@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../admin-pro-release-template"
+		}
+	],
+  "settings": {
+    "workbench.colorTheme": "One Monokai",
+    "javascript.format.enable": true,
+    "git.confirmSync": false,
+    "liveServer.settings.donotShowInfoMsg": true,
+    "explorer.confirmDelete": false,
+    "files.autoSave": "onFocusChange"
+  }
+}
