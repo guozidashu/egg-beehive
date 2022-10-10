@@ -53,7 +53,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '首页',
-      // icon: 'home-2-line',
+      // icon: 'home-2-line', development standard cost value
       breadcrumbHidden: true,
     },
     children: [
@@ -63,6 +63,26 @@ export const asyncRoutes = [
         component: () => import('@/subview/index/index'),
         meta: {
           title: '首页',
+          noClosable: true,
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'board',
+        name: 'Board',
+        component: () => import('@/subview/index/board'),
+        meta: {
+          title: '看板',
+          noClosable: true,
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'visualization',
+        name: 'Visualization',
+        component: () => import('@/subview/index/visualization'),
+        meta: {
+          title: '可视化',
           noClosable: true,
           // icon: 'home-2-line',
         },
@@ -91,16 +111,576 @@ export const asyncRoutes = [
       },
     ],
   },
-  // {
-  //   path: '/',
-  //   name: 'IndexCopy',
-  //   component: Layout,
-  //   // redirect: '/subview/index/indexcopy',
-  //   meta: {
-  //     title: '首页2',
-  //     // breadcrumbHidden: true,
-  //   },
-  // },
+  {
+    path: '/research',
+    name: 'Research',
+    component: Layout,
+    meta: {
+      title: '研发',
+      // icon: 'error-warning-line',
+      breadcrumbHidden: true,
+    },
+    children: [
+      {
+        path: 'project',
+        name: 'Project',
+        meta: {
+          title: '商品企划',
+          // icon: 'home-2-line',
+        },
+        children: [
+          {
+            path: 'brand',
+            name: 'ProjectBrand',
+            component: () => import('@/subview/research/project/brand'),
+            meta: {
+              title: '品牌管理',
+              // icon: 'home-2-line',
+            },
+          },
+          {
+            path: 'band',
+            name: 'ProjectBand',
+            component: () => import('@/subview/research/project/band'),
+            meta: {
+              title: '波段计划',
+              // icon: 'home-2-line',
+            },
+          },
+          {
+            path: 'projectcategory',
+            name: 'Projectcategory',
+            component: () => import('@/subview/research/project/category'),
+            meta: {
+              title: '类目计划',
+              // icon: 'home-2-line',
+            },
+          },
+          {
+            path: 'projectPrice',
+            name: 'ProjectPrice',
+            component: () => import('@/subview/research/project/price'),
+            meta: {
+              title: '价格带计划',
+              // icon: 'home-2-line',
+            },
+          },
+          {
+            path: 'projectPost',
+            name: 'ProjectPost',
+            component: () => import('@/subview/research/project/post'),
+            meta: {
+              title: '岗位目标计划',
+              // icon: 'home-2-line',
+            },
+          },
+        ],
+      },
+      {
+        path: 'progress',
+        name: 'Progress',
+        component: () => import('@/subview/research/progress'),
+        meta: {
+          title: '研发进度',
+          // icon: 'home-2-line',
+        },
+      },
+      // 开发核价单 标准核价单 部门成本分析 员工价值分析 development standard cost value
+      {
+        path: 'financial',
+        name: 'Financial',
+        meta: {
+          title: '财务管理',
+          // icon: 'home-2-line',
+        },
+        children: [
+          {
+            path: 'development',
+            name: 'FinancialDevelopment',
+            component: () => import('@/subview/research/financial/development'),
+            meta: {
+              title: '开发核价单',
+              // icon: 'home-2-line',
+            },
+          },
+          {
+            path: 'standard',
+            name: 'FinancialStandard',
+            component: () => import('@/subview/research/financial/standard'),
+            meta: {
+              title: '标准核价单',
+              // icon: 'home-2-line',
+            },
+          },
+          {
+            path: 'cost',
+            name: 'FinancialCost',
+            component: () => import('@/subview/research/financial/cost'),
+            meta: {
+              title: '部门成本分析',
+              // icon: 'home-2-line',
+            },
+          },
+          {
+            path: 'value',
+            name: 'FinancialValue',
+            component: () => import('@/subview/research/financial/value'),
+            meta: {
+              title: '员工价值分析',
+              // icon: 'home-2-line',
+            },
+          },
+        ],
+      },
+      {
+        path: 'grail',
+        name: 'Grail',
+        component: () => import('@/subview/research/grail'),
+        meta: {
+          title: '研发大盘',
+          // icon: 'home-2-line',
+        },
+      },
+    ],
+  },
+  {
+    path: '/documentary',
+    name: 'Documentary',
+    component: Layout,
+    meta: {
+      title: '跟单',
+      // icon: 'error-warning-line',
+      breadcrumbHidden: true,
+    },
+    children: [
+      {
+        path: 'documentaryProduction',
+        name: 'DocumentaryProduction',
+        component: () => import('@/subview/documentary/production'),
+        meta: {
+          title: '生产计划单',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'documentaryOutgoing',
+        name: 'DocumentaryOutgoing',
+        component: () => import('@/subview/documentary/outgoing'),
+        meta: {
+          title: '外发加工单',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'documentaryProgress',
+        name: 'DocumentaryProgress',
+        component: () => import('@/subview/documentary/progress'),
+        meta: {
+          title: '生产进度分析',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'documentaryReport',
+        name: 'DocumentaryReport',
+        component: () => import('@/subview/documentary/report'),
+        meta: {
+          title: '跟单报表',
+          // icon: 'home-2-line',
+        },
+      },
+    ],
+  },
+  {
+    path: '/supplier',
+    name: 'Supplier',
+    component: Layout,
+    meta: {
+      title: '供应商',
+      // icon: 'error-warning-line',
+      breadcrumbHidden: true,
+    },
+    children: [
+      {
+        path: 'supplierOrder',
+        name: 'SupplierOrder',
+        component: () => import('@/subview/supplier/order'),
+        meta: {
+          title: '采购订单',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'supplierManagement',
+        name: 'SupplierManagement',
+        component: () => import('@/subview/supplier/management'),
+        meta: {
+          title: '供应商管理',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'supplierStatistical',
+        name: 'SupplierStatistical',
+        component: () => import('@/subview/supplier/statistical'),
+        meta: {
+          title: '采购统计',
+          // icon: 'home-2-line',
+        },
+      },
+    ],
+  },
+  {
+    path: '/goods',
+    name: 'Goods',
+    component: Layout,
+    meta: {
+      title: '商品',
+      // icon: 'error-warning-line',
+      breadcrumbHidden: true,
+    },
+    children: [
+      {
+        path: 'goodsManage',
+        name: 'GoodsManage',
+        component: () => import('@/subview/goods/manage'),
+        meta: {
+          title: '商品管理',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'goodsClassified',
+        name: 'GoodsClassified',
+        component: () => import('@/subview/goods/classified'),
+        meta: {
+          title: '商品分类',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'goodsStatistical',
+        name: 'GoodsStatistical',
+        component: () => import('@/subview/goods/statistical'),
+        meta: {
+          title: '商品统计',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'goodsStock',
+        name: 'GoodsStock',
+        component: () => import('@/subview/goods/stock'),
+        meta: {
+          title: '库存统计',
+          // icon: 'home-2-line',
+        },
+      },
+    ],
+  },
+  {
+    path: '/order',
+    name: 'Order',
+    component: Layout,
+    meta: {
+      title: '订单',
+      // icon: 'error-warning-line',
+      breadcrumbHidden: true,
+    },
+    children: [
+      {
+        path: 'orderList',
+        name: 'OrderList',
+        component: () => import('@/subview/order/list/index'),
+        meta: {
+          title: '订单列表',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'orderBasis',
+        name: 'OrderBasis',
+        component: () => import('@/subview/order/basis/index'),
+        meta: {
+          title: '订单统计',
+          // icon: 'home-2-line',
+        },
+      },
+    ],
+  },
+  {
+    path: '/customer',
+    name: 'Customer',
+    component: Layout,
+    meta: {
+      title: '客户',
+      // icon: 'error-warning-line',
+      breadcrumbHidden: true,
+    },
+    children: [
+      {
+        path: 'customerManage',
+        name: 'CustomerManage',
+        component: () => import('@/subview/customer/manage'),
+        meta: {
+          title: '客户管理',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'customerLevel',
+        name: 'CustomerLevel',
+        component: () => import('@/subview/customer/level'),
+        meta: {
+          title: '客户等级',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'customerClassify',
+        name: 'CustomerClassify',
+        component: () => import('@/subview/customer/classify'),
+        meta: {
+          title: '客户分类',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'customerTags',
+        name: 'CustomerTags',
+        component: () => import('@/subview/customer/tags'),
+        meta: {
+          title: '客户标签',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'customerStatistical',
+        name: 'CustomerStatistical',
+        component: () => import('@/subview/customer/statistical'),
+        meta: {
+          title: '客户统计',
+          // icon: 'home-2-line',
+        },
+      },
+    ],
+  },
+  {
+    path: '/report',
+    name: 'Report',
+    component: Layout,
+    meta: {
+      title: '报表',
+      // icon: 'error-warning-line',
+      breadcrumbHidden: true,
+    },
+    children: [
+      {
+        path: 'reportOrder',
+        name: 'ReportOrder',
+        component: () => import('@/subview/report/order'),
+        meta: {
+          title: '订单分析',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'reportCustomer',
+        name: 'ReportCustomer',
+        component: () => import('@/subview/report/customer'),
+        meta: {
+          title: '客户分析',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'reportInventory',
+        name: 'ReportInventory',
+        component: () => import('@/subview/report/inventory'),
+        meta: {
+          title: '库存分析',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'reportGoods',
+        name: 'ReportGoods',
+        component: () => import('@/subview/report/goods'),
+        meta: {
+          title: '商品分析',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'reportTransaction',
+        name: 'ReportTransaction',
+        component: () => import('@/subview/report/transaction'),
+        meta: {
+          title: '交易分析',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'reportFinance',
+        name: 'ReportFinance',
+        component: () => import('@/subview/report/finance'),
+        meta: {
+          title: '财务分析',
+          // icon: 'home-2-line',
+        },
+      },
+    ],
+  },
+  {
+    path: '/financial',
+    name: 'Financial',
+    component: Layout,
+    meta: {
+      title: '财务',
+      // icon: 'error-warning-line',
+      breadcrumbHidden: true,
+    },
+    children: [
+      {
+        path: 'financialOverview',
+        name: 'FinancialOverview',
+        component: () => import('@/subview/financial/overview'),
+        meta: {
+          title: '财务总览',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'financialSupplier',
+        name: 'FinancialSupplier',
+        component: () => import('@/subview/financial/supplier'),
+        meta: {
+          title: '供应商付款',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'financialCustomer',
+        name: 'FinancialCustomer',
+        component: () => import('@/subview/financial/customer'),
+        meta: {
+          title: '客户应收款',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'financialAccounting',
+        name: 'FinancialAccounting',
+        component: () => import('@/subview/financial/accounting'),
+        meta: {
+          title: '成品核算单',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'financialCost',
+        name: 'FinancialCost',
+        component: () => import('@/subview/financial/cost'),
+        meta: {
+          title: '成本分析',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'financialProfit',
+        name: 'FinancialProfit',
+        component: () => import('@/subview/financial/profit'),
+        meta: {
+          title: '利润分析',
+          // icon: 'home-2-line',
+        },
+      },
+    ],
+  },
+  {
+    path: '/archives',
+    name: 'Archives',
+    component: Layout,
+    meta: {
+      title: '基础档案',
+      // icon: 'error-warning-line',
+      breadcrumbHidden: true,
+    },
+    children: [
+      {
+        path: 'archivesBrand',
+        name: 'ArchivesBrand',
+        component: () => import('@/subview/archives/brand'),
+        meta: {
+          title: '品牌管理',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'archivesGoods',
+        name: 'ArchivesGoods',
+        component: () => import('@/subview/archives/goods'),
+        meta: {
+          title: '商品资料',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'archivesCustomer',
+        name: 'ArchivesCustomer',
+        component: () => import('@/subview/archives/customer'),
+        meta: {
+          title: '客户资料',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'archivesSupplier',
+        name: 'ArchivesSupplier',
+        component: () => import('@/subview/archives/supplier'),
+        meta: {
+          title: '供应商管理',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'archivesYear',
+        name: 'ArchivesYear',
+        component: () => import('@/subview/archives/year'),
+        meta: {
+          title: '年份管理',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'archivesSeasonal',
+        name: 'ArchivesSeasonal',
+        component: () => import('@/subview/archives/seasonal'),
+        meta: {
+          title: '季节管理',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'archivesBand',
+        name: 'ArchivesBand',
+        component: () => import('@/subview/archives/band'),
+        meta: {
+          title: '波段管理',
+          // icon: 'home-2-line',
+        },
+      },
+      {
+        path: 'archivesWarehouse',
+        name: 'ArchivesWarehouse',
+        component: () => import('@/subview/archives/warehouse'),
+        meta: {
+          title: '仓库管理',
+          // icon: 'home-2-line',
+        },
+      },
+    ],
+  },
   {
     path: '/setting',
     name: 'Setting',
@@ -119,26 +699,6 @@ export const asyncRoutes = [
           title: '授权信息',
           // icon: 'home-2-line',
         },
-        // children: [
-        //   {
-        //     path: 'accountAuthorization',
-        //     name: 'AccountAuthorization',
-        //     component: () => import('@/subview/setting/account/authorization'),
-        //     meta: {
-        //       title: '授权信息',
-        //       // icon: 'home-2-line',
-        //     },
-        //   },
-        //   {
-        //     path: 'accountService',
-        //     name: 'AccountService',
-        //     component: () => import('@/subview/setting/account/service'),
-        //     meta: {
-        //       title: '客服信息',
-        //       // icon: 'home-2-line',
-        //     },
-        //   },
-        // ],
       },
       {
         path: 'system',
@@ -197,7 +757,7 @@ export const asyncRoutes = [
         },
         children: [
           {
-            path: 'EmployeesList',
+            path: 'employeesList',
             name: 'EmployeesList',
             component: () => import('@/subview/setting/employees/list'),
             meta: {
@@ -206,7 +766,7 @@ export const asyncRoutes = [
             },
           },
           {
-            path: 'EmployeesJobs',
+            path: 'employeesJobs',
             name: 'EmployeesJobs',
             component: () => import('@/subview/setting/employees/jobs'),
             meta: {
@@ -231,231 +791,6 @@ export const asyncRoutes = [
         component: () => import('@/subview/setting/logs/index'),
         meta: {
           title: '操作日志',
-          // icon: 'home-2-line',
-        },
-      },
-    ],
-  },
-  {
-    path: '/customer',
-    name: 'Customer',
-    component: Layout,
-    meta: {
-      title: '客户',
-      // icon: 'error-warning-line',
-      breadcrumbHidden: true,
-    },
-    children: [
-      {
-        path: 'CustomerStatistical',
-        name: 'CustomerStatistical',
-        component: () => import('@/subview/customer/statistical/index'),
-        meta: {
-          title: '统计',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'classify',
-        name: 'Classify',
-        component: () => import('@/subview/customer/classify/index'),
-        meta: {
-          title: '客户分类',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'level',
-        name: 'Level',
-        component: () => import('@/subview/customer/level/index'),
-        meta: {
-          title: '客户等级',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'CustomerList',
-        name: 'CustomerList',
-        component: () => import('@/subview/customer/list/index'),
-        meta: {
-          title: '客户列表',
-          // icon: 'home-2-line',
-        },
-      },
-    ],
-  },
-  {
-    path: '/supplier',
-    name: 'Supplier',
-    component: Layout,
-    meta: {
-      title: '供应商',
-      // icon: 'error-warning-line',
-      breadcrumbHidden: true,
-    },
-    children: [
-      {
-        path: 'SupplierStatistical',
-        name: 'SupplierStatistical',
-        component: () => import('@/subview/supplier/statistical/index'),
-        meta: {
-          title: '统计',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'SupplierList',
-        name: 'SupplierList',
-        component: () => import('@/subview/supplier/list/index'),
-        meta: {
-          title: '供应商列表',
-          // icon: 'home-2-line',
-        },
-      },
-    ],
-  },
-  {
-    path: '/order',
-    name: 'Order',
-    component: Layout,
-    meta: {
-      title: '订单',
-      // icon: 'error-warning-line',
-      breadcrumbHidden: true,
-    },
-    children: [
-      {
-        path: 'OrderList',
-        name: 'OrderList',
-        component: () => import('@/subview/order/list/index'),
-        meta: {
-          title: '订单列表',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'OrderBasis',
-        name: 'OrderBasis',
-        component: () => import('@/subview/order/basis/index'),
-        meta: {
-          title: '基础信息统计',
-          // icon: 'home-2-line',
-        },
-      },
-    ],
-  },
-  {
-    path: '/digital',
-    name: 'Digital',
-    component: Layout,
-    meta: {
-      title: '分析',
-      // icon: 'error-warning-line',
-      breadcrumbHidden: true,
-    },
-    children: [
-      {
-        path: 'president',
-        name: 'President',
-        component: () => import('@/subview/digital/president/index'),
-        meta: {
-          title: '总统',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'boss',
-        name: 'Boss',
-        component: () => import('@/subview/digital/boss/index'),
-        meta: {
-          title: '老板',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'sales',
-        name: 'Sales',
-        component: () => import('@/subview/digital/sales/index'),
-        meta: {
-          title: '销售',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'technology',
-        name: 'Technology',
-        component: () => import('@/subview/digital/technology/index'),
-        meta: {
-          title: '研发',
-          // icon: 'home-2-line',
-        },
-      },
-    ],
-  },
-  {
-    path: '/financial',
-    name: 'Financial',
-    component: Layout,
-    meta: {
-      title: '财务',
-      // icon: 'error-warning-line',
-      breadcrumbHidden: true,
-    },
-    children: [
-      {
-        path: 'report',
-        name: 'Report',
-        component: () => import('@/subview/financial/report/index'),
-        meta: {
-          title: '报表',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'cost',
-        name: 'Cost',
-        component: () => import('@/subview/financial/cost/index'),
-        meta: {
-          title: '成本',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'profits',
-        name: 'Profits',
-        component: () => import('@/subview/financial/profits/index'),
-        meta: {
-          title: '利润',
-          // icon: 'home-2-line',
-        },
-      },
-    ],
-  },
-  {
-    path: '/goods',
-    name: 'Goods',
-    component: Layout,
-    meta: {
-      title: '商品',
-      // icon: 'error-warning-line',
-      breadcrumbHidden: true,
-    },
-    children: [
-      {
-        path: 'statistical',
-        name: 'Statistical',
-        component: () => import('@/subview/goods/statistical/index'),
-        meta: {
-          title: '统计',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'list',
-        name: 'List',
-        component: () => import('@/subview/goods/list/index'),
-        meta: {
-          title: '商品列表',
           // icon: 'home-2-line',
         },
       },
@@ -487,7 +822,7 @@ export const asyncRoutes = [
         },
         children: [
           {
-            path: 'binding',
+            path: 'wxpublicBinding',
             name: 'WxpublicBinding',
             component: () => import('@/subview/platform/wxpublic/binding'),
             meta: {
@@ -496,7 +831,7 @@ export const asyncRoutes = [
             },
           },
           {
-            path: 'menu',
+            path: 'wxpublicMenu',
             name: 'WxpublicMenu',
             component: () => import('@/subview/platform/wxpublic/menu'),
             meta: {
@@ -505,7 +840,7 @@ export const asyncRoutes = [
             },
           },
           {
-            path: 'pay',
+            path: 'wxpublicPay',
             name: 'WxpublicPay',
             component: () => import('@/subview/platform/wxpublic/pay'),
             meta: {
@@ -514,7 +849,7 @@ export const asyncRoutes = [
             },
           },
           {
-            path: 'message',
+            path: 'wxpublicMessage',
             name: 'WxpublicMessage',
             component: () => import('@/subview/platform/wxpublic/message'),
             meta: {
@@ -533,7 +868,7 @@ export const asyncRoutes = [
         },
         children: [
           {
-            path: 'binding',
+            path: 'wxprogrambBinding',
             name: 'WxprogrambBinding',
             component: () => import('@/subview/platform/wxprogram/binding'),
             meta: {
@@ -542,7 +877,7 @@ export const asyncRoutes = [
             },
           },
           {
-            path: 'pay',
+            path: 'wxprogramPay',
             name: 'WxprogramPay',
             component: () => import('@/subview/platform/wxprogram/pay'),
             meta: {
@@ -551,7 +886,7 @@ export const asyncRoutes = [
             },
           },
           {
-            path: 'message',
+            path: 'wxprogramMessage',
             name: 'WxprogramMessage',
             component: () => import('@/subview/platform/wxprogram/message'),
             meta: {
@@ -560,7 +895,7 @@ export const asyncRoutes = [
             },
           },
           {
-            path: 'service',
+            path: 'wxprogramService',
             name: 'WxprogramService',
             component: () => import('@/subview/platform/wxprogram/service'),
             meta: {
@@ -671,7 +1006,7 @@ export const asyncRoutes = [
       },
       {
         path: 'doudin',
-        name: 'Poudin',
+        name: 'Doudin',
         component: () => import('@/subview/platform/doudin'),
         meta: {
           title: '抖店开放平台',

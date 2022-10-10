@@ -87,7 +87,7 @@
   import { getList } from '@/api/area'
 
   export default {
-    name: 'Poudin',
+    name: 'Doudin',
     data() {
       return {
         form: {

@@ -155,6 +155,7 @@
   .card-ra {
     border-radius: 6px;
   }
+  // 更改成主题颜色
   .card-ra ::v-deep .el-card__header {
     color: $base-color-blue;
     background-color: #e8f4ff;

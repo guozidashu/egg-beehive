@@ -10,9 +10,8 @@
         <!-- 表单组件具名插槽自定义表单 -->
         <template #Form>
           <el-form-item
-            class="f-w-600"
             label="订单状态:"
-            style="padding-top: 10px; padding-right: 80px"
+            style="padding-top: 10px; padding-right: 80px; font-weight: 600"
           >
             <el-radio-group
               v-model="orderForm.orderSta"
@@ -28,9 +27,8 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item
-            class="f-w-600"
             label="支付来源:"
-            style="padding-top: 10px; padding-right: 80px"
+            style="padding-top: 10px; padding-right: 80px; font-weight: 600"
           >
             <el-radio-group
               v-model="orderForm.paySta"
@@ -47,9 +45,8 @@
           </el-form-item>
           <el-form-item
             v-show="!orderForm.fold"
-            class="f-w-600"
             label="订单来源:"
-            style="padding-top: 10px; padding-right: 80px"
+            style="padding-top: 10px; padding-right: 80px; font-weight: 600"
           >
             <el-radio-group
               v-model="orderForm.orderSource"
@@ -163,7 +160,7 @@
           <el-table-column
             align="center"
             label="订单号/类型"
-            prop="orderid"
+            prop="orderno"
             show-overflow-tooltip
           />
           <el-table-column
@@ -216,7 +213,7 @@
   import List from './components/List'
   import Form from './components/Form'
   import Drawer from './components/Drawer'
-  import { getList } from '@/api/userManagement'
+  // import { getList } from '@/api/userManagement'
   export default {
     name: 'OrderList',
     components: { Form, List, Drawer },
@@ -243,8 +240,51 @@
 
         // 公共参数
         listType: 1,
-        list: [],
-        listLoading: true,
+        list: [
+          {
+            orderno: '1234522/普通订单',
+            username: '叶良辰/24',
+            num: 23,
+            money: 345,
+            state: '已完成',
+          },
+          {
+            orderno: '1234522/普通订单',
+            username: '叶良辰/24',
+            num: 23,
+            money: 345,
+            state: '已完成',
+          },
+          {
+            orderno: '1234522/普通订单',
+            username: '叶良辰/24',
+            num: 23,
+            money: 345,
+            state: '已完成',
+          },
+          {
+            orderno: '1234522/普通订单',
+            username: '叶良辰/24',
+            num: 23,
+            money: 345,
+            state: '已完成',
+          },
+          {
+            orderno: '1234522/普通订单',
+            username: '叶良辰/24',
+            num: 23,
+            money: 345,
+            state: '已完成',
+          },
+          {
+            orderno: '1234522/普通订单',
+            username: '叶良辰/24',
+            num: 23,
+            money: 345,
+            state: '已完成',
+          },
+        ],
+        listLoading: false,
         total: 0,
       }
     },
@@ -296,13 +336,13 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        this.listLoading = true
-        const {
-          data: { list, total },
-        } = await getList(this.orderForm)
-        this.list = list
-        this.total = total
-        this.listLoading = false
+        // this.listLoading = true
+        // const {
+        //   data: { list, total },
+        // } = await getList(this.orderForm)
+        // this.list = list
+        // this.total = total
+        // this.listLoading = false
       },
       // 详情抽屉
       handleDetail() {
@@ -319,8 +359,5 @@
   .table-pos {
     position: relative;
     top: -20px;
-  }
-  .f-w-600 {
-    font-weight: 600;
   }
 </style>

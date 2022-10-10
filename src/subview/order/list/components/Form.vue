@@ -4,9 +4,9 @@
       <vab-query-form-top-panel>
         <el-form
           ref="form"
-          class="order-form"
           label-width="80px"
           :model="orderForm"
+          style="display: flex; flex-wrap: wrap"
           @submit.native.prevent
         >
           <slot name="Form"></slot>
@@ -93,9 +93,4 @@
     },
   }
 </script>
-<style lang="scss" scoped>
-  .order-form {
-    display: flex;
-    flex-wrap: wrap;
-  }
-</style>
+<style lang="scss" scoped></style>

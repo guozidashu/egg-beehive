@@ -283,15 +283,13 @@
 </script>
 
 <style lang="scss" scoped>
-  .comprehensive-form-container {
-    .demo-form {
-      margin-top: 10px;
-      .sms-input {
-        width: 180px;
-      }
-      .switch-input {
-        margin: 0 40px 0 10px;
-      }
-    }
+  .demo-form {
+    margin-top: 10px;
+  }
+  .sms-input {
+    width: 180px;
+  }
+  .switch-input {
+    margin: 0 40px 0 10px;
   }
 </style>

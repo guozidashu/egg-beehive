@@ -1,37 +1,24 @@
 <template>
   <div class="components-drawer">
-    <div class="head">
-      <div class="">
-        <p>[普通订单]</p>
-        <div class="">
-          <img :src="avatar" style="margin: 10px" />
-          <span>订单编号：wx310090959855550464</span>
+    <div style="padding: 30px 35px 25px">
+      <div>
+        <p style="font-size: 16px; font-weight: 600">[普通订单]</p>
+        <div style="display: flex">
+          <img
+            :src="avatar"
+            style="width: 50px; height: 50px; margin: 0 10px 10px 0"
+          />
+          <span style="margin: 10px 0 0 0">订单编号：wx310090959855550464</span>
         </div>
-        <!-- <el-button
-          native-type="submit"
-          size="small"
-          style="height: 32px"
-          type="primary"
-        >
-          小票打印
-        </el-button> -->
       </div>
-      <div class="detail-sta">
-        <div class="detail-sta-text">
-          <span>订单状态</span>
-          <span>待评价</span>
-        </div>
-        <div class="detail-sta-text">
-          <span>实际支付</span>
-          <span>¥247.50</span>
-        </div>
-        <div class="detail-sta-text">
-          <span>支付方式</span>
-          <span>余额支付</span>
-        </div>
-        <div class="detail-sta-text">
-          <span>支付时间</span>
-          <span>2022-10-08 16:30:46</span>
+      <div style="display: flex">
+        <div
+          v-for="(item, index) in stalist"
+          :key="index"
+          style="display: flex; flex: 1; flex-direction: column"
+        >
+          <span style="margin-bottom: 12px">{{ item.name }}</span>
+          <span>{{ item.value }}</span>
         </div>
       </div>
     </div>
@@ -91,31 +78,41 @@
             <el-table-column
               align="center"
               label="商品信息"
-              prop="orderid"
-              show-overflow-tooltip
-            />
+              prop="inof"
+              width="330"
+            >
+              <template #default="{ row }">
+                <div style="display: flex">
+                  <el-image
+                    :src="row.inof.img"
+                    style="width: 50px; height: 50px; margin-right: 20px"
+                  />
+                  <span>{{ row.inof.wenzi }}|{{ row.inof.color }}</span>
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column
               align="center"
               label="售价"
-              prop="username"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="实付金额"
-              prop="num"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="数量"
               prop="money"
               show-overflow-tooltip
             />
             <el-table-column
               align="center"
+              label="实付金额"
+              prop="pay"
+              show-overflow-tooltip
+            />
+            <el-table-column
+              align="center"
+              label="数量"
+              prop="num"
+              show-overflow-tooltip
+            />
+            <el-table-column
+              align="center"
               label="小计"
-              prop="state"
+              prop="comutp"
               show-overflow-tooltip
             />
           </template>
@@ -132,19 +129,19 @@
             <el-table-column
               align="center"
               label="订单ID"
-              prop="orderid"
+              prop="id"
               show-overflow-tooltip
             />
             <el-table-column
               align="center"
               label="操作记录"
-              prop="username"
+              prop="log"
               show-overflow-tooltip
             />
             <el-table-column
               align="center"
               label="操作时间"
-              prop="num"
+              prop="time"
               show-overflow-tooltip
             />
           </template>
@@ -152,7 +149,7 @@
       </el-tab-pane>
       <el-tab-pane label="发货记录" name="four">
         <List
-          :order-list="orderList"
+          :order-list="stareList"
           :order-state="listLoading"
           :type="listType"
         >
@@ -161,32 +158,37 @@
             <el-table-column
               align="center"
               label="订单号"
-              prop="orderid"
+              prop="id"
               show-overflow-tooltip
             />
             <el-table-column
               align="center"
               label="商品信息"
-              prop="username"
-              show-overflow-tooltip
-            />
+              prop="inof"
+              width="330"
+            >
+              <template #default="{ row }">
+                <div style="display: flex">
+                  <el-image
+                    :src="row.inof.img"
+                    style="width: 50px; height: 50px; margin-right: 20px"
+                  />
+                  <span>{{ row.inof.wenzi }}|{{ row.inof.color }}</span>
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column
               align="center"
               label="发货信息"
-              prop="num"
+              prop="time"
               show-overflow-tooltip
             />
-            <el-table-column
-              align="center"
-              label="操作"
-              show-overflow-tooltip
-              width="85"
-            >
+            <el-table-column align="center" label="操作" width="85">
               <template #default="{ row }">
                 <el-button type="text" @click="handleDetail(row)">
-                  详情
+                  立即核销
                 </el-button>
-                <el-button type="text">作废</el-button>
+                <el-button type="text">更多</el-button>
               </template>
             </el-table-column>
           </template>
@@ -206,10 +208,63 @@
       return {
         activeName: 'first',
         listLoading: false,
-        avatar: '',
         listType: 2,
-        goosList: [],
-        orderList: [],
+        goosList: [
+          {
+            inof: {
+              img: 'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
+              color: '粉',
+              wenzi:
+                '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
+            },
+            money: 12,
+            pay: 11,
+            num: 1,
+            comutp: 1.0,
+          },
+        ],
+        stareList: [
+          {
+            inof: {
+              img: 'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
+              color: '粉',
+              wenzi:
+                '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
+            },
+            id: 'wx310816471104094208[金家酒便利]',
+            time: '2022-10-10 16:33:41',
+          },
+        ],
+        orderList: [
+          {
+            id: 4525,
+            log: '用户付款成功',
+            time: '2022-10-10 16:33:41',
+          },
+          {
+            id: 4525,
+            log: '用户付款成功',
+            time: '2022-10-10 16:33:41',
+          },
+        ],
+        stalist: [
+          {
+            name: '订单状态',
+            value: '待评价',
+          },
+          {
+            name: '实际支付',
+            value: '¥247.50',
+          },
+          {
+            name: '支付方式',
+            value: '余额支付',
+          },
+          {
+            name: '支付时间',
+            value: '2022-10-08 16:30:46',
+          },
+        ],
       }
     },
     computed: {
@@ -224,28 +279,6 @@
 <style lang="scss" scoped>
   .head {
     padding: 30px 35px 25px;
-    .detail-top {
-      display: flex;
-      justify-content: space-between;
-      .detail-top-text {
-        display: flex;
-        flex-direction: column;
-        span {
-          margin-bottom: 12px;
-        }
-      }
-    }
-    .detail-sta {
-      display: flex;
-      .detail-sta-text {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        span {
-          margin-bottom: 12px;
-        }
-      }
-    }
   }
   .drawer-tab {
     padding: 0 25px;
