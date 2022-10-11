@@ -199,7 +199,7 @@
 </template>
 
 <script>
-  import List from './List'
+  import List from '@/subview/components/List'
   import { mapGetters } from 'vuex'
   export default {
     name: 'ComponentsDrawer',

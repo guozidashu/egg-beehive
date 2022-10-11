@@ -210,7 +210,7 @@
 </template>
 
 <script>
-  import List from './components/List'
+  import List from '@/subview/components/List'
   import Form from './components/Form'
   import Drawer from './components/Drawer'
   // import { getList } from '@/api/userManagement'

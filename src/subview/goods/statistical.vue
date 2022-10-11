@@ -211,7 +211,7 @@
 </template>
 
 <script>
-  import List from '../order/list/components/List'
+  import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
   export default {
     name: 'GoodsStatistical',

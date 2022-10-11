@@ -53,7 +53,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '首页',
-      // icon: 'home-2-line', development standard cost value
+      icon: 'home-2-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -64,7 +64,7 @@ export const asyncRoutes = [
         meta: {
           title: '首页',
           noClosable: true,
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -73,8 +73,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/index/board'),
         meta: {
           title: '看板',
-          noClosable: true,
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -83,41 +82,40 @@ export const asyncRoutes = [
         component: () => import('@/subview/index/visualization'),
         meta: {
           title: '可视化',
-          noClosable: true,
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
     ],
   },
-  {
-    path: '/indexcopy',
-    name: 'IndexCopy',
-    component: Layout,
-    meta: {
-      title: '首页',
-      icon: 'error-warning-line',
-      levelHidden: true,
-    },
-    children: [
-      {
-        path: '',
-        name: 'IndexCopy',
-        component: () => import('@/subview/index/indexcopy'),
-        meta: {
-          title: '首页',
-          icon: 'error-warning-line',
-          // tabHidden: true,
-        },
-      },
-    ],
-  },
+  // {
+  //   path: '/indexcopy',
+  //   name: 'IndexCopy',
+  //   component: Layout,
+  //   meta: {
+  //     title: '首页',
+  //     icon: 'error-warning-line',
+  //     levelHidden: true,
+  //   },
+  //   children: [
+  //     {
+  //       path: '',
+  //       name: 'IndexCopy',
+  //       component: () => import('@/subview/index/indexcopy'),
+  //       meta: {
+  //         title: '首页',
+  //         icon: 'error-warning-line',
+  //         // tabHidden: true,
+  //       },
+  //     },
+  //   ],
+  // },
   {
     path: '/research',
     name: 'Research',
     component: Layout,
     meta: {
       title: '研发',
-      // icon: 'error-warning-line',
+      icon: 'archive-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -126,11 +124,11 @@ export const asyncRoutes = [
         name: 'Project',
         meta: {
           title: '商品企划',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
         children: [
           {
-            path: 'brand',
+            path: 'projectBrand',
             name: 'ProjectBrand',
             component: () => import('@/subview/research/project/brand'),
             meta: {
@@ -139,7 +137,7 @@ export const asyncRoutes = [
             },
           },
           {
-            path: 'band',
+            path: 'projectBand',
             name: 'ProjectBand',
             component: () => import('@/subview/research/project/band'),
             meta: {
@@ -182,7 +180,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/research/progress'),
         meta: {
           title: '研发进度',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       // 开发核价单 标准核价单 部门成本分析 员工价值分析 development standard cost value
@@ -191,7 +189,7 @@ export const asyncRoutes = [
         name: 'Financial',
         meta: {
           title: '财务管理',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
         children: [
           {
@@ -238,7 +236,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/research/grail'),
         meta: {
           title: '研发大盘',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
     ],
@@ -249,7 +247,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '跟单',
-      // icon: 'error-warning-line',
+      icon: 'archive-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -259,7 +257,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/documentary/production'),
         meta: {
           title: '生产计划单',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -268,7 +266,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/documentary/outgoing'),
         meta: {
           title: '外发加工单',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -277,7 +275,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/documentary/progress'),
         meta: {
           title: '生产进度分析',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -286,7 +284,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/documentary/report'),
         meta: {
           title: '跟单报表',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
     ],
@@ -297,7 +295,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '供应商',
-      // icon: 'error-warning-line',
+      icon: 'archive-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -307,7 +305,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/supplier/order'),
         meta: {
           title: '采购订单',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -316,7 +314,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/supplier/management'),
         meta: {
           title: '供应商管理',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -325,7 +323,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/supplier/statistical'),
         meta: {
           title: '采购统计',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
     ],
@@ -336,7 +334,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '商品',
-      // icon: 'error-warning-line',
+      icon: 'archive-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -346,7 +344,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/goods/manage'),
         meta: {
           title: '商品管理',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -355,7 +353,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/goods/classified'),
         meta: {
           title: '商品分类',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -364,7 +362,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/goods/statistical'),
         meta: {
           title: '商品统计',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -373,7 +371,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/goods/stock'),
         meta: {
           title: '库存统计',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
     ],
@@ -384,7 +382,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '订单',
-      // icon: 'error-warning-line',
+      icon: 'archive-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -394,7 +392,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/order/list/index'),
         meta: {
           title: '订单列表',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -403,7 +401,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/order/basis/index'),
         meta: {
           title: '订单统计',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
     ],
@@ -414,7 +412,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '客户',
-      // icon: 'error-warning-line',
+      icon: 'archive-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -424,7 +422,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/customer/manage'),
         meta: {
           title: '客户管理',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -433,7 +431,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/customer/level'),
         meta: {
           title: '客户等级',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -442,7 +440,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/customer/classify'),
         meta: {
           title: '客户分类',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -451,7 +449,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/customer/tags'),
         meta: {
           title: '客户标签',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -460,7 +458,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/customer/statistical'),
         meta: {
           title: '客户统计',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
     ],
@@ -471,7 +469,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '报表',
-      // icon: 'error-warning-line',
+      icon: 'archive-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -481,7 +479,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/report/order'),
         meta: {
           title: '订单分析',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -490,7 +488,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/report/customer'),
         meta: {
           title: '客户分析',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -499,7 +497,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/report/inventory'),
         meta: {
           title: '库存分析',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -508,7 +506,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/report/goods'),
         meta: {
           title: '商品分析',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -517,7 +515,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/report/transaction'),
         meta: {
           title: '交易分析',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -526,7 +524,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/report/finance'),
         meta: {
           title: '财务分析',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
     ],
@@ -537,7 +535,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '财务',
-      // icon: 'error-warning-line',
+      icon: 'archive-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -547,7 +545,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/financial/overview'),
         meta: {
           title: '财务总览',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -556,7 +554,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/financial/supplier'),
         meta: {
           title: '供应商付款',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -565,7 +563,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/financial/customer'),
         meta: {
           title: '客户应收款',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -574,7 +572,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/financial/accounting'),
         meta: {
           title: '成品核算单',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -583,7 +581,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/financial/cost'),
         meta: {
           title: '成本分析',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -592,7 +590,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/financial/profit'),
         meta: {
           title: '利润分析',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
     ],
@@ -603,7 +601,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '基础档案',
-      // icon: 'error-warning-line',
+      icon: 'archive-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -613,7 +611,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/brand'),
         meta: {
           title: '品牌管理',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -622,7 +620,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/goods'),
         meta: {
           title: '商品资料',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -631,7 +629,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/customer'),
         meta: {
           title: '客户资料',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -640,7 +638,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/supplier'),
         meta: {
           title: '供应商管理',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -649,7 +647,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/year'),
         meta: {
           title: '年份管理',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -658,7 +656,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/seasonal'),
         meta: {
           title: '季节管理',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -667,7 +665,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/band'),
         meta: {
           title: '波段管理',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
       {
@@ -676,7 +674,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/warehouse'),
         meta: {
           title: '仓库管理',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
     ],
@@ -687,7 +685,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '设置',
-      // icon: 'error-warning-line',
+      icon: 'archive-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -696,16 +694,16 @@ export const asyncRoutes = [
         name: 'Account',
         component: () => import('@/subview/setting/account'),
         meta: {
-          title: '授权信息',
-          // icon: 'home-2-line',
+          title: '账户信息',
+          icon: 'archive-line',
         },
       },
       {
         path: 'system',
         name: 'System',
         meta: {
-          title: '系统参数',
-          // icon: 'home-2-line',
+          title: '系统设置',
+          icon: 'archive-line',
         },
         children: [
           {
@@ -726,24 +724,113 @@ export const asyncRoutes = [
               // icon: 'home-2-line',
             },
           },
+          {
+            path: 'systemmodule',
+            name: 'SystemModule',
+            component: () => import('@/subview/setting/system/module'),
+            meta: {
+              title: '模块配置',
+              // icon: 'home-2-line',
+            },
+          },
+          {
+            path: 'systemPay',
+            name: 'systemPay',
+            component: () => import('@/subview/setting/system/pay'),
+            meta: {
+              title: '支付配置',
+              // icon: 'home-2-line',
+            },
+          },
+          {
+            path: 'systemInterface',
+            name: 'systemInterface',
+            component: () => import('@/subview/setting/system/interface'),
+            meta: {
+              title: '开放接口',
+              // icon: 'home-2-line',
+            },
+          },
         ],
       },
       {
-        path: 'basis',
-        name: 'Basis',
+        path: 'platform',
+        name: 'Platform',
         meta: {
-          title: '基础信息',
-
-          // icon: 'home-2-line',
+          title: '渠道',
+          icon: 'archive-line',
         },
         children: [
           {
-            path: 'basisBrand',
-            name: 'BasisBrand',
-            component: () => import('@/subview/setting/basis/brand'),
+            path: 'platformwxgong',
+            name: 'PlatformWxgong',
+            component: () => import('@/subview/setting/platform/wxgong'),
             meta: {
-              title: '品牌',
-              // icon: 'home-2-line',
+              title: '微信公众号',
+            },
+          },
+          {
+            path: 'platformwxxiao',
+            name: 'PlatformWxxiao',
+            component: () => import('@/subview/setting/platform/wxxiao'),
+            meta: {
+              title: '微信小程序',
+            },
+          },
+          {
+            path: 'platformvideo',
+            name: 'PlatformVideo',
+            component: () => import('@/subview/setting/platform/video'),
+            meta: {
+              title: '视频号小店接入',
+            },
+          },
+          {
+            path: 'platformzfbxiao',
+            name: 'PlatformZfbxiao',
+            component: () => import('@/subview/setting/platform/zfbxiao'),
+            meta: {
+              title: '支付宝小程序',
+            },
+          },
+          {
+            path: 'platformttxiao',
+            name: 'PlatformTtxiao',
+            component: () => import('@/subview/setting/platform/ttxiao'),
+            meta: {
+              title: '头条小程序',
+            },
+          },
+          {
+            path: 'platformapp',
+            name: 'PlatformApp',
+            component: () => import('@/subview/setting/platform/app'),
+            meta: {
+              title: '移动App',
+            },
+          },
+          {
+            path: 'platformdoudin',
+            name: 'PlatformDoudin',
+            component: () => import('@/subview/setting/platform/doudin'),
+            meta: {
+              title: '抖店接入',
+            },
+          },
+          {
+            path: 'platformpinduoduoktt',
+            name: 'PlatformPinduoduoktt',
+            component: () => import('@/subview/setting/platform/pinduoduoktt'),
+            meta: {
+              title: '快团团',
+            },
+          },
+          {
+            path: 'platformredbook',
+            name: 'PlatformRedbook',
+            component: () => import('@/subview/setting/platform/redbook'),
+            meta: {
+              title: '小红书',
             },
           },
         ],
@@ -751,47 +838,55 @@ export const asyncRoutes = [
       {
         path: 'employees',
         name: 'Employees',
+        component: () => import('@/subview/setting/employees'),
         meta: {
           title: '员工管理',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
-        children: [
-          {
-            path: 'employeesList',
-            name: 'EmployeesList',
-            component: () => import('@/subview/setting/employees/list'),
-            meta: {
-              title: '列表',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'employeesJobs',
-            name: 'EmployeesJobs',
-            component: () => import('@/subview/setting/employees/jobs'),
-            meta: {
-              title: '岗位',
-              // icon: 'home-2-line',
-            },
-          },
-        ],
       },
       {
-        path: 'menu',
-        name: 'Menu',
-        component: () => import('@/subview/setting/menu/index'),
+        path: 'user',
+        name: 'User',
+        component: () => import('@/subview/setting/user'),
         meta: {
-          title: '菜单管理',
-          // icon: 'home-2-line',
+          title: '角色管理',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'stores',
+        name: 'Stores',
+        component: () => import('@/subview/setting/stores'),
+        meta: {
+          title: '门店管理',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'distribution',
+        name: 'Distribution',
+        component: () => import('@/subview/setting/distribution'),
+        meta: {
+          title: '配送方式',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'print',
+        name: 'Print',
+        component: () => import('@/subview/setting/print'),
+        meta: {
+          title: '云打印机设置',
+          icon: 'archive-line',
         },
       },
       {
         path: 'logs',
         name: 'Logs',
-        component: () => import('@/subview/setting/logs/index'),
+        component: () => import('@/subview/setting/logs'),
         meta: {
           title: '操作日志',
-          // icon: 'home-2-line',
+          icon: 'archive-line',
         },
       },
     ],
@@ -802,220 +897,6 @@ export const asyncRoutes = [
     meta: {
       hidden: true,
     },
-  },
-  {
-    path: '/platform',
-    name: 'Platform',
-    component: Layout,
-    meta: {
-      title: '平台',
-      // icon: 'error-warning-line',
-      breadcrumbHidden: true,
-    },
-    children: [
-      {
-        path: 'wxpublic',
-        name: 'Wxpublic',
-        meta: {
-          title: '微信公众号',
-          // icon: 'home-2-line',
-        },
-        children: [
-          {
-            path: 'wxpublicBinding',
-            name: 'WxpublicBinding',
-            component: () => import('@/subview/platform/wxpublic/binding'),
-            meta: {
-              title: '公众号绑定',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'wxpublicMenu',
-            name: 'WxpublicMenu',
-            component: () => import('@/subview/platform/wxpublic/menu'),
-            meta: {
-              title: '菜单设置',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'wxpublicPay',
-            name: 'WxpublicPay',
-            component: () => import('@/subview/platform/wxpublic/pay'),
-            meta: {
-              title: '支付设置',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'wxpublicMessage',
-            name: 'WxpublicMessage',
-            component: () => import('@/subview/platform/wxpublic/message'),
-            meta: {
-              title: '模板消息设置',
-              // icon: 'home-2-line',
-            },
-          },
-        ],
-      },
-      {
-        path: 'wxprogram',
-        name: 'Wxprogram',
-        meta: {
-          title: '微信小程序',
-          // icon: 'home-2-line',
-        },
-        children: [
-          {
-            path: 'wxprogrambBinding',
-            name: 'WxprogrambBinding',
-            component: () => import('@/subview/platform/wxprogram/binding'),
-            meta: {
-              title: '小程序绑定',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'wxprogramPay',
-            name: 'WxprogramPay',
-            component: () => import('@/subview/platform/wxprogram/pay'),
-            meta: {
-              title: '支付设置',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'wxprogramMessage',
-            name: 'WxprogramMessage',
-            component: () => import('@/subview/platform/wxprogram/message'),
-            meta: {
-              title: '订阅消息设置',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'wxprogramService',
-            name: 'WxprogramService',
-            component: () => import('@/subview/platform/wxprogram/service'),
-            meta: {
-              title: '服务类目',
-              // icon: 'home-2-line',
-            },
-          },
-        ],
-      },
-      {
-        path: 'zfbprogram',
-        name: 'Zfbprogram',
-        component: () => import('@/subview/platform/zfbprogram/index'),
-        meta: {
-          title: '支付宝小程序',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'bdprogram',
-        name: 'Bdprogram',
-        component: () => import('@/subview/platform/bdprogram/index'),
-        meta: {
-          title: '百度小程序',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'ttprogram',
-        name: 'Ttprogram',
-        component: () => import('@/subview/platform/ttprogram/index'),
-        meta: {
-          title: '头条小程序',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'qqprogram',
-        name: 'Qqprogram',
-        component: () => import('@/subview/platform/qqprogram/index'),
-        meta: {
-          title: 'QQ小程序',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'phoneh5',
-        name: 'Phoneh5',
-        component: () => import('@/subview/platform/phoneh5/index'),
-        meta: {
-          title: '手机h5',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'phoneapp',
-        name: 'Phoneapp',
-        component: () => import('@/subview/platform/phoneapp/index'),
-        meta: {
-          title: '手机app',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'baison',
-        name: 'Baison',
-        component: () => import('@/subview/platform/baison'),
-        meta: {
-          title: '百胜ERP',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'burgeon',
-        name: 'Burgeon',
-        component: () => import('@/subview/platform/burgeon'),
-        meta: {
-          title: '伯俊BOS',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'pursun',
-        name: 'Pursun',
-        component: () => import('@/subview/platform/pursun'),
-        meta: {
-          title: '紫日ERP',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'jushuitan',
-        name: 'Jushuitan',
-        component: () => import('@/subview/platform/jushuitan'),
-        meta: {
-          title: '聚水潭ERP',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'pinduoduoktt',
-        name: 'Pinduoduoktt',
-        component: () => import('@/subview/platform/pinduoduoktt'),
-        meta: {
-          title: '快团团',
-          // icon: 'home-2-line',
-        },
-      },
-      {
-        path: 'doudin',
-        name: 'Doudin',
-        component: () => import('@/subview/platform/doudin'),
-        meta: {
-          title: '抖店开放平台',
-          // icon: 'home-2-line',
-        },
-      },
-      // 百盛ERP 伯俊BOS 紫日ERP 聚水潭ERP 快团团 抖店开放平台
-      //baison burgeon pursun jushuitan pinduoduoktt doudin
-    ],
   },
 ]
 /* export const asyncRoutes = [
