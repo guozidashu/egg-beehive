@@ -1,189 +1,510 @@
 <template>
-  <div class="user-management-container">
-    <vab-query-form>
-      <vab-query-form-left-panel :span="12">
-        <el-button
-          icon="el-icon-plus"
-          type="primary"
-          @click="handleEdit($event)"
+  <div style="background-color: #f6f8f9">
+    <div
+      style="
+        padding: 20px 20px 20px 20px;
+        margin-bottom: 20px;
+        background-color: white;
+      "
+    >
+      <el-form
+        ref="form"
+        :inline="true"
+        label-width="80px"
+        :model="goodsForm"
+        style="display: flex; justify-content: space-between"
+        @submit.native.prevent
+      >
+        <span style="margin-top: 10px; font-size: 16px">商品概况</span>
+        <el-form-item
+          label="时间筛选:"
+          style="margin-right: 0; font-size: 12px"
         >
-          添加
-        </el-button>
-        <el-button
-          icon="el-icon-delete"
-          type="danger"
-          @click="handleDelete($event)"
+          <el-date-picker
+            v-model="goodsForm.date"
+            size="small"
+            style="width: 250px"
+            type="daterange"
+          />
+          <el-button
+            native-type="submit"
+            size="small"
+            style="margin: 0 20px"
+            type="primary"
+          >
+            查询
+          </el-button>
+          <el-button native-type="submit" size="small" type="primary">
+            导出
+          </el-button>
+        </el-form-item>
+      </el-form>
+      <div style="display: flex; flex-wrap: wrap">
+        <div
+          v-for="(item, index) in goodsStaList"
+          :key="index"
+          style="display: flex; width: 20%; margin-bottom: 30px"
         >
-          批量删除
-        </el-button>
-      </vab-query-form-left-panel>
-      <vab-query-form-right-panel :span="12">
-        <el-form :inline="true" :model="queryForm" @submit.native.prevent>
-          <el-form-item>
-            <el-input
-              v-model.trim="queryForm.username"
-              clearable
-              placeholder="请输入用户名"
-            />
+          <vab-icon
+            icon="bar-chart-box-fill"
+            style="margin-right: 15px; font-size: 32px; color: #3bdfdf"
+          />
+          <div style="display: flex; flex-direction: column; margin-top: 5px">
+            <div>
+              {{ item.title }}
+              <vab-icon
+                icon="album-line"
+                style="position: relative; top: -2px; font-size: 14px"
+              />
+            </div>
+            <div
+              style="
+                padding: 10px 0;
+                font-size: 30px;
+                font-weight: 400;
+                color: rgba(0, 0, 0, 0.85);
+              "
+            >
+              {{ item.num }}
+            </div>
+            <div>
+              <span v-if="item.type === 1">环比增长：</span>
+              <span v-else>环比减少：</span>
+              <i v-if="item.type === 1" style="font-size: 12px; color: #f5222d">
+                {{ item.number }}%
+                <vab-icon icon="arrow-drop-up-fill" />
+              </i>
+              <i v-else style="font-size: 12px; color: #39c15b">
+                {{ item.number }}%
+                <vab-icon icon="arrow-drop-down-fill" />
+              </i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <vab-chart
+        :init-options="initOptions"
+        :option="option"
+        style="width: 100%; height: 400px"
+      />
+    </div>
+    <div style="padding: 20px; background-color: white">
+      <el-form
+        ref="form"
+        :inline="true"
+        label-width="80px"
+        :model="goodsForm"
+        style="display: flex; justify-content: space-between"
+        @submit.native.prevent
+      >
+        <span style="margin-top: 10px; font-size: 16px">商品排行</span>
+        <el-form-item style="margin-right: 0">
+          <el-form-item label="统计类型:" prop="region">
+            <el-select
+              v-model="goodsForm.region"
+              size="small"
+              style="width: 150px"
+            >
+              <el-option label="浏览量" value="shanghai" />
+              <el-option label="访问数" value="beijing" />
+            </el-select>
           </el-form-item>
-          <el-form-item>
-            <el-button icon="el-icon-search" type="primary" @click="queryData">
+          <el-form-item
+            label="时间筛选:"
+            style="margin-right: 0; font-size: 12px"
+          >
+            <el-date-picker
+              v-model="goodsForm.date"
+              size="small"
+              style="width: 250px"
+              type="daterange"
+            />
+            <el-button
+              native-type="submit"
+              size="small"
+              style="margin: 0 0 0 20px"
+              type="primary"
+            >
               查询
             </el-button>
           </el-form-item>
-        </el-form>
-      </vab-query-form-right-panel>
-    </vab-query-form>
-
-    <el-table
-      v-loading="listLoading"
-      border
-      :data="list"
-      @selection-change="setSelectRows"
-    >
-      <el-table-column align="center" show-overflow-tooltip type="selection" />
-      <el-table-column align="center" label="序号" width="55">
-        <template #default="{ $index }">
-          {{ $index + 1 }}
+        </el-form-item>
+      </el-form>
+      <List :order-list="goosList" :order-state="listLoading" :type="listType">
+        <!-- 表格组件具名插槽 自定义表头 -->
+        <template #List>
+          <el-table-column
+            align="center"
+            label="商品图片"
+            prop="image"
+            show-overflow-tooltip
+          >
+            <template #default="{ row }">
+              <el-image :src="row.image" />
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="商品名称" prop="store_name" />
+          <el-table-column
+            align="center"
+            label="浏览量"
+            prop="visit"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="访客数"
+            prop="user"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="加购件数"
+            prop="cart"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="下单件数"
+            prop="orders"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="支付件数"
+            prop="pay"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="支付金额"
+            prop="price"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="毛利率(%)"
+            prop="profit"
+            show-overflow-tooltip
+          >
+            <template #default="{ row }">{{ row.profit * 100 }}%</template>
+          </el-table-column>
+          <el-table-column
+            align="center"
+            label="收藏数"
+            prop="collect"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="操作"
+            show-overflow-tooltip
+            width="85"
+          >
+            <template #default="{ row }">
+              <el-button type="text" @click="handleDetail(row)">查看</el-button>
+            </template>
+          </el-table-column>
         </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="id"
-        prop="id"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        align="center"
-        label="用户名"
-        prop="username"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        align="center"
-        label="邮箱"
-        prop="email"
-        show-overflow-tooltip
-      />
-
-      <el-table-column align="center" label="角色" show-overflow-tooltip>
-        <template #default="{ row }">
-          <el-tag v-for="(item, index) in row.roles" :key="index">
-            {{ item }}
-          </el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        align="center"
-        label="修改时间"
-        prop="datatime"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        align="center"
-        label="操作"
-        show-overflow-tooltip
-        width="85"
-      >
-        <template #default="{ row }">
-          <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-          <el-button type="text" @click="handleDelete(row)">删除</el-button>
-        </template>
-      </el-table-column>
-      <template #empty>
-        <el-image
-          class="vab-data-empty"
-          :src="require('@/assets/empty_images/data_empty.png')"
-        />
-      </template>
-    </el-table>
-    <el-pagination
-      background
-      :current-page="queryForm.pageNo"
-      :layout="layout"
-      :page-size="queryForm.pageSize"
-      :total="total"
-      @current-change="handleCurrentChange"
-      @size-change="handleSizeChange"
-    />
+      </List>
+    </div>
   </div>
 </template>
 
 <script>
-  import { doDelete, getList } from '@/api/userManagement'
-
+  import List from '@/subview/components/List'
+  import VabChart from '@/extra/VabChart'
   export default {
-    name: 'FinancialProfit',
+    name: 'GoodsStatistical',
+    components: { List, VabChart },
     data() {
       return {
-        list: [],
-        listLoading: true,
-        layout: 'total, sizes, prev, pager, next, jumper',
-        total: 0,
-        selectRows: '',
-        queryForm: {
-          pageNo: 1,
-          pageSize: 10,
-          username: '',
+        listLoading: false,
+        listType: 2,
+        goosList: [
+          {
+            visit: '507',
+            user: 215,
+            cart: '20',
+            orders: '14',
+            pay: '12',
+            price: '1.04',
+            cost: '2388.00',
+            profit: '-1.00',
+            collect: '4',
+            store_name:
+              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
+            image:
+              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
+          },
+          {
+            visit: '507',
+            user: 215,
+            cart: '20',
+            orders: '14',
+            pay: '12',
+            price: '1.04',
+            cost: '2388.00',
+            profit: '-1.00',
+            collect: '4',
+            store_name:
+              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
+            image:
+              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
+          },
+          {
+            visit: '507',
+            user: 215,
+            cart: '20',
+            orders: '14',
+            pay: '12',
+            price: '1.04',
+            cost: '2388.00',
+            profit: '-1.00',
+            collect: '4',
+            store_name:
+              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
+            image:
+              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
+          },
+          {
+            visit: '507',
+            user: 215,
+            cart: '20',
+            orders: '14',
+            pay: '12',
+            price: '1.04',
+            cost: '2388.00',
+            profit: '-1.00',
+            collect: '4',
+            store_name:
+              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
+            image:
+              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
+          },
+          {
+            visit: '507',
+            user: 215,
+            cart: '20',
+            orders: '14',
+            pay: '12',
+            price: '1.04',
+            cost: '2388.00',
+            profit: '-1.00',
+            collect: '4',
+            store_name:
+              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
+            image:
+              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
+          },
+        ],
+        goodsForm: {},
+        goodsStaList: [
+          {
+            title: '商品数量',
+            number: 200,
+            num: 94.32,
+            type: 1,
+          },
+          {
+            title: '商品数量',
+            number: 200,
+            num: 94.32,
+            type: 1,
+          },
+          {
+            title: '商品数量',
+            number: 200,
+            num: 94.32,
+            type: 1,
+          },
+          {
+            title: '商品数量',
+            number: 200,
+            num: 94.32,
+            type: 1,
+          },
+          {
+            title: '商品数量',
+            number: 200,
+            num: 94.32,
+            type: 1,
+          },
+          {
+            title: '成本金额',
+            number: 400,
+            num: 34.32,
+            type: 2,
+          },
+          {
+            title: '成本金额',
+            number: 400,
+            num: 34.32,
+            type: 2,
+          },
+          {
+            title: '成本金额',
+            number: 400,
+            num: 34.32,
+            type: 2,
+          },
+          {
+            title: '成本金额',
+            number: 400,
+            num: 34.32,
+            type: 2,
+          },
+          {
+            title: '成本金额',
+            number: 400,
+            num: 34.32,
+            type: 2,
+          },
+        ],
+        initOptions: {
+          renderer: 'svg',
+        },
+        option: {
+          tooltip: {
+            trigger: 'axis', //触发类型；轴触发，axis则鼠标hover到一条柱状图显示全部数据，item则鼠标hover到折线点显示相应数据，
+            axisPointer: {
+              type: 'cross', // 十字准星指示器
+            },
+          },
+          legend: {
+            data: ['商品浏览量', '商品访客量', '支付金额', '退款金额'],
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true,
+          },
+          toolbox: {
+            feature: {
+              saveAsImage: {},
+            },
+          },
+          xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: [
+              '09-11',
+              '09-12',
+              '09-13',
+              '09-14',
+              '09-15',
+              '09-16',
+              '09-17',
+              '09-18',
+              '09-19',
+              '09-20',
+              '09-21',
+              '09-22',
+              '09-23',
+              '09-24',
+              '09-25',
+              '09-26',
+              '09-27',
+              '09-28',
+              '09-29',
+              '09-30',
+              '10-01',
+              '10-02',
+              '10-03',
+              '10-04',
+              '10-05',
+              '10-06',
+              '10-07',
+              '10-08',
+              '10-09',
+              '10-10',
+            ],
+          },
+          yAxis: [
+            {
+              type: 'value',
+              name: '金额',
+              min: `0`,
+              max: `120000`,
+
+              // ...
+            },
+            {
+              type: 'value',
+              name: '数量',
+              min: `0`,
+              max: `2500`,
+            },
+          ],
+          series: [
+            {
+              name: '商品浏览量',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
+              data: [
+                27, 49, 102, 669, 141, 507, 115, 71, 164, 155, 212, 358, 478,
+                468, 310, 194, 376, 231, 606, 731, 82, 495, 121, 124, 603, 254,
+                434, 2262, 786, 211,
+              ],
+              yAxisIndex: 1,
+              itemStyle: {
+                color: '#FFC833',
+              },
+            },
+            {
+              name: '商品访客量',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
+              data: [
+                10, 15, 32, 34, 34, 33, 19, 19, 29, 36, 34, 45, 60, 51, 29, 40,
+                43, 45, 29, 41, 15, 21, 24, 24, 25, 18, 26, 39, 31, 21,
+              ],
+              yAxisIndex: 1,
+              itemStyle: {
+                color: '#FF6C87',
+              },
+            },
+            {
+              name: '支付金额',
+              type: 'bar',
+              data: [
+                0, 10.09, 0, 4.43, 74.25, 157.1, 0, 0, 47.04, 0, 0, 1473.6, 0,
+                0, 0, 377.2, 0.11, 0.67, 0.11, 85.18, 0, 0.1, 0, 0, 0, 0, 0,
+                0.18, 0, 0,
+              ],
+              itemStyle: {
+                color: '#55DF7E',
+              },
+            },
+            {
+              name: '退款金额',
+              type: 'bar',
+              data: [
+                0, 0, 0, 0.02, 0, 0, 3798.02, 0, 0.01, 0, 7001, 1151.36, 0,
+                4494.1, 1002679, 6131.7, 0, 0, 0, 59.1, 0, 1000050.14, 0, 403,
+                299, 11696.1, 0, 2665, 0, 15242.36,
+              ],
+              itemStyle: {
+                color: '#1890FF',
+              },
+            },
+          ],
         },
       }
     },
-    created() {
-      this.fetchData()
-    },
+    created() {},
     methods: {
-      setSelectRows(val) {
-        this.selectRows = val
-      },
-      handleEdit(row) {
-        if (row.id) {
-          this.$refs['edit'].showEdit(row)
-        } else {
-          this.$refs['edit'].showEdit()
-        }
-      },
-      handleDelete(row) {
-        if (row.id) {
-          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { msg } = await doDelete({ ids: row.id })
-            this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-            await this.fetchData()
-          })
-        } else {
-          if (this.selectRows.length > 0) {
-            const ids = this.selectRows.map((item) => item.id).join()
-            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-              const { msg } = await doDelete({ ids })
-              this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.fetchData()
-            })
-          } else {
-            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
-          }
-        }
-      },
-      handleSizeChange(val) {
-        this.queryForm.pageSize = val
-        this.fetchData()
-      },
-      handleCurrentChange(val) {
-        this.queryForm.pageNo = val
-        this.fetchData()
-      },
-      queryData() {
-        this.queryForm.pageNo = 1
-        this.fetchData()
-      },
-      async fetchData() {
-        this.listLoading = true
-        const {
-          data: { list, total },
-        } = await getList(this.queryForm)
-        this.list = list
-        this.total = total
-        this.listLoading = false
-      },
+      // 详情抽屉
+      handleDetail() {},
     },
   }
 </script>
+
+<style lang="scss" scoped>
+  .workbench-container {
+    padding: 0 !important;
+    background: $base-color-background !important;
+  }
+</style>

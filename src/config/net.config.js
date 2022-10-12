@@ -5,6 +5,13 @@ module.exports = {
   // 默认的接口地址，开发环境和生产环境都会走/vab-mock-server
   // 正式项目可以选择自己配置成需要的接口地址，如"https://api.xxx.com"
   // 问号后边代表开发环境，冒号后边代表生产环境
+  // baseURL:
+  //   process.env.NODE_ENV === 'development'
+  //     ? 'https://meta.gaizi.top/QYAPI/index.php/platform'
+  //     : 'https://meta.gaizi.top/QYAPI/index.php/platform',
+
+  // : '/vab-mock-server',
+  //
   baseURL:
     process.env.NODE_ENV === 'development'
       ? '/vab-mock-server'

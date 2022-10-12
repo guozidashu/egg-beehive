@@ -63,6 +63,7 @@ const requestConf = (config) => {
 
   if (
     config.data &&
+    // config.headers['Content-Type'] === 'application/json; charset=utf-8'
     config.headers['Content-Type'] ===
       'application/x-www-form-urlencoded;charset=UTF-8'
   )

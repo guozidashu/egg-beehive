@@ -3,6 +3,7 @@
  */
 const path = require('path')
 const {
+  // baseURL,
   /*  baseURL, */
   publicPath,
   assetsDir,
@@ -52,19 +53,13 @@ module.exports = {
       warnings: true,
       errors: true,
     },
-    // 注释掉的地方是前端配置代理访问后端的示例
-    // baseURL必须为/xxx，而不是后端服务器，请先了解代理逻辑，再设置前端代理
-    // ！！！一定要注意！！！
-    // 1.这里配置了跨域及代理只针对开发环境生效
-    // 2.不建议你在前端配置跨域，建议你后端配置Allow-Origin,Method,Headers，放行token字段，一步到位
-    // 3.后端配置了跨域，就不需要前端再配置，会发生Origin冲突
     // proxy: {
     //   [baseURL]: {
-    //     target: `http://你的后端接口地址`,
+    //     target: `https://meta.gaizi.top/QYAPI/index.php/platform`, //所有配置不要动，只改这一个地方，改完重启项目
     //     ws: true,
     //     changeOrigin: true,
     //     pathRewrite: {
-    //       ['^' + baseURL]: '',
+    //       ['^/' + baseURL]: '',
     //     },
     //   },
     // },
