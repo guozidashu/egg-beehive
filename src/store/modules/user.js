@@ -61,6 +61,30 @@ const actions = {
    * @param {*} userInfo
    */
   async login({ commit }, userInfo) {
+    const { code, data } = await login(userInfo)
+    console.log(code, data)
+    if (code === 200) {
+      const token = data
+      if (token) {
+        commit('setToken', token)
+        const hour = new Date().getHours()
+        const thisTime =
+          hour < 8
+            ? '早上好'
+            : hour <= 11
+            ? '上午好'
+            : hour <= 13
+            ? '中午好'
+            : hour < 18
+            ? '下午好'
+            : '晚上好'
+        Vue.prototype.$baseNotify(`欢迎登录${title}`, `${thisTime}！`)
+      } else {
+        const err = `登录接口异常，未正确返回${tokenName}...`
+        Vue.prototype.$baseMessage(err, 'error', 'vab-hey-message-error')
+        throw err
+      }
+    }
     const {
       data: { [tokenName]: token },
     } = await login(userInfo)

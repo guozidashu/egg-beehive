@@ -59,7 +59,7 @@ const requestConf = (config) => {
   // if (token) config.headers[tokenName] = token
 
   // 规范写法 不可随意自定义
-  if (token) config.headers['Authorization'] = `Bearer ${token}`
+  if (token) config.headers['Authorization'] = `${token}`
 
   if (
     config.data &&

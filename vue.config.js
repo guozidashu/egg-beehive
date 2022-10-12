@@ -3,7 +3,7 @@
  */
 const path = require('path')
 const {
-  // baseURL,
+  baseURL,
   /*  baseURL, */
   publicPath,
   assetsDir,
@@ -53,16 +53,16 @@ module.exports = {
       warnings: true,
       errors: true,
     },
-    // proxy: {
-    //   [baseURL]: {
-    //     target: `https://meta.gaizi.top/QYAPI/index.php/platform`, //所有配置不要动，只改这一个地方，改完重启项目
-    //     ws: true,
-    //     changeOrigin: true,
-    //     pathRewrite: {
-    //       ['^/' + baseURL]: '',
-    //     },
-    //   },
-    // },
+    proxy: {
+      [baseURL]: {
+        target: `https://meta.gaizi.top/QYAPI/index.php`, //所有配置不要动，只改这一个地方，改完重启项目
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^/' + baseURL]: '',
+        },
+      },
+    },
     after: require('./mock'),
   },
   pwa: {

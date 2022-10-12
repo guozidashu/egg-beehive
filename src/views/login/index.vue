@@ -198,6 +198,8 @@
           if (valid)
             try {
               this.loading = true
+              // const { res } = await login1(this.queryForm)
+              // console.log(232323, res)
               await this.login(this.form).catch(() => {})
               await this.$router.push(this.handleRoute())
             } finally {
