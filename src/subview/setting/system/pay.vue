@@ -2,11 +2,74 @@
   <div class="comprehensive-form-container">
     <el-card class="tabs-card" shadow="hover">
       <el-tabs v-model="activeName">
-        <el-tab-pane label="TAB切换" name="first">敬请期待</el-tab-pane>
-        <el-tab-pane label="微信支付" name="second">敬请期待</el-tab-pane>
-        <el-tab-pane label="支付宝支付" name="three">敬请期待</el-tab-pane>
-        <el-tab-pane label="余额支付" name="four">敬请期待</el-tab-pane>
-        <el-tab-pane label="线下支付" name="three">敬请期待</el-tab-pane>
+        <el-tab-pane label="微信支付" name="first">
+          <el-form
+            ref="form"
+            class="demo-form"
+            label-position="right"
+            label-width="140px"
+            :model="form"
+          >
+            <el-form-item label="微信支付状态：">
+              <el-radio-group v-model="form.resource1">
+                <el-radio label="开启" />
+                <el-radio label="关闭" />
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="微信支付模式：">
+              <el-radio-group v-model="form.resource1">
+                <el-radio label="普通模式" />
+                <el-radio label="服务商模式" />
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="支付商户号：">
+              <el-input v-model="form.name" />
+            </el-form-item>
+            <el-form-item label="支付秘钥：">
+              <el-input v-model="form.name" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('form')">
+                提交
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="支付宝支付" name="second">
+          <el-form
+            ref="form"
+            class="demo-form"
+            label-position="right"
+            label-width="140px"
+            :model="form"
+          >
+            <el-form-item label="支付宝支付状态：">
+              <el-radio-group v-model="form.resource1">
+                <el-radio label="开启" />
+                <el-radio label="关闭" />
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="支付宝支付模式：">
+              <el-radio-group v-model="form.resource1">
+                <el-radio label="普通模式" />
+                <el-radio label="服务商模式" />
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="支付商户号：">
+              <el-input v-model="form.name" />
+            </el-form-item>
+            <el-form-item label="支付秘钥：">
+              <el-input v-model="form.name" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('form')">
+                提交
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="余额支付" name="three">敬请期待</el-tab-pane>
+        <el-tab-pane label="线下支付" name="four">敬请期待</el-tab-pane>
       </el-tabs>
     </el-card>
   </div>

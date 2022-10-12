@@ -1,11 +1,45 @@
 <template>
   <div class="comprehensive-form-container">
-    <el-radio-group v-model="formType" size="small" style="width: 100%">
-      <el-radio-button label="聚水潭ERP" />
-      <el-radio-button label="伯俊BOS" />
-      <el-radio-button label="百盛ERP" />
-      <el-radio-button label="紫日ERP" />
-    </el-radio-group>
+    <el-card shadow="never">
+      <div slot="header" class="clearfix">
+        <span>绑定微信公众号</span>
+      </div>
+      <el-form
+        ref="form"
+        label-position="right"
+        label-width="160px"
+        :model="form"
+        style="width: 40%; padding-top: 40px"
+      >
+        <el-form-item label="公众号ID：">
+          <el-input v-model="form.name" />
+        </el-form-item>
+        <el-form-item label="开发者私钥：">
+          <el-input v-model="form.name" />
+        </el-form-item>
+        <el-form-item label="支付宝公钥：">
+          <el-input v-model="form.name" />
+        </el-form-item>
+        <el-form-item label="公众号名称：">
+          <el-input v-model="form.name" />
+        </el-form-item>
+        <el-form-item label="公众号头像：">
+          <el-input v-model="form.name" />
+        </el-form-item>
+        <el-form-item label="公众号码：">
+          <el-input v-model="form.name" />
+        </el-form-item>
+        <el-form-item label="公众号支付状态">
+          <el-radio-group v-model="form.resource1">
+            <el-radio label="开启" />
+            <el-radio label="关闭" />
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('form')">确认</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
   </div>
 </template>
 
