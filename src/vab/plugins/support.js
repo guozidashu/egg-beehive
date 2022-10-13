@@ -20,7 +20,7 @@ if (!!window.ActiveXObject || 'ActiveXObject' in window) {
 if (process.env.NODE_ENV !== 'development') {
   // eslint-disable-next-line no-console
   console.log(
-    ` %c ${title}  %c 基于admin-pro构建 `,
+    ` %c ${title}  %c杭州圈域数字科技有限公司`,
     'color: #fadfa3; background: #030307; padding:5px 0;',
     'background: #fadfa3; padding:5px 0;'
   )

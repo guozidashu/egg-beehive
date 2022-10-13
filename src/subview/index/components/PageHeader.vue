@@ -18,7 +18,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import { getList } from '@/api/description'
+  // import { getList } from '@/api/description'
   import VabAvatarList from '@/extra/VabAvatarList'
 
   export default {
@@ -66,10 +66,10 @@
           : `晚上好 ${this.username}，愿你天黑有灯，下雨有伞。`
       },
       async fetchData() {
-        const {
-          data: { description },
-        } = await getList()
-        this.description = description
+        // const {
+        //   data: { description },
+        // } = await getList()
+        // this.description = description
       },
     },
   }

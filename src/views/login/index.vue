@@ -154,7 +154,7 @@
         passwordType: 'password',
         redirect: undefined,
         timer: 0,
-        codeUrl: 'https://www.oschina.net/action/user/captcha',
+        codeUrl: 'https://meta.gaizi.top/QYAPI/index.php/platform/verify',
         previewText: '',
       }
     },
@@ -173,7 +173,7 @@
     },
     mounted() {
       this.form.username = 'admin'
-      this.form.password = '123456'
+      this.form.password = '1234567'
     },
     methods: {
       ...mapActions({
@@ -198,8 +198,6 @@
           if (valid)
             try {
               this.loading = true
-              // const { res } = await login1(this.queryForm)
-              // console.log(232323, res)
               await this.login(this.form).catch(() => {})
               await this.$router.push(this.handleRoute())
             } finally {
@@ -208,7 +206,7 @@
         })
       },
       changeCode() {
-        this.codeUrl = `https://www.oschina.net/action/user/captcha?timestamp=${new Date().getTime()}`
+        this.codeUrl = `https://meta.gaizi.top/QYAPI/index.php/platform/verify?timestamp=${new Date().getTime()}`
       },
     },
   }

@@ -21,7 +21,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import { getList } from '@/api/search'
+  // import { getList } from '@/api/search'
 
   export default {
     name: 'VabSearch',
@@ -59,10 +59,10 @@
         this.dialogVisible = true
       },
       async loadAll() {
-        const {
-          data: { list },
-        } = await getList()
-        this.restaurants = list
+        // const {
+        //   data: { list },
+        // } = await getList()
+        // this.restaurants = list
       },
       querySearchAsync(queryString, cb) {
         const restaurants = this.restaurants

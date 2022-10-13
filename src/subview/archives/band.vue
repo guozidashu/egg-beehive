@@ -2,49 +2,20 @@
   <div class="comprehensive-form-container">
     <el-card shadow="never">
       <div slot="header" class="clearfix">
-        <span>波段管理</span>
+        <span>品牌管理</span>
       </div>
-      <el-form
-        ref="form"
-        :inline="true"
-        :model="orderForm"
-        @submit.native.prevent
-      >
+      <el-form ref="form" :inline="true" :model="form" @submit.native.prevent>
         <el-form-item>
           <el-button
             native-type="submit"
             size="small"
             type="primary"
-            @click="handleQuery"
+            @click="handleEdit(1)"
           >
             添加
           </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            删除
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            开启
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            关闭
-          </el-button>
         </el-form-item>
-        <el-form-item style="float: right">
+        <!-- <el-form-item style="float: right">
           <el-button
             icon="el-icon-search"
             native-type="submit"
@@ -55,31 +26,20 @@
             查询
           </el-button>
         </el-form-item>
-        <el-form-item label="状态:" prop="region" style="float: right">
-          <el-select
-            v-model="orderForm.dataSelect"
-            size="small"
-            style="width: 150px"
-          >
-            <el-option label="全部" value="0" />
-            <el-option label="已开启" value="beijing" />
-            <el-option label="已关闭" value="beijing" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="名称" prop="region" style="float: right">
+        <el-form-item label="品牌名称" prop="region" style="float: right">
           <el-input
-            v-model="orderForm.orderId"
+            v-model="form.name"
             size="small"
             style="width: 150px; padding-left: 10px"
           />
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <!-- 表格组件使用 -->
       <List
+        :list-type="listType"
         :order-list="list"
         :order-state="listLoading"
         :order-total="total"
-        :type="listType"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
@@ -92,28 +52,15 @@
           />
           <el-table-column
             align="center"
-            label="ID"
+            label="品牌ID"
             prop="id"
             show-overflow-tooltip
             sortable
           />
           <el-table-column
             align="center"
-            label="波段名称"
+            label="品牌名称"
             prop="name"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="创建时间"
-            prop="time"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="状态"
-            prop="sta"
             show-overflow-tooltip
           />
           <el-table-column
@@ -123,85 +70,43 @@
             width="85"
           >
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">详情</el-button>
+              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+              <!-- <el-button type="text" @click="handleDelete(row)">删除</el-button> -->
             </template>
           </el-table-column>
         </template>
       </List>
     </el-card>
+    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 
 <script>
   import List from '@/subview/components/List'
+  import Edit from './components/BandEdit'
+  import { getWaveList, editWave, deleteBrand } from '@/api/basic'
   export default {
-    name: 'OrderList',
-    components: { List },
+    name: 'ArchivesBand',
+    components: { List, Edit },
     data() {
       return {
         // 表单数据/列表参数
-        orderForm: {
-          // 自定义参数
-          orderSta: '全部',
-          paySta: '全部',
-          orderSource: 'ERP订单',
-          fold: true,
-          typeSelect: 'order',
-          dataSelect: '0',
-          data: '',
-          orderId: '',
-          // 公共参数
+        form: {
+          id: 0,
+          name: '',
           pageNo: 1,
           pageSize: 10,
         },
+        title: '',
         // 列表数据相关
-        // 公共参数
         listType: 1,
-        list: [
-          {
-            id: 'pc12138',
-            name: '波段名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '波段名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '波段名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '波段名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '波段名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '波段名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-        ],
+        list: [],
         listLoading: false,
         total: 0,
       }
     },
     watch: {
-      orderForm: {
-        //表单筛选条件变化实时刷新列表
+      form: {
         handler: function () {
           this.fetchData()
         },
@@ -212,26 +117,53 @@
       this.fetchData()
     },
     methods: {
-      handleQuery() {},
+      // 新增修改
+      async handleEdit(row) {
+        if (row === 1) {
+          this.$refs['edit'].showEdit()
+        } else {
+          if (row.id) {
+            const { code, data } = await editWave({ id: row.id })
+            if (code === 200) {
+              this.$refs['edit'].showEdit(data)
+            }
+          } else {
+            this.$refs['edit'].showEdit()
+          }
+        }
+      },
+      // 查询
+      handleQuery() {
+        this.form.pageNo = 1
+      },
+      // 删除
+      async handleDelete(row) {
+        const { code } = await deleteBrand({ id: row.id })
+        if (code != 200) {
+          return
+        }
+        this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
+        this.fetchData()
+      },
       // 列表数据封装函数
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        this.orderForm.pageNo = data
+        this.form.pageNo = data
       },
       // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {
-        this.orderForm.pageSize = data
+        this.form.pageSize = data
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getList(this.orderForm)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const {
+          data: { list, total },
+        } = await getWaveList(this.form)
+        this.list = list
+        this.total = total
+        this.listLoading = false
       },
     },
   }

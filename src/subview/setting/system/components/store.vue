@@ -1,131 +1,84 @@
 <template>
-  <div class="comprehensive-form-container">
-    <el-radio-group v-model="formType" size="small" style="width: 100%">
-      <el-radio-button label="基础设置" />
-      <el-radio-button label="财务设置" />
-      <el-radio-button label="积分设置" />
-      <el-radio-button label="分销分红" />
-      <el-radio-button label="文本自定义" />
-      <el-radio-button label="登录设置" />
-      <el-radio-button label="注册协议" />
-      <el-radio-button label="附件设置" />
-    </el-radio-group>
-    <el-form
-      v-if="formType === '基础设置'"
-      ref="form"
-      label-position="right"
-      label-width="160px"
-      :model="form"
-      style="width: 100%; padding-top: 40px"
-    >
-      <el-form-item label="商家名称：">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="唯一标识：">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="API域名：">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="商家LOGO：">
-        <el-button type="primary" @click="submitForm('form')">
-          上传图片
-        </el-button>
-        <sapn style="margin-left: 10px; color: #999">
-          建议尺寸：200×200像素
-        </sapn>
-      </el-form-item>
-      <el-form-item>
-        <img
-          src="https://new.shopvvv.cn/static/imgsrc/logo.jpg"
-          style="width: 100px; height: 100px"
-        />
-      </el-form-item>
-      <el-form-item label="商家简介：">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="商家服务电话：">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="商家地址：">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="经纬度：">
-        <el-input v-model="form.name" style="width: 150px" />
-        -
-        <el-input v-model="form.name" style="width: 150px" />
-        <el-button
-          style="margin-left: 10px"
-          type="primary"
-          @click="submitForm('form')"
-        >
-          选择坐标
-        </el-button>
-      </el-form-item>
-      <el-form-item label="客服系统链接：">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="客服系统链接：">
-        <span style="margin-left: 10px; color: #999">
-          商品详情页客服链接，不填写则使用商城内部客服系统
-        </span>
-      </el-form-item>
-      <el-form-item label="微信小程序客服：">
-        <el-radio-group v-model="form.resource1">
-          <el-radio label="客服链接" />
-          <el-radio label="小程序客服" />
-          <el-radio label="微信客服" />
-        </el-radio-group>
-      </el-form-item>
-      <div style="display: flex; flex-direction: row">
-        <el-form-item
-          v-if="form.resource1 === '客服链接' || form.resource1 === '微信客服'"
-          label="客服链接："
-        >
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item v-if="form.resource1 === '微信客服'" label="企业ID：">
-          <el-input v-model="form.name" />
-        </el-form-item>
-      </div>
-      <el-form-item>
-        <span style="color: #999">
-          客服链接：使用填写的客服链接，不填写则使用商城内部客服系统；
-          小程序客服：在小程序后台-功能-客服-小程序客服，配置客服人员；
-          微信客服：在
-          <span style="color: black">微信客服</span>
-          系统注册账号并绑定，
-          <span style="color: black">查看绑定流程</span>
-          ，填写企业ID并复制客服链接填写到客服链接处
-        </span>
-      </el-form-item>
-    </el-form>
+  <div>
+    <el-card>
+      <i class="el-icon-s-tools"></i>
+      系统配置
+      <el-divider />
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="基础配置" name="first">
+          <!-- 插入基础设置-->
+          <basicSetting />
+        </el-tab-pane>
+        <el-tab-pane label="财务设置" name="two">
+          <!-- 插入配置管理 -->
+          <management />
+        </el-tab-pane>
+        <el-tab-pane label="积分设置" name="three">
+          <!-- 插入积分配置 -->
+          <jifen />
+        </el-tab-pane>
+        <el-tab-pane label="分销分红" name="four">
+          <!-- 插入分销配置 -->
+          <distribution />
+        </el-tab-pane>
+        <el-tab-pane label="文本自定义" name="five">
+          <!-- 插入文本自定义 -->
+          <textTT />
+        </el-tab-pane>
+        <el-tab-pane label="登录设置" name="six">
+          <!-- 插入登录设置 -->
+          <!-- <logging></logging> -->
+          <loginGin />
+        </el-tab-pane>
+        <el-tab-pane label="注册协议" name="seven">
+          <!-- 插入富文本编辑 -->
+          <fuwenben />
+        </el-tab-pane>
+        <el-tab-pane label="配置管理" name="eight">
+          <!-- 插入附件设置 -->
+          <accessory />
+        </el-tab-pane>
+      </el-tabs>
+    </el-card>
   </div>
 </template>
-
 <script>
+  import basicSetting from './peizhi/basicSetting.vue'
+  import management from './peizhi/management.vue'
+  import jifen from './peizhi/jifen.vue'
+  import distribution from './peizhi/distribution.vue'
+  import textTT from './peizhi/textTT.vue'
+  import accessory from './peizhi/accessory.vue'
+  //  import logging from './peizhi/logging.vue'
+  import loginGin from './peizhi/loginGin.vue'
+  import fuwenben from './peizhi/fuwenben.vue'
   export default {
-    name: 'SystemStorage',
+    components: {
+      basicSetting,
+      management,
+      jifen,
+      distribution,
+      textTT,
+      accessory,
+      //  logging,
+      loginGin,
+      fuwenben,
+    },
     data() {
       return {
-        formType: '基础设置',
-        form: {
-          name: '',
-          state: '',
-          date: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          description: '',
-          checkList: ['选中且禁用', '复选框 A'],
-          area: [],
-        },
+        activeName: 'two',
       }
     },
-    created() {},
-    methods: {},
+    methods: {
+      handleClick(tab, event) {
+        console.log(tab, event)
+      },
+    },
   }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  ::v-deep.el-form-item--small.el-form-item {
+    margin-left: 90px;
+  }
+</style>

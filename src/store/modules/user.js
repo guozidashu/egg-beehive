@@ -5,7 +5,8 @@ import Vue from 'vue'
 import { getUserInfo, login, logout, socialLogin } from '@/api/user'
 import { getToken, removeToken, setToken } from '@/utils/token'
 import { resetRouter } from '@/router'
-import { isArray, isString } from '@/utils/validate'
+import { isString } from '@/utils/validate'
+// isArray
 import { title, tokenName } from '@/config'
 
 const state = () => ({
@@ -62,7 +63,6 @@ const actions = {
    */
   async login({ commit }, userInfo) {
     const { code, data } = await login(userInfo)
-    console.log(code, data)
     if (code === 200) {
       const token = data
       if (token) {
@@ -85,28 +85,28 @@ const actions = {
         throw err
       }
     }
-    const {
-      data: { [tokenName]: token },
-    } = await login(userInfo)
-    if (token) {
-      commit('setToken', token)
-      const hour = new Date().getHours()
-      const thisTime =
-        hour < 8
-          ? '早上好'
-          : hour <= 11
-          ? '上午好'
-          : hour <= 13
-          ? '中午好'
-          : hour < 18
-          ? '下午好'
-          : '晚上好'
-      Vue.prototype.$baseNotify(`欢迎登录${title}`, `${thisTime}！`)
-    } else {
-      const err = `登录接口异常，未正确返回${tokenName}...`
-      Vue.prototype.$baseMessage(err, 'error', 'vab-hey-message-error')
-      throw err
-    }
+    // const {
+    //   data: { [tokenName]: token },
+    // } = await login(userInfo)
+    // if (token) {
+    //   commit('setToken', token)
+    //   const hour = new Date().getHours()
+    //   const thisTime =
+    //     hour < 8
+    //       ? '早上好'
+    //       : hour <= 11
+    //       ? '上午好'
+    //       : hour <= 13
+    //       ? '中午好'
+    //       : hour < 18
+    //       ? '下午好'
+    //       : '晚上好'
+    //   Vue.prototype.$baseNotify(`欢迎登录${title}`, `${thisTime}！`)
+    // } else {
+    //   const err = `登录接口异常，未正确返回${tokenName}...`
+    //   Vue.prototype.$baseMessage(err, 'error', 'vab-hey-message-error')
+    //   throw err
+    // }
   },
   /**
    * @description 第三方登录
@@ -142,10 +142,15 @@ const actions = {
    * @param {*} { commit, dispatch, state }
    * @returns
    */
-  async getUserInfo({ commit, dispatch }) {
-    const {
-      data: { username, avatar, roles, permissions },
-    } = await getUserInfo()
+  async getUserInfo({ commit }) {
+    // dispatch
+    // const {
+    //   data: { username, avatar, roles, permissions },
+    // } = await getUserInfo()
+    const { code, data } = await getUserInfo()
+    if (code != 200) {
+      return
+    }
     /**
      * 检验返回数据是否正常，无对应参数，将使用默认用户名,头像,Roles和Permissions
      * username {String}
@@ -154,24 +159,26 @@ const actions = {
      * ability {List}
      */
     if (
-      (username && !isString(username)) ||
-      (avatar && !isString(avatar)) ||
-      (roles && !isArray(roles)) ||
-      (permissions && !isArray(permissions))
+      data.list[0].username &&
+      !isString(data.list[0].username)
+      // ||
+      // (avatar && !isString(avatar)) ||
+      // (roles && !isArray(roles)) ||
+      // (permissions && !isArray(permissions))
     ) {
       const err = 'getUserInfo核心接口异常，请检查返回JSON格式是否正确'
       Vue.prototype.$baseMessage(err, 'error', 'vab-hey-message-error')
       throw err
     } else {
       // 如不使用username用户名,可删除以下代码
-      if (username) commit('setUsername', username)
+      if (data.list[0].username) commit('setUsername', data.list[0].username)
       // 如不使用avatar头像,可删除以下代码
-      if (avatar) commit('setAvatar', avatar)
+      if (data.list[0].image) commit('setAvatar', data.list[0].image)
       // 如不使用roles权限控制,可删除以下代码
       // if (roles) dispatch('acl/setRole', roles, { root: true })
       // 如不使用permissions权限控制,可删除以下代码
-      if (permissions)
-        dispatch('acl/setPermission', permissions, { root: true })
+      // if (permissions)
+      //   dispatch('acl/setPermission', permissions, { root: true })
     }
   },
   /**

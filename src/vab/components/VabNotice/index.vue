@@ -43,7 +43,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { translateTitle } from '@/utils/i18n'
-  import { getList } from '@/api/notice'
+  // import { getList } from '@/api/notice'
 
   export default {
     name: 'VabNotice',
@@ -75,11 +75,11 @@
         this.$baseMessage('清空消息成功', 'success', 'vab-hey-message-success')
       },
       async fetchData() {
-        const {
-          data: { list, total },
-        } = await getList()
-        this.list = list
-        this.badge = total === 0 ? null : total
+        // const {
+        //   data: { list, total },
+        // } = await getList()
+        // this.list = list
+        // this.badge = total === 0 ? null : total
       },
     },
   }

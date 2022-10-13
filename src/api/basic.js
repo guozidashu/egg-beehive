@@ -193,7 +193,7 @@ export function getWaveList(data) {
 }
 export function addWave(data) {
   return request({
-    url: '/wave_save',
+    url: '/wave_srve',
     method: 'post',
     data,
   })

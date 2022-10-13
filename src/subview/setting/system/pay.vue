@@ -15,18 +15,56 @@
                 <el-radio label="开启" />
                 <el-radio label="关闭" />
               </el-radio-group>
+              <span style="margin-left: 50px">
+                JSAPI支付授权目录：
+                <span style="font-weight: 600">https://new.shopvvv.cn/</span>
+              </span>
             </el-form-item>
             <el-form-item label="微信支付模式：">
-              <el-radio-group v-model="form.resource1">
+              <el-radio-group v-model="form.resource9">
                 <el-radio label="普通模式" />
                 <el-radio label="服务商模式" />
               </el-radio-group>
             </el-form-item>
             <el-form-item label="支付商户号：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 200px" />
             </el-form-item>
-            <el-form-item label="支付秘钥：">
-              <el-input v-model="form.name" />
+            <el-form-item
+              v-if="form.resource9 === '服务商模式'"
+              label="支付秘钥："
+            >
+              <el-input v-model="form.name" style="width: 200px" />
+              <span style="margin-left: 20px; color: gray">
+                请在
+                <span style="color: black">微信支付商户平台</span>
+                [账户中心]-[API安全]中设置[API密钥]
+              </span>
+            </el-form-item>
+            <el-form-item
+              v-if="form.resource9 === '服务商模式'"
+              label="PEM证书："
+            >
+              <el-button type="primary" @click="submitForm('form')">
+                上传
+              </el-button>
+              <span style="margin-left: 20px; color: gray">
+                apiclient_cert.pem 请在
+                <span style="color: black">微信支付商户平台</span>
+                [账户中心]-[API安全]中设置[API证书]，设置完成后上传
+              </span>
+            </el-form-item>
+            <el-form-item
+              v-if="form.resource9 === '服务商模式'"
+              label="证书密钥："
+            >
+              <el-button type="primary" @click="submitForm('form')">
+                上传
+              </el-button>
+              <span style="margin-left: 20px; color: gray">
+                apiclient_key.pem 请在
+                <span style="color: black">微信支付商户平台</span>
+                [账户中心]-[API安全]中设置[API证书]，设置完成后上传
+              </span>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('form')">
@@ -43,23 +81,61 @@
             label-width="140px"
             :model="form"
           >
-            <el-form-item label="支付宝支付状态：">
+            <el-form-item label="微信支付状态：">
               <el-radio-group v-model="form.resource1">
                 <el-radio label="开启" />
                 <el-radio label="关闭" />
               </el-radio-group>
+              <span style="margin-left: 50px">
+                JSAPI支付授权目录：
+                <span style="font-weight: 600">https://new.shopvvv.cn/</span>
+              </span>
             </el-form-item>
-            <el-form-item label="支付宝支付模式：">
-              <el-radio-group v-model="form.resource1">
+            <el-form-item label="微信支付模式：">
+              <el-radio-group v-model="form.resource9">
                 <el-radio label="普通模式" />
                 <el-radio label="服务商模式" />
               </el-radio-group>
             </el-form-item>
             <el-form-item label="支付商户号：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 200px" />
             </el-form-item>
-            <el-form-item label="支付秘钥：">
-              <el-input v-model="form.name" />
+            <el-form-item
+              v-if="form.resource9 === '服务商模式'"
+              label="支付秘钥："
+            >
+              <el-input v-model="form.name" style="width: 200px" />
+              <span style="margin-left: 20px; color: gray">
+                请在
+                <span style="color: black">微信支付商户平台</span>
+                [账户中心]-[API安全]中设置[API密钥]
+              </span>
+            </el-form-item>
+            <el-form-item
+              v-if="form.resource9 === '服务商模式'"
+              label="PEM证书："
+            >
+              <el-button type="primary" @click="submitForm('form')">
+                上传
+              </el-button>
+              <span style="margin-left: 20px; color: gray">
+                apiclient_cert.pem 请在
+                <span style="color: black">微信支付商户平台</span>
+                [账户中心]-[API安全]中设置[API证书]，设置完成后上传
+              </span>
+            </el-form-item>
+            <el-form-item
+              v-if="form.resource9 === '服务商模式'"
+              label="证书密钥："
+            >
+              <el-button type="primary" @click="submitForm('form')">
+                上传
+              </el-button>
+              <span style="margin-left: 20px; color: gray">
+                apiclient_key.pem 请在
+                <span style="color: black">微信支付商户平台</span>
+                [账户中心]-[API安全]中设置[API证书]，设置完成后上传
+              </span>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('form')">
@@ -76,8 +152,7 @@
 </template>
 
 <script>
-  import { getList } from '@/api/area'
-
+  // import { getList } from '@/api/area'
   export default {
     name: 'SystemPay',
     data() {
@@ -140,10 +215,10 @@
     methods: {
       //获取行政区划
       async fetchData() {
-        const {
-          data: { list },
-        } = await getList()
-        this.areaOptions = list
+        // const {
+        //   data: { list },
+        // } = await getList()
+        // this.areaOptions = list
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
@@ -159,14 +234,4 @@
   }
 </script>
 
-<style lang="scss" scoped>
-  .demo-form {
-    margin-top: 10px;
-  }
-  .sms-input {
-    width: 180px;
-  }
-  .switch-input {
-    margin: 0 40px 0 10px;
-  }
-</style>
+<style lang="scss" scoped></style>

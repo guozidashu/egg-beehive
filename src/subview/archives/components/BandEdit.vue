@@ -18,8 +18,7 @@
 </template>
 
 <script>
-  import { doEdit } from '@/api/departmentManagement'
-  // import { updateWave, addWave } from '@/api/basic'
+  import { updateWave, addWave } from '@/api/basic'
   export default {
     name: 'BandEdit',
     data() {
@@ -55,15 +54,27 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { msg } = await doEdit(this.form)
-              // const { msg } = await addWave(this.form)
-              this.$baseMessage(msg, 'success', 'vab-hey-message-success')
+              const { code } = await addWave(this.form)
+              if (code != 200) {
+                return
+              }
+              this.$baseMessage(
+                '新增成功',
+                'success',
+                'vab-hey-message-success'
+              )
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { msg } = await doEdit(this.form)
-              // const { msg } = await updateWave(this.form)
-              this.$baseMessage(msg, 'success', 'vab-hey-message-success')
+              const { code } = await updateWave(this.form)
+              if (code != 200) {
+                return
+              }
+              this.$baseMessage(
+                '修改成功',
+                'success',
+                'vab-hey-message-success'
+              )
               this.$emit('fetch-data')
               this.close()
             }

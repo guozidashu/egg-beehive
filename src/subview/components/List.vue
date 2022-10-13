@@ -49,7 +49,15 @@
         layout: 'total, sizes, prev, pager, next, jumper',
       }
     },
-    created() {},
+    created() {
+      console.log(
+        232323,
+        this.listType,
+        this.orderList,
+        this.orderState,
+        this.orderTotal
+      )
+    },
     methods: {
       // 改变每页条数事件 公共
       handleSizeChange(val) {

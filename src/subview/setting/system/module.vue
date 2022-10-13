@@ -42,28 +42,28 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item label="单位：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item label="年龄段：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item label="性别：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item label="公司地址：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item label="电话：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item label="微信：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item label="支付宝：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item label="银行卡号：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('form')">
@@ -77,11 +77,11 @@
             ref="form"
             class="demo-form"
             label-position="right"
-            label-width="120px"
+            label-width="180px"
             :model="form"
           >
             <el-form-item label="生产协同参数保留参数：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('form')">
@@ -95,11 +95,11 @@
             ref="form"
             class="demo-form"
             label-position="right"
-            label-width="120px"
+            label-width="180px"
             :model="form"
           >
             <el-form-item label="生产协同参数保留参数：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('form')">
@@ -113,32 +113,32 @@
             ref="form"
             class="demo-form"
             label-position="right"
-            label-width="120px"
+            label-width="140px"
             :model="form"
           >
             <el-form-item label="企微ID：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item label="通讯录密钥：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item label="研发应用ID：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item label="研发应用密钥：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item label="ERP应用ID：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item label="ERP应用密钥：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item label="生产协同应用ID：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item label="生产协同应用密钥：">
-              <el-input v-model="form.name" />
+              <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('form')">
@@ -157,7 +157,7 @@
 </template>
 
 <script>
-  import { getList } from '@/api/area'
+  // import { getList } from '@/api/area'
   import Form from './components/store'
   export default {
     name: 'SystemModule',
@@ -222,10 +222,10 @@
     methods: {
       //获取行政区划
       async fetchData() {
-        const {
-          data: { list },
-        } = await getList()
-        this.areaOptions = list
+        // const {
+        //   data: { list },
+        // } = await getList()
+        // this.areaOptions = list
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
@@ -241,14 +241,4 @@
   }
 </script>
 
-<style lang="scss" scoped>
-  .demo-form {
-    margin-top: 10px;
-  }
-  .sms-input {
-    width: 180px;
-  }
-  .switch-input {
-    margin: 0 40px 0 10px;
-  }
-</style>
+<style lang="scss" scoped></style>

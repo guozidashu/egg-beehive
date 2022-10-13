@@ -3,7 +3,7 @@
  */
 module.exports = {
   // 标题，此项修改后需要重启项目！！！ (包括初次加载雪花屏的标题 页面的标题 浏览器的标题)
-  title: 'Vue Admin Pro',
+  title: '圈域数字中台',
   // 标题分隔符
   titleSeparator: ' - ',
   // 标题是否反转
@@ -11,9 +11,9 @@ module.exports = {
   // 如果为ture : "title - page"
   titleReverse: false,
   // 简写
-  abbreviation: 'vab-admin-pro',
+  abbreviation: 'QY',
   // pro版本copyright可随意修改
-  copyright: 'chuzhixin 1204505056@qq.com',
+  copyright: '杭州圈域数字科技有限公司',
   // 缓存路由的最大数量
   keepAliveMaxNum: 20,
   // 路由模式，可选值为 history 或 hash
