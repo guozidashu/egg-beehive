@@ -4,12 +4,28 @@
       <div slot="header" class="clearfix">
         <span>绑定视频号</span>
       </div>
+      <div
+        style="
+          padding: 8px 16px 8px 16px;
+          margin-bottom: 20px;
+          font-size: 12px;
+          line-height: 22px;
+          color: #666;
+          background-color: #e8f4ff;
+          border-radius: 6px;
+        "
+      >
+        <p>
+          请登录微信开发者平台，创建您的视频号，并将以下信息填写保存（请认真填写，确保信息无误）；
+        </p>
+        <p>保存完成后，可到“视频号审核”中，发布/更新您的微信视频号。</p>
+      </div>
       <el-form
         ref="form"
         label-position="right"
         label-width="160px"
         :model="form"
-        style="width: 40%; padding-top: 40px"
+        style="width: 40%"
       >
         <el-form-item label="视频号ID：">
           <el-input v-model="form.name" />
@@ -17,7 +33,7 @@
         <el-form-item label="开发者私钥：">
           <el-input v-model="form.name" />
         </el-form-item>
-        <el-form-item label="支付宝公钥：">
+        <el-form-item label="视频号公钥：">
           <el-input v-model="form.name" />
         </el-form-item>
         <el-form-item label="视频号名称：">

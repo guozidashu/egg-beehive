@@ -3,6 +3,9 @@
     <el-card class="tabs-card" shadow="hover">
       <el-tabs v-model="activeName">
         <el-tab-pane label="微信支付" name="first">
+          <div class="textCss">
+            登录微信商户地址：https://pay.weixin.qq.com，需要配置ip白名单以及回调地址
+          </div>
           <el-form
             ref="form"
             class="demo-form"
@@ -74,6 +77,9 @@
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="支付宝支付" name="second">
+          <div class="textCss">
+            登录支付宝商家地址：https://b.alipay.com，需要配置ip白名单以及回调地址
+          </div>
           <el-form
             ref="form"
             class="demo-form"
@@ -81,7 +87,7 @@
             label-width="140px"
             :model="form"
           >
-            <el-form-item label="微信支付状态：">
+            <el-form-item label="支付宝支付状态：">
               <el-radio-group v-model="form.resource1">
                 <el-radio label="开启" />
                 <el-radio label="关闭" />
@@ -91,7 +97,7 @@
                 <span style="font-weight: 600">https://new.shopvvv.cn/</span>
               </span>
             </el-form-item>
-            <el-form-item label="微信支付模式：">
+            <el-form-item label="支付宝支付模式：">
               <el-radio-group v-model="form.resource9">
                 <el-radio label="普通模式" />
                 <el-radio label="服务商模式" />
@@ -107,7 +113,7 @@
               <el-input v-model="form.name" style="width: 200px" />
               <span style="margin-left: 20px; color: gray">
                 请在
-                <span style="color: black">微信支付商户平台</span>
+                <span style="color: black">支付宝支付商户平台</span>
                 [账户中心]-[API安全]中设置[API密钥]
               </span>
             </el-form-item>
@@ -120,7 +126,7 @@
               </el-button>
               <span style="margin-left: 20px; color: gray">
                 apiclient_cert.pem 请在
-                <span style="color: black">微信支付商户平台</span>
+                <span style="color: black">支付宝支付商户平台</span>
                 [账户中心]-[API安全]中设置[API证书]，设置完成后上传
               </span>
             </el-form-item>
@@ -133,7 +139,7 @@
               </el-button>
               <span style="margin-left: 20px; color: gray">
                 apiclient_key.pem 请在
-                <span style="color: black">微信支付商户平台</span>
+                <span style="color: black">支付宝支付商户平台</span>
                 [账户中心]-[API安全]中设置[API证书]，设置完成后上传
               </span>
             </el-form-item>
@@ -144,8 +150,50 @@
             </el-form-item>
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="余额支付" name="three">敬请期待</el-tab-pane>
-        <el-tab-pane label="线下支付" name="four">敬请期待</el-tab-pane>
+        <el-tab-pane label="余额支付" name="three">
+          <el-form
+            ref="form"
+            class="demo-form"
+            label-position="right"
+            label-width="140px"
+            :model="form"
+          >
+            <el-form-item label="余额支付状态">
+              <span v-if="form.value" style="margin-right: 10px">开启</span>
+              <span v-else style="margin-right: 10px">关闭</span>
+              <el-switch
+                v-model="form.value"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+              />
+            </el-form-item>
+            <el-form-item>
+              <span style="color: #999">余额支付请选择开启或关闭</span>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="线下支付" name="four">
+          <el-form
+            ref="form"
+            class="demo-form"
+            label-position="right"
+            label-width="140px"
+            :model="form"
+          >
+            <el-form-item label="线下支付状态">
+              <span v-if="form.value" style="margin-right: 10px">开启</span>
+              <span v-else style="margin-right: 10px">关闭</span>
+              <el-switch
+                v-model="form.value"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+              />
+            </el-form-item>
+            <el-form-item>
+              <span style="color: #999">线下支付请选择开启或关闭</span>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
@@ -169,6 +217,8 @@
           resource: '',
           description: '',
           area: [],
+          resource9: '服务商模式',
+          value: true,
         },
         areaOptions: [],
         rules: {
@@ -234,4 +284,14 @@
   }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .textCss {
+    padding: 8px 16px 8px 16px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 22px;
+    color: #666;
+    background-color: #e8f4ff;
+    border-radius: 6px;
+  }
+</style>

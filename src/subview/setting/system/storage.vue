@@ -7,14 +7,54 @@
         <el-tab-pane label="腾讯云储存" name="腾讯云储存" />
         <el-tab-pane label="七牛云储存" name="七牛云储存" />
       </el-tabs>
-      <el-button
+      <div
+        v-if="activeName == '本地储存'"
+        class="textCss"
+        v-html="listText[0].text"
+      ></div>
+      <div
+        v-if="activeName == '阿里云储存'"
+        class="textCss"
+        v-html="listText[1].text"
+      ></div>
+      <div
+        v-if="activeName == '腾讯云储存'"
+        class="textCss"
+        v-html="listText[2].text"
+      ></div>
+      <div
+        v-if="activeName == '七牛云储存'"
+        class="textCss"
+        v-html="listText[3].text"
+      ></div>
+      <el-form
         v-if="activeName === '本地储存'"
-        style="margin-top: 30px"
-        type="primary"
-        @click="submitForm('form')"
+        ref="form"
+        label-position="right"
+        label-width="160px"
+        :model="form"
+        style="width: 40%"
       >
-        保存
-      </el-button>
+        <el-form-item label="线下支付状态">
+          <span v-if="form.value" style="margin-right: 10px">开启</span>
+          <el-switch
+            v-model="form.value"
+            active-color="#13ce66"
+            disabled
+            inactive-color="#ff4949"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            style="margin-top: 30px"
+            type="primary"
+            @click="submitForm('form')"
+          >
+            保存
+          </el-button>
+        </el-form-item>
+      </el-form>
+
       <el-form
         v-if="activeName !== '本地储存'"
         ref="form"
@@ -98,6 +138,35 @@
           description: '',
           area: [],
         },
+        listText: [
+          {
+            text: '<p>未设置按照系统默认生成，系统默认：大图800 * 800px，中图300 * 300px，小图150 * 150px</p> ',
+          },
+          {
+            text:
+              '<p style="font-weight:600">使用说明</p> <p ">' +
+              '阿里云oss开通方法：' +
+              '第一步： 添加【存储空间】（空间名称不能重复）</p><p > ' +
+              '第二步： 开启【使用状态】</p><p >第三步（可选）： 选择云存储空间列表上的修改【空间域名操作】</p><p >' +
+              '第四步（可选）： 选择云存储空间列表上的修改【CNAME配置】，打开后复制记录值到对应的平台解析</p>',
+          },
+          {
+            text:
+              '<p style="font-weight:600">使用说明</p> <p ">' +
+              '腾讯云oss开通方法：' +
+              '第一步： 添加【存储空间】（空间名称不能重复）</p><p > ' +
+              '第二步： 开启【使用状态】</p><p >第三步（可选）： 选择云存储空间列表上的修改【空间域名操作】</p><p >' +
+              '第四步（可选）： 选择云存储空间列表上的修改【CNAME配置】，打开后复制记录值到对应的平台解析</p>',
+          },
+          {
+            text:
+              '<p style="font-weight:600">使用说明</p> <p ">' +
+              '七牛云开通方法：' +
+              '第一步： 添加【存储空间】（空间名称不能重复）</p><p > ' +
+              '第二步： 开启【使用状态】</p><p >第三步（可选）： 选择云存储空间列表上的修改【空间域名操作】</p><p >' +
+              '第四步（可选）： 选择云存储空间列表上的修改【CNAME配置】，打开后复制记录值到对应的平台解析</p>',
+          },
+        ],
       }
     },
     created() {},
@@ -105,4 +174,14 @@
   }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .textCss {
+    padding: 8px 16px 8px 16px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 22px;
+    color: #666;
+    background-color: #e8f4ff;
+    border-radius: 6px;
+  }
+</style>

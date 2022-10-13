@@ -3,6 +3,13 @@
     <el-card class="tabs-card" shadow="hover">
       <el-tabs v-model="activeName">
         <el-tab-pane label="短信模板" name="first">
+          <div class="textCss">
+            <p>主营行业：未选择</p>
+            <p>副营行业：未选择</p>
+            <p>
+              注意：小程序需选择生活服务/百货/超市/便利店类目，否则不能同步小程序订阅消息
+            </p>
+          </div>
           <el-form
             ref="form"
             class="demo-form"
@@ -156,6 +163,18 @@
         </el-tab-pane>
         <el-tab-pane label="消息配置" name="second">敬请期待</el-tab-pane>
         <el-tab-pane label="企业微信配置" name="three">
+          <div class="textCss">
+            <p style="font-weight: 600">使用说明</p>
+            <p>
+              1.可以生成带参数的二维码名片，支持活码功能，即随机选取设置的活码成员推给用户。加企业微信为好友后，可以给微信联系人自动回复相应欢迎消息和打标签。
+            </p>
+            <p>
+              2.受限于官方，单人类型的渠道码创建后尽量不要再修改成员，否则会造成列表中，该二维码中间的头像与配置的成员头像不一致，但是并不影响功能使用。
+            </p>
+            <p>
+              3.如果企业在企业微信后台为相关成员配置了可用的欢迎语，使用本系统配置欢迎语，则均不起效，推送的还是企业微信官方的。
+            </p>
+          </div>
           <el-form
             ref="form"
             class="demo-form"
@@ -282,4 +301,14 @@
   }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .textCss {
+    padding: 8px 16px 8px 16px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 22px;
+    color: #666;
+    background-color: #e8f4ff;
+    border-radius: 6px;
+  }
+</style>

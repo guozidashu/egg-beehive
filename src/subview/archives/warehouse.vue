@@ -15,7 +15,7 @@
             添加
           </el-button>
         </el-form-item>
-        <el-form-item style="float: right">
+        <!-- <el-form-item style="float: right">
           <el-button
             icon="el-icon-search"
             native-type="submit"
@@ -32,14 +32,14 @@
             size="small"
             style="width: 150px; padding-left: 10px"
           />
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <!-- 表格组件使用 -->
       <List
+        :list-type="listType"
         :order-list="list"
         :order-state="listLoading"
         :order-total="total"
-        :type="listType"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
@@ -71,7 +71,7 @@
           >
             <template #default="{ row }">
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <el-button type="text" @click="handleDelete(row)">删除</el-button>
+              <!-- <el-button type="text" @click="handleDelete(row)">删除</el-button> -->
             </template>
           </el-table-column>
         </template>
@@ -84,11 +84,7 @@
 <script>
   import List from '@/subview/components/List'
   import Edit from './components/WareHouseEdit'
-  // import {
-  //   getWarehouseList,
-  //   editWarehouse,
-  //   deleteWarehouse,
-  // } from '@/api/basic'
+  import { getWarehouseList, editWarehouse, deleteWarehouse } from '@/api/basic'
   export default {
     name: 'ArchivesWarehouse',
     components: { List, Edit },
@@ -104,44 +100,7 @@
         title: '',
         // 列表数据相关
         listType: 1,
-        list: [
-          {
-            id: 'pc12138',
-            name: '仓库名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '仓库名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '仓库名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '仓库名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '仓库名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '仓库名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-        ],
+        list: [],
         listLoading: false,
         total: 0,
       }
@@ -164,8 +123,10 @@
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {
-            // const res = await editWarehouse(row.id)
-            this.$refs['edit'].showEdit(row)
+            const { code, data } = await editWarehouse({ id: row.id })
+            if (code === 200) {
+              this.$refs['edit'].showEdit(data)
+            }
           } else {
             this.$refs['edit'].showEdit()
           }
@@ -176,8 +137,12 @@
         this.form.pageNo = 1
       },
       // 删除
-      async handleDelete() {
-        // const res = await deleteWarehouse(row.id)
+      async handleDelete(row) {
+        const { code } = await deleteWarehouse({ id: row.id })
+        if (code != 200) {
+          return
+        }
+        this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
         this.fetchData()
       },
       // 列表数据封装函数
@@ -192,13 +157,13 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getWarehouseList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const {
+          data: { list, total },
+        } = await getWarehouseList(this.form)
+        this.list = list
+        this.total = total
+        this.listLoading = false
       },
     },
   }

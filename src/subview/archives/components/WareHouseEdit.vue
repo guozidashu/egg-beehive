@@ -9,6 +9,12 @@
       <el-form-item label="仓库名称" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
+      <el-form-item label="是否默认" prop="mr">
+        <el-checkbox v-model="form.mr" />
+      </el-form-item>
+      <el-form-item label="库位" prop="position">
+        <el-input v-model="form.position" />
+      </el-form-item>
     </el-form>
     <template #footer>
       <el-button @click="close">取 消</el-button>
@@ -18,8 +24,7 @@
 </template>
 
 <script>
-  import { doEdit, getList } from '@/api/departmentManagement'
-  // import { updateWarehouse, addWarehouse } from '@/api/basic'
+  import { updateWarehouse, addWarehouse } from '@/api/basic'
   export default {
     name: 'DepartmentManagementEdit',
     data() {
@@ -37,18 +42,18 @@
     },
     created() {},
     methods: {
-      async fetchData() {
-        const {
-          data: { list },
-        } = await getList()
-        this.treeData = list
-      },
       showEdit(row) {
         if (!row) {
           this.title = '添加'
         } else {
           this.title = '编辑'
-          this.form = Object.assign({}, row)
+          if (row.mr == 1) {
+            row.mr = true
+            this.form = Object.assign({}, row)
+          } else {
+            row.mr = false
+            this.form = Object.assign({}, row)
+          }
         }
         this.dialogFormVisible = true
       },
@@ -61,15 +66,27 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { msg } = await doEdit(this.form)
-              // const { msg } = await addWarehouse(this.form)
-              this.$baseMessage(msg, 'success', 'vab-hey-message-success')
+              const { code } = await addWarehouse(this.form)
+              if (code != 200) {
+                return
+              }
+              this.$baseMessage(
+                '新增成功',
+                'success',
+                'vab-hey-message-success'
+              )
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { msg } = await doEdit(this.form)
-              // const { msg } = await updateWarehouse(this.form)
-              this.$baseMessage(msg, 'success', 'vab-hey-message-success')
+              const { code } = await updateWarehouse(this.form)
+              if (code != 200) {
+                return
+              }
+              this.$baseMessage(
+                '修改成功',
+                'success',
+                'vab-hey-message-success'
+              )
               this.$emit('fetch-data')
               this.close()
             }

@@ -32,7 +32,7 @@ module.exports = {
   recordRoute: true,
   // 是否开启logo，不显示时设置false，请填写src/icon路径下的图标名称
   // 如需使用内置RemixIcon图标，请自行去logo组件切换注释代码(内置svg雪碧图较大，对性能有一定影响)
-  logo: 'vuejs-fill',
+  logo: 'vuejs-logo',
   // 语言类型zh、en
   i18n: 'zh',
   // 消息框消失时间

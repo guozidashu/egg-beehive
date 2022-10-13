@@ -3,6 +3,9 @@
     <el-card class="tabs-card" shadow="hover">
       <el-tabs v-model="activeName">
         <el-tab-pane label="ERP配置" name="first">
+          <div class="textCss">
+            <p style="font-weight: 600">使用说明</p>
+          </div>
           <el-form
             ref="form"
             class="demo-form"
@@ -73,6 +76,9 @@
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="生产配置" name="second">
+          <div class="textCss">
+            <p style="font-weight: 600">使用说明</p>
+          </div>
           <el-form
             ref="form"
             class="demo-form"
@@ -91,6 +97,9 @@
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="研发配置" name="three">
+          <div class="textCss">
+            <p style="font-weight: 600">使用说明</p>
+          </div>
           <el-form
             ref="form"
             class="demo-form"
@@ -109,6 +118,9 @@
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="企业微信配置" name="four">
+          <div class="textCss">
+            <p style="font-weight: 600">使用说明</p>
+          </div>
           <el-form
             ref="form"
             class="demo-form"
@@ -116,29 +128,67 @@
             label-width="140px"
             :model="form"
           >
+            <div style="font-weight: 600">企业微信基础配置</div>
+            <el-divider />
             <el-form-item label="企微ID：">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
-            <el-form-item label="通讯录密钥：">
+            <el-form-item>
+              <span style="color: #999">
+                企业微信ID，前往企业微信后台【我的企业】企业信息中可查看
+              </span>
+            </el-form-item>
+            <div style="font-weight: 600">企业微信通讯录配置</div>
+            <el-divider />
+            <div class="textCss">
+              <p>
+                1.请先登录企业微信:https://work.weixin.qq.com
+                客户与上下游->客户联系->关联微信开发者ID。2.请必须绑定微信开放平台
+              </p>
+            </div>
+            <el-form-item label="Token">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
-            <el-form-item label="研发应用ID：">
+            <el-form-item>
+              <span style="color: #999">通讯录事件接收服务器token</span>
+            </el-form-item>
+            <el-form-item label="EncodingAESKey">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
-            <el-form-item label="研发应用密钥：">
+            <el-form-item>
+              <span style="color: #999">企业微信通讯录EncodingAESKey</span>
+            </el-form-item>
+            <el-form-item label="服务器地址">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
-            <el-form-item label="ERP应用ID：">
+
+            <div style="font-weight: 600">企业微信客户设置</div>
+            <el-divider />
+            <el-form-item label="Secret">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
-            <el-form-item label="ERP应用密钥：">
+            <el-form-item>
+              <span style="color: #999">
+                企业微信客户secret，可前往【客户与上下游】查看secret
+              </span>
+            </el-form-item>
+            <div style="font-weight: 600">企业微信自建应用设置</div>
+            <el-divider />
+            <el-form-item label="应用AgentId">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
-            <el-form-item label="生产协同应用ID：">
+            <el-form-item>
+              <span style="color: #999">
+                企业微信自建应用AgentId，可前往【应用管理】进行自建应用
+              </span>
+            </el-form-item>
+            <el-form-item label="应用Secret">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
-            <el-form-item label="生产协同应用密钥：">
-              <el-input v-model="form.name" style="width: 250px" />
+            <el-form-item>
+              <span style="color: #999">
+                企业微信自建应用secret，可前往【应用管理】自建应用应用内查看secret
+              </span>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('form')">
@@ -150,7 +200,63 @@
         <el-tab-pane label="商城配置" name="five">
           <Form />
         </el-tab-pane>
-        <el-tab-pane label="SCRM配置" name="six">敬请期待</el-tab-pane>
+        <el-tab-pane label="SCRM配置" name="six">
+          <p style="font-weight: 700">将以下信息复制到圈域宝SCRM后台</p>
+          <el-form
+            ref="form"
+            class="demo-form"
+            label-position="right"
+            label-width="140px"
+            :model="form"
+          >
+            <div class="textCss">
+              <p>
+                用于对接圈域宝SCRM，实现聊天中向客户一键发送商品、优惠券等，查看客户购买的商城订单信息、购物车的商品等，使用该功能需要先购买圈域宝的企业私域
+                SCRM 用户增长系统
+              </p>
+            </div>
+            <el-form-item label="功能启用：">
+              <el-radio-group v-model="form.resource1">
+                <el-radio label="开启" />
+                <el-radio label="关闭" />
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="ERP应用密钥：">
+              <el-input v-model="form.name" style="width: 250px" />
+            </el-form-item>
+            <el-form-item label="请求地址：">
+              <el-input v-model="form.name" style="width: 250px" />
+              <span style="margin-left: 20px; color: #999">
+                请求地址： 开启并填入地址后需要一段时间同步会员信息
+              </span>
+            </el-form-item>
+            <el-form-item label="店铺域名：">
+              <el-input v-model="form.name" style="width: 250px" />
+            </el-form-item>
+            <el-form-item label="店铺ID：">
+              <el-input v-model="form.name" style="width: 250px" />
+            </el-form-item>
+            <el-form-item label="API_KEY">
+              <el-input
+                v-model="form.name"
+                placeholder="已隐藏内容，点击查看或编辑"
+                style="width: 250px"
+              />
+              <el-button
+                style="margin-left: 20px"
+                type="primary"
+                @click="submitForm('form')"
+              >
+                重置
+              </el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('form')">
+                提交
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
@@ -158,10 +264,10 @@
 
 <script>
   // import { getList } from '@/api/area'
-  import Form from './components/store'
+  // import Form from './components/store'
   export default {
     name: 'SystemModule',
-    components: { Form },
+    // components: { Form },
     data() {
       return {
         activeName: 'first',
@@ -176,6 +282,7 @@
           resource: '',
           description: '',
           area: [],
+          value: true,
         },
         areaOptions: [],
         rules: {
@@ -241,4 +348,14 @@
   }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .textCss {
+    padding: 8px 16px 8px 16px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 22px;
+    color: #666;
+    background-color: #e8f4ff;
+    border-radius: 6px;
+  }
+</style>
