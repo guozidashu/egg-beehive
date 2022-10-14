@@ -3,7 +3,8 @@
     <el-card shadow="never">
       <!-- 表单组件使用 -->
       <Form
-        :order-form="orderForm"
+        :form="form"
+        :form-type="formType"
         @changeSearch="changeBtnSearch"
         @changeSta="changeBtnSta"
       >
@@ -14,7 +15,7 @@
             style="padding-top: 10px; padding-right: 80px; font-weight: 600"
           >
             <el-radio-group
-              v-model="orderForm.orderSta"
+              v-model="form.orderSta"
               size="small"
               @change="changeHandler"
             >
@@ -31,7 +32,7 @@
             style="padding-top: 10px; padding-right: 80px; font-weight: 600"
           >
             <el-radio-group
-              v-model="orderForm.paySta"
+              v-model="form.paySta"
               size="small"
               @change="changeHandler"
             >
@@ -44,12 +45,12 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item
-            v-show="!orderForm.fold"
+            v-show="!form.fold"
             label="订单来源:"
             style="padding-top: 10px; padding-right: 80px; font-weight: 600"
           >
             <el-radio-group
-              v-model="orderForm.orderSource"
+              v-model="form.orderSource"
               size="small"
               @change="changeHandler"
             >
@@ -63,27 +64,23 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item
-            v-show="!orderForm.fold"
+            v-show="!form.fold"
             label="配送方式:"
             prop="region"
             style="padding-top: 10px; padding-right: 80px"
           >
-            <el-select
-              v-model="orderForm.region"
-              size="small"
-              style="width: 150px"
-            >
+            <el-select v-model="form.region" size="small" style="width: 150px">
               <el-option label="普通快递" value="shanghai" />
               <el-option label="到店自取" value="beijing" />
             </el-select>
           </el-form-item>
           <el-form-item
-            v-show="!orderForm.fold"
+            v-show="!form.fold"
             label-width="0px"
             style="padding-top: 10px; padding-right: 80px"
           >
             <el-select
-              v-model="orderForm.typeSelect"
+              v-model="form.typeSelect"
               size="small"
               style="width: 120px; padding-left: 10px"
             >
@@ -99,19 +96,19 @@
               <el-option label="所属门店" value="huiyuan8" />
             </el-select>
             <el-input
-              v-model="orderForm.orderId"
+              v-model="form.orderId"
               size="small"
               style="width: 150px; padding-left: 10px"
             />
           </el-form-item>
           <el-form-item
-            v-show="!orderForm.fold"
+            v-show="!form.fold"
             label-width="0px"
             style="padding-top: 10px; padding-right: 80px"
           >
             <el-select
-              v-show="!orderForm.fold"
-              v-model="orderForm.dataSelect"
+              v-show="!form.fold"
+              v-model="form.dataSelect"
               size="small"
               style="width: 120px; padding: 0 10px"
             >
@@ -121,7 +118,7 @@
               <el-option label="完成时间" value="seccon" />
             </el-select>
             <el-date-picker
-              v-model="orderForm.date"
+              v-model="form.date"
               size="small"
               style="width: 350px"
               type="datetimerange"
@@ -138,10 +135,10 @@
       </el-tabs>
       <!-- 表格组件使用 -->
       <List
-        :order-list="list"
-        :order-state="listLoading"
-        :order-total="total"
-        :type="listType"
+        :list="list"
+        :list-type="listType"
+        :state="listLoading"
+        :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
@@ -211,7 +208,7 @@
 
 <script>
   import List from '@/subview/components/List'
-  import Form from './components/Form'
+  import Form from '@/subview/components/Form'
   import Drawer from './components/Drawer'
   // import { getList } from '@/api/userManagement'
   export default {
@@ -222,7 +219,7 @@
         activeName: 'first',
         drawer: false,
         // 表单数据/列表参数
-        orderForm: {
+        form: {
           // 自定义参数
           orderSta: '全部',
           paySta: '全部',
@@ -240,6 +237,7 @@
 
         // 公共参数
         listType: 1,
+        formType: 1,
         list: [
           {
             orderno: '1234522/普通订单',
@@ -289,7 +287,7 @@
       }
     },
     watch: {
-      orderForm: {
+      form: {
         //表单筛选条件变化实时刷新列表
         handler: function () {
           this.fetchData()
@@ -304,22 +302,22 @@
       // 列表表单子组件展开闭合事件  公共部分
       changeBtnSta(data) {
         console.log(2323233, data)
-        this.orderForm.fold = data
+        this.form.fold = data
       },
       // 列表表单子组件查询事件   公共部分
       changeBtnSearch(data) {
         console.log(6666, data)
-        this.orderForm.pageNo = 1
+        this.form.pageNo = 1
       },
       // 列表表单单选标签监听  自定义部分
       changeHandler(data) {
         console.log(888, data)
-        this.orderForm.pageNo = 1
+        this.form.pageNo = 1
       },
       // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
         console.log(1111, tab.label)
-        this.orderForm.pageNo = 1
+        this.form.pageNo = 1
       },
 
       // 列表数据封装函数
@@ -327,19 +325,19 @@
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         console.log(9090909, data)
-        this.orderForm.pageNo = data
+        this.form.pageNo = data
       },
       // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {
         console.log(8080080, data)
-        this.orderForm.pageSize = data
+        this.form.pageSize = data
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
         // this.listLoading = true
         // const {
         //   data: { list, total },
-        // } = await getList(this.orderForm)
+        // } = await getList(this.form)
         // this.list = list
         // this.total = total
         // this.listLoading = false

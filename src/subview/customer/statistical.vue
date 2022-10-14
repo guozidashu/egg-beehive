@@ -130,7 +130,7 @@
           </el-form-item>
         </el-form-item>
       </el-form>
-      <List :order-list="goosList" :order-state="listLoading" :type="listType">
+      <List :list="goosList" :state="listLoading" :type="listType">
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column

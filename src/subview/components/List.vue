@@ -1,7 +1,11 @@
 <template>
   <div>
-    <el-table v-loading="orderState" border :data="orderList">
-      <!-- @selection-change="setSelectRows" -->
+    <el-table
+      v-loading="state"
+      border
+      :data="list"
+      @selection-change="setSelectRows"
+    >
       <slot name="List"></slot>
       <template #empty>
         <el-image
@@ -13,10 +17,10 @@
     <el-pagination
       v-if="listType === 1"
       background
-      :current-page="orderList.pageNo"
+      :current-page="list.pageNo"
       :layout="layout"
-      :page-size="orderList.pageSize"
-      :total="orderTotal"
+      :page-size="list.pageSize"
+      :total="total"
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
     />
@@ -27,15 +31,15 @@
   export default {
     name: 'ComponentsList',
     props: {
-      orderList: {
+      list: {
         type: Array,
         default: () => [],
       },
-      orderState: {
+      state: {
         type: Boolean,
         default: true,
       },
-      orderTotal: {
+      total: {
         type: Number,
         default: 0,
       },
@@ -50,24 +54,21 @@
       }
     },
     created() {
-      console.log(
-        232323,
-        this.listType,
-        this.orderList,
-        this.orderState,
-        this.orderTotal
-      )
+      console.log(232323, this.listType, this.list, this.state, this.total)
     },
     methods: {
       // 改变每页条数事件 公共
       handleSizeChange(val) {
-        console.log(45454545, val)
         this.$emit('changePageSize', val)
       },
       // 改变页数事件 公共
       handleCurrentChange(val) {
-        console.log(2666662, val)
         this.$emit('changePage', val)
+      },
+      //多选
+      setSelectRows(val) {
+        console.log(1323443, val)
+        this.$emit('selectRows', val)
       },
     },
   }

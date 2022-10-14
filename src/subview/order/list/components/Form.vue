@@ -5,7 +5,7 @@
         <el-form
           ref="form"
           label-width="80px"
-          :model="orderForm"
+          :model="form"
           style="display: flex; flex-wrap: wrap"
           @submit.native.prevent
         >
@@ -61,7 +61,7 @@
   export default {
     name: 'ComponentsForm',
     props: {
-      orderForm: {
+      form: {
         type: Object,
         default: () => {},
       },
@@ -69,7 +69,7 @@
     data() {
       return {
         // 隐藏展示参数
-        fold: this.orderForm.fold,
+        fold: this.form.fold,
         height: this.$baseTableHeight(3) - 30,
       }
     },
@@ -88,7 +88,7 @@
       },
       // 查询事件 公共
       handleQuery() {
-        this.$emit('changeSearch', this.orderForm)
+        this.$emit('changeSearch', this.form)
       },
     },
   }

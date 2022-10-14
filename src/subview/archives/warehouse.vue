@@ -1,47 +1,32 @@
 <template>
   <div class="comprehensive-form-container">
     <el-card shadow="never">
-      <div slot="header" class="clearfix">
-        <span>仓库管理</span>
-      </div>
-      <el-form ref="form" :inline="true" :model="form" @submit.native.prevent>
-        <el-form-item>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleEdit(1)"
-          >
-            添加
-          </el-button>
-        </el-form-item>
-        <!-- <el-form-item style="float: right">
-          <el-button
-            icon="el-icon-search"
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            查询
-          </el-button>
-        </el-form-item>
-        <el-form-item label="仓库名称" prop="region" style="float: right">
-          <el-input
-            v-model="form.name"
-            size="small"
-            style="width: 150px; padding-left: 10px"
-          />
-        </el-form-item> -->
-      </el-form>
+      <Form
+        :form="form"
+        :form-type="formType"
+        @addDate="handleEdit"
+        @changeSearch="handleQuery"
+        @deleteDate="handleDelete"
+      >
+        <template #Form>
+          <el-form-item label="仓库名称" prop="region" style="float: right">
+            <el-input
+              v-model="form.name"
+              size="small"
+              style="width: 150px; padding-left: 10px"
+            />
+          </el-form-item>
+        </template>
+      </Form>
       <!-- 表格组件使用 -->
       <List
+        :list="list"
         :list-type="listType"
-        :order-list="list"
-        :order-state="listLoading"
-        :order-total="total"
+        :state="listLoading"
+        :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
+        @selectRows="selectBtnRows"
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
@@ -65,13 +50,30 @@
           />
           <el-table-column
             align="center"
+            label="是否默认"
+            prop="mr"
+            show-overflow-tooltip
+          >
+            <template #default="{ row }">
+              <span v-if="row.mr == 0">否</span>
+              <span v-else>默认</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            align="center"
+            label="库位"
+            prop="position"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
             label="操作"
             show-overflow-tooltip
             width="85"
           >
             <template #default="{ row }">
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <!-- <el-button type="text" @click="handleDelete(row)">删除</el-button> -->
+              <el-button type="text" @click="handleDelete(row)">删除</el-button>
             </template>
           </el-table-column>
         </template>
@@ -84,10 +86,11 @@
 <script>
   import List from '@/subview/components/List'
   import Edit from './components/WareHouseEdit'
+  import Form from '@/subview/components/Form'
   import { getWarehouseList, editWarehouse, deleteWarehouse } from '@/api/basic'
   export default {
     name: 'ArchivesWarehouse',
-    components: { List, Edit },
+    components: { List, Edit, Form },
     data() {
       return {
         // 表单数据/列表参数
@@ -97,8 +100,9 @@
           pageNo: 1,
           pageSize: 10,
         },
-        title: '',
+        formType: 2,
         // 列表数据相关
+        selectRows: [],
         listType: 1,
         list: [],
         listLoading: false,
@@ -133,23 +137,45 @@
         }
       },
       // 查询
-      handleQuery() {
+      handleQuery(data) {
+        console.log(3232, data)
         this.form.pageNo = 1
       },
       // 删除
-      async handleDelete(row) {
-        const { code } = await deleteWarehouse({ id: row.id })
-        if (code != 200) {
-          return
+      handleDelete(row) {
+        if (row.id) {
+          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
+            const { code } = await deleteWarehouse({ id: row.id })
+            if (code != 200) {
+              return
+            }
+            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
+          })
+        } else {
+          if (this.selectRows.length > 0) {
+            const ids = this.selectRows.map((item) => item.id).join()
+            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
+              const { code } = await deleteWarehouse(ids)
+              if (code != 200) {
+                return
+              }
+              this.fetchData()
+            })
+          } else {
+            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
+          }
         }
-        this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
-        this.fetchData()
       },
       // 列表数据封装函数
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         this.form.pageNo = data
+      },
+      // 多选获取数据   公共部分
+      selectBtnRows(data) {
+        this.selectRows = data
       },
       // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {

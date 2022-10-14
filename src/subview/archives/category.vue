@@ -9,7 +9,7 @@
         @deleteDate="handleDelete"
       >
         <template #Form>
-          <el-form-item label="等级名称" prop="region" style="float: right">
+          <el-form-item label="款式" prop="region" style="float: right">
             <el-input
               v-model="form.name"
               size="small"
@@ -37,39 +37,15 @@
           />
           <el-table-column
             align="center"
-            label="等级ID"
+            label="款式ID"
             prop="id"
             show-overflow-tooltip
             sortable
           />
           <el-table-column
             align="center"
-            label="等级名称"
+            label="款式名称"
             prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="等级折扣"
-            prop="zhekou"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="是否散批"
-            prop="sp"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="散码折扣"
-            prop="zhekou_sm"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="备注"
-            prop="des"
             show-overflow-tooltip
           />
           <el-table-column
@@ -92,11 +68,11 @@
 
 <script>
   import List from '@/subview/components/List'
-  import Edit from './components/LevelDeit'
+  import Edit from './components/CategoryEdit'
   import Form from '@/subview/components/Form'
-  import { getGradeList, editGrade, deleteGrade } from '@/api/basic'
+  import { getCategoryList, editCategory, deleteCategory } from '@/api/basic'
   export default {
-    name: 'CustomerLevel',
+    name: 'ArchivesCategory',
     components: { List, Form, Edit },
     data() {
       return {
@@ -134,9 +110,9 @@
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {
-            const { code, data } = await editGrade({ id: row.id })
+            const { code, data } = await editCategory({ id: row.id })
             if (code === 200) {
-              this.$refs['edit'].showEdit(data)
+              this.$refs['edit'].showEdit(data.list)
             }
           } else {
             this.$refs['edit'].showEdit()
@@ -151,7 +127,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await deleteGrade({ id: row.id })
+            const { code } = await deleteCategory({ id: row.id })
             if (code != 200) {
               return
             }
@@ -162,7 +138,7 @@
           if (this.selectRows.length > 0) {
             const ids = this.selectRows.map((item) => item.id).join()
             this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-              const { code } = await deleteGrade(ids)
+              const { code } = await deleteCategory(ids)
               if (code != 200) {
                 return
               }
@@ -194,7 +170,7 @@
         this.listLoading = true
         const {
           data: { list, total },
-        } = await getGradeList(this.form)
+        } = await getCategoryList(this.form)
         this.list = list
         this.total = total
         this.listLoading = false

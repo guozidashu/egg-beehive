@@ -677,6 +677,60 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'archivesMeeting',
+        name: 'ArchivesMeeting',
+        component: () => import('@/subview/archives/meeting'),
+        meta: {
+          title: '订货会',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'archivesCategory',
+        name: 'ArchivesCategory',
+        component: () => import('@/subview/archives/category'),
+        meta: {
+          title: '款式分类',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'archivesColor',
+        name: 'ArchivesColor',
+        component: () => import('@/subview/archives/color'),
+        meta: {
+          title: '颜色',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'archivesSize',
+        name: 'ArchivesSize',
+        component: () => import('@/subview/archives/size'),
+        meta: {
+          title: '尺码',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'archivesSubject',
+        name: 'ArchivesSubject',
+        component: () => import('@/subview/archives/subject'),
+        meta: {
+          title: '科目',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'archivesBom',
+        name: 'ArchivesBom',
+        component: () => import('@/subview/archives/bom'),
+        meta: {
+          title: '物料',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {

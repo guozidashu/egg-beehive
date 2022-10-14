@@ -1,6 +1,153 @@
 import request from '@/utils/request'
 // 基础档案模块  增删改查接口
 
+// 物料分类
+export function getBomList(data) {
+  return request({
+    url: '/Bomcategory_index',
+    method: 'post',
+    data,
+  })
+}
+export function addBom(data) {
+  return request({
+    url: '/Bomcategory_save',
+    method: 'post',
+    data,
+  })
+}
+export function editBom(data) {
+  return request({
+    url: '/Bomcategory_edit',
+    method: 'post',
+    data,
+  })
+}
+export function updateBom(data) {
+  return request({
+    url: '/Bomcategory_update',
+    method: 'post',
+    data,
+  })
+}
+export function deleteBom(data) {
+  return request({
+    url: '/Bomcategory_delete',
+    method: 'post',
+    data,
+  })
+}
+
+// 尺码
+export function getSizeList(data) {
+  return request({
+    url: '/size_index',
+    method: 'post',
+    data,
+  })
+}
+export function addSize(data) {
+  return request({
+    url: '/size_save',
+    method: 'post',
+    data,
+  })
+}
+export function editSize(data) {
+  return request({
+    url: '/size_edit',
+    method: 'post',
+    data,
+  })
+}
+export function updateSize(data) {
+  return request({
+    url: '/size_update',
+    method: 'post',
+    data,
+  })
+}
+export function deleteSize(data) {
+  return request({
+    url: '/size_delete',
+    method: 'post',
+    data,
+  })
+}
+
+// 颜色
+export function getColorList(data) {
+  return request({
+    url: '/color_index',
+    method: 'post',
+    data,
+  })
+}
+export function addColor(data) {
+  return request({
+    url: '/color_save',
+    method: 'post',
+    data,
+  })
+}
+export function editColor(data) {
+  return request({
+    url: '/color_edit',
+    method: 'post',
+    data,
+  })
+}
+export function updateColor(data) {
+  return request({
+    url: '/color_update',
+    method: 'post',
+    data,
+  })
+}
+export function deleteColor(data) {
+  return request({
+    url: '/color_delete',
+    method: 'post',
+    data,
+  })
+}
+
+// 客户等级
+export function getGradeList(data) {
+  return request({
+    url: '/grade_index',
+    method: 'post',
+    data,
+  })
+}
+export function addGrade(data) {
+  return request({
+    url: '/grade_save',
+    method: 'post',
+    data,
+  })
+}
+export function editGrade(data) {
+  return request({
+    url: '/grade_edit',
+    method: 'post',
+    data,
+  })
+}
+export function updateGrade(data) {
+  return request({
+    url: '/grade_update',
+    method: 'post',
+    data,
+  })
+}
+export function deleteGrade(data) {
+  return request({
+    url: '/grade_delete',
+    method: 'post',
+    data,
+  })
+}
 // 会计科目
 export function getSubjectList(data) {
   return request({

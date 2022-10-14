@@ -6,8 +6,8 @@
     @close="close"
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item label="品牌名称" prop="name">
-        <el-input v-model="form.name" />
+      <el-form-item label="尺码名称" prop="name">
+        <el-input v-model="form.name" style="width: 220px" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -18,9 +18,9 @@
 </template>
 
 <script>
-  import { updateBrand, addBrand } from '@/api/basic'
+  import { updateSize, addSize } from '@/api/basic'
   export default {
-    name: 'BrandEdit',
+    name: 'LevelDeit',
     data() {
       return {
         form: {
@@ -54,7 +54,7 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await addBrand(this.form)
+              const { code } = await addSize(this.form)
               if (code != 200) {
                 return
               }
@@ -66,7 +66,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await updateBrand(this.form)
+              const { code } = await updateSize(this.form)
               if (code != 200) {
                 return
               }

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <vab-query-form>
+    <vab-query-form v-if="formType == 1">
       <vab-query-form-top-panel>
         <el-form
           ref="form"
           label-width="80px"
-          :model="orderForm"
+          :model="form"
           style="display: flex; flex-wrap: wrap"
           @submit.native.prevent
         >
@@ -48,12 +48,73 @@
               type="primary"
               @click="handleQuery"
             >
-              批量发货
+              批量
             </el-button>
           </el-form-item>
         </el-form>
       </vab-query-form-top-panel>
     </vab-query-form>
+
+    <el-form
+      v-if="formType === 2"
+      ref="form"
+      :inline="true"
+      :model="form"
+      @submit.native.prevent
+    >
+      <el-form-item>
+        <el-button
+          native-type="submit"
+          size="small"
+          type="primary"
+          @click="handleEdit"
+        >
+          添加
+        </el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          native-type="submit"
+          size="small"
+          type="primary"
+          @click="handleDelete"
+        >
+          批量删除
+        </el-button>
+      </el-form-item>
+      <el-form-item style="float: right">
+        <el-button
+          icon="el-icon-search"
+          native-type="submit"
+          size="small"
+          type="primary"
+          @click="handleQuery"
+        >
+          查询
+        </el-button>
+      </el-form-item>
+      <slot name="Form"></slot>
+    </el-form>
+    <el-form
+      v-if="formType === 3"
+      ref="form"
+      :inline="true"
+      :model="form"
+      @submit.native.prevent
+    >
+      <slot name="Form"></slot>
+      <el-form-item>
+        <el-button
+          icon="el-icon-search"
+          native-type="submit"
+          size="small"
+          type="primary"
+          @click="handleQuery"
+        >
+          查询
+        </el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -61,15 +122,19 @@
   export default {
     name: 'ComponentsForm',
     props: {
-      orderForm: {
+      form: {
         type: Object,
         default: () => {},
+      },
+      formType: {
+        type: Number,
+        default: 0,
       },
     },
     data() {
       return {
         // 隐藏展示参数
-        fold: this.orderForm.fold,
+        fold: this.form.fold,
         height: this.$baseTableHeight(3) - 30,
       }
     },
@@ -88,7 +153,15 @@
       },
       // 查询事件 公共
       handleQuery() {
-        this.$emit('changeSearch', this.orderForm)
+        this.$emit('changeSearch', this.form)
+      },
+      // 添加事件 公共
+      handleEdit() {
+        this.$emit('addDate', 1)
+      },
+      // 删除事件 公共
+      handleDelete() {
+        this.$emit('deleteDate', 1)
       },
     },
   }

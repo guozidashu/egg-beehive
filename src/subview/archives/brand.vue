@@ -1,47 +1,32 @@
 <template>
   <div class="comprehensive-form-container">
     <el-card shadow="never">
-      <div slot="header" class="clearfix">
-        <span>品牌管理</span>
-      </div>
-      <el-form ref="form" :inline="true" :model="form" @submit.native.prevent>
-        <el-form-item>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleEdit(1)"
-          >
-            添加
-          </el-button>
-        </el-form-item>
-        <el-form-item style="float: right">
-          <el-button
-            icon="el-icon-search"
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            查询
-          </el-button>
-        </el-form-item>
-        <el-form-item label="品牌名称" prop="region" style="float: right">
-          <el-input
-            v-model="form.name"
-            size="small"
-            style="width: 150px; padding-left: 10px"
-          />
-        </el-form-item>
-      </el-form>
+      <Form
+        :form="form"
+        :form-type="formType"
+        @addDate="handleEdit"
+        @changeSearch="handleQuery"
+        @deleteDate="handleDelete"
+      >
+        <template #Form>
+          <el-form-item label="品牌名称" prop="region" style="float: right">
+            <el-input
+              v-model="form.name"
+              size="small"
+              style="width: 150px; padding-left: 10px"
+            />
+          </el-form-item>
+        </template>
+      </Form>
       <!-- 表格组件使用 -->
       <List
-        :order-list="list"
-        :order-state="listLoading"
-        :order-total="total"
-        :type="listType"
+        :list="list"
+        :list-type="listType"
+        :state="listLoading"
+        :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
+        @selectRows="selectBtnRows"
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
@@ -84,14 +69,11 @@
 <script>
   import List from '@/subview/components/List'
   import Edit from './components/BrandEdit'
-  // import {
-  //   getBrandList,
-  //   editBrand,
-  //   deleteBrand,
-  // } from '@/api/basic'
+  import Form from '@/subview/components/Form'
+  import { getBrandList, editBrand, deleteBrand } from '@/api/basic'
   export default {
     name: 'ArchivesBrand',
-    components: { List, Edit },
+    components: { List, Edit, Form },
     data() {
       return {
         // 表单数据/列表参数
@@ -101,47 +83,11 @@
           pageNo: 1,
           pageSize: 10,
         },
-        title: '',
+        formType: 2,
         // 列表数据相关
+        selectRows: [],
         listType: 1,
-        list: [
-          {
-            id: 'pc12138',
-            name: '品牌名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '品牌名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '品牌名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '品牌名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '品牌名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '品牌名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-        ],
+        list: [],
         listLoading: false,
         total: 0,
       }
@@ -164,8 +110,10 @@
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {
-            // const res = await editBrand(row.id)
-            this.$refs['edit'].showEdit(row)
+            const { code, data } = await editBrand({ id: row.id })
+            if (code === 200) {
+              this.$refs['edit'].showEdit(data)
+            }
           } else {
             this.$refs['edit'].showEdit()
           }
@@ -176,9 +124,30 @@
         this.form.pageNo = 1
       },
       // 删除
-      async handleDelete() {
-        // const res = await deleteBrand(row.id)
-        this.fetchData()
+      handleDelete(row) {
+        if (row.id) {
+          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
+            const { code } = await deleteBrand({ id: row.id })
+            if (code != 200) {
+              return
+            }
+            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
+          })
+        } else {
+          if (this.selectRows.length > 0) {
+            const ids = this.selectRows.map((item) => item.id).join()
+            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
+              const { code } = await deleteBrand(ids)
+              if (code != 200) {
+                return
+              }
+              this.fetchData()
+            })
+          } else {
+            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
+          }
+        }
       },
       // 列表数据封装函数
 
@@ -186,30 +155,27 @@
       changeBtnPage(data) {
         this.form.pageNo = data
       },
-      // 列表数据改变每页条数  自定义部分
+      // 多选获取数据   公共部分
+      selectBtnRows(data) {
+        this.selectRows = data
+      },
+
+      // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
+        console.log(data)
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getBrandList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const {
+          data: { list, total },
+        } = await getBrandList(this.form)
+        this.list = list
+        this.total = total
+        this.listLoading = false
       },
     },
   }
 </script>
-<style lang="scss" scoped>
-  .link-container {
-    padding: 0 !important;
-    background: white;
-  }
-  .table-pos {
-    position: relative;
-    top: -20px;
-  }
-</style>
+<style lang="scss" scoped></style>

@@ -68,11 +68,7 @@
       </el-tab-pane>
       <el-tab-pane label="商品信息" name="second">
         <!-- 表格组件使用 -->
-        <List
-          :order-list="goosList"
-          :order-state="listLoading"
-          :type="listType"
-        >
+        <List :list="goosList" :state="listLoading" :type="listType">
           <!-- 表格组件具名插槽 自定义表头 -->
           <template #List>
             <el-table-column
@@ -119,11 +115,7 @@
         </List>
       </el-tab-pane>
       <el-tab-pane label=" 订单记录" name="three">
-        <List
-          :order-list="orderList"
-          :order-state="listLoading"
-          :type="listType"
-        >
+        <List :list="orderList" :state="listLoading" :type="listType">
           <!-- 表格组件具名插槽 自定义表头 -->
           <template #List>
             <el-table-column
@@ -148,11 +140,7 @@
         </List>
       </el-tab-pane>
       <el-tab-pane label="发货记录" name="four">
-        <List
-          :order-list="stareList"
-          :order-state="listLoading"
-          :type="listType"
-        >
+        <List :list="stareList" :state="listLoading" :type="listType">
           <!-- 表格组件具名插槽 自定义表头 -->
           <template #List>
             <el-table-column

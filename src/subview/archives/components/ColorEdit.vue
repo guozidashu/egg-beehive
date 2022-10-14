@@ -6,8 +6,15 @@
     @close="close"
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item label="品牌名称" prop="name">
-        <el-input v-model="form.name" />
+      <el-form-item label="年份" prop="year">
+        <el-date-picker
+          v-model="form.year"
+          placeholder="选择年份"
+          type="year"
+        />
+      </el-form-item>
+      <el-form-item label="款式" prop="name">
+        <el-input v-model="form.name" style="width: 220px" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -18,17 +25,26 @@
 </template>
 
 <script>
-  import { updateBrand, addBrand } from '@/api/basic'
+  import { updateColor, addColor } from '@/api/basic'
   export default {
-    name: 'BrandEdit',
+    name: 'LevelDeit',
     data() {
       return {
         form: {
           name: '',
           id: '',
+          year: '',
         },
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
+          year: [
+            {
+              type: 'string',
+              required: true,
+              message: '请选择年份',
+              trigger: 'change',
+            },
+          ],
         },
         title: '',
         dialogFormVisible: false,
@@ -54,7 +70,7 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await addBrand(this.form)
+              const { code } = await addColor(this.form)
               if (code != 200) {
                 return
               }
@@ -66,7 +82,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await updateBrand(this.form)
+              const { code } = await updateColor(this.form)
               if (code != 200) {
                 return
               }

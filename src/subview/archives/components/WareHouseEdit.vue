@@ -10,7 +10,10 @@
         <el-input v-model="form.name" />
       </el-form-item>
       <el-form-item label="是否默认" prop="mr">
-        <el-checkbox v-model="form.mr" />
+        <el-radio-group v-model="form.mr">
+          <el-radio :label="1">关闭</el-radio>
+          <el-radio :label="0">开启</el-radio>
+        </el-radio-group>
       </el-form-item>
       <el-form-item label="库位" prop="position">
         <el-input v-model="form.position" />
@@ -32,9 +35,17 @@
         form: {
           name: '',
           id: '',
+          mr: 0,
+          position: '',
         },
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
+          mr: [
+            { required: true, trigger: 'change', message: '请选择是否默认' },
+          ],
+          position: [
+            { required: true, trigger: 'blur', message: '请输入库位' },
+          ],
         },
         title: '',
         dialogFormVisible: false,

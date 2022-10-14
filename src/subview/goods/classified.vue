@@ -4,12 +4,7 @@
       <div slot="header" class="clearfix">
         <span>商品分类</span>
       </div>
-      <el-form
-        ref="form"
-        :inline="true"
-        :model="orderForm"
-        @submit.native.prevent
-      >
+      <el-form ref="form" :inline="true" :model="form" @submit.native.prevent>
         <el-form-item>
           <el-button
             native-type="submit"
@@ -31,9 +26,9 @@
       </el-form>
       <!-- 表格组件使用 -->
       <List
-        :order-list="list"
-        :order-state="listLoading"
-        :order-total="total"
+        :list="list"
+        :state="listLoading"
+        :total="total"
         :type="listType"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
@@ -101,7 +96,7 @@
     data() {
       return {
         // 表单数据/列表参数
-        orderForm: {
+        form: {
           // 自定义参数
           orderSta: '全部',
           paySta: '全部',
@@ -161,7 +156,7 @@
       }
     },
     watch: {
-      orderForm: {
+      form: {
         //表单筛选条件变化实时刷新列表
         handler: function () {
           this.fetchData()
@@ -178,18 +173,18 @@
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        this.orderForm.pageNo = data
+        this.form.pageNo = data
       },
       // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {
-        this.orderForm.pageSize = data
+        this.form.pageSize = data
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
         // this.listLoading = true
         // const {
         //   data: { list, total },
-        // } = await getList(this.orderForm)
+        // } = await getList(this.form)
         // this.list = list
         // this.total = total
         // this.listLoading = false
