@@ -59,10 +59,8 @@
         } else {
           this.title = '编辑'
           if (row.mr == 1) {
-            row.mr = true
             this.form = Object.assign({}, row)
           } else {
-            row.mr = false
             this.form = Object.assign({}, row)
           }
         }

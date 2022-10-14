@@ -4,12 +4,12 @@
       <Form
         :form="form"
         :form-type="formType"
-        @addDate="handleEdit"
+        @addDate="handleEdit('add')"
         @changeSearch="handleQuery"
         @deleteDate="handleDelete"
       >
         <template #Form>
-          <el-form-item label="尺码名称" prop="region" style="float: right">
+          <el-form-item label="尺码名称" style="float: right">
             <el-input
               v-model="form.name"
               size="small"
@@ -50,13 +50,19 @@
           />
           <el-table-column
             align="center"
+            label="尺码"
+            prop="size"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
             label="操作"
             show-overflow-tooltip
             width="85"
           >
             <template #default="{ row }">
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <el-button type="text" @click="handleDelete(row)">删除</el-button>
+              <!-- <el-button type="text" @click="handleDelete(row)">删除</el-button> -->
             </template>
           </el-table-column>
         </template>
@@ -106,7 +112,7 @@
     methods: {
       // 新增修改
       async handleEdit(row) {
-        if (row === 1) {
+        if (row === 'add') {
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {
@@ -171,7 +177,7 @@
         const {
           data: { list, total },
         } = await getSizeList(this.form)
-        this.list = list
+        this.list = list.list_whole.concat(list.list_scatterer)
         this.total = total
         this.listLoading = false
       },

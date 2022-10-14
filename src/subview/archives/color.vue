@@ -1,67 +1,79 @@
 <template>
   <div class="comprehensive-form-container">
-    <el-card shadow="never">
-      <Form
-        :form="form"
-        :form-type="formType"
-        @addDate="handleEdit"
-        @changeSearch="handleQuery"
-        @deleteDate="handleDelete"
-      >
-        <template #Form>
-          <el-form-item label="订货名称" prop="region" style="float: right">
-            <el-input
-              v-model="form.name"
-              size="small"
-              style="width: 150px; padding-left: 10px"
-            />
-          </el-form-item>
-        </template>
-      </Form>
-      <!-- 表格组件使用 -->
-      <List
-        :list="list"
-        :list-type="listType"
-        :state="listLoading"
-        :total="total"
-        @changePage="changeBtnPage"
-        @changePageSize="changeBtnPageSize"
-        @selectRows="selectBtnRows"
-      >
-        <!-- 表格组件具名插槽 自定义表头 -->
-        <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="订货ID"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="订货名称"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
+    <el-row :gutter="20">
+      <el-col :lg="6" :md="8" :sm="24" :xl="4" :xs="24">
+        <el-card shadow="hover">
+          <p v-for="(item, index) in list" :key="index">
+            {{ item.name }}
+            <el-button type="text" @click="handleEdit(item)">编辑</el-button>
+            <el-button type="text" @click="handleDelete(item)">删除</el-button>
+          </p>
+        </el-card>
+      </el-col>
+      <el-col :lg="18" :md="16" :sm="24" :xl="20" :xs="24">
+        <el-card shadow="never">
+          <Form
+            :form="form"
+            :form-type="formType"
+            @addDate="handleEdit('add')"
+            @changeSearch="handleQuery"
+            @deleteDate="handleDelete"
           >
-            <template #default="{ row }">
-              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <el-button type="text" @click="handleDelete(row)">删除</el-button>
+            <template #Form>
+              <el-form-item label="颜色名称" prop="region" style="float: right">
+                <el-input
+                  v-model="form.name"
+                  size="small"
+                  style="width: 150px; padding-left: 10px"
+                />
+              </el-form-item>
             </template>
-          </el-table-column>
-        </template>
-      </List>
-    </el-card>
+          </Form>
+          <!-- 表格组件使用 -->
+          <List
+            :list="list"
+            :list-type="listType"
+            :state="listLoading"
+            :total="total"
+            @changePage="changeBtnPage"
+            @changePageSize="changeBtnPageSize"
+            @selectRows="selectBtnRows"
+          >
+            <!-- 表格组件具名插槽 自定义表头 -->
+            <template #List>
+              <el-table-column
+                align="center"
+                show-overflow-tooltip
+                type="selection"
+              />
+              <el-table-column label="颜色" prop="name" show-overflow-tooltip />
+              <el-table-column
+                align="center"
+                label="颜色ID"
+                prop="id"
+                show-overflow-tooltip
+                sortable
+              />
+              <el-table-column
+                align="center"
+                label="操作"
+                show-overflow-tooltip
+                width="85"
+              >
+                <template #default="{ row }">
+                  <el-button type="text" @click="handleEdit(row)">
+                    编辑
+                  </el-button>
+                  <el-button type="text" @click="handleDelete(row)">
+                    删除
+                  </el-button>
+                </template>
+              </el-table-column>
+            </template>
+          </List>
+        </el-card>
+      </el-col>
+    </el-row>
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
@@ -86,7 +98,7 @@
         formType: 2,
         // 列表数据相关
         selectRows: [],
-        listType: 1,
+        listType: 3,
         list: [],
         listLoading: false,
         total: 0,
@@ -106,11 +118,12 @@
     methods: {
       // 新增修改
       async handleEdit(row) {
-        if (row === 1) {
+        console.log(23232, row)
+        if (row === 'add') {
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {
-            const { code, data } = await editColor({ id: row.id })
+            const { code, data } = await editColor(row)
             if (code === 200) {
               this.$refs['edit'].showEdit(data)
             }
@@ -168,11 +181,10 @@
       // 列表数据请求函数 公共部分
       async fetchData() {
         this.listLoading = true
-        const {
-          data: { list, total },
-        } = await getColorList(this.form)
-        this.list = list
-        this.total = total
+        const { data } = await getColorList(this.form)
+        this.list = data
+        console.log(2323, data)
+        // this.total = total
         this.listLoading = false
       },
     },

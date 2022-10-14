@@ -6,14 +6,7 @@
     @close="close"
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item label="年份" prop="year">
-        <el-date-picker
-          v-model="form.year"
-          placeholder="选择年份"
-          type="year"
-        />
-      </el-form-item>
-      <el-form-item label="款式" prop="name">
+      <el-form-item label="颜色名称" prop="name">
         <el-input v-model="form.name" style="width: 220px" />
       </el-form-item>
     </el-form>

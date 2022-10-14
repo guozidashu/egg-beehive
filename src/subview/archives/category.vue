@@ -4,7 +4,7 @@
       <Form
         :form="form"
         :form-type="formType"
-        @addDate="handleEdit"
+        @addDate="handleEdit(add)"
         @changeSearch="handleQuery"
         @deleteDate="handleDelete"
       >
@@ -106,7 +106,7 @@
     methods: {
       // 新增修改
       async handleEdit(row) {
-        if (row === 1) {
+        if (row === 'add') {
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {

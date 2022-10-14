@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-table
+      v-if="listType === 1"
       v-loading="state"
       border
       :data="list"
@@ -14,8 +15,26 @@
         />
       </template>
     </el-table>
+    <el-table
+      v-if="listType === 3"
+      v-loading="state"
+      border
+      :data="list"
+      default-expand-all
+      row-key="id"
+      :tree-props="{ children: 'color' }"
+      @selection-change="setSelectRows"
+    >
+      <slot name="List"></slot>
+      <template #empty>
+        <el-image
+          class="vab-data-empty"
+          :src="require('@/assets/empty_images/data_empty.png')"
+        />
+      </template>
+    </el-table>
     <el-pagination
-      v-if="listType === 1"
+      v-if="listType === 1 || listType === 3"
       background
       :current-page="list.pageNo"
       :layout="layout"
