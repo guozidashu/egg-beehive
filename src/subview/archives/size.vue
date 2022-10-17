@@ -1,23 +1,29 @@
 <template>
-  <div class="comprehensive-form-container">
-    <el-card shadow="never">
-      <Form
-        :form="form"
-        :form-type="formType"
-        @addDate="handleEdit('add')"
-        @changeSearch="handleQuery"
-        @deleteDate="handleDelete"
-      >
+  <div style="background-color: #f6f8f9">
+    <div
+      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+    >
+      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
-          <el-form-item label="尺码名称" style="float: right">
-            <el-input
-              v-model="form.name"
-              size="small"
-              style="width: 150px; padding-left: 10px"
-            />
+          <el-form-item label="尺码名称" prop="region">
+            <el-input v-model="form.name" size="small" />
           </el-form-item>
         </template>
       </Form>
+    </div>
+    <el-card shadow="never">
+      <el-form ref="form" :inline="true" @submit.native.prevent>
+        <el-form-item>
+          <el-button
+            native-type="submit"
+            size="small"
+            type="primary"
+            @click="handleEdit('add')"
+          >
+            添加
+          </el-button>
+        </el-form-item>
+      </el-form>
       <!-- 表格组件使用 -->
       <List
         :list="list"
@@ -89,7 +95,7 @@
           pageNo: 1,
           pageSize: 10,
         },
-        formType: 2,
+        formType: 4,
         // 列表数据相关
         selectRows: [],
         listType: 1,

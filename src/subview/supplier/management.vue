@@ -1,6 +1,8 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <el-card shadow="never" style="border: 0">
+    <div
+      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+    >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
           <el-form-item label="供应商类别:">
@@ -24,7 +26,7 @@
           </el-form-item>
         </template>
       </Form>
-    </el-card>
+    </div>
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -32,7 +34,7 @@
             native-type="submit"
             size="small"
             type="primary"
-            @click="handleQuery"
+            @click="handleEdit('add')"
           >
             添加供应商
           </el-button>
@@ -49,90 +51,53 @@
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="ID"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="供应商名称"
-            prop="name"
-            show-overflow-tooltip
-          />
+          <el-table-column type="selection" />
+          <el-table-column label="ID" prop="id" sortable width="80" />
+          <el-table-column label="供应商名称" prop="name" width="150" />
           <el-table-column
             align="center"
             label="类别"
-            prop="name"
-            show-overflow-tooltip
+            prop="type"
+            width="150"
           />
-          <el-table-column
-            align="center"
-            label="类型"
-            prop="time"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="应付款"
-            prop="time"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="联系人姓名"
-            prop="sta"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="联系方式"
-            prop="sta"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="创建时间"
-            prop="sta"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="供应商状态"
-            prop="sta"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
-          >
+          <el-table-column label="类型" prop="type1" width="150" />
+          <el-table-column label="应付款" prop="pay" width="80" />
+          <el-table-column label="联系人姓名" prop="usename" width="120" />
+          <el-table-column label="联系方式" prop="phone" width="200" />
+          <el-table-column label="创建时间" prop="time" />
+          <el-table-column label="供应商状态" prop="state" width="200">
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">编辑</el-button>
+              <el-switch
+                v-model="row.status"
+                active-color="#13ce66"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#ff4949"
+                inactive-text="关闭"
+                :inactive-value="0"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="操作" width="85">
+            <template #default="{ row }">
+              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
               <el-button type="text">删除</el-button>
             </template>
           </el-table-column>
         </template>
       </List>
     </el-card>
+    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
-
 <script>
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
+  import Edit from './components/OrderEdit'
   export default {
     name: 'SupplierOrder',
-    components: { List, Form },
+    components: { List, Form, Edit },
     data() {
       return {
         activeName: 'first',
@@ -158,39 +123,25 @@
         list: [
           {
             id: 'pc12138',
-            name: '采购订单',
+            name: '官方供应商',
+            type: '类别一',
+            type1: '类型一',
             time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            pay: 233,
+            usename: '阿白',
+            phone: 18898988888,
+            state: 1,
           },
           {
             id: 'pc12138',
-            name: '采购订单',
+            name: '私家供应商',
+            type: '类别二',
+            type1: '类型二',
             time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            pay: 233,
+            usename: '阿兰',
+            phone: 18898988888,
+            state: 0,
           },
         ],
         listLoading: false,
@@ -210,6 +161,22 @@
       this.fetchData()
     },
     methods: {
+      // 新增修改
+      async handleEdit() {
+        this.$refs['edit'].showEdit()
+        // if (row === 'add') {
+        //   this.$refs['edit'].showEdit()
+        // } else {
+        //   if (row.id) {
+        //     const { code, data } = await editWave({ id: row.id })
+        //     if (code === 200) {
+        //       this.$refs['edit'].showEdit(data)
+        //     }
+        //   } else {
+        //     this.$refs['edit'].showEdit()
+        //   }
+        // }
+      },
       handleQuery() {},
       // 列表数据封装函数
 
@@ -236,11 +203,40 @@
         // this.total = total
         // this.listLoading = false
       },
-      // 详情抽屉
-      handleDetail() {
-        this.drawer = true
-      },
     },
   }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss">
+  /* switch按钮样式 */
+  .switch .el-switch__label {
+    position: absolute;
+    display: none;
+    color: #fff !important;
+  }
+  /*打开时文字位置设置*/
+  .switch .el-switch__label--right {
+    z-index: 1;
+  }
+  /* 调整打开时文字的显示位子 */
+  .switch .el-switch__label--right span {
+    margin-left: 10px;
+  }
+  /*关闭时文字位置设置*/
+  .switch .el-switch__label--left {
+    z-index: 1;
+  }
+  /* 调整关闭时文字的显示位子 */
+  .switch .el-switch__label--left span {
+    margin-left: 20px;
+  }
+  /*显示文字*/
+  .switch .el-switch__label.is-active {
+    display: block;
+  }
+  /* 调整按钮的宽度 */
+  .switch.el-switch .el-switch__core,
+  .el-switch .el-switch__label {
+    width: 60px !important;
+    margin: 0;
+  }
+</style>

@@ -1,30 +1,37 @@
 <template>
-  <div class="comprehensive-form-container">
-    <el-card shadow="never">
-      <Form
-        :form="form"
-        :form-type="formType"
-        @addDate="handleEdit"
-        @changeSearch="handleQuery"
-      >
+  <div style="background-color: #f6f8f9">
+    <div
+      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+    >
+      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
-          <el-form-item label="波段名称" prop="region" style="float: right">
-            <el-input
-              v-model="form.name"
-              size="small"
-              style="width: 150px; padding-left: 10px"
-            />
+          <el-form-item label="季节名称" prop="region">
+            <el-input v-model="form.name" size="small" />
           </el-form-item>
         </template>
       </Form>
-      <!-- 表格组件使用 -->
+    </div>
+    <el-card shadow="never" style="border: 0">
+      <el-form ref="form" :inline="true" @submit.native.prevent>
+        <el-form-item>
+          <el-button
+            native-type="submit"
+            size="small"
+            type="primary"
+            @click="handleEdit('add')"
+          >
+            添加
+          </el-button>
+        </el-form-item>
+      </el-form>
       <List
         :list="list"
+        :list-type="listType"
         :state="listLoading"
         :total="total"
-        :type="listType"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
+        @selectRows="selectBtnRows"
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
@@ -35,7 +42,7 @@
           />
           <el-table-column
             align="center"
-            label="ID"
+            label="季节ID"
             prop="id"
             show-overflow-tooltip
             sortable
@@ -45,19 +52,6 @@
             label="季节名称"
             prop="name"
             show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="创建时间"
-            prop="time"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="状态"
-            prop="sta"
-            show-overflow-tooltip
           />
           <el-table-column
             align="center"
@@ -66,87 +60,45 @@
             width="85"
           >
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">详情</el-button>
+              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+              <el-button type="text" @click="handleDelete(row)">删除</el-button>
             </template>
           </el-table-column>
         </template>
       </List>
     </el-card>
+    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 
 <script>
   import List from '@/subview/components/List'
+  import Edit from './components/CategoryEdit'
   import Form from '@/subview/components/Form'
+  // import { getCategoryList, editCategory, deleteCategory } from '@/api/basic'
   export default {
     name: 'ArchivesSeasonal',
-    components: { List, Form },
+    components: { List, Form, Edit },
     data() {
       return {
         // 表单数据/列表参数
         form: {
-          // 自定义参数
-          orderSta: '全部',
-          paySta: '全部',
-          orderSource: 'ERP订单',
-          fold: true,
-          typeSelect: 'order',
-          dataSelect: '0',
-          data: '',
-          orderId: '',
-          // 公共参数
+          id: 0,
+          name: '',
           pageNo: 1,
           pageSize: 10,
         },
+        formType: 4,
         // 列表数据相关
-        // 公共参数
+        selectRows: [],
         listType: 1,
-        formType: 2,
-        list: [
-          {
-            id: 'pc12138',
-            name: '季节名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '季节名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '季节名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '季节名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '季节名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '季节名称',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-        ],
+        list: [],
         listLoading: false,
         total: 0,
       }
     },
     watch: {
       form: {
-        //表单筛选条件变化实时刷新列表
         handler: function () {
           this.fetchData()
         },
@@ -157,23 +109,73 @@
       this.fetchData()
     },
     methods: {
-      handleQuery() {},
+      // 新增修改
+      // async handleEdit(row) {
+      //   if (row === 'add') {
+      //     this.$refs['edit'].showEdit()
+      //   } else {
+      //     if (row.id) {
+      //       const { code, data } = await editCategory({ id: row.id })
+      //       if (code === 200) {
+      //         this.$refs['edit'].showEdit(data.list)
+      //       }
+      //     } else {
+      //       this.$refs['edit'].showEdit()
+      //     }
+      //   }
+      // },
+      // 查询
+      handleQuery() {
+        this.form.pageNo = 1
+      },
+      // 删除
+      // handleDelete(row) {
+      //   if (row.id) {
+      //     this.$baseConfirm('你确定要删除当前项吗', null, async () => {
+      //       const { code } = await deleteCategory({ id: row.id })
+      //       if (code != 200) {
+      //         return
+      //       }
+      //       this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
+      //       this.fetchData()
+      //     })
+      //   } else {
+      //     if (this.selectRows.length > 0) {
+      //       const ids = this.selectRows.map((item) => item.id).join()
+      //       this.$baseConfirm('你确定要删除选中项吗', null, async () => {
+      //         const { code } = await deleteCategory(ids)
+      //         if (code != 200) {
+      //           return
+      //         }
+      //         this.fetchData()
+      //       })
+      //     } else {
+      //       this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
+      //     }
+      //   }
+      // },
       // 列表数据封装函数
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         this.form.pageNo = data
       },
-      // 列表数据改变每页条数  自定义部分
+      // 多选获取数据   公共部分
+      selectBtnRows(data) {
+        this.selectRows = data
+      },
+
+      // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
+        console.log(data)
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
         // this.listLoading = true
         // const {
         //   data: { list, total },
-        // } = await getList(this.form)
+        // } = await getCategoryList(this.form)
         // this.list = list
         // this.total = total
         // this.listLoading = false
@@ -181,13 +183,4 @@
     },
   }
 </script>
-<style lang="scss" scoped>
-  .link-container {
-    padding: 0 !important;
-    background: white;
-  }
-  .table-pos {
-    position: relative;
-    top: -20px;
-  }
-</style>
+<style lang="scss" scoped></style>

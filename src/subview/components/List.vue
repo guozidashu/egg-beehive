@@ -5,6 +5,23 @@
       v-loading="state"
       border
       :data="list"
+      style="width: 100%"
+      @selection-change="setSelectRows"
+    >
+      <slot name="List"></slot>
+      <template #empty>
+        <el-image
+          class="vab-data-empty"
+          :src="require('@/assets/empty_images/data_empty.png')"
+        />
+      </template>
+    </el-table>
+    <el-table
+      v-if="listType === 2"
+      v-loading="state"
+      border
+      :data="list"
+      style="width: 100%"
       @selection-change="setSelectRows"
     >
       <slot name="List"></slot>

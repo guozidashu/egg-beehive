@@ -1,10 +1,62 @@
 <template>
-  <div class="comprehensive-form-container">
-    <el-card shadow="never">
-      <div slot="header" class="clearfix">
-        <span>云打印机设置</span>
-      </div>
-      <el-form ref="form" :inline="true" :model="form" @submit.native.prevent>
+  <div style="background-color: #f6f8f9">
+    <div
+      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+    >
+      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+        <template #Form>
+          <el-form-item label="品牌:">
+            <el-input v-model="form.name" style="width: 215px" />
+          </el-form-item>
+          <el-form-item label="类别款式:">
+            <el-input v-model="form.name" style="width: 215px" />
+          </el-form-item>
+          <el-form-item label="年份:">
+            <el-date-picker v-model="form.date" type="year" />
+          </el-form-item>
+          <el-form-item label="季节:">
+            <el-select v-model="form.region">
+              <el-option label="春季" value="shanghai" />
+              <el-option label="夏季" value="shanghai" />
+              <el-option label="秋季" value="shanghai" />
+              <el-option label="冬季" value="shanghai" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="供应商:">
+            <el-input v-model="form.name" style="width: 215px" />
+          </el-form-item>
+          <el-form-item label="状态:">
+            <el-select v-model="form.region">
+              <el-option label="在售" value="shanghai" />
+              <el-option label="停售" value="shanghai" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="类型:">
+            <el-select v-model="form.region">
+              <el-option label="整手" value="shanghai" />
+              <el-option label="散码" value="shanghai" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="商品搜索:">
+            <el-input
+              v-model="form.name"
+              placeholder="请输入商品名称/类型/货号"
+              style="width: 215px"
+            />
+          </el-form-item>
+        </template>
+      </Form>
+    </div>
+    <el-card shadow="never" style="border: 0">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="出售中 (3)" name="first" />
+        <el-tab-pane label="仓库中 (129)" name="second" />
+        <el-tab-pane label=" 已售罄 (18)" name="three" />
+        <el-tab-pane label="库存预警 (2)" name="four" />
+        <el-tab-pane label="待确认 (10)" name="five" />
+        <el-tab-pane label="待收货 (30)" name="six" />
+      </el-tabs>
+      <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
             native-type="submit"
@@ -12,7 +64,7 @@
             type="primary"
             @click="handleQuery"
           >
-            添加
+            添加商品
           </el-button>
           <el-button
             native-type="submit"
@@ -20,7 +72,7 @@
             type="primary"
             @click="handleQuery"
           >
-            删除
+            批量分组
           </el-button>
           <el-button
             native-type="submit"
@@ -28,83 +80,16 @@
             type="primary"
             @click="handleQuery"
           >
-            导入
+            复制商品
           </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            上架
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            下架
-          </el-button>
-        </el-form-item>
-        <el-form-item style="float: right">
-          <el-button
-            icon="el-icon-search"
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            查询
-          </el-button>
-        </el-form-item>
-        <el-form-item label="状态:" prop="region" style="float: right">
-          <el-select
-            v-model="form.dataSelect"
-            size="small"
-            style="width: 150px"
-          >
-            <el-option label="全部" value="0" />
-            <el-option label="已上架" value="beijing" />
-            <el-option label="已下架" value="beijing" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="分组:" prop="region" style="float: right">
-          <el-select
-            v-model="form.dataSelect"
-            size="small"
-            style="width: 150px"
-          >
-            <el-option label="全部" value="0" />
-            <el-option label="新款" value="beijing" />
-            <el-option label="热销" value="beijing" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="分类:" prop="region" style="float: right">
-          <el-select
-            v-model="form.dataSelect"
-            size="small"
-            style="width: 150px"
-          >
-            <el-option label="全部" value="0" />
-            <el-option label="分类一" value="beijing" />
-            <el-option label="分类二" value="beijing" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="商品款号" prop="region" style="float: right">
-          <el-input
-            v-model="form.orderId"
-            size="small"
-            style="width: 150px; padding-left: 10px"
-          />
         </el-form-item>
       </el-form>
       <!-- 表格组件使用 -->
       <List
         :list="list"
+        :list-type="listType"
         :state="listLoading"
         :total="total"
-        :type="listType"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
@@ -117,63 +102,63 @@
           />
           <el-table-column
             align="center"
-            label="ID"
+            label="商品ID"
             prop="id"
             show-overflow-tooltip
             sortable
           />
           <el-table-column
             align="center"
-            label="云打印机设置"
+            label="商品图"
+            prop="img"
+            show-overflow-tooltip
+          >
+            <template #default="{ row }">
+              <img :src="row.img" style="width: 50px; height: 50px" />
+            </template>
+          </el-table-column>
+          <el-table-column
+            align="center"
+            label="商品名称"
             prop="name"
             show-overflow-tooltip
-            sortable
           />
           <el-table-column
             align="center"
             label="款号"
-            prop="time"
+            prop="type"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="库存"
-            prop="sta"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="显示销量"
-            prop="sta"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="实际销量"
-            prop="sta"
+            label="供应商"
+            prop="gongying"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="序号"
-            prop="sta"
+            label="类别款式"
+            prop="liebie"
             show-overflow-tooltip
-            sortable
+          />
+          <el-table-column
+            align="center"
+            label="销售价"
+            prop="xiaoshou"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="当前库存"
+            prop="num"
+            show-overflow-tooltip
           />
           <el-table-column
             align="center"
             label="创建时间"
-            prop="sta"
+            prop="time"
             show-overflow-tooltip
             sortable
-          />
-          <el-table-column
-            align="center"
-            label="商品状态"
-            prop="sta"
-            show-overflow-tooltip
           />
           <el-table-column
             align="center"
@@ -183,6 +168,7 @@
           >
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">详情</el-button>
+              <el-button type="text">编辑</el-button>
             </template>
           </el-table-column>
         </template>
@@ -193,11 +179,13 @@
 
 <script>
   import List from '@/subview/components/List'
+  import Form from '@/subview/components/Form'
   export default {
-    name: 'GoodsManage',
-    components: { List },
+    name: 'Print',
+    components: { List, Form },
     data() {
       return {
+        activeName: 'first',
         // 表单数据/列表参数
         form: {
           // 自定义参数
@@ -216,42 +204,32 @@
         // 列表数据相关
         // 公共参数
         listType: 1,
+        formType: 4,
         list: [
+          // id img name type gongying liebie xiaoshou num time
           {
             id: 'pc12138',
-            name: '云打印机设置',
+            img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
             time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            name: '阿白',
+            type: '款式一',
+            gongying: '官方供应商',
+            pay: '未收',
+            num: 23,
+            xiaoshou: 345,
+            liebie: '青春版',
           },
           {
             id: 'pc12138',
-            name: '云打印机设置',
+            img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
             time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '云打印机设置',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '云打印机设置',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '云打印机设置',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '云打印机设置',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            name: '阿白',
+            gongying: '私营供应商',
+            type: '款式二',
+            pay: '未收',
+            num: 23,
+            xiaoshou: 345,
+            liebie: '老年版',
           },
         ],
         listLoading: false,
@@ -282,6 +260,11 @@
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
+      // 列表数据表头切换监听 自定义部分
+      handleClick(tab) {
+        console.log(1111, tab.label)
+        this.form.pageNo = 1
+      },
       // 列表数据请求函数 公共部分
       async fetchData() {
         // this.listLoading = true
@@ -292,16 +275,11 @@
         // this.total = total
         // this.listLoading = false
       },
+      // 详情抽屉
+      handleDetail() {
+        this.drawer = true
+      },
     },
   }
 </script>
-<style lang="scss" scoped>
-  .link-container {
-    padding: 0 !important;
-    background: white;
-  }
-  .table-pos {
-    position: relative;
-    top: -20px;
-  }
-</style>
+<style lang="scss" scoped></style>

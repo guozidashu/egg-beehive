@@ -1,6 +1,8 @@
 <template>
-  <div class="comprehensive-form-container">
-    <el-card shadow="never">
+  <div style="background-color: #f6f8f9">
+    <div
+      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+    >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
           <el-form-item label="员工姓名" prop="region">
@@ -12,6 +14,8 @@
           </el-form-item>
         </template>
       </Form>
+    </div>
+    <el-card shadow="never" style="border: 0">
       <!-- 表格组件使用 -->
       <List
         :list="list"
@@ -101,7 +105,7 @@
           pageNo: 1,
           pageSize: 10,
         },
-        formType: 3,
+        formType: 4,
         // 列表数据相关
         // 公共参数
         listType: 1,

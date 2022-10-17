@@ -3,11 +3,38 @@
     <el-row :gutter="20">
       <el-col :lg="6" :md="8" :sm="24" :xl="4" :xs="24">
         <el-card shadow="hover">
-          <p v-for="(item, index) in list" :key="index">
-            {{ item.name }}
-            <el-button type="text" @click="handleEdit(item)">编辑</el-button>
-            <el-button type="text" @click="handleDelete(item)">删除</el-button>
-          </p>
+          <el-button
+            native-type="submit"
+            size="small"
+            style="margin-bottom: 10px"
+            type="primary"
+            @click="handleEditGrouP('add')"
+          >
+            添加
+          </el-button>
+          <div v-for="(item, index) in list" :key="index" style="clear: both">
+            <el-button
+              style="float: left; color: black"
+              type="text"
+              @click="handleGrouPQuery(item)"
+            >
+              {{ item.name }}
+            </el-button>
+            <el-button
+              style="float: right"
+              type="text"
+              @click="handleEditGrouP(item)"
+            >
+              编辑
+            </el-button>
+            <el-button
+              style="float: right"
+              type="text"
+              @click="handleDeleteGrouP(item)"
+            >
+              删除
+            </el-button>
+          </div>
         </el-card>
       </el-col>
       <el-col :lg="18" :md="16" :sm="24" :xl="20" :xs="24">
@@ -30,15 +57,7 @@
             </template>
           </Form>
           <!-- 表格组件使用 -->
-          <List
-            :list="list"
-            :list-type="listType"
-            :state="listLoading"
-            :total="total"
-            @changePage="changeBtnPage"
-            @changePageSize="changeBtnPageSize"
-            @selectRows="selectBtnRows"
-          >
+          <List :list="listGroup" :list-type="listType" :state="listLoading">
             <!-- 表格组件具名插槽 自定义表头 -->
             <template #List>
               <el-table-column
@@ -82,7 +101,12 @@
   import List from '@/subview/components/List'
   import Edit from './components/ColorEdit'
   import Form from '@/subview/components/Form'
-  import { getColorList, editColor, deleteColor } from '@/api/basic'
+  import {
+    getColorGroupList,
+    deleteColorGroupList,
+    getColorList,
+    deleteColorList,
+  } from '@/api/basic'
   export default {
     name: 'ArchivesColor',
     components: { List, Form, Edit },
@@ -91,75 +115,83 @@
         // 表单数据/列表参数
         form: {
           id: 0,
-          name: '',
           pageNo: 1,
+          name: '',
           pageSize: 10,
         },
         formType: 2,
         // 列表数据相关
         selectRows: [],
-        listType: 3,
+        listType: 2,
         list: [],
+        listGroup: [],
         listLoading: false,
         total: 0,
       }
     },
     watch: {
-      form: {
-        handler: function () {
-          this.fetchData()
-        },
-        deep: true,
-      },
+      // form: {
+      //   handler: function () {
+      //     this.fetchData()
+      //   },
+      //   deep: true,
+      // },
     },
     created() {
       this.fetchData()
     },
     methods: {
-      // 新增修改
-      async handleEdit(row) {
-        console.log(23232, row)
+      // 颜色组新增修改
+      async handleEditGrouP(row) {
         if (row === 'add') {
-          this.$refs['edit'].showEdit()
+          this.$refs['edit'].showEdit(1)
         } else {
-          if (row.id) {
-            const { code, data } = await editColor(row)
-            if (code === 200) {
-              this.$refs['edit'].showEdit(data)
-            }
-          } else {
-            this.$refs['edit'].showEdit()
-          }
+          this.$refs['edit'].showEdit(1, row)
+        }
+      },
+      // 颜色新增修改
+      async handleEdit(row) {
+        if (row === 'add') {
+          this.$refs['edit'].showEdit(2)
+        } else {
+          row.pid = this.form.id
+          row.sort = 1
+          this.$refs['edit'].showEdit(2, row)
         }
       },
       // 查询
       handleQuery() {
         this.form.pageNo = 1
       },
-      // 删除
+      // 颜色查询
+      handleGrouPQuery(item) {
+        this.form.id = String(item.id)
+        this.fetchData1()
+      },
+      // 颜色删除
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await deleteColor({ id: row.id })
+            const { code } = await deleteColorList({ id: row.id })
             if (code != 200) {
               return
             }
             this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
             this.fetchData()
           })
-        } else {
-          if (this.selectRows.length > 0) {
-            const ids = this.selectRows.map((item) => item.id).join()
-            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-              const { code } = await deleteColor(ids)
-              if (code != 200) {
-                return
-              }
-              this.fetchData()
-            })
-          } else {
-            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
-          }
+        }
+      },
+      // 颜色组删除
+      handleDeleteGrouP(row) {
+        if (row.id) {
+          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
+            const { code } = await deleteColorGroupList({ id: row.id })
+            if (code != 200) {
+              return
+            }
+            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
+          })
         }
       },
       // 列表数据封装函数
@@ -178,13 +210,18 @@
         this.form.pageSize = data
         console.log(data)
       },
-      // 列表数据请求函数 公共部分
+      // 颜色组列表
       async fetchData() {
+        const { data } = await getColorGroupList()
+        this.list = data
+        this.form.id = String(data[0].id)
+        this.fetchData1()
+      },
+      // 颜色列表
+      async fetchData1() {
         this.listLoading = true
         const { data } = await getColorList(this.form)
-        this.list = data
-        console.log(2323, data)
-        // this.total = total
+        this.listGroup = data
         this.listLoading = false
       },
     },

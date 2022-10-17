@@ -1,59 +1,75 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <el-card shadow="never" style="border: 0">
+    <div
+      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+    >
       <!-- 表单组件使用 -->
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+      <Form
+        :form="form"
+        :form-type="formType"
+        @changeSearch="handleQuery"
+        @changeSta="changeBtnSta"
+      >
         <template #Form>
-          <el-form-item label="订单状态:">
+          <el-form-item label="客户搜索:">
+            <el-input
+              v-model="form.name"
+              placeholder="请输入手机号/姓名"
+              style="width: 215px"
+            />
+          </el-form-item>
+          <el-form-item v-show="!form.fold" label="客户等级:">
             <el-select v-model="form.region">
-              <el-option label="全部" value="shanghai" />
-              <el-option label="待收款" value="shanghai" />
-              <el-option label="待发货" value="shanghai" />
-              <el-option label="待收货" value="shanghai" />
-              <el-option label="退货" value="shanghai" />
-              <el-option label="待确认" value="beijing" />
+              <el-option label="黄金" value="shanghai" />
+              <el-option label="白银" value="shanghai" />
+              <el-option label="钻石" value="shanghai" />
+              <el-option label="青铜" value="shanghai" />
             </el-select>
           </el-form-item>
-          <el-form-item label="订单来源:">
+          <el-form-item v-show="!form.fold" label="用户标签:">
             <el-select v-model="form.region">
-              <el-option label="ERP订单" value="shanghai" />
-              <el-option label="自有商城" value="shanghai" />
-              <el-option label="淘宝" value="shanghai" />
-              <el-option label="天猫" value="shanghai" />
-              <el-option label="抖音" value="shanghai" />
-              <el-option label="快团团" value="beijing" />
-              <el-option label="小红书" value="beijing" />
+              <el-option label="标签一" value="shanghai" />
+              <el-option label="标签二" value="shanghai" />
             </el-select>
           </el-form-item>
-          <el-form-item label="支付方式:">
+          <el-form-item v-show="!form.fold" label="客户分类:">
             <el-select v-model="form.region">
-              <el-option label="全部" value="shanghai" />
-              <el-option label="微信支付" value="shanghai" />
-              <el-option label="支付宝" value="shanghai" />
-              <el-option label="余额支付" value="shanghai" />
-              <el-option label="银行卡" value="shanghai" />
-              <el-option label="信用卡" value="beijing" />
+              <el-option label="分类一" value="shanghai" />
+              <el-option label="分类二" value="shanghai" />
             </el-select>
           </el-form-item>
-          <el-form-item label="下单时间:">
-            <el-date-picker v-model="form.date" type="datetimerange" />
-          </el-form-item>
-          <el-form-item label="会员名称:">
-            <el-input v-model="form.name" style="width: 215px" />
-          </el-form-item>
-          <el-form-item label="订单搜索:">
-            <el-input v-model="form.name" style="width: 215px" />
+          <el-form-item v-show="!form.fold" label="来源渠道:">
+            <el-radio-group
+              v-model="form.orderSource"
+              size="small"
+              @change="changeHandler"
+            >
+              <el-radio-button label="全部" />
+              <el-radio-button label="ERP平台" />
+              <el-radio-button label="微信公众号" />
+              <el-radio-button label="微信小程序" />
+              <el-radio-button label="H5" />
+              <el-radio-button label="APP" />
+              <el-radio-button label="EXP手动导入" />
+              <el-radio-button label="淘宝" />
+              <el-radio-button label="天猫" />
+              <el-radio-button label="抖音" />
+              <el-radio-button label="快团团" />
+              <el-radio-button label="小红书" />
+            </el-radio-group>
           </el-form-item>
         </template>
       </Form>
-    </el-card>
+    </div>
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="所有订单" name="first" />
-        <el-tab-pane label="普通订单 (100)" name="second" />
-        <el-tab-pane label=" 商城 (10)" name="three" />
-        <el-tab-pane label="第三方订单 (100)" name="four" />
-        <el-tab-pane label="门店订单 (10)" name="five" />
+        <el-tab-pane label="全部" name="first" />
+        <el-tab-pane label="ERP平台 (100)" name="second" />
+        <el-tab-pane label=" 微信公众号 (10)" name="three" />
+        <el-tab-pane label="微信小程序 (100)" name="four" />
+        <el-tab-pane label="app (10)" name="five" />
+        <el-tab-pane label="第三方平台 (100)" name="six" />
+        <el-tab-pane label="企业微信 (10)" name="seven" />
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -63,15 +79,7 @@
             type="primary"
             @click="handleQuery"
           >
-            导出
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            批量
+            添加
           </el-button>
         </el-form-item>
       </el-form>
@@ -92,57 +100,54 @@
           />
           <el-table-column
             align="center"
-            label="订单号"
-            prop="orderno"
+            label="ID"
+            prop="id"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="单据日期"
-            prop="data"
+            label="昵称头像"
+            prop="img"
             show-overflow-tooltip
-            sortable
+          >
+            <template #default="{ row }">
+              <img :src="row.img" style="width: 50px; height: 50px" />
+            </template>
+          </el-table-column>
+          <el-table-column
+            align="center"
+            label="客户等级"
+            prop="leve"
+            show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="订单类型"
+            label="客户分类"
             prop="type"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="客户名称"
-            prop="username"
+            label="来源"
+            prop="yuantou"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="商品信息"
-            prop="inof"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="数量"
-            prop="num"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="实际金额"
+            label="成交额"
             prop="money"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="支付方式"
+            label="余额/欠款"
             prop="pay"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="订单状态"
-            prop="state"
+            label="加入时间"
+            prop="time"
             show-overflow-tooltip
           />
           <el-table-column
@@ -152,8 +157,8 @@
             width="100"
           >
             <template #default="{ row }">
+              <el-button type="text">编辑</el-button>
               <el-button type="text" @click="handleDetail(row)">详情</el-button>
-              <el-button type="text">作废</el-button>
               <!-- <el-button type="text">发货</el-button> -->
             </template>
           </el-table-column>
@@ -195,26 +200,24 @@
         formType: 1,
         list: [
           {
-            orderno: '1234522',
-            username: '叶良辰',
-            data: '2020.10.08',
-            type: '商城',
-            inof: '吊牌洗衣液',
-            pay: '微信支付',
-            num: 23,
-            money: 345,
-            state: '已完成',
+            id: '1234522',
+            img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+            leve: '青铜',
+            type: '类别一',
+            yuantou: '官方',
+            money: 23,
+            pay: 345,
+            time: '2022-10-13 23:33:48',
           },
           {
-            orderno: '1234522',
-            username: '叶良辰',
-            data: '2020.10.08',
-            type: '商城',
-            inof: '吊牌洗衣液',
-            pay: '微信支付',
-            num: 23,
-            money: 345,
-            state: '已完成',
+            id: '1234522',
+            img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+            leve: '钻石',
+            type: '类别二',
+            yuantou: '私营',
+            money: 23,
+            pay: 345,
+            time: '2022-10-13 23:33:48',
           },
         ],
         listLoading: false,
@@ -236,7 +239,6 @@
     methods: {
       // 列表表单子组件展开闭合事件  公共部分
       changeBtnSta(data) {
-        console.log(2323233, data)
         this.form.fold = data
       },
       // 列表表单子组件查询事件   公共部分

@@ -1,6 +1,8 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <el-card shadow="never" style="border: 0">
+    <div
+      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+    >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
           <el-form-item label="品牌:">
@@ -44,7 +46,7 @@
           </el-form-item>
         </template>
       </Form>
-    </el-card>
+    </div>
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="出售中 (3)" name="first" />
@@ -108,9 +110,13 @@
           <el-table-column
             align="center"
             label="商品图"
-            prop="name"
+            prop="img"
             show-overflow-tooltip
-          />
+          >
+            <template #default="{ row }">
+              <img :src="row.img" style="width: 50px; height: 50px" />
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="商品名称"
@@ -120,37 +126,37 @@
           <el-table-column
             align="center"
             label="款号"
-            prop="time"
+            prop="type"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
             label="供应商"
-            prop="time"
+            prop="gongying"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
             label="类别款式"
-            prop="sta"
+            prop="liebie"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
             label="销售价"
-            prop="sta"
+            prop="xiaoshou"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
             label="当前库存"
-            prop="sta"
+            prop="num"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
             label="创建时间"
-            prop="sta"
+            prop="time"
             show-overflow-tooltip
             sortable
           />
@@ -206,41 +212,30 @@
         listType: 1,
         formType: 4,
         list: [
+          // id img name type gongying liebie xiaoshou num time
           {
             id: 'pc12138',
-            name: '采购订单',
+            img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
             time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            name: '阿白',
+            type: '款式一',
+            gongying: '官方供应商',
+            pay: '未收',
+            num: 23,
+            xiaoshou: 345,
+            liebie: '青春版',
           },
           {
             id: 'pc12138',
-            name: '采购订单',
+            img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
             time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            name: '阿白',
+            gongying: '私营供应商',
+            type: '款式二',
+            pay: '未收',
+            num: 23,
+            xiaoshou: 345,
+            liebie: '老年版',
           },
         ],
         listLoading: false,

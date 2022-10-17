@@ -75,43 +75,64 @@ export function deleteSize(data) {
   })
 }
 
-// 颜色
-export function getColorList(data) {
+// 颜色组
+export function getColorGroupList(data) {
   return request({
     url: '/color_index',
     method: 'post',
     data,
   })
 }
-export function addColor(data) {
+export function editColorGroupList(data) {
   return request({
-    url: '/color_save',
+    url: '/color_edit_group',
     method: 'post',
     data,
   })
 }
-export function editColor(data) {
+export function addColorGroupList(data) {
+  return request({
+    url: '/color_group',
+    method: 'post',
+    data,
+  })
+}
+export function deleteColorGroupList(data) {
+  return request({
+    url: '/color_delete_group',
+    method: 'post',
+    data,
+  })
+}
+// 颜色
+export function getColorList(data) {
+  return request({
+    url: '/color_color',
+    method: 'post',
+    data,
+  })
+}
+export function editColorList(data) {
   return request({
     url: '/color_edit',
     method: 'post',
     data,
   })
 }
-export function updateColor(data) {
+export function addColorList(data) {
   return request({
-    url: '/color_update',
+    url: '/color_save',
     method: 'post',
     data,
   })
 }
-export function deleteColor(data) {
+export function deleteColorList(data) {
   return request({
     url: '/color_delete',
     method: 'post',
     data,
   })
 }
-
 // 客户等级
 export function getGradeList(data) {
   return request({

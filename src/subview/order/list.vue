@@ -1,7 +1,8 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <el-card shadow="never" style="border: 0">
-      <!-- 表单组件使用 -->
+    <div
+      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+    >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
           <el-form-item label="订单状态:">
@@ -36,17 +37,36 @@
             </el-select>
           </el-form-item>
           <el-form-item label="下单时间:">
-            <el-date-picker v-model="form.date" type="datetimerange" />
+            <el-date-picker v-model="form.date" type="date" />
           </el-form-item>
           <el-form-item label="会员名称:">
             <el-input v-model="form.name" style="width: 215px" />
           </el-form-item>
           <el-form-item label="订单搜索:">
-            <el-input v-model="form.name" style="width: 215px" />
+            <el-input
+              v-model="form.input3"
+              class="input-with-select"
+              placeholder="请输入"
+            >
+              <el-select
+                v-model="form.select"
+                slot="prepend"
+                placeholder="全部"
+                style="width: 100px"
+              >
+                <el-option label="代发货" value="1" />
+                <el-option label="待收货" value="2" />
+                <el-option label="待确认" value="3" />
+                <el-option label="退货单" value="4" />
+                <el-option label="代收款" value="5" />
+                <el-option label="已完成" value="6" />
+              </el-select>
+            </el-input>
           </el-form-item>
         </template>
       </Form>
-    </el-card>
+    </div>
+
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="所有订单" name="first" />
@@ -85,76 +105,67 @@
         @changePageSize="changeBtnPageSize"
       >
         <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="订单号"
-            prop="orderno"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="单据日期"
-            prop="data"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="订单类型"
-            prop="type"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="客户名称"
-            prop="username"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="商品信息"
-            prop="inof"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="数量"
-            prop="num"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="实际金额"
-            prop="money"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="支付方式"
-            prop="pay"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="订单状态"
-            prop="state"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="100"
-          >
+          <el-table-column type="selection" />
+          <el-table-column label="订单号" prop="orderno" width="120" />
+          <el-table-column label="单据日期" prop="date" sortable width="200" />
+          <el-table-column label="订单类型" prop="type" width="120" />
+          <el-table-column label="客户名称" prop="username" width="120" />
+          <el-table-column label="商品信息" prop="inof">
+            <template #default="{ row }">
+              <div
+                v-for="(item, index) in row.inof"
+                :key="index"
+                style="display: flex"
+              >
+                <img
+                  :src="item.img"
+                  style="
+                    width: 30px;
+                    height: 30px;
+                    margin-top: 10px;
+                    margin-right: 10px;
+                  "
+                />
+                <p
+                  style="
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                  "
+                >
+                  {{ item.text }}
+                </p>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="数量" prop="num" width="80" />
+          <el-table-column label="实际金额" prop="money" width="80" />
+          <el-table-column label="支付方式" prop="pay" width="120" />
+          <el-table-column label="订单状态" prop="state" width="120">
+            <template #default="{ row }">
+              <div
+                style="
+                  width: 80px;
+                  line-height: 22px;
+                  color: #ffa39e;
+                  text-align: center;
+                  background: #fff1f0;
+                  border-color: #ffa39e;
+                "
+              >
+                {{ row.state }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="100">
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">详情</el-button>
-              <el-button type="text">作废</el-button>
-              <!-- <el-button type="text">发货</el-button> -->
+              <el-button v-if="row.state === '已完成'" type="text">
+                作废
+              </el-button>
+              <el-button v-if="row.state === '待收款'" type="text">
+                发货
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -190,6 +201,7 @@
           dataSelect: 'xiadan',
           data: '',
           orderId: '',
+          select: '',
           // 公共参数
           pageNo: 1,
           pageSize: 10,
@@ -201,26 +213,44 @@
         formType: 4,
         list: [
           {
-            orderno: '1234522',
-            username: '叶良辰',
-            data: '2020.10.08',
-            type: '商城',
-            inof: '吊牌洗衣液',
+            orderno: 'wx312009361683644416',
+            date: '2022-10-13 23:33:48',
+            type: '普通订单',
+            inof: [
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+            ],
+            username: '阿白',
             pay: '微信支付',
             num: 23,
             money: 345,
             state: '已完成',
           },
           {
-            orderno: '1234522',
-            username: '叶良辰',
-            data: '2020.10.08',
-            type: '商城',
-            inof: '吊牌洗衣液',
-            pay: '微信支付',
+            orderno: 'wx312009361683644416',
+            date: '2022-10-13 23:33:48',
+            type: '普通订单',
+            inof: [
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+            ],
+            username: '阿蓝',
+            pay: '支付宝支付',
             num: 23,
             money: 345,
-            state: '已完成',
+            state: '待收款',
           },
         ],
         listLoading: false,

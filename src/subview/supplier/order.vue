@@ -1,6 +1,8 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <el-card shadow="never" style="border: 0">
+    <div
+      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+    >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
           <el-form-item label="创建时间:">
@@ -22,14 +24,29 @@
           </el-form-item>
           <el-form-item label="订单搜索:">
             <el-input
-              v-model="form.name"
-              placeholder="请输入商品名称/订单号/货号"
-              style="width: 215px"
-            />
+              v-model="form.input3"
+              class="input-with-select"
+              placeholder="请输入"
+            >
+              <el-select
+                v-model="form.select"
+                slot="prepend"
+                placeholder="全部"
+                style="width: 100px"
+              >
+                <el-option label="计划生产" value="1" />
+                <el-option label="成品采购" value="2" />
+                <el-option label="面料供应商" value="3" />
+                <el-option label="全部" value="4" />
+                <el-option label="订单号" value="5" />
+                <el-option label="商品名称" value="6" />
+                <el-option label="货号" value="6" />
+              </el-select>
+            </el-input>
           </el-form-item>
         </template>
       </Form>
-    </el-card>
+    </div>
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="全部订单 (3)" name="first" />
@@ -68,67 +85,58 @@
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="订单号"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="订单类型"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="供应商"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="商品信息"
-            prop="time"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="数量"
-            prop="time"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="采购金额"
-            prop="sta"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="创建时间"
-            prop="sta"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="交货时间"
-            prop="sta"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="订单状态"
-            prop="sta"
-            show-overflow-tooltip
-            sortable
-          />
+          <el-table-column type="selection" />
+          <el-table-column label="订单号" prop="orderno" sortable width="120" />
+          <el-table-column label="订单类型" prop="type" width="80" />
+          <el-table-column label="供应商" prop="name" width="120" />
+          <el-table-column label="商品信息" prop="inof">
+            <template #default="{ row }">
+              <div
+                v-for="(item, index) in row.inof"
+                :key="index"
+                style="display: flex"
+              >
+                <img
+                  :src="item.img"
+                  style="
+                    width: 30px;
+                    height: 30px;
+                    margin-top: 10px;
+                    margin-right: 10px;
+                  "
+                />
+                <p
+                  style="
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                  "
+                >
+                  {{ item.text }}
+                </p>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="数量" prop="num" width="80" />
+          <el-table-column label="采购金额" prop="money" width="80" />
+          <el-table-column label="创建时间" prop="creat_time" width="200" />
+          <el-table-column label="交货时间" prop="end_time" width="200" />
+          <el-table-column label="订单状态" prop="state" width="120">
+            <template #default="{ row }">
+              <div
+                style="
+                  width: 80px;
+                  line-height: 22px;
+                  color: #ffa39e;
+                  text-align: center;
+                  background: #fff1f0;
+                  border-color: #ffa39e;
+                "
+              >
+                {{ row.state }}
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="操作"
@@ -174,42 +182,47 @@
         // 公共参数
         listType: 1,
         formType: 4,
+        // orderno type name inof num money creat_time end_time state
         list: [
           {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            orderno: 'wx312009361683644416',
+            creat_time: '2022-10-13 23:33:48',
+            end_time: '2022-11-13 23:33:48',
+            type: '计划生产',
+            inof: [
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+            ],
+            name: '阿白',
+            num: 23,
+            money: 345,
+            state: '部分入库',
           },
           {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            orderno: 'wx312009361683644416',
+            creat_time: '2022-10-13 23:33:48',
+            end_time: '2022-11-13 23:33:48',
+            type: '成品采购',
+            inof: [
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+            ],
+            name: '阿白',
+            num: 23,
+            money: 345,
+            state: '未入库',
           },
         ],
         listLoading: false,

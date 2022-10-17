@@ -1,36 +1,45 @@
 <template>
   <div>
-    <vab-query-form v-if="formType == 1">
-      <vab-query-form-top-panel>
-        <el-form
-          ref="form"
-          label-width="80px"
-          :model="form"
-          style="display: flex; flex-wrap: wrap"
-          @submit.native.prevent
+    <el-form
+      v-if="formType === 1"
+      ref="form"
+      :inline="true"
+      label-width="100px"
+      :model="form"
+      size="small"
+      style="margin-top: 18px"
+      @submit.native.prevent
+    >
+      <slot name="Form"></slot>
+      <el-form-item label-width="0px">
+        <el-button
+          icon="el-icon-search"
+          native-type="submit"
+          size="small"
+          type="primary"
+          @click="handleQuery"
         >
-          <slot name="Form"></slot>
-          <el-form-item label-width="0px" style="padding-top: 10px">
-            <el-button
-              icon="el-icon-search"
-              native-type="submit"
-              size="small"
-              type="primary"
-              @click="handleQuery"
-            >
-              查询
-            </el-button>
-            <el-button type="text" @click="handleFold">
-              <span v-if="fold">展开</span>
-              <span v-else>合并</span>
-              <vab-icon
-                class="vab-dropdown"
-                :class="{ 'vab-dropdown-active': fold }"
-                icon="arrow-up-s-line"
-              />
-            </el-button>
-          </el-form-item>
-          <el-form-item
+          搜索
+        </el-button>
+        <el-button
+          native-type="submit"
+          size="small"
+          type="primary"
+          @click="handleQuery"
+        >
+          重置
+        </el-button>
+        <el-button type="text" @click="handleFold">
+          <span v-if="fold">展开</span>
+          <span v-else>合并</span>
+          <vab-icon
+            class="vab-dropdown"
+            :class="{ 'vab-dropdown-active': fold }"
+            icon="arrow-up-s-line"
+          />
+        </el-button>
+      </el-form-item>
+      <!-- <el-form-item
             label-width="0px"
             style="flex-basis: 100%; padding-top: 10px"
           >
@@ -50,10 +59,8 @@
             >
               批量
             </el-button>
-          </el-form-item>
-        </el-form>
-      </vab-query-form-top-panel>
-    </vab-query-form>
+          </el-form-item> -->
+    </el-form>
 
     <el-form
       v-if="formType === 2"
@@ -72,7 +79,7 @@
           添加
         </el-button>
       </el-form-item>
-      <el-form-item>
+      <!-- <el-form-item>
         <el-button
           native-type="submit"
           size="small"
@@ -81,7 +88,7 @@
         >
           批量删除
         </el-button>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item style="float: right">
         <el-button
           icon="el-icon-search"
@@ -96,26 +103,6 @@
       <slot name="Form"></slot>
     </el-form>
     <el-form
-      v-if="formType === 3"
-      ref="form"
-      :inline="true"
-      :model="form"
-      @submit.native.prevent
-    >
-      <slot name="Form"></slot>
-      <el-form-item>
-        <el-button
-          icon="el-icon-search"
-          native-type="submit"
-          size="small"
-          type="primary"
-          @click="handleQuery"
-        >
-          查询
-        </el-button>
-      </el-form-item>
-    </el-form>
-    <el-form
       v-if="formType === 4"
       ref="form"
       :inline="true"
@@ -126,7 +113,7 @@
       @submit.native.prevent
     >
       <slot name="Form"></slot>
-      <el-form-item>
+      <el-form-item label-width=" ">
         <el-button
           icon="el-icon-search"
           native-type="submit"

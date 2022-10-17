@@ -1,180 +1,90 @@
 <template>
-  <div class="comprehensive-form-container">
-    <el-card shadow="never">
-      <div slot="header" class="clearfix">
-        <span>客户应收款</span>
-      </div>
-      <el-form ref="form" :inline="true" :model="form" @submit.native.prevent>
-        <el-form-item>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            添加
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            删除
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            导入
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            上架
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            下架
-          </el-button>
-        </el-form-item>
-        <el-form-item style="float: right">
-          <el-button
-            icon="el-icon-search"
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            查询
-          </el-button>
-        </el-form-item>
-        <el-form-item label="状态:" prop="region" style="float: right">
-          <el-select
-            v-model="form.dataSelect"
-            size="small"
-            style="width: 150px"
-          >
-            <el-option label="全部" value="0" />
-            <el-option label="已上架" value="beijing" />
-            <el-option label="已下架" value="beijing" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="分组:" prop="region" style="float: right">
-          <el-select
-            v-model="form.dataSelect"
-            size="small"
-            style="width: 150px"
-          >
-            <el-option label="全部" value="0" />
-            <el-option label="新款" value="beijing" />
-            <el-option label="热销" value="beijing" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="分类:" prop="region" style="float: right">
-          <el-select
-            v-model="form.dataSelect"
-            size="small"
-            style="width: 150px"
-          >
-            <el-option label="全部" value="0" />
-            <el-option label="分类一" value="beijing" />
-            <el-option label="分类二" value="beijing" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="商品款号" prop="region" style="float: right">
-          <el-input
-            v-model="form.orderId"
-            size="small"
-            style="width: 150px; padding-left: 10px"
-          />
-        </el-form-item>
-      </el-form>
+  <div style="background-color: #f6f8f9">
+    <div
+      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+    >
+      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+        <template #Form>
+          <el-form-item label="单据日期:">
+            <el-date-picker v-model="form.date" type="date" />
+          </el-form-item>
+          <el-form-item label="客户搜索:">
+            <el-input
+              v-model="form.name"
+              placeholder="请输入手机号/姓名"
+              style="width: 215px"
+            />
+          </el-form-item>
+        </template>
+      </Form>
+    </div>
+    <el-card shadow="never" style="border: 0">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="所有 (3)" name="first" />
+        <el-tab-pane label="已收 (129)" name="second" />
+        <el-tab-pane label=" 未收 (18)" name="three" />
+      </el-tabs>
       <!-- 表格组件使用 -->
       <List
         :list="list"
+        :list-type="listType"
         :state="listLoading"
         :total="total"
-        :type="listType"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="ID"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="客户应收款"
-            prop="name"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="款号"
-            prop="time"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="库存"
-            prop="sta"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="显示销量"
-            prop="sta"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="实际销量"
-            prop="sta"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="序号"
-            prop="sta"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="创建时间"
-            prop="sta"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="商品状态"
-            prop="sta"
-            show-overflow-tooltip
-          />
+          <el-table-column type="selection" />
+          <el-table-column label="相关订单号" prop="orderno" width="200" />
+          <el-table-column label="客户名称" prop="username" width="150" />
+          <el-table-column label="商品信息" prop="inof">
+            <template #default="{ row }">
+              <div
+                v-for="(item, index) in row.inof"
+                :key="index"
+                style="display: flex"
+              >
+                <img
+                  :src="item.img"
+                  style="
+                    width: 30px;
+                    height: 30px;
+                    margin-top: 10px;
+                    margin-right: 10px;
+                  "
+                />
+                <p
+                  style="
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                  "
+                >
+                  {{ item.text }}
+                </p>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="数量" prop="num" width="80" />
+          <el-table-column label="应收金额" prop="money" width="80" />
+          <el-table-column label="订单状态" prop="state" width="120" />
+          <el-table-column label="支付状态" prop="pay" width="120">
+            <template #default="{ row }">
+              <div
+                style="
+                  width: 80px;
+                  line-height: 22px;
+                  color: #ffa39e;
+                  text-align: center;
+                  background: #fff1f0;
+                  border-color: #ffa39e;
+                "
+              >
+                {{ row.state }}
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="操作"
@@ -183,6 +93,7 @@
           >
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">详情</el-button>
+              <el-button type="text">收款</el-button>
             </template>
           </el-table-column>
         </template>
@@ -193,11 +104,14 @@
 
 <script>
   import List from '@/subview/components/List'
+  import Form from '@/subview/components/Form'
+  // import Drawer from './components/Drawer'
   export default {
-    name: 'GoodsManage',
-    components: { List },
+    name: 'FinancialCustomer',
+    components: { List, Form },
     data() {
       return {
+        activeName: 'first',
         // 表单数据/列表参数
         form: {
           // 自定义参数
@@ -216,42 +130,47 @@
         // 列表数据相关
         // 公共参数
         listType: 1,
+        formType: 4,
         list: [
           {
-            id: 'pc12138',
-            name: '客户应收款',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            orderno: 'wx312009361683644416',
+            date: '2022-10-13 23:33:48',
+            type: '普通订单',
+            inof: [
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+            ],
+            username: '阿白',
+            pay: '未收',
+            num: 23,
+            money: 345,
+            state: '代发货',
           },
           {
-            id: 'pc12138',
-            name: '客户应收款',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '客户应收款',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '客户应收款',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '客户应收款',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '客户应收款',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            orderno: 'wx312009361683644416',
+            date: '2022-10-13 23:33:48',
+            type: '普通订单',
+            inof: [
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+            ],
+            username: '阿蓝',
+            pay: '已收',
+            num: 23,
+            money: 345,
+            state: '全部发货',
           },
         ],
         listLoading: false,
@@ -282,6 +201,11 @@
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
+      // 列表数据表头切换监听 自定义部分
+      handleClick(tab) {
+        console.log(1111, tab.label)
+        this.form.pageNo = 1
+      },
       // 列表数据请求函数 公共部分
       async fetchData() {
         // this.listLoading = true
@@ -292,16 +216,11 @@
         // this.total = total
         // this.listLoading = false
       },
+      // 详情抽屉
+      handleDetail() {
+        this.drawer = true
+      },
     },
   }
 </script>
-<style lang="scss" scoped>
-  .link-container {
-    padding: 0 !important;
-    background: white;
-  }
-  .table-pos {
-    position: relative;
-    top: -20px;
-  }
-</style>
+<style lang="scss" scoped></style>

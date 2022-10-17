@@ -39,7 +39,7 @@
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
           year: [
             {
-              type: 'string',
+              type: 'date',
               required: true,
               message: '请选择年份',
               trigger: 'change',

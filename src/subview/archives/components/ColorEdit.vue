@@ -18,15 +18,20 @@
 </template>
 
 <script>
-  import { updateColor, addColor } from '@/api/basic'
+  import {
+    editColorGroupList,
+    addColorGroupList,
+    editColorList,
+    addColorList,
+  } from '@/api/basic'
   export default {
     name: 'LevelDeit',
     data() {
       return {
         form: {
           name: '',
-          id: '',
-          year: '',
+          id: 0,
+          sort: 1,
         },
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
@@ -45,13 +50,24 @@
     },
     created() {},
     methods: {
-      showEdit(row) {
-        if (!row) {
-          this.title = '添加'
+      showEdit(type, row) {
+        if (type == 1) {
+          if (!row) {
+            this.title = '颜色组添加'
+          } else {
+            this.title = '颜色组编辑'
+            this.form = Object.assign({}, row)
+          }
         } else {
-          this.title = '编辑'
-          this.form = Object.assign({}, row)
+          if (!row) {
+            this.title = '颜色添加'
+          } else {
+            this.title = '颜色编辑'
+            console.log(row)
+            this.form = Object.assign({}, row)
+          }
         }
+
         this.dialogFormVisible = true
       },
       close() {
@@ -62,8 +78,8 @@
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
-            if (this.title === '添加') {
-              const { code } = await addColor(this.form)
+            if (this.title === '颜色组添加') {
+              const { code } = await addColorGroupList(this.form)
               if (code != 200) {
                 return
               }
@@ -74,8 +90,32 @@
               )
               this.$emit('fetch-data')
               this.close()
-            } else {
-              const { code } = await updateColor(this.form)
+            } else if (this.title === '颜色组编辑') {
+              const { code } = await editColorGroupList(this.form)
+              if (code != 200) {
+                return
+              }
+              this.$baseMessage(
+                '修改成功',
+                'success',
+                'vab-hey-message-success'
+              )
+              this.$emit('fetch-data')
+              this.close()
+            } else if (this.title === '颜色添加') {
+              const { code } = await addColorList(this.form)
+              if (code != 200) {
+                return
+              }
+              this.$baseMessage(
+                '新增成功',
+                'success',
+                'vab-hey-message-success'
+              )
+              this.$emit('fetch-data')
+              this.close()
+            } else if (this.title === '颜色编辑') {
+              const { code } = await editColorList(this.form)
               if (code != 200) {
                 return
               }
