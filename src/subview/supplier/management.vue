@@ -1,10 +1,32 @@
 <template>
-  <div class="comprehensive-form-container">
-    <el-card shadow="never">
-      <div slot="header" class="clearfix">
-        <span>供应商管理</span>
-      </div>
-      <el-form ref="form" :inline="true" :model="form" @submit.native.prevent>
+  <div style="background-color: #f6f8f9">
+    <el-card shadow="never" style="border: 0">
+      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+        <template #Form>
+          <el-form-item label="供应商类别:">
+            <el-select v-model="form.region">
+              <el-option label="张三" value="shanghai" />
+              <el-option label="李四" value="shanghai" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="供应商类型:">
+            <el-select v-model="form.region">
+              <el-option label="张三" value="shanghai" />
+              <el-option label="李四" value="shanghai" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="搜索:">
+            <el-input
+              v-model="form.name"
+              placeholder="请输入供应商名称"
+              style="width: 215px"
+            />
+          </el-form-item>
+        </template>
+      </Form>
+    </el-card>
+    <el-card shadow="never" style="border: 0">
+      <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
             native-type="submit"
@@ -12,69 +34,16 @@
             type="primary"
             @click="handleQuery"
           >
-            添加
+            添加供应商
           </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            删除
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            开启
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            关闭
-          </el-button>
-        </el-form-item>
-        <el-form-item style="float: right">
-          <el-button
-            icon="el-icon-search"
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            查询
-          </el-button>
-        </el-form-item>
-        <el-form-item label="状态:" prop="region" style="float: right">
-          <el-select
-            v-model="form.dataSelect"
-            size="small"
-            style="width: 150px"
-          >
-            <el-option label="全部" value="0" />
-            <el-option label="已开启" value="beijing" />
-            <el-option label="已关闭" value="beijing" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="名称" prop="region" style="float: right">
-          <el-input
-            v-model="form.orderId"
-            size="small"
-            style="width: 150px; padding-left: 10px"
-          />
         </el-form-item>
       </el-form>
       <!-- 表格组件使用 -->
       <List
         :list="list"
+        :list-type="listType"
         :state="listLoading"
         :total="total"
-        :type="listType"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
@@ -94,22 +63,52 @@
           />
           <el-table-column
             align="center"
-            label="供应商管理"
+            label="供应商名称"
             prop="name"
             show-overflow-tooltip
-            sortable
           />
           <el-table-column
             align="center"
-            label="创建时间"
+            label="类别"
+            prop="name"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="类型"
             prop="time"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="状态"
+            label="应付款"
+            prop="time"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="联系人姓名"
             prop="sta"
             show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="联系方式"
+            prop="sta"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="创建时间"
+            prop="sta"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="供应商状态"
+            prop="sta"
+            show-overflow-tooltip
+            sortable
           />
           <el-table-column
             align="center"
@@ -118,7 +117,8 @@
             width="85"
           >
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">详情</el-button>
+              <el-button type="text" @click="handleDetail(row)">编辑</el-button>
+              <el-button type="text">删除</el-button>
             </template>
           </el-table-column>
         </template>
@@ -129,11 +129,13 @@
 
 <script>
   import List from '@/subview/components/List'
+  import Form from '@/subview/components/Form'
   export default {
-    name: 'SupplierManagement',
-    components: { List },
+    name: 'SupplierOrder',
+    components: { List, Form },
     data() {
       return {
+        activeName: 'first',
         // 表单数据/列表参数
         form: {
           // 自定义参数
@@ -152,40 +154,41 @@
         // 列表数据相关
         // 公共参数
         listType: 1,
+        formType: 4,
         list: [
           {
             id: 'pc12138',
-            name: '供应商管理',
+            name: '采购订单',
             time: '2018-05-15 08:01:41',
             sta: '已开启',
           },
           {
             id: 'pc12138',
-            name: '供应商管理',
+            name: '采购订单',
             time: '2018-05-15 08:01:41',
             sta: '已开启',
           },
           {
             id: 'pc12138',
-            name: '供应商管理',
+            name: '采购订单',
             time: '2018-05-15 08:01:41',
             sta: '已开启',
           },
           {
             id: 'pc12138',
-            name: '供应商管理',
+            name: '采购订单',
             time: '2018-05-15 08:01:41',
             sta: '已开启',
           },
           {
             id: 'pc12138',
-            name: '供应商管理',
+            name: '采购订单',
             time: '2018-05-15 08:01:41',
             sta: '已开启',
           },
           {
             id: 'pc12138',
-            name: '供应商管理',
+            name: '采购订单',
             time: '2018-05-15 08:01:41',
             sta: '已开启',
           },
@@ -218,6 +221,11 @@
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
+      // 列表数据表头切换监听 自定义部分
+      handleClick(tab) {
+        console.log(1111, tab.label)
+        this.form.pageNo = 1
+      },
       // 列表数据请求函数 公共部分
       async fetchData() {
         // this.listLoading = true
@@ -228,16 +236,11 @@
         // this.total = total
         // this.listLoading = false
       },
+      // 详情抽屉
+      handleDetail() {
+        this.drawer = true
+      },
     },
   }
 </script>
-<style lang="scss" scoped>
-  .link-container {
-    padding: 0 !important;
-    background: white;
-  }
-  .table-pos {
-    position: relative;
-    top: -20px;
-  }
-</style>
+<style lang="scss" scoped></style>

@@ -1,10 +1,43 @@
 <template>
-  <div class="comprehensive-form-container">
-    <el-card shadow="never">
-      <div slot="header" class="clearfix">
-        <span>采购订单</span>
-      </div>
-      <el-form ref="form" :inline="true" :model="form" @submit.native.prevent>
+  <div style="background-color: #f6f8f9">
+    <el-card shadow="never" style="border: 0">
+      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+        <template #Form>
+          <el-form-item label="创建时间:">
+            <el-date-picker v-model="form.date" type="date" />
+          </el-form-item>
+          <el-form-item label="供应商:">
+            <el-select v-model="form.region">
+              <el-option label="张三" value="shanghai" />
+              <el-option label="李四" value="shanghai" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="订单类型:">
+            <el-select v-model="form.region">
+              <el-option label="全部" value="shanghai" />
+              <el-option label="计划生产" value="shanghai" />
+              <el-option label="成品采购" value="shanghai" />
+              <el-option label="面料供应商" value="shanghai" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="订单搜索:">
+            <el-input
+              v-model="form.name"
+              placeholder="请输入商品名称/订单号/货号"
+              style="width: 215px"
+            />
+          </el-form-item>
+        </template>
+      </Form>
+    </el-card>
+    <el-card shadow="never" style="border: 0">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="全部订单 (3)" name="first" />
+        <el-tab-pane label="成品采购订单 (129)" name="second" />
+        <el-tab-pane label="计划生产单 (18)" name="three" />
+        <el-tab-pane label="物料采购 (2)" name="four" />
+      </el-tabs>
+      <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
             native-type="submit"
@@ -12,7 +45,7 @@
             type="primary"
             @click="handleQuery"
           >
-            添加
+            导出
           </el-button>
           <el-button
             native-type="submit"
@@ -20,61 +53,16 @@
             type="primary"
             @click="handleQuery"
           >
-            删除
+            打印
           </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            开启
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            关闭
-          </el-button>
-        </el-form-item>
-        <el-form-item style="float: right">
-          <el-button
-            icon="el-icon-search"
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            查询
-          </el-button>
-        </el-form-item>
-        <el-form-item label="状态:" prop="region" style="float: right">
-          <el-select
-            v-model="form.dataSelect"
-            size="small"
-            style="width: 150px"
-          >
-            <el-option label="全部" value="0" />
-            <el-option label="已开启" value="beijing" />
-            <el-option label="已关闭" value="beijing" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="名称" prop="region" style="float: right">
-          <el-input
-            v-model="form.orderId"
-            size="small"
-            style="width: 150px; padding-left: 10px"
-          />
         </el-form-item>
       </el-form>
       <!-- 表格组件使用 -->
       <List
         :list="list"
+        :list-type="listType"
         :state="listLoading"
         :total="total"
-        :type="listType"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
@@ -87,29 +75,59 @@
           />
           <el-table-column
             align="center"
-            label="ID"
+            label="订单号"
             prop="id"
             show-overflow-tooltip
             sortable
           />
           <el-table-column
             align="center"
-            label="采购订单"
+            label="订单类型"
             prop="name"
             show-overflow-tooltip
-            sortable
           />
           <el-table-column
             align="center"
-            label="创建时间"
+            label="供应商"
+            prop="name"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="商品信息"
             prop="time"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="状态"
+            label="数量"
+            prop="time"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="采购金额"
             prop="sta"
             show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="创建时间"
+            prop="sta"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="交货时间"
+            prop="sta"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="订单状态"
+            prop="sta"
+            show-overflow-tooltip
+            sortable
           />
           <el-table-column
             align="center"
@@ -119,6 +137,7 @@
           >
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">详情</el-button>
+              <el-button type="text">作废</el-button>
             </template>
           </el-table-column>
         </template>
@@ -129,11 +148,13 @@
 
 <script>
   import List from '@/subview/components/List'
+  import Form from '@/subview/components/Form'
   export default {
     name: 'SupplierOrder',
-    components: { List },
+    components: { List, Form },
     data() {
       return {
+        activeName: 'first',
         // 表单数据/列表参数
         form: {
           // 自定义参数
@@ -152,6 +173,7 @@
         // 列表数据相关
         // 公共参数
         listType: 1,
+        formType: 4,
         list: [
           {
             id: 'pc12138',
@@ -218,6 +240,11 @@
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
+      // 列表数据表头切换监听 自定义部分
+      handleClick(tab) {
+        console.log(1111, tab.label)
+        this.form.pageNo = 1
+      },
       // 列表数据请求函数 公共部分
       async fetchData() {
         // this.listLoading = true
@@ -228,16 +255,11 @@
         // this.total = total
         // this.listLoading = false
       },
+      // 详情抽屉
+      handleDetail() {
+        this.drawer = true
+      },
     },
   }
 </script>
-<style lang="scss" scoped>
-  .link-container {
-    padding: 0 !important;
-    background: white;
-  }
-  .table-pos {
-    position: relative;
-    top: -20px;
-  }
-</style>
+<style lang="scss" scoped></style>

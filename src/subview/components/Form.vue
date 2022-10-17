@@ -115,6 +115,29 @@
         </el-button>
       </el-form-item>
     </el-form>
+    <el-form
+      v-if="formType === 4"
+      ref="form"
+      :inline="true"
+      label-width="100px"
+      :model="form"
+      size="small"
+      style="margin-top: 18px"
+      @submit.native.prevent
+    >
+      <slot name="Form"></slot>
+      <el-form-item>
+        <el-button
+          icon="el-icon-search"
+          native-type="submit"
+          size="small"
+          type="primary"
+          @click="handleQuery"
+        >
+          查询
+        </el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 

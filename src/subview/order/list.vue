@@ -1,58 +1,59 @@
 <template>
   <div style="background-color: #f6f8f9">
     <el-card shadow="never" style="border: 0">
+      <!-- 表单组件使用 -->
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
-          <el-form-item label="品牌:">
-            <el-input v-model="form.name" style="width: 215px" />
-          </el-form-item>
-          <el-form-item label="类别款式:">
-            <el-input v-model="form.name" style="width: 215px" />
-          </el-form-item>
-          <el-form-item label="年份:">
-            <el-date-picker v-model="form.date" type="year" />
-          </el-form-item>
-          <el-form-item label="季节:">
+          <el-form-item label="订单状态:">
             <el-select v-model="form.region">
-              <el-option label="春季" value="shanghai" />
-              <el-option label="夏季" value="shanghai" />
-              <el-option label="秋季" value="shanghai" />
-              <el-option label="冬季" value="shanghai" />
+              <el-option label="全部" value="shanghai" />
+              <el-option label="待收款" value="shanghai" />
+              <el-option label="待发货" value="shanghai" />
+              <el-option label="待收货" value="shanghai" />
+              <el-option label="退货" value="shanghai" />
+              <el-option label="待确认" value="beijing" />
             </el-select>
           </el-form-item>
-          <el-form-item label="供应商:">
+          <el-form-item label="订单来源:">
+            <el-select v-model="form.region">
+              <el-option label="ERP订单" value="shanghai" />
+              <el-option label="自有商城" value="shanghai" />
+              <el-option label="淘宝" value="shanghai" />
+              <el-option label="天猫" value="shanghai" />
+              <el-option label="抖音" value="shanghai" />
+              <el-option label="快团团" value="beijing" />
+              <el-option label="小红书" value="beijing" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="支付方式:">
+            <el-select v-model="form.region">
+              <el-option label="全部" value="shanghai" />
+              <el-option label="微信支付" value="shanghai" />
+              <el-option label="支付宝" value="shanghai" />
+              <el-option label="余额支付" value="shanghai" />
+              <el-option label="银行卡" value="shanghai" />
+              <el-option label="信用卡" value="beijing" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="下单时间:">
+            <el-date-picker v-model="form.date" type="datetimerange" />
+          </el-form-item>
+          <el-form-item label="会员名称:">
             <el-input v-model="form.name" style="width: 215px" />
           </el-form-item>
-          <el-form-item label="状态:">
-            <el-select v-model="form.region">
-              <el-option label="在售" value="shanghai" />
-              <el-option label="停售" value="shanghai" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="类型:">
-            <el-select v-model="form.region">
-              <el-option label="整手" value="shanghai" />
-              <el-option label="散码" value="shanghai" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="商品搜索:">
-            <el-input
-              v-model="form.name"
-              placeholder="请输入商品名称/类型/货号"
-              style="width: 215px"
-            />
+          <el-form-item label="订单搜索:">
+            <el-input v-model="form.name" style="width: 215px" />
           </el-form-item>
         </template>
       </Form>
     </el-card>
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="出售中 (3)" name="first" />
-        <el-tab-pane label="仓库中 (129)" name="second" />
-        <el-tab-pane label=" 已售罄 (18)" name="three" />
-        <el-tab-pane label="库存预警 (2)" name="four" />
-        <el-tab-pane label="待确认 (10)" name="five" />
-        <el-tab-pane label="待收货 (30)" name="six" />
+        <el-tab-pane label="所有订单" name="first" />
+        <el-tab-pane label="普通订单 (100)" name="second" />
+        <el-tab-pane label=" 商城 (10)" name="three" />
+        <el-tab-pane label="第三方订单 (100)" name="four" />
+        <el-tab-pane label="门店订单 (10)" name="five" />
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -62,7 +63,7 @@
             type="primary"
             @click="handleQuery"
           >
-            添加商品
+            导出
           </el-button>
           <el-button
             native-type="submit"
@@ -70,15 +71,7 @@
             type="primary"
             @click="handleQuery"
           >
-            批量分组
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            复制商品
+            批量
           </el-button>
         </el-form-item>
       </el-form>
@@ -91,7 +84,6 @@
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column
             align="center"
@@ -100,69 +92,69 @@
           />
           <el-table-column
             align="center"
-            label="商品ID"
-            prop="id"
+            label="订单号"
+            prop="orderno"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="单据日期"
+            prop="data"
             show-overflow-tooltip
             sortable
           />
           <el-table-column
             align="center"
-            label="商品图"
-            prop="name"
+            label="订单类型"
+            prop="type"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="商品名称"
-            prop="name"
+            label="客户名称"
+            prop="username"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="款号"
-            prop="time"
+            label="商品信息"
+            prop="inof"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="供应商"
-            prop="time"
+            label="数量"
+            prop="num"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="类别款式"
-            prop="sta"
+            label="实际金额"
+            prop="money"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="销售价"
-            prop="sta"
+            label="支付方式"
+            prop="pay"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="当前库存"
-            prop="sta"
+            label="订单状态"
+            prop="state"
             show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="创建时间"
-            prop="sta"
-            show-overflow-tooltip
-            sortable
           />
           <el-table-column
             align="center"
             label="操作"
             show-overflow-tooltip
-            width="85"
+            width="100"
           >
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">详情</el-button>
-              <el-button type="text">编辑</el-button>
+              <el-button type="text">作废</el-button>
+              <!-- <el-button type="text">发货</el-button> -->
             </template>
           </el-table-column>
         </template>
@@ -179,9 +171,10 @@
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
   import Drawer from './components/Drawer'
+  // import { getList } from '@/api/userManagement'
   export default {
-    name: 'GoodsManage',
-    components: { List, Form, Drawer },
+    name: 'OrderList',
+    components: { Form, List, Drawer },
     data() {
       return {
         activeName: 'first',
@@ -194,7 +187,7 @@
           orderSource: 'ERP订单',
           fold: true,
           typeSelect: 'order',
-          dataSelect: '0',
+          dataSelect: 'xiadan',
           data: '',
           orderId: '',
           // 公共参数
@@ -202,45 +195,32 @@
           pageSize: 10,
         },
         // 列表数据相关
+
         // 公共参数
         listType: 1,
         formType: 4,
         list: [
           {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            orderno: '1234522',
+            username: '叶良辰',
+            data: '2020.10.08',
+            type: '商城',
+            inof: '吊牌洗衣液',
+            pay: '微信支付',
+            num: 23,
+            money: 345,
+            state: '已完成',
           },
           {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
-          },
-          {
-            id: 'pc12138',
-            name: '采购订单',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            orderno: '1234522',
+            username: '叶良辰',
+            data: '2020.10.08',
+            type: '商城',
+            inof: '吊牌洗衣液',
+            pay: '微信支付',
+            num: 23,
+            money: 345,
+            state: '已完成',
           },
         ],
         listLoading: false,
@@ -260,21 +240,38 @@
       this.fetchData()
     },
     methods: {
-      handleQuery() {},
-      // 列表数据封装函数
-
-      // 列表数据改变页数   公共部分
-      changeBtnPage(data) {
-        this.form.pageNo = data
+      // 列表表单子组件展开闭合事件  公共部分
+      changeBtnSta(data) {
+        console.log(2323233, data)
+        this.form.fold = data
       },
-      // 列表数据改变每页条数  自定义部分
-      changeBtnPageSize(data) {
-        this.form.pageSize = data
+      // 列表表单子组件查询事件   公共部分
+      handleQuery(data) {
+        console.log(6666, data)
+        this.form.pageNo = 1
+      },
+      // 列表表单单选标签监听  自定义部分
+      changeHandler(data) {
+        console.log(888, data)
+        this.form.pageNo = 1
       },
       // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
         console.log(1111, tab.label)
         this.form.pageNo = 1
+      },
+
+      // 列表数据封装函数
+
+      // 列表数据改变页数   公共部分
+      changeBtnPage(data) {
+        console.log(9090909, data)
+        this.form.pageNo = data
+      },
+      // 列表数据改变每页条数  自定义部分
+      changeBtnPageSize(data) {
+        console.log(8080080, data)
+        this.form.pageSize = data
       },
       // 列表数据请求函数 公共部分
       async fetchData() {

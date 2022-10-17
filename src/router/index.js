@@ -389,7 +389,7 @@ export const asyncRoutes = [
       {
         path: 'orderList',
         name: 'OrderList',
-        component: () => import('@/subview/order/list/index'),
+        component: () => import('@/subview/order/list'),
         meta: {
           title: '订单列表',
           icon: 'archive-line',
@@ -398,7 +398,7 @@ export const asyncRoutes = [
       {
         path: 'orderBasis',
         name: 'OrderBasis',
-        component: () => import('@/subview/order/basis/index'),
+        component: () => import('@/subview/order/basis'),
         meta: {
           title: '订单统计',
           icon: 'archive-line',
