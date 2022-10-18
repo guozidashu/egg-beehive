@@ -77,7 +77,7 @@
             native-type="submit"
             size="small"
             type="primary"
-            @click="handleQuery"
+            @click="handleEdit('add')"
           >
             添加
           </el-button>
@@ -93,71 +93,29 @@
         @changePageSize="changeBtnPageSize"
       >
         <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="ID"
-            prop="id"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="昵称头像"
-            prop="img"
-            show-overflow-tooltip
-          >
+          <el-table-column type="selection" />
+          <el-table-column label="ID" prop="id" width="80" />
+          <el-table-column label="昵称头像" prop="img" width="120">
             <template #default="{ row }">
               <img :src="row.img" style="width: 50px; height: 50px" />
             </template>
           </el-table-column>
-          <el-table-column
-            align="center"
-            label="客户等级"
-            prop="leve"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="客户分类"
-            prop="type"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="来源"
-            prop="yuantou"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="成交额"
-            prop="money"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="余额/欠款"
-            prop="pay"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="加入时间"
-            prop="time"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="100"
-          >
+          <el-table-column label="客户名称" prop="name" width="120" />
+          <el-table-column label="客户等级" prop="level" width="120" />
+          <el-table-column label="客户分类" prop="type" width="120" />
+          <el-table-column label="来源" prop="yuantou" />
+          <el-table-column label="成交额" prop="money1" width="120" />
+          <el-table-column label="余额/欠款" width="150">
             <template #default="{ row }">
-              <el-button type="text">编辑</el-button>
+              <span>{{ row.money }}</span>
+              /
+              <span>{{ row.qiankuan }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="加入时间" prop="time" />
+          <el-table-column align="center" label="操作" width="100">
+            <template #default="{ row }">
+              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
               <el-button type="text" @click="handleDetail(row)">详情</el-button>
               <!-- <el-button type="text">发货</el-button> -->
             </template>
@@ -165,16 +123,18 @@
         </template>
       </List>
     </el-card>
+    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 
 <script>
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
-  // import { getList } from '@/api/userManagement'
+  import Edit from './components/manageDeit'
+  import { getManagementList, addManagementList } from '@/api/basic'
   export default {
     name: 'CustomerManage',
-    components: { Form, List },
+    components: { Form, List, Edit },
     data() {
       return {
         activeName: 'first',
@@ -198,28 +158,7 @@
         // 公共参数
         listType: 1,
         formType: 1,
-        list: [
-          {
-            id: '1234522',
-            img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
-            leve: '青铜',
-            type: '类别一',
-            yuantou: '官方',
-            money: 23,
-            pay: 345,
-            time: '2022-10-13 23:33:48',
-          },
-          {
-            id: '1234522',
-            img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
-            leve: '钻石',
-            type: '类别二',
-            yuantou: '私营',
-            money: 23,
-            pay: 345,
-            time: '2022-10-13 23:33:48',
-          },
-        ],
+        list: [],
         listLoading: false,
         total: 0,
       }
@@ -237,14 +176,52 @@
       this.fetchData()
     },
     methods: {
+      // 新增修改
+      async handleEdit(row) {
+        if (row === 'add') {
+          this.$refs['edit'].showEdit()
+        } else {
+          if (row.id) {
+            this.$refs['edit'].showEdit(row)
+          } else {
+            this.$refs['edit'].showEdit()
+          }
+        }
+      },
+      // 查询
+      handleQuery() {
+        this.form.pageNo = 1
+      },
+      // 删除
+      handleDelete(row) {
+        if (row.id) {
+          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
+            const { code } = await addManagementList({ id: row.id })
+            if (code != 200) {
+              return
+            }
+            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
+          })
+        } else {
+          if (this.selectRows.length > 0) {
+            const ids = this.selectRows.map((item) => item.id).join()
+            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
+              const { code } = await addManagementList(ids)
+              if (code != 200) {
+                return
+              }
+              this.fetchData()
+            })
+          } else {
+            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
+          }
+        }
+      },
+
       // 列表表单子组件展开闭合事件  公共部分
       changeBtnSta(data) {
         this.form.fold = data
-      },
-      // 列表表单子组件查询事件   公共部分
-      handleQuery(data) {
-        console.log(6666, data)
-        this.form.pageNo = 1
       },
       // 列表表单单选标签监听  自定义部分
       changeHandler(data) {
@@ -271,13 +248,13 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const {
+          data: { list, total },
+        } = await getManagementList(this.form)
+        this.list = list
+        this.total = total
+        this.listLoading = false
       },
       // 详情抽屉
       handleDetail() {

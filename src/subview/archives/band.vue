@@ -1,186 +1,121 @@
 <template>
-  <div style="background-color: #f6f8f9">
-    <div
-      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
-    >
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
-        <template #Form>
-          <el-form-item label="波段名称" prop="region">
-            <el-input v-model="form.name" size="small" />
-          </el-form-item>
-        </template>
-      </Form>
-    </div>
-    <el-card shadow="never" style="border: 0">
-      <el-form ref="form" :inline="true" @submit.native.prevent>
-        <el-form-item>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleEdit('add')"
-          >
-            添加
-          </el-button>
+  <div style="padding-top: 20px">
+    <el-form label-width="100px">
+      <el-row type="flex">
+        <el-form-item label="波段搜索：" style="margin-left: 50px">
+          <el-input style="width: 248px" />
         </el-form-item>
-      </el-form>
-      <List
-        :list="list"
-        :list-type="listType"
-        :state="listLoading"
-        :total="total"
-        @changePage="changeBtnPage"
-        @changePageSize="changeBtnPageSize"
-        @selectRows="selectBtnRows"
-      >
-        <!-- 表格组件具名插槽 自定义表头 -->
-        <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="波段ID"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="波段名称"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
+        <el-form-item>
+          <el-button style="margin-left: -80px" type="primary">查询</el-button>
+        </el-form-item>
+      </el-row>
+    </el-form>
+    <div style="width: 100%; height: 20px; background-color: #f6f8f9"></div>
+    <el-button style="margin-top: 20px; margin-left: 20px" type="primary">
+      添加波段
+    </el-button>
+    <el-table
+      ref="multipleTable"
+      :data="tableData"
+      style="width: 100%; margin-top: 20px"
+      tooltip-effect="dark"
+    >
+      <el-table-column type="index" width="150" />
+      <el-table-column label="波段名称" prop="date" width="220" />
+      <el-table-column label="商品数量" prop="name" width="220">
+        <template slot-scope="{ row }">
+          <el-button
+            size="small"
+            type="text"
+            @click="$router.push('/goods/goodsStatistical')"
           >
-            <template #default="{ row }">
-              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <el-button type="text" @click="handleDelete(row)">删除</el-button>
-            </template>
-          </el-table-column>
+            {{ row.name }}
+          </el-button>
         </template>
-      </List>
-    </el-card>
-    <edit ref="edit" @fetch-data="fetchData" />
+      </el-table-column>
+      <el-table-column
+        label="备注"
+        prop="address"
+        show-overflow-tooltip
+        width="600"
+      />
+      <el-table-column label="操作" prop="name" width="120">
+        <template slot-scope="{ row }">
+          <el-button size="small" style="color: #2d8cf0" type="text">
+            {{ row.editor }}丨
+          </el-button>
+          <el-button
+            size="small"
+            style="margin-left: -2px; color: #2d8cf0"
+            type="text"
+          >
+            {{ row.delete }}
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <!-- 分页组件 -->
+    <el-pagination
+      background
+      :current-page.sync="currentPage3"
+      layout="prev, pager, next, jumper"
+      :page-size="100"
+      style="margin-left: 200px"
+      :total="1000"
+    />
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import Edit from './components/BandEdit'
-  import Form from '@/subview/components/Form'
-  import { getWaveList, editWave, deleteWave } from '@/api/basic'
   export default {
-    name: 'ArchivesBand',
-    components: { List, Edit, Form },
     data() {
       return {
-        // 表单数据/列表参数
-        form: {
-          id: 0,
-          name: '',
-          pageNo: 1,
-          pageSize: 10,
-        },
-        formType: 4,
-        // 列表数据相关
-        selectRows: [],
-        listType: 1,
-        list: [],
-        listLoading: false,
-        total: 0,
+        currentPage3: 5,
+        tableData: [
+          {
+            date: '春季',
+            name: '100',
+            address: '请开启 JavaScript 功能来使用 CRMEB。',
+            editor: '编辑',
+            delete: '删除',
+          },
+          {
+            date: '夏季',
+            name: '312',
+            address: ' BY FAR Miranda leather shoulder bag |默认',
+            editor: '编辑',
+            delete: '删除',
+          },
+          {
+            date: '春季',
+            name: '2132',
+            address: '上海市普陀区金沙江路 1518 弄大声道撒多sadsad撒撒的',
+            editor: '编辑',
+            delete: '删除',
+          },
+          {
+            date: '秋季',
+            name: '90',
+            address: '【供应商】金枕榴莲 新鲜水果 整果带壳特产 5-6斤1个装 | ',
+            editor: '编辑',
+            delete: '删除',
+          },
+          {
+            date: '冬季',
+            name: '100',
+            address: '【供应商】金枕榴莲 新鲜水果 整果带壳特产 5-6斤1个装 | ',
+            editor: '编辑',
+            delete: '删除',
+          },
+        ],
+        multipleSelection: [],
       }
-    },
-    watch: {
-      form: {
-        handler: function () {
-          this.fetchData()
-        },
-        deep: true,
-      },
-    },
-    created() {
-      this.fetchData()
-    },
-    methods: {
-      // 新增修改
-      async handleEdit(row) {
-        if (row === 'add') {
-          this.$refs['edit'].showEdit()
-        } else {
-          if (row.id) {
-            const { code, data } = await editWave({ id: row.id })
-            if (code === 200) {
-              this.$refs['edit'].showEdit(data)
-            }
-          } else {
-            this.$refs['edit'].showEdit()
-          }
-        }
-      },
-      // 查询
-      handleQuery() {
-        this.form.pageNo = 1
-      },
-      // 删除
-      handleDelete(row) {
-        if (row.id) {
-          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await deleteWave({ id: row.id })
-            if (code != 200) {
-              return
-            }
-            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
-            this.fetchData()
-          })
-        } else {
-          if (this.selectRows.length > 0) {
-            const ids = this.selectRows.map((item) => item.id).join()
-            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-              const { code } = await deleteWave(ids)
-              if (code != 200) {
-                return
-              }
-              this.fetchData()
-            })
-          } else {
-            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
-          }
-        }
-      },
-      // 列表数据封装函数
-
-      // 列表数据改变页数   公共部分
-      changeBtnPage(data) {
-        this.form.pageNo = data
-      },
-      // 多选获取数据   公共部分
-      selectBtnRows(data) {
-        this.selectRows = data
-      },
-
-      // 列表数据改变每页条数  公共部分
-      changeBtnPageSize(data) {
-        this.form.pageSize = data
-        console.log(data)
-      },
-      // 列表数据请求函数 公共部分
-      async fetchData() {
-        this.listLoading = true
-        const {
-          data: { list, total },
-        } = await getWaveList(this.form)
-        this.list = list
-        this.total = total
-        this.listLoading = false
-      },
     },
   }
 </script>
-<style lang="scss" scoped></style>
+
+<style lang="scss" scoped>
+  ::v-deep .el-input--small .el-input__inner {
+    border-radius: 4px;
+  }
+</style>

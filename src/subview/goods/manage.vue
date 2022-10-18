@@ -100,66 +100,28 @@
             show-overflow-tooltip
             type="selection"
           />
-          <el-table-column
-            align="center"
-            label="商品ID"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="商品图"
-            prop="img"
-            show-overflow-tooltip
-          >
+          <el-table-column align="center" prop="id" sortable width="80" />
+          <el-table-column label="商品图" prop="img" width="80">
             <template #default="{ row }">
               <img :src="row.img" style="width: 50px; height: 50px" />
             </template>
           </el-table-column>
-          <el-table-column
-            align="center"
-            label="商品名称"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="款号"
-            prop="type"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="供应商"
-            prop="gongying"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="类别款式"
-            prop="liebie"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="销售价"
-            prop="xiaoshou"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="当前库存"
-            prop="num"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="创建时间"
-            prop="time"
-            show-overflow-tooltip
-            sortable
-          />
+          <el-table-column label="标题" prop="shoptitle" />
+          <el-table-column label="商品名称" prop="name" width="250" />
+          <el-table-column label="款号" prop="kuanshi" width="80" />
+          <el-table-column label="供应商" prop="gongying" width="120" />
+          <el-table-column label="类别款式" prop="liebie" width="120" />
+          <el-table-column label="销售价" prop="xiaoshou" width="80" />
+          <el-table-column prop="num" width="150">
+            <!-- 现货|生产中 -->
+            <template slot="header">
+              <span>现货|生产中</span>
+            </template>
+            <template slot-scope="scope">
+              {{ scope.row.num }}
+            </template>
+          </el-table-column>
+          <el-table-column label="创建时间" prop="time" sortable width="200" />
           <el-table-column
             align="center"
             label="操作"
@@ -185,6 +147,7 @@
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
   import Drawer from './components/Drawer'
+  import { getGoodsManagementList } from '@/api/basic'
   export default {
     name: 'GoodsManage',
     components: { List, Form, Drawer },
@@ -211,33 +174,7 @@
         // 公共参数
         listType: 1,
         formType: 4,
-        list: [
-          // id img name type gongying liebie xiaoshou num time
-          {
-            id: 'pc12138',
-            img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
-            time: '2018-05-15 08:01:41',
-            name: '阿白',
-            type: '款式一',
-            gongying: '官方供应商',
-            pay: '未收',
-            num: 23,
-            xiaoshou: 345,
-            liebie: '青春版',
-          },
-          {
-            id: 'pc12138',
-            img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
-            time: '2018-05-15 08:01:41',
-            name: '阿白',
-            gongying: '私营供应商',
-            type: '款式二',
-            pay: '未收',
-            num: 23,
-            xiaoshou: 345,
-            liebie: '老年版',
-          },
-        ],
+        list: [],
         listLoading: false,
         total: 0,
       }
@@ -273,13 +210,13 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const {
+          data: { list, total },
+        } = await getGoodsManagementList(this.form)
+        this.list = list
+        this.total = total
+        this.listLoading = false
       },
       // 详情抽屉
       handleDetail() {

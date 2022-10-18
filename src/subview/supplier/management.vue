@@ -6,9 +6,13 @@
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
           <el-form-item label="供应商类别:">
-            <el-select v-model="form.region">
-              <el-option label="张三" value="shanghai" />
-              <el-option label="李四" value="shanghai" />
+            <!-- 1外协加工厂2成品采购商3面辅料供应商4其他5自厂 -->
+            <el-select v-model="form.region1">
+              <el-option label="外协加工厂" :value="1" />
+              <el-option label="成品采购商" :value="2" />
+              <el-option label="面辅料供应商" :value="3" />
+              <el-option label="其他" :value="4" />
+              <el-option label="自厂" :value="5" />
             </el-select>
           </el-form-item>
           <el-form-item label="供应商类型:">
@@ -54,21 +58,24 @@
           <el-table-column type="selection" />
           <el-table-column label="ID" prop="id" sortable width="80" />
           <el-table-column label="供应商名称" prop="name" width="150" />
-          <el-table-column
-            align="center"
-            label="类别"
-            prop="type"
-            width="150"
-          />
-          <el-table-column label="类型" prop="type1" width="150" />
-          <el-table-column label="应付款" prop="pay" width="80" />
-          <el-table-column label="联系人姓名" prop="usename" width="120" />
-          <el-table-column label="联系方式" prop="phone" width="200" />
-          <el-table-column label="创建时间" prop="time" />
-          <el-table-column label="供应商状态" prop="state" width="200">
+          <el-table-column label="类别" prop="lx" width="150">
+            <template #default="{ row }">
+              <span v-if="row.lx === 1">外协加工厂</span>
+              <span v-else-if="row.lx === 2">成品采购商</span>
+              <span v-else-if="row.lx === 3">面辅料供应商</span>
+              <span v-else-if="row.lx === 4">其他</span>
+              <span v-else-if="row.lx === 5">自厂</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="类型" prop="fenlei" />
+          <el-table-column label="应付款" prop="yingfu" width="80" />
+          <el-table-column label="联系人姓名" prop="usename" width="100" />
+          <el-table-column label="联系方式" prop="tel" width="200" />
+          <el-table-column label="创建时间" prop="time" width="200" />
+          <el-table-column label="供应商状态" prop="isdefault" width="100">
             <template #default="{ row }">
               <el-switch
-                v-model="row.status"
+                v-model="row.isdefault"
                 active-color="#13ce66"
                 active-text="开启"
                 :active-value="1"
@@ -79,7 +86,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="操作" width="85">
+          <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
               <el-button type="text">删除</el-button>
@@ -95,6 +102,7 @@
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
   import Edit from './components/OrderEdit'
+  import { getSupplierManagementList } from '@/api/basic'
   export default {
     name: 'SupplierOrder',
     components: { List, Form, Edit },
@@ -120,30 +128,7 @@
         // 公共参数
         listType: 1,
         formType: 4,
-        list: [
-          {
-            id: 'pc12138',
-            name: '官方供应商',
-            type: '类别一',
-            type1: '类型一',
-            time: '2018-05-15 08:01:41',
-            pay: 233,
-            usename: '阿白',
-            phone: 18898988888,
-            state: 1,
-          },
-          {
-            id: 'pc12138',
-            name: '私家供应商',
-            type: '类别二',
-            type1: '类型二',
-            time: '2018-05-15 08:01:41',
-            pay: 233,
-            usename: '阿兰',
-            phone: 18898988888,
-            state: 0,
-          },
-        ],
+        list: [],
         listLoading: false,
         total: 0,
       }
@@ -195,13 +180,13 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const {
+          data: { list, total },
+        } = await getSupplierManagementList(this.form)
+        this.list = list
+        this.total = total
+        this.listLoading = false
       },
     },
   }

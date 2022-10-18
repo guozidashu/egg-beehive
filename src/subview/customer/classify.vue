@@ -1,307 +1,115 @@
 <template>
-  <div class="comprehensive-form-container">
-    <el-card shadow="never">
-      <div slot="header" class="clearfix">
-        <span>客户分类</span>
-      </div>
-      <el-form ref="form" :inline="true" :model="form" @submit.native.prevent>
-        <el-form-item>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            添加
+  <div>
+    <el-button style="margin-top: 20px; margin-left: 20px" type="primary">
+      添加分类
+    </el-button>
+    <el-table
+      ref="multipleTable"
+      :data="tableData"
+      style="width: 100%; margin-top: 20px"
+      tooltip-effect="dark"
+    >
+      <el-table-column type="index" width="155" />
+      <el-table-column label="分类名称" prop="date" width="220" />
+      <el-table-column label="客户数" prop="name" width="220" />
+      <el-table-column
+        label="分类说明（备注）"
+        prop="address"
+        show-overflow-tooltip
+        width="500"
+      />
+
+      <el-table-column label="操作" prop="name" width="120">
+        <template slot-scope="{ row }">
+          <el-button size="small" style="color: #2d8cf0" type="text">
+            {{ row.editor }}丨
           </el-button>
           <el-button
-            native-type="submit"
             size="small"
-            type="primary"
-            @click="handleQuery"
+            style="margin-left: -2px; color: #2d8cf0"
+            type="text"
           >
-            删除
+            {{ row.delete }}
           </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            导入
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            上架
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            下架
-          </el-button>
-        </el-form-item>
-        <el-form-item style="float: right">
-          <el-button
-            icon="el-icon-search"
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            查询
-          </el-button>
-        </el-form-item>
-        <el-form-item label="状态:" prop="region" style="float: right">
-          <el-select
-            v-model="form.dataSelect"
-            size="small"
-            style="width: 150px"
-          >
-            <el-option label="全部" value="0" />
-            <el-option label="已上架" value="beijing" />
-            <el-option label="已下架" value="beijing" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="分组:" prop="region" style="float: right">
-          <el-select
-            v-model="form.dataSelect"
-            size="small"
-            style="width: 150px"
-          >
-            <el-option label="全部" value="0" />
-            <el-option label="新款" value="beijing" />
-            <el-option label="热销" value="beijing" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="分类:" prop="region" style="float: right">
-          <el-select
-            v-model="form.dataSelect"
-            size="small"
-            style="width: 150px"
-          >
-            <el-option label="全部" value="0" />
-            <el-option label="分类一" value="beijing" />
-            <el-option label="分类二" value="beijing" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="商品款号" prop="region" style="float: right">
-          <el-input
-            v-model="form.orderId"
-            size="small"
-            style="width: 150px; padding-left: 10px"
-          />
-        </el-form-item>
-      </el-form>
-      <!-- 表格组件使用 -->
-      <List
-        :list="list"
-        :state="listLoading"
-        :total="total"
-        :type="listType"
-        @changePage="changeBtnPage"
-        @changePageSize="changeBtnPageSize"
-      >
-        <!-- 表格组件具名插槽 自定义表头 -->
-        <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="ID"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="客户分类"
-            prop="name"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="款号"
-            prop="time"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="库存"
-            prop="sta"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="显示销量"
-            prop="sta"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="实际销量"
-            prop="sta"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="序号"
-            prop="sta"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="创建时间"
-            prop="sta"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="商品状态"
-            prop="sta"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
-          >
-            <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">详情</el-button>
-            </template>
-          </el-table-column>
         </template>
-      </List>
-    </el-card>
+      </el-table-column>
+    </el-table>
+    <!-- 分页组件 -->
+    <el-pagination
+      background
+      :current-page.sync="currentPage3"
+      layout="prev, pager, next, jumper"
+      :page-size="100"
+      style="margin-left: 200px"
+      :total="1000"
+    />
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
   export default {
-    name: 'GoodsManage',
-    components: { List },
     data() {
       return {
-        // 表单数据/列表参数
-        form: {
-          // 自定义参数
-          orderSta: '全部',
-          paySta: '全部',
-          orderSource: 'ERP订单',
-          fold: true,
-          typeSelect: 'order',
-          dataSelect: '0',
-          data: '',
-          orderId: '',
-          // 公共参数
-          pageNo: 1,
-          pageSize: 10,
-        },
-        // 列表数据相关
-        // 公共参数
-        listType: 1,
-        list: [
+        tableData: [
           {
-            id: 'pc12138',
-            name: '客户分类',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            date: '零售店',
+            name: '10',
+            address: '抖音快团团',
+            editor: '编辑',
+            delete: '删除',
           },
           {
-            id: 'pc12138',
-            name: '客户分类',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            date: '网店',
+            name: '20',
+            address:
+              '如果您使用 Shopify 中的免费模板，那么您可以联系 Shopify 支持以获',
+            editor: '编辑',
+            delete: '删除',
           },
           {
-            id: 'pc12138',
-            name: '客户分类',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            date: '超市连锁店',
+            name: '0',
+            address:
+              '订单备注、购物车属性和订单项目属性是具有类似功能的三个单独的工具。',
+            editor: '编辑',
+            delete: '删除',
           },
           {
-            id: 'pc12138',
-            name: '客户分类',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            date: '趣店',
+            name: '111',
+            address:
+              '可在您模板的购物车页面上启用订单备注。请按照以下步骤操作，或参阅您的模板的文档，以详细了解如何在您的模板中查找此设置。',
+            editor: '编辑',
+            delete: '删除',
           },
           {
-            id: 'pc12138',
-            name: '客户分类',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            date: '社区团购',
+            name: '12',
+            address:
+              '如果您的屏幕宽度超过 1600 像素，则您的自定义和编辑选项会显示在屏幕右侧。如果您的屏幕宽度小于 1600 像素，则它们将显示在屏幕左侧。',
+            editor: '编辑',
+            delete: '删除',
           },
           {
-            id: 'pc12138',
-            name: '客户分类',
-            time: '2018-05-15 08:01:41',
-            sta: '已开启',
+            date: '零售',
+            name: '23',
+            address: '在销售渠道部分，轻触在线商店。',
+            editor: '编辑',
+            delete: '删除',
+          },
+          {
+            date: '商场',
+            name: '3',
+            address: '选中启用购物车备注。',
+            editor: '编辑',
+            delete: '删除',
           },
         ],
-        listLoading: false,
-        total: 0,
+        multipleSelection: [],
+        currentPage3: 5,
       }
-    },
-    watch: {
-      form: {
-        //表单筛选条件变化实时刷新列表
-        handler: function () {
-          this.fetchData()
-        },
-        deep: true,
-      },
-    },
-    created() {
-      this.fetchData()
-    },
-    methods: {
-      handleQuery() {},
-      // 列表数据封装函数
-
-      // 列表数据改变页数   公共部分
-      changeBtnPage(data) {
-        this.form.pageNo = data
-      },
-      // 列表数据改变每页条数  自定义部分
-      changeBtnPageSize(data) {
-        this.form.pageSize = data
-      },
-      // 列表数据请求函数 公共部分
-      async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
-      },
     },
   }
 </script>
-<style lang="scss" scoped>
-  .link-container {
-    padding: 0 !important;
-    background: white;
-  }
-  .table-pos {
-    position: relative;
-    top: -20px;
-  }
-</style>
+
+<style></style>

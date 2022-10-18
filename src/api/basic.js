@@ -1,6 +1,39 @@
 import request from '@/utils/request'
 // 基础档案模块  增删改查接口
 
+// 客户管理
+export function getManagementList(data) {
+  return request({
+    url: '/management_list',
+    method: 'post',
+    data,
+  })
+}
+export function addManagementList(data) {
+  return request({
+    url: '/management_add',
+    method: 'post',
+    data,
+  })
+}
+
+// 商品管理
+export function getGoodsManagementList(data) {
+  return request({
+    url: '/goods_management',
+    method: 'post',
+    data,
+  })
+}
+
+// 供应商管理
+export function getSupplierManagementList(data) {
+  return request({
+    url: '/supplier_management',
+    method: 'post',
+    data,
+  })
+}
 // 物料分类
 export function getBomList(data) {
   return request({

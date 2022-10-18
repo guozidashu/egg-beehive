@@ -152,7 +152,7 @@
       // 颜色新增修改
       async handleEdit(row) {
         if (row === 'add') {
-          this.$refs['edit'].showEdit(2)
+          this.$refs['edit'].showEdit(2, this.form.id)
         } else {
           row.pid = this.form.id
           row.sort = 1

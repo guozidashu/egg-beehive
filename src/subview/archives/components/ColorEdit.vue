@@ -59,7 +59,8 @@
             this.form = Object.assign({}, row)
           }
         } else {
-          if (!row) {
+          if (!row.id) {
+            this.form.pid = row
             this.title = '颜色添加'
           } else {
             this.title = '颜色编辑'
@@ -103,6 +104,7 @@
               this.$emit('fetch-data')
               this.close()
             } else if (this.title === '颜色添加') {
+              console.log(1111, this.form)
               const { code } = await addColorList(this.form)
               if (code != 200) {
                 return
@@ -115,6 +117,7 @@
               this.$emit('fetch-data')
               this.close()
             } else if (this.title === '颜色编辑') {
+              this.form.pid = Number(this.form.pid)
               const { code } = await editColorList(this.form)
               if (code != 200) {
                 return
