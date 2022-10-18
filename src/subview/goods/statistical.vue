@@ -15,7 +15,7 @@
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">商品概况</span>
+        <span style="margin-top: 10px; font-size: 16px">商品统计</span>
         <el-form-item
           label="时间筛选:"
           style="margin-right: 0; font-size: 12px"
@@ -99,26 +99,27 @@
       >
         <span style="margin-top: 10px; font-size: 16px">商品排行</span>
         <el-form-item style="margin-right: 0">
-          <el-form-item label="统计类型:" prop="region">
+          <el-form-item label="品牌:" prop="region">
             <el-select
               v-model="goodsForm.region"
               size="small"
               style="width: 150px"
             >
-              <el-option label="浏览量" value="shanghai" />
-              <el-option label="访问数" value="beijing" />
+              <el-option label="品牌1" value="shanghai" />
+              <el-option label="品牌2" value="beijing" />
             </el-select>
           </el-form-item>
-          <el-form-item
-            label="时间筛选:"
-            style="margin-right: 0; font-size: 12px"
-          >
-            <el-date-picker
-              v-model="goodsForm.date"
+          <el-form-item label="类别:" prop="region">
+            <el-select
+              v-model="goodsForm.region"
               size="small"
-              style="width: 250px"
-              type="daterange"
-            />
+              style="width: 150px"
+            >
+              <el-option label="类别1" value="shanghai" />
+              <el-option label="类别2" value="beijing" />
+            </el-select>
+          </el-form-item>
+          <el-form-item style="margin-right: 0; font-size: 12px">
             <el-button
               native-type="submit"
               size="small"
@@ -130,75 +131,24 @@
           </el-form-item>
         </el-form-item>
       </el-form>
-      <List :list="goosList" :state="listLoading" :type="listType">
+      <List :list="goosList" :list-type="listType" :state="listLoading">
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column
-            align="center"
-            label="商品图片"
-            prop="image"
-            show-overflow-tooltip
-          >
+          <el-table-column label="商品图片" prop="image" width="200">
             <template #default="{ row }">
               <el-image :src="row.image" />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="商品名称" prop="store_name" />
+          <el-table-column label="商品名称" prop="store_name" />
+          <el-table-column label="销量" prop="visit" width="100" />
+          <el-table-column label="销售金额" prop="user" width="100" />
+          <el-table-column label="类别" prop="cart" width="120" />
+          <el-table-column label="利润" prop="orders" width="100" />
           <el-table-column
             align="center"
-            label="浏览量"
-            prop="visit"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="访客数"
-            prop="user"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="加购件数"
-            prop="cart"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="下单件数"
-            prop="orders"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="支付件数"
-            prop="pay"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="支付金额"
-            prop="price"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="毛利率(%)"
-            prop="profit"
-            show-overflow-tooltip
-          >
-            <template #default="{ row }">{{ row.profit * 100 }}%</template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            label="收藏数"
-            prop="collect"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
+            fixed="right"
             label="操作"
-            show-overflow-tooltip
-            width="85"
+            width="100"
           >
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">查看</el-button>
@@ -300,61 +250,61 @@
         goodsForm: {},
         goodsStaList: [
           {
-            title: '商品数量',
+            title: '今日上新',
             number: 200,
-            num: 94.32,
+            num: 10,
             type: 1,
           },
           {
-            title: '商品数量',
+            title: '昨日上新',
             number: 200,
-            num: 94.32,
+            num: 20,
             type: 1,
           },
           {
-            title: '商品数量',
+            title: '仓库中',
             number: 200,
-            num: 94.32,
+            num: 100,
             type: 1,
           },
           {
-            title: '商品数量',
+            title: '生产中',
             number: 200,
-            num: 94.32,
+            num: 100,
             type: 1,
           },
           {
-            title: '商品数量',
+            title: '出售中',
             number: 200,
-            num: 94.32,
+            num: 100,
             type: 1,
           },
           {
-            title: '成本金额',
+            title: '库存预警',
             number: 400,
             num: 34.32,
             type: 2,
           },
           {
-            title: '成本金额',
+            title: '待确认',
             number: 400,
             num: 34.32,
             type: 2,
           },
           {
-            title: '成本金额',
+            title: '总库存',
             number: 400,
             num: 34.32,
             type: 2,
           },
           {
-            title: '成本金额',
+            title: '现货成本',
             number: 400,
             num: 34.32,
             type: 2,
           },
           {
-            title: '成本金额',
+            title: '生产中成本',
             number: 400,
             num: 34.32,
             type: 2,
@@ -371,7 +321,7 @@
             },
           },
           legend: {
-            data: ['商品浏览量', '商品访客量', '支付金额', '退款金额'],
+            data: ['上衣', '裤子', '连衣裙', '童装'],
           },
           grid: {
             left: '3%',
@@ -438,7 +388,7 @@
           ],
           series: [
             {
-              name: '商品浏览量',
+              name: '上衣',
               type: 'line',
               stack: 'Total',
               smooth: true,
@@ -453,7 +403,7 @@
               },
             },
             {
-              name: '商品访客量',
+              name: '裤子',
               type: 'line',
               stack: 'Total',
               smooth: true,
@@ -467,7 +417,7 @@
               },
             },
             {
-              name: '支付金额',
+              name: '连衣裙',
               type: 'bar',
               data: [
                 0, 10.09, 0, 4.43, 74.25, 157.1, 0, 0, 47.04, 0, 0, 1473.6, 0,
@@ -479,7 +429,7 @@
               },
             },
             {
-              name: '退款金额',
+              name: '童装',
               type: 'bar',
               data: [
                 0, 0, 0, 0.02, 0, 0, 3798.02, 0, 0.01, 0, 7001, 1151.36, 0,

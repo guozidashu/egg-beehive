@@ -66,22 +66,6 @@
           >
             添加商品
           </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            批量分组
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            复制商品
-          </el-button>
         </el-form-item>
       </el-form>
       <!-- 表格组件使用 -->

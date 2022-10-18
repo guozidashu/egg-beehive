@@ -147,7 +147,7 @@ export function getColorList(data) {
 }
 export function editColorList(data) {
   return request({
-    url: '/color_edit',
+    url: '/color_update',
     method: 'post',
     data,
   })
