@@ -74,7 +74,7 @@
             <el-checkbox label="复选框 C" />
             <el-checkbox label="禁用" />
           </div>
-          <div class="bigTwo" style="margin-left: 80px">
+          <div class="bigTwo">
             <el-checkbox label="复选框 D" />
             <el-checkbox label="复选框 E" />
             <el-checkbox label="复选框 F" />
@@ -85,12 +85,8 @@
       </el-form-item>
     </el-form>
     <el-button
-      style="
-        margin-left: 80px;
-        margin-top: 30px;
-        background-color: #009688;
-        border: unset;
-      "
+      style="margin-top: 30px; margin-left: 80px; border: unset"
+      type="primary"
     >
       提交
     </el-button>
@@ -117,49 +113,49 @@
 </script>
 
 <style scoped lang="scss">
-  ::v-deep .el-checkbox.is-bordered.el-checkbox--small .el-checkbox__inner {
-    height: 32px;
-    width: 32px;
-    background-color: #fff;
-    border: 1px solid #5fb878;
-    text-align: center;
-  }
-  ::v-deep[data-v-49011f64]
-    .el-checkbox.is-bordered.el-checkbox--small
-    .el-checkbox__inner {
-    position: absolute;
-    top: -15px;
-    left: 73px;
-  }
-  .vab-theme-blue-black .el-checkbox.is-bordered.is-checked {
-    background-color: #5fb878;
-    border: 1px solid #5fb878;
-  }
-  ::v-deep .el-checkbox__inner::after {
-    left: 10px;
-    top: 1px;
-  }
-  ::v-deep
-    .el-checkbox.is-bordered.el-checkbox--small
-    .el-checkbox__inner::after {
-    height: 16px;
-    width: 8px;
-  }
-  ::v-deep .el-checkbox__inner::after {
-    border: 1px solid green;
-    border-top: #fff;
-    border-left: #fff;
-  }
-  ::v-deep
-    [data-v-49011f64]
-    .el-checkbox.is-bordered.el-checkbox--small
-    .el-checkbox__inner {
-    border: 1px solid #d2d2d2;
-  }
-  ::v-deep .el-checkbox.is-bordered.el-checkbox--small .el-checkbox__label {
-    color: #fff;
-  }
-  ::v-deep .el-checkbox.is-bordered {
-    background-color: #d2d2d2;
-  }
+  // ::v-deep .el-checkbox.is-bordered.el-checkbox--small .el-checkbox__inner {
+  //   width: 32px;
+  //   height: 32px;
+  //   text-align: center;
+  //   background-color: #fff;
+  //   border: 1px solid #5fb878;
+  // }
+  // ::v-deep[data-v-49011f64]
+  //   .el-checkbox.is-bordered.el-checkbox--small
+  //   .el-checkbox__inner {
+  //   position: absolute;
+  //   top: -15px;
+  //   left: 73px;
+  // }
+  // .vab-theme-blue-black .el-checkbox.is-bordered.is-checked {
+  //   background-color: #5fb878;
+  //   border: 1px solid #5fb878;
+  // }
+  // ::v-deep .el-checkbox__inner::after {
+  //   top: 1px;
+  //   left: 10px;
+  // }
+  // ::v-deep
+  //   .el-checkbox.is-bordered.el-checkbox--small
+  //   .el-checkbox__inner::after {
+  //   width: 8px;
+  //   height: 16px;
+  // }
+  // ::v-deep .el-checkbox__inner::after {
+  //   border: 1px solid green;
+  //   border-top: #fff;
+  //   border-left: #fff;
+  // }
+  // ::v-deep
+  //   [data-v-49011f64]
+  //   .el-checkbox.is-bordered.el-checkbox--small
+  //   .el-checkbox__inner {
+  //   border: 1px solid #d2d2d2;
+  // }
+  // ::v-deep .el-checkbox.is-bordered.el-checkbox--small .el-checkbox__label {
+  //   color: #fff;
+  // }
+  // ::v-deep .el-checkbox.is-bordered {
+  //   background-color: #d2d2d2;
+  // }
 </style>

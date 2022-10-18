@@ -16,20 +16,21 @@
     </el-button>
     <el-table
       ref="multipleTable"
-      :data="tableData"
+      border
+      :data="bandList"
       style="width: 100%; margin-top: 20px"
       tooltip-effect="dark"
     >
-      <el-table-column type="index" width="150" />
-      <el-table-column label="波段名称" prop="date" width="220" />
-      <el-table-column label="商品数量" prop="name" width="220">
+      <el-table-column prop="id" width="200" />
+      <el-table-column label="波段名称" prop="name" width="320" />
+      <el-table-column label="商品数量" width="320">
         <template slot-scope="{ row }">
           <el-button
             size="small"
             type="text"
             @click="$router.push('/goods/goodsStatistical')"
           >
-            {{ row.name }}
+            {{ row.ddid }}
           </el-button>
         </template>
       </el-table-column>
@@ -39,19 +40,17 @@
         show-overflow-tooltip
         width="600"
       />
-      <el-table-column label="操作" prop="name" width="120">
-        <template slot-scope="{ row }">
-          <el-button size="small" style="color: #2d8cf0" type="text">
-            {{ row.editor }}丨
-          </el-button>
-          <el-button
-            size="small"
-            style="margin-left: -2px; color: #2d8cf0"
-            type="text"
-          >
-            {{ row.delete }}
-          </el-button>
-        </template>
+      <el-table-column label="操作" width="120">
+        <el-button size="small" style="color: #2d8cf0" type="text">
+          编辑丨
+        </el-button>
+        <el-button
+          size="small"
+          style="margin-left: -2px; color: #2d8cf0"
+          type="text"
+        >
+          删除
+        </el-button>
       </el-table-column>
     </el-table>
     <!-- 分页组件 -->
@@ -67,6 +66,7 @@
 </template>
 
 <script>
+  import { getWaveList } from '@/api/basic'
   export default {
     data() {
       return {
@@ -108,8 +108,19 @@
             delete: '删除',
           },
         ],
+        bandList: [],
         multipleSelection: [],
       }
+    },
+    created() {
+      this.getWaveList()
+    },
+    methods: {
+      async getWaveList() {
+        const res = await getWaveList()
+        console.log(res)
+        this.bandList = res.data.list
+      },
     },
   }
 </script>

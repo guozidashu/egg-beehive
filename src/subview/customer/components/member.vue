@@ -3,7 +3,7 @@
     <el-dialog
       :before-close="handleClose"
       style="font-size: 14px"
-      title="添加会员等级"
+      :title="`${numberValidateForm.id ? '编辑' : '添加'}会员等级`"
       :visible="dialogVisible"
       width="38%"
     >
@@ -23,7 +23,10 @@
         style="margin-top: 20px"
       >
         <el-form-item label="等级名称">
-          <el-input placeholder="请输入等级名称" />
+          <el-input
+            v-model.trim="numberValidateForm.name"
+            placeholder="请输入等级名称"
+          />
         </el-form-item>
         <el-row type="flex">
           <el-form-item label="等级">
@@ -38,9 +41,9 @@
           </el-form-item>
           <el-form-item label="享受折扣">
             <el-input-number
-              v-model="num1"
+              v-model="numberValidateForm.discount_sm"
               controls-position="right"
-              :max="1000"
+              :max="10"
               :min="1"
               style="width: 90px"
               @change="handleChange"
@@ -51,7 +54,7 @@
               v-model="num1"
               controls-position="right"
               :max="1000"
-              :min="1"
+              :min="0"
               style="width: 90px"
               @change="handleChange"
             />
@@ -86,9 +89,9 @@
           </el-dialog>
         </el-form-item>
         <el-form-item label="是否显示">
-          <el-radio-group v-model="radio">
-            <el-radio :label="3">显示</el-radio>
-            <el-radio :label="6">隐藏</el-radio>
+          <el-radio-group v-model="numberValidateForm.sp">
+            <el-radio :label="1">显示</el-radio>
+            <el-radio :label="0">隐藏</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="等级说明">
@@ -110,6 +113,7 @@
 
 <script>
   /* eslint-disable */
+  import { addGrade, updateGrade } from '@/api/basic'
   export default {
     props: {
       dialogVisible: {
@@ -125,7 +129,13 @@
         dialogImageUrl: '',
         dialogImage: false,
         textarea2: '',
-        numberValidateForm: {},
+        numberValidateForm: {
+          name: '',
+          discount: '',
+          sp: 0,
+          discount_sm: 10,
+          des: '3.5',
+        },
         rules: {
           img: [{ required: true, message: '请选择图标' }],
           img1: [{ required: true, message: '请选择背景' }],
@@ -135,6 +145,14 @@
     methods: {
       handleClose() {
         this.$emit('update:dialogVisible', false)
+        this.$refs.numberValidateForm.resetFields()
+        this.numberValidateForm = {
+          name: '',
+          discount: '',
+          sp: 0,
+          discount_sm: 10,
+          des: '',
+        }
       },
       handleChange(value) {
         // console.log(value)
@@ -146,8 +164,24 @@
         this.dialogImageUrl = file.url
         this.dialogVisible = true
       },
-      submit() {
-        this.$refs.numberValidateForm.validate()
+      async submit() {
+        // this.$refs.numberValidateForm.validate()
+        try {
+          this.numberValidateForm.id
+            ? await updateGrade({
+                id: String(this.numberValidateForm.id),
+                name: this.numberValidateForm.name,
+              })
+            : await addGrade(this.numberValidateForm)
+          this.$parent.getGradeList()
+          this.$message({
+            message: `${this.numberValidateForm.id ? '编辑' : '添加'}成功`,
+            type: 'success',
+          })
+          this.handleClose()
+        } catch (error) {
+          console.log(error)
+        }
       },
     },
   }

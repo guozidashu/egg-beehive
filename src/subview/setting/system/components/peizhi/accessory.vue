@@ -81,14 +81,7 @@
         </el-form-item>
       </div>
     </el-form>
-    <el-button
-      style="
-        margin-left: 80px;
-        margin-top: 30px;
-        background-color: #009688;
-        border: unset;
-      "
-    >
+    <el-button style="margin-top: 20px; margin-left: 40px" type="primary">
       提交
     </el-button>
   </div>
@@ -122,7 +115,7 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .vab-theme-blue-black .el-select-dropdown__item.hover,
   .vab-theme-blue-black .el-select-dropdown__item:hover {
     background-color: #5fb878;

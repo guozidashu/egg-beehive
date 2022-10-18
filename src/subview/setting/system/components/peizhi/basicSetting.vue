@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form label-width="108px">
+    <el-form label-width="158px">
       <el-form-item label="商家名称：">
         <el-input />
       </el-form-item>
@@ -12,7 +12,9 @@
       </el-form-item>
       <el-form-item label="商家LOGO：">
         <el-button>上传图片</el-button>
-        <span style="color: #999999">建议尺寸：200×200像素</span>
+        <span style="margin-left: 20px; color: #999999">
+          建议尺寸：200×200像素
+        </span>
         <div class="topLogo">
           <img alt="" src="https://new.shopvvv.cn/static/imgsrc/logo.jpg" />
         </div>
@@ -24,44 +26,38 @@
         <el-input />
       </el-form-item>
       <el-form-item label="经纬度：">
-        <el-input class="ipt2" style="margin-right: 10px" />
-        -
-        <el-input class="ipt2" style="margin-left: 10px" />
-        <el-button class="btn1">选择坐标</el-button>
+        <el-row type="flex">
+          <el-input class="ipt2" />
+          -
+          <el-input class="ipt2" style="margin-left: -1110px" />
+        </el-row>
       </el-form-item>
       <el-form-item label="客服链接地址：">
         <el-input style="width: 300px; height: 38px" />
-        <div style="color: #999999; margin-left: 80px">
-          商品详情页客服链接，不填写则使用商城内部客服系统
-        </div>
+        <span>商品详情页客服链接，不填写则使用商城内部客服系统</span>
       </el-form-item>
-      <el-row style="height: 38px; line-height: 38px" type="flex">
-        <div style="margin-left: 80px">微信小程序客服：</div>
-        <el-radio-group v-model="radio" style="line-height: 50px">
-          <el-radio :label="3">备选项</el-radio>
-          <el-radio :label="6">备选项</el-radio>
-          <el-radio :label="9">备选项</el-radio>
-        </el-radio-group>
-        <div v-if="radio === 3" style="margin-left: 50px">
-          客服链接：
-          <el-input />
-        </div>
-        <div v-if="radio === 9" style="margin-left: 50px">
-          客服链接：
-          <el-input />
-          <span style="margin-left: 10px">
-            企业ID ：
+      <el-form-item label="微信小程序客服：">
+        <el-row type="flex">
+          <el-radio-group v-model="radio" style="margin-top: 10px">
+            <el-radio :label="3">备选项</el-radio>
+            <el-radio :label="6">备选项</el-radio>
+            <el-radio :label="9">备选项</el-radio>
+          </el-radio-group>
+          <el-form-item v-if="radio === 3" label="客服链接：">
             <el-input />
-          </span>
-        </div>
-      </el-row>
-      <div style="color: #999999; margin-left: 184px; margin-top: 10px">
+          </el-form-item>
+          <el-form-item v-if="radio === 9" label="企业ID：">
+            <el-input />
+          </el-form-item>
+        </el-row>
+      </el-form-item>
+      <div style="margin-top: 10px; margin-left: 184px; color: #999999">
         客服链接：使用填写的客服链接，不填写则使用商城内部客服系统；
       </div>
-      <div style="color: #999999; margin-left: 184px; margin-top: 5px">
+      <div style="margin-top: 5px; margin-left: 184px; color: #999999">
         小程序客服：在小程序后台-功能-客服-小程序客服，配置客服人员；
       </div>
-      <div style="color: #999999; margin-left: 184px; margin-top: 5px">
+      <div style="margin-top: 5px; margin-left: 184px; color: #999999">
         微信客服：在
         <a href="#" style="color: black">微信客服</a>
         系统注册账号并绑定，
@@ -125,16 +121,7 @@
         <el-input v-model="a" />
       </div>
     </el-form>
-    <el-button
-      style="
-        margin-left: 80px;
-        margin-top: 30px;
-        background-color: #009688;
-        border: unset;
-      "
-    >
-      提交
-    </el-button>
+    <el-button style="margin-left: 80px" type="primary">提交</el-button>
   </div>
 </template>
 
@@ -154,53 +141,59 @@
   }
 </script>
 
-<style lang="scss">
-  .el-color-picker--small .el-color-picker__trigger {
-    margin-top: -14px;
-    margin-bottom: -13px;
-    height: 38px;
-    width: 38px;
-    margin-left: 10px;
-  }
-  .el-form-item__label {
-    margin-left: 80px;
-  }
-  .el-input {
-    width: 190px;
-  }
-  .el-input--small .el-input__inner {
-    height: 38px;
-  }
-  .vab-theme-blue-black .el-button {
-    margin-right: 20px;
+<style lang="scss" scoped>
+  ::v-deep .el-input--small .el-input__inner {
+    width: 248px;
   }
   .topLogo {
     width: 106px;
     height: 106px;
     margin-top: 10px;
-    margin-left: 80px;
     img {
       width: 100%;
       height: 100%;
       padding: 2px;
-      border: #d3d3d3 1px solid;
       background-color: #f6f6f6;
+      border: #d3d3d3 1px solid;
     }
   }
-  .ipt1 {
-    width: 600px;
-    height: 38px;
+  ::v-deep .ipt2 .el-input__inner {
+    width: 100px;
   }
-  .ipt2 {
-    width: 150px;
-    height: 38px;
-  }
-  .btn1 {
-    width: 94px;
-    height: 37px;
-    margin-left: 10px;
-  }
-  .vab-theme-blue-black .el-button {
-    border: 1px solid #555555;
-  }
+  // .el-color-picker--small .el-color-picker__trigger {
+  //   width: 38px;
+  //   height: 38px;
+  //   margin-top: -14px;
+  //   margin-bottom: -13px;
+  //   margin-left: 10px;
+  // }
+  // .el-form-item__label {
+  //   margin-left: 80px;
+  // }
+  // .el-input {
+  //   width: 190px;
+  // }
+  // .el-input--small .el-input__inner {
+  //   height: 38px;
+  // }
+  // .vab-theme-blue-black .el-button {
+  //   margin-right: 20px;
+  // }
+
+  // .ipt1 {
+  //   width: 600px;
+  //   height: 38px;
+  // }
+  // .ipt2 {
+  //   width: 150px;
+  //   height: 38px;
+  // }
+  // .btn1 {
+  //   width: 94px;
+  //   height: 37px;
+  //   margin-left: 10px;
+  // }
+  // .vab-theme-blue-black .el-button {
+  //   border: 1px solid #555555;
+  // }
 </style>

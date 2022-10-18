@@ -2,7 +2,7 @@
   <div>
     <el-card>
       <i class="el-icon-s-tools"></i>
-      系统配置
+      商城配置
       <el-divider />
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="基础配置" name="first">

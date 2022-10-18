@@ -5,20 +5,20 @@
     </el-button>
     <el-table
       ref="multipleTable"
+      border
       :data="tableData"
       style="width: 100%; margin-top: 20px"
       tooltip-effect="dark"
     >
       <el-table-column type="index" width="155" />
-      <el-table-column label="分类名称" prop="date" width="220" />
-      <el-table-column label="客户数" prop="name" width="220" />
+      <el-table-column label="分类名称" prop="date" width="420" />
+      <el-table-column label="客户数" prop="name" width="320" />
       <el-table-column
         label="分类说明（备注）"
         prop="address"
         show-overflow-tooltip
         width="500"
       />
-
       <el-table-column label="操作" prop="name" width="120">
         <template slot-scope="{ row }">
           <el-button size="small" style="color: #2d8cf0" type="text">

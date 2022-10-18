@@ -29,23 +29,24 @@
     <el-button
       style="margin-top: 20px; margin-left: 20px"
       type="primary"
-      @click="dialogMember"
+      @click="dialogMember('add')"
     >
       添加会员等级
     </el-button>
     <!-- 弹框组件 -->
-    <member :dialog-visible.sync="dialogVisible" />
+    <member ref="memberDialog" :dialog-visible.sync="dialogVisible" />
     <!-- 表格部分 -->
     <el-table
       ref="multipleTable"
+      border
       :data="tableData"
       style="width: 100%; margin-top: 20px"
       tooltip-effect="dark"
     >
-      <el-table-column label="ID" type="index" width="80" />
+      <el-table-column label="ID" prop="id" width="80" />
       <el-table-column label="等级图标" width="200">
         <template slot-scope="{ row }">
-          <img alt="" :src="row.date" style="width: 36px; height: 36px" />
+          <img alt="" :src="row.img" style="width: 36px; height: 36px" />
         </template>
       </el-table-column>
       <el-table-column label="等级名称" prop="name" width="200" />
@@ -65,14 +66,19 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="整批折扣" prop="BulkDiscount" width="200" />
-      <el-table-column label="散批折扣" prop="BulkDiscount" width="200" />
-      <el-table-column label="散批" prop="allow" width="200" />
+      <el-table-column label="整批折扣" prop="des" width="200" />
+      <el-table-column label="散批折扣" prop="zhekou_sm" width="200" />
+      <el-table-column label="散批" prop="sp" width="200">
+        <template slot-scope="{ row }">
+          <span v-show="row.sp == 0">不允许</span>
+          <span v-show="row.sp == 1">允许</span>
+        </template>
+      </el-table-column>
       <el-table-column label="等级说明" prop="num" width="160" />
       <el-table-column label="操作">
         <template slot-scope="{ row }">
-          <el-button size="small" type="text" @click="dialogMember()">
-            {{ row.editor }}丨
+          <el-button size="small" type="text" @click.native="dialogMember(row)">
+            编辑丨
           </el-button>
           <el-dropdown>
             <span
@@ -83,7 +89,9 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click="del(row.id)">删除等级</el-dropdown-item>
+              <el-dropdown-item @click.native="del(row.id)">
+                删除等级
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -102,6 +110,7 @@
 </template>
 
 <script>
+  import { getGradeList, deleteGrade, editGrade } from '@/api/basic'
   import member from './components/member.vue'
   export default {
     components: {
@@ -122,68 +131,50 @@
         ],
         currentPage3: 5,
         value: '',
-        tableData: [
-          {
-            date: 'https://s-pro.crmeb.net/uploads/system/fbacd351e606f494431a9c777ce7522c.png',
-            name: '黄金会员',
-            address: '10',
-            BulkDiscount: '3.5',
-            BulkBatchDiscount: '10',
-            allow: '不允许',
-            num: '12',
-            editor: '编辑',
-          },
-          {
-            date: 'https://s-pro.crmeb.net/uploads/system/58908a8c245f422da6e0924dec27c95d.png',
-            name: '白金会员',
-            address: '20',
-            BulkDiscount: '3.5',
-            BulkBatchDiscount: '3.8',
-            allow: '允许',
-            num: '10',
-            editor: '编辑',
-          },
-          {
-            date: 'https://s-pro.crmeb.net/uploads/system/e3d227d703e847a02655132f223436f8.png',
-            name: '铂金会员',
-            address: '3',
-            BulkDiscount: '2.8',
-            BulkBatchDiscount: '3.5',
-            allow: '允许',
-            num: '8',
-            editor: '编辑',
-          },
-          {
-            date: 'https://s-pro.crmeb.net/uploads/system/7adae9b31744480adf98a5c28a4ea095.png',
-            name: '青铜会员',
-            address: '20',
-            BulkDiscount: '3',
-            BulkBatchDiscount: '3',
-            allow: '允许',
-            num: '6',
-            editor: '编辑',
-          },
-          {
-            date: '	https://s-pro.crmeb.net/uploads/system/f834709c81367d94f5fb67d82a7d34bd.png',
-            name: '钻石会员',
-            address: '5',
-            BulkDiscount: '3.8',
-            BulkBatchDiscount: '2.8',
-            allow: '允许',
-            num: '1',
-            editor: '编辑',
-          },
-        ],
+        tableData: [],
         multipleSelection: [],
       }
     },
+    created() {
+      this.getGradeList()
+    },
     methods: {
-      del(row) {
-        this.$confirm('确认删除吗', '提示', { type: 'warning ' })
-        console.log(row)
+      async del(id) {
+        await this.$confirm('确认删除吗', '提示', { type: 'warning' })
+        // console.log(id)
+        await deleteGrade({ id: id })
+        this.$message({
+          message: '删除成功',
+          type: 'success',
+        })
+        this.getGradeList()
+        // console.log(res)
       },
-      dialogMember() {
+      async dialogMember(val) {
+        if (val === 'add') {
+          // console.log(45646, val)
+        } else {
+          // console.log(111111111, val)
+          const res = await editGrade({ id: val.id })
+          console.log(res)
+          this.$refs.memberDialog.numberValidateForm = {
+            id: val.id,
+            name: res.data.name,
+          }
+        }
         this.dialogVisible = true
+
+        // console.log(this.$refs.memberDialog)
+      },
+      async getGradeList() {
+        const res = await getGradeList()
+        // console.log(res)
+        this.tableData = res.data.list
+        this.tableData.forEach((item) => {
+          Object.assign(item, {
+            img: 'https://s-pro.crmeb.net/uploads/system/58908a8c245f422da6e0924dec27c95d.png',
+          })
+        })
       },
     },
   }

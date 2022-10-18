@@ -26,9 +26,9 @@
       <el-divider content-position="left">提现</el-divider>
       <el-form-item label="提现方式：">
         <el-checkbox-group v-model="checkboxGroup1" size="small">
-          <el-checkbox border label="微信钱包" />
-          <el-checkbox border label=" 支付宝" />
-          <el-checkbox border label="银行卡" />
+          <el-checkbox border class="box1" label="微信钱包" />
+          <el-checkbox border class="box1" label=" 支付宝" />
+          <el-checkbox border class="box1" label="银行卡" />
         </el-checkbox-group>
         <div style="margin-left: 80px; color: #999999">
           提现到微信钱包需开通企业付款到零钱功能
@@ -56,12 +56,16 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="提现最小金额：">
-        <el-input v-model="money" />
-        元
+        <el-row type="flex">
+          <el-input v-model="money" />
+          <span style="margin-left: -1120px">元</span>
+        </el-row>
       </el-form-item>
       <el-form-item label="提现手续费：">
-        <el-input v-model="money1" />
-        %
+        <el-row type="flex">
+          <el-input v-model="money1" />
+          <span style="margin-left: -1120px">%</span>
+        </el-row>
       </el-form-item>
       <el-divider content-position="left">在线支付</el-divider>
       <el-form-item label="微信支付限额：">
@@ -95,14 +99,7 @@
         开启后会员下单时可使用此支付方式，后台需审核并处理订单，仅平台支持
       </div>
     </el-form>
-    <el-button
-      style="
-        margin-left: 80px;
-        margin-top: 30px;
-        background-color: #009688;
-        border: unset;
-      "
-    >
+    <el-button style="margin-top: 20px; margin-left: 40px" type="primary">
       提交
     </el-button>
   </div>
@@ -131,15 +128,18 @@
   }
 </script>
 <style lang="scss" scoped>
+  ::v-deep .el-input--small .el-input__inner {
+    width: 248px;
+  }
   ::v-deep .el-checkbox.is-bordered + .el-checkbox.is-bordered {
-    margin-left: 10px;
     padding-right: 22px;
+    margin-left: 10px;
   }
 </style>
 <style lang="scss" scoped>
   .el-divider--horizontal .el-divider__text {
-    font-size: 20px;
     padding-top: 10px;
+    font-size: 20px;
   }
   html body .el-divider--horizontal,
   html body[class*='vab-theme-'] .el-divider--horizontal {
@@ -148,21 +148,21 @@
   .vab-theme-blue-black
     .el-checkbox-button.is-checked
     .el-checkbox-button__inner {
+    margin-right: 45px;
     background-color: #1890ff;
     border-color: #1890ff;
-    margin-right: 45px;
   }
   [data-v-5509bdc4] .el-checkbox.is-bordered + .el-checkbox.is-bordered {
-    margin-left: 11px;
     padding-right: 35px;
+    margin-left: 11px;
   }
 
   ::v-deep .el-checkbox.is-bordered.el-checkbox--small .el-checkbox__inner {
-    height: 32px;
     width: 32px;
+    height: 32px;
+    text-align: center;
     background-color: #fff;
     border: 1px solid #5fb878;
-    text-align: center;
   }
   ::v-deep[data-v-49011f64]
     .el-checkbox.is-bordered.el-checkbox--small
@@ -172,21 +172,21 @@
     left: 73px;
   }
   .vab-theme-blue-black .el-checkbox.is-bordered.is-checked {
-    background-color: #5fb878;
-    border: 1px solid #5fb878;
+    background-color: #1890ff;
+    border: 1px solid #1890ff;
   }
   ::v-deep .el-checkbox__inner::after {
-    left: 10px;
     top: 1px;
+    left: 10px;
   }
   ::v-deep
     .el-checkbox.is-bordered.el-checkbox--small
     .el-checkbox__inner::after {
-    height: 16px;
     width: 8px;
+    height: 16px;
   }
   ::v-deep .el-checkbox__inner::after {
-    border: 1px solid green;
+    border: 1px solid #1890ff;
     border-top: #fff;
     border-left: #fff;
   }
@@ -210,6 +210,16 @@
   ::v-deep[data-v-5509bdc4]
     .el-checkbox.is-bordered.el-checkbox--small
     .el-checkbox__inner {
+    border: 1px solid #d2d2d2;
+  }
+  ::v-deep[data-v-64dbe5e0]
+    .el-checkbox.is-bordered.el-checkbox--small
+    .el-checkbox__inner {
+    width: 32px;
+    height: 32px;
+    margin-left: -13px;
+    text-align: center;
+    background-color: #fff;
     border: 1px solid #d2d2d2;
   }
 </style>

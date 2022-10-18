@@ -166,6 +166,7 @@
     <!-- 插入表格 -->
     <el-table
       ref="multipleTable"
+      border
       :data="tableData"
       style="width: 100%; margin-top: 20px"
       tooltip-effect="dark"
@@ -214,6 +215,7 @@
 </template>
 
 <script>
+  //
   export default {
     data() {
       return {

@@ -26,16 +26,7 @@
         <el-input v-model="f8" />
       </el-form-item>
     </el-form>
-    <el-button
-      style="
-        margin-left: 80px;
-        margin-top: 30px;
-        background-color: #009688;
-        border: unset;
-      "
-    >
-      提交
-    </el-button>
+    <el-button style="margin-left: 110px" type="primary">提交</el-button>
   </div>
 </template>
 
@@ -56,4 +47,10 @@
   }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+  ::v-deep .el-input--small .el-input__inner {
+    width: 248px;
+    height: 32px;
+    line-height: 32px;
+  }
+</style>

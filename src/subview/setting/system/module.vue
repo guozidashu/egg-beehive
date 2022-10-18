@@ -264,10 +264,10 @@
 
 <script>
   // import { getList } from '@/api/area'
-  // import Form from './components/store'
+  import Form from './components/store'
   export default {
     name: 'SystemModule',
-    // components: { Form },
+    components: { Form },
     data() {
       return {
         activeName: 'first',
