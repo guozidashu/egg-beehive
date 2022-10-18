@@ -1,6 +1,6 @@
 const fs = require('fs')
 const { Random } = require('mockjs')
-// sadsad
+
 /**
  * @description 随机生成图片url。
  * @returns {string}
