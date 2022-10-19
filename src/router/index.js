@@ -477,7 +477,7 @@ export const asyncRoutes = [
     name: 'Report',
     component: Layout,
     meta: {
-      title: '报表',
+      title: '数据',
       icon: 'archive-line',
       breadcrumbHidden: true,
     },

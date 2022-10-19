@@ -25,7 +25,13 @@ export function getGoodsManagementList(data) {
     data,
   })
 }
-
+export function getGoodsTypeList(data) {
+  return request({
+    url: '/goods_type',
+    method: 'post',
+    data,
+  })
+}
 // 供应商管理
 export function getSupplierManagementList(data) {
   return request({

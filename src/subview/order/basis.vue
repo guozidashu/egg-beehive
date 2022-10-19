@@ -15,211 +15,171 @@
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">商品概况</span>
-        <el-form-item
-          label="时间筛选:"
-          style="margin-right: 0; font-size: 12px"
-        >
+        <el-form-item style="margin-right: 0; font-size: 12px">
+          <el-radio-group v-model="goodsForm.cite">
+            <el-radio-button label="今天" />
+            <el-radio-button label="昨天" />
+            <el-radio-button label="最近七天" />
+            <el-radio-button label="最近30天" />
+            <el-radio-button label="本月" />
+            <el-radio-button label="本年" />
+          </el-radio-group>
           <el-date-picker
             v-model="goodsForm.date"
             size="small"
             style="width: 250px"
             type="daterange"
           />
-          <el-button
-            native-type="submit"
-            size="small"
-            style="margin: 0 20px"
-            type="primary"
-          >
-            查询
-          </el-button>
-          <el-button native-type="submit" size="small" type="primary">
-            导出
-          </el-button>
         </el-form-item>
       </el-form>
       <div style="display: flex; flex-wrap: wrap">
         <div
           v-for="(item, index) in goodsStaList"
           :key="index"
-          style="display: flex; width: 20%; margin-bottom: 30px"
+          style="display: flex; width: 25%; padding: 25px"
         >
           <vab-icon
             icon="bar-chart-box-fill"
-            style="margin-right: 15px; font-size: 32px; color: #3bdfdf"
+            style="margin-right: 15px; font-size: 60px; color: #3bdfdf"
           />
-          <div style="display: flex; flex-direction: column; margin-top: 5px">
-            <div>
+          <div style="margin-top: 8px">
+            <p style="margin: 0; font-size: 24px">{{ item.num }}</p>
+            <p style="margin-top: 10px; font-size: 12px; color: #98a9bc">
               {{ item.title }}
-              <vab-icon
-                icon="album-line"
-                style="position: relative; top: -2px; font-size: 14px"
-              />
-            </div>
-            <div
-              style="
-                padding: 10px 0;
-                font-size: 30px;
-                font-weight: 400;
-                color: rgba(0, 0, 0, 0.85);
-              "
-            >
-              {{ item.num }}
-            </div>
-            <div>
-              <span v-if="item.type === 1">环比增长：</span>
-              <span v-else>环比减少：</span>
-              <i v-if="item.type === 1" style="font-size: 12px; color: #f5222d">
-                {{ item.number }}%
-                <vab-icon icon="arrow-drop-up-fill" />
-              </i>
-              <i v-else style="font-size: 12px; color: #39c15b">
-                {{ item.number }}%
-                <vab-icon icon="arrow-drop-down-fill" />
-              </i>
-            </div>
+            </p>
           </div>
         </div>
       </div>
+      <p style="font-size: 24px">营业趋势</p>
       <vab-chart
         :init-options="initOptions"
         :option="option"
         style="width: 100%; height: 400px"
       />
     </div>
-    <div style="padding: 20px; background-color: white">
-      <el-form
-        ref="form"
-        :inline="true"
-        label-width="80px"
-        :model="goodsForm"
-        style="display: flex; justify-content: space-between"
-        @submit.native.prevent
+
+    <div style="display: flex; justify-content: space-between">
+      <div
+        style="
+          width: 50%;
+          padding: 20px;
+          margin-right: 20px;
+          background-color: white;
+        "
       >
-        <span style="margin-top: 10px; font-size: 16px">商品排行</span>
-        <el-form-item style="margin-right: 0">
-          <el-form-item label="统计类型:" prop="region">
-            <el-select
-              v-model="goodsForm.region"
-              size="small"
-              style="width: 150px"
-            >
-              <el-option label="浏览量" value="shanghai" />
-              <el-option label="访问数" value="beijing" />
-            </el-select>
-          </el-form-item>
-          <el-form-item
-            label="时间筛选:"
-            style="margin-right: 0; font-size: 12px"
+        <div style="margin-bottom: 20px">
+          <span style="font-size: 24px">订单来源分析</span>
+          <el-button
+            native-type="submit"
+            size="small"
+            style="float: right"
+            type="primary"
+            @click="staType = !staType"
           >
-            <el-date-picker
-              v-model="goodsForm.date"
-              size="small"
-              style="width: 250px"
-              type="daterange"
-            />
-            <el-button
-              native-type="submit"
-              size="small"
-              style="margin: 0 0 0 20px"
-              type="primary"
-            >
-              查询
-            </el-button>
-          </el-form-item>
-        </el-form-item>
-      </el-form>
-      <List :list="goosList" :state="listLoading" :type="listType">
-        <!-- 表格组件具名插槽 自定义表头 -->
-        <template #List>
+            切换样式
+          </el-button>
+        </div>
+        <el-table v-if="staType" :data="tableData" height="480px">
           <el-table-column
             align="center"
-            label="商品图片"
-            prop="image"
-            show-overflow-tooltip
-          >
+            label="序号"
+            type="index"
+            width="80"
+          />
+          <el-table-column label="来源" prop="title" width="200px" />
+          <el-table-column label="金额" prop="num" width="200px" />
+          <el-table-column label="占比率">
             <template #default="{ row }">
-              <el-image :src="row.image" />
+              <el-progress :color="row.color" :percentage="row.percentage" />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="商品名称" prop="store_name" />
-          <el-table-column
-            align="center"
-            label="浏览量"
-            prop="visit"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="访客数"
-            prop="user"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="加购件数"
-            prop="cart"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="下单件数"
-            prop="orders"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="支付件数"
-            prop="pay"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="支付金额"
-            prop="price"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="毛利率(%)"
-            prop="profit"
-            show-overflow-tooltip
+        </el-table>
+        <BasisEchart v-else />
+      </div>
+      <div style="width: 49%; padding: 20px; background-color: white">
+        <div style="margin-bottom: 20px">
+          <span style="font-size: 24px">订单类型分析</span>
+          <el-button
+            native-type="submit"
+            size="small"
+            style="float: right"
+            type="primary"
+            @click="staType1 = !staType1"
           >
-            <template #default="{ row }">{{ row.profit * 100 }}%</template>
-          </el-table-column>
+            切换样式
+          </el-button>
+        </div>
+        <el-table v-if="staType1" :data="tableData" height="480px">
           <el-table-column
             align="center"
-            label="收藏数"
-            prop="collect"
-            show-overflow-tooltip
+            label="序号"
+            type="index"
+            width="80"
           />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
-          >
+          <el-table-column label="来源" prop="title" width="200px" />
+          <el-table-column label="金额" prop="num" width="200px" />
+          <el-table-column label="占比率">
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">查看</el-button>
+              <el-progress :color="row.color" :percentage="row.percentage" />
             </template>
           </el-table-column>
-        </template>
-      </List>
+        </el-table>
+        <BasisEchart v-else />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
+  import BasisEchart from '@/subview/components/BasisEchart.vue'
   export default {
     name: 'GoodsStatistical',
-    components: { List, VabChart },
+    components: { VabChart, BasisEchart },
     data() {
       return {
         listLoading: false,
+        staType: false,
+        staType1: false,
         listType: 2,
+        tableData: [
+          {
+            title: '小程序',
+            num: 20,
+            percentage: 50,
+            color: '#95de64',
+          },
+          {
+            title: '小程序',
+            num: 20,
+            percentage: 8,
+            color: '#69c0ff',
+          },
+          {
+            title: '小程序',
+            num: 20,
+            percentage: 76,
+            color: '#1890FF',
+          },
+          {
+            title: '小程序',
+            num: 20,
+            percentage: 100,
+            color: '#ffc069',
+          },
+          {
+            title: '小程序',
+            num: 20,
+            percentage: 25,
+            color: '#5cdbd3',
+          },
+          {
+            title: '小程序',
+            num: 20,
+            percentage: 1,
+            color: '#b37feb',
+          },
+        ],
         goosList: [
           {
             visit: '507',
@@ -297,67 +257,25 @@
               'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
           },
         ],
-        goodsForm: {},
+        goodsForm: {
+          cite: '今天',
+        },
         goodsStaList: [
           {
-            title: '商品数量',
-            number: 200,
+            title: '数量',
             num: 94.32,
-            type: 1,
           },
           {
-            title: '商品数量',
-            number: 200,
+            title: '销售额',
             num: 94.32,
-            type: 1,
           },
           {
-            title: '商品数量',
-            number: 200,
+            title: '退货数量',
             num: 94.32,
-            type: 1,
           },
           {
-            title: '商品数量',
-            number: 200,
+            title: '退货金额',
             num: 94.32,
-            type: 1,
-          },
-          {
-            title: '商品数量',
-            number: 200,
-            num: 94.32,
-            type: 1,
-          },
-          {
-            title: '成本金额',
-            number: 400,
-            num: 34.32,
-            type: 2,
-          },
-          {
-            title: '成本金额',
-            number: 400,
-            num: 34.32,
-            type: 2,
-          },
-          {
-            title: '成本金额',
-            number: 400,
-            num: 34.32,
-            type: 2,
-          },
-          {
-            title: '成本金额',
-            number: 400,
-            num: 34.32,
-            type: 2,
-          },
-          {
-            title: '成本金额',
-            number: 400,
-            num: 34.32,
-            type: 2,
           },
         ],
         initOptions: {
@@ -371,7 +289,7 @@
             },
           },
           legend: {
-            data: ['商品浏览量', '商品访客量', '支付金额', '退款金额'],
+            data: ['数量', '销售额', '退货数量', '退货金额'],
           },
           grid: {
             left: '3%',
@@ -438,7 +356,7 @@
           ],
           series: [
             {
-              name: '商品浏览量',
+              name: '数量',
               type: 'line',
               stack: 'Total',
               smooth: true,
@@ -453,7 +371,7 @@
               },
             },
             {
-              name: '商品访客量',
+              name: '销售额',
               type: 'line',
               stack: 'Total',
               smooth: true,
@@ -467,8 +385,10 @@
               },
             },
             {
-              name: '支付金额',
-              type: 'bar',
+              name: '退货数量',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
               data: [
                 0, 10.09, 0, 4.43, 74.25, 157.1, 0, 0, 47.04, 0, 0, 1473.6, 0,
                 0, 0, 377.2, 0.11, 0.67, 0.11, 85.18, 0, 0.1, 0, 0, 0, 0, 0,
@@ -479,11 +399,13 @@
               },
             },
             {
-              name: '退款金额',
-              type: 'bar',
+              name: '退货金额',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
               data: [
                 0, 0, 0, 0.02, 0, 0, 3798.02, 0, 0.01, 0, 7001, 1151.36, 0,
-                4494.1, 1002679, 6131.7, 0, 0, 0, 59.1, 0, 1000050.14, 0, 403,
+                4494.1, 102679, 6131.7, 0, 0, 0, 59.1, 0, 100050.14, 0, 403,
                 299, 11696.1, 0, 2665, 0, 15242.36,
               ],
               itemStyle: {

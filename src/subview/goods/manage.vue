@@ -6,20 +6,36 @@
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
           <el-form-item label="品牌:">
-            <el-input v-model="form.name" style="width: 215px" />
+            <el-select v-model="form.brand" placeholder="请选择品牌">
+              <el-option
+                v-for="(item, index) in typeData.brand"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="类别款式:">
-            <el-input v-model="form.name" style="width: 215px" />
+            <el-select v-model="form.region" placeholder="请选择类别款式">
+              <el-option
+                v-for="(item, index) in typeData.goods_category"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="年份:">
             <el-date-picker v-model="form.date" type="year" />
           </el-form-item>
           <el-form-item label="季节:">
-            <el-select v-model="form.region">
-              <el-option label="春季" value="shanghai" />
-              <el-option label="夏季" value="shanghai" />
-              <el-option label="秋季" value="shanghai" />
-              <el-option label="冬季" value="shanghai" />
+            <el-select v-model="form.region" placeholder="请选择季节">
+              <el-option
+                v-for="(item, index) in typeData.schedule_record"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
             </el-select>
           </el-form-item>
           <el-form-item label="供应商:">
@@ -48,13 +64,13 @@
       </Form>
     </div>
     <el-card shadow="never" style="border: 0">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="出售中 (3)" name="first" />
-        <el-tab-pane label="仓库中 (129)" name="second" />
-        <el-tab-pane label=" 已售罄 (18)" name="three" />
-        <el-tab-pane label="库存预警 (2)" name="four" />
-        <el-tab-pane label="待确认 (10)" name="five" />
-        <el-tab-pane label="待收货 (30)" name="six" />
+      <el-tabs v-model="form.activeName" @tab-click="handleClick">
+        <el-tab-pane label="出售中 (3)" name="1" />
+        <el-tab-pane label="仓库中 (129)" name="2" />
+        <el-tab-pane label=" 已售罄 (18)" name="3" />
+        <el-tab-pane label="库存预警 (2)" name="4" />
+        <el-tab-pane label="待确认 (10)" name="5" />
+        <el-tab-pane label="待收货 (30)" name="6" />
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -131,25 +147,19 @@
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
   import Drawer from './components/Drawer'
-  import { getGoodsManagementList } from '@/api/basic'
+  import { getGoodsManagementList, getGoodsTypeList } from '@/api/basic'
   export default {
     name: 'GoodsManage',
     components: { List, Form, Drawer },
     data() {
       return {
-        activeName: 'first',
         drawer: false,
         // 表单数据/列表参数
         form: {
           // 自定义参数
-          orderSta: '全部',
-          paySta: '全部',
-          orderSource: 'ERP订单',
-          fold: true,
-          typeSelect: 'order',
-          dataSelect: '0',
-          data: '',
-          orderId: '',
+          activeName: '1',
+          type: 1,
+          brand: 1,
           // 公共参数
           pageNo: 1,
           pageSize: 10,
@@ -159,6 +169,7 @@
         listType: 1,
         formType: 4,
         list: [],
+        typeData: [],
         listLoading: false,
         total: 0,
       }
@@ -174,6 +185,7 @@
     },
     created() {
       this.fetchData()
+      this.getGoodsTypeList()
     },
     methods: {
       handleQuery() {},
@@ -189,7 +201,7 @@
       },
       // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
-        console.log(1111, tab.label)
+        console.log(1111, tab.label, tab.name)
         this.form.pageNo = 1
       },
       // 列表数据请求函数 公共部分
@@ -201,6 +213,13 @@
         this.list = list
         this.total = total
         this.listLoading = false
+      },
+      async getGoodsTypeList() {
+        const {
+          data: { data },
+        } = await getGoodsTypeList(this.form)
+        this.typeData = data
+        console.log(111111111111, this.typeData)
       },
       // 详情抽屉
       handleDetail() {

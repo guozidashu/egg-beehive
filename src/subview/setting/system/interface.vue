@@ -354,7 +354,7 @@
     name: 'SystemStorage',
     data() {
       return {
-        activeName: '本地储存',
+        activeName: '聚水潭ERP',
         form: {
           name: '',
           state: '',
