@@ -43,9 +43,9 @@
           >
             <i class="el-icon-plus"></i>
           </el-upload>
-          <!-- <el-dialog>
+          <el-dialog :visible.sync="dialogImage">
             <img alt="" :src="dialogImageUrl" width="100%" />
-          </el-dialog> -->
+          </el-dialog>
         </el-form-item>
         <el-form-item label="会员背景" prop="img1">
           <el-upload
@@ -57,9 +57,9 @@
           >
             <i class="el-icon-plus"></i>
           </el-upload>
-          <!-- <el-dialog :visible.sync="dialogImage">
+          <el-dialog :visible.sync="dialogImage">
             <img alt="" :src="dialogImageUrl" width="100%" />
-          </el-dialog> -->
+          </el-dialog>
         </el-form-item>
         <el-form-item label="排序">
           <el-input-number
@@ -119,7 +119,6 @@
           },
         ],
         value: '',
-        dialogImage: '',
         dialogImageUrl: '',
         num: 0,
         radio: 3,
@@ -140,9 +139,6 @@
       },
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url
-      },
-      handleChange(value) {
-        console.log(value)
       },
     },
   }

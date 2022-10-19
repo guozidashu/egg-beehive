@@ -38,7 +38,7 @@
     <el-button
       style="margin-top: 20px; margin-left: 20px"
       type="primary"
-      @click="open('add')"
+      @click="open()"
     >
       添加分类
     </el-button>
@@ -81,20 +81,15 @@
       </el-table-column>
       <el-table-column align="center" label="操作" prop="name" width="120">
         <template slot-scope="{ row }">
-          <el-button
-            size="small"
-            style="color: #2d8cf0"
-            type="text"
-            @click="open(row.id)"
-          >
-            编辑丨
+          <el-button size="small" style="color: #2d8cf0" type="text">
+            {{ row.editor }}丨
           </el-button>
           <el-button
             size="small"
             style="margin-left: -2px; color: #2d8cf0"
             type="text"
           >
-            删除
+            {{ row.delete }}
           </el-button>
         </template>
       </el-table-column>
@@ -349,12 +344,7 @@
       }
     },
     methods: {
-      open(val) {
-        if (val == 'add') {
-          console.log('添加')
-        } else {
-          console.log('编辑')
-        }
+      open() {
         this.dialogVisible = true
       },
       handleSelectionChange(val) {

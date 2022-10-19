@@ -81,20 +81,15 @@
       </el-table-column>
       <el-table-column align="center" label="操作" prop="name" width="120">
         <template slot-scope="{ row }">
-          <el-button
-            size="small"
-            style="color: #2d8cf0"
-            type="text"
-            @click="open(row.id)"
-          >
-            编辑丨
+          <el-button size="small" style="color: #2d8cf0" type="text">
+            {{ row.editor }}丨
           </el-button>
           <el-button
             size="small"
             style="margin-left: -2px; color: #2d8cf0"
             type="text"
           >
-            删除
+            {{ row.delete }}
           </el-button>
         </template>
       </el-table-column>
