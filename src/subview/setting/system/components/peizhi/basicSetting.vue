@@ -96,18 +96,22 @@
         </el-col>
       </el-row>
       <el-form-item label="主色调：">
-        <el-input v-model="color1" />
-        <el-color-picker v-model="color1" />
-        <span style="margin-left: 20px; color: #999999">
-          商城主色调，如：#FD4A46
-        </span>
+        <el-row type="flex">
+          <el-input v-model="color1" />
+          <el-color-picker v-model="color1" style="margin-left: -1077px" />
+          <span style="margin-left: 20px; color: #999999">
+            商城主色调，如：#FD4A46
+          </span>
+        </el-row>
       </el-form-item>
       <el-form-item label="辅色调：">
-        <el-input v-model="color2" />
-        <el-color-picker v-model="color2" />
-        <span style="margin-left: 20px; color: #999999">
-          商城辅色调，如：#7E71F6
-        </span>
+        <el-row type="flex">
+          <el-input v-model="color2" />
+          <el-color-picker v-model="color2" style="margin-left: -1077px" />
+          <span style="margin-left: 20px; color: #999999">
+            商城辅色调，如：#7E71F6
+          </span>
+        </el-row>
       </el-form-item>
       <el-form-item label="进入条件：" style="margin-right: 20px">
         <el-checkbox-group v-model="checked2">

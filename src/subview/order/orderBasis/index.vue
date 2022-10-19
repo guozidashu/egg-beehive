@@ -191,8 +191,10 @@
         width="332"
       >
         <template slot-scope="{ row }">
-          <img alt="" :src="row.img" style="width: 30px; height: 30px" />
-          <span>{{ row.shoping }}</span>
+          <div v-for="(item, index) in row.inof" :key="index">
+            <img alt="" :src="item.img" style="width: 30px; height: 30px" />
+            <span>{{ item.text }}</span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="实际支付" prop="pay" width="102" />
@@ -377,7 +379,16 @@
             name: '[普通订单]',
             address: '阿白',
             shoping: ' BY FAR Miranda leather shoulder bag |默认',
-            img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+            inof: [
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://img0.baidu.com/it/u=1312333900,3482091395&fm=253&fmt=auto&app=120&f=JPEG?w=392&h=696',
+              },
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://img1.baidu.com/it/u=2380423497,3235001906&fm=253&fmt=auto&app=138&f=JPEG?w=400&h=400',
+              },
+            ],
             pay: '597.00',
             time: '2022-10-11 13:40:47',
             type: '余额支付',
@@ -389,7 +400,20 @@
             name: '[普通订单]',
             address: '155****0161',
             shoping: '【供应商】金枕榴莲 新鲜水果 整果带壳特产 5-6斤1个装 | ',
-            img: 'https://s-pro.crmeb.net/uploads/attach/2022/09/28/a22df8c033b57be21a7ee30023f03a2d.jpg',
+            inof: [
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://img0.baidu.com/it/u=2619542684,4152077598&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+              },
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://img2.baidu.com/it/u=1443268907,972332939&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+              },
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://img1.baidu.com/it/u=585075827,92212782&fm=253&fmt=auto&app=138&f=JPEG?w=469&h=469',
+              },
+            ],
             pay: '0.93',
             time: '2022-10-11 13:40:47',
             type: '余额支付',
@@ -401,7 +425,12 @@
             name: '[普通订单]',
             address: '阿白',
             shoping: ' BY FAR Miranda leather shoulder bag |默认',
-            img: 'https://qiniu.crmeb.net/attach/2021/08/7dd96202108091906115467.png',
+            inof: [
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://img0.baidu.com/it/u=1312333900,3482091395&fm=253&fmt=auto&app=120&f=JPEG?w=392&h=696',
+              },
+            ],
             pay: '597.00',
             time: '2022-10-11 13:40:47',
             type: '余额支付',
@@ -413,7 +442,16 @@
             name: '[普通订单]',
             address: '155****0161',
             shoping: '【供应商】金枕榴莲 新鲜水果 整果带壳特产 5-6斤1个装 | ',
-            img: 'https://qiniu.crmeb.net/attach/2021/08/c4a77202108091906111650.png',
+            inof: [
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://img1.baidu.com/it/u=3707023224,3122065746&fm=253&fmt=auto&app=138&f=JPEG?w=354&h=354',
+              },
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://img1.baidu.com/it/u=531720831,2464565346&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+              },
+            ],
             pay: '0.93',
             time: '2022-10-11 13:40:47',
             type: '余额支付',
@@ -431,10 +469,13 @@
         this.name = tab.name
         // console.log(this.name)
       },
-      handleSelectionChange(index) {
-        console.log(index)
-        this.disabled = index
+      handleSelectionChange(selection) {
+        console.log(selection)
+        this.disabled = selection
       },
+      // select1(selection, row) {
+      //   console.log(selection, '11111111111111111', row)
+      // },
     },
   }
 </script>

@@ -26,9 +26,24 @@
       <el-divider content-position="left">提现</el-divider>
       <el-form-item label="提现方式：">
         <el-checkbox-group v-model="checkboxGroup1" size="small">
-          <el-checkbox border class="box1" label="微信钱包" />
-          <el-checkbox border class="box1" label=" 支付宝" />
-          <el-checkbox border class="box1" label="银行卡" />
+          <el-checkbox
+            border
+            class="box1"
+            label="微信钱包"
+            style="padding-left: 0px"
+          />
+          <el-checkbox
+            border
+            class="box1"
+            label=" 支付宝"
+            style="padding-left: 3px"
+          />
+          <el-checkbox
+            border
+            class="box1"
+            label="银行卡"
+            style="padding-left: 3px"
+          />
         </el-checkbox-group>
         <div style="margin-left: 80px; color: #999999">
           提现到微信钱包需开通企业付款到零钱功能
