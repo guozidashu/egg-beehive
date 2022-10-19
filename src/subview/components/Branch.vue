@@ -1,8 +1,9 @@
 <template>
-  <div class="dccc" style="width: 300px; height: 200px">
+  <div>
     <vab-chart
       :init-options="initOptions"
       :option="option"
+      style="width: 400px"
       theme="vab-echarts-theme"
     />
   </div>
