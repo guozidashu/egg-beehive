@@ -16,7 +16,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="类别款式:">
-            <el-select v-model="form.region" placeholder="请选择类别款式">
+            <el-select v-model="form.kuanshi" placeholder="请选择类别款式">
               <el-option
                 v-for="(item, index) in typeData.goods_category"
                 :key="index"
@@ -26,10 +26,14 @@
             </el-select>
           </el-form-item>
           <el-form-item label="年份:">
-            <el-date-picker v-model="form.date" type="year" />
+            <el-date-picker
+              v-model="form.nianfen"
+              type="year"
+              value-format="yyyy"
+            />
           </el-form-item>
           <el-form-item label="季节:">
-            <el-select v-model="form.region" placeholder="请选择季节">
+            <el-select v-model="form.jijie" placeholder="请选择季节">
               <el-option
                 v-for="(item, index) in typeData.schedule_record"
                 :key="index"
@@ -39,7 +43,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="供应商:">
-            <el-input v-model="form.name" style="width: 215px" />
+            <el-input v-model="form.name1" style="width: 215px" />
           </el-form-item>
           <el-form-item label="状态:">
             <el-select v-model="form.region">
@@ -64,7 +68,7 @@
       </Form>
     </div>
     <el-card shadow="never" style="border: 0">
-      <el-tabs v-model="form.activeName" @tab-click="handleClick">
+      <el-tabs v-model="form.type" @tab-click="handleClick">
         <el-tab-pane label="出售中 (3)" name="1" />
         <el-tab-pane label="仓库中 (129)" name="2" />
         <el-tab-pane label=" 已售罄 (18)" name="3" />
@@ -78,7 +82,7 @@
             native-type="submit"
             size="small"
             type="primary"
-            @click="handleQuery"
+            @click="handleEdit('add')"
           >
             添加商品
           </el-button>
@@ -113,7 +117,6 @@
           <el-table-column label="类别款式" prop="liebie" width="120" />
           <el-table-column label="销售价" prop="xiaoshou" width="80" />
           <el-table-column prop="num" width="150">
-            <!-- 现货|生产中 -->
             <template slot="header">
               <span>现货|生产中</span>
             </template>
@@ -130,7 +133,7 @@
           >
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">详情</el-button>
-              <el-button type="text">编辑</el-button>
+              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
             </template>
           </el-table-column>
         </template>
@@ -140,30 +143,43 @@
       <!-- 详情抽屉组件 -->
       <Drawer />
     </el-drawer>
+    <Edit :form="editForm" :state="editState" :title="editTitle" />
   </div>
 </template>
 
 <script>
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
+  import Edit from '@/subview/components/Edit'
   import Drawer from './components/Drawer'
   import { getGoodsManagementList, getGoodsTypeList } from '@/api/basic'
   export default {
     name: 'GoodsManage',
-    components: { List, Form, Drawer },
+    components: { List, Form, Drawer, Edit },
     data() {
       return {
         drawer: false,
         // 表单数据/列表参数
         form: {
           // 自定义参数
-          activeName: '1',
-          type: 1,
+          type: '1',
           brand: 1,
           // 公共参数
           pageNo: 1,
           pageSize: 10,
+          //款式
+          kuanshi: 4,
+          //年份
+          nianfen: '',
+          //季节
+          jijie: '',
+          //商品名称
+          name: '',
         },
+        // 编辑组件
+        editForm: {},
+        editState: false,
+        editTitle: '',
         // 列表数据相关
         // 公共参数
         listType: 1,
@@ -188,6 +204,17 @@
       this.getGoodsTypeList()
     },
     methods: {
+      // 新增修改
+      async handleEdit(row) {
+        if (row === 'add') {
+          this.editTitle = '新增商品'
+          this.editState = true
+        } else {
+          this.editTitle = '修改商品'
+          this.editState = true
+          this.editForm = row
+        }
+      },
       handleQuery() {},
       // 列表数据封装函数
 
@@ -219,7 +246,6 @@
           data: { data },
         } = await getGoodsTypeList(this.form)
         this.typeData = data
-        console.log(111111111111, this.typeData)
       },
       // 详情抽屉
       handleDetail() {

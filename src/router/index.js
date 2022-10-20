@@ -326,6 +326,15 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'supplierAnalysis',
+        name: 'SupplierAnalysis',
+        component: () => import('@/subview/supplier/analysis'),
+        meta: {
+          title: '供应商分析',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {
@@ -737,6 +746,15 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/bom'),
         meta: {
           title: '物料',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'archivesPrint',
+        name: 'ArchivesPrint',
+        component: () => import('@/subview/archives/print'),
+        meta: {
+          title: '吊牌打印',
           icon: 'archive-line',
         },
       },
