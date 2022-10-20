@@ -32,25 +32,8 @@
           />
         </el-form-item>
       </el-form>
-      <div style="display: flex; flex-wrap: wrap">
-        <div
-          v-for="(item, index) in goodsStaList"
-          :key="index"
-          style="display: flex; width: 25%; padding: 25px"
-        >
-          <vab-icon
-            icon="bar-chart-box-fill"
-            style="margin-right: 15px; font-size: 60px; color: #3bdfdf"
-          />
-          <div style="margin-top: 8px">
-            <p style="margin: 0; font-size: 24px">{{ item.num }}</p>
-            <p style="margin-top: 10px; font-size: 12px; color: #98a9bc">
-              {{ item.title }}
-            </p>
-          </div>
-        </div>
-      </div>
-      <p style="font-size: 24px">营业趋势</p>
+      <TextLabels :list="goodsStaList" :width="textwidth" />
+      <p>营业趋势</p>
       <vab-chart
         :init-options="initOptions"
         :option="option"
@@ -94,7 +77,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <BasisEchart v-else />
+        <Branch v-else :list="branchList" />
       </div>
       <div style="width: 49%; padding: 20px; background-color: white">
         <div style="margin-bottom: 20px">
@@ -124,7 +107,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <BasisEchart v-else />
+        <Branch v-else :list="branchList" />
       </div>
     </div>
   </div>
@@ -132,16 +115,51 @@
 
 <script>
   import VabChart from '@/extra/VabChart'
-  import BasisEchart from '@/subview/components/BasisEchart.vue'
+  import Branch from '@/subview/components/Branch'
+  import TextLabels from '@/subview/components/TextLabels'
   export default {
     name: 'GoodsStatistical',
-    components: { VabChart, BasisEchart },
+    components: { VabChart, Branch, TextLabels },
     data() {
       return {
         listLoading: false,
-        staType: false,
+        staType: true,
         staType1: false,
         listType: 2,
+        textwidth: '25%',
+        branchList: [
+          { value: 1048, name: 'APP' },
+          { value: 735, name: 'H5' },
+          { value: 580, name: '移动端' },
+          { value: 484, name: 'PC端' },
+          { value: 300, name: '小程序' },
+        ],
+        goodsStaList: [
+          {
+            title: '数量',
+            number: 200,
+            num: 94.32,
+            type: 1,
+          },
+          {
+            title: '销售额',
+            number: 200,
+            num: 94.32,
+            type: 1,
+          },
+          {
+            title: '退货数量',
+            number: 200,
+            num: 94.32,
+            type: 1,
+          },
+          {
+            title: '退货金额',
+            number: 200,
+            num: 94.32,
+            type: 1,
+          },
+        ],
         tableData: [
           {
             title: '小程序',
@@ -260,24 +278,6 @@
         goodsForm: {
           cite: '今天',
         },
-        goodsStaList: [
-          {
-            title: '数量',
-            num: 94.32,
-          },
-          {
-            title: '销售额',
-            num: 94.32,
-          },
-          {
-            title: '退货数量',
-            num: 94.32,
-          },
-          {
-            title: '退货金额',
-            num: 94.32,
-          },
-        ],
         initOptions: {
           renderer: 'svg',
         },
@@ -424,9 +424,4 @@
   }
 </script>
 
-<style lang="scss" scoped>
-  .workbench-container {
-    padding: 0 !important;
-    background: $base-color-background !important;
-  }
-</style>
+<style lang="scss" scoped></style>

@@ -7,7 +7,7 @@
         <template #Form>
           <el-form-item label="供应商类别:">
             <!-- 1外协加工厂2成品采购商3面辅料供应商4其他5自厂 -->
-            <el-select v-model="form.region1">
+            <el-select v-model="form.supplierType">
               <el-option label="外协加工厂" :value="1" />
               <el-option label="成品采购商" :value="2" />
               <el-option label="面辅料供应商" :value="3" />
@@ -16,14 +16,14 @@
             </el-select>
           </el-form-item>
           <el-form-item label="供应商类型:">
-            <el-select v-model="form.region">
+            <el-select v-model="form.supplierType1">
               <el-option label="张三" value="shanghai" />
               <el-option label="李四" value="shanghai" />
             </el-select>
           </el-form-item>
           <el-form-item label="搜索:">
             <el-input
-              v-model="form.name"
+              v-model="form.supplierName"
               placeholder="请输入供应商名称"
               style="width: 215px"
             />
@@ -112,15 +112,9 @@
         // 表单数据/列表参数
         form: {
           // 自定义参数
-          orderSta: '全部',
-          paySta: '全部',
-          orderSource: 'ERP订单',
-          fold: true,
-          typeSelect: 'order',
-          dataSelect: '0',
-          data: '',
-          orderId: '',
           // 公共参数
+          supplierType: '',
+          supplierName: '',
           pageNo: 1,
           pageSize: 10,
         },

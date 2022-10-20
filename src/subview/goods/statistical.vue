@@ -39,49 +39,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <div style="display: flex; flex-wrap: wrap">
-        <div
-          v-for="(item, index) in goodsStaList"
-          :key="index"
-          style="display: flex; width: 20%; margin-bottom: 30px"
-        >
-          <vab-icon
-            icon="bar-chart-box-fill"
-            style="margin-right: 15px; font-size: 32px; color: #3bdfdf"
-          />
-          <div style="display: flex; flex-direction: column; margin-top: 5px">
-            <div>
-              {{ item.title }}
-              <vab-icon
-                icon="album-line"
-                style="position: relative; top: -2px; font-size: 14px"
-              />
-            </div>
-            <div
-              style="
-                padding: 10px 0;
-                font-size: 30px;
-                font-weight: 400;
-                color: rgba(0, 0, 0, 0.85);
-              "
-            >
-              {{ item.num }}
-            </div>
-            <div>
-              <span v-if="item.type === 1">环比增长：</span>
-              <span v-else>环比减少：</span>
-              <i v-if="item.type === 1" style="font-size: 12px; color: #f5222d">
-                {{ item.number }}%
-                <vab-icon icon="arrow-drop-up-fill" />
-              </i>
-              <i v-else style="font-size: 12px; color: #39c15b">
-                {{ item.number }}%
-                <vab-icon icon="arrow-drop-down-fill" />
-              </i>
-            </div>
-          </div>
-        </div>
-      </div>
+      <TextLabels :list="goodsStaList" />
       <vab-chart
         :init-options="initOptions"
         :option="option"
@@ -163,9 +121,10 @@
 <script>
   import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
+  import TextLabels from '@/subview/components/TextLabels'
   export default {
     name: 'GoodsStatistical',
-    components: { List, VabChart },
+    components: { List, VabChart, TextLabels },
     data() {
       return {
         listLoading: false,

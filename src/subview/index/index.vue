@@ -2,14 +2,12 @@
   <div class="index-container">
     <el-row :gutter="20">
       <page-header />
-      <el-col :lg="6" :md="12" :sm="24" :xl="6" :xs="24">
-        <access />
-      </el-col>
-      <el-col :lg="6" :md="12" :sm="24" :xl="6" :xs="24">
-        <authorization />
+      <TextTags :list="textTagList" />
+      <el-col :lg="12" :md="12" :sm="24" :xl="12" :xs="24">
+        <MembersChart />
       </el-col>
       <el-col :lg="12" :md="24" :sm="24" :xl="12" :xs="24">
-        <version-information />
+        <SalesChart />
       </el-col>
       <el-col :lg="12" :md="12" :sm="24" :xl="12" :xs="24">
         <trend />
@@ -36,12 +34,12 @@
 
 <script>
   import PageHeader from './components/PageHeader'
-  import Access from './components/Access'
-  import Authorization from './components/Authorization'
+  import TextTags from './componentscopy/TextTags'
+  import MembersChart from './componentscopy/MembersChart'
+  import SalesChart from './componentscopy/SalesChart'
   import ChinaMap from './components/ChinaMap'
   import MyProject from './components/MyProject'
   import Plan from './components/Plan'
-  import VersionInformation from './components/VersionInformation'
   import Trend from './components/Trend'
   import Branch from './components/Branch'
   import Rank from './components/Rank'
@@ -51,16 +49,54 @@
     name: 'Index',
     components: {
       PageHeader,
-      Access,
-      Authorization,
+      TextTags,
+      MembersChart,
+      SalesChart,
       ChinaMap,
-      VersionInformation,
       MyProject,
       Plan,
       Trend,
       Branch,
       Rank,
       Tabs,
+    },
+    data() {
+      return {
+        textTagList: [
+          {
+            title: '销售额',
+            number: 200,
+            num: 94.32,
+            type: 1,
+            pay: 234,
+            money: 3000,
+          },
+          {
+            title: '销售数量',
+            number: 200,
+            num: 94.32,
+            type: 1,
+            pay: 234,
+            money: 1000,
+          },
+          {
+            title: '客户',
+            number: 400,
+            num: 34.32,
+            type: 2,
+            pay: 234,
+            money: 2000,
+          },
+          {
+            title: '新增客户',
+            number: 400,
+            num: 34.32,
+            type: 2,
+            pay: 234,
+            money: 2000,
+          },
+        ],
+      }
     },
   }
 </script>

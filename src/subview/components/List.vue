@@ -36,11 +36,8 @@
       v-if="listType === 4"
       v-loading="state"
       :data="list"
-      :header-cell-style="{
-        background: '#FFFFFF',
-      }"
       max-height="500"
-      style="margin-left: 20px"
+      style="width: 100%"
       @selection-change="setSelectRows"
     >
       <slot name="List"></slot>

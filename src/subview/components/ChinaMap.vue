@@ -16,6 +16,12 @@
     components: {
       VabChart,
     },
+    props: {
+      title: {
+        type: String,
+        default: '',
+      },
+    },
     data() {
       return {
         countConfig: {
@@ -46,7 +52,7 @@
         VabChart.registerMap('china', data)
         this.option = {
           title: {
-            text: '用户地域分布',
+            text: this.title,
           },
           tooltip: {
             trigger: 'item',
@@ -72,7 +78,7 @@
           series: [
             {
               layoutCenter: ['50%', '50%'],
-              layoutSize: '100%',
+              layoutSize: '90%',
               name: '地区统计',
               type: 'map',
               roam: false,
