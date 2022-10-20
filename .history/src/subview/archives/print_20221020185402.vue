@@ -222,11 +222,11 @@
             >
               <div>
                 <span>商品名称：</span>
-                <span>夏季清爽套装玩转珍格格</span>
+                <span>同城深秋卡通套装</span>
               </div>
               <div style="margin-top: 5px">
                 <span>商品编码：</span>
-                <span>QY0454234</span>
+                <span>QY001HS90</span>
               </div>
             </div>
           </div>
@@ -280,7 +280,7 @@
             </div>
           </div>
         </div>
-        <div v-if="radio2 == '白色'" style="width: 600px; height: 400px">
+        <div v-if="radio2 == '红色'" style="width: 600px; height: 400px">
           <div
             style="
               display: flex;
@@ -299,7 +299,7 @@
             >
               <img
                 alt=""
-                src="https://img0.baidu.com/it/u=1458576126,4143555283&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=5005"
+                src="https://img0.baidu.com/it/u=4234749206,2760073433&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=385"
                 style="width: 100px; height: 100px"
               />
             </div>
@@ -314,11 +314,11 @@
             >
               <div>
                 <span>商品名称：</span>
-                <span>新疆棉纯棉100%T恤儿童</span>
+                <span>同城深秋卡通套装</span>
               </div>
               <div style="margin-top: 5px">
                 <span>商品编码：</span>
-                <span>QY0323123</span>
+                <span>QY001HS90</span>
               </div>
             </div>
           </div>

@@ -96,7 +96,10 @@
           </div>
         </div>
         <!-- 活动下半部分 -->
-        <div v-if="radio2 == '黑色'" style="width: 600px; height: 400px">
+        <div
+          v-if="radio2 == '黑色'&&radio1='QY001'"
+          style="width: 600px; height: 400px"
+        >
           <div
             style="
               display: flex;

@@ -74,12 +74,6 @@
               <el-radio-group v-model="radio2">
                 <el-radio-button label="黑色" style="" />
               </el-radio-group>
-              <el-radio-group v-model="radio2">
-                <el-radio-button label="红色" style="" />
-              </el-radio-group>
-              <el-radio-group v-model="radio2">
-                <el-radio-button label="白色" style="" />
-              </el-radio-group>
             </span>
           </div>
           <div style="margin-top: 5px">
@@ -96,7 +90,10 @@
           </div>
         </div>
         <!-- 活动下半部分 -->
-        <div v-if="radio2 == '黑色'" style="width: 600px; height: 400px">
+        <div
+          v-if="radio2 == '黑色'"
+          style="width: 600px; height: 400px; background-color: pink"
+        >
           <div
             style="
               display: flex;
@@ -138,99 +135,14 @@
               </div>
             </div>
           </div>
-          <div style="width: 600px; height: 200px; margin-top: 40px">
-            <div style="padding-top: 20px; margin-left: 30px">
-              <span>打印种类：</span>
-              <el-radio-group v-model="radio">
-                <el-radio :label="3">备选项</el-radio>
-                <el-radio :label="6">备选项</el-radio>
-                <el-radio :label="9">备选项</el-radio>
-              </el-radio-group>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <span>打印模板：</span>
-              <el-select
-                v-model="value1"
-                placeholder="请选择"
-                style="width: 120px"
-              >
-                <el-option
-                  v-for="item in options1"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-              <el-radio
-                v-model="radio1"
-                border
-                label="1"
-                style="margin-left: 10px"
-              >
-                默认使用模板设置的打印机
-              </el-radio>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <el-row type="flex">
-                <span style="line-height: 32px">打印数量：</span>
-                <el-input v-model="num" style="width: 50px" />
-                <el-button plain style="margin-left: 10px" type="primary">
-                  打印预览
-                </el-button>
-                <el-button plain type="primary">立即打印</el-button>
-              </el-row>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <el-row type="flex">
-                <span style="line-height: 32px">自定义打印内容：</span>
-                <el-input style="width: 248px" />
-              </el-row>
-            </div>
-          </div>
-        </div>
-        <div v-if="radio2 == '红色'" style="width: 600px; height: 400px">
           <div
             style="
-              display: flex;
-              width: 500px;
-              height: 100px;
-              margin-left: 10px;
+              width: 600px;
+              height: 200px;
+              margin-top: 40px;
+              background-color: red;
             "
           >
-            <div
-              style="
-                width: 100px;
-                height: 100px;
-                margin-top: 40px;
-                margin-left: 20px;
-              "
-            >
-              <img
-                alt=""
-                src="https://img0.baidu.com/it/u=4234749206,2760073433&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=385"
-                style="width: 100px; height: 100px"
-              />
-            </div>
-            <div
-              style="
-                width: 750px;
-                height: 100%;
-                padding-top: 40px;
-                margin-left: 40px;
-                font-size: 16px;
-              "
-            >
-              <div>
-                <span>商品名称：</span>
-                <span>夏季清爽套装玩转珍格格</span>
-              </div>
-              <div style="margin-top: 5px">
-                <span>商品编码：</span>
-                <span>QY0454234</span>
-              </div>
-            </div>
-          </div>
-          <div style="width: 600px; height: 200px; margin-top: 40px">
             <div style="padding-top: 20px; margin-left: 30px">
               <span>打印种类：</span>
               <el-radio-group v-model="radio">
@@ -253,122 +165,10 @@
                   :value="item.value"
                 />
               </el-select>
-              <el-radio
-                v-model="radio1"
-                border
-                label="1"
+              <el-radio-button
+                label="默认使用模板设置的打印机"
                 style="margin-left: 10px"
-              >
-                默认使用模板设置的打印机
-              </el-radio>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <el-row type="flex">
-                <span style="line-height: 32px">打印数量：</span>
-                <el-input v-model="num" style="width: 50px" />
-                <el-button plain style="margin-left: 10px" type="primary">
-                  打印预览
-                </el-button>
-                <el-button plain type="primary">立即打印</el-button>
-              </el-row>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <el-row type="flex">
-                <span style="line-height: 32px">自定义打印内容：</span>
-                <el-input style="width: 248px" />
-              </el-row>
-            </div>
-          </div>
-        </div>
-        <div v-if="radio2 == '白色'" style="width: 600px; height: 400px">
-          <div
-            style="
-              display: flex;
-              width: 500px;
-              height: 100px;
-              margin-left: 10px;
-            "
-          >
-            <div
-              style="
-                width: 100px;
-                height: 100px;
-                margin-top: 40px;
-                margin-left: 20px;
-              "
-            >
-              <img
-                alt=""
-                src="https://img0.baidu.com/it/u=1458576126,4143555283&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=5005"
-                style="width: 100px; height: 100px"
               />
-            </div>
-            <div
-              style="
-                width: 750px;
-                height: 100%;
-                padding-top: 40px;
-                margin-left: 40px;
-                font-size: 16px;
-              "
-            >
-              <div>
-                <span>商品名称：</span>
-                <span>新疆棉纯棉100%T恤儿童</span>
-              </div>
-              <div style="margin-top: 5px">
-                <span>商品编码：</span>
-                <span>QY0323123</span>
-              </div>
-            </div>
-          </div>
-          <div style="width: 600px; height: 200px; margin-top: 40px">
-            <div style="padding-top: 20px; margin-left: 30px">
-              <span>打印种类：</span>
-              <el-radio-group v-model="radio">
-                <el-radio :label="3">备选项</el-radio>
-                <el-radio :label="6">备选项</el-radio>
-                <el-radio :label="9">备选项</el-radio>
-              </el-radio-group>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <span>打印模板：</span>
-              <el-select
-                v-model="value1"
-                placeholder="请选择"
-                style="width: 120px"
-              >
-                <el-option
-                  v-for="item in options1"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-              <el-radio
-                v-model="radio1"
-                border
-                label="1"
-                style="margin-left: 10px"
-              >
-                默认使用模板设置的打印机
-              </el-radio>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <el-row type="flex">
-                <span style="line-height: 32px">打印数量：</span>
-                <el-input v-model="num" style="width: 50px" />
-                <el-button plain style="margin-left: 10px" type="primary">
-                  打印预览
-                </el-button>
-                <el-button plain type="primary">立即打印</el-button>
-              </el-row>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <el-row type="flex">
-                <span style="line-height: 32px">自定义打印内容：</span>
-                <el-input style="width: 248px" />
-              </el-row>
             </div>
           </div>
         </div>
@@ -471,7 +271,6 @@
   export default {
     data() {
       return {
-        num: 1,
         options1: [
           {
             value: '选项1',
@@ -570,7 +369,6 @@
   ::v-deep .el-radio-button__orig-radio:checked + .el-radio-button__inner {
     color: #fff;
     background-color: #505153;
-    // border: 1px solid #505153;
-    border-left: 1px solid #505153;
+    border: 1px solid #505153;
   }
 </style>

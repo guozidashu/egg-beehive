@@ -1,0 +1,203 @@
+<template>
+  <div style="padding-top: 20px">
+    <el-button style="margin-left: 20px" type="primary">打印吊牌条码</el-button>
+    <el-button style="margin-left: 40px" type="primary">
+      导入打印吊牌条码
+    </el-button>
+    <!-- 分签页 -->
+    <el-tabs
+      v-model="activeName"
+      style="margin-left: 20px"
+      @tab-click="handleClick"
+    >
+      <div
+        v-if="activeName === 'first'"
+        style="
+          width: 100%;
+          height: 60px;
+          padding-left: 30px;
+          line-height: 60px;
+          background-color: #e8f4ff;
+        "
+      >
+        Tabs 组件提供了选项卡功能，默认选中第一个标签页，你也可以通过 value
+        属性来指定当前选中的标签页。
+      </div>
+      <div
+        v-if="activeName === 'second'"
+        style="
+          width: 100%;
+          height: 60px;
+          padding-top: 10px;
+          padding-left: 30px;
+          background-color: #e8f4ff;
+        "
+      >
+        <span>①找到订单单号，复制到粘贴框</span>
+        <span style="display: block; margin-top: 5px">
+          ②点击导入商品，导入明细进行打印
+        </span>
+      </div>
+      <el-tab-pane label="常规打印" name="first">
+        <!-- 插入第一部分内容 -->
+        <el-form label-width="104px">
+          <el-form-item label="商品搜索：" style="margin-top: 20px">
+            <el-input placeholder="请输入款号" style="width: 248px" />
+            <el-button style="margin-left: 20px" type="primary">查询</el-button>
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
+      <el-tab-pane label="导入式打印" name="second">
+        <!-- 插入第二部分内容 -->
+        <i class="el-icon-printer"></i>
+        <el-button type="">吊牌打印预览</el-button>
+        <el-form>
+          <el-form-item>
+            <el-row type="flex">
+              <el-select
+                v-model="value"
+                placeholder="请选择"
+                style="width: 120px; margin-top: 20px"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+              <el-input
+                placeholder="粘贴到这里"
+                style="width: 248px; margin-top: 20px"
+              />
+              <el-button
+                style="height: 32px; margin-top: 20px; margin-left: 20px"
+                type="primary"
+              >
+                导入商品
+              </el-button>
+            </el-row>
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
+    </el-tabs>
+    <el-table
+      ref="multipleTable"
+      v-loading="loading"
+      border
+      :data="printList"
+      sortable
+      style="width: 100%; margin-top: 20px"
+      tooltip-effect="dark"
+      @selection-change="handleSelectionChange"
+    >
+      >
+      <el-table-column type="selection" width="55" />
+      <el-table-column align="center" label="图片" prop="img" width="220">
+        <template slot-scope="{ row }">
+          <img alt="" :src="row.img" style="width: 40px; height: 30px" />
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="center"
+        label="商品名称"
+        prop="name"
+        width="220"
+      />
+      <el-table-column align="center" label="款号" prop="model" width="220" />
+      <el-table-column
+        label="颜色"
+        prop="color"
+        show-overflow-tooltip
+        width="220"
+      />
+      <el-table-column align="center" label="尺码" prop="size" width="220" />
+      <el-table-column align="center" label="数量" prop="num" width="220" />
+      <el-table-column
+        align="center"
+        label="商品编码"
+        prop="bianma"
+        width="220"
+      />
+    </el-table>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        activeName: 'first',
+        options: [
+          {
+            value: '选项1',
+            label: '采购单',
+          },
+          {
+            value: '选项2',
+            label: '生产计划单',
+          },
+          {
+            value: '选项3',
+            label: '外发加工单',
+          },
+        ],
+        value: '',
+        printList: [
+          {
+            img: 'https://img0.baidu.com/it/u=1895837640,2691329714&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '黑色',
+            model: '2022款',
+            size: 'XXL',
+            num: '99',
+            bianma: 'xz1289088980234234',
+          },
+          {
+            img: 'https://img1.baidu.com/it/u=2138195331,3860457921&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '黄色色',
+            model: '2021款',
+            size: 'S',
+            num: '10',
+            bianma: 'xz1289088980234234',
+          },
+          {
+            img: 'https://img2.baidu.com/it/u=4128009961,2011864989&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '白色',
+            model: '2022款',
+            size: 'XL',
+            num: '1000',
+            bianma: 'xz1289088980234234',
+          },
+          {
+            img: 'https://img1.baidu.com/it/u=3985309804,2360825202&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '黑色',
+            model: '2022款',
+            size: 'M',
+            num: '999',
+            bianma: 'xz1289088980234234',
+          },
+          {
+            img: 'https://img2.baidu.com/it/u=82239579,3679411218&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '黄色',
+            model: '2022款',
+            size: 'L',
+            num: '199',
+            bianma: 'xz1289088980234234',
+          },
+        ],
+      }
+    },
+    methods: {
+      handleClick(tab, event) {
+        console.log(tab, event)
+      },
+    },
+  }
+</script>
+
+<style lang="scss" scoped></style>
