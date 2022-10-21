@@ -68,7 +68,11 @@
         </List>
       </div>
       <div style="flex: 3; padding: 20px; background-color: white">
-        <branch :list="branchList" :title="branchTitle" />
+        <branch
+          :list="branchList"
+          :style-chart="styleObj"
+          :title="branchTitle"
+        />
       </div>
     </div>
     <div style="padding: 20px; margin-top: 20px; background-color: white">
@@ -132,6 +136,13 @@
         branchTitle: '供应商类别占比',
         mapTitle: '供应商域分布',
         goodsForm: {},
+        styleObj: {
+          width: '400px',
+          height: '500px',
+          legendx: 0,
+          legendy: 450,
+          center: ['50%', '50%'],
+        },
         branchList: [
           { value: 1048, name: '外协加工厂' },
           { value: 580, name: '成品采购商' },

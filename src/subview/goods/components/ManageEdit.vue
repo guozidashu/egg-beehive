@@ -9,71 +9,48 @@
       <el-form-item label="商品名称">
         <el-input v-model="form.name" />
       </el-form-item>
-      <el-form-item label="商品标题" prop="shop_title">
-        <el-input v-model="form.shop_title" />
+      <el-form-item label="商品标题" prop="shoptitle">
+        <el-input v-model="form.shoptitle" />
       </el-form-item>
       <el-form-item label="商品图片">
         <el-upload
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action="/upload"
+          :auto-upload="false"
+          :file-list="fileList"
           list-type="picture-card"
+          :on-change="handleChange"
           :on-preview="handlePictureCardPreview"
           :on-remove="handleRemove"
         >
           <i class="el-icon-plus"></i>
         </el-upload>
-        <el-dialog :visible.sync="dialogVisible">
-          <img alt="" :src="dialogImageUrl" width="100%" />
+        <el-dialog
+          append-to-body
+          title="查看大图"
+          :visible.sync="dialogVisible"
+        >
+          <div>
+            <el-image :src="dialogImageUrl" />
+          </div>
         </el-dialog>
       </el-form-item>
-      <el-form-item label="款号" prop="sn">
-        <el-input v-model="form.sn" />
-      </el-form-item>
-      <el-form-item label="商品颜色" prop="colors">
-        <el-select v-model="form.colors" multiple placeholder="请选择">
+      <el-form-item label="品牌:">
+        <el-select v-model="form.brand" placeholder="请选择品牌">
           <el-option
-            v-for="item in form.colorOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="(item, index) in typeData.brand"
+            :key="index"
+            :label="item.name"
+            :value="item.id"
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="商品尺码" prop="sizes">
-        <el-select v-model="form.sizes" multiple placeholder="请选择">
+      <el-form-item label="类别款式:">
+        <el-select v-model="form.kuanshi" placeholder="请选择类别款式">
           <el-option
-            v-for="item in form.sizeOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="裁床金额" prop="cutting_price">
-        <el-input v-model="form.cutting_price" />
-      </el-form-item>
-      <el-form-item label="加工费" prop="process_price">
-        <el-input v-model="form.process_price" />
-      </el-form-item>
-      <el-form-item label="设计编号" prop="designer_sn">
-        <el-input v-model="form.designer_sn" />
-      </el-form-item>
-      <el-form-item label="设计师" prop="designer_userid">
-        <el-select v-model="form.designer_userid" placeholder="请选择">
-          <el-option
-            v-for="item in form.designerOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="年龄段" prop="age">
-        <el-select v-model="form.age" placeholder="请选择">
-          <el-option
-            v-for="item in form.ageOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="(item, index) in typeData.goods_category"
+            :key="index"
+            :label="item.name"
+            :value="item.id"
           />
         </el-select>
       </el-form-item>
@@ -93,10 +70,17 @@
       return {
         dialogImageUrl: '',
         dialogVisible: false,
+        fileList: [
+          {
+            url: '',
+          },
+        ],
+        typeData: [],
         form: {
           name: '',
           id: '',
           year: '',
+          img: '',
         },
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
@@ -125,11 +109,21 @@
         this.dialogFormVisible = true
       },
       handleRemove(file, fileList) {
-        console.log(file, fileList)
+        console.log(222, file, fileList)
       },
       handlePictureCardPreview(file) {
+        console.log(3333, file)
         this.dialogImageUrl = file.url
         this.dialogVisible = true
+      },
+      handleChange(file, fileList) {
+        console.log(22343423, file, fileList)
+        if (file.size > 1048576 * this.size) {
+          fileList.filter((item) => item !== file)
+          this.fileList = fileList
+        } else {
+          this.allImgNum = fileList.length
+        }
       },
       close() {
         this.$refs['form'].resetFields()

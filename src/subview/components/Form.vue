@@ -39,27 +39,6 @@
           />
         </el-button>
       </el-form-item>
-      <!-- <el-form-item
-            label-width="0px"
-            style="flex-basis: 100%; padding-top: 10px"
-          >
-            <el-button
-              native-type="submit"
-              size="small"
-              type="primary"
-              @click="handleQuery"
-            >
-              导出
-            </el-button>
-            <el-button
-              native-type="submit"
-              size="small"
-              type="primary"
-              @click="handleQuery"
-            >
-              批量
-            </el-button>
-          </el-form-item> -->
     </el-form>
 
     <el-form
@@ -114,6 +93,7 @@
     >
       <slot name="Form"></slot>
       <el-form-item label-width=" ">
+        <el-button @click="resetForm">重置</el-button>
         <el-button
           icon="el-icon-search"
           native-type="submit"
@@ -135,6 +115,10 @@
       form: {
         type: Object,
         default: () => {},
+      },
+      typeData: {
+        type: Array,
+        default: () => [],
       },
       formType: {
         type: Number,
@@ -172,6 +156,9 @@
       // 删除事件 公共
       handleDelete() {
         this.$emit('deleteDate', 1)
+      },
+      resetForm() {
+        this.$emit('resetForm')
       },
     },
   }

@@ -49,6 +49,22 @@
       </template>
     </el-table>
     <el-table
+      v-if="listType === 5"
+      v-loading="state"
+      :data="list"
+      :max-height="listHeight"
+      style="width: 100%"
+      @selection-change="setSelectRows"
+    >
+      <slot name="List"></slot>
+      <template #empty>
+        <el-image
+          class="vab-data-empty"
+          :src="require('@/assets/empty_images/data_empty.png')"
+        />
+      </template>
+    </el-table>
+    <el-table
       v-if="listType === 3"
       v-loading="state"
       border
@@ -96,6 +112,10 @@
         default: 0,
       },
       listType: {
+        type: Number,
+        default: 0,
+      },
+      listHeight: {
         type: Number,
         default: 0,
       },

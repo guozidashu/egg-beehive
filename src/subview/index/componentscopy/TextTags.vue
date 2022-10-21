@@ -48,7 +48,7 @@
         </div>
         <div class="bottom">
           <span>
-            本日销售额
+            本月销售额
             <el-tag
               v-if="item.type === 1"
               class="card-footer-tag"

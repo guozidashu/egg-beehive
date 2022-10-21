@@ -3,7 +3,12 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+      <Form
+        :form="form"
+        :form-type="formType"
+        @changeSearch="handleQuery"
+        @resetForm="resetForm"
+      >
         <template #Form>
           <el-form-item label="品牌:">
             <el-select v-model="form.brand" placeholder="请选择品牌">
@@ -28,6 +33,7 @@
           <el-form-item label="年份:">
             <el-date-picker
               v-model="form.nianfen"
+              style="width: 215px"
               type="year"
               value-format="yyyy"
             />
@@ -47,14 +53,14 @@
           </el-form-item>
           <el-form-item label="状态:">
             <el-select v-model="form.region">
-              <el-option label="在售" value="shanghai" />
-              <el-option label="停售" value="shanghai" />
+              <el-option label="在售" value="1" />
+              <el-option label="停售" value="2" />
             </el-select>
           </el-form-item>
           <el-form-item label="类型:">
-            <el-select v-model="form.region">
-              <el-option label="整手" value="shanghai" />
-              <el-option label="散码" value="shanghai" />
+            <el-select v-model="form.region1">
+              <el-option label="整手" value="1" />
+              <el-option label="散码" value="2" />
             </el-select>
           </el-form-item>
           <el-form-item label="商品搜索:">
@@ -142,7 +148,7 @@
       <!-- 详情抽屉组件 -->
       <Drawer />
     </el-drawer>
-    <edit ref="edit" @fetch-data="fetchData" />
+    <edit ref="edit" :type-data="typeData" @fetch-data="fetchData" />
   </div>
 </template>
 
@@ -162,12 +168,12 @@
         form: {
           // 自定义参数
           type: '1',
-          brand: 1,
+          brand: '',
           // 公共参数
           pageNo: 1,
           pageSize: 10,
           //款式
-          kuanshi: 4,
+          kuanshi: '',
           //年份
           nianfen: '',
           //季节
@@ -201,9 +207,11 @@
     methods: {
       // 新增修改
       async handleEdit(row) {
+        this.$refs.edit.typeData = this.typeData
         if (row === 'add') {
           this.$refs['edit'].showEdit()
         } else {
+          console.log(65466546, row)
           this.$refs['edit'].showEdit(row)
         }
       },
@@ -242,6 +250,9 @@
       // 详情抽屉
       handleDetail() {
         this.drawer = true
+      },
+      resetForm() {
+        this.form = this.$options.data().form
       },
     },
   }

@@ -77,7 +77,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <Branch v-else :list="branchList" />
+        <Branch v-else :list="branchList" :style-chart="styleObj" />
       </div>
       <div style="width: 49%; padding: 20px; background-color: white">
         <div style="margin-bottom: 20px">
@@ -107,7 +107,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <Branch v-else :list="branchList" />
+        <Branch v-else :list="branchList" :style-chart="styleObj" />
       </div>
     </div>
   </div>
@@ -127,6 +127,13 @@
         staType1: false,
         listType: 2,
         textwidth: '25%',
+        styleObj: {
+          width: '400px',
+          height: '400px',
+          legendx: 0,
+          legendy: 350,
+          center: ['50%', '50%'],
+        },
         branchList: [
           { value: 1048, name: 'APP' },
           { value: 735, name: 'H5' },
