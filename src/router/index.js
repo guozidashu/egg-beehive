@@ -422,6 +422,15 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'analysis',
+        name: 'Analysis',
+        component: () => import('@/subview/order/analysis.vue'),
+        meta: {
+          title: '订单统计分析',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {

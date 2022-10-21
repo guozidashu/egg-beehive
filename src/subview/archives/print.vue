@@ -96,7 +96,11 @@
           </div>
         </div>
         <!-- 活动下半部分 -->
-        <div v-if="radio2 == '黑色'" style="width: 600px; height: 400px">
+        <div
+          v-if="radio2 == '黑色'"
+          ref="vab-print-table"
+          style="width: 600px; height: 400px"
+        >
           <div
             style="
               display: flex;
@@ -113,11 +117,24 @@
                 margin-left: 20px;
               "
             >
-              <img
-                alt=""
-                src="https://img0.baidu.com/it/u=3096705183,261020725&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=984"
-                style="width: 100px; height: 100px"
-              />
+              <el-tooltip
+                class="item"
+                content="Top Center 提示文字"
+                effect="dark"
+                placement="top"
+              >
+                <img
+                  slot="content"
+                  src="https://img0.baidu.com/it/u=3096705183,261020725&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=984"
+                  style="width: 200px; height: 200px"
+                />
+                <img
+                  alt=""
+                  src="https://img0.baidu.com/it/u=3096705183,261020725&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=984"
+                  style="width: 100px; height: 100px"
+                  @click="openDialog"
+                />
+              </el-tooltip>
             </div>
             <div
               style="
@@ -142,9 +159,9 @@
             <div style="padding-top: 20px; margin-left: 30px">
               <span>打印种类：</span>
               <el-radio-group v-model="radio">
-                <el-radio :label="3">备选项</el-radio>
-                <el-radio :label="6">备选项</el-radio>
-                <el-radio :label="9">备选项</el-radio>
+                <el-radio :label="3">打印吊牌</el-radio>
+                <el-radio :label="6">打印条码</el-radio>
+                <el-radio :label="9">BT打印</el-radio>
               </el-radio-group>
             </div>
             <div style="margin-top: 5px; margin-left: 30px">
@@ -174,7 +191,12 @@
               <el-row type="flex">
                 <span style="line-height: 32px">打印数量：</span>
                 <el-input v-model="num" style="width: 50px" />
-                <el-button plain style="margin-left: 10px" type="primary">
+                <el-button
+                  plain
+                  style="margin-left: 10px"
+                  type="primary"
+                  @click="print('vab-print-table')"
+                >
                   打印预览
                 </el-button>
                 <el-button plain type="primary">立即打印</el-button>
@@ -188,7 +210,11 @@
             </div>
           </div>
         </div>
-        <div v-if="radio2 == '红色'" style="width: 600px; height: 400px">
+        <div
+          v-if="radio2 == '红色'"
+          ref="vab-print-table"
+          style="width: 600px; height: 400px"
+        >
           <div
             style="
               display: flex;
@@ -205,11 +231,24 @@
                 margin-left: 20px;
               "
             >
-              <img
-                alt=""
-                src="https://img0.baidu.com/it/u=4234749206,2760073433&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=385"
-                style="width: 100px; height: 100px"
-              />
+              <el-tooltip
+                class="item"
+                content="Top Center 提示文字"
+                effect="dark"
+                placement="top"
+              >
+                <img
+                  slot="content"
+                  src="https://img1.baidu.com/it/u=1212355170,3821244735&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500"
+                  style="width: 200px; height: 200px"
+                />
+                <img
+                  alt=""
+                  src="https://img1.baidu.com/it/u=1212355170,3821244735&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500"
+                  style="width: 100px; height: 100px"
+                  @click="openDialog"
+                />
+              </el-tooltip>
             </div>
             <div
               style="
@@ -234,9 +273,9 @@
             <div style="padding-top: 20px; margin-left: 30px">
               <span>打印种类：</span>
               <el-radio-group v-model="radio">
-                <el-radio :label="3">备选项</el-radio>
-                <el-radio :label="6">备选项</el-radio>
-                <el-radio :label="9">备选项</el-radio>
+                <el-radio :label="3">打印吊牌</el-radio>
+                <el-radio :label="6">打印条码</el-radio>
+                <el-radio :label="9">BT打印</el-radio>
               </el-radio-group>
             </div>
             <div style="margin-top: 5px; margin-left: 30px">
@@ -266,7 +305,12 @@
               <el-row type="flex">
                 <span style="line-height: 32px">打印数量：</span>
                 <el-input v-model="num" style="width: 50px" />
-                <el-button plain style="margin-left: 10px" type="primary">
+                <el-button
+                  plain
+                  style="margin-left: 10px"
+                  type="primary"
+                  @click="print('vab-print-table')"
+                >
                   打印预览
                 </el-button>
                 <el-button plain type="primary">立即打印</el-button>
@@ -280,7 +324,11 @@
             </div>
           </div>
         </div>
-        <div v-if="radio2 == '白色'" style="width: 600px; height: 400px">
+        <div
+          v-if="radio2 == '白色'"
+          ref="vab-print-table"
+          style="width: 600px; height: 400px"
+        >
           <div
             style="
               display: flex;
@@ -297,11 +345,24 @@
                 margin-left: 20px;
               "
             >
-              <img
-                alt=""
-                src="https://img0.baidu.com/it/u=1458576126,4143555283&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=5005"
-                style="width: 100px; height: 100px"
-              />
+              <el-tooltip
+                class="item"
+                content="Top Center 提示文字"
+                effect="dark"
+                placement="top"
+              >
+                <img
+                  slot="content"
+                  src="https://img0.baidu.com/it/u=3633604987,1917476119&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+                  style="width: 200px; height: 200px"
+                />
+                <img
+                  alt=""
+                  src="https://img0.baidu.com/it/u=3633604987,1917476119&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+                  style="width: 100px; height: 100px"
+                  @click="openDialog"
+                />
+              </el-tooltip>
             </div>
             <div
               style="
@@ -326,9 +387,9 @@
             <div style="padding-top: 20px; margin-left: 30px">
               <span>打印种类：</span>
               <el-radio-group v-model="radio">
-                <el-radio :label="3">备选项</el-radio>
-                <el-radio :label="6">备选项</el-radio>
-                <el-radio :label="9">备选项</el-radio>
+                <el-radio :label="3">打印吊牌</el-radio>
+                <el-radio :label="6">打印条码</el-radio>
+                <el-radio :label="9">BT打印</el-radio>
               </el-radio-group>
             </div>
             <div style="margin-top: 5px; margin-left: 30px">
@@ -358,7 +419,12 @@
               <el-row type="flex">
                 <span style="line-height: 32px">打印数量：</span>
                 <el-input v-model="num" style="width: 50px" />
-                <el-button plain style="margin-left: 10px" type="primary">
+                <el-button
+                  plain
+                  style="margin-left: 10px"
+                  type="primary"
+                  @click="print('vab-print-table')"
+                >
                   打印预览
                 </el-button>
                 <el-button plain type="primary">立即打印</el-button>
@@ -407,6 +473,7 @@
           class="el-icon-printer"
           style="margin-left: 1300px"
           type="primary"
+          @click="print1('vab-print-table1')"
         >
           吊牌打印预览
         </el-button>
@@ -414,7 +481,7 @@
           条码打印预览
         </el-button>
         <el-table
-          ref="multipleTable"
+          ref="vab-print-table1"
           border
           :data="printList"
           sortable
@@ -461,16 +528,62 @@
             width="220"
           />
         </el-table>
-        <el-pagination background layout="prev, pager, next" :total="1000" />
+        <el-pagination
+          background
+          :current-page.sync="page.pageNo"
+          layout="prev, pager, next, jumper,sizes,total"
+          :page-size.sync="page.pageSize"
+          :page-sizes="[5, 10, 15, 20]"
+          style="margin-left: 200px"
+          :total="total"
+        />
       </el-tab-pane>
     </el-tabs>
+    <div
+      style="
+        position: absolute;
+        top: 250px;
+        left: 1000px;
+        width: 400px;
+        height: 500px;
+        /* background-color: pink; */
+      "
+    >
+      <el-card v-if="radio2 == '黑色'" style="width: 100%; height: 100%">
+        <div
+          style="
+            width: 161px;
+            height: 341px;
+            margin-left: 20px;
+            border: 2px solid #3d64a3;
+          "
+        >
+          <div
+            style="
+              position: absolute;
+              top: 71px;
+              left: 163px;
+              width: 161px;
+              height: 341px;
+              margin-left: 20px;
+              border: 2px solid #3d64a3;
+            "
+          ></div>
+        </div>
+      </el-card>
+    </div>
   </div>
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
+  import VabPrint from '@/extra/VabPrint'
+
   export default {
     data() {
       return {
+        page: { pageNo: 1, pageSize: 10 },
+        total: 12,
         num: 1,
         options1: [
           {
@@ -483,7 +596,6 @@
           },
         ],
         value1: '110X90mm',
-        textHtml: '<a href="http://www.baidu.com">百度一下</a>',
         radio1: '',
         radio2: '',
         radio3: '',
@@ -552,6 +664,105 @@
             num: '199',
             bianma: 'xz1289088980234234',
           },
+          {
+            img: 'https://img0.baidu.com/it/u=1895837640,2691329714&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '黑色',
+            model: '2022款',
+            size: 'XXL',
+            num: '99',
+            bianma: 'xz1289088980234234',
+          },
+          {
+            img: 'https://img1.baidu.com/it/u=2138195331,3860457921&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '黄色色',
+            model: '2021款',
+            size: 'S',
+            num: '10',
+            bianma: 'xz1289088980234234',
+          },
+          {
+            img: 'https://img2.baidu.com/it/u=4128009961,2011864989&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '白色',
+            model: '2022款',
+            size: 'XL',
+            num: '1000',
+            bianma: 'xz1289088980234234',
+          },
+          {
+            img: 'https://img1.baidu.com/it/u=3985309804,2360825202&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '黑色',
+            model: '2022款',
+            size: 'M',
+            num: '999',
+            bianma: 'xz1289088980234234',
+          },
+          {
+            img: 'https://img2.baidu.com/it/u=82239579,3679411218&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '黄色',
+            model: '2022款',
+            size: 'L',
+            num: '199',
+            bianma: 'xz1289088980234234',
+          },
+          {
+            img: 'https://img0.baidu.com/it/u=1895837640,2691329714&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '黑色',
+            model: '2022款',
+            size: 'XXL',
+            num: '99',
+            bianma: 'xz1289088980234234',
+          },
+          {
+            img: 'https://img1.baidu.com/it/u=2138195331,3860457921&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '黄色色',
+            model: '2021款',
+            size: 'S',
+            num: '10',
+            bianma: 'xz1289088980234234',
+          },
+          {
+            img: 'https://img2.baidu.com/it/u=4128009961,2011864989&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '白色',
+            model: '2022款',
+            size: 'XL',
+            num: '1000',
+            bianma: 'xz1289088980234234',
+          },
+          {
+            img: 'https://img1.baidu.com/it/u=3985309804,2360825202&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '黑色',
+            model: '2022款',
+            size: 'M',
+            num: '999',
+            bianma: 'xz1289088980234234',
+          },
+          {
+            img: 'https://img2.baidu.com/it/u=82239579,3679411218&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '黄色',
+            model: '2022款',
+            size: 'L',
+            num: '199',
+            bianma: 'xz1289088980234234',
+          },
+          {
+            img: 'https://img0.baidu.com/it/u=1895837640,2691329714&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            name: '请开启 JavaScript 功能来使用 CRMEB。',
+            color: '黑色',
+            model: '2022款',
+            size: 'XXL',
+            num: '99',
+            bianma: 'xz1289088980234234',
+          },
         ],
       }
     },
@@ -562,15 +773,25 @@
       handleSelectionChange(val) {
         this.multipleSelection = val
       },
+      ...mapActions({
+        openSideBar: 'settings/openSideBar',
+        foldSideBar: 'settings/foldSideBar',
+      }),
+      async print(val) {
+        await this.foldSideBar()
+        await VabPrint(this.$refs[val], { noPrintParent: true })
+        await this.openSideBar()
+      },
+      async print1(val) {
+        await this.foldSideBar()
+        await VabPrint(this.$refs[val], { noPrintParent: true })
+        await this.openSideBar()
+      },
+      openDialog() {
+        this.$refs['vabCropper1'].dialogVisible = true
+      },
     },
   }
 </script>
 
-<style lang="scss" scoped>
-  ::v-deep .el-radio-button__orig-radio:checked + .el-radio-button__inner {
-    color: #fff;
-    background-color: #505153;
-    // border: 1px solid #505153;
-    border-left: 1px solid #505153;
-  }
-</style>
+<style lang="scss" scoped></style>

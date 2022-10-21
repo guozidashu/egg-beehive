@@ -1,285 +1,393 @@
 <template>
-  <div style="background-color: #f6f8f9">
-    <div
-      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
-    >
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
-        <template #Form>
-          <el-form-item label="品牌:">
-            <el-input v-model="form.name" style="width: 215px" />
-          </el-form-item>
-          <el-form-item label="类别款式:">
-            <el-input v-model="form.name" style="width: 215px" />
-          </el-form-item>
-          <el-form-item label="年份:">
-            <el-date-picker v-model="form.date" type="year" />
-          </el-form-item>
-          <el-form-item label="季节:">
-            <el-select v-model="form.region">
-              <el-option label="春季" value="shanghai" />
-              <el-option label="夏季" value="shanghai" />
-              <el-option label="秋季" value="shanghai" />
-              <el-option label="冬季" value="shanghai" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="供应商:">
-            <el-input v-model="form.name" style="width: 215px" />
-          </el-form-item>
-          <el-form-item label="状态:">
-            <el-select v-model="form.region">
-              <el-option label="在售" value="shanghai" />
-              <el-option label="停售" value="shanghai" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="类型:">
-            <el-select v-model="form.region">
-              <el-option label="整手" value="shanghai" />
-              <el-option label="散码" value="shanghai" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="商品搜索:">
-            <el-input
-              v-model="form.name"
-              placeholder="请输入商品名称/类型/货号"
-              style="width: 215px"
+  <div>
+    <el-form>
+      <el-form-item
+        label="搜索名称："
+        style="padding-top: 30px; padding-bottom: 20px; margin-left: 40px"
+      >
+        <el-input style="width: 248px" />
+        <el-button style="margin-left: 20px" type="primary">搜索</el-button>
+      </el-form-item>
+    </el-form>
+    <!-- 分割 -->
+    <div style="width: 100%; height: 20px; background-color: #f6f8f9"></div>
+    <el-form label-width="100px">
+      <el-row type="flex">
+        <el-button
+          style="height: 32px; margin-top: 32px; margin-left: 30px"
+          type="primary"
+          @click="add('add')"
+        >
+          添加
+        </el-button>
+        <el-button style="height: 32px; margin-top: 32px">删除</el-button>
+        <el-form-item label="名称" style="margin-top: 32px; margin-left: 750px">
+          <el-input />
+        </el-form-item>
+        <el-form-item label="状态" style="margin-top: 32px; margin-left: -20px">
+          <el-select v-model="value" placeholder="全部">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
             />
-          </el-form-item>
+          </el-select>
+        </el-form-item>
+        <el-button
+          style="height: 32px; margin-top: 32px; margin-left: 20px"
+          type="primary"
+        >
+          搜索
+        </el-button>
+      </el-row>
+    </el-form>
+    <el-table
+      ref="multipleTable"
+      border
+      :data="list"
+      style="width: 100%; margin-top: 20px"
+      tooltip-effect="dark"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column type="selection" width="55" />
+      <el-table-column label="ID" prop="id" width="80" />
+
+      <el-table-column label="名称" prop="name" width="180" />
+      <el-table-column
+        label="区域及价格"
+        prop="price"
+        show-overflow-tooltip
+        width="867"
+      >
+        <template slot-scope="{ row }">
+          <span style="font-weight: 700; color: #000">
+            {{ row.price.text }}
+          </span>
+          <div>{{ row.price.a }}</div>
         </template>
-      </Form>
-    </div>
-    <el-card shadow="never" style="border: 0">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="出售中 (3)" name="first" />
-        <el-tab-pane label="仓库中 (129)" name="second" />
-        <el-tab-pane label=" 已售罄 (18)" name="three" />
-        <el-tab-pane label="库存预警 (2)" name="four" />
-        <el-tab-pane label="待确认 (10)" name="five" />
-        <el-tab-pane label="待收货 (30)" name="six" />
-      </el-tabs>
-      <el-form ref="form" :inline="true" @submit.native.prevent>
-        <el-form-item>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
+      </el-table-column>
+      <el-table-column label="满额包邮" prop="bao" width="120" />
+      <el-table-column label="序号" prop="num" width="80" />
+      <el-table-column label="状态" prop="zt" style="color: #3fa170" width="80">
+        <template slot-scope="{ row }">
+          <span style="color: #479f5d">{{ row.zt }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="180">
+        <el-button @click="edit">编辑</el-button>
+        <el-button>删除</el-button>
+      </el-table-column>
+    </el-table>
+    <!-- 弹框组件 -->
+    <el-dialog
+      :before-close="handleClose"
+      title="+添加配送模板"
+      :visible.sync="dialogVisible"
+      width="60%"
+    >
+      <el-form
+        label="140px"
+        style="margin-top: -30px; border-top: 1px solid #f6f6f6"
+      >
+        <el-form-item label="配送方式：">
+          <el-radio-group v-model="radio">
+            <el-radio :label="3">普通快递</el-radio>
+            <el-radio :label="6">到店自提</el-radio>
+            <el-radio :label="9">同城配送</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="显示名称：">
+          <el-input v-model="formDate.name" style="width: 248px" />
+        </el-form-item>
+        <el-form-item label="计价方式：">
+          <el-radio-group v-model="radio1">
+            <el-radio :label="1">按重量</el-radio>
+            <el-radio :label="2">按件数</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="区域及价格：">
+          <el-table border :data="tableData" style="width: 85%">
+            <el-table-column label="区域" prop="name" width="150">
+              <template slot-scope="{ row }">
+                <span v-if="row.name == '全国（默认运费）'">
+                  {{ row.name }}
+                </span>
+                <el-button v-if="row.name == '编辑'">{{ row.name }}</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column label="是否配送" width="140" />
+            <el-table-column label="首重重量(克)" prop="kg" width="140">
+              <template slot-scope="{ row }">
+                <el-input v-model="row.kg" />
+              </template>
+            </el-table-column>
+            <el-table-column label="首重费用(元)" prop="money" width="140">
+              <template slot-scope="{ row }">
+                <el-input v-model="row.money" />
+              </template>
+            </el-table-column>
+            <el-table-column label="续重重量(克)" prop="k" width="140">
+              <template slot-scope="{ row }">
+                <el-input v-model="row.k" />
+              </template>
+            </el-table-column>
+            <el-table-column label="续重费用(元)" prop="y" width="140">
+              <template slot-scope="{ row }">
+                <el-input v-model="row.y" />
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" prop="xx" width="100">
+              <template slot-scope="{ row }">
+                <el-button @click="open('编辑')">
+                  {{ row.xx ? row.xx : '添加' }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-form-item>
+        <div style="margin-left: 70px; color: #999">
+          根据重量来计算运费，当物品不足《首重重量》时，按照《首重费用》计算，超过部分按照《续重重量》和《续重费用》乘积来计算，首重续重为空时默认按照1000计算
+        </div>
+        <el-form-item label="满额包邮：">
+          <el-switch
+            v-model="value1"
+            active-color="#1890ff"
+            inactive-color="#d2d2d2"
+          />
+        </el-form-item>
+        <el-form-item label="满额配送：">
+          <el-switch
+            v-model="value2"
+            active-color="#1890ff"
+            inactive-color="#d2d2d2"
+          />
+        </el-form-item>
+        <el-form-item label="配送时间：">
+          <el-radio v-model="radio4" label="1">关闭</el-radio>
+          <el-radio v-model="radio4" label="2">开启</el-radio>
+          <span style="color: #a5a5a5">
+            开启后用户下单时可以选择配送时间或提货时间
+          </span>
+        </el-form-item>
+        <el-form-item label="设置表单：">
+          <el-button @click="addfn('单行输入')">单行输入</el-button>
+          <el-button @click="addfn1('多行输入')">多行输入</el-button>
+          <el-button @click="addfn2('单切选择')">单切选择</el-button>
+          <el-button @click="addfn3('多项选择')">多项选择</el-button>
+          <el-button @click="addfn4('普通选择')">普通选择</el-button>
+          <el-button @click="addfn5('时间选择')">时间选择</el-button>
+          <el-button @click="addfn6('日期选择')">日期选择</el-button>
+          <el-button @click="addfn7('上传图片')">上传图片</el-button>
+          <el-table
+            border
+            :data="tableData1"
+            style="width: 85%; margin-top: 20px; margin-left: 80px"
           >
-            添加商品
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            批量分组
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            复制商品
-          </el-button>
+            <el-table-column label="字段类型" prop="name" width="150" />
+            <el-table-column label="字段名称" prop="name1" width="190">
+              <template slot-scope="{ row }">
+                <el-input v-model="row.name1" placeholder="请输入字段名称" />
+              </template>
+            </el-table-column>
+            <el-table-column label="字段内容" prop="name2" width="340">
+              <template slot-scope="{ row }">
+                <el-input v-model="row.name2" placeholder="请输入提示信息" />
+              </template>
+            </el-table-column>
+            <el-table-column label="是否必填" prop="name3" width="110">
+              <template slot-scope="{ row }">
+                <el-switch
+                  v-model="row.name3"
+                  active-color="#1890ff"
+                  inactive-color="#d2d2d2"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" prop="k" width="150">
+              <el-button @click="addfn">添加</el-button>
+              <el-button>删除</el-button>
+            </el-table-column>
+          </el-table>
+        </el-form-item>
+        <el-form-item label="序号：" style="margin-left: 20px">
+          <el-input v-model="z" style="width: 248px" />
+          <span style="margin-left: 20px; color: #999">
+            用于排序，越大越靠前
+          </span>
+        </el-form-item>
+        <el-form-item label="状态：" style="margin-left: 20px">
+          <el-radio-group v-model="radio10">
+            <el-radio :label="10">备选项</el-radio>
+            <el-radio :label="11">备选项</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
-      <!-- 表格组件使用 -->
-      <List
-        :list="list"
-        :list-type="listType"
-        :state="listLoading"
-        :total="total"
-        @changePage="changeBtnPage"
-        @changePageSize="changeBtnPageSize"
-      >
-        <!-- 表格组件具名插槽 自定义表头 -->
-        <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="商品ID"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="商品图"
-            prop="img"
-            show-overflow-tooltip
-          >
-            <template #default="{ row }">
-              <img :src="row.img" style="width: 50px; height: 50px" />
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            label="商品名称"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="款号"
-            prop="type"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="供应商"
-            prop="gongying"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="类别款式"
-            prop="liebie"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="销售价"
-            prop="xiaoshou"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="当前库存"
-            prop="num"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="创建时间"
-            prop="time"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
-          >
-            <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">详情</el-button>
-              <el-button type="text">编辑</el-button>
-            </template>
-          </el-table-column>
-        </template>
-      </List>
-    </el-card>
+      <el-button style="margin-left: 80px" type="primary">提交</el-button>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
   export default {
-    name: 'Distribution',
-    components: { List, Form },
     data() {
       return {
-        activeName: 'first',
-        // 表单数据/列表参数
-        form: {
-          // 自定义参数
-          orderSta: '全部',
-          paySta: '全部',
-          orderSource: 'ERP订单',
-          fold: true,
-          typeSelect: 'order',
-          dataSelect: '0',
-          data: '',
-          orderId: '',
-          // 公共参数
-          pageNo: 1,
-          pageSize: 10,
+        radio10: 10,
+        z: '0',
+        value1: false,
+        value2: false,
+        formDate: {
+          name: '普通快递',
         },
-        // 列表数据相关
-        // 公共参数
-        listType: 1,
-        formType: 4,
-        list: [
-          // id img name type gongying liebie xiaoshou num time
+        radio4: '1',
+        radio: 3,
+        radio1: 1,
+        dialogVisible: false,
+        options: [
           {
-            id: 'pc12138',
-            img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
-            time: '2018-05-15 08:01:41',
-            name: '阿白',
-            type: '款式一',
-            gongying: '官方供应商',
-            pay: '未收',
-            num: 23,
-            xiaoshou: 345,
-            liebie: '青春版',
+            value: '选项1',
+            label: '全部',
           },
           {
-            id: 'pc12138',
-            img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
-            time: '2018-05-15 08:01:41',
-            name: '阿白',
-            gongying: '私营供应商',
-            type: '款式二',
-            pay: '未收',
-            num: 23,
-            xiaoshou: 345,
-            liebie: '老年版',
+            value: '选项2',
+            label: '开启',
+          },
+          {
+            value: '选项3',
+            label: '关闭',
           },
         ],
-        listLoading: false,
-        total: 0,
+        value: '',
+        list: [
+          {
+            id: '8',
+            name: '普通快递',
+            price: {
+              text: '全国（默认运费）：',
+              a: '1000克以下0元，每超出1000克加0元',
+            },
+            bao: '不开启',
+            num: '0',
+            zt: '开启',
+          },
+          {
+            id: '9',
+            name: '到店自提',
+            price: {
+              text: '自提门店：',
+              a: '全部',
+            },
+            bao: '不开启',
+            num: '0',
+            zt: '开启',
+          },
+        ],
+        tableData: [
+          {
+            name: '全国（默认运费）',
+            kg: '1000',
+            money: '0',
+            k: '1000',
+            y: '0',
+          },
+        ],
+        tableData1: [
+          {
+            name: '单行输入',
+            name1: '备注',
+            name2: '选填，请输入备注信息',
+            name3: false,
+          },
+        ],
       }
     },
-    watch: {
-      form: {
-        //表单筛选条件变化实时刷新列表
-        handler: function () {
-          this.fetchData()
-        },
-        deep: true,
-      },
-    },
-    created() {
-      this.fetchData()
-    },
     methods: {
-      handleQuery() {},
-      // 列表数据封装函数
-
-      // 列表数据改变页数   公共部分
-      changeBtnPage(data) {
-        this.form.pageNo = data
+      handleClose() {
+        this.dialogVisible = false
       },
-      // 列表数据改变每页条数  自定义部分
-      changeBtnPageSize(data) {
-        this.form.pageSize = data
+      handleSelectionChange(val) {
+        this.multipleSelection = val
       },
-      // 列表数据表头切换监听 自定义部分
-      handleClick(tab) {
-        console.log(1111, tab.label)
-        this.form.pageNo = 1
+      add(val) {
+        if (val == 'add') {
+          console.log('添加')
+          this.dialogVisible = true
+        } else {
+          console.log('编辑')
+        }
       },
-      // 列表数据请求函数 公共部分
-      async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+      addfn(val) {
+        this.tableData1.push({
+          name: val,
+          name1: '',
+          name2: '',
+          name3: true,
+        })
       },
-      // 详情抽屉
-      handleDetail() {
-        this.drawer = true
+      addfn1(val) {
+        this.tableData1.push({
+          name: val,
+          name1: '',
+          name2: '',
+          name3: true,
+        })
+      },
+      addfn2(val) {
+        this.tableData1.push({
+          name: val,
+          name1: '',
+          name2: '',
+          name3: true,
+        })
+      },
+      addfn3(val) {
+        this.tableData1.push({
+          name: val,
+          name1: '',
+          name2: '',
+          name3: true,
+        })
+      },
+      addfn4(val) {
+        this.tableData1.push({
+          name: val,
+          name1: '',
+          name2: '',
+          name3: true,
+        })
+      },
+      addfn5(val) {
+        this.tableData1.push({
+          name: val,
+          name1: '',
+          name2: '',
+          name3: true,
+        })
+      },
+      addfn6(val) {
+        this.tableData1.push({
+          name: val,
+          name1: '',
+          name2: '',
+          name3: true,
+        })
+      },
+      addfn7(val) {
+        this.tableData1.push({
+          name: val,
+          name1: '',
+          name2: '',
+          name3: true,
+        })
+      },
+      edit() {
+        this.dialogVisible = true
+      },
+      open(el) {
+        this.tableData.push({ name: el, name1: '', name2: '', name3: true })
       },
     },
   }
 </script>
-<style lang="scss" scoped></style>
+
+<style></style>
