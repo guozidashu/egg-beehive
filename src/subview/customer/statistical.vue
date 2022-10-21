@@ -1,12 +1,6 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <div
-      style="
-        padding: 20px 20px 20px 20px;
-        margin-bottom: 20px;
-        background-color: white;
-      "
-    >
+    <div style="padding: 20px; margin-bottom: 20px; background-color: white">
       <el-form
         ref="form"
         :inline="true"
@@ -47,50 +41,7 @@
           </el-select>
         </el-form-item>
       </el-form>
-
-      <div style="display: flex; flex-wrap: wrap; width: 100%">
-        <div
-          v-for="(item, index) in goodsStaList"
-          :key="index"
-          style="display: flex; width: 20%; margin-bottom: 30px"
-        >
-          <vab-icon
-            icon="bar-chart-box-fill"
-            style="margin-right: 15px; font-size: 32px; color: #3bdfdf"
-          />
-          <div style="display: flex; flex-direction: column; margin-top: 5px">
-            <div>
-              {{ item.title }}
-              <vab-icon
-                icon="album-line"
-                style="position: relative; top: -2px; font-size: 14px"
-              />
-            </div>
-            <div
-              style="
-                padding: 10px 0;
-                font-size: 30px;
-                font-weight: 400;
-                color: rgba(0, 0, 0, 0.85);
-              "
-            >
-              {{ item.num }}
-            </div>
-            <div>
-              <span v-if="item.type === 1">环比增长：</span>
-              <span v-else>环比减少：</span>
-              <i v-if="item.type === 1" style="font-size: 12px; color: #f5222d">
-                {{ item.number }}%
-                <vab-icon icon="arrow-drop-up-fill" />
-              </i>
-              <i v-else style="font-size: 12px; color: #39c15b">
-                {{ item.number }}%
-                <vab-icon icon="arrow-drop-down-fill" />
-              </i>
-            </div>
-          </div>
-        </div>
-      </div>
+      <TextLabels :list="goodsStaList" />
       <vab-chart
         :init-options="initOptions"
         :option="option"
@@ -107,7 +58,7 @@
           background-color: white;
         "
       >
-        <china-map style="width: 30%" />
+        <china-map style="width: 30%" :title="mapTitle" />
         <List
           :list="goosList"
           :list-type="listType"
@@ -123,8 +74,8 @@
           </template>
         </List>
       </div>
-      <div style="flex: 3; background-color: white">
-        <branch />
+      <div style="flex: 3; padding: 20px; background-color: white">
+        <branch :list="branchList" :title="branchTitle" />
       </div>
     </div>
   </div>
@@ -135,14 +86,23 @@
   import VabChart from '@/extra/VabChart'
   import ChinaMap from '@/subview/components/ChinaMap'
   import Branch from '@/subview/components/Branch'
+  import TextLabels from '@/subview/components/TextLabels'
   export default {
     name: 'GoodsStatistical',
-    components: { ChinaMap, List, VabChart, Branch },
-    // components: { List, VabChart, ChinaMap },
+    components: { ChinaMap, List, VabChart, Branch, TextLabels },
     data() {
       return {
         listLoading: false,
         listType: 4,
+        branchTitle: '客户会员占比',
+        mapTitle: '客户区域分布',
+        branchList: [
+          { value: 1048, name: '普通会员' },
+          { value: 735, name: '黄金会员' },
+          { value: 580, name: '钻石会员' },
+          { value: 484, name: '白金会员' },
+          { value: 300, name: '黑钻svp' },
+        ],
         goosList: [
           {
             visit: '507',

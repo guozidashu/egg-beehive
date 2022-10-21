@@ -16,6 +16,16 @@
     components: {
       VabChart,
     },
+    props: {
+      title: {
+        type: String,
+        default: '',
+      },
+      list: {
+        type: Array,
+        default: () => [],
+      },
+    },
     data() {
       return {
         initOptions: {
@@ -24,6 +34,14 @@
         option: {
           tooltip: {
             trigger: 'item',
+          },
+          title: {
+            text: this.title,
+          },
+          legend: {
+            orient: 'horizontal',
+            x: 'center',
+            y: 350,
           },
           series: [
             {
@@ -40,13 +58,7 @@
                   show: true,
                 },
               },
-              data: [
-                { value: 1048, name: '普通会员' },
-                { value: 735, name: '黄金会员' },
-                { value: 580, name: '钻石会员' },
-                { value: 484, name: '白金会员' },
-                { value: 300, name: '黑钻svp' },
-              ],
+              data: this.list,
             },
           ],
         },

@@ -74,7 +74,6 @@
         <el-tab-pane label=" 已售罄 (18)" name="3" />
         <el-tab-pane label="库存预警 (2)" name="4" />
         <el-tab-pane label="待确认 (10)" name="5" />
-        <el-tab-pane label="待收货 (30)" name="6" />
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -143,14 +142,14 @@
       <!-- 详情抽屉组件 -->
       <Drawer />
     </el-drawer>
-    <Edit :form="editForm" :state="editState" :title="editTitle" />
+    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 
 <script>
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
-  import Edit from '@/subview/components/Edit'
+  import Edit from './components/ManageEdit'
   import Drawer from './components/Drawer'
   import { getGoodsManagementList, getGoodsTypeList } from '@/api/basic'
   export default {
@@ -176,10 +175,6 @@
           //商品名称
           name: '',
         },
-        // 编辑组件
-        editForm: {},
-        editState: false,
-        editTitle: '',
         // 列表数据相关
         // 公共参数
         listType: 1,
@@ -207,12 +202,9 @@
       // 新增修改
       async handleEdit(row) {
         if (row === 'add') {
-          this.editTitle = '新增商品'
-          this.editState = true
+          this.$refs['edit'].showEdit()
         } else {
-          this.editTitle = '修改商品'
-          this.editState = true
-          this.editForm = row
+          this.$refs['edit'].showEdit(row)
         }
       },
       handleQuery() {},

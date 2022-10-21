@@ -10,7 +10,6 @@
       </div>
       <div class="page-header-avatar-list">
         <vab-avatar-list :avatar-list="avatatList" />
-        <p>participants</p>
       </div>
     </el-card>
   </el-col>
@@ -25,7 +24,8 @@
     components: { VabAvatarList },
     data() {
       return {
-        description: '',
+        description:
+          '考虑到本次项目要实现流程优化、系统学习、部门协同需要一定的时间成本，圈量AC项目组为“wan”项目组分析了目前企业的问题，并将问题归因，然后提出了 “整体规划、统一部署、分步上线”的数智化集成中台建设方案，方案获得了“ffffffff”团队的一致认可',
         avatatList: [
           {
             avatar: 'https://i.gtimg.cn/club/item/face/img/2/15922_100.gif',

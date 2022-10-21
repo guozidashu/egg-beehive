@@ -432,15 +432,17 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
-{
-        path: 'dingdanList',
-        name: 'DingdanList',
-        component: () => import('@/subview/order/orderBasis/index.vue'),
-        meta: {
-          title: '订单统计2',
-          icon: 'archive-line',
-        },
-      },
+=======
+      // {
+      //   path: 'dingdanList',
+      //   name: 'DingdanList',
+      //   component: () => import('@/subview/order/orderBasis/index.vue'),
+      //   meta: {
+      //     title: '订单统计2',
+      //     icon: 'archive-line',
+      //   },
+      // },
+>>>>>>> 541851b9cd7b2a937b8e0aeaa7524514679f1a82
     ],
   },
   {
