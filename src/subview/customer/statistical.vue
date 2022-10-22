@@ -75,7 +75,11 @@
         </List>
       </div>
       <div style="flex: 3; padding: 20px; background-color: white">
-        <branch :list="branchList" :title="branchTitle" />
+        <branch
+          :list="branchList"
+          :style-chart="styleObj"
+          :title="branchTitle"
+        />
       </div>
     </div>
   </div>
@@ -96,6 +100,13 @@
         listType: 4,
         branchTitle: '客户会员占比',
         mapTitle: '客户区域分布',
+        styleObj: {
+          width: '400px',
+          height: '500px',
+          legendx: 0,
+          legendy: 450,
+          center: ['50%', '50%'],
+        },
         branchList: [
           { value: 1048, name: '普通会员' },
           { value: 735, name: '黄金会员' },

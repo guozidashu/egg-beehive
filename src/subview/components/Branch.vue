@@ -3,7 +3,7 @@
     <vab-chart
       :init-options="initOptions"
       :option="option"
-      style="width: 400px"
+      :style="styleObject"
       theme="vab-echarts-theme"
     />
   </div>
@@ -25,9 +25,17 @@
         type: Array,
         default: () => [],
       },
+      styleChart: {
+        type: Object,
+        default: () => {},
+      },
     },
     data() {
       return {
+        styleObject: {
+          height: this.styleChart.height,
+          width: this.styleChart.width,
+        },
         initOptions: {
           renderer: 'svg',
         },
@@ -40,14 +48,15 @@
           },
           legend: {
             orient: 'horizontal',
-            x: 'center',
-            y: 350,
+            x: this.styleChart.legendx,
+            y: this.styleChart.legendy,
           },
           series: [
             {
               name: '访问来源',
               type: 'pie',
               radius: '50%',
+              center: this.styleChart.center,
               itemStyle: {
                 borderRadius: 10,
                 borderColor: '#fff',

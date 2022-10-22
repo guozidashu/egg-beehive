@@ -3,30 +3,20 @@
     <el-row :gutter="20">
       <page-header />
       <TextTags :list="textTagList" />
-      <el-col :lg="12" :md="12" :sm="24" :xl="12" :xs="24">
+      <el-col :lg="9" :md="18" :sm="24" :xl="9" :xs="24">
         <MembersChart />
       </el-col>
-      <el-col :lg="12" :md="24" :sm="24" :xl="12" :xs="24">
+      <el-col :lg="9" :md="18" :sm="24" :xl="9" :xs="24">
         <SalesChart />
       </el-col>
-      <el-col :lg="12" :md="12" :sm="24" :xl="12" :xs="24">
-        <trend />
+      <el-col :lg="6" :md="12" :sm="24" :xl="6" :xs="24">
+        <NewCustomer />
+      </el-col>
+      <el-col :lg="18" :md="24" :sm="24" :xl="18" :xs="24">
+        <MemberList />
       </el-col>
       <el-col :lg="6" :md="12" :sm="24" :xl="6" :xs="24">
-        <branch />
-      </el-col>
-      <el-col :lg="6" :md="12" :sm="24" :xl="6" :xs="24">
-        <rank />
-      </el-col>
-      <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24">
-        <tabs />
-      </el-col>
-      <el-col :lg="12" :md="12" :sm="24" :xl="12" :xs="24">
-        <china-map />
-        <my-project />
-      </el-col>
-      <el-col :lg="12" :md="12" :sm="24" :xl="12" :xs="24">
-        <plan />
+        <UserChart />
       </el-col>
     </el-row>
   </div>
@@ -37,13 +27,9 @@
   import TextTags from './componentscopy/TextTags'
   import MembersChart from './componentscopy/MembersChart'
   import SalesChart from './componentscopy/SalesChart'
-  import ChinaMap from './components/ChinaMap'
-  import MyProject from './components/MyProject'
-  import Plan from './components/Plan'
-  import Trend from './components/Trend'
-  import Branch from './components/Branch'
-  import Rank from './components/Rank'
-  import Tabs from './components/Tabs'
+  import NewCustomer from './componentscopy/NewCustomer'
+  import MemberList from './componentscopy/MemberList'
+  import UserChart from './componentscopy/UserChart'
 
   export default {
     name: 'Index',
@@ -52,13 +38,9 @@
       TextTags,
       MembersChart,
       SalesChart,
-      ChinaMap,
-      MyProject,
-      Plan,
-      Trend,
-      Branch,
-      Rank,
-      Tabs,
+      NewCustomer,
+      MemberList,
+      UserChart,
     },
     data() {
       return {
