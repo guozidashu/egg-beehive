@@ -96,7 +96,11 @@
           </div>
         </div>
         <!-- 活动下半部分 -->
-        <div v-if="radio2 == '黑色'" style="width: 600px; height: 400px">
+        <div
+          v-if="radio2 == '黑色'"
+          ref="vab-print-table"
+          style="width: 600px; height: 400px"
+        >
           <div
             style="
               display: flex;
@@ -121,12 +125,12 @@
               >
                 <img
                   slot="content"
-                  src="https://img0.baidu.com/it/u=2876562511,1995269794&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+                  src="https://img0.baidu.com/it/u=3096705183,261020725&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=984"
                   style="width: 200px; height: 200px"
                 />
                 <img
                   alt=""
-                  src="https://img0.baidu.com/it/u=2876562511,1995269794&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+                  src="https://img0.baidu.com/it/u=3096705183,261020725&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=984"
                   style="width: 100px; height: 100px"
                   @click="openDialog"
                 />
@@ -206,7 +210,11 @@
             </div>
           </div>
         </div>
-        <div v-if="radio2 == '红色'" style="width: 600px; height: 400px">
+        <div
+          v-if="radio2 == '红色'"
+          ref="vab-print-table"
+          style="width: 600px; height: 400px"
+        >
           <div
             style="
               display: flex;
@@ -316,7 +324,11 @@
             </div>
           </div>
         </div>
-        <div v-if="radio2 == '白色'" style="width: 600px; height: 400px">
+        <div
+          v-if="radio2 == '白色'"
+          ref="vab-print-table"
+          style="width: 600px; height: 400px"
+        >
           <div
             style="
               display: flex;
@@ -533,402 +545,37 @@
         top: 250px;
         left: 1000px;
         width: 400px;
-        height: 600px;
+        height: 500px;
         /* background-color: pink; */
       "
     >
       <el-card v-if="radio2 == '黑色'" style="width: 100%; height: 100%">
         <div
-          ref="vab-print-table"
           style="
-            width: 181px;
-            height: 501px;
-            margin-left: 10px;
+            width: 161px;
+            height: 341px;
+            margin-left: 20px;
 
             border: 2px solid #3d64a3;
           "
         >
           <h3 style="color: #000019; text-align: center">合格证</h3>
-          <p style="font-size: 12px; color: #000">
-            商品款号：
-            <span>K11TZ2822</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            产品名称：
-            <span>内衣</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            规格：
-            <span>F</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            执行标准：
-            <span>FZ/T73016-2015</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            安全类别：
-            <span>GB18401-2010</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            商品颜色：
-            <span>黑色</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            质量等级：
-            <span>合格品</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            商品检验：
-            <span>01</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            成分含量：
-            <span>粘胶:42%，锦纶:34%，腈纶:18%，氨纶:6%</span>
-          </p>
-          <p><img src="../../assets/1666403831760(1).jpg" /></p>
-          <div style="color    "></div>
-          <h4 style="color: #000; text-align: center; margin-top: -18px">
-            K11TZ2822KF
-          </h4>
-          <h4 style="color: #000; text-align: center; margin-top: -18px">
-            280.00RMB
-          </h4>
-          <h5 style="color: #000; text-align: center; margin-top: -18px">
-            公司名称：杭州洛一服饰有限公司
-          </h5>
-          <h5 style="color: #000; text-align: center; margin-top: -18px">
-            地址：滨江区研祥科技大厦510
-          </h5>
+          <p>产品名称：</p>
+          <span>内衣</span>
           <div
             style="
               position: absolute;
               top: 71px;
-              left: 175px;
-              width: 181px;
-              height: 501px;
+              left: 163px;
+              width: 161px;
+              height: 341px;
               margin-left: 20px;
-              border: 2px solid #3d64a3;
-              overflow: hidden;
-            "
-          >
-            <h4
-              style="
-                color: #000019;
-                text-align: center;
-                border: 2px solid #000;
-                width: 70px;
-                margin-left: 55px;
-              "
-            >
-              合格证
-            </h4>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              品名：
-              <span>LLIO-T恤</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              货号：
-              <span>1221</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              颜色：
-              <span>白色</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              成分：
-              <span>棉100%(三丝光棉)</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              执行标准：
-              <span>GB22849-2006</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              安全类别：
-              <span>GB22849-2008 B类</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              等级：
-              <span>合格品</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              检验：
-              <span>OB</span>
-              <img src="../../assets/1666406914065.jpg" />
-            </p>
-            <h4 style="margin-left: 120px; margin-top: -10px">228.00</h4>
-            <div
-              style="
-                position: absolute;
-                top: 0;
-                width: 15px;
-                height: 950px;
-                background-color: #fff;
-                margin-top: -20px;
-              "
-            ></div>
-          </div>
-        </div>
-      </el-card>
-      <el-card v-if="radio2 == '红色'" style="width: 100%; height: 100%">
-        <div
-          ref="vab-print-table"
-          style="
-            width: 181px;
-            height: 501px;
-            margin-left: 10px;
 
-            border: 2px solid #3d64a3;
-          "
-        >
-          <h3 style="color: #000019; text-align: center">合格证</h3>
-          <p style="font-size: 12px; color: #000">
-            商品款号：
-            <span>G23GZ8080</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            产品名称：
-            <span>童装</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            规格：
-            <span>M</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            执行标准：
-            <span>GZ/T73016-2225</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            安全类别：
-            <span>FT32133-2019</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            商品颜色：
-            <span>红色</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            质量等级：
-            <span>合格品</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            商品检验：
-            <span>01</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            成分含量：
-            <span>棉：99%</span>
-          </p>
-          <p><img src="../../assets/1666403831760(1).jpg" /></p>
-          <div style="color    "></div>
-          <h4 style="color: #000; text-align: center; margin-top: -18px">
-            K35GB2442KF
-          </h4>
-          <h4 style="color: #000; text-align: center; margin-top: -18px">
-            108.00RMB
-          </h4>
-          <h5 style="color: #000; text-align: center; margin-top: -18px">
-            公司名称：杭州洛一服饰有限公司
-          </h5>
-          <h5 style="color: #000; text-align: center; margin-top: -18px">
-            地址：滨江区研祥科技大厦510
-          </h5>
-          <div
-            style="
-              position: absolute;
-              top: 71px;
-              left: 175px;
-              width: 181px;
-              height: 501px;
-              margin-left: 20px;
               border: 2px solid #3d64a3;
-              overflow: hidden;
             "
           >
-            <h4
-              style="
-                color: #000019;
-                text-align: center;
-                border: 2px solid #000;
-                width: 70px;
-                margin-left: 55px;
-              "
-            >
-              合格证
-            </h4>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              品名：
-              <span>碎花裙</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              货号：
-              <span>1221</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              颜色：
-              <span>红色</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              成分：
-              <span>聚酯纤维100%</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              执行标准：
-              <span>GB22849-2006</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              安全类别：
-              <span>GB22849-2008 A类</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              等级：
-              <span>合格品</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              检验：
-              <span>OB</span>
-              <img src="../../assets/1666406914065.jpg" />
-            </p>
-            <h4 style="margin-left: 120px; margin-top: -10px">108.00</h4>
             <div
-              style="
-                position: absolute;
-                top: 0;
-                width: 15px;
-                height: 950px;
-                background-color: #fff;
-                margin-top: -20px;
-              "
-            ></div>
-          </div>
-        </div>
-      </el-card>
-      <el-card v-if="radio2 == '白色'" style="width: 100%; height: 100%">
-        <div
-          ref="vab-print-table"
-          style="
-            width: 181px;
-            height: 501px;
-            margin-left: 10px;
-
-            border: 2px solid #3d64a3;
-          "
-        >
-          <h3 style="color: #000019; text-align: center">合格证</h3>
-          <p style="font-size: 12px; color: #000">
-            商品款号：
-            <span>FTTT8080</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            产品名称：
-            <span>婴幼儿套装</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            规格：
-            <span>F</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            执行标准：
-            <span>GZ/T73016-1110</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            安全类别：
-            <span>FT11110-2020</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            商品颜色：
-            <span>白色</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            质量等级：
-            <span>合格品</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            商品检验：
-            <span>01</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            成分含量：
-            <span>纯棉：100%</span>
-          </p>
-          <p><img src="../../assets/1666403831760(1).jpg" /></p>
-          <div style="color    "></div>
-          <h4 style="color: #000; text-align: center; margin-top: -18px">
-            FTT380001110
-          </h4>
-          <h4 style="color: #000; text-align: center; margin-top: -18px">
-            258.00RMB
-          </h4>
-          <h5 style="color: #000; text-align: center; margin-top: -18px">
-            公司名称：杭州洛一服饰有限公司
-          </h5>
-          <h5 style="color: #000; text-align: center; margin-top: -18px">
-            地址：滨江区研祥科技大厦510
-          </h5>
-          <div
-            style="
-              position: absolute;
-              top: 71px;
-              left: 175px;
-              width: 181px;
-              height: 501px;
-              margin-left: 20px;
-              border: 2px solid #3d64a3;
-              overflow: hidden;
-            "
-          >
-            <h4
-              style="
-                color: #000019;
-                text-align: center;
-                border: 2px solid #000;
-                width: 70px;
-                margin-left: 55px;
-              "
-            >
-              合格证
-            </h4>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              品名：
-              <span>婴儿连体睡眠衣</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              货号：
-              <span>1110</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              颜色：
-              <span>白色</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              成分：
-              <span>纯棉100%</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              执行标准：
-              <span>FT22849-1110</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              安全类别：
-              <span>FT22849-1110 A类</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              等级：
-              <span>合格品</span>
-            </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
-              检验：
-              <span>OB</span>
-              <img src="../../assets/1666406914065.jpg" />
-            </p>
-            <h4 style="margin-left: 120px; margin-top: -10px">258.00</h4>
-            <div
-              style="
-                position: absolute;
-                top: 0;
-                width: 15px;
-                height: 950px;
-                background-color: #fff;
-                margin-top: -20px;
-              "
+              style="width: 25px; height: 290px; background-color: #fff"
             ></div>
           </div>
         </div>
