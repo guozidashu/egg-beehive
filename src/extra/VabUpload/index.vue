@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    :append-to-body="true"
     :before-close="handleClose"
     :close-on-click-modal="false"
     :title="title"

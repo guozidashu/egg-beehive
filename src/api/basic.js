@@ -25,6 +25,13 @@ export function getGoodsManagementList(data) {
     data,
   })
 }
+export function addGoodsList(data) {
+  return request({
+    url: '/goods_add',
+    method: 'post',
+    data,
+  })
+}
 export function getGoodsTypeList(data) {
   return request({
     url: '/goods_type',

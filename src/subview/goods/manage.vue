@@ -132,6 +132,7 @@
           <el-table-column label="创建时间" prop="time" sortable width="200" />
           <el-table-column
             align="center"
+            fixed="right"
             label="操作"
             show-overflow-tooltip
             width="85"

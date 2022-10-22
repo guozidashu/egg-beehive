@@ -58,16 +58,6 @@
           添加
         </el-button>
       </el-form-item>
-      <!-- <el-form-item>
-        <el-button
-          native-type="submit"
-          size="small"
-          type="primary"
-          @click="handleDelete"
-        >
-          批量删除
-        </el-button>
-      </el-form-item> -->
       <el-form-item style="float: right">
         <el-button
           icon="el-icon-search"
@@ -80,6 +70,29 @@
         </el-button>
       </el-form-item>
       <slot name="Form"></slot>
+    </el-form>
+    <el-form
+      v-if="formType === 3"
+      ref="form"
+      :inline="true"
+      label-width="100px"
+      :model="form"
+      size="small"
+      style="margin-top: 18px"
+      @submit.native.prevent
+    >
+      <slot name="Form"></slot>
+      <el-form-item label-width=" ">
+        <el-button
+          icon="el-icon-search"
+          native-type="submit"
+          size="small"
+          type="primary"
+          @click="handleQuery"
+        >
+          查询
+        </el-button>
+      </el-form-item>
     </el-form>
     <el-form
       v-if="formType === 4"

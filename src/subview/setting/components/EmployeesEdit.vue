@@ -2,88 +2,68 @@
   <el-dialog
     :title="title"
     :visible.sync="dialogFormVisible"
-    width="700px"
+    width="500px"
     @close="close"
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item label="商品名称">
-        <el-input v-model="form.name" />
+      <el-form-item label="员工姓名:" prop="name">
+        <el-input v-model="form.name" style="width: 215px" />
       </el-form-item>
-      <el-form-item label="商品标题" prop="shoptitle">
-        <el-input v-model="form.shoptitle" />
+      <el-form-item label="账号:" prop="name1">
+        <el-input v-model="form.name1" style="width: 215px" />
       </el-form-item>
-      <el-form-item label="商品图片">
-        <el-button type="primary" @click="handleShow()">图片上传</el-button>
-      </el-form-item>
-      <el-form-item label="品牌:">
-        <el-select v-model="form.brand" placeholder="请选择品牌">
-          <el-option
-            v-for="(item, index) in typeData.brand"
-            :key="index"
-            :label="item.name"
-            :value="item.id"
-          />
+      <el-form-item label="岗位:" prop="qx">
+        <el-select v-model="form.qx">
+          <el-option label="设计师" :value="1" />
+          <el-option label="管理员" :value="2" />
         </el-select>
       </el-form-item>
-      <el-form-item label="类别款式:">
-        <el-select v-model="form.kuanshi" placeholder="请选择类别款式">
-          <el-option
-            v-for="(item, index) in typeData.goods_category"
-            :key="index"
-            :label="item.name"
-            :value="item.id"
-          />
+      <el-form-item label="部门:" prop="status1">
+        <el-select v-model="form.status1">
+          <el-option label="研发部" :value="1" />
+          <el-option label="技术部" :value="2" />
+          <el-option label="销售部" :value="3" />
         </el-select>
+      </el-form-item>
+      <el-form-item label="状态:">
+        <el-switch
+          v-model="form.status"
+          active-color="#13ce66"
+          active-text="开启"
+          :active-value="1"
+          class="switch"
+          inactive-color="#ff4949"
+          inactive-text="关闭"
+          :inactive-value="0"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
       <el-button @click="close">取 消</el-button>
       <el-button type="primary" @click="save">确 定</el-button>
     </template>
-    <vab-upload
-      ref="vabUpload"
-      :limit="50"
-      name="file"
-      :size="2"
-      url="/upload"
-    />
   </el-dialog>
 </template>
 
 <script>
-  import VabUpload from '@/extra/VabUpload'
-  import { updateMeeting, addGoodsList } from '@/api/basic'
+  // import { updateMeeting, addGoodsList } from '@/api/basic'
   export default {
-    name: 'LevelDeit',
-    components: {
-      VabUpload,
-    },
+    name: 'EmployeesEdit',
     data() {
       return {
-        dialogImageUrl: '',
-        dialogVisible: false,
-        fileList: [
-          {
-            url: '',
-          },
-        ],
         typeData: [],
         form: {
           name: '',
-          shoptitle: '',
-          brand: '',
-          kuanshi: '',
+          name1: '',
+          qx: '',
+          status1: '',
+          status: '',
         },
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
-          year: [
-            {
-              type: 'date',
-              required: true,
-              message: '请选择年份',
-              trigger: 'change',
-            },
-          ],
+          name1: [{ required: true, trigger: 'blur', message: '请输入账号' }],
+          qx: [{ required: true, trigger: 'blur', message: '请选择岗位' }],
+          status1: [{ required: true, trigger: 'blur', message: '请选择部门' }],
         },
         title: '',
         dialogFormVisible: false,
@@ -112,10 +92,10 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await addGoodsList(this.form)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await addGoodsList(this.form)
+              // if (code != 200) {
+              //   return
+              // }
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -124,10 +104,10 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await updateMeeting(this.form)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await updateMeeting(this.form)
+              // if (code != 200) {
+              //   return
+              // }
               this.$baseMessage(
                 '修改成功',
                 'success',

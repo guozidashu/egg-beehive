@@ -1,9 +1,9 @@
 <template>
   <div class="comprehensive-form-container">
     <el-card shadow="never">
-      <div slot="header" class="clearfix">
-        <span>绑定小红书</span>
-      </div>
+      <template #header>
+        <span style="font-size: 16px; font-weight: 600">绑定小红书</span>
+      </template>
       <div
         style="
           padding: 8px 16px 8px 16px;
@@ -55,7 +55,7 @@
 
 <script>
   export default {
-    name: 'Platformwxgong',
+    name: 'PlatformRedbook',
     data() {
       return {
         formType: '本地储存',

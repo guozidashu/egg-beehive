@@ -881,7 +881,7 @@ export const asyncRoutes = [
             name: 'PlatformVideo',
             component: () => import('@/subview/setting/platform/video'),
             meta: {
-              title: '视频号小店接入',
+              title: '视频号接入',
             },
           },
           {

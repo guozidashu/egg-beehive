@@ -64,7 +64,7 @@
         />
       </template>
     </el-table>
-    <el-table
+    <!-- <el-table
       v-if="listType === 3"
       v-loading="state"
       border
@@ -81,7 +81,7 @@
           :src="require('@/assets/empty_images/data_empty.png')"
         />
       </template>
-    </el-table>
+    </el-table> -->
     <el-pagination
       v-if="listType === 1 || listType === 3"
       background
