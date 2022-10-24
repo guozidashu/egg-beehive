@@ -586,17 +586,17 @@
             <span>粘胶:42%，锦纶:34%，腈纶:18%，氨纶:6%</span>
           </p>
           <p><img src="../../assets/1666403831760(1).jpg" /></p>
-          <div style="color    "></div>
-          <h4 style="color: #000; text-align: center; margin-top: -18px">
+          <div style=""></div>
+          <h4 style="margin-top: -18px; color: #000; text-align: center">
             K11TZ2822KF
           </h4>
-          <h4 style="color: #000; text-align: center; margin-top: -18px">
+          <h4 style="margin-top: -18px; color: #000; text-align: center">
             280.00RMB
           </h4>
-          <h5 style="color: #000; text-align: center; margin-top: -18px">
+          <h5 style="margin-top: -18px; color: #000; text-align: center">
             公司名称：杭州洛一服饰有限公司
           </h5>
-          <h5 style="color: #000; text-align: center; margin-top: -18px">
+          <h5 style="margin-top: -18px; color: #000; text-align: center">
             地址：滨江区研祥科技大厦510
           </h5>
           <div
@@ -607,63 +607,63 @@
               width: 181px;
               height: 501px;
               margin-left: 20px;
-              border: 2px solid #3d64a3;
               overflow: hidden;
+              border: 2px solid #3d64a3;
             "
           >
             <h4
               style="
+                width: 70px;
+                margin-left: 55px;
                 color: #000019;
                 text-align: center;
                 border: 2px solid #000;
-                width: 70px;
-                margin-left: 55px;
               "
             >
               合格证
             </h4>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               品名：
               <span>LLIO-T恤</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               货号：
               <span>1221</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               颜色：
               <span>白色</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               成分：
               <span>棉100%(三丝光棉)</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               执行标准：
               <span>GB22849-2006</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               安全类别：
               <span>GB22849-2008 B类</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               等级：
               <span>合格品</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               检验：
               <span>OB</span>
               <img src="../../assets/1666406914065.jpg" />
             </p>
-            <h4 style="margin-left: 120px; margin-top: -10px">228.00</h4>
+            <h4 style="margin-top: -10px; margin-left: 120px">228.00</h4>
             <div
               style="
                 position: absolute;
                 top: 0;
                 width: 15px;
                 height: 950px;
-                background-color: #fff;
                 margin-top: -20px;
+                background-color: #fff;
               "
             ></div>
           </div>
@@ -718,17 +718,17 @@
             <span>棉：99%</span>
           </p>
           <p><img src="../../assets/1666403831760(1).jpg" /></p>
-          <div style="color    "></div>
-          <h4 style="color: #000; text-align: center; margin-top: -18px">
+          <div style=""></div>
+          <h4 style="margin-top: -18px; color: #000; text-align: center">
             K35GB2442KF
           </h4>
-          <h4 style="color: #000; text-align: center; margin-top: -18px">
+          <h4 style="margin-top: -18px; color: #000; text-align: center">
             108.00RMB
           </h4>
-          <h5 style="color: #000; text-align: center; margin-top: -18px">
+          <h5 style="margin-top: -18px; color: #000; text-align: center">
             公司名称：杭州洛一服饰有限公司
           </h5>
-          <h5 style="color: #000; text-align: center; margin-top: -18px">
+          <h5 style="margin-top: -18px; color: #000; text-align: center">
             地址：滨江区研祥科技大厦510
           </h5>
           <div
@@ -739,63 +739,63 @@
               width: 181px;
               height: 501px;
               margin-left: 20px;
-              border: 2px solid #3d64a3;
               overflow: hidden;
+              border: 2px solid #3d64a3;
             "
           >
             <h4
               style="
+                width: 70px;
+                margin-left: 55px;
                 color: #000019;
                 text-align: center;
                 border: 2px solid #000;
-                width: 70px;
-                margin-left: 55px;
               "
             >
               合格证
             </h4>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               品名：
               <span>碎花裙</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               货号：
               <span>1221</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               颜色：
               <span>红色</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               成分：
               <span>聚酯纤维100%</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               执行标准：
               <span>GB22849-2006</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               安全类别：
               <span>GB22849-2008 A类</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               等级：
               <span>合格品</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               检验：
               <span>OB</span>
               <img src="../../assets/1666406914065.jpg" />
             </p>
-            <h4 style="margin-left: 120px; margin-top: -10px">108.00</h4>
+            <h4 style="margin-top: -10px; margin-left: 120px">108.00</h4>
             <div
               style="
                 position: absolute;
                 top: 0;
                 width: 15px;
                 height: 950px;
-                background-color: #fff;
                 margin-top: -20px;
+                background-color: #fff;
               "
             ></div>
           </div>
@@ -850,17 +850,17 @@
             <span>纯棉：100%</span>
           </p>
           <p><img src="../../assets/1666403831760(1).jpg" /></p>
-          <div style="color    "></div>
-          <h4 style="color: #000; text-align: center; margin-top: -18px">
+          <div style=""></div>
+          <h4 style="margin-top: -18px; color: #000; text-align: center">
             FTT380001110
           </h4>
-          <h4 style="color: #000; text-align: center; margin-top: -18px">
+          <h4 style="margin-top: -18px; color: #000; text-align: center">
             258.00RMB
           </h4>
-          <h5 style="color: #000; text-align: center; margin-top: -18px">
+          <h5 style="margin-top: -18px; color: #000; text-align: center">
             公司名称：杭州洛一服饰有限公司
           </h5>
-          <h5 style="color: #000; text-align: center; margin-top: -18px">
+          <h5 style="margin-top: -18px; color: #000; text-align: center">
             地址：滨江区研祥科技大厦510
           </h5>
           <div
@@ -871,63 +871,63 @@
               width: 181px;
               height: 501px;
               margin-left: 20px;
-              border: 2px solid #3d64a3;
               overflow: hidden;
+              border: 2px solid #3d64a3;
             "
           >
             <h4
               style="
+                width: 70px;
+                margin-left: 55px;
                 color: #000019;
                 text-align: center;
                 border: 2px solid #000;
-                width: 70px;
-                margin-left: 55px;
               "
             >
               合格证
             </h4>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               品名：
               <span>婴儿连体睡眠衣</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               货号：
               <span>1110</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               颜色：
               <span>白色</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               成分：
               <span>纯棉100%</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               执行标准：
               <span>FT22849-1110</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               安全类别：
               <span>FT22849-1110 A类</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               等级：
               <span>合格品</span>
             </p>
-            <p style="font-size: 12px; color: #000; margin-left: 15px">
+            <p style="margin-left: 15px; font-size: 12px; color: #000">
               检验：
               <span>OB</span>
               <img src="../../assets/1666406914065.jpg" />
             </p>
-            <h4 style="margin-left: 120px; margin-top: -10px">258.00</h4>
+            <h4 style="margin-top: -10px; margin-left: 120px">258.00</h4>
             <div
               style="
                 position: absolute;
                 top: 0;
                 width: 15px;
                 height: 950px;
-                background-color: #fff;
                 margin-top: -20px;
+                background-color: #fff;
               "
             ></div>
           </div>

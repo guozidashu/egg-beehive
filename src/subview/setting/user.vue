@@ -5,6 +5,15 @@
     >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
+          <el-form-item>
+            <el-button
+              style="margin-left: 20px"
+              type="primary"
+              @click="handleEdit('add')"
+            >
+              新增
+            </el-button>
+          </el-form-item>
           <el-form-item label="角色搜索:">
             <el-input
               v-model="form.name"
@@ -15,85 +24,88 @@
         </template>
       </Form>
     </div>
-    <el-card
+    <div
       v-for="(item, index) in cartList"
       :key="index"
-      shadow="hover"
-      style="border: 0"
+      @mouseenter="mouseOver(index)"
+      @mouseleave="mouseLeave(index)"
     >
-      <div
-        @click="handleChange(index)"
-        @mouseleave="mouseLeave(index)"
-        @mouseover="mouseOver(index)"
-      >
-        <div style="display: flex; margin-top: 5px 0 0 5px">
-          <div style="width: 50%">
-            <div style="margin-bottom: 20px">
-              <span style="margin-right: 20px; font-size: 16px; color: black">
-                {{ item.name }}
-              </span>
-              <span>{{ item.num }} 人</span>
+      <el-card shadow="hover" style="border: 0">
+        <div @click="handleChange(index)">
+          <div style="display: flex; margin-top: 5px 0 0 5px">
+            <div style="width: 50%">
+              <div style="margin-bottom: 20px">
+                <span style="margin-right: 20px; font-size: 16px; color: black">
+                  {{ item.name }}
+                </span>
+                <span>{{ item.num }} 人</span>
+              </div>
+              <div>{{ item.title }}（已设置{{ item.number }}个权限）</div>
             </div>
-            <div>{{ item.title }}（已设置{{ item.number }}个权限）</div>
+            <div style="width: 50%; margin-top: 10px">
+              <div v-if="item.btnIconStatus">
+                <el-button
+                  icon="el-icon-edit"
+                  size="small"
+                  style="margin-left: 125px; color: #999"
+                  type="text"
+                  @click="handleEdit(index)"
+                >
+                  编辑
+                </el-button>
+                <el-button
+                  icon="el-icon-delete"
+                  size="small"
+                  style="margin-left: 125px; color: #999"
+                  type="text"
+                  @click="handleDelete(index)"
+                >
+                  删除
+                </el-button>
+                <el-button
+                  icon="el-icon-share"
+                  size="small"
+                  style="margin-left: 125px; color: #999"
+                  type="text"
+                  @click="handleDetail"
+                >
+                  分配权限
+                </el-button>
+              </div>
+            </div>
+            <vab-icon
+              v-if="item.cartSta"
+              icon="arrow-down-circle-line"
+              style="float: right; margin-top: 10px; font-size: 25px"
+            />
+            <vab-icon
+              v-else
+              icon="arrow-right-circle-line"
+              style="float: right; margin-top: 10px; font-size: 25px"
+            />
           </div>
-          <div style="width: 50%; margin-top: 10px">
-            <div>
-              <el-button
-                icon="el-icon-edit"
-                size="small"
-                style="margin-left: 125px; color: #999"
-                type="text"
-                @click="handleEdit(index)"
+          <div v-if="item.cartSta">
+            <el-divider />
+            <div style="display: flex; flex-wrap: wrap; width: 100%">
+              <div
+                v-for="(item1, index1) in item.userlist"
+                :key="index1"
+                style="display: flex; width: 20%; margin-bottom: 20px"
               >
-                编辑
-              </el-button>
-              <el-button
-                icon="el-icon-delete"
-                size="small"
-                style="margin-left: 125px; color: #999"
-                type="text"
-                @click="handleDelete(index)"
-              >
-                删除
-              </el-button>
-              <el-button
-                icon="el-icon-share"
-                size="small"
-                style="margin-left: 125px; color: #999"
-                type="text"
-                @click="handleDetail"
-              >
-                分配权限
-              </el-button>
+                <el-avatar :size="50" :src="item1.avatar" />
+                <span style="margin: 20px 0 0 20px">{{ item1.name }}</span>
+              </div>
             </div>
           </div>
-          <vab-icon
-            v-if="item.cartSta"
-            icon="arrow-down-circle-line"
-            style="float: right; margin-top: 10px; font-size: 25px"
-          />
-          <vab-icon
-            v-else
-            icon="arrow-right-circle-line"
-            style="float: right; margin-top: 10px; font-size: 25px"
-          />
         </div>
-        <div v-if="item.cartSta">
-          <el-divider />
-          <div style="display: flex; flex-wrap: wrap; width: 100%">
-            <div style="display: flex; width: 20%; margin-bottom: 20px">
-              <el-avatar
-                :size="50"
-                src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
-              />
-              <span style="margin: 20px 0 0 20px">李二</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </el-card>
+      </el-card>
+    </div>
+
+    <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
+      <Drawer />
+    </el-drawer>
     <el-dialog
-      title="编辑角色"
+      :title="title"
       :visible.sync="dialogFormVisible"
       width="500px"
       @close="close"
@@ -113,9 +125,6 @@
         <el-button type="primary" @click="close">确 定</el-button>
       </template>
     </el-dialog>
-    <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
-      <Drawer />
-    </el-drawer>
   </div>
 </template>
 
@@ -130,6 +139,7 @@
         drawer: false,
         // 表单数据/列表参数
         dialogFormVisible: false,
+        title: '',
         formType: 3,
         form: {
           id: 0,
@@ -137,7 +147,9 @@
           pageNo: 1,
           pageSize: 10,
         },
-        editform: {},
+        editform: {
+          name: '',
+        },
         editrules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
         },
@@ -150,6 +162,14 @@
             number: 10,
             btnIconStatus: false,
             cartSta: false,
+            userlist: [
+              {
+                id: 1,
+                name: '李二',
+                avatar:
+                  'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+              },
+            ],
           },
           {
             id: 2,
@@ -159,6 +179,26 @@
             number: 100,
             btnIconStatus: false,
             cartSta: false,
+            userlist: [
+              {
+                id: 1,
+                name: '李二',
+                avatar:
+                  'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+              },
+              {
+                id: 1,
+                name: '张三',
+                avatar:
+                  'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+              },
+              {
+                id: 1,
+                name: '李四',
+                avatar:
+                  'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+              },
+            ],
           },
         ],
         activeName: 'first',
@@ -177,10 +217,16 @@
         })
       },
       close() {
+        this.$refs['editform'].resetFields()
         this.dialogFormVisible = false
       },
       handleEdit(index) {
-        this.editform = this.cartList[index]
+        if (index !== 'add') {
+          this.title = '编辑角色'
+          this.editform = this.cartList[index]
+        } else {
+          this.title = '新增角色'
+        }
         this.dialogFormVisible = true
       },
       handleChange(index) {

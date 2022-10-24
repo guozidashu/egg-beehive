@@ -37,7 +37,7 @@
       ref="multipleTable"
       border
       :data="list"
-      style="width: 100%; margin-top: 10px"
+      style="width: 100%; margin-top: 10px; margin-left: 20px"
       tooltip-effect="dark"
       @selection-change="handleSelectionChange"
     >
@@ -49,7 +49,7 @@
         label="区域及价格"
         prop="price"
         show-overflow-tooltip
-        width="867"
+        width="800"
       >
         <template slot-scope="{ row }">
           <span style="font-weight: 700; color: #000">
@@ -71,17 +71,14 @@
       </el-table-column>
     </el-table>
     <!-- 弹框组件 -->
-    <el-dialog
+    <el-drawer
       :before-close="handleClose"
+      size="55%"
       title="+添加配送模板"
       :visible.sync="dialogVisible"
-      width="60%"
     >
-      <el-form
-        label="140px"
-        style="margin-top: -30px; border-top: 1px solid #f6f6f6"
-      >
-        <el-form-item label="配送方式：">
+      <el-form label="140px" style="border-top: 1px solid #f6f6f6">
+        <el-form-item label="配送方式：" style="margin-left: 50px">
           <el-radio-group v-model="radio">
             <el-radio :label="3">普通快递</el-radio>
             <el-radio :label="6">到店自提</el-radio>
@@ -90,16 +87,16 @@
         </el-form-item>
       </el-form>
       <el-form v-if="radio == 3">
-        <el-form-item label="显示名称：">
+        <el-form-item label="显示名称：" style="margin-left: 50px">
           <el-input v-model="formDate.name" style="width: 248px" />
         </el-form-item>
-        <el-form-item label="计价方式：">
+        <el-form-item label="计价方式：" style="margin-left: 50px">
           <el-radio-group v-model="radio1">
             <el-radio :label="1">按重量</el-radio>
             <el-radio :label="2">按件数</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="区域及价格：">
+        <el-form-item label="区域及价格：" style="margin-left: 50px">
           <el-table border :data="tableData" style="width: 85%">
             <el-table-column label="区域" prop="name" width="150">
               <template slot-scope="{ row }">
@@ -109,8 +106,17 @@
                 <el-button v-if="row.name == '编辑'">{{ row.name }}</el-button>
               </template>
             </el-table-column>
-            <el-table-column label="是否配送" width="140" />
-            <el-table-column label="首重重量(克)" prop="kg" width="140">
+            <el-table-column
+              label="是否配送"
+              style="margin-left: 50px"
+              width="140"
+            />
+            <el-table-column
+              label="首重重量(克)"
+              prop="kg"
+              style="margin-left: 50px"
+              width="140"
+            >
               <template slot-scope="{ row }">
                 <el-input v-model="row.kg" />
               </template>
@@ -142,28 +148,28 @@
         <div style="margin-left: 70px; color: #999">
           根据重量来计算运费，当物品不足《首重重量》时，按照《首重费用》计算，超过部分按照《续重重量》和《续重费用》乘积来计算，首重续重为空时默认按照1000计算
         </div>
-        <el-form-item label="满额包邮：">
+        <el-form-item label="满额包邮：" style="margin-left: 50px">
           <el-switch
             v-model="value1"
             active-color="#1890ff"
             inactive-color="#d2d2d2"
           />
         </el-form-item>
-        <el-form-item label="满额配送：">
+        <el-form-item label="满额配送：" style="margin-left: 50px">
           <el-switch
             v-model="value2"
             active-color="#1890ff"
             inactive-color="#d2d2d2"
           />
         </el-form-item>
-        <el-form-item label="配送时间：">
+        <el-form-item label="配送时间：" style="margin-left: 50px">
           <el-radio v-model="radio4" label="1">关闭</el-radio>
           <el-radio v-model="radio4" label="2">开启</el-radio>
           <span style="color: #a5a5a5">
             开启后用户下单时可以选择配送时间或提货时间
           </span>
         </el-form-item>
-        <el-form-item label="设置表单：">
+        <el-form-item label="设置表单：" style="margin-left: 50px">
           <el-button @click="addfn('单行输入')">单行输入</el-button>
           <el-button @click="addfn1('多行输入')">多行输入</el-button>
           <el-button @click="addfn2('单切选择')">单切选择</el-button>
@@ -177,8 +183,18 @@
             :data="tableData1"
             style="width: 85%; margin-top: 20px; margin-left: 80px"
           >
-            <el-table-column label="字段类型" prop="name" width="150" />
-            <el-table-column label="字段名称" prop="name1" width="190">
+            <el-table-column
+              label="字段类型"
+              prop="name"
+              style="margin-left: 50px"
+              width="150"
+            />
+            <el-table-column
+              label="字段名称"
+              prop="name1"
+              style="margin-left: 50px"
+              width="190"
+            >
               <template slot-scope="{ row }">
                 <el-input v-model="row.name1" placeholder="请输入字段名称" />
               </template>
@@ -203,13 +219,13 @@
             </el-table-column>
           </el-table>
         </el-form-item>
-        <el-form-item label="序号：" style="margin-left: 20px">
+        <el-form-item label="序号：" style="margin-left: 50px">
           <el-input v-model="z" style="width: 248px" />
           <span style="margin-left: 20px; color: #999">
             用于排序，越大越靠前
           </span>
         </el-form-item>
-        <el-form-item label="状态：" style="margin-left: 20px">
+        <el-form-item label="状态：" style="margin-left: 50px">
           <el-radio-group v-model="radio10">
             <el-radio :label="10">开启</el-radio>
             <el-radio :label="11">关闭</el-radio>
@@ -219,30 +235,30 @@
         <!--  -->
       </el-form>
       <el-form v-if="radio == 6">
-        <el-form-item label="显示名称：">
+        <el-form-item label="显示名称：" style="margin-left: 50px">
           <el-input v-model="dd" style="width: 248px" />
         </el-form-item>
-        <el-form-item label="自提门店：">
+        <el-form-item label="自提门店：" style="margin-left: 50px">
           <el-radio v-model="radio12" label="100">全部</el-radio>
           <el-radio v-model="radio12" label="101">选择门店</el-radio>
         </el-form-item>
-        <el-form-item label="提货时间：">
+        <el-form-item label="提货时间：" style="margin-left: 50px">
           <el-radio v-model="radio13" label="102">关闭</el-radio>
           <el-radio v-model="radio13" label="103">开启</el-radio>
           <span style="color: #999">
             开启后用户下单时可以选择配送时间或提货时间
           </span>
         </el-form-item>
-        <el-form-item label="联系方式：">
+        <el-form-item label="联系方式：" style="margin-left: 50px">
           <el-radio v-model="radio14" label="104">关闭</el-radio>
           <el-radio v-model="radio14" label="105">开启</el-radio>
           <span style="color: #999">提交订单时，联系人和联系电话是否必填</span>
         </el-form-item>
-        <el-form-item label="服务费：">
+        <el-form-item label="服务费：" style="margin-left: 50px">
           <el-input v-model="fw" style="width: 150px" />
           元
         </el-form-item>
-        <el-form-item label="设置表单：">
+        <el-form-item label="设置表单：" style="margin-left: 50px">
           <el-button>单行输入</el-button>
           <el-button>多行输入</el-button>
           <el-button>单项选择</el-button>
@@ -282,23 +298,23 @@
             </el-table-column>
           </el-table>
         </el-form-item>
-        <el-form-item label="序号：">
+        <el-form-item label="序号：" style="margin-left: 50px">
           <el-input v-model="xx" style="width: 150px" />
-          <span style="color: #999; margin-left: 20px">
+          <span style="margin-left: 20px; color: #999">
             用于排序，越大越靠前
           </span>
         </el-form-item>
-        <el-form-item label="状态：">
+        <el-form-item label="状态：" style="margin-left: 50px">
           <el-radio v-model="radio15" label="110">开启</el-radio>
           <el-radio v-model="radio15" label15="111">关闭</el-radio>
         </el-form-item>
         <el-button style="margin-left: 80px" type="primary">提交</el-button>
       </el-form>
       <el-form v-if="radio == 9">
-        <el-form-item label="显示名称：">
+        <el-form-item label="显示名称：" style="margin-left: 50px">
           <el-input v-model="tc" style="width: 248px" />
         </el-form-item>
-        <el-form-item label="配送费：">
+        <el-form-item label="配送费：" style="margin-left: 50px">
           <el-row type="flex">
             <el-input v-model="ps" style="width: 120px" />
             <span style="margin-left: 10px">公里内</span>
@@ -316,8 +332,8 @@
             style="
               width: 800px;
               height: 600px;
-              background-color: #fff;
               margin-left: 70px;
+              background-color: #fff;
             "
           >
             <img src="../../assets/1666410791864.jpg" />
@@ -332,28 +348,28 @@
             <span style="margin-left: 10px">米</span>
           </el-row>
         </el-form-item>
-        <el-form-item label="满额包邮：">
+        <el-form-item label="满额包邮：" style="margin-left: 50px">
           <el-switch
             v-model="value100"
             active-color="#1890ff"
             inactive-color="#d2d2d2"
           />
         </el-form-item>
-        <el-form-item label="满额起送：">
+        <el-form-item label="满额起送：" style="margin-left: 50px">
           <el-switch
             v-model="value101"
             active-color="#1890ff"
             inactive-color="#d2d2d2"
           />
         </el-form-item>
-        <el-form-item label="配送时间：">
+        <el-form-item label="配送时间：" style="margin-left: 50px">
           <el-radio v-model="radio22" label="1000">关闭</el-radio>
           <el-radio v-model="radio22" label22="2000">开启</el-radio>
           <span style="color: #999">
             开启后用户下单时可以选择配送时间或提货时间
           </span>
         </el-form-item>
-        <el-form-item label="设置表单：">
+        <el-form-item label="设置表单：" style="margin-left: 50px">
           <el-button>单行输入</el-button>
           <el-button>多行输入</el-button>
           <el-button>单项选择</el-button>
@@ -393,19 +409,20 @@
             </el-table-column>
           </el-table>
         </el-form-item>
-        <el-form-item label="序号：" style="margin-left: 20px">
+        <el-form-item label="序号：" style="margin-left: 50px">
           <el-input v-model="z" style="width: 248px" />
           <span style="margin-left: 20px; color: #999">
             用于排序，越大越靠前
           </span>
         </el-form-item>
-        <el-form-item label="状态：">
+        <el-form-item label="状态：" style="margin-left: 50px">
           <el-radio v-model="radio33" label="120">开启</el-radio>
           <el-radio v-model="radio33" label33="130">关闭</el-radio>
         </el-form-item>
         <el-button style="margin-left: 80px" type="primary">提交</el-button>
+        <div style="width: 100%; height: 50px; background-color: #fff"></div>
       </el-form>
-    </el-dialog>
+    </el-drawer>
   </div>
 </template>
 

@@ -1,53 +1,60 @@
 <template>
-  <div>
+  <div style="padding: 20px">
     <div
       style="
         width: 100%;
-        height: 50px;
+        height: 20px;
+        padding-left: 10px;
         font-size: 16px;
-        line-height: 50px;
-        padding-left: 30px;
-        border-bottom: 1px solid #d2d2d2;
+        line-height: 10px;
       "
     >
       云打印机设置
     </div>
-    <!-- 分割 -->
-    <div style="width: 100%; height: 20px; background-color: #f6f8f9"></div>
+    <div style="width: 100%; height: 2px; background-color: #e4e7ed"></div>
     <div
       style="
         width: 100%;
-        height: 50px;
-        background-color: #e8f4ff;
-        line-height: 50px;
+        height: 62px;
         padding-left: 20px;
+        margin-top: 10px;
+        line-height: 62px;
+        background-color: #e8f4ff;
+        border-radius: 8px;
       "
     >
       小票打印机用于用户下单成功后自动打印小票+语音播报，目前支持易联云和飞鹅的小票打印机，请先购买小票打印机后进行配置，点击进入易联云购买地址，点击进入飞鹅购买地址
     </div>
-    <el-row style="margin-top: 20px">
-      <el-button type="primary" @click="add">添加易联云打印机</el-button>
-      <el-button type="primary" @click="add1">添加飞鹅打印机</el-button>
-      <el-button>删除</el-button>
-      <el-button>开启</el-button>
-      <el-button>关闭</el-button>
-
-      <span style="margin-left: 650px">名称</span>
-      <el-input style="width: 150px; margin-left: 20px" />
-      <span style="margin-left: 20px">状态</span>
-      <el-select
-        v-model="value"
-        placeholder="请选择"
-        style="width: 150px; margin-left: 20px"
-      >
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
-      </el-select>
-      <el-button style="margin-left: 20px" type="primary">查询</el-button>
+    <el-row
+      justify-content="space-between"
+      style="margin-top: 20px"
+      type="flex"
+    >
+      <div>
+        <el-button type="primary" @click="add">添加易联云打印机</el-button>
+        <el-button type="primary" @click="add1">添加飞鹅打印机</el-button>
+        <el-button>删除</el-button>
+        <el-button>开启</el-button>
+        <el-button>关闭</el-button>
+      </div>
+      <div>
+        <span style="margin-left: 600px">名称</span>
+        <el-input style="width: 150px; margin-left: 20px" />
+        <span style="margin-left: 20px">状态</span>
+        <el-select
+          v-model="value"
+          placeholder="请选择"
+          style="width: 150px; margin-left: 20px"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+        <el-button style="margin-left: 20px" type="primary">查询</el-button>
+      </div>
     </el-row>
     <el-table
       border
@@ -77,7 +84,7 @@
     >
       <el-form
         label-width="120px"
-        style="border-top: 1px solid #d2d2d2; margin-top: -20px"
+        style="margin-top: -20px; border-top: 1px solid #d2d2d2"
       >
         <el-form-item label="名称：" style="margin-top: 10px">
           <el-input v-model="name" style="width: 248px" />
@@ -154,7 +161,7 @@
     >
       <el-form
         label-width="120px"
-        style="border-top: 1px solid #d2d2d2; margin-top: -20px"
+        style="margin-top: -20px; border-top: 1px solid #d2d2d2"
       >
         <el-form-item label="名称：" style="margin-top: 10px">
           <el-input v-model="name" style="width: 248px" />

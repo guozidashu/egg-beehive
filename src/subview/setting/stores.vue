@@ -55,6 +55,7 @@
         <el-switch
           v-model="value1"
           active-color="#1890ff"
+          disabled
           inactive-color="#d2d2d2"
         />
       </el-table-column>
@@ -67,19 +68,19 @@
       background
       layout="prev, pager, next, jumper,sizes,total"
       :page-sizes="[5, 10, 15, 20]"
-      style="margin-left: 200px"
-      :total="4"
+      style="margin-left: 900px"
+      :total="50"
     />
     <!-- 弹框 -->
-    <el-dialog
+    <el-drawer
       :before-close="handleClose"
+      size="50%"
       title="+添加门店"
       :visible.sync="dialogVisible"
-      width="50%"
     >
       <el-form
         label-width="100px"
-        style="border-top: 1px solid #d2d2d2; margin-top: -20px"
+        style="margin-top: -20px; border-top: 1px solid #d2d2d2"
       >
         <el-form-item label="名称：" style="margin-top: 20px">
           <el-input style="width: 248px" />
@@ -91,9 +92,9 @@
           </span>
           <div
             style="
-              margin-top: 10px;
               width: 106px;
               height: 106px;
+              margin-top: 10px;
               background-color: #f6f6f6;
               border: 1px solid #d2d2d2;
             "
@@ -136,7 +137,7 @@
         </el-form-item>
         <el-form-item label="序号：">
           <el-input v-model="m" style="width: 150px" />
-          <span style="color: #999; margin-left: 20px">
+          <span style="margin-left: 20px; color: #999">
             用于排序，越大越靠前
           </span>
         </el-form-item>
@@ -146,7 +147,8 @@
         </el-form-item>
       </el-form>
       <el-button style="margin-left: 50px" type="primary">提交</el-button>
-    </el-dialog>
+      <div style="width: 100%; height: 30px; background-color: #fff"></div>
+    </el-drawer>
   </div>
 </template>
 
@@ -224,6 +226,7 @@
           },
         ],
         value: '',
+        fullscreen: false,
         options1: {
           theme: 'snow',
           bounds: document.body,
@@ -282,4 +285,10 @@
   }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+  ::v-deep .el-pagination.is-background .el-pager li:not(.disabled).active {
+    color: #1890ff;
+    background-color: #fff;
+    border: 1px solid #1890ff;
+  }
+</style>

@@ -1,1144 +1,340 @@
 <template>
-  <div class="tagAdmin">
-    <div class="btnNav">
-      <el-button size="mini" type="primary" @click="submit">提交</el-button>
+  <div style="padding: 20px">
+    <div>
+      <p style="font-size: 16px; font-weight: 600">管理员权限</p>
+      <p>设置角色对应的后台管理权限以及功能操作</p>
     </div>
     <el-form ref="ruleForm" :model="formData">
       <el-table
         border
         :data="tableData"
-        :header-cell-style="{
-          color: '#333',
-          background: '#eee',
-          padding: '5px 10px',
-          'font-size': '12px',
-        }"
-        height="400"
-        row-class-name="bda-table"
-        :span-method="arraySpanMethod"
-        style="width: 100%"
+        :span-method="objectSpanMethod"
+        style="width: 100%; margin-top: 20px"
       >
-        <el-table-column label="功能" min-width="120" prop="parentId">
-          <template #default="scope">
+        <el-table-column label="一级">
+          <template slot="header">
             <el-checkbox
-              v-model="
-                formData[
-                  scope.row[
-                    scope.row.children.length !== 0 ? 'parentId' : 'cfunctionId'
-                  ]
-                ]
-              "
-              :indeterminate="
-                childSelection[
-                  scope.row[
-                    scope.row.children.length !== 0 ? 'parentId' : 'cfunctionId'
-                  ]
-                ]
-              "
-              size="mini"
-              @change="
-                checkChange(
-                  scope.row[
-                    scope.row.children.length !== 0 ? 'parentId' : 'cfunctionId'
-                  ],
-                  sourceData.find((item) => {
-                    return (
-                      item.cfunctionId ===
-                      scope.row[
-                        scope.row.children.length !== 0
-                          ? 'parentId'
-                          : 'cfunctionId'
-                      ]
-                    )
-                  }).children
-                )
-              "
+              v-model="formData[0]"
+              @change="checkChange(0, null, 0)"
             >
-              {{
-                scope.row[
-                  scope.row.children.length !== 0
-                    ? 'parentName'
-                    : 'cfunctionName'
-                ]
-              }}
+              全选
+            </el-checkbox>
+          </template>
+          <template slot-scope="scope">
+            <el-checkbox
+              v-model="formData[scope.row.yijiid]"
+              @change="checkChange(scope.row.yijiid, scope.row, 1)"
+            >
+              {{ scope.row.yiji }}
             </el-checkbox>
           </template>
         </el-table-column>
-        <el-table-column label="二级功能" min-width="120" prop="two-level">
-          <template #default="scope">
+        <el-table-column label="二级" prop="erji">
+          <template #default="{ row }">
             <el-checkbox
-              v-if="scope.row.children.length !== 0"
-              v-model="formData[scope.row.cfunctionId]"
-              :indeterminate="childSelection[scope.row.cfunctionId]"
-              size="mini"
-              @change="
-                checkChange(
-                  scope.row.cfunctionId,
-                  scope.row.children,
-                  scope.row
-                )
-              "
+              v-model="formData[row.erjiid]"
+              @change="checkChange(row.erjiid, row, 2)"
             >
-              {{ scope.row.cfunctionName }}
+              {{ row.erji }}
             </el-checkbox>
-            <div v-else>
-              <el-checkbox
-                v-for="item in scope.row.unOwnedList"
-                :key="item.cfunctionId"
-                v-model="formData[item.cfunctionId]"
-                size="mini"
-                @change="checkChange(item.cfunctionId, null, item)"
-              >
-                {{ item.cfunctionName }}
-              </el-checkbox>
-            </div>
           </template>
         </el-table-column>
-        <el-table-column label="三级功能" min-width="300" prop="three-level">
-          <template #default="scope">
+        <el-table-column label="三级" prop="sanji">
+          <template #default="{ row }">
             <el-checkbox
-              v-for="item in scope.row.children"
-              :key="item.cfunctionId"
-              v-model="formData[item.cfunctionId]"
-              size="mini"
-              @change="checkChange(item.cfunctionId, null, item, scope.row.pId)"
+              v-if="row.sanji"
+              v-model="formData[row.sanjiid]"
+              @change="checkChange(row.sanjiid, row, 3)"
             >
-              {{ item.cfunctionName }}
+              {{ row.sanji }}
+            </el-checkbox>
+          </template>
+        </el-table-column>
+        <el-table-column label="功能" prop="gongneng">
+          <template #default="{ row }">
+            <el-checkbox
+              v-for="(item, index) in row.gongneng"
+              :key="index"
+              v-model="formData[item.gongnengid]"
+              @change="checkChange(item.gongnengid, row, 4)"
+            >
+              {{ item.gongnnegname }}
             </el-checkbox>
           </template>
         </el-table-column>
       </el-table>
     </el-form>
+    <div
+      style="
+        position: fixed;
+        bottom: 0;
+        z-index: 999;
+        width: 100%;
+        padding: 20px 0;
+        background-color: white;
+      "
+    >
+      <el-button>取消</el-button>
+      <el-button type="primary" @click="submit">确定</el-button>
+    </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'EmployeesEdit',
+    name: 'Dashboard',
     data() {
       return {
-        tableData: [],
-        sourceData: [
+        quanxuan: true,
+        formData: {},
+        tableData: [
           {
-            cfunctionId: '10059',
-            cfunctionName: '首页菜单',
-            pCfunctionId: '0',
-            indexCode: '32',
-            indexLev: 0,
-            seq: 0,
-            pCfunctionName: null,
-            permissionStr:
-              'url:bdatag/homepage\nurl:bdatag/tag/statistics\nurl:bdatag/anlyz/listAnlyzByIndexIdAngTagobjId\nmenu:taglib/homeOverview\nurl:bdatag/tag/job/listHistTagCalcDayTime',
-            groupId: null,
-            groupName: null,
-            componentId: null,
-            componentName: null,
-            permissionValue: null,
-            enable: false,
-            id: '10059',
-            pId: '0',
-            indexType: null,
+            yiji: '首页',
+            erji: '首页',
+            yijiid: 1,
+            erjiid: 2,
+            gongneng: [
+              { gongnnegname: '功能一', gongnengid: 3 },
+              { gongnnegname: '功能二', gongnengid: 4 },
+            ],
           },
           {
-            cfunctionId: '10001',
-            cfunctionName: '标签管理',
-            pCfunctionId: '0',
-            indexCode: '01',
-            indexLev: 0,
-            seq: 1,
-            pCfunctionName: null,
-            permissionStr:
-              'url:bdatag/dbcolumn\r\nurl:bdatag/model\r\nmenu:tag\r\nurl:bdatag/tag\r\nurl:bdatag/tagobj\r\nurl:bdatag/dbtable\r\nurl:bdatag/dbenum\r\nurl:bdatag/region',
-            groupId: null,
-            groupName: null,
-            componentId: null,
-            componentName: null,
-            permissionValue: null,
-            enable: false,
-            children: [
-              {
-                cfunctionId: '10008',
-                cfunctionName: '标签目录维护',
-                pCfunctionId: '10001',
-                indexCode: '01.01',
-                indexLev: 1,
-                seq: 0,
-                pCfunctionName: null,
-                permissionStr: '',
-                groupId: null,
-                groupName: null,
-                componentId: null,
-                componentName: null,
-                permissionValue: null,
-                enable: false,
-                children: [
-                  {
-                    cfunctionId: '10015',
-                    cfunctionName: '新建目录',
-                    pCfunctionId: '10008',
-                    indexCode: '01.01.01',
-                    indexLev: 2,
-                    seq: 0,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tagindex:create',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10015',
-                    pId: '10008',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10016',
-                    cfunctionName: '编辑目录',
-                    pCfunctionId: '10008',
-                    indexCode: '01.01.02',
-                    indexLev: 2,
-                    seq: 1,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tagindex:update',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10016',
-                    pId: '10008',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10017',
-                    cfunctionName: '删除目录',
-                    pCfunctionId: '10008',
-                    indexCode: '01.01.03',
-                    indexLev: 2,
-                    seq: 2,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tagindex:delete',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10017',
-                    pId: '10008',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10018',
-                    cfunctionName: '移动目录',
-                    pCfunctionId: '10008',
-                    indexCode: '01.01.04',
-                    indexLev: 2,
-                    seq: 3,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tagindex:move',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10018',
-                    pId: '10008',
-                    indexType: null,
-                  },
-                ],
-                id: '10008',
-                pId: '10001',
-                indexType: null,
-              },
-              {
-                cfunctionId: '10009',
-                cfunctionName: '标签维护',
-                pCfunctionId: '10001',
-                indexCode: '01.02',
-                indexLev: 1,
-                seq: 1,
-                pCfunctionName: null,
-                permissionStr: 'url:workflow\nmenu:taglib/tag',
-                groupId: null,
-                groupName: null,
-                componentId: null,
-                componentName: null,
-                permissionValue: null,
-                enable: false,
-                children: [
-                  {
-                    cfunctionId: '10020',
-                    cfunctionName: '创建标签',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.02',
-                    indexLev: 2,
-                    seq: 0,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:create',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10020',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10023',
-                    cfunctionName: '编辑标签',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.05',
-                    indexLev: 2,
-                    seq: 1,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:update',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10023',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10025',
-                    cfunctionName: '删除标签',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.08',
-                    indexLev: 2,
-                    seq: 2,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:delete',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10025',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10024',
-                    cfunctionName: '移动标签',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.07',
-                    indexLev: 2,
-                    seq: 3,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:move',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10024',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10019',
-                    cfunctionName: '标签详细',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.01',
-                    indexLev: 2,
-                    seq: 4,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:details',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10019',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10026',
-                    cfunctionName: '执行更新',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.09',
-                    indexLev: 2,
-                    seq: 5,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:calc',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10026',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10027',
-                    cfunctionName: '发布标签',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.10',
-                    indexLev: 2,
-                    seq: 6,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:publish',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10027',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10028',
-                    cfunctionName: '评估标签',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.11',
-                    indexLev: 2,
-                    seq: 7,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:evaluate',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10028',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10029',
-                    cfunctionName: '优化标签',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.12',
-                    indexLev: 2,
-                    seq: 8,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:optimize',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10029',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10030',
-                    cfunctionName: '停用标签',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.13',
-                    indexLev: 2,
-                    seq: 9,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:deactivate',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10030',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10031',
-                    cfunctionName: '重新启动',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.14',
-                    indexLev: 2,
-                    seq: 10,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:republish',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10031',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10032',
-                    cfunctionName: '下线标签',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.15',
-                    indexLev: 2,
-                    seq: 11,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:offline',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10032',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10033',
-                    cfunctionName: '命中分析配置',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.16',
-                    indexLev: 2,
-                    seq: 12,
-                    pCfunctionName: null,
-                    permissionStr:
-                      'bdatag:fun:tag:hit\r\nurl:bdatag/anlyz/getDefaultDbtable\r\nurl:bdatag/anlyz/v2/execute',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10033',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10034',
-                    cfunctionName: '标签预览数据',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.17',
-                    indexLev: 2,
-                    seq: 13,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:preview',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10034',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10035',
-                    cfunctionName: '标签明细数据查询',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.18',
-                    indexLev: 2,
-                    seq: 14,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:datatab:show',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10035',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10036',
-                    cfunctionName: '标签数据导出',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.19',
-                    indexLev: 2,
-                    seq: 15,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:detail:exp',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10036',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10117',
-                    cfunctionName: '规则标签',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.20',
-                    indexLev: 2,
-                    seq: 16,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:rule',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10117',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10118',
-                    cfunctionName: '组合标签',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.21',
-                    indexLev: 2,
-                    seq: 17,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:combine',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10118',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10119',
-                    cfunctionName: '手工标签',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.22',
-                    indexLev: 2,
-                    seq: 18,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:manual',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10119',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10120',
-                    cfunctionName: '模型标签',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.23',
-                    indexLev: 2,
-                    seq: 19,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:model',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10120',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10121',
-                    cfunctionName: '实时标签',
-                    pCfunctionId: '10009',
-                    indexCode: '01.02.24',
-                    indexLev: 2,
-                    seq: 20,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:realtime',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10121',
-                    pId: '10009',
-                    indexType: null,
-                  },
-                ],
-                id: '10009',
-                pId: '10001',
-                indexType: null,
-              },
-              {
-                cfunctionId: '10303',
-                cfunctionName: '我的标签',
-                pCfunctionId: '10001',
-                indexCode: '01.11',
-                indexLev: 1,
-                seq: 2,
-                pCfunctionName: null,
-                permissionStr: 'menu:myTag',
-                groupId: null,
-                groupName: null,
-                componentId: null,
-                componentName: null,
-                permissionValue: null,
-                enable: false,
-                children: [
-                  {
-                    cfunctionId: '10304',
-                    cfunctionName: '创建的标签',
-                    pCfunctionId: '10303',
-                    indexCode: '01.11.01',
-                    indexLev: 2,
-                    seq: 0,
-                    pCfunctionName: null,
-                    permissionStr: 'menu:taglib/tagSelfCreate',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10304',
-                    pId: '10303',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10305',
-                    cfunctionName: '收藏的标签',
-                    pCfunctionId: '10303',
-                    indexCode: '01.11.02',
-                    indexLev: 2,
-                    seq: 1,
-                    pCfunctionName: null,
-                    permissionStr: 'menu:taglib/tagSelfCollect',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10305',
-                    pId: '10303',
-                    indexType: null,
-                  },
-                ],
-                id: '10303',
-                pId: '10001',
-                indexType: null,
-              },
-              {
-                cfunctionId: '10010',
-                cfunctionName: '标签集市',
-                pCfunctionId: '10001',
-                indexCode: '01.03',
-                indexLev: 1,
-                seq: 3,
-                pCfunctionName: null,
-                permissionStr: 'menu:taglib/tagMarket/market',
-                groupId: null,
-                groupName: null,
-                componentId: null,
-                componentName: null,
-                permissionValue: null,
-                enable: false,
-                id: '10010',
-                pId: '10001',
-                indexType: null,
-              },
-              {
-                cfunctionId: '10011',
-                cfunctionName: '标签更新',
-                pCfunctionId: '10001',
-                indexCode: '01.04',
-                indexLev: 1,
-                seq: 4,
-                pCfunctionName: null,
-                permissionStr:
-                  'menu:taglib/tagUpdate\nurl:bdatag/tagclash\nurl:bdatag/visual/listTagFilterFieldVos\nurl:bdatag/visual/listTagShowFieldVos\nurl:bdatag/portrait/listBizObjects\nurl:bdatag/job/log/list',
-                groupId: null,
-                groupName: null,
-                componentId: null,
-                componentName: null,
-                permissionValue: null,
-                enable: false,
-                id: '10011',
-                pId: '10001',
-                indexType: null,
-              },
-              {
-                cfunctionId: '10012',
-                cfunctionName: '运营监测',
-                pCfunctionId: '10001',
-                indexCode: '01.05',
-                indexLev: 1,
-                seq: 5,
-                pCfunctionName: null,
-                permissionStr: 'menu:taglib/tagAssessment',
-                groupId: null,
-                groupName: null,
-                componentId: null,
-                componentName: null,
-                permissionValue: null,
-                enable: false,
-                id: '10012',
-                pId: '10001',
-                indexType: null,
-              },
-              {
-                cfunctionId: '10013',
-                cfunctionName: '需求提报',
-                pCfunctionId: '10001',
-                indexCode: '01.06',
-                indexLev: 1,
-                seq: 6,
-                pCfunctionName: null,
-                permissionStr:
-                  'menu:taglib/requirement\nurl:taglib/requirement\n',
-                groupId: null,
-                groupName: null,
-                componentId: null,
-                componentName: null,
-                permissionValue: null,
-                enable: false,
-                children: [
-                  {
-                    cfunctionId: '10038',
-                    cfunctionName: '提需求',
-                    pCfunctionId: '10013',
-                    indexCode: '01.06.02',
-                    indexLev: 2,
-                    seq: 0,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:apply',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10038',
-                    pId: '10013',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10039',
-                    cfunctionName: '删除需求',
-                    pCfunctionId: '10013',
-                    indexCode: '01.06.03',
-                    indexLev: 2,
-                    seq: 1,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:deleteApply',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10039',
-                    pId: '10013',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10041',
-                    cfunctionName: '关闭需求',
-                    pCfunctionId: '10013',
-                    indexCode: '01.06.05',
-                    indexLev: 2,
-                    seq: 2,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:closeApply',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10041',
-                    pId: '10013',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10042',
-                    cfunctionName: '导入需求',
-                    pCfunctionId: '10013',
-                    indexCode: '01.06.06',
-                    indexLev: 2,
-                    seq: 3,
-                    pCfunctionName: null,
-                    permissionStr:
-                      'bdatag:fun:tag:importApply\nurl:bdatag/excel',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10042',
-                    pId: '10013',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10044',
-                    cfunctionName: '导出需求',
-                    pCfunctionId: '10013',
-                    indexCode: '01.06.07',
-                    indexLev: 2,
-                    seq: 4,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tag:exportApply',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10044',
-                    pId: '10013',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10037',
-                    cfunctionName: '流程配置',
-                    pCfunctionId: '10013',
-                    indexCode: '01.06.01',
-                    indexLev: 2,
-                    seq: 5,
-                    pCfunctionName: null,
-                    permissionStr: 'fun:tag:applyworkflow:config',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10037',
-                    pId: '10013',
-                    indexType: null,
-                  },
-                ],
-                id: '10013',
-                pId: '10001',
-                indexType: null,
-              },
-              {
-                cfunctionId: '10014',
-                cfunctionName: '主体配置',
-                pCfunctionId: '10001',
-                indexCode: '01.07',
-                indexLev: 1,
-                seq: 7,
-                pCfunctionName: null,
-                permissionStr:
-                  'menu:taglib/tagobj\nurl:workflow\nurl:bdatag/dblink\nurl:bdatag/excel/cancle\nurl:bdatag/excel/getTemplate',
-                groupId: null,
-                groupName: null,
-                componentId: null,
-                componentName: null,
-                permissionValue: null,
-                enable: false,
-                children: [
-                  {
-                    cfunctionId: '10047',
-                    cfunctionName: '新增标签主体',
-                    pCfunctionId: '10014',
-                    indexCode: '01.07.01',
-                    indexLev: 2,
-                    seq: 0,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tagobj:create',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10047',
-                    pId: '10014',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10048',
-                    cfunctionName: '编辑标签主体',
-                    pCfunctionId: '10014',
-                    indexCode: '01.07.02',
-                    indexLev: 2,
-                    seq: 1,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tagobj:update',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10048',
-                    pId: '10014',
-                    indexType: null,
-                  },
-                  {
-                    cfunctionId: '10049',
-                    cfunctionName: '删除标签主体',
-                    pCfunctionId: '10014',
-                    indexCode: '01.07.03',
-                    indexLev: 2,
-                    seq: 2,
-                    pCfunctionName: null,
-                    permissionStr: 'bdatag:fun:tagobj:delete',
-                    groupId: null,
-                    groupName: null,
-                    componentId: null,
-                    componentName: null,
-                    permissionValue: null,
-                    enable: false,
-                    id: '10049',
-                    pId: '10014',
-                    indexType: null,
-                  },
-                ],
-                id: '10014',
-                pId: '10001',
-                indexType: null,
-              },
+            yiji: '系统设置',
+            erji: '员工管理',
+            yijiid: 5,
+            erjiid: 6,
+            gongneng: [
+              { gongnnegname: '功能一', gongnengid: 7 },
+              { gongnnegname: '功能二', gongnengid: 8 },
             ],
-            id: '10001',
-            pId: '0',
-            indexType: null,
+          },
+          {
+            yiji: '系统设置',
+            erji: '角色管理',
+            yijiid: 5,
+            erjiid: 9,
+            gongneng: [
+              { gongnnegname: '功能一', gongnengid: 10 },
+              { gongnnegname: '功能二', gongnengid: 11 },
+            ],
+          },
+          {
+            yiji: '系统设置',
+            erji: '用户管理',
+            yijiid: 5,
+            erjiid: 12,
+            gongneng: [
+              { gongnnegname: '功能一', gongnengid: 13 },
+              { gongnnegname: '功能二', gongnengid: 14 },
+            ],
+          },
+          {
+            yiji: '系统设置',
+            erji: '渠道管理',
+            sanji: '微信',
+            yijiid: 5,
+            erjiid: 15,
+            sanjiid: 16,
+            gongneng: [
+              { gongnnegname: '功能一', gongnengid: 17 },
+              { gongnnegname: '功能二', gongnengid: 18 },
+            ],
+          },
+          {
+            yiji: '系统设置',
+            erji: '渠道管理',
+            sanji: '支付宝',
+            yijiid: 5,
+            erjiid: 15,
+            sanjiid: 19,
+            gongneng: [
+              { gongnnegname: '功能一', gongnengid: 20 },
+              { gongnnegname: '功能二', gongnengid: 21 },
+            ],
           },
         ],
-        formData: {},
-        treeData: [],
-        childSelection: {},
+        spanArr: [], //一个空的数组，用于存放每一行记录的合并数
+        pos: '', //pos是spanArr的索引,需要合并行下标
+        spanArr2: [],
+        pos2: '',
       }
     },
     created() {
-      // 初始化数据（处理成适合的数据）
-      // initData(JSON.parse(JSON.stringify(data.treeData)));
-      this.treeData = JSON.parse(JSON.stringify(this.sourceData))
-      this.initData(this.treeData)
+      this.getSpanArr(this.tableData)
     },
+    mounted() {},
     methods: {
-      // 处理数据方法
-      initData(arr) {
-        arr.forEach((item) => {
-          let unOwnedList = []
-          if (item.children) {
-            item.children.forEach((j) => {
-              let temp = JSON.parse(JSON.stringify(j))
-              j.parentId = item.cfunctionId
-              j.parentName = item.cfunctionName
-              if (!j.children) {
-                j.children = []
-                unOwnedList.push(temp)
-              }
-            })
-          }
-          // window.console.log(unOwnedList, item.children)
-          if (item.children) {
-            let childItem = item.children
-
-            if (unOwnedList.length !== 0) {
-              unOwnedList.forEach((item_1) => {
-                childItem.forEach((res, index) => {
-                  // window.console.log(res.cfunctionName, item_1.cfunctionName)
-                  if (res.cfunctionId === item_1.cfunctionId) {
-                    // window.console.log(index, childItem[index])
-                    childItem.splice(index, 1)
-                  }
-                })
-              })
-              childItem.push({
-                // ...item,
-                children: [],
-                unOwnedList: unOwnedList,
-                parentId: item.cfunctionId,
-                parentName: item.cfunctionName,
-                cfunctionId: item.cfunctionId,
-                cfunctionName: item.cfunctionName,
-              })
-            }
-            // window.console.log(childItem)
-            this.tableData.push(...childItem)
-          } else {
-            this.tableData.push({
-              ...item,
-              children: [],
-            })
-          }
-        })
-      },
-      // 合并表格方法
-      arraySpanMethod(row, column, rowIndex, columnIndex) {
+      objectSpanMethod({ rowIndex, columnIndex }) {
         if (columnIndex === 0) {
-          const parent = this.treeData.find(
-            (i) => i.cfunctionId === row.parentId
-          )
-          // window.console.log(parent)
-          if (parent && row.cfunctionId === parent.children[0].cfunctionId) {
-            return {
-              rowspan: parent.children.length,
-              colspan: 1,
-            }
-          } else if (
-            parent &&
-            row.cfunctionId !== parent.children[0].cfunctionId
-          ) {
-            return {
-              rowspan: 0,
-              colspan: 0,
-            }
-          } else {
-            return {
-              rowspan: 1,
-              colspan: 3,
-            }
+          const _row = this.spanArr[rowIndex]
+          const _col = _row > 0 ? 1 : 0
+          return {
+            // [0,0] 表示这一行不显示， [2,1]表示行的合并数
+            rowspan: _row,
+            colspan: _col,
           }
         } else if (columnIndex === 1) {
-          // window.console.log(row, column, rowIndex, columnIndex)
-          if (row.children.length !== 0) {
-            return {
-              rowspan: 1,
-              colspan: 1,
-            }
-          } else {
-            return {
-              rowspan: 1,
-              colspan: 2,
-            }
+          const _row = this.spanArr2[rowIndex]
+          const _col = _row > 0 ? 1 : 0
+          return {
+            // [0,0] 表示这一行不显示， [2,1]表示行的合并数
+            rowspan: _row,
+            colspan: _col,
           }
         }
       },
-      // 多选框选中效果
-      checkChange(id, childList, row, superiorId) {
-        this.childSelection[id] = false
-        if (row && row.pId !== '0') {
-          this.childSelection[row.pId] = true
 
-          if (superiorId) {
-            this.childSelection[superiorId] = true
-          }
-        }
+      getSpanArr(data) {
+        // data就是我们从后台拿到的数据
+        for (let i = 0; i < data.length; i++) {
+          //如果是第一条记录（索引为０），向数组中加入１，并设置索引位置
+          if (i === 0) {
+            this.spanArr.push(1)
+            this.pos = 0 //spanArr的索引
 
-        if (childList) {
-          childList.forEach((item) => {
-            this.formData[item.cfunctionId] = this.formData[id]
-            if (item.children) {
-              this.checkChange(item.cfunctionId, item.children)
+            this.spanArr2.push(1)
+            this.pos2 = 0
+          } else {
+            //如果不是第一条记录，则判断它与前一条记录是否相等
+            //根据相同 扣分类别名称 进行合并,根据需要可进行修改
+            if (data[i].yiji === data[i - 1].yiji) {
+              //如果相等，则向spanArr中添入元素0，并将前一位元素＋１，表示合并行数＋１
+              this.spanArr[this.pos] += 1
+              this.spanArr.push(0)
+            } else {
+              this.spanArr.push(1)
+              this.pos = i
             }
-          })
+
+            if (data[i].erji === data[i - 1].erji) {
+              //如果相等，则向spanArr中添入元素0，并将前一位元素＋１，表示合并行数＋１
+              this.spanArr2[this.pos2] += 1
+              this.spanArr2.push(0)
+            } else {
+              this.spanArr2.push(1)
+              this.pos2 = i
+            }
+          }
         }
       },
       // 提交选中内容
-      submit() {
-        window.console.log('选中内容', this.formData)
+      submit() {},
+      // 多选框选中效果
+      checkChange(id, row, type) {
+        if (type === 0) {
+          this.tableData.forEach((item) => {
+            this.formData[item.yijiid] = this.formData[id]
+            this.formData[item.erjiid] = this.formData[id]
+            this.formData[item.sanjiid] = this.formData[id]
+            item.gongneng.forEach((item1) => {
+              this.formData[item1.gongnengid] = this.formData[id]
+            })
+          })
+        } else if (type === 1) {
+          if (this.formData[id]) {
+            this.tableData.forEach((item) => {
+              if (item.yijiid === id) {
+                this.formData[item.erjiid] = true
+                this.formData[item.sanjiid] = true
+                item.gongneng.forEach((item1) => {
+                  this.formData[item1.gongnengid] = true
+                })
+              }
+            })
+          } else {
+            this.tableData.forEach((item) => {
+              if (item.yijiid === id) {
+                this.formData[item.erjiid] = false
+                this.formData[item.sanjiid] = false
+                item.gongneng.forEach((item1) => {
+                  this.formData[item1.gongnengid] = false
+                })
+              }
+            })
+          }
+        } else if (type === 2) {
+          let flag = false
+          this.tableData.forEach((item) => {
+            if (item.yijiid === row.yijiid && this.formData[item.erjiid]) {
+              flag = true
+              return
+            }
+          })
+          this.formData[row.yijiid] = flag
+          if (this.formData[id]) {
+            this.tableData.forEach((item) => {
+              if (item.erjiid === id) {
+                this.formData[item.sanjiid] = true
+                item.gongneng.forEach((item1) => {
+                  this.formData[item1.gongnengid] = true
+                })
+              }
+            })
+          } else {
+            this.tableData.forEach((item) => {
+              if (item.erjiid === id) {
+                this.formData[item.sanjiid] = false
+                item.gongneng.forEach((item1) => {
+                  this.formData[item1.gongnengid] = false
+                })
+              }
+            })
+          }
+        } else if (type === 3) {
+          if (this.formData[id]) {
+            this.formData[row.erjiid] = true
+            this.formData[row.yijiid] = true
+            row.gongneng.forEach((item1) => {
+              this.formData[item1.gongnengid] = true
+            })
+          } else {
+            row.gongneng.forEach((item1) => {
+              this.formData[item1.gongnengid] = false
+            })
+            let flag = false
+            this.tableData.forEach((item) => {
+              if (row.erjiid === item.erjiid && this.formData[item.sanjiid]) {
+                flag = true
+              }
+            })
+            this.formData[row.erjiid] = flag
+            let flag1 = false
+            this.tableData.forEach((item) => {
+              if (row.yijiid === item.yijiid && this.formData[item.erjiid]) {
+                flag1 = true
+              }
+            })
+            this.formData[row.yijiid] = flag1
+          }
+        } else if (type === 4) {
+          if (this.formData[id]) {
+            this.formData[row.sanjiid] = true
+            this.formData[row.erjiid] = true
+            this.formData[row.yijiid] = true
+          } else {
+            this.formData[row.sanjiid] = false
+            let flag = false
+            row.gongneng.forEach((item1) => {
+              if (this.formData[item1.gongnengid]) {
+                flag = true
+              }
+            })
+            this.formData[row.sanjiid] = flag
+            let flag1 = false
+            this.tableData.forEach((item) => {
+              if (item.erjiid === row.erjiid) {
+                if (this.formData[item.sanjiid]) {
+                  flag1 = true
+                }
+              }
+            })
+            this.formData[row.erjiid] = flag1
+            this.formData[row.yijiid] = flag1
+          }
+        }
       },
     },
   }
 </script>
+
+<style lang="scss" scoped></style>
