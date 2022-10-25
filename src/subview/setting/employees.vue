@@ -7,6 +7,7 @@
         <template #Form>
           <el-form-item label="状态:">
             <el-select v-model="form.status">
+              <el-option label="全部" :value="0" />
               <el-option label="开启" :value="1" />
               <el-option label="关闭" :value="2" />
             </el-select>
@@ -62,13 +63,14 @@
             <template #default="{ row }">
               <el-switch
                 v-model="row.status"
-                active-color="#13ce66"
+                active-color="#41B584"
                 active-text="开启"
                 :active-value="1"
                 class="switch"
-                inactive-color="#ff4949"
+                inactive-color="#D2D2D2"
                 inactive-text="关闭"
                 :inactive-value="0"
+                style="margin: 0 10px"
               />
             </template>
           </el-table-column>
@@ -105,6 +107,7 @@
           name: '',
           pageNo: 1,
           pageSize: 10,
+          status: 0,
         },
         formType: 3,
         listType: 1,
@@ -164,37 +167,3 @@
     },
   }
 </script>
-<style lang="scss">
-  /* switch按钮样式 */
-  .switch .el-switch__label {
-    position: absolute;
-    display: none;
-    color: #fff !important;
-  }
-  /*打开时文字位置设置*/
-  .switch .el-switch__label--right {
-    z-index: 1;
-  }
-  /* 调整打开时文字的显示位子 */
-  .switch .el-switch__label--right span {
-    margin-left: 10px;
-  }
-  /*关闭时文字位置设置*/
-  .switch .el-switch__label--left {
-    z-index: 1;
-  }
-  /* 调整关闭时文字的显示位子 */
-  .switch .el-switch__label--left span {
-    margin-left: 20px;
-  }
-  /*显示文字*/
-  .switch .el-switch__label.is-active {
-    display: block;
-  }
-  /* 调整按钮的宽度 */
-  .switch.el-switch .el-switch__core,
-  .el-switch .el-switch__label {
-    width: 60px !important;
-    margin: 0;
-  }
-</style>

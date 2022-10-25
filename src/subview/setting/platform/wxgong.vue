@@ -1,12 +1,10 @@
 <template>
   <div class="comprehensive-form-container">
     <el-card shadow="never">
-      <template #header>
-        <el-tabs v-model="activeName" style="font-size: 16px; font-weight: 600">
-          <el-tab-pane label="绑定微信公众号" name="绑定微信公众号" />
-          <el-tab-pane label="支付设置" name="支付设置" />
-        </el-tabs>
-      </template>
+      <el-tabs v-model="activeName" style="font-size: 16px; font-weight: 600">
+        <el-tab-pane label="绑定微信公众号" name="绑定微信公众号" />
+        <el-tab-pane label="支付设置" name="支付设置" />
+      </el-tabs>
       <div v-if="activeName == '绑定微信公众号'">
         <div
           style="
@@ -48,7 +46,7 @@
           <el-form-item label="公众号名称：">
             <el-input v-model="form.name2" style="width: 40%" />
           </el-form-item>
-          <el-form-item label="公众号类型">
+          <el-form-item label="公众号类型：">
             <el-radio-group v-model="form.resource2">
               <el-radio label="认证服务号" />
               <el-radio label="认证订阅号" />
@@ -158,13 +156,13 @@
           :model="form"
           style="width: 100%"
         >
-          <el-form-item label="微支付状态">
+          <el-form-item label="微支付状态：">
             <el-radio-group v-model="form.resource1">
               <el-radio label="开启" />
               <el-radio label="关闭" />
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="微支付模式">
+          <el-form-item label="微支付模式：">
             <el-radio-group v-model="form.resource2">
               <el-radio label="普通模式" />
               <el-radio label="服务商模式" />

@@ -86,8 +86,8 @@
     </el-form>
     <el-button
       style="
-        margin-left: 80px;
         margin-top: 30px;
+        margin-left: 80px;
         background-color: #009688;
         border: unset;
       "
@@ -123,18 +123,18 @@
     left: 77px;
   }
   .el-checkbox.is-bordered.el-checkbox--small .el-checkbox__inner {
-    height: 32px;
     width: 32px;
+    height: 32px;
+    text-align: center;
     background-color: #fff;
     border: 1px solid #d2d2d2;
-    text-align: center;
   }
   .el-checkbox__inner::after {
     left: 11px;
   }
   .el-checkbox.is-bordered.el-checkbox--small .el-checkbox__inner::after {
-    height: 19px;
     width: 8px;
+    height: 19px;
   }
   .vab-theme-blue-black .el-checkbox.is-bordered.is-checked {
     background-color: #5fb878;
@@ -151,12 +151,12 @@
   }
   .vab-theme-blue-black .el-checkbox__inner::after {
     border: 1px solid #5fb878;
-    border-left: #fff;
     border-top: #fff;
+    border-left: #fff;
   }
   .el-checkbox.is-bordered + .el-checkbox.is-bordered {
-    margin-left: 10px;
     padding-right: 19px;
     padding-left: 1px;
+    margin-left: 10px;
   }
 </style>

@@ -38,12 +38,21 @@
             <el-form-item label="短信模板设置" style="width: 250px" />
             <el-divider />
             <el-form-item label="短信验证码">
-              <el-input v-model="form.name" class="sms-input" />
+              <el-input
+                v-model="form.name"
+                class="sms-input"
+                style="width: 250px"
+              />
               <el-switch
                 v-model="value"
-                active-color="#13ce66"
-                class="switch-input"
-                inactive-color="#ff4949"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
               />
               <span>短信验证码 请填写模板编号</span>
               <span style="color: gray">
@@ -51,12 +60,21 @@
               </span>
             </el-form-item>
             <el-form-item label="订单支付成功">
-              <el-input v-model="form.name" class="sms-input" />
+              <el-input
+                v-model="form.name"
+                class="sms-input"
+                style="width: 250px"
+              />
               <el-switch
                 v-model="value"
-                active-color="#13ce66"
-                class="switch-input"
-                inactive-color="#ff4949"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
               />
               <span>短信验证码 请填写模板编号</span>
               <span style="color: gray">
@@ -64,12 +82,21 @@
               </span>
             </el-form-item>
             <el-form-item label="订单发货通知">
-              <el-input v-model="form.name" class="sms-input" />
+              <el-input
+                v-model="form.name"
+                class="sms-input"
+                style="width: 250px"
+              />
               <el-switch
                 v-model="value"
-                active-color="#13ce66"
-                class="switch-input"
-                inactive-color="#ff4949"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
               />
               <span>短信验证码 请填写模板编号</span>
               <span style="color: gray">
@@ -77,12 +104,21 @@
               </span>
             </el-form-item>
             <el-form-item label="拼团成功通知">
-              <el-input v-model="form.name" class="sms-input" />
+              <el-input
+                v-model="form.name"
+                class="sms-input"
+                style="width: 250px"
+              />
               <el-switch
                 v-model="value"
-                active-color="#13ce66"
-                class="switch-input"
-                inactive-color="#ff4949"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
               />
               <span>短信验证码 请填写模板编号</span>
               <span style="color: gray">
@@ -90,12 +126,21 @@
               </span>
             </el-form-item>
             <el-form-item label="退款成功通知">
-              <el-input v-model="form.name" class="sms-input" />
+              <el-input
+                v-model="form.name"
+                class="sms-input"
+                style="width: 250px"
+              />
               <el-switch
                 v-model="value"
-                active-color="#13ce66"
-                class="switch-input"
-                inactive-color="#ff4949"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
               />
               <span>短信验证码 请填写模板编号</span>
               <span style="color: gray">
@@ -103,12 +148,21 @@
               </span>
             </el-form-item>
             <el-form-item label="退款驳回通知">
-              <el-input v-model="form.name" class="sms-input" />
+              <el-input
+                v-model="form.name"
+                class="sms-input"
+                style="width: 250px"
+              />
               <el-switch
                 v-model="value"
-                active-color="#13ce66"
-                class="switch-input"
-                inactive-color="#ff4949"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
               />
               <span>短信验证码 请填写模板编号</span>
               <span style="color: gray">
@@ -116,12 +170,21 @@
               </span>
             </el-form-item>
             <el-form-item label="提现成功通知">
-              <el-input v-model="form.name" class="sms-input" />
+              <el-input
+                v-model="form.name"
+                class="sms-input"
+                style="width: 250px"
+              />
               <el-switch
                 v-model="value"
-                active-color="#13ce66"
-                class="switch-input"
-                inactive-color="#ff4949"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
               />
               <span>短信验证码 请填写模板编号</span>
               <span style="color: gray">
@@ -129,12 +192,21 @@
               </span>
             </el-form-item>
             <el-form-item label="提现失败通知">
-              <el-input v-model="form.name" class="sms-input" />
+              <el-input
+                v-model="form.name"
+                class="sms-input"
+                style="width: 250px"
+              />
               <el-switch
                 v-model="value"
-                active-color="#13ce66"
-                class="switch-input"
-                inactive-color="#ff4949"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
               />
               <span>短信验证码 请填写模板编号</span>
               <span style="color: gray">
@@ -142,12 +214,21 @@
               </span>
             </el-form-item>
             <el-form-item label="分销成功提醒">
-              <el-input v-model="form.name" class="sms-input" />
+              <el-input
+                v-model="form.name"
+                class="sms-input"
+                style="width: 250px"
+              />
               <el-switch
                 v-model="value"
-                active-color="#13ce66"
-                class="switch-input"
-                inactive-color="#ff4949"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
               />
               <span>短信验证码 请填写模板编号</span>
               <span style="color: gray">
@@ -182,25 +263,25 @@
             label-width="140px"
             :model="form"
           >
-            <el-form-item label="企微ID：">
+            <el-form-item label="企微ID">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
-            <el-form-item label="通讯录密钥：">
+            <el-form-item label="通讯录密钥">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
-            <el-form-item label="研发应用ID：">
+            <el-form-item label="研发应用ID">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
-            <el-form-item label="ERP应用ID：">
+            <el-form-item label="ERP应用ID">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
-            <el-form-item label="ERP应用密钥：">
+            <el-form-item label="ERP应用密钥">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
-            <el-form-item label="生产协同应用ID：">
+            <el-form-item label="生产协同应用ID">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
-            <el-form-item label="生产协同应用密钥：">
+            <el-form-item label="生产协同应用密钥">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
 
@@ -219,7 +300,6 @@
 
 <script>
   // import { getList } from '@/api/area'
-
   export default {
     name: 'SystemNotice',
     data() {

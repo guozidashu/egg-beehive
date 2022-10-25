@@ -1,14 +1,12 @@
 <template>
   <div class="comprehensive-form-container">
     <el-card shadow="never">
-      <template #header>
-        <el-tabs v-model="activeName" style="font-size: 16px; font-weight: 600">
-          <el-tab-pane label="小程序绑定" name="小程序绑定" />
-          <el-tab-pane label="支付设置" name="支付设置" />
-          <el-tab-pane label="订阅消息设置" name="订阅消息设置" />
-          <el-tab-pane label="服务类目" name="服务类目" />
-        </el-tabs>
-      </template>
+      <el-tabs v-model="activeName" style="font-size: 16px; font-weight: 600">
+        <el-tab-pane label="小程序绑定" name="小程序绑定" />
+        <el-tab-pane label="支付设置" name="支付设置" />
+        <el-tab-pane label="订阅消息设置" name="订阅消息设置" />
+        <el-tab-pane label="服务类目" name="服务类目" />
+      </el-tabs>
       <div v-if="activeName == '小程序绑定'">
         <div
           style="
@@ -35,25 +33,25 @@
           :model="form"
           style="width: 100%"
         >
-          <el-form-item label="AppID：">
+          <el-form-item label="AppID">
             <el-input v-model="form.name" style="width: 40%" />
             <span style="margin-left: 10px; color: #999">
               登录微信公众平台(mp.weixin.qq.com)[开发]-[基本配置]中查找
             </span>
           </el-form-item>
-          <el-form-item label="AppSecret：">
+          <el-form-item label="AppSecret">
             <el-input v-model="form.name1" style="width: 40%" />
             <span style="margin-left: 10px; color: #999">
               登录微信公众平台(mp.weixin.qq.com)[开发]-[基本配置]中查找
             </span>
           </el-form-item>
-          <el-form-item label="小程序名称：">
+          <el-form-item label="小程序名称">
             <el-input v-model="form.name2" style="width: 40%" />
           </el-form-item>
-          <el-form-item label="小程序头像：">
+          <el-form-item label="小程序头像">
             <el-button type="primary" @click="handleShow()">图片上传</el-button>
           </el-form-item>
-          <el-form-item label="小程序二维码：">
+          <el-form-item label="小程序二维码">
             <el-button type="primary" @click="handleShow()">图片上传</el-button>
           </el-form-item>
         </el-form>
@@ -81,16 +79,16 @@
           :model="form"
           style="width: 100%"
         >
-          <el-form-item label="request合法域名：">
+          <el-form-item label="request合法域名">
             <span style="font-weight: 600">https://new.shopvvv.cn</span>
           </el-form-item>
-          <el-form-item label="socket合法域名：">
+          <el-form-item label="socket合法域名">
             <span style="font-weight: 600">wss://new.shopvvv.cn</span>
           </el-form-item>
-          <el-form-item label="uploadFile合法域名：">
+          <el-form-item label="uploadFile合法域名">
             <span style="font-weight: 600">https://new.shopvvv.cn</span>
           </el-form-item>
-          <el-form-item label="downloadFile合法域名：">
+          <el-form-item label="downloadFile合法域名">
             <span style="font-weight: 600">https://new.shopvvv.cn</span>
           </el-form-item>
           <el-form-item>
@@ -113,13 +111,13 @@
           :model="form"
           style="width: 100%"
         >
-          <el-form-item label="微支付状态">
+          <el-form-item label="微支付状态：">
             <el-radio-group v-model="form.resource1">
               <el-radio label="开启" />
               <el-radio label="关闭" />
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="微支付模式">
+          <el-form-item label="微支付模式：">
             <el-radio-group v-model="form.resource2">
               <el-radio label="普通模式" />
               <el-radio label="服务商模式" />

@@ -86,7 +86,7 @@
             label-width="180px"
             :model="form"
           >
-            <el-form-item label="生产协同参数保留参数：">
+            <el-form-item label="生产协同参数保留参数">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item>
@@ -107,7 +107,7 @@
             label-width="180px"
             :model="form"
           >
-            <el-form-item label="生产协同参数保留参数：">
+            <el-form-item label="生产协同参数保留参数">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item>
@@ -130,7 +130,7 @@
           >
             <div style="font-weight: 600">企业微信基础配置</div>
             <el-divider />
-            <el-form-item label="企微ID：">
+            <el-form-item label="企微ID">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
             <el-form-item>

@@ -4,7 +4,9 @@
       <el-tabs v-model="activeName">
         <el-tab-pane label="微信支付" name="first">
           <div class="textCss">
-            登录微信商户地址：https://pay.weixin.qq.com，需要配置ip白名单以及回调地址
+            <p>
+              登录微信商户地址：https://pay.weixin.qq.com，需要配置ip白名单以及回调地址
+            </p>
           </div>
           <el-form
             ref="form"
@@ -39,7 +41,9 @@
               <el-input v-model="form.name" style="width: 200px" />
               <span style="margin-left: 20px; color: gray">
                 请在
-                <span style="color: black">微信支付商户平台</span>
+                <span style="color: black" @click="jumpWX">
+                  &nbsp;微信支付商户平台 &nbsp;
+                </span>
                 [账户中心]-[API安全]中设置[API密钥]
               </span>
             </el-form-item>
@@ -52,7 +56,9 @@
               </el-button>
               <span style="margin-left: 20px; color: gray">
                 apiclient_cert.pem 请在
-                <span style="color: black">微信支付商户平台</span>
+                <span style="color: black" @click="jumpWX">
+                  &nbsp;微信支付商户平台 &nbsp;
+                </span>
                 [账户中心]-[API安全]中设置[API证书]，设置完成后上传
               </span>
             </el-form-item>
@@ -65,7 +71,9 @@
               </el-button>
               <span style="margin-left: 20px; color: gray">
                 apiclient_key.pem 请在
-                <span style="color: black">微信支付商户平台</span>
+                <span style="color: black" @click="jumpWX">
+                  &nbsp;微信支付商户平台 &nbsp;
+                </span>
                 [账户中心]-[API安全]中设置[API证书]，设置完成后上传
               </span>
             </el-form-item>
@@ -78,7 +86,9 @@
         </el-tab-pane>
         <el-tab-pane label="支付宝支付" name="second">
           <div class="textCss">
-            登录支付宝商家地址：https://b.alipay.com，需要配置ip白名单以及回调地址
+            <p>
+              登录支付宝商家地址：https://b.alipay.com，需要配置ip白名单以及回调地址
+            </p>
           </div>
           <el-form
             ref="form"
@@ -159,12 +169,16 @@
             :model="form"
           >
             <el-form-item label="余额支付状态">
-              <span v-if="form.value" style="margin-right: 10px">开启</span>
-              <span v-else style="margin-right: 10px">关闭</span>
               <el-switch
                 v-model="form.value"
-                active-color="#13ce66"
-                inactive-color="#ff4949"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
               />
             </el-form-item>
             <el-form-item>
@@ -181,12 +195,16 @@
             :model="form"
           >
             <el-form-item label="线下支付状态">
-              <span v-if="form.value" style="margin-right: 10px">开启</span>
-              <span v-else style="margin-right: 10px">关闭</span>
               <el-switch
                 v-model="form.value"
-                active-color="#13ce66"
-                inactive-color="#ff4949"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
               />
             </el-form-item>
             <el-form-item>
@@ -269,6 +287,12 @@
         //   data: { list },
         // } = await getList()
         // this.areaOptions = list
+      },
+      jumpWX() {
+        window.open(
+          'https://pay.weixin.qq.com/index.php/core/home/login?return_url=%2F',
+          '_blank'
+        )
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {

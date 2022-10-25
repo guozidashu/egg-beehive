@@ -43,7 +43,7 @@
       >
         <div style="font-weight: 600">对接设置</div>
         <el-divider />
-        <el-form-item label="是否开启接口" style="margin-bottom: 0">
+        <el-form-item label="是否开启接口：" style="margin-bottom: 0">
           <el-radio-group v-model="form.state">
             <el-radio label="启用" />
             <el-radio label="关闭" />
@@ -53,7 +53,7 @@
           <span style="color: #999">启用后才会同步商品、订单、库存数据</span>
         </el-form-item>
         <div v-if="activeName == '聚水潭ERP'">
-          <el-form-item label=" 聚水潭账号">
+          <el-form-item label=" 聚水潭账号：">
             <el-input
               v-model="form.name"
               placeholder="请输入聚水潭管理登录账号"
@@ -61,21 +61,21 @@
             />
           </el-form-item>
 
-          <el-form-item label=" 聚水潭密码">
+          <el-form-item label=" 聚水潭密码：">
             <el-input
               v-model="form.name"
               placeholder="请输入聚水潭管理登录密码"
               style="width: 250px"
             />
           </el-form-item>
-          <el-form-item label=" 聚水潭APP Key">
+          <el-form-item label=" 聚水潭APP Key：">
             <el-input
               v-model="form.name"
               placeholder="请输入聚水潭APP Key "
               style="width: 250px"
             />
           </el-form-item>
-          <el-form-item label=" 聚水潭APP Secret">
+          <el-form-item label=" 聚水潭APP Secret：">
             <el-input
               v-model="form.name1"
               placeholder="请输入聚水潭APP Secret "
@@ -84,28 +84,28 @@
           </el-form-item>
         </div>
         <div v-else>
-          <el-form-item label="旺店通账号">
+          <el-form-item label="旺店通账号：">
             <el-input
               v-model="form.name"
               placeholder="请输入旺店通管理登录账号"
               style="width: 250px"
             />
           </el-form-item>
-          <el-form-item label="旺店通密码">
+          <el-form-item label="旺店通密码：">
             <el-input
               v-model="form.name"
               placeholder="请输入旺店通管理登录密码"
               style="width: 250px"
             />
           </el-form-item>
-          <el-form-item label="旺店通APP Key">
+          <el-form-item label="旺店通APP Key：">
             <el-input
               v-model="form.name"
               placeholder="请输入旺店通APP Key "
               style="width: 250px"
             />
           </el-form-item>
-          <el-form-item label="旺店通APP Secret">
+          <el-form-item label="旺店通APP Secret：">
             <el-input
               v-model="form.name1"
               placeholder="请输入旺店通APP Secret "
@@ -114,20 +114,25 @@
           </el-form-item>
         </div>
 
-        <el-form-item label="店铺编号（ShopId）">
+        <el-form-item label="店铺编号（ShopId）：">
           <el-input
             v-model="form.name1"
             placeholder="请输入ShopId "
             style="width: 250px"
           />
         </el-form-item>
-        <el-form-item label="开放平台应用回调地址">
+        <el-form-item label="开放平台应用回调地址：">
           <span style="color: rgb(251, 102, 56)">
-            https://v.99xcx.cn/shop/apps/erp321/client/api2/q36dye440r01
-            <span style="color: #1890ff">复制</span>
+            {{ wangzhi }}
+            <span
+              style="color: #1890ff"
+              @click="handleCopyIcon(wangzhi, $event)"
+            >
+              复制
+            </span>
           </span>
         </el-form-item>
-        <el-form-item label="商品编辑">
+        <el-form-item label="商品编辑：">
           <el-radio-group v-model="form.stat2e">
             <el-radio label="自动同步修改内容" />
             <el-radio label="不同步修改内容" />
@@ -161,28 +166,48 @@
         <div class="textCss">
           将以下信息复制到ERP系统中，用于接收ERP订单库存变化信息
         </div>
-        <el-form-item label="物流同步">
+        <el-form-item label="物流同步：">
           <span style="color: rgb(251, 102, 56)">
-            https://v.99xcx.cn/shop/apps/erp321/client/api2/q36dye440r01
-            <span style="color: #1890ff">复制</span>
+            {{ wangzhi }}
+            <span
+              style="color: #1890ff"
+              @click="handleCopyIcon(wangzhi, $event)"
+            >
+              复制
+            </span>
           </span>
         </el-form-item>
-        <el-form-item label="取消订单">
+        <el-form-item label="取消订单：">
           <span style="color: rgb(251, 102, 56)">
-            https://v.99xcx.cn/shop/apps/erp321/client/api2/q36dye440r01
-            <span style="color: #1890ff">复制</span>
+            {{ wangzhi }}
+            <span
+              style="color: #1890ff"
+              @click="handleCopyIcon(wangzhi, $event)"
+            >
+              复制
+            </span>
           </span>
         </el-form-item>
-        <el-form-item label="库存同步">
+        <el-form-item label="库存同步：">
           <span style="color: rgb(251, 102, 56)">
-            https://v.99xcx.cn/shop/apps/erp321/client/api2/q36dye440r01
-            <span style="color: #1890ff">复制</span>
+            {{ wangzhi }}
+            <span
+              style="color: #1890ff"
+              @click="handleCopyIcon(wangzhi, $event)"
+            >
+              复制
+            </span>
           </span>
         </el-form-item>
-        <el-form-item label="售后收货">
+        <el-form-item label="售后收货：">
           <span style="color: rgb(251, 102, 56)">
-            https://v.99xcx.cn/shop/apps/erp321/client/api2/q36dye440r01
-            <span style="color: #1890ff">复制</span>
+            {{ wangzhi }}
+            <span
+              style="color: #1890ff"
+              @click="handleCopyIcon(wangzhi, $event)"
+            >
+              复制
+            </span>
           </span>
         </el-form-item>
         <div style="font-weight: 600">商品同步</div>
@@ -247,7 +272,7 @@
       >
         <div style="font-weight: 600">对接设置</div>
         <el-divider />
-        <el-form-item label="是否开启接口" style="margin-bottom: 0">
+        <el-form-item label="是否开启接口：" style="margin-bottom: 0">
           <el-radio-group v-model="form.state">
             <el-radio label="启用" />
             <el-radio label="关闭" />
@@ -258,87 +283,87 @@
             启用后才会同步会员、商品、订单、库存数据
           </span>
         </el-form-item>
-        <el-form-item v-if="activeName == '百胜ERP'" label="ERP版本">
+        <el-form-item v-if="activeName == '百胜ERP'" label="ERP版本：">
           <el-radio-group v-model="form.resource5">
             <el-radio label="BSERP2" />
             <el-radio label="BS3000+" />
             <el-radio label="BSERP3+IPOS" />
           </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="activeName == '伯俊BOS'" label="ERP版本">
+        <el-form-item v-if="activeName == '伯俊BOS'" label="ERP版本：">
           <el-radio-group v-model="form.resource5">
             <el-radio label="BOSXE" />
             <el-radio label="BOS_2.0" />
             <el-radio label="BOS_3.0" />
           </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="activeName == '紫日ERP'" label="ERP版本">
+        <el-form-item v-if="activeName == '紫日ERP'" label="ERP版本：">
           <el-radio-group v-model="form.resource5">
             <el-radio label="Q3" />
             <el-radio label="Q5" />
             <el-radio label="Q7" />
           </el-radio-group>
         </el-form-item>
-        <el-form-item label=" 数据库链接地址">
+        <el-form-item label=" 数据库链接地址：">
           <el-input style="width: 350px" />
         </el-form-item>
-        <el-form-item label=" 数据库账号">
+        <el-form-item label=" 数据库账号：">
           <el-input style="width: 350px" />
         </el-form-item>
-        <el-form-item label=" 数据库密码">
+        <el-form-item label=" 数据库密码：">
           <el-input style="width: 350px" />
         </el-form-item>
-        <el-form-item label=" 数据库名">
+        <el-form-item label=" 数据库名：">
           <el-input style="width: 350px" />
         </el-form-item>
-        <el-form-item label=" ERP管理员">
+        <el-form-item label=" ERP管理员：">
           <el-input placeholder="默认QuanYu " style="width: 350px" />
         </el-form-item>
         <div style="font-weight: 600">基本资料</div>
         <el-divider />
-        <el-form-item label="是否开启分销机制">
+        <el-form-item label="是否开启分销机制：">
           <el-radio-group v-model="form.state">
             <el-radio label="启用" />
             <el-radio label="关闭" />
           </el-radio-group>
         </el-form-item>
-        <el-form-item label=" 客户类别代码">
+        <el-form-item label=" 客户类别代码：">
           <el-input style="width: 350px" />
           <span style="margin-left: 20px; color: rgb(153, 153, 153)">
             直营店对应的客户类别代码
           </span>
         </el-form-item>
-        <el-form-item label="  默认区域代码/ID">
+        <el-form-item label="  默认区域代码/ID：">
           <el-input style="width: 350px" />
         </el-form-item>
-        <el-form-item label=" 默认充值方式ID">
+        <el-form-item label=" 默认充值方式ID：">
           <el-input style="width: 350px" />
         </el-form-item>
-        <el-form-item label=" 默认制单人ID">
+        <el-form-item label=" 默认制单人ID：">
           <el-input style="width: 350px" />
         </el-form-item>
-        <el-form-item label=" 默认制单人等级ID">
+        <el-form-item label=" 默认制单人等级ID：">
           <el-input style="width: 350px" />
         </el-form-item>
-        <el-form-item label=" 默认组织/渠道代码">
+        <el-form-item label=" 默认组织/渠道代码：">
           <el-input style="width: 350px" />
         </el-form-item>
-        <el-form-item label=" 默认仓库代码">
+        <el-form-item label=" 默认仓库代码：">
           <el-input style="width: 350px" />
         </el-form-item>
-        <el-form-item label=" 默认员工代码">
+        <el-form-item label=" 默认员工代码：">
           <el-input style="width: 350px" />
         </el-form-item>
-        <el-form-item label=" 默认卡系代码">
+        <el-form-item label=" 默认卡系代码：">
           <el-input style="width: 350px" />
         </el-form-item>
-        <el-form-item label=" 默认卡类代码">
+        <el-form-item label=" 默认卡类代码：">
           <el-input style="width: 350px" />
         </el-form-item>
-        <el-form-item label=" 默认类别代码">
+        <el-form-item label=" 默认类别代码：">
           <el-input style="width: 350px" />
         </el-form-item>
-        <el-form-item label=" 线下可分销订单的支付方式">
+        <el-form-item label=" 线下可分销订单的支付方式：">
           <el-input style="width: 350px" />
         </el-form-item>
         <el-form-item style="margin-top: 20px">
@@ -350,10 +375,12 @@
 </template>
 
 <script>
+  import clip from '@/utils/clipboard'
   export default {
     name: 'SystemStorage',
     data() {
       return {
+        wangzhi: 'https://v.99xcx.cn/shop/apps/erp321/client/api2/q36dye440r01',
         activeName: '聚水潭ERP',
         form: {
           name: '',
@@ -383,13 +410,17 @@
             text: '<p>用于对接百胜ERP，实现相互同步会员、积分、优惠券、商品、订单、库存数据等，使用该功能需要先购买百胜ERP。</p> ',
           },
           {
-            text: '用于对接紫日ERP，实现相互同步会员、积分、优惠券、商品、订单、库存数据等，使用该功能需要先购买紫日ERP。 ',
+            text: '<p>用于对接紫日ERP，实现相互同步会员、积分、优惠券、商品、订单、库存数据等，使用该功能需要先购买紫日ERP。</p> ',
           },
         ],
       }
     },
     created() {},
-    methods: {},
+    methods: {
+      handleCopyIcon(wangzhi, event) {
+        clip(`${wangzhi}`, event)
+      },
+    },
   }
 </script>
 

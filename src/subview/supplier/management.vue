@@ -76,11 +76,11 @@
             <template #default="{ row }">
               <el-switch
                 v-model="row.isdefault"
-                active-color="#13ce66"
+                active-color="#41B584"
                 active-text="开启"
                 :active-value="1"
                 class="switch"
-                inactive-color="#ff4949"
+                inactive-color="#D2D2D2"
                 inactive-text="关闭"
                 :inactive-value="0"
               />

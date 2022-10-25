@@ -28,13 +28,14 @@
       <el-form-item label="状态:">
         <el-switch
           v-model="form.status"
-          active-color="#13ce66"
+          active-color="#41B584"
           active-text="开启"
           :active-value="1"
           class="switch"
-          inactive-color="#ff4949"
+          inactive-color="#D2D2D2"
           inactive-text="关闭"
           :inactive-value="0"
+          style="margin: 0 10px"
         />
       </el-form-item>
     </el-form>

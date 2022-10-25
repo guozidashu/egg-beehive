@@ -431,15 +431,6 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
-      {
-        path: 'dingdanList',
-        name: 'DingdanList',
-        component: () => import('@/subview/order/orderBasis/index.vue'),
-        meta: {
-          title: '订单统计2',
-          icon: 'archive-line',
-        },
-      },
     ],
   },
   {
@@ -810,7 +801,7 @@ export const asyncRoutes = [
             name: 'SystemStorage',
             component: () => import('@/subview/setting/system/storage'),
             meta: {
-              title: '储存配置',
+              title: '存储配置',
               // icon: 'home-2-line',
             },
           },

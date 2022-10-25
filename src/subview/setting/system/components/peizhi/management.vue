@@ -154,7 +154,7 @@
 <style lang="scss" scoped>
   .el-divider--horizontal .el-divider__text {
     padding-top: 10px;
-    font-size: 20px;
+    font-size: 16px;
   }
   html body .el-divider--horizontal,
   html body[class*='vab-theme-'] .el-divider--horizontal {

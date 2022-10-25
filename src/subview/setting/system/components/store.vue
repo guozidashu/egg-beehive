@@ -1,45 +1,52 @@
 <template>
   <div>
-    <el-card>
-      <i class="el-icon-s-tools"></i>
-      商城配置
-      <el-divider />
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="基础配置" name="first">
-          <!-- 插入基础设置-->
-          <basicSetting />
-        </el-tab-pane>
-        <el-tab-pane label="财务设置" name="two">
-          <!-- 插入配置管理 -->
-          <management />
-        </el-tab-pane>
-        <el-tab-pane label="积分设置" name="three">
-          <!-- 插入积分配置 -->
-          <jifen />
-        </el-tab-pane>
-        <el-tab-pane label="分销分红" name="four">
-          <!-- 插入分销配置 -->
-          <distribution />
-        </el-tab-pane>
-        <el-tab-pane label="文本自定义" name="five">
-          <!-- 插入文本自定义 -->
-          <textTT />
-        </el-tab-pane>
-        <el-tab-pane label="登录设置" name="six">
-          <!-- 插入登录设置 -->
-          <!-- <logging></logging> -->
-          <loginGin />
-        </el-tab-pane>
-        <el-tab-pane label="注册协议" name="seven">
-          <!-- 插入富文本编辑 -->
-          <fuwenben />
-        </el-tab-pane>
-        <el-tab-pane label="配置管理" name="eight">
-          <!-- 插入附件设置 -->
-          <accessory />
-        </el-tab-pane>
-      </el-tabs>
-    </el-card>
+    <div class="textCss">
+      <p style="font-weight: 600">使用说明</p>
+    </div>
+    <div style="font-weight: 600">商城配置</div>
+    <el-divider />
+    <el-radio-group v-model="activeName" style="margin-bottom: 20px">
+      <el-radio-button label="基础配置" />
+      <el-radio-button label="财务设置" />
+      <el-radio-button label="积分设置" />
+      <el-radio-button label="分销分红" />
+      <el-radio-button label="文本自定义" />
+      <el-radio-button label="登录设置" />
+      <el-radio-button label="注册协议" />
+      <el-radio-button label="配置管理" />
+    </el-radio-group>
+    <basicSetting v-if="activeName == '基础配置'" />
+    <management v-if="activeName == '财务设置'" />
+    <jifen v-if="activeName == '积分设置'" />
+    <distribution v-if="activeName == '分销分红'" />
+    <textTT v-if="activeName == '文本自定义'" />
+    <loginGin v-if="activeName == '登录设置'" />
+    <fuwenben v-if="activeName == '注册协议'" />
+    <accessory v-if="activeName == '配置管理'" />
+    <!-- <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="基础配置" name="first" />
+      <el-tab-pane label="财务设置" name="two">
+        <management />
+      </el-tab-pane>
+      <el-tab-pane label="积分设置" name="three">
+        <jifen />
+      </el-tab-pane>
+      <el-tab-pane label="分销分红" name="four">
+        <distribution />
+      </el-tab-pane>
+      <el-tab-pane label="文本自定义" name="five">
+        <textTT />
+      </el-tab-pane>
+      <el-tab-pane label="登录设置" name="six">
+        <loginGin />
+      </el-tab-pane>
+      <el-tab-pane label="注册协议" name="seven">
+        <fuwenben />
+      </el-tab-pane>
+      <el-tab-pane label="配置管理" name="eight">
+        <accessory />
+      </el-tab-pane>
+    </el-tabs> -->
   </div>
 </template>
 <script>
@@ -66,7 +73,7 @@
     },
     data() {
       return {
-        activeName: 'two',
+        activeName: '基础配置',
       }
     },
     methods: {
@@ -80,5 +87,14 @@
 <style lang="scss" scoped>
   ::v-deep.el-form-item--small.el-form-item {
     margin-left: 90px;
+  }
+  .textCss {
+    padding: 8px 16px 8px 16px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 22px;
+    color: #666;
+    background-color: #e8f4ff;
+    border-radius: 6px;
   }
 </style>
