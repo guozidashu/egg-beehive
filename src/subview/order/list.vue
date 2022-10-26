@@ -18,26 +18,42 @@
           <el-form-item label="订单来源:">
             <el-select v-model="form.region">
               <el-option label="ERP订单" value="shanghai" />
-              <el-option label="自有商城" value="shanghai" />
-              <el-option label="淘宝" value="shanghai" />
-              <el-option label="天猫" value="shanghai" />
-              <el-option label="抖音" value="shanghai" />
-              <el-option label="快团团" value="beijing" />
-              <el-option label="小红书" value="beijing" />
+              <el-option label="自有商城" value="shanghai2" />
+              <el-option label="淘宝" value="shanghai3" />
+              <el-option label="天猫" value="shanghai4" />
+              <el-option label="抖音" value="shanghai5" />
+              <el-option label="快团团" value="beijing6" />
+              <el-option label="小红书" value="beijing7" />
             </el-select>
           </el-form-item>
           <el-form-item label="支付方式:">
             <el-select v-model="form.region">
               <el-option label="全部" value="shanghai" />
-              <el-option label="微信支付" value="shanghai" />
-              <el-option label="支付宝" value="shanghai" />
-              <el-option label="余额支付" value="shanghai" />
-              <el-option label="银行卡" value="shanghai" />
-              <el-option label="信用卡" value="beijing" />
+              <el-option label="微信支付" value="shanghai1" />
+              <el-option label="支付宝" value="shanghai2" />
+              <el-option label="余额支付" value="shanghai3" />
+              <el-option label="银行卡" value="shanghai4" />
+              <el-option label="信用卡" value="beijing5" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="下单模式:">
+            <el-select v-model="form.region1">
+              <el-option label="整手" value="shanghai" />
+              <el-option label="散码" value="shanghai1" />
+              <el-option label="混合" value="shanghai2" />
             </el-select>
           </el-form-item>
           <el-form-item label="下单时间:">
-            <el-date-picker v-model="form.date" type="date" />
+            <el-date-picker
+              v-model="form.date"
+              align="right"
+              end-placeholder="结束日期"
+              :picker-options="pickerOptions"
+              range-separator="至"
+              start-placeholder="开始日期"
+              type="daterange"
+              unlink-panels
+            />
           </el-form-item>
           <el-form-item label="会员名称:">
             <el-input v-model="form.name" style="width: 215px" />
@@ -188,6 +204,61 @@
     components: { Form, List, Drawer },
     data() {
       return {
+        pickerOptions: {
+          shortcuts: [
+            {
+              text: '今天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date()
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '昨天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 1
+                end.setTime(start)
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '最近7天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 7
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '最近30天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 30
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '本月',
+              onClick(picker) {
+                const end = new Date()
+                const start =
+                  new Date().getTime() -
+                  3600 * 1000 * 24 * (new Date().getDate() - 1)
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '本年',
+              onClick(picker) {
+                const start = new Date(new Date().getFullYear(), 0, 1)
+                const end = new Date()
+                picker.$emit('pick', [start, end])
+              },
+            },
+          ],
+        },
         activeName: 'first',
         drawer: false,
         // 表单数据/列表参数

@@ -11,7 +11,7 @@
       @submit.native.prevent
     >
       <slot name="Form"></slot>
-      <el-form-item label-width="0px">
+      <el-form-item style="float: right">
         <el-button
           icon="el-icon-search"
           native-type="submit"

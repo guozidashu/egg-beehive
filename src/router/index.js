@@ -627,7 +627,7 @@ export const asyncRoutes = [
     name: 'Archives',
     component: Layout,
     meta: {
-      title: '基础档案',
+      title: '档案',
       icon: 'archive-line',
       breadcrumbHidden: true,
     },
@@ -642,20 +642,11 @@ export const asyncRoutes = [
         },
       },
       {
-        path: 'archivesGoods',
-        name: 'ArchivesGoods',
-        component: () => import('@/subview/archives/goods'),
+        path: 'archivesMeeting',
+        name: 'ArchivesMeeting',
+        component: () => import('@/subview/archives/meeting'),
         meta: {
-          title: '商品资料',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'archivesCustomer',
-        name: 'ArchivesCustomer',
-        component: () => import('@/subview/archives/customer'),
-        meta: {
-          title: '客户资料',
+          title: '订货会',
           icon: 'archive-line',
         },
       },
@@ -665,6 +656,15 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/supplier'),
         meta: {
           title: '供应商管理',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'archivesCustomer',
+        name: 'ArchivesCustomer',
+        component: () => import('@/subview/archives/customer'),
+        meta: {
+          title: '客户资料',
           icon: 'archive-line',
         },
       },
@@ -687,6 +687,42 @@ export const asyncRoutes = [
         },
       },
       {
+        path: 'archivesGoods',
+        name: 'ArchivesGoods',
+        component: () => import('@/subview/archives/goods'),
+        meta: {
+          title: '商品资料',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'archivesCategory',
+        name: 'ArchivesCategory',
+        component: () => import('@/subview/archives/category'),
+        meta: {
+          title: '款式分类',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'archivesColor',
+        name: 'ArchivesColor',
+        component: () => import('@/subview/archives/color'),
+        meta: {
+          title: '颜色管理',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'archivesSize',
+        name: 'ArchivesSize',
+        component: () => import('@/subview/archives/size'),
+        meta: {
+          title: '尺码管理',
+          icon: 'archive-line',
+        },
+      },
+      {
         path: 'archivesBand',
         name: 'ArchivesBand',
         component: () => import('@/subview/archives/band'),
@@ -705,38 +741,11 @@ export const asyncRoutes = [
         },
       },
       {
-        path: 'archivesMeeting',
-        name: 'ArchivesMeeting',
-        component: () => import('@/subview/archives/meeting'),
+        path: 'archivesBom',
+        name: 'ArchivesBom',
+        component: () => import('@/subview/archives/bom'),
         meta: {
-          title: '订货会',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'archivesCategory',
-        name: 'ArchivesCategory',
-        component: () => import('@/subview/archives/category'),
-        meta: {
-          title: '款式分类',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'archivesColor',
-        name: 'ArchivesColor',
-        component: () => import('@/subview/archives/color'),
-        meta: {
-          title: '颜色',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'archivesSize',
-        name: 'ArchivesSize',
-        component: () => import('@/subview/archives/size'),
-        meta: {
-          title: '尺码',
+          title: '物料列表',
           icon: 'archive-line',
         },
       },
@@ -745,16 +754,7 @@ export const asyncRoutes = [
         name: 'ArchivesSubject',
         component: () => import('@/subview/archives/subject'),
         meta: {
-          title: '科目',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'archivesBom',
-        name: 'ArchivesBom',
-        component: () => import('@/subview/archives/bom'),
-        meta: {
-          title: '物料',
+          title: '会计科目',
           icon: 'archive-line',
         },
       },
@@ -847,7 +847,7 @@ export const asyncRoutes = [
         path: 'platform',
         name: 'Platform',
         meta: {
-          title: '渠道',
+          title: '销售渠道',
           icon: 'archive-line',
         },
         children: [
@@ -872,7 +872,7 @@ export const asyncRoutes = [
             name: 'PlatformVideo',
             component: () => import('@/subview/setting/platform/video'),
             meta: {
-              title: '视频号接入',
+              title: '视频号矩阵',
             },
           },
           {
@@ -884,14 +884,6 @@ export const asyncRoutes = [
             },
           },
           {
-            path: 'platformttxiao',
-            name: 'PlatformTtxiao',
-            component: () => import('@/subview/setting/platform/ttxiao'),
-            meta: {
-              title: '头条小程序',
-            },
-          },
-          {
             path: 'platformapp',
             name: 'PlatformApp',
             component: () => import('@/subview/setting/platform/app'),
@@ -900,19 +892,27 @@ export const asyncRoutes = [
             },
           },
           {
+            path: 'platformpinduoduoktt',
+            name: 'PlatformPinduoduoktt',
+            component: () => import('@/subview/setting/platform/pinduoduoktt'),
+            meta: {
+              title: '社群快团团',
+            },
+          },
+          {
+            path: 'platformttxiao',
+            name: 'PlatformTtxiao',
+            component: () => import('@/subview/setting/platform/ttxiao'),
+            meta: {
+              title: '头条小程序',
+            },
+          },
+          {
             path: 'platformdoudin',
             name: 'PlatformDoudin',
             component: () => import('@/subview/setting/platform/doudin'),
             meta: {
               title: '抖店接入',
-            },
-          },
-          {
-            path: 'platformpinduoduoktt',
-            name: 'PlatformPinduoduoktt',
-            component: () => import('@/subview/setting/platform/pinduoduoktt'),
-            meta: {
-              title: '快团团',
             },
           },
           {

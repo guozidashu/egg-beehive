@@ -38,6 +38,13 @@
               <el-option label="分类二" value="shanghai" />
             </el-select>
           </el-form-item>
+          <el-form-item v-show="!form.fold" label="下单模式:">
+            <el-select v-model="form.region1">
+              <el-option label="整手" value="shanghai" />
+              <el-option label="散码" value="shanghai1" />
+              <el-option label="混合" value="shanghai2" />
+            </el-select>
+          </el-form-item>
           <el-form-item v-show="!form.fold" label="来源渠道:">
             <el-radio-group
               v-model="form.orderSource"

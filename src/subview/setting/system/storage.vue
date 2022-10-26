@@ -33,9 +33,9 @@
         label-position="right"
         label-width="160px"
         :model="form"
-        style="width: 40%"
+        style="width: 40%; margin-top: 20px"
       >
-        <el-form-item label="线下支付状态">
+        <el-form-item label="默认状态">
           <span v-if="form.value" style="margin-right: 10px">开启</span>
           <el-switch
             v-model="form.value"
@@ -46,7 +46,7 @@
         </el-form-item>
         <el-form-item>
           <el-button
-            style="margin-top: 30px"
+            style="margin-top: 10px"
             type="primary"
             @click="submitForm('form')"
           >
@@ -61,7 +61,7 @@
         label-position="right"
         label-width="160px"
         :model="form"
-        style="width: 40%"
+        style="width: 40%; margin-top: 20px"
       >
         <el-form-item v-if="activeName === '七牛云存储'" label="AccessKey">
           <el-input v-model="form.name" />
@@ -140,7 +140,11 @@
         },
         listText: [
           {
-            text: '<p>未设置按照系统默认生成，系统默认：大图800 * 800px，中图300 * 300px，小图150 * 150px</p> ',
+            text:
+              '<p style="font-weight:600">本地存储开通方法</p> <p ">' +
+              '第一步： 文件、图片存储在圈域服务器由阿里云计算提供技术及安全服务</p><p > ' +
+              '第二步： 圈域默认提供10G免费存储空间，超额部分需另行购买，具体参考阿里云计价</p><p >' +
+              '第三步： 私有化独立部署客户请省略</p>',
           },
           {
             text:

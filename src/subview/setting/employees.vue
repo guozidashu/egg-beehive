@@ -52,13 +52,22 @@
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column type="selection" />
-          <el-table-column label="企业成员" prop="name" width="150" />
-          <el-table-column label="账号" prop="name1" width="150" />
-          <el-table-column label="岗位" prop="qx" width="150" />
+          <el-table-column align="center" label="头像" prop="name" width="150">
+            <template #default="{ row }">
+              <img :src="row.avatar" style="width: 50px; height: 50px" />
+            </template>
+          </el-table-column>
+          <el-table-column label="员工姓名" prop="name" width="150" />
+          <el-table-column label="（用户名）账号" prop="name1" width="150" />
           <el-table-column label="所在部门" prop="status1" width="150" />
-          <el-table-column label="最后一次登录时间" prop="qx1" />
-          <el-table-column label="最后一次登录IP" prop="qx1" />
+          <el-table-column label="岗位" prop="qx1" width="150" />
+          <el-table-column label="角色权限" prop="qx" width="150" />
+          <el-table-column label="最后一次登录" prop="qx1">
+            <template #default="{ row }">
+              <div>2022-11-01 12:02:02</div>
+              <div>192.168.31.173:10000 {{ row.qx1 }}</div>
+            </template>
+          </el-table-column>
           <el-table-column label="状态" prop="status" width="100">
             <template #default="{ row }">
               <el-switch

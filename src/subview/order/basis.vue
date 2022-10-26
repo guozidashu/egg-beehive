@@ -15,20 +15,16 @@
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <el-form-item style="margin-right: 0; font-size: 12px">
-          <el-radio-group v-model="goodsForm.cite">
-            <el-radio-button label="今天" />
-            <el-radio-button label="昨天" />
-            <el-radio-button label="最近七天" />
-            <el-radio-button label="最近30天" />
-            <el-radio-button label="本月" />
-            <el-radio-button label="本年" />
-          </el-radio-group>
+        <el-form-item label="日期">
           <el-date-picker
             v-model="goodsForm.date"
-            size="small"
-            style="width: 250px"
+            align="right"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+            range-separator="至"
+            start-placeholder="开始日期"
             type="daterange"
+            unlink-panels
           />
         </el-form-item>
       </el-form>
@@ -122,6 +118,61 @@
     components: { VabChart, Branch, TextLabels },
     data() {
       return {
+        pickerOptions: {
+          shortcuts: [
+            {
+              text: '今天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date()
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '昨天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 1
+                end.setTime(start)
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '最近7天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 7
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '最近30天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 30
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '本月',
+              onClick(picker) {
+                const end = new Date()
+                const start =
+                  new Date().getTime() -
+                  3600 * 1000 * 24 * (new Date().getDate() - 1)
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '本年',
+              onClick(picker) {
+                const start = new Date(new Date().getFullYear(), 0, 1)
+                const end = new Date()
+                picker.$emit('pick', [start, end])
+              },
+            },
+          ],
+        },
         listLoading: false,
         staType: true,
         staType1: false,

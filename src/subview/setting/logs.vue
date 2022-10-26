@@ -4,30 +4,35 @@
       <vab-query-form-top-panel>
         <el-form
           :inline="true"
-          label-width="60px"
+          label-width="100px"
           :model="queryForm"
           @submit.native.prevent
         >
-          <el-form-item label="账号">
-            <el-input
-              v-model.trim="queryForm.account"
-              clearable
-              placeholder="请输入账号"
-            />
-          </el-form-item>
-          <el-form-item label="周期">
+          <el-form-item label="操作时间：">
             <el-date-picker
-              v-model="queryForm.searchDate"
+              v-model="goodsForm.date"
+              align="right"
               end-placeholder="结束日期"
-              format="yyyy-MM-dd"
+              :picker-options="pickerOptions"
+              range-separator="至"
               start-placeholder="开始日期"
               type="daterange"
-              value-format="yyyy-MM-dd"
+              unlink-panels
             />
+          </el-form-item>
+          <el-form-item label="日志类型：">
+            <el-select v-model="queryForm.searchType" placeholder="请选择">
+              <el-option label="全部" :value="0" />
+              <el-option label="开启" :value="1" />
+              <el-option label="关闭" :value="2" />
+            </el-select>
           </el-form-item>
           <el-form-item>
             <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
+            </el-button>
+            <el-button icon="el-icon-search" type="primary" @click="queryData">
+              重置
             </el-button>
           </el-form-item>
         </el-form>
@@ -44,7 +49,7 @@
       />
       <el-table-column
         align="center"
-        label="账号"
+        label="操作人"
         prop="account"
         show-overflow-tooltip
       />
@@ -68,7 +73,7 @@
       <el-table-column align="center" label="登录IP" prop="ip" />
       <el-table-column
         align="center"
-        label="访问时间"
+        label="操作时间"
         prop="datetime"
         show-overflow-tooltip
       />
@@ -92,21 +97,92 @@
 </template>
 
 <script>
-  import { getList } from '@/api/systemLog'
+  // import { getList } from '@/api/systemLog'
 
   export default {
     name: 'Logs',
     data() {
       return {
-        list: [],
-        listLoading: true,
+        pickerOptions: {
+          shortcuts: [
+            {
+              text: '今天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date()
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '昨天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 1
+                end.setTime(start)
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '最近7天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 7
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '最近30天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 30
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '本月',
+              onClick(picker) {
+                const end = new Date()
+                const start =
+                  new Date().getTime() -
+                  3600 * 1000 * 24 * (new Date().getDate() - 1)
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '本年',
+              onClick(picker) {
+                const start = new Date(new Date().getFullYear(), 0, 1)
+                const end = new Date()
+                picker.$emit('pick', [start, end])
+              },
+            },
+          ],
+        },
+        list: [
+          {
+            type: '数据库日志',
+            account: 'editor',
+            executeResult: 'dos攻击',
+            ip: '173.199.147.72',
+            datetime: '2003-11-11 18:31:11',
+          },
+          {
+            type: '操作日志',
+            account: 'editor',
+            executeResult: '登录成功',
+            ip: '173.199.147.72',
+            datetime: '2003-11-11 18:31:11',
+          },
+        ],
+        listLoading: false,
         layout: 'total, sizes, prev, pager, next, jumper',
         total: 0,
         queryForm: {
           account: '',
           searchDate: '',
+          searchType: 0,
           pageNo: 1,
-          pageSize: 20,
+          pageSize: 10,
         },
       }
     },
@@ -127,13 +203,13 @@
         this.fetchData()
       },
       async fetchData() {
-        this.listLoading = true
-        const {
-          data: { list, total },
-        } = await getList(this.queryForm)
-        this.list = list
-        this.total = total
-        this.listLoading = false
+        // this.listLoading = true
+        // const {
+        //   data: { list, total },
+        // } = await getList(this.queryForm)
+        // this.list = list
+        // this.total = total
+        // this.listLoading = false
       },
     },
   }

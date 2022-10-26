@@ -61,6 +61,7 @@
             <el-select v-model="form.region1">
               <el-option label="整手" value="1" />
               <el-option label="散码" value="2" />
+              <el-option label="混合" value="2" />
             </el-select>
           </el-form-item>
           <el-form-item label="商品搜索:">
