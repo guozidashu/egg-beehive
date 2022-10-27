@@ -1,185 +1,223 @@
 <template>
-  <div style="padding-top: 20px">
-    <el-form label-width="100px">
-      <el-row type="flex">
-        <el-form-item label="季节搜索：" style="margin-left: 50px">
-          <el-input style="width: 248px" />
-        </el-form-item>
+  <div style="background-color: #f6f8f9">
+    <div
+      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+    >
+      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+        <template #Form>
+          <el-form-item label="季节名称" prop="region">
+            <el-input v-model="form.name" size="small" />
+          </el-form-item>
+        </template>
+      </Form>
+    </div>
+    <el-card shadow="never" style="border: 0">
+      <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
-          <el-button style="margin-left: -80px" type="primary">查询</el-button>
-        </el-form-item>
-      </el-row>
-    </el-form>
-    <div style="width: 100%; height: 20px; background-color: #f6f8f9"></div>
-    <el-button
-      style="margin-top: 20px; margin-left: 20px"
-      type="primary"
-      @click="addfn('add')"
-    >
-      添加季节
-    </el-button>
-    <el-table
-      ref="multipleTable"
-      border
-      :data="tableData"
-      style="width: 100%; margin-top: 20px"
-      tooltip-effect="dark"
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" />
-      <el-table-column align="center" label="ID" type="index" width="150" />
-      <el-table-column
-        align="center"
-        label="季节名称"
-        prop="date"
-        width="300"
-      />
-      <el-table-column align="center" label="商品数量" prop="name" width="420">
-        <template slot-scope="{ row }">
           <el-button
+            native-type="submit"
             size="small"
-            type="text"
-            @click="$router.push('/goods/goodsStatistical')"
+            type="primary"
+            @click="handleEdit('add')"
           >
-            {{ row.name }}
+            添加
           </el-button>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="备注"
-        prop="address"
-        show-overflow-tooltip
-        width="500"
-      />
-      <el-table-column align="center" label="操作" prop="name" width="150">
-        <template slot-scope="{ row }">
-          <el-button
-            size="small"
-            style="color: #2d8cf0"
-            type="text"
-            @click="addfn(row.id)"
-          >
-            编辑丨
-          </el-button>
-          <el-button
-            size="small"
-            style="margin-left: -2px; color: #2d8cf0"
-            type="text"
-          >
-            删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 分页组件 -->
-    <el-pagination
-      background
-      :current-page.sync="currentPage3"
-      layout="prev, pager, next, jumper"
-      :page-size="100"
-      style="margin-left: 200px"
-      :total="1000"
-    />
-    <!-- 弹框组件 -->
-    <el-dialog
-      :before-close="handleClose"
-      title="添加季节"
-      :visible.sync="dialogVisible"
-      width="25%"
-    >
-      <el-form label-width="104px" style="margin-top: -20px">
-        <el-form-item label="季节名称：">
-          <el-input v-model="formdata.name" style="width: 248px" />
-        </el-form-item>
-        <el-form-item label="是否默认：">
-          <el-radio-group v-model="radio">
-            <el-radio :label="3">关闭</el-radio>
-            <el-radio :label="6">备开启</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="商品数量：">
-          <el-input style="width: 248px" />
         </el-form-item>
       </el-form>
-      <el-button style="margin-left: 30px" @click="handleClose">
-        取 消
-      </el-button>
-      <el-button type="primary">确 定</el-button>
-    </el-dialog>
+      <List
+        :list="list"
+        :list-type="listType"
+        :state="listLoading"
+        :total="total"
+        @changePage="changeBtnPage"
+        @changePageSize="changeBtnPageSize"
+        @selectRows="selectBtnRows"
+      >
+        <!-- 表格组件具名插槽 自定义表头 -->
+        <template #List>
+          <el-table-column
+            align="center"
+            show-overflow-tooltip
+            type="selection"
+          />
+          <el-table-column
+            align="center"
+            label="ID"
+            prop="id"
+            show-overflow-tooltip
+            sortable
+          />
+          <el-table-column
+            align="center"
+            label="季节名称"
+            prop="name"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="商品数量"
+            prop="num"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="备注"
+            prop="rema"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="操作"
+            show-overflow-tooltip
+            width="85"
+          >
+            <template #default="{ row }">
+              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+              <el-button type="text" @click="handleDelete(row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </template>
+      </List>
+    </el-card>
+    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
-
 <script>
+  import List from '@/subview/components/List'
+  import Edit from './components/SeasonalEdit'
+  import Form from '@/subview/components/Form'
+  // import { getBrandList, editBrand, deleteBrand } from '@/api/basic'
   export default {
+    name: 'ArchivesSeasonal',
+    components: { List, Edit, Form },
     data() {
       return {
-        formdata: {
+        // 表单数据/列表参数
+        form: {
+          id: 0,
           name: '',
+          pageNo: 1,
+          pageSize: 10,
         },
-        radio: 3,
-        dialogVisible: false,
-        currentPage3: 5,
-        tableData: [
+        formType: 4,
+        // 列表数据相关
+        selectRows: [],
+        listType: 1,
+        list: [
           {
-            date: '春季',
-            name: '100',
-            address: '请开启 JavaScript 功能来使用 CRMEB。',
-            editor: '编辑',
-            delete: '删除',
+            id: 1,
+            name: '春季',
+            num: 10,
+            rema: '春季商品',
           },
           {
-            date: '夏季',
-            name: '312',
-            address: ' BY FAR Miranda leather shoulder bag |默认',
-            editor: '编辑',
-            delete: '删除',
+            id: 2,
+            name: '夏季',
+            num: 10,
+            rema: '夏季商品',
           },
           {
-            date: '春季',
-            name: '2132',
-            address: '上海市普陀区金沙江路 1518 弄大声道撒多sadsad撒撒的',
-            editor: '编辑',
-            delete: '删除',
+            id: 3,
+            name: '秋季',
+            num: 10,
+            rema: '秋季商品',
           },
           {
-            date: '秋季',
-            name: '90',
-            address: '【供应商】金枕榴莲 新鲜水果 整果带壳特产 5-6斤1个装 | ',
-            editor: '编辑',
-            delete: '删除',
-          },
-          {
-            date: '冬季',
-            name: '100',
-            address: '【供应商】金枕榴莲 新鲜水果 整果带壳特产 5-6斤1个装 | ',
-            editor: '编辑',
-            delete: '删除',
+            id: 4,
+            name: '冬季',
+            num: 10,
+            rema: '冬季商品',
           },
         ],
-        multipleSelection: [],
+        listLoading: false,
+        total: 0,
       }
     },
+    watch: {
+      form: {
+        handler: function () {
+          this.fetchData()
+        },
+        deep: true,
+      },
+    },
+    created() {
+      this.fetchData()
+    },
     methods: {
-      handleSelectionChange(val) {
-        this.multipleSelection = val
-      },
-      addfn(val) {
-        if (val === 'add') {
-          console.log('添加')
+      // 新增修改
+      async handleEdit(row) {
+        if (row === 'add') {
+          this.$refs['edit'].showEdit()
         } else {
-          console.log('编辑')
+          if (row.id) {
+            // const { code, data } = await editBrand({ id: row.id })
+            // if (code === 200) {
+            //   this.$refs['edit'].showEdit(data)
+            // }
+            this.$refs['edit'].showEdit(row)
+          } else {
+            this.$refs['edit'].showEdit()
+          }
         }
-        this.dialogVisible = true
       },
-      handleClose() {
-        this.dialogVisible = false
+      // 查询
+      handleQuery() {
+        this.form.pageNo = 1
+      },
+      // 删除
+      handleDelete(row) {
+        if (row.id) {
+          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
+            // const { code } = await deleteBrand({ id: row.id })
+            // if (code != 200) {
+            //   return
+            // }
+            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
+          })
+        } else {
+          // if (this.selectRows.length > 0) {
+          //   const ids = this.selectRows.map((item) => item.id).join()
+          //   this.$baseConfirm('你确定要删除选中项吗', null, async () => {
+          //     const { code } = await deleteBrand(ids)
+          //     if (code != 200) {
+          //       return
+          //     }
+          //     this.fetchData()
+          //   })
+          // } else {
+          //   this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
+          // }
+        }
+      },
+      // 列表数据封装函数
+
+      // 列表数据改变页数   公共部分
+      changeBtnPage(data) {
+        this.form.pageNo = data
+      },
+      // 多选获取数据   公共部分
+      selectBtnRows(data) {
+        this.selectRows = data
+      },
+
+      // 列表数据改变每页条数  公共部分
+      changeBtnPageSize(data) {
+        this.form.pageSize = data
+        console.log(data)
+      },
+      // 列表数据请求函数 公共部分
+      async fetchData() {
+        // this.listLoading = true
+        // const {
+        //   data: { list, total },
+        // } = await getBrandList(this.form)
+        // this.list = list
+        // this.total = total
+        // this.listLoading = false
       },
     },
   }
 </script>
-
-<style lang="scss" scoped>
-  ::v-deep .el-input--small .el-input__inner {
-    border-radius: 4px;
-  }
-</style>
+<style lang="scss" scoped></style>

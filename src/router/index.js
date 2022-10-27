@@ -966,7 +966,7 @@ export const asyncRoutes = [
         name: 'Print',
         component: () => import('@/subview/setting/print'),
         meta: {
-          title: '云打印机设置',
+          title: '云打印机',
           icon: 'archive-line',
         },
       },

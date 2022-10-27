@@ -1,220 +1,209 @@
 <template>
-  <div style="padding-top: 20px">
-    <el-form label-width="100px">
-      <el-row type="flex">
-        <el-form-item label="状态：" style="margin-left: 30px">
-          <el-select
-            v-model="value"
-            placeholder="请选择"
-            style="width: 248px; border-radius: 20px"
-          >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="等级名称：" style="margin-left: 20px">
-          <el-input placeholder="请输入等级名称" style="width: 250px" />
-        </el-form-item>
+  <div style="background-color: #f6f8f9">
+    <div
+      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+    >
+      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+        <template #Form>
+          <el-form-item label="等级名称" prop="region">
+            <el-input v-model="form.name" size="small" />
+          </el-form-item>
+        </template>
+      </Form>
+    </div>
+    <el-card shadow="never" style="border: 0">
+      <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
-          <el-button style="margin-left: -80px" type="primary">查询</el-button>
-        </el-form-item>
-      </el-row>
-    </el-form>
-    <!-- 分割 -->
-    <div style="width: 100%; height: 20px; background-color: #f6f8f9"></div>
-    <el-button
-      style="margin-top: 20px; margin-left: 20px"
-      type="primary"
-      @click="dialogMember('add')"
-    >
-      添加会员等级
-    </el-button>
-    <!-- 弹框组件 -->
-    <member ref="memberDialog" :dialog-visible.sync="dialogVisible" />
-    <!-- 表格部分 -->
-    <el-table
-      ref="multipleTable"
-      v-loading="loading"
-      border
-      :data="tableData"
-      style="width: 100%; margin-top: 20px"
-      tooltip-effect="dark"
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column align="center" type="selection" width="55" />
-      <el-table-column align="center" label="ID" prop="id" width="80" />
-      <el-table-column align="center" label="等级图标" width="200">
-        <template slot-scope="{ row }">
-          <img alt="" :src="row.img" style="width: 36px; height: 36px" />
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="等级名称"
-        prop="name"
-        width="200"
-      />
-      <el-table-column
-        align="center"
-        label="客户数量"
-        prop="address"
-        show-overflow-tooltip
-        width="200"
-      >
-        <template slot-scope="{ row }">
           <el-button
+            native-type="submit"
             size="small"
-            type="text"
-            @click="$router.push('/customer/customerLevel')"
+            type="primary"
+            @click="handleEdit('add')"
           >
-            {{ row.address }}
+            添加
           </el-button>
+        </el-form-item>
+      </el-form>
+      <List
+        :list="list"
+        :list-type="listType"
+        :state="listLoading"
+        :total="total"
+        @changePage="changeBtnPage"
+        @changePageSize="changeBtnPageSize"
+        @selectRows="selectBtnRows"
+      >
+        <!-- 表格组件具名插槽 自定义表头 -->
+        <template #List>
+          <el-table-column
+            align="center"
+            show-overflow-tooltip
+            type="selection"
+          />
+          <el-table-column
+            align="center"
+            label="等级ID"
+            prop="id"
+            show-overflow-tooltip
+            sortable
+          />
+          <el-table-column
+            align="center"
+            label="等级名称"
+            prop="name"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="等级折扣"
+            prop="zhekou"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="是否散批"
+            prop="sp"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="散码折扣"
+            prop="zhekou_sm"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="备注"
+            prop="des"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="操作"
+            show-overflow-tooltip
+            width="85"
+          >
+            <template #default="{ row }">
+              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+              <el-button type="text" @click="handleDelete(row)">删除</el-button>
+            </template>
+          </el-table-column>
         </template>
-      </el-table-column>
-      <el-table-column align="center" label="整批折扣" prop="des" width="200" />
-      <el-table-column
-        align="center"
-        label="散批折扣"
-        prop="zhekou_sm"
-        width="200"
-      />
-      <el-table-column align="center" label="散批" prop="sp" width="200">
-        <template slot-scope="{ row }">
-          <span v-show="row.sp == 0">不允许</span>
-          <span v-show="row.sp == 1">允许</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="等级说明" prop="num" width="160" />
-      <el-table-column align="center" label="操作">
-        <template slot-scope="{ row }">
-          <el-button size="small" type="text" @click.native="dialogMember(row)">
-            编辑丨
-          </el-button>
-          <el-dropdown>
-            <span
-              class="el-dropdown-link"
-              style="font-size: 12px; color: #1890ff"
-            >
-              更多
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="del(row.id)">
-                删除等级
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 分页组件 -->
-    <el-pagination
-      background
-      :current-page.sync="page.pageNo"
-      layout="prev, pager, next, jumper,sizes,total"
-      :page-size.sync="page.pageSize"
-      :page-sizes="[5, 10, 15, 20]"
-      style="margin-left: 200px"
-      :total="Number(total)"
-      @current-change="getGradeList"
-      @size-change="getGradeList"
-    />
+      </List>
+    </el-card>
+    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
-
 <script>
-  import { getGradeList, deleteGrade, editGrade } from '@/api/basic'
-  import member from './components/member.vue'
+  import List from '@/subview/components/List'
+  import Edit from './components/LevelDeit'
+  import Form from '@/subview/components/Form'
+  import { getGradeList, editGrade, deleteGrade } from '@/api/basic'
   export default {
-    components: {
-      member,
-    },
+    name: 'ArchivesBand',
+    components: { List, Edit, Form },
     data() {
       return {
-        loading: false,
-        total: '',
-        page: {
+        // 表单数据/列表参数
+        form: {
+          id: 0,
+          name: '',
           pageNo: 1,
           pageSize: 10,
         },
-        dialogVisible: false,
-        options: [
-          {
-            value: '选项1',
-            label: '显示',
-          },
-          {
-            value: '选项2',
-            label: '不显示',
-          },
-        ],
-        value: '',
-        tableData: [],
-        multipleSelection: [],
+        formType: 4,
+        // 列表数据相关
+        selectRows: [],
+        listType: 1,
+        list: [],
+        listLoading: false,
+        total: 0,
       }
     },
+    watch: {
+      form: {
+        handler: function () {
+          this.fetchData()
+        },
+        deep: true,
+      },
+    },
     created() {
-      this.getGradeList()
+      this.fetchData()
     },
     methods: {
-      async del(id) {
-        await this.$confirm('确认删除吗', '提示', { type: 'warning' })
-        // console.log(id)
-        await deleteGrade({ id: id })
-        this.$message({
-          message: '删除成功',
-          type: 'success',
-        })
-        this.getGradeList()
-        // console.log(res)
-      },
-      async dialogMember(val) {
-        if (val === 'add') {
-          // console.log(45646, val)
+      // 新增修改
+      async handleEdit(row) {
+        if (row === 'add') {
+          this.$refs['edit'].showEdit()
         } else {
-          // console.log(111111111, val)
-          const res = await editGrade({ id: val.id })
-          console.log(res)
-          this.$refs.memberDialog.numberValidateForm = {
-            id: val.id,
-            name: res.data.name,
+          if (row.id) {
+            const { code, data } = await editGrade({ id: row.id })
+            if (code === 200) {
+              this.$refs['edit'].showEdit(data)
+            }
+          } else {
+            this.$refs['edit'].showEdit()
           }
         }
-        this.dialogVisible = true
-
-        // console.log(this.$refs.memberDialog)
       },
-      async getGradeList() {
-        this.loading = true
-        try {
-          const res = await getGradeList(this.page)
-          // console.log(res)
-          this.tableData = res.data.list
-          this.total = res.data.total
-          this.tableData.forEach((item) => {
-            Object.assign(item, {
-              img: 'https://s-pro.crmeb.net/uploads/system/58908a8c245f422da6e0924dec27c95d.png',
-            })
+      // 查询
+      handleQuery() {
+        this.form.pageNo = 1
+      },
+      // 删除
+      handleDelete(row) {
+        if (row.id) {
+          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
+            const { code } = await deleteGrade({ id: row.id })
+            if (code != 200) {
+              return
+            }
+            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
           })
-        } catch (error) {
-          console.log(error)
-        } finally {
-          this.loading = false
+        } else {
+          if (this.selectRows.length > 0) {
+            const ids = this.selectRows.map((item) => item.id).join()
+            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
+              const { code } = await deleteGrade(ids)
+              if (code != 200) {
+                return
+              }
+              this.fetchData()
+            })
+          } else {
+            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
+          }
         }
       },
-      handleSelectionChange(val) {
-        this.multipleSelection = val
+      // 列表数据封装函数
+
+      // 列表数据改变页数   公共部分
+      changeBtnPage(data) {
+        this.form.pageNo = data
+      },
+      // 多选获取数据   公共部分
+      selectBtnRows(data) {
+        this.selectRows = data
+      },
+
+      // 列表数据改变每页条数  公共部分
+      changeBtnPageSize(data) {
+        this.form.pageSize = data
+        console.log(data)
+      },
+      // 列表数据请求函数 公共部分
+      async fetchData() {
+        this.listLoading = true
+        const {
+          data: { list, total },
+        } = await getGradeList(this.form)
+        this.list = list
+        this.total = total
+        this.listLoading = false
       },
     },
   }
 </script>
-
-<style lang="scss" scoped>
-  ::v-deep .el-input--small .el-input__inner {
-    border-radius: 4px;
-  }
-</style>
+<style lang="scss" scoped></style>

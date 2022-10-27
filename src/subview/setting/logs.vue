@@ -10,7 +10,7 @@
         >
           <el-form-item label="操作时间：">
             <el-date-picker
-              v-model="goodsForm.date"
+              v-model="queryForm.date"
               align="right"
               end-placeholder="结束日期"
               :picker-options="pickerOptions"

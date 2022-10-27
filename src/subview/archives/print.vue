@@ -1,986 +1,297 @@
 <template>
-  <div style="padding-top: 20px">
-    <el-button style="margin-left: 20px" type="primary">打印吊牌条码</el-button>
-    <el-button style="margin-left: 40px" type="primary">
-      导入打印吊牌条码
-    </el-button>
-    <div style="width: 100%; height: 20px; background-color: #f6f8f9"></div>
-    <!-- 分签页 -->
-    <el-tabs
-      v-model="activeName"
-      style="margin-left: 20px"
-      @tab-click="handleClick"
-    >
-      <div
-        v-if="activeName === 'first'"
-        style="
-          width: 100%;
-          height: 60px;
-          padding-left: 30px;
-          line-height: 60px;
-          background-color: #e8f4ff;
-        "
-      >
-        Tabs 组件提供了选项卡功能，默认选中第一个标签页，你也可以通过 value
-        属性来指定当前选中的标签页。
-      </div>
-      <div
-        v-if="activeName === 'second'"
-        style="
-          width: 100%;
-          height: 60px;
-          padding-top: 10px;
-          padding-left: 30px;
-          background-color: #e8f4ff;
-        "
-      >
-        <span>①找到订单单号，复制到粘贴框</span>
-        <span style="display: block; margin-top: 5px">
+  <div style="background-color: #f6f8f9">
+    <div style="padding: 20px; background-color: white">
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="打印吊牌条码" name="打印吊牌条码" />
+        <el-tab-pane label="导入打印吊牌条码" name="导入打印吊牌条码" />
+      </el-tabs>
+      <div class="textCss">
+        <p v-if="activeName === '打印吊牌条码'">
+          Tabs 组件提供了选项卡功能，默认选中第一个标签页，你也可以通过 value
+          属性来指定当前选中的标签页。
+        </p>
+        <p v-if="activeName === '导入打印吊牌条码'">
+          ①找到订单单号，复制到粘贴框
+        </p>
+        <p v-if="activeName === '导入打印吊牌条码'">
           ②点击导入商品，导入明细进行打印
-        </span>
+        </p>
       </div>
-      <el-tab-pane label="常规打印" name="first">
-        <!-- 插入第一部分内容 -->
-        <el-form label-width="104px">
-          <el-form-item label="商品搜索：" style="margin-top: 20px">
-            <el-input placeholder="请输入款号" style="width: 248px" />
-            <el-button style="margin-left: 30px" type="primary">查询</el-button>
-          </el-form-item>
-        </el-form>
-        <!-- 活动部分 -->
-        <div
-          style="
-            width: 800px;
-            height: 200px;
-            padding-top: 20px;
-            padding-left: 20px;
-            margin-left: 30px;
-            font-size: 16px;
-          "
+      <div
+        v-if="activeName === '打印吊牌条码'"
+        style="display: flex; margin-top: 20px"
+      >
+        <el-form
+          ref="form"
+          label-position="right"
+          label-width="110px"
+          :model="form"
+          style="width: 50%"
         >
-          <div>
-            <span>货号：</span>
-            <span style="margin-left: -4px">
-              <el-radio-group v-model="radio1">
-                <el-radio-button label="QY001" style="" />
-                <el-radio-button label="QY301" style="" />
-                <el-radio-button label="QY121" style="" />
-              </el-radio-group>
-            </span>
-          </div>
-          <div style="margin-top: 5px">
-            <span>颜色：</span>
-            <span>
-              <el-radio-group v-model="radio2">
-                <el-radio-button label="黑色" style="" />
-              </el-radio-group>
-              <el-radio-group v-model="radio2">
-                <el-radio-button label="红色" style="" />
-              </el-radio-group>
-              <el-radio-group v-model="radio2">
-                <el-radio-button label="白色" style="" />
-              </el-radio-group>
-            </span>
-          </div>
-          <div style="margin-top: 5px">
-            <span>尺码：</span>
-            <span>
-              <el-radio-group v-model="radio3">
-                <el-radio-button label="80" style="" />
-                <el-radio-button label="90" style="" />
-                <el-radio-button label="100" style="" />
-                <el-radio-button label="110" style="" />
-                <el-radio-button label="120" style="" />
-              </el-radio-group>
-            </span>
-          </div>
-        </div>
-        <!-- 活动下半部分 -->
-        <div v-if="radio2 == '黑色'" style="width: 600px; height: 400px">
-          <div
-            style="
-              display: flex;
-              width: 500px;
-              height: 100px;
-              margin-left: 10px;
-            "
-          >
-            <div
-              style="
-                width: 100px;
-                height: 100px;
-                margin-top: 40px;
-                margin-left: 20px;
-              "
-            >
-              <el-tooltip
-                class="item"
-                content="Top Center 提示文字"
-                effect="dark"
-                placement="top"
-              >
-                <img
-                  slot="content"
-                  src="https://img0.baidu.com/it/u=2876562511,1995269794&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-                  style="width: 200px; height: 200px"
-                />
-                <img
-                  alt=""
-                  src="https://img0.baidu.com/it/u=2876562511,1995269794&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-                  style="width: 100px; height: 100px"
-                  @click="openDialog"
-                />
-              </el-tooltip>
-            </div>
-            <div
-              style="
-                width: 750px;
-                height: 100%;
-                padding-top: 40px;
-                margin-left: 40px;
-                font-size: 16px;
-              "
-            >
-              <div>
-                <span>商品名称：</span>
-                <span>同城深秋卡通套装</span>
-              </div>
-              <div style="margin-top: 5px">
-                <span>商品编码：</span>
-                <span>QY001HS90</span>
-              </div>
-            </div>
-          </div>
-          <div style="width: 600px; height: 200px; margin-top: 40px">
-            <div style="padding-top: 20px; margin-left: 30px">
-              <span>打印种类：</span>
-              <el-radio-group v-model="radio">
-                <el-radio :label="3">打印吊牌</el-radio>
-                <el-radio :label="6">打印条码</el-radio>
-                <el-radio :label="9">BT打印</el-radio>
-              </el-radio-group>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <span>打印模板：</span>
-              <el-select
-                v-model="value1"
-                placeholder="请选择"
-                style="width: 120px"
-              >
-                <el-option
-                  v-for="item in options1"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-              <el-radio
-                v-model="radio1"
-                border
-                label="1"
-                style="margin-left: 10px"
-              >
-                默认使用模板设置的打印机
-              </el-radio>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <el-row type="flex">
-                <span style="line-height: 32px">打印数量：</span>
-                <el-input v-model="num" style="width: 50px" />
-                <el-button
-                  plain
-                  style="margin-left: 10px"
-                  type="primary"
-                  @click="print('vab-print-table')"
-                >
-                  打印预览
-                </el-button>
-                <el-button plain type="primary">立即打印</el-button>
-              </el-row>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <el-row type="flex">
-                <span style="line-height: 32px">自定义打印内容：</span>
-                <el-input style="width: 248px" />
-              </el-row>
-            </div>
-          </div>
-        </div>
-        <div v-if="radio2 == '红色'" style="width: 600px; height: 400px">
-          <div
-            style="
-              display: flex;
-              width: 500px;
-              height: 100px;
-              margin-left: 10px;
-            "
-          >
-            <div
-              style="
-                width: 100px;
-                height: 100px;
-                margin-top: 40px;
-                margin-left: 20px;
-              "
-            >
-              <el-tooltip
-                class="item"
-                content="Top Center 提示文字"
-                effect="dark"
-                placement="top"
-              >
-                <img
-                  slot="content"
-                  src="https://img1.baidu.com/it/u=1212355170,3821244735&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500"
-                  style="width: 200px; height: 200px"
-                />
-                <img
-                  alt=""
-                  src="https://img1.baidu.com/it/u=1212355170,3821244735&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500"
-                  style="width: 100px; height: 100px"
-                  @click="openDialog"
-                />
-              </el-tooltip>
-            </div>
-            <div
-              style="
-                width: 750px;
-                height: 100%;
-                padding-top: 40px;
-                margin-left: 40px;
-                font-size: 16px;
-              "
-            >
-              <div>
-                <span>商品名称：</span>
-                <span>夏季清爽套装玩转珍格格</span>
-              </div>
-              <div style="margin-top: 5px">
-                <span>商品编码：</span>
-                <span>QY0454234</span>
-              </div>
-            </div>
-          </div>
-          <div style="width: 600px; height: 200px; margin-top: 40px">
-            <div style="padding-top: 20px; margin-left: 30px">
-              <span>打印种类：</span>
-              <el-radio-group v-model="radio">
-                <el-radio :label="3">打印吊牌</el-radio>
-                <el-radio :label="6">打印条码</el-radio>
-                <el-radio :label="9">BT打印</el-radio>
-              </el-radio-group>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <span>打印模板：</span>
-              <el-select
-                v-model="value1"
-                placeholder="请选择"
-                style="width: 120px"
-              >
-                <el-option
-                  v-for="item in options1"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-              <el-radio
-                v-model="radio1"
-                border
-                label="1"
-                style="margin-left: 10px"
-              >
-                默认使用模板设置的打印机
-              </el-radio>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <el-row type="flex">
-                <span style="line-height: 32px">打印数量：</span>
-                <el-input v-model="num" style="width: 50px" />
-                <el-button
-                  plain
-                  style="margin-left: 10px"
-                  type="primary"
-                  @click="print('vab-print-table')"
-                >
-                  打印预览
-                </el-button>
-                <el-button plain type="primary">立即打印</el-button>
-              </el-row>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <el-row type="flex">
-                <span style="line-height: 32px">自定义打印内容：</span>
-                <el-input style="width: 248px" />
-              </el-row>
-            </div>
-          </div>
-        </div>
-        <div v-if="radio2 == '白色'" style="width: 600px; height: 400px">
-          <div
-            style="
-              display: flex;
-              width: 500px;
-              height: 100px;
-              margin-left: 10px;
-            "
-          >
-            <div
-              style="
-                width: 100px;
-                height: 100px;
-                margin-top: 40px;
-                margin-left: 20px;
-              "
-            >
-              <el-tooltip
-                class="item"
-                content="Top Center 提示文字"
-                effect="dark"
-                placement="top"
-              >
-                <img
-                  slot="content"
-                  src="https://img0.baidu.com/it/u=3633604987,1917476119&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-                  style="width: 200px; height: 200px"
-                />
-                <img
-                  alt=""
-                  src="https://img0.baidu.com/it/u=3633604987,1917476119&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-                  style="width: 100px; height: 100px"
-                  @click="openDialog"
-                />
-              </el-tooltip>
-            </div>
-            <div
-              style="
-                width: 750px;
-                height: 100%;
-                padding-top: 40px;
-                margin-left: 40px;
-                font-size: 16px;
-              "
-            >
-              <div>
-                <span>商品名称：</span>
-                <span>新疆棉纯棉100%T恤儿童</span>
-              </div>
-              <div style="margin-top: 5px">
-                <span>商品编码：</span>
-                <span>QY0323123</span>
-              </div>
-            </div>
-          </div>
-          <div style="width: 600px; height: 200px; margin-top: 40px">
-            <div style="padding-top: 20px; margin-left: 30px">
-              <span>打印种类：</span>
-              <el-radio-group v-model="radio">
-                <el-radio :label="3">打印吊牌</el-radio>
-                <el-radio :label="6">打印条码</el-radio>
-                <el-radio :label="9">BT打印</el-radio>
-              </el-radio-group>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <span>打印模板：</span>
-              <el-select
-                v-model="value1"
-                placeholder="请选择"
-                style="width: 120px"
-              >
-                <el-option
-                  v-for="item in options1"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-              <el-radio
-                v-model="radio1"
-                border
-                label="1"
-                style="margin-left: 10px"
-              >
-                默认使用模板设置的打印机
-              </el-radio>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <el-row type="flex">
-                <span style="line-height: 32px">打印数量：</span>
-                <el-input v-model="num" style="width: 50px" />
-                <el-button
-                  plain
-                  style="margin-left: 10px"
-                  type="primary"
-                  @click="print('vab-print-table')"
-                >
-                  打印预览
-                </el-button>
-                <el-button plain type="primary">立即打印</el-button>
-              </el-row>
-            </div>
-            <div style="margin-top: 5px; margin-left: 30px">
-              <el-row type="flex">
-                <span style="line-height: 32px">自定义打印内容：</span>
-                <el-input style="width: 248px" />
-              </el-row>
-            </div>
-          </div>
-        </div>
-      </el-tab-pane>
-      <el-tab-pane label="导入式打印" name="second">
-        <!-- 插入第二部分内容 -->
-        <el-form>
+          <el-form-item label="商品搜索">
+            <el-input
+              v-model="form.name2"
+              placeholder="请输入商品名称"
+              style="width: 215px; margin-right: 10px"
+            />
+            <el-button type="primary" @click="handleShow()">查询</el-button>
+          </el-form-item>
+          <el-form-item label="货号">
+            <el-radio-group v-model="form.radio3" size="small">
+              <el-radio-button label="QY001" />
+              <el-radio-button label="QY002" />
+              <el-radio-button label="QY003" />
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="颜色">
+            <el-radio-group v-model="form.radio3" size="small">
+              <el-radio-button label="红色" />
+              <el-radio-button label="黄色" />
+              <el-radio-button label="绿色" />
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="尺码">
+            <el-radio-group v-model="form.radio3" size="small">
+              <el-radio-button label="80" />
+              <el-radio-button label="90" />
+              <el-radio-button label="100" />
+              <el-radio-button label="120" />
+              <el-radio-button label="140" />
+            </el-radio-group>
+          </el-form-item>
           <el-form-item>
-            <el-row type="flex">
-              <el-select
-                v-model="value"
-                placeholder="请选择"
-                style="width: 120px; margin-top: 20px"
-              >
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+            <div style="display: flex">
+              <el-tooltip placement="top">
+                <img
+                  slot="content"
+                  src="https://img0.baidu.com/it/u=2876562511,1995269794&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+                  style="width: 200px; height: 200px; margin: 10px"
                 />
-              </el-select>
-              <el-input
-                placeholder="粘贴到这里"
-                style="width: 248px; margin-top: 20px"
-              />
-              <el-button
-                style="height: 32px; margin-top: 20px; margin-left: 20px"
-                type="primary"
-              >
-                导入商品
-              </el-button>
-            </el-row>
+                <img
+                  src="https://img0.baidu.com/it/u=2876562511,1995269794&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+                  style="width: 80px; height: 80px; margin-right: 20px"
+                />
+              </el-tooltip>
+              <div>
+                <div>商品名称：夏季清爽套装玩转珍格格</div>
+                <div>商品编码：QY0454234</div>
+              </div>
+            </div>
+          </el-form-item>
+          <el-form-item label="打印种类">
+            <el-radio-group v-model="form.radio2" size="small">
+              <el-radio label="打印吊牌" />
+              <el-radio label="打印条码" />
+              <el-radio label="BT打印" />
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="打印模板">
+            <el-select
+              v-model="form.status1"
+              style="width: 150px; margin-right: 10px"
+            >
+              <el-option label="110x90mm" :value="1" />
+              <el-option label="120x90mm" :value="2" />
+              <el-option label="130x90mm" :value="3" />
+            </el-select>
+            <el-radio v-model="form.radio1" border label="1">
+              默认使用模板设置的打印机
+            </el-radio>
+          </el-form-item>
+          <el-form-item label="打印数量">
+            <el-input
+              v-model="form.num"
+              style="width: 50px; margin-right: 10px"
+            />
+            <el-button type="primary" @click="print('vab-print-table')">
+              打印预览
+            </el-button>
+            <el-button type="primary">立即打印</el-button>
+          </el-form-item>
+          <el-form-item label="自定义打印内容">
+            <el-input v-model="form.content" style="width: 215px" />
           </el-form-item>
         </el-form>
-        <el-button
-          class="el-icon-printer"
-          style="margin-left: 1300px"
-          type="primary"
-          @click="print1('vab-print-table1')"
-        >
-          吊牌打印预览
-        </el-button>
-        <el-button class="el-icon-printer" type="primary">
-          条码打印预览
-        </el-button>
-        <el-table
-          ref="vab-print-table1"
-          border
-          :data="printList"
-          sortable
-          style="width: 100%; margin-top: 20px"
-          tooltip-effect="dark"
-          @selection-change="handleSelectionChange"
-        >
+        <div style="width: 50%">
+          <el-card shadow="hover" style="width: 50%; margin-left: 25%">
+            <div
+              ref="vab-print-table"
+              style="
+                width: 60%;
+                margin-left: 20%;
+                text-align: center;
+                border: 2px solid #3d64a3;
+              "
+            >
+              <h3 style="color: #000019; text-align: center">合格证</h3>
+              <p style="font-size: 12px; color: #000">
+                商品款号：
+                <span>G23GZ8080</span>
+              </p>
+              <p style="font-size: 12px; color: #000">
+                产品名称：
+                <span>童装</span>
+              </p>
+              <p style="font-size: 12px; color: #000">
+                规格：
+                <span>M</span>
+              </p>
+              <p style="font-size: 12px; color: #000">
+                执行标准：
+                <span>GZ/T73016-2225</span>
+              </p>
+              <p style="font-size: 12px; color: #000">
+                安全类别：
+                <span>FT32133-2019</span>
+              </p>
+              <p style="font-size: 12px; color: #000">
+                商品颜色：
+                <span>红色</span>
+              </p>
+              <p style="font-size: 12px; color: #000">
+                质量等级：
+                <span>合格品</span>
+              </p>
+              <p style="font-size: 12px; color: #000">
+                商品检验：
+                <span>01</span>
+              </p>
+              <p style="font-size: 12px; color: #000">
+                成分含量：
+                <span>棉：99%</span>
+              </p>
+              <p><img src="../../assets/1666403831760(1).jpg" /></p>
+              <div style=""></div>
+              <h4 style="margin-top: -18px; color: #000; text-align: center">
+                K35GB2442KF
+              </h4>
+              <h4 style="margin-top: -18px; color: #000; text-align: center">
+                108.00RMB
+              </h4>
+              <h5 style="margin-top: -18px; color: #000; text-align: center">
+                公司名称：杭州洛一服饰有限公司
+              </h5>
+              <h5 style="margin-top: -18px; color: #000; text-align: center">
+                地址：滨江区研祥科技大厦510
+              </h5>
+            </div>
+          </el-card>
+        </div>
+      </div>
+      <div v-else style="margin-top: 20px">
+        <el-form ref="form" label-position="right" :model="form">
+          <el-form-item>
+            <el-select
+              v-model="form.status1"
+              style="width: 150px; margin-right: 10px"
+            >
+              <el-option label="采购单" :value="1" />
+              <el-option label="生产计划单" :value="2" />
+              <el-option label="外发加工单" :value="3" />
+            </el-select>
+            <el-input
+              v-model="form.name2"
+              placeholder="粘到这里"
+              style="width: 215px; margin-right: 10px"
+            />
+            <el-button type="primary" @click="handleShow()">导入商品</el-button>
+            <el-button
+              class="el-icon-printer"
+              type="primary"
+              @click="print1('vab-print-table1')"
+            >
+              吊牌打印预览
+            </el-button>
+            <el-button class="el-icon-printer" type="primary">
+              条码打印预览
+            </el-button>
+          </el-form-item>
+        </el-form>
+        <div ref="vab-print-table1">
+          <List
+            :list="list"
+            :list-type="listType"
+            :state="listLoading"
+            :total="total"
+            @changePage="changeBtnPage"
+            @changePageSize="changeBtnPageSize"
+            @selectRows="selectBtnRows"
           >
-          <el-table-column type="selection" width="55" />
-          <el-table-column align="center" label="图片" prop="img" width="220">
-            <template slot-scope="{ row }">
-              <img alt="" :src="row.img" style="width: 40px; height: 30px" />
+            <!-- 表格组件具名插槽 自定义表头 -->
+            <template #List>
+              <el-table-column type="selection" width="55" />
+              <el-table-column
+                align="center"
+                label="图片"
+                prop="img"
+                width="220"
+              >
+                <template slot-scope="{ row }">
+                  <img
+                    alt=""
+                    :src="row.img"
+                    style="width: 40px; height: 30px"
+                  />
+                </template>
+              </el-table-column>
+              <el-table-column
+                align="center"
+                label="商品名称"
+                prop="name"
+                width="220"
+              />
+              <el-table-column
+                align="center"
+                label="款号"
+                prop="model"
+                width="220"
+              />
+              <el-table-column
+                label="颜色"
+                prop="color"
+                show-overflow-tooltip
+                width="220"
+              />
+              <el-table-column
+                align="center"
+                label="尺码"
+                prop="size"
+                width="220"
+              />
+              <el-table-column
+                align="center"
+                label="数量"
+                prop="num"
+                width="220"
+              />
+              <el-table-column
+                align="center"
+                label="商品编码"
+                prop="bianma"
+                width="220"
+              />
             </template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            label="商品名称"
-            prop="name"
-            width="220"
-          />
-          <el-table-column
-            align="center"
-            label="款号"
-            prop="model"
-            width="220"
-          />
-          <el-table-column
-            label="颜色"
-            prop="color"
-            show-overflow-tooltip
-            width="220"
-          />
-          <el-table-column
-            align="center"
-            label="尺码"
-            prop="size"
-            width="220"
-          />
-          <el-table-column align="center" label="数量" prop="num" width="220" />
-          <el-table-column
-            align="center"
-            label="商品编码"
-            prop="bianma"
-            width="220"
-          />
-        </el-table>
-        <el-pagination
-          background
-          :current-page.sync="page.pageNo"
-          layout="prev, pager, next, jumper,sizes,total"
-          :page-size.sync="page.pageSize"
-          :page-sizes="[5, 10, 15, 20]"
-          style="margin-left: 200px"
-          :total="total"
-        />
-      </el-tab-pane>
-    </el-tabs>
-    <div
-      style="
-        position: absolute;
-        top: 250px;
-        left: 1000px;
-        width: 400px;
-        height: 600px;
-        /* background-color: pink; */
-      "
-    >
-      <el-card v-if="radio2 == '黑色'" style="width: 100%; height: 100%">
-        <div
-          ref="vab-print-table"
-          style="
-            width: 181px;
-            height: 501px;
-            margin-left: 10px;
-
-            border: 2px solid #3d64a3;
-          "
-        >
-          <h3 style="color: #000019; text-align: center">合格证</h3>
-          <p style="font-size: 12px; color: #000">
-            商品款号：
-            <span>K11TZ2822</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            产品名称：
-            <span>内衣</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            规格：
-            <span>F</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            执行标准：
-            <span>FZ/T73016-2015</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            安全类别：
-            <span>GB18401-2010</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            商品颜色：
-            <span>黑色</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            质量等级：
-            <span>合格品</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            商品检验：
-            <span>01</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            成分含量：
-            <span>粘胶:42%，锦纶:34%，腈纶:18%，氨纶:6%</span>
-          </p>
-          <p><img src="../../assets/1666403831760(1).jpg" /></p>
-          <div style=""></div>
-          <h4 style="margin-top: -18px; color: #000; text-align: center">
-            K11TZ2822KF
-          </h4>
-          <h4 style="margin-top: -18px; color: #000; text-align: center">
-            280.00RMB
-          </h4>
-          <h5 style="margin-top: -18px; color: #000; text-align: center">
-            公司名称：杭州洛一服饰有限公司
-          </h5>
-          <h5 style="margin-top: -18px; color: #000; text-align: center">
-            地址：滨江区研祥科技大厦510
-          </h5>
-          <div
-            style="
-              position: absolute;
-              top: 71px;
-              left: 175px;
-              width: 181px;
-              height: 501px;
-              margin-left: 20px;
-              overflow: hidden;
-              border: 2px solid #3d64a3;
-            "
-          >
-            <h4
-              style="
-                width: 70px;
-                margin-left: 55px;
-                color: #000019;
-                text-align: center;
-                border: 2px solid #000;
-              "
-            >
-              合格证
-            </h4>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              品名：
-              <span>LLIO-T恤</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              货号：
-              <span>1221</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              颜色：
-              <span>白色</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              成分：
-              <span>棉100%(三丝光棉)</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              执行标准：
-              <span>GB22849-2006</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              安全类别：
-              <span>GB22849-2008 B类</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              等级：
-              <span>合格品</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              检验：
-              <span>OB</span>
-              <img src="../../assets/1666406914065.jpg" />
-            </p>
-            <h4 style="margin-top: -10px; margin-left: 120px">228.00</h4>
-            <div
-              style="
-                position: absolute;
-                top: 0;
-                width: 15px;
-                height: 950px;
-                margin-top: -20px;
-                background-color: #fff;
-              "
-            ></div>
-          </div>
+          </List>
         </div>
-      </el-card>
-      <el-card v-if="radio2 == '红色'" style="width: 100%; height: 100%">
-        <div
-          ref="vab-print-table"
-          style="
-            width: 181px;
-            height: 501px;
-            margin-left: 10px;
-
-            border: 2px solid #3d64a3;
-          "
-        >
-          <h3 style="color: #000019; text-align: center">合格证</h3>
-          <p style="font-size: 12px; color: #000">
-            商品款号：
-            <span>G23GZ8080</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            产品名称：
-            <span>童装</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            规格：
-            <span>M</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            执行标准：
-            <span>GZ/T73016-2225</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            安全类别：
-            <span>FT32133-2019</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            商品颜色：
-            <span>红色</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            质量等级：
-            <span>合格品</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            商品检验：
-            <span>01</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            成分含量：
-            <span>棉：99%</span>
-          </p>
-          <p><img src="../../assets/1666403831760(1).jpg" /></p>
-          <div style=""></div>
-          <h4 style="margin-top: -18px; color: #000; text-align: center">
-            K35GB2442KF
-          </h4>
-          <h4 style="margin-top: -18px; color: #000; text-align: center">
-            108.00RMB
-          </h4>
-          <h5 style="margin-top: -18px; color: #000; text-align: center">
-            公司名称：杭州洛一服饰有限公司
-          </h5>
-          <h5 style="margin-top: -18px; color: #000; text-align: center">
-            地址：滨江区研祥科技大厦510
-          </h5>
-          <div
-            style="
-              position: absolute;
-              top: 71px;
-              left: 175px;
-              width: 181px;
-              height: 501px;
-              margin-left: 20px;
-              overflow: hidden;
-              border: 2px solid #3d64a3;
-            "
-          >
-            <h4
-              style="
-                width: 70px;
-                margin-left: 55px;
-                color: #000019;
-                text-align: center;
-                border: 2px solid #000;
-              "
-            >
-              合格证
-            </h4>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              品名：
-              <span>碎花裙</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              货号：
-              <span>1221</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              颜色：
-              <span>红色</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              成分：
-              <span>聚酯纤维100%</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              执行标准：
-              <span>GB22849-2006</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              安全类别：
-              <span>GB22849-2008 A类</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              等级：
-              <span>合格品</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              检验：
-              <span>OB</span>
-              <img src="../../assets/1666406914065.jpg" />
-            </p>
-            <h4 style="margin-top: -10px; margin-left: 120px">108.00</h4>
-            <div
-              style="
-                position: absolute;
-                top: 0;
-                width: 15px;
-                height: 950px;
-                margin-top: -20px;
-                background-color: #fff;
-              "
-            ></div>
-          </div>
-        </div>
-      </el-card>
-      <el-card v-if="radio2 == '白色'" style="width: 100%; height: 100%">
-        <div
-          ref="vab-print-table"
-          style="
-            width: 181px;
-            height: 501px;
-            margin-left: 10px;
-
-            border: 2px solid #3d64a3;
-          "
-        >
-          <h3 style="color: #000019; text-align: center">合格证</h3>
-          <p style="font-size: 12px; color: #000">
-            商品款号：
-            <span>FTTT8080</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            产品名称：
-            <span>婴幼儿套装</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            规格：
-            <span>F</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            执行标准：
-            <span>GZ/T73016-1110</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            安全类别：
-            <span>FT11110-2020</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            商品颜色：
-            <span>白色</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            质量等级：
-            <span>合格品</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            商品检验：
-            <span>01</span>
-          </p>
-          <p style="font-size: 12px; color: #000">
-            成分含量：
-            <span>纯棉：100%</span>
-          </p>
-          <p><img src="../../assets/1666403831760(1).jpg" /></p>
-          <div style=""></div>
-          <h4 style="margin-top: -18px; color: #000; text-align: center">
-            FTT380001110
-          </h4>
-          <h4 style="margin-top: -18px; color: #000; text-align: center">
-            258.00RMB
-          </h4>
-          <h5 style="margin-top: -18px; color: #000; text-align: center">
-            公司名称：杭州洛一服饰有限公司
-          </h5>
-          <h5 style="margin-top: -18px; color: #000; text-align: center">
-            地址：滨江区研祥科技大厦510
-          </h5>
-          <div
-            style="
-              position: absolute;
-              top: 71px;
-              left: 175px;
-              width: 181px;
-              height: 501px;
-              margin-left: 20px;
-              overflow: hidden;
-              border: 2px solid #3d64a3;
-            "
-          >
-            <h4
-              style="
-                width: 70px;
-                margin-left: 55px;
-                color: #000019;
-                text-align: center;
-                border: 2px solid #000;
-              "
-            >
-              合格证
-            </h4>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              品名：
-              <span>婴儿连体睡眠衣</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              货号：
-              <span>1110</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              颜色：
-              <span>白色</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              成分：
-              <span>纯棉100%</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              执行标准：
-              <span>FT22849-1110</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              安全类别：
-              <span>FT22849-1110 A类</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              等级：
-              <span>合格品</span>
-            </p>
-            <p style="margin-left: 15px; font-size: 12px; color: #000">
-              检验：
-              <span>OB</span>
-              <img src="../../assets/1666406914065.jpg" />
-            </p>
-            <h4 style="margin-top: -10px; margin-left: 120px">258.00</h4>
-            <div
-              style="
-                position: absolute;
-                top: 0;
-                width: 15px;
-                height: 950px;
-                margin-top: -20px;
-                background-color: #fff;
-              "
-            ></div>
-          </div>
-        </div>
-      </el-card>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+  import List from '@/subview/components/List'
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
-
   export default {
+    components: { List },
     data() {
       return {
-        page: { pageNo: 1, pageSize: 10 },
-        total: 12,
-        num: 1,
-        options1: [
-          {
-            value: '选项1',
-            label: '110X90mm',
-          },
-          {
-            value: '选项2',
-            label: '100X100mm',
-          },
-        ],
-        value1: '110X90mm',
-        radio1: '',
-        radio2: '',
-        radio3: '',
-        radio: 3,
-        radio4: '',
-        radio5: '',
-        activeName: 'first',
-        options: [
-          {
-            value: '选项1',
-            label: '采购单',
-          },
-          {
-            value: '选项2',
-            label: '生产计划单',
-          },
-          {
-            value: '选项3',
-            label: '外发加工单',
-          },
-        ],
-        value: '',
-        printList: [
+        activeName: '打印吊牌条码',
+        form: { pageNo: 1, pageSize: 10 },
+        // 列表数据相关
+        selectRows: [],
+        listType: 1,
+        list: [
           {
             img: 'https://img0.baidu.com/it/u=1895837640,2691329714&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
             name: '请开启 JavaScript 功能来使用 CRMEB。',
@@ -1126,15 +437,22 @@
             bianma: 'xz1289088980234234',
           },
         ],
+        listLoading: false,
+        total: 0,
       }
     },
+    watch: {
+      form: {
+        handler: function () {
+          this.fetchData()
+        },
+        deep: true,
+      },
+    },
+    created() {
+      this.fetchData()
+    },
     methods: {
-      handleClick(tab, event) {
-        console.log(tab, event)
-      },
-      handleSelectionChange(val) {
-        this.multipleSelection = val
-      },
       ...mapActions({
         openSideBar: 'settings/openSideBar',
         foldSideBar: 'settings/foldSideBar',
@@ -1149,11 +467,44 @@
         await VabPrint(this.$refs[val], { noPrintParent: true })
         await this.openSideBar()
       },
-      openDialog() {
-        this.$refs['vabCropper1'].dialogVisible = true
+      // 列表数据封装函数
+
+      // 列表数据改变页数   公共部分
+      changeBtnPage(data) {
+        this.form.pageNo = data
+      },
+      // 多选获取数据   公共部分
+      selectBtnRows(data) {
+        this.selectRows = data
+      },
+
+      // 列表数据改变每页条数  公共部分
+      changeBtnPageSize(data) {
+        this.form.pageSize = data
+        console.log(data)
+      },
+      // 列表数据请求函数 公共部分
+      async fetchData() {
+        // this.listLoading = true
+        // const {
+        //   data: { list, total },
+        // } = await getWaveList(this.form)
+        // this.list = list
+        // this.total = total
+        // this.listLoading = false
       },
     },
   }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .textCss {
+    padding: 8px 16px 8px 16px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 22px;
+    color: #666;
+    background-color: #e8f4ff;
+    border-radius: 6px;
+  }
+</style>

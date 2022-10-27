@@ -25,56 +25,69 @@
     >
       小票打印机用于用户下单成功后自动打印小票+语音播报，目前支持易联云和飞鹅的小票打印机，请先购买小票打印机后进行配置，点击进入易联云购买地址，点击进入飞鹅购买地址
     </div>
-    <el-row
-      justify-content="space-between"
-      style="margin-top: 20px"
-      type="flex"
-    >
-      <div>
-        <el-button type="primary" @click="add">添加易联云打印机</el-button>
-        <el-button type="primary" @click="add1">添加飞鹅打印机</el-button>
-        <el-button>删除</el-button>
-        <el-button>开启</el-button>
-        <el-button>关闭</el-button>
-      </div>
-      <div>
-        <span style="margin-left: 600px">名称</span>
-        <el-input style="width: 150px; margin-left: 20px" />
-        <span style="margin-left: 20px">状态</span>
-        <el-select
-          v-model="value"
-          placeholder="请选择"
-          style="width: 150px; margin-left: 20px"
-        >
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+    <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+      <template #Form>
+        <el-form-item>
+          <el-button type="primary" @click="add">添加易联云打印机</el-button>
+          <el-button type="primary" @click="add1">添加飞鹅打印机</el-button>
+        </el-form-item>
+        <el-form-item label="名称:">
+          <el-input
+            v-model="form.name"
+            placeholder="请输入名称"
+            style="width: 215px"
           />
-        </el-select>
-        <el-button style="margin-left: 20px" type="primary">查询</el-button>
-      </div>
-    </el-row>
-    <el-table
-      border
-      :data="tableData"
-      style="width: 100%; margin-top: 10px"
-      tooltip-effect="dark"
-      @selection-change="handleSelectionChange"
+        </el-form-item>
+        <el-form-item label="状态:">
+          <el-select v-model="form.status">
+            <el-option label="全部" :value="0" />
+            <el-option label="开启" :value="1" />
+            <el-option label="关闭" :value="2" />
+          </el-select>
+        </el-form-item>
+      </template>
+    </Form>
+    <List
+      :list="list"
+      :list-type="listType"
+      :state="listLoading"
+      :total="total"
+      @changePage="changeBtnPage"
+      @changePageSize="changeBtnPageSize"
     >
-      <el-table-column type="selection" width="55" />
-      <el-table-column label="ID" prop="id" width="80" />
-      <el-table-column label="类型" prop="leixing" width="213" />
-      <el-table-column label="名称" prop="mingcheng" show-overflow-tooltip />
-      <el-table-column label="标题" prop="biaoti" width="212" />
-      <el-table-column label="终端号" prop="zhongduan" width="212" />
-      <el-table-column label="添加时间" prop="tianjia" width="212" />
-      <el-table-column label="状态" prop="zhuangtai" width="212" />
-      <el-table-column label="操作" width="212">
-        <el-button>删除</el-button>
-      </el-table-column>
-    </el-table>
+      <!-- 表格组件具名插槽 自定义表头 -->
+      <template #List>
+        <el-table-column type="selection" width="55" />
+        <el-table-column label="ID" prop="id" width="80" />
+        <el-table-column label="类型" prop="leixing" width="150" />
+        <el-table-column label="名称" prop="mingcheng" width="180" />
+        <el-table-column label="标题" prop="biaoti" show-overflow-tooltip />
+        <el-table-column
+          label="终端号"
+          prop="zhongduan"
+          show-overflow-tooltip
+        />
+        <el-table-column label="添加时间" prop="tianjia" width="200" />
+        <el-table-column label="状态" prop="zhuangtai" width="150">
+          <template #default="{ row }">
+            <el-switch
+              v-model="row.zhuangtai"
+              active-color="#41B584"
+              active-text="开启"
+              :active-value="1"
+              class="switch"
+              inactive-color="#D2D2D2"
+              inactive-text="关闭"
+              :inactive-value="0"
+              style="margin: 0 10px"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column align="center" fixed="right" label="操作" width="100">
+          <el-button>删除</el-button>
+        </el-table-column>
+      </template>
+    </List>
     <!-- 弹框1 -->
     <el-dialog
       :before-close="handleClose"
@@ -149,7 +162,13 @@
           <el-radio v-model="radio22" label="3">开启</el-radio>
           <el-radio v-model="radio22" label="4">关闭</el-radio>
         </el-form-item>
-        <el-button style="margin-left: 70px" type="primary">提交</el-button>
+        <el-button
+          style="margin-left: 70px"
+          type="primary"
+          @click="dialogVisible = false"
+        >
+          提交
+        </el-button>
       </el-form>
     </el-dialog>
     <!-- 弹框2 -->
@@ -222,28 +241,34 @@
           <el-radio v-model="radio22" label="3">开启</el-radio>
           <el-radio v-model="radio22" label="4">关闭</el-radio>
         </el-form-item>
-        <el-button style="margin-left: 70px" type="primary">提交</el-button>
+        <el-button
+          style="margin-left: 70px"
+          type="primary"
+          @click="dialogVisible1 = false"
+        >
+          提交
+        </el-button>
       </el-form>
     </el-dialog>
   </div>
 </template>
 
 <script>
+  import Form from '@/subview/components/Form'
+  import List from '@/subview/components/List'
   export default {
+    components: { Form, List },
     data() {
       return {
-        radio22: '3',
-        radio21: '300',
-        checked: false,
-        radio2: '11',
-        radio1: '3',
-        radio: '1',
-        ID: '',
-        title: '商城系统',
-        name: '小票打印机',
-        dialogVisible: false,
-        dialogVisible1: false,
-        tableData: [
+        formType: 3,
+        form: {
+          name: '',
+          pageNo: 1,
+          pageSize: 10,
+          status: 0,
+        },
+        listType: 1,
+        list: [
           {
             id: '1',
             leixing: '易联云',
@@ -308,21 +333,19 @@
             tianjia: '2016-05-02',
           },
         ],
-        options: [
-          {
-            value: '选项1',
-            label: '全部',
-          },
-          {
-            value: '选项2',
-            label: '已开启',
-          },
-          {
-            value: '选项3',
-            label: '已关闭',
-          },
-        ],
-        value: '选项1',
+        listLoading: false,
+        total: 0,
+        radio22: '3',
+        radio21: '300',
+        checked: false,
+        radio2: '11',
+        radio1: '3',
+        radio: '1',
+        ID: '',
+        title: '商城系统',
+        name: '小票打印机',
+        dialogVisible: false,
+        dialogVisible1: false,
       }
     },
     methods: {
@@ -340,6 +363,36 @@
       },
       handleClose1() {
         this.dialogVisible1 = false
+      },
+      // 列表数据封装函数
+
+      // 列表数据改变页数   公共部分
+      changeBtnPage(data) {
+        this.form.pageNo = data
+      },
+      // 多选获取数据   公共部分
+      selectBtnRows(data) {
+        this.selectRows = data
+      },
+
+      // 列表数据改变每页条数  公共部分
+      changeBtnPageSize(data) {
+        this.form.pageSize = data
+        console.log(data)
+      },
+      // 列表数据请求函数 公共部分
+      async fetchData() {
+        // this.listLoading = true
+        // const {
+        //   data: { list, total },
+        // } = await getWaveList(this.form)
+        // this.list = list
+        // this.total = total
+        // this.listLoading = false
+      },
+      // 查询
+      handleQuery() {
+        this.form.pageNo = 1
       },
     },
   }

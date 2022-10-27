@@ -55,7 +55,12 @@
               <span style="font-weight: 700; color: #000">
                 {{ row.price.text }}
               </span>
-              <div>{{ row.price.a }}</div>
+              <div v-if="row.price.state === 1">
+                {{ row.price.weight }}克以下{{ row.price.price }}元，每超出{{
+                  row.price.weight1
+                }}克加{{ row.price.price1 }}元
+              </div>
+              <div v-else>全部</div>
             </template>
           </el-table-column>
           <el-table-column label="满额包邮" prop="bao" width="120" />
@@ -127,9 +132,14 @@
           {
             id: '8',
             name: '普通快递',
+            state: '按重量',
             price: {
               text: '全国（默认运费）：',
-              a: '1000克以下0元，每超出1000克加0元',
+              state: 1,
+              weight: 1000,
+              price: 0,
+              weight1: 1000,
+              price1: 0,
             },
             bao: '不开启',
             num: '0',
@@ -138,9 +148,10 @@
           {
             id: '9',
             name: '到店自提',
+            state: '按件数',
             price: {
               text: '自提门店：',
-              a: '全部',
+              state: 2,
             },
             bao: '不开启',
             num: '0',
@@ -187,6 +198,7 @@
       },
       // 详情抽屉
       handleDetail(row) {
+        console.log(row)
         if (row === 'add') {
           this.formDrawer.title = '新增配送方式'
         } else {

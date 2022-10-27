@@ -6,23 +6,8 @@
     @close="close"
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item label="等级名称" prop="name">
+      <el-form-item label="季节名称" prop="name">
         <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="等级折扣" prop="discount">
-        <el-input v-model="form.discount" />
-      </el-form-item>
-      <el-form-item label="是否散批" prop="sp">
-        <el-radio-group v-model="form.sp">
-          <el-radio :label="1">关闭</el-radio>
-          <el-radio :label="0">开启</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="折扣散码" prop="discount_sm">
-        <el-input v-model="form.discount_sm" />
-      </el-form-item>
-      <el-form-item label="备注" prop="des">
-        <el-input v-model="form.des" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -33,29 +18,17 @@
 </template>
 
 <script>
-  import { updateGrade, addGrade } from '@/api/basic'
+  // import { updateBrand, addBrand } from '@/api/basic'
   export default {
-    name: 'LevelDeit',
+    name: 'BrandEdit',
     data() {
       return {
         form: {
           name: '',
           id: '',
-          discount: '',
-          discount_sm: '',
-          sp: 0,
-          des: '',
         },
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
-          discount: [
-            { required: true, trigger: 'blur', message: '请输入折扣' },
-          ],
-          sp: [{ required: true, trigger: 'change', message: '请选择散批' }],
-          discount_sm: [
-            { required: true, trigger: 'blur', message: '请输入折扣散码' },
-          ],
-          des: [{ required: true, trigger: 'blur', message: '请输入备注' }],
         },
         title: '',
         dialogFormVisible: false,
@@ -81,10 +54,10 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await addGrade(this.form)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await addBrand(this.form)
+              // if (code != 200) {
+              //   return
+              // }
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -93,10 +66,10 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await updateGrade(this.form)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await updateBrand(this.form)
+              // if (code != 200) {
+              //   return
+              // }
               this.$baseMessage(
                 '修改成功',
                 'success',

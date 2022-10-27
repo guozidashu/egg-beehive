@@ -64,14 +64,13 @@
         />
       </template>
     </el-table>
-    <!-- <el-table
+    <el-table
       v-if="listType === 3"
       v-loading="state"
       border
       :data="list"
-      default-expand-all
       row-key="id"
-      :tree-props="{ children: 'color' }"
+      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       @selection-change="setSelectRows"
     >
       <slot name="List"></slot>
@@ -81,7 +80,7 @@
           :src="require('@/assets/empty_images/data_empty.png')"
         />
       </template>
-    </el-table> -->
+    </el-table>
     <el-pagination
       v-if="listType === 1 || listType === 3"
       background
