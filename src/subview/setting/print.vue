@@ -28,8 +28,12 @@
     <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
       <template #Form>
         <el-form-item>
-          <el-button type="primary" @click="add">添加易联云打印机</el-button>
-          <el-button type="primary" @click="add1">添加飞鹅打印机</el-button>
+          <el-button type="primary" @click="add('易联云', 1)">
+            添加易联云打印机
+          </el-button>
+          <el-button type="primary" @click="add('飞鹅', 1)">
+            添加飞鹅打印机
+          </el-button>
         </el-form-item>
         <el-form-item label="名称:">
           <el-input
@@ -84,14 +88,17 @@
           </template>
         </el-table-column>
         <el-table-column align="center" fixed="right" label="操作" width="100">
-          <el-button>删除</el-button>
+          <template #default="{ row }">
+            <el-button type="text" @click="add(row.leixing, 2)">编辑</el-button>
+            <el-button type="text">打印测试OK</el-button>
+          </template>
         </el-table-column>
       </template>
     </List>
     <!-- 弹框1 -->
     <el-dialog
       :before-close="handleClose"
-      title="+添加易联云小票打印机"
+      :title="distitle"
       :visible.sync="dialogVisible"
       width="50%"
     >
@@ -174,7 +181,7 @@
     <!-- 弹框2 -->
     <el-dialog
       :before-close="handleClose1"
-      title="+添加飞鹅小票打印机"
+      :title="distitle1"
       :visible.sync="dialogVisible1"
       width="50%"
     >
@@ -346,6 +353,8 @@
         name: '小票打印机',
         dialogVisible: false,
         dialogVisible1: false,
+        distitle: '',
+        distitle1: '',
       }
     },
     methods: {
@@ -355,11 +364,22 @@
       handleClose() {
         this.dialogVisible = false
       },
-      add() {
-        this.dialogVisible = true
-      },
-      add1() {
-        this.dialogVisible1 = true
+      add(type, lx) {
+        if (type == '易联云') {
+          this.dialogVisible = true
+          if (lx == 1) {
+            this.distitle = '添加易联云打印机'
+          } else {
+            this.distitle = '编辑易联云打印机'
+          }
+        } else {
+          this.dialogVisible1 = true
+          if (lx == 1) {
+            this.distitle1 = '添加飞鹅打印机'
+          } else {
+            this.distitle1 = '编辑飞鹅打印机'
+          }
+        }
       },
       handleClose1() {
         this.dialogVisible1 = false

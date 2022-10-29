@@ -39,29 +39,7 @@
         <el-form-item label="门店地址：" prop="qx">
           <addressCity @getLawyerListInfo="selectAddress" />
         </el-form-item>
-        <el-form-item label="详细地址：" prop="qx">
-          <el-input
-            v-model="formDrawer.address"
-            class="input-with-select"
-            placeholder="请输入详细地址"
-            style="width: 665px"
-          >
-            <el-button slot="append" icon="el-icon-search">查找位置</el-button>
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <img
-            src="../../../assets/1666436281999.jpg"
-            style="width: 665px; height: 500px"
-          />
-        </el-form-item>
-        <el-form-item label="门店坐标：" prop="qx">
-          <el-input
-            v-model="formDrawer.address"
-            style="width: 105px; margin-right: 10px"
-          />
-          <el-input v-model="formDrawer.address" style="width: 105px" />
-        </el-form-item>
+        <StroeMap @getshopInfo="getStroeMap" />
         <el-form-item label="联系人：" prop="qx">
           <el-input v-model="formDrawer.address" style="width: 215px" />
         </el-form-item>
@@ -129,11 +107,12 @@
 </template>
 
 <script>
+  import StroeMap from '@/subview/components/StroeMap'
   import VabUpload from '@/extra/VabUpload'
   import addressCity from '@/subview/components/City.vue'
   export default {
     name: 'EmployeesDrawer',
-    components: { addressCity, VabUpload },
+    components: { addressCity, VabUpload, StroeMap },
     props: {
       form: {
         type: Object,
@@ -145,14 +124,14 @@
       return {
         value1: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
         value2: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
-        formDrawer: this.form,
+        formDrawer: Object.assign({}, this.form),
       }
     },
     watch: {
       form: {
-        handler: function (val) {
-          this.formDrawer = val
-          console.log(val)
+        handler: function (newVal) {
+          this.formDrawer = Object.assign({}, newVal)
+          console.log(2222, newVal)
         },
         deep: true,
       },
@@ -164,6 +143,10 @@
       },
       handleShow() {
         this.$refs['vabUpload'].handleShow()
+      },
+      getStroeMap(value) {
+        this.formDrawer.lng = value.lng
+        this.formDrawer.lat = value.lat
       },
     },
   }

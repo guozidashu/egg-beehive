@@ -69,7 +69,7 @@
             native-type="submit"
             size="small"
             type="primary"
-            @click="handleQuery"
+            @click="handleDownload"
           >
             导出
           </el-button>
@@ -85,12 +85,14 @@
       </el-form>
       <!-- 表格组件使用 -->
       <List
+        ref="multipleTable"
         :list="list"
         :list-type="listType"
         :state="listLoading"
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
+        @selectRows="handleSelectionChange"
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
@@ -148,6 +150,7 @@
           </el-table-column>
           <el-table-column
             align="center"
+            fixed="right"
             label="操作"
             show-overflow-tooltip
             width="85"
@@ -171,7 +174,18 @@
     components: { List, Form },
     data() {
       return {
+        downloadLoading: false,
+        exclList: [],
         pickerOptions: {
+          cellClassName: (time) => {
+            if (
+              new Date().getDate() === time.getDate() &&
+              new Date().getMonth() === time.getMonth() &&
+              new Date().getFullYear() === time.getFullYear()
+            ) {
+              return 'dateArrClass' // 返回值设置的是我们添加的类名
+            }
+          },
           shortcuts: [
             {
               text: '今天',
@@ -331,10 +345,64 @@
         // this.list = list
         // this.total = total
         // this.listLoading = false
+        this.list.forEach((item) => {
+          item.inofText = ''
+          item.inof.forEach((item1) => {
+            item.inofText = item.inofText + item1.text
+          })
+        })
       },
       // 详情抽屉
       handleDetail() {
         this.drawer = true
+      },
+      // 导出
+      handleSelectionChange(val) {
+        this.exclList = val
+      },
+      handleDownload() {
+        if (this.exclList.length) {
+          console.log(888, this.exclList)
+          this.downloadLoading = true
+          import('@/utils/excel').then((excel) => {
+            const tHeader = [
+              '订单号',
+              '订单类型',
+              '供应商',
+              '商品信息',
+              '数量',
+              '采购金额',
+              '创建时间按',
+              '交货时间',
+              '订单状态',
+            ]
+            const filterVal = [
+              'orderno',
+              'type',
+              'name',
+              'inofText',
+              'num',
+              'money',
+              'creat_time',
+              'end_time',
+              'state',
+            ]
+            const list = this.exclList
+            const data = this.formatJson(filterVal, list)
+            excel.export_json_to_excel({
+              header: tHeader,
+              data,
+              filename: this.filename,
+            })
+            this.$refs.multipleTable.$children[0].clearSelection()
+            this.downloadLoading = false
+          })
+        } else {
+          this.$baseMessage('请至少选择一行', 'error', 'vab-hey-message-error')
+        }
+      },
+      formatJson(filterVal, jsonData) {
+        return jsonData.map((v) => filterVal.map((j) => v[j]))
       },
     },
   }

@@ -114,6 +114,10 @@
         type: Number,
         default: 0,
       },
+      tableRowselect: {
+        type: String,
+        default: '',
+      },
       listHeight: {
         type: Number,
         default: 0,
@@ -124,9 +128,7 @@
         layout: 'total, sizes, prev, pager, next, jumper',
       }
     },
-    created() {
-      console.log(232323, this.listType, this.list, this.state, this.total)
-    },
+    created() {},
     methods: {
       // 改变每页条数事件 公共
       handleSizeChange(val) {
@@ -138,7 +140,6 @@
       },
       //多选
       setSelectRows(val) {
-        console.log(1323443, val)
         this.$emit('selectRows', val)
       },
     },

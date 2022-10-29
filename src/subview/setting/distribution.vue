@@ -8,14 +8,14 @@
           <el-form-item label="状态:">
             <el-select v-model="form.status">
               <el-option label="全部" :value="0" />
-              <el-option label="营业中" :value="1" />
-              <el-option label="停业中" :value="2" />
+              <el-option label="开启" :value="1" />
+              <el-option label="关闭" :value="2" />
             </el-select>
           </el-form-item>
           <el-form-item label="搜索:">
             <el-input
               v-model="form.name"
-              placeholder="请输入门店名称"
+              placeholder="请输入配送名称"
               style="width: 215px"
             />
           </el-form-item>
@@ -33,16 +33,26 @@
           >
             添加
           </el-button>
+          <el-button
+            native-type="submit"
+            size="small"
+            type="primary"
+            @click="handleDownload"
+          >
+            导出
+          </el-button>
         </el-form-item>
       </el-form>
       <!-- 表格组件使用 -->
       <List
+        ref="multipleTable"
         :list="list"
         :list-type="listType"
         :state="listLoading"
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
+        @selectRows="handleSelectionChange"
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
@@ -158,6 +168,8 @@
             zt: '开启',
           },
         ],
+        downloadLoading: false,
+        exclList: [],
         listLoading: false,
         total: 0,
       }
@@ -195,6 +207,22 @@
         // this.list = list
         // this.total = total
         // this.listLoading = false
+        this.list.forEach((item) => {
+          if (item.price.state === 1) {
+            item.priceText =
+              item.price.text +
+              item.price.weight +
+              '克以下' +
+              item.price.price +
+              '元，每超出' +
+              item.price.weight1 +
+              '克加' +
+              item.price.price1 +
+              '元'
+          } else {
+            item.priceText = item.price.text + '全部'
+          }
+        })
       },
       // 详情抽屉
       handleDetail(row) {
@@ -217,6 +245,34 @@
       //     this.$refs['edit'].showEdit(row)
       //   }
       // },
+      // 导出
+      handleSelectionChange(val) {
+        this.exclList = val
+      },
+      handleDownload() {
+        if (this.exclList.length) {
+          console.log(888, this.exclList)
+          this.downloadLoading = true
+          import('@/utils/excel').then((excel) => {
+            const tHeader = ['Id', '名称', '区域及价格', '满额包邮', '状态']
+            const filterVal = ['id', 'name', 'priceText', 'bao', 'zt']
+            const list = this.exclList
+            const data = this.formatJson(filterVal, list)
+            excel.export_json_to_excel({
+              header: tHeader,
+              data,
+              filename: this.filename,
+            })
+            this.$refs.multipleTable.$children[0].clearSelection()
+            this.downloadLoading = false
+          })
+        } else {
+          this.$baseMessage('请至少选择一行', 'error', 'vab-hey-message-error')
+        }
+      },
+      formatJson(filterVal, jsonData) {
+        return jsonData.map((v) => filterVal.map((j) => v[j]))
+      },
     },
   }
 </script>

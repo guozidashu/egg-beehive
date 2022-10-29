@@ -105,7 +105,7 @@
       @submit.native.prevent
     >
       <slot name="Form"></slot>
-      <el-form-item label-width=" ">
+      <el-form-item style="margin-left: 20px">
         <el-button @click="resetForm">重置</el-button>
         <el-button
           icon="el-icon-search"

@@ -595,6 +595,15 @@
           ],
         },
         pickerOptions: {
+          cellClassName: (time) => {
+            if (
+              new Date().getDate() === time.getDate() &&
+              new Date().getMonth() === time.getMonth() &&
+              new Date().getFullYear() === time.getFullYear()
+            ) {
+              return 'dateArrClass' // 返回值设置的是我们添加的类名
+            }
+          },
           shortcuts: [
             {
               text: '最近一周',

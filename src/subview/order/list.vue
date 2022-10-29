@@ -46,7 +46,7 @@
           <el-form-item label="下单时间:">
             <el-date-picker
               v-model="form.date"
-              align="right"
+              align="left"
               end-placeholder="结束日期"
               :picker-options="pickerOptions"
               range-separator="至"
@@ -97,28 +97,22 @@
             native-type="submit"
             size="small"
             type="primary"
-            @click="handleQuery"
+            @click="handleDownload"
           >
             导出
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleQuery"
-          >
-            批量
           </el-button>
         </el-form-item>
       </el-form>
       <!-- 表格组件使用 -->
       <List
+        ref="multipleTable"
         :list="list"
         :list-type="listType"
         :state="listLoading"
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
+        @selectRows="handleSelectionChange"
       >
         <template #List>
           <el-table-column type="selection" />
@@ -204,7 +198,18 @@
     components: { Form, List, Drawer },
     data() {
       return {
+        downloadLoading: false,
+        exclList: [],
         pickerOptions: {
+          cellClassName: (time) => {
+            if (
+              new Date().getDate() === time.getDate() &&
+              new Date().getMonth() === time.getMonth() &&
+              new Date().getFullYear() === time.getFullYear()
+            ) {
+              return 'dateArrClass' // 返回值设置的是我们添加的类名
+            }
+          },
           shortcuts: [
             {
               text: '今天',
@@ -383,12 +388,77 @@
         // this.list = list
         // this.total = total
         // this.listLoading = false
+        this.list.forEach((item) => {
+          item.inofText = ''
+          item.inof.forEach((item1) => {
+            item.inofText = item.inofText + item1.text
+          })
+        })
       },
       // 详情抽屉
       handleDetail() {
         this.drawer = true
       },
+      // 导出
+      handleSelectionChange(val) {
+        this.exclList = val
+      },
+      handleDownload() {
+        if (this.exclList.length) {
+          console.log(888, this.exclList)
+          this.downloadLoading = true
+          import('@/utils/excel').then((excel) => {
+            const tHeader = [
+              '订单号',
+              '单据日期',
+              '订单类型',
+              '客户名称',
+              '商品信息',
+              '数量',
+              '实际金额',
+              '支付方式',
+              '订单状态',
+            ]
+            const filterVal = [
+              'orderno',
+              'date',
+              'type',
+              'username',
+              'inofText',
+              'num',
+              'money',
+              'pay',
+              'state',
+            ]
+            const list = this.exclList
+            const data = this.formatJson(filterVal, list)
+            excel.export_json_to_excel({
+              header: tHeader,
+              data,
+              filename: this.filename,
+            })
+            this.$refs.multipleTable.$children[0].clearSelection()
+            this.downloadLoading = false
+          })
+        } else {
+          this.$baseMessage('请至少选择一行', 'error', 'vab-hey-message-error')
+        }
+      },
+      formatJson(filterVal, jsonData) {
+        return jsonData.map((v) => filterVal.map((j) => v[j]))
+      },
     },
   }
 </script>
-<style lang="scss" scoped></style>
+<style>
+  .dateArrClass > div ::after {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 5px;
+    height: 5px;
+    content: '';
+    background-color: #1890ff;
+    border-radius: 50%;
+  }
+</style>

@@ -147,11 +147,8 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item>
-            <img
-              v-if="formDrawer.state9 == '圆形范围'"
-              src="../../../assets/yuanMap.png"
-            />
-            <img v-else src="../../../assets/fangMap.png" />
+            <YuanMap v-if="formDrawer.state9 == '圆形范围'" />
+            <FangMap v-else />
             <p>注：多边形的形状尽量简洁，不要有交叉线</p>
           </el-form-item>
           <el-form-item label="配送点：">
@@ -257,12 +254,20 @@
 </template>
 
 <script>
-  import addressCity from '@/subview/components/City.vue'
+  import addressCity from '@/subview/components/City'
+  import YuanMap from '@/subview/components/YuanMap'
+  import FangMap from '@/subview/components/FangMap'
   import DistributionTime from './DistributionTime'
   import DistributionTable from './DistributionTable'
   export default {
     name: 'EmployeesDrawer',
-    components: { addressCity, DistributionTime, DistributionTable },
+    components: {
+      addressCity,
+      DistributionTime,
+      DistributionTable,
+      YuanMap,
+      FangMap,
+    },
     props: {
       form: {
         type: Object,

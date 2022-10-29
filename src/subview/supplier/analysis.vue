@@ -34,7 +34,12 @@
           >
             查询
           </el-button>
-          <el-button native-type="submit" size="small" type="primary">
+          <el-button
+            native-type="submit"
+            size="small"
+            type="primary"
+            @click="handleDownload"
+          >
             导出
           </el-button>
         </el-form-item>
@@ -45,7 +50,7 @@
           </el-select>
         </el-form-item>
       </el-form>
-      <TextLabels :list="goodsStaList" />
+      <TextLabels ref="multipleTable" :list="goodsStaList" />
     </div>
     <div style="display: flex; width: 100%">
       <div
@@ -135,7 +140,17 @@
     components: { ChinaMap, List, Branch, TextLabels },
     data() {
       return {
+        downloadLoading: false,
         pickerOptions: {
+          cellClassName: (time) => {
+            if (
+              new Date().getDate() === time.getDate() &&
+              new Date().getMonth() === time.getMonth() &&
+              new Date().getFullYear() === time.getFullYear()
+            ) {
+              return 'dateArrClass' // 返回值设置的是我们添加的类名
+            }
+          },
           shortcuts: [
             {
               text: '今天',
@@ -416,6 +431,25 @@
     methods: {
       // 详情抽屉
       handleDetail() {},
+      // 导出
+      handleDownload() {
+        console.log(888, this.goodsStaList)
+        this.downloadLoading = true
+        import('@/utils/excel').then((excel) => {
+          const tHeader = ['名称', '数量', '环比数量']
+          const filterVal = ['title', 'num', 'number']
+          const list = this.goodsStaList
+          const data = this.formatJson(filterVal, list)
+          excel.export_json_to_excel({
+            header: tHeader,
+            data,
+            filename: this.filename,
+          })
+        })
+      },
+      formatJson(filterVal, jsonData) {
+        return jsonData.map((v) => filterVal.map((j) => v[j]))
+      },
     },
   }
 </script>
