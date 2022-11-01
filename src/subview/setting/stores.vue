@@ -5,11 +5,19 @@
     >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
-          <el-form-item label="状态:">
+          <el-form-item label="营业状态:">
             <el-select v-model="form.status">
               <el-option label="全部" :value="0" />
               <el-option label="营业中" :value="1" />
               <el-option label="停业中" :value="2" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="合作模式:">
+            <el-select v-model="form.status1">
+              <el-option label="直营店" :value="0" />
+              <el-option label="联营店" :value="1" />
+              <el-option label="加盟店" :value="2" />
+              <el-option label="分销数字店" :value="3" />
             </el-select>
           </el-form-item>
           <el-form-item label="搜索:">
@@ -48,20 +56,18 @@
         <template #List>
           <el-table-column type="selection" />
           <el-table-column label="ID" prop="id" width="80" />
-          <el-table-column label="门店名称" prop="name" width="200" />
-          <el-table-column label="门店图片" prop="img">
+          <el-table-column label="门店图片" prop="img" width="150">
             <template slot-scope="{ row }">
-              <img :src="row.img" style="width: 200px; height: 100px" />
+              <img :src="row.img" style="width: 100px; height: 100px" />
             </template>
           </el-table-column>
-          <el-table-column label="门店电话/地址" prop="dizhi">
-            <template slot-scope="{ row }">
-              <span>{{ row.men.phone }}</span>
-              <p>{{ row.men.dizhi }}</p>
-            </template>
-          </el-table-column>
-          <el-table-column label="创建时间" prop="time" />
-          <el-table-column label="状态" prop="zhuangtai" width="150" />
+          <el-table-column label="门店名称" prop="name" width="120" />
+          <el-table-column label="联系人" prop="usename" width="100" />
+          <el-table-column label="联系电话" prop="phone" width="150" />
+          <el-table-column label="门店地址" prop="dizhi" />
+          <el-table-column label="合作模式" prop="moshi" width="120" />
+          <el-table-column label="营业时间" prop="time" />
+          <el-table-column label="营业状态" prop="zhuangtai" width="150" />
           <el-table-column
             align="center"
             fixed="right"
@@ -99,6 +105,7 @@
           pageNo: 1,
           pageSize: 10,
           status: 0,
+          status1: 0,
         },
         formDrawer: {
           name: '',
@@ -116,10 +123,10 @@
             id: '1',
             name: '下沙店',
             zhuangtai: '营业中',
-            men: {
-              phone: '268-1185',
-              dizhi: '下沙街道白羊小区门口2栋11-11',
-            },
+            phone: '268-1185',
+            dizhi: '下沙街道白羊小区门口2栋11-11',
+            usename: '张三',
+            moshi: '自营',
             time: '2022-03-15 14:06',
             img: 'https://img0.baidu.com/it/u=286715445,3841954973&fm=253&fmt=auto&app=120&f=JPEG?w=674&h=500',
           },
@@ -127,10 +134,10 @@
             id: '2',
             name: '西湖店',
             zhuangtai: '营业中',
-            men: {
-              phone: '268-1185',
-              dizhi: '西华文化中心广场C座A-1',
-            },
+            phone: '268-1185',
+            usename: '张三',
+            moshi: '自营',
+            dizhi: '西华文化中心广场C座A-1',
             time: '2022-03-15 14:06',
             img: 'https://img0.baidu.com/it/u=4178934027,994064546&fm=253&fmt=auto&app=120&f=JPEG?w=700&h=458',
           },
@@ -138,10 +145,10 @@
             id: '3',
             name: '金沙湖店',
             zhuangtai: '营业中',
-            men: {
-              phone: '268-1185',
-              dizhi: '幸福里小区门口边上3-11',
-            },
+            phone: '268-1185',
+            usename: '张三',
+            moshi: '自营',
+            dizhi: '幸福里小区门口边上3-11',
             time: '2022-03-15 14:06',
             img: 'https://img2.baidu.com/it/u=2634194466,1574358241&fm=253&fmt=auto&app=120&f=JPEG?w=668&h=504',
           },
@@ -149,10 +156,10 @@
             id: '4',
             name: '尚品折扣店',
             zhuangtai: '营业中',
-            men: {
-              phone: '268-1185',
-              dizhi: '尚品商场2楼-3-0-2',
-            },
+            phone: '268-1185',
+            usename: '张三',
+            moshi: '自营',
+            dizhi: '尚品商场2楼-3-0-2',
             time: '2022-03-15 14:06',
             img: 'https://img2.baidu.com/it/u=2677049865,3831399706&fm=253&fmt=auto&app=138&f=JPEG?w=468&h=312',
           },

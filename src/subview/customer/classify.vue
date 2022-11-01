@@ -6,7 +6,11 @@
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
           <el-form-item label="分类名称" prop="region">
-            <el-input v-model="form.name" size="small" />
+            <el-input
+              v-model="form.name"
+              placeholder="请输入分类名称"
+              size="small"
+            />
           </el-form-item>
         </template>
       </Form>
@@ -20,7 +24,7 @@
             type="primary"
             @click="handleEdit('add')"
           >
-            添加
+            添加客户分类
           </el-button>
         </el-form-item>
       </el-form>
@@ -35,35 +39,12 @@
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="分类名称"
-            prop="date"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="客户数"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="分类说明（备注）"
-            prop="address"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
-          >
+          <el-table-column align="center" type="selection" />
+          <el-table-column label="id" prop="id" width="80px" />
+          <el-table-column label="分类名称" prop="date" width="150px" />
+          <el-table-column label="客户数" prop="name" width="100px" />
+          <el-table-column label="分类说明（备注）" prop="address" />
+          <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
               <el-button type="text" @click="handleDelete(row)">删除</el-button>
@@ -103,6 +84,7 @@
             address: '抖音快团团',
             editor: '编辑',
             delete: '删除',
+            id: 1,
           },
           {
             date: '网店',
@@ -111,6 +93,7 @@
               '如果您使用 Shopify 中的免费模板，那么您可以联系 Shopify 支持以获',
             editor: '编辑',
             delete: '删除',
+            id: 2,
           },
           {
             date: '超市连锁店',
@@ -119,6 +102,7 @@
               '订单备注、购物车属性和订单项目属性是具有类似功能的三个单独的工具。',
             editor: '编辑',
             delete: '删除',
+            id: 3,
           },
           {
             date: '趣店',
@@ -127,6 +111,7 @@
               '可在您模板的购物车页面上启用订单备注。请按照以下步骤操作，或参阅您的模板的文档，以详细了解如何在您的模板中查找此设置。',
             editor: '编辑',
             delete: '删除',
+            id: 4,
           },
           {
             date: '社区团购',
@@ -135,6 +120,7 @@
               '如果您的屏幕宽度超过 1600 像素，则您的自定义和编辑选项会显示在屏幕右侧。如果您的屏幕宽度小于 1600 像素，则它们将显示在屏幕左侧。',
             editor: '编辑',
             delete: '删除',
+            id: 5,
           },
           {
             date: '零售',
@@ -142,6 +128,7 @@
             address: '在销售渠道部分，轻触在线商店。',
             editor: '编辑',
             delete: '删除',
+            id: 6,
           },
           {
             date: '商场',
@@ -149,6 +136,7 @@
             address: '选中启用购物车备注。',
             editor: '编辑',
             delete: '删除',
+            id: 7,
           },
         ],
         listLoading: false,
@@ -169,6 +157,8 @@
     methods: {
       // 新增修改
       async handleEdit(row) {
+        console.log(row)
+        console.log(row === 'add')
         if (row === 'add') {
           this.$refs['edit'].showEdit()
         } else {

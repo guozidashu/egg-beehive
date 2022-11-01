@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div id="container" style="width: 600px; height: 500px"></div>
+    <el-form ref="form" label-width="120px">
+      <el-form-item>
+        <div id="container" style="width: 100%; height: 400px"></div>
+        <p>注：多边形的形状尽量简洁，不要有交叉线</p>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 

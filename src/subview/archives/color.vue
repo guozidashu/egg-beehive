@@ -10,31 +10,46 @@
             type="primary"
             @click="handleEditGrouP('add')"
           >
-            添加
+            添加颜色组
           </el-button>
-          <div v-for="(item, index) in list" :key="index" style="clear: both">
-            <el-button
-              style="float: left; color: black"
-              type="text"
-              @click="handleGrouPQuery(item)"
+          <el-menu
+            class="el-menu-vertical-demo"
+            default-active="2"
+            style="width: 100%; height: 100%; border: 0"
+            @close="handleClose"
+            @open="handleOpen"
+          >
+            <el-menu-item
+              v-for="(item, index) in list"
+              :key="index"
+              :index="item.id + ''"
             >
-              {{ item.name }}
-            </el-button>
-            <el-button
-              style="float: right"
-              type="text"
-              @click="handleEditGrouP(item)"
-            >
-              编辑
-            </el-button>
-            <el-button
-              style="float: right"
-              type="text"
-              @click="handleDeleteGrouP(item)"
-            >
-              删除
-            </el-button>
-          </div>
+              <div
+                @mouseenter="mouseOver(index)"
+                @mouseleave="mouseLeave(index)"
+              >
+                <div slot="title">
+                  <span @click="handleGrouPQuery(item)">{{ item.name }}</span>
+                  <el-dropdown style="float: right" trigger="click">
+                    <span class="el-dropdown-link">
+                      <i
+                        v-if="item.btnIconStatus && item.id != '0'"
+                        class="el-icon-menu"
+                      ></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item>
+                        <span @click="handleEditGrouP(item)">编辑</span>
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <span @click="handleDeleteGrouP(item)">删除</span>
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </div>
+              </div>
+            </el-menu-item>
+          </el-menu>
         </el-card>
       </el-col>
       <el-col :lg="18" :md="16" :sm="24" :xl="20" :xs="24">
@@ -213,6 +228,9 @@
       // 颜色组列表
       async fetchData() {
         const { data } = await getColorGroupList()
+        data.forEach((item) => {
+          item.btnIconStatus = false
+        })
         this.list = data
         this.form.id = String(data[0].id)
         this.fetchData1()
@@ -223,6 +241,26 @@
         const { data } = await getColorList(this.form)
         this.listGroup = data
         this.listLoading = false
+      },
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath)
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath)
+      },
+      mouseOver(index) {
+        if (this.list[index].btnIconStatus == false) {
+          this.list[index].btnIconStatus = true
+        } else {
+          this.list[index].btnIconStatus = false
+        }
+      },
+      mouseLeave(index) {
+        if (this.list[index].btnIconStatus == false) {
+          this.list[index].btnIconStatus = true
+        } else {
+          this.list[index].btnIconStatus = false
+        }
       },
     },
   }

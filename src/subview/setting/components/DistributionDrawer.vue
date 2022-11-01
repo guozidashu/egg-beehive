@@ -5,9 +5,9 @@
       <el-form ref="form" label-width="120px" :model="formDrawer">
         <el-form-item label="配送方式：" prop="name">
           <el-radio-group v-model="formDrawer.name">
-            <el-radio label="同城配送" />
-            <el-radio label="到店自提" />
-            <el-radio label="普通快递" />
+            <el-radio :label="0">普通快递</el-radio>
+            <el-radio :label="1">到店自提</el-radio>
+            <el-radio :label="2">同城配送</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="显示名称：">
@@ -17,11 +17,11 @@
             style="width: 215px"
           />
         </el-form-item>
-        <div v-if="formDrawer.name == '同城配送'">
+        <div v-if="formDrawer.name == 0">
           <el-form-item label="计价方式：">
             <el-radio-group v-model="formDrawer.state">
-              <el-radio label="按重量" />
-              <el-radio label="按件数" />
+              <el-radio :label="0">按重量</el-radio>
+              <el-radio :label="1">按件数</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="区域及价格：">
@@ -79,14 +79,14 @@
               </el-table-column>
             </el-table>
           </el-form-item>
-          <el-form-item v-if="formDrawer.state === '按重量'">
+          <el-form-item v-if="formDrawer.state === 0">
             根据重量来计算运费，当物品不足《首重重量》时，按照《首重费用》计算，超过部分按照《续重重量》和《续重费用》乘积来计算，首重续重为空时默认按照1000计算
           </el-form-item>
           <el-form-item v-else>
             根据件数来计算运费，当物品不足《首件件数》时，按照《首件费用》计算，超过部分按照《续件件数》和《续件费用》乘积来计算
           </el-form-item>
         </div>
-        <div v-if="formDrawer.name == '到店自提'">
+        <div v-if="formDrawer.name == 1">
           <el-form-item label="自提门店：">
             <el-radio-group v-model="formDrawer.state8">
               <el-radio label="全部" />
@@ -129,7 +129,7 @@
             元
           </el-form-item>
         </div>
-        <div v-if="formDrawer.name == '普通快递'">
+        <div v-if="formDrawer.name == 2">
           <el-form-item label="配送费：">
             <el-input v-model="formDrawer.name4" style="width: 80px" />
             公里内
@@ -142,15 +142,12 @@
           </el-form-item>
           <el-form-item label="配送范围：">
             <el-radio-group v-model="formDrawer.state9">
-              <el-radio label="圆形范围" />
-              <el-radio label="多变形范围" />
+              <el-radio :label="0">圆形范围</el-radio>
+              <el-radio :label="1">多变形范围</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item>
-            <YuanMap v-if="formDrawer.state9 == '圆形范围'" />
-            <FangMap v-else />
-            <p>注：多边形的形状尽量简洁，不要有交叉线</p>
-          </el-form-item>
+          <YuanMap v-if="formDrawer.state9 == 0" />
+          <FangMap v-else />
           <el-form-item label="配送点：">
             <el-input v-model="formDrawer.name4" style="width: 80px" />
             -
@@ -164,9 +161,7 @@
             </el-button>
           </el-form-item>
         </div>
-        <div
-          v-if="formDrawer.name == '同城配送' || formDrawer.name == '普通快递'"
-        >
+        <div v-if="formDrawer.name == 0 || formDrawer.name == 2">
           <el-form-item label="满额包邮：">
             <el-switch
               v-model="formDrawer.zt"
@@ -212,12 +207,12 @@
               v-model="formDrawer.state1"
               style="margin-right: 20px"
             >
-              <el-radio label="开启" />
-              <el-radio label="关闭" />
+              <el-radio :label="0">关闭</el-radio>
+              <el-radio :label="1">开启</el-radio>
             </el-radio-group>
             <span>开启后用户下单时可以选择配送时间或提货时间</span>
           </el-form-item>
-          <DistributionTime v-if="formDrawer.state1 === '开启'" />
+          <DistributionTime v-if="formDrawer.state1 === 1" />
         </div>
 
         <DistributionTable />
@@ -227,8 +222,8 @@
         </el-form-item>
         <el-form-item label="状态：">
           <el-radio-group v-model="formDrawer.state2">
-            <el-radio label="开启" />
-            <el-radio label="关闭" />
+            <el-radio :label="0">关闭</el-radio>
+            <el-radio :label="1">开启</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item>
@@ -277,7 +272,13 @@
 
     data() {
       return {
-        formDrawer: Object.assign({}, this.form),
+        formDrawer: {
+          state: 0,
+          state1: 0,
+          name: 0,
+          state2: 1,
+          state9: 0,
+        },
         dialogVisible: false,
         address: '',
         index: 0,
@@ -297,12 +298,16 @@
     watch: {
       form: {
         handler: function (newVal) {
+          console.log(22222, this.formDrawer)
           this.formDrawer = Object.assign({}, newVal)
+          console.log(3333, this.formDrawer)
         },
         deep: true,
       },
     },
-    created() {},
+    created() {
+      console.log(11111, this.formDrawer)
+    },
     methods: {
       selectSubit() {
         this.tableData[this.index].name = this.address

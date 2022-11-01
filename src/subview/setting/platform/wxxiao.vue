@@ -102,6 +102,19 @@
         </el-form>
       </div>
       <div v-else-if="activeName == '支付设置'">
+        <div
+          style="
+            padding: 8px 16px 8px 16px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            line-height: 22px;
+            color: #666;
+            background-color: #e8f4ff;
+            border-radius: 6px;
+          "
+        >
+          <p>在小程序付款时使用</p>
+        </div>
         <div style="font-weight: 600">填写支付设置</div>
         <el-divider />
         <el-form

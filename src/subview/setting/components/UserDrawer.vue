@@ -20,6 +20,7 @@
               全选
             </el-checkbox>
           </template>
+
           <template slot-scope="scope">
             <el-checkbox
               v-model="formData[scope.row.yijiid]"

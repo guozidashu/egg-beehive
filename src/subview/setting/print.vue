@@ -99,6 +99,7 @@
     <el-dialog
       :before-close="handleClose"
       :title="distitle"
+      top="10vh"
       :visible.sync="dialogVisible"
       width="50%"
     >
@@ -157,7 +158,11 @@
           <el-radio v-model="radio2" label="12">选择门店</el-radio>
         </el-form-item>
         <el-form-item v-if="radio2 == '12'" label="选择门店：">
-          <el-checkbox v-model="checked">总店</el-checkbox>
+          <el-select placeholder="请选择门店">
+            <el-option label="门店一" :value="0" />
+            <el-option label="门店二" :value="1" />
+            <el-option label="门店三" :value="2" />
+          </el-select>
         </el-form-item>
         <el-form-item label="音量大小：">
           <el-radio v-model="radio21" label="100">不播报</el-radio>
@@ -182,6 +187,7 @@
     <el-dialog
       :before-close="handleClose1"
       :title="distitle1"
+      top="10vh"
       :visible.sync="dialogVisible1"
       width="50%"
     >
@@ -234,7 +240,11 @@
           <el-radio v-model="radio2" label="12">选择门店</el-radio>
         </el-form-item>
         <el-form-item v-if="radio2 == '12'" label="选择门店：">
-          <el-checkbox v-model="checked">总店</el-checkbox>
+          <el-select placeholder="请选择门店">
+            <el-option label="门店一" :value="0" />
+            <el-option label="门店二" :value="1" />
+            <el-option label="门店三" :value="2" />
+          </el-select>
         </el-form-item>
         <el-form-item label="打印机类型：">
           <el-radio v-model="radio21" label="100">小票打印机</el-radio>

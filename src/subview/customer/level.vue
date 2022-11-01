@@ -5,8 +5,18 @@
     >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
+          <el-form-item label="状态" prop="region">
+            <el-select v-model="form.type1" placeholder="请选择">
+              <el-option label="显示" :value="1" />
+              <el-option label="不显示" :value="2" />
+            </el-select>
+          </el-form-item>
           <el-form-item label="等级名称" prop="region">
-            <el-input v-model="form.name" size="small" />
+            <el-input
+              v-model="form.name"
+              placeholder="请输入等级名称"
+              size="small"
+            />
           </el-form-item>
         </template>
       </Form>
@@ -20,7 +30,7 @@
             type="primary"
             @click="handleEdit('add')"
           >
-            添加
+            添加会员等级
           </el-button>
         </el-form-item>
       </el-form>
@@ -35,54 +45,32 @@
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="等级ID"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="等级名称"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="等级折扣"
-            prop="zhekou"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="是否散批"
-            prop="sp"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="散码折扣"
-            prop="zhekou_sm"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="备注"
-            prop="des"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
-          >
+          <el-table-column type="selection" width="50px" />
+          <el-table-column label="等级图标" prop="img" width="150px">
+            <template #default="{ row }">
+              <img :src="row.img" style="width: 100px; height: 100px" />
+            </template>
+          </el-table-column>
+          <el-table-column label="等级名称" prop="name" width="150px" />
+          <el-table-column label="客户数" prop="num" width="80px" />
+          <el-table-column label="整手折扣" prop="zhekou" width="100px" />
+          <el-table-column label="散码折扣" prop="zhekou_sm" width="100px" />
+          <el-table-column label="是否允许散批" prop="sp" width="150px">
+            <template #default="{ row }">
+              <el-switch
+                v-model="row.sp"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column label="备注" prop="des" />
+          <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
               <el-button type="text" @click="handleDelete(row)">删除</el-button>
@@ -96,7 +84,7 @@
 </template>
 <script>
   import List from '@/subview/components/List'
-  import Edit from './components/LevelDeit'
+  import Edit from './components/LevelEdit'
   import Form from '@/subview/components/Form'
   import { getGradeList, editGrade, deleteGrade } from '@/api/basic'
   export default {

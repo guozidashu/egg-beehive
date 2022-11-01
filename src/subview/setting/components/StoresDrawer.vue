@@ -21,12 +21,14 @@
             <el-radio label="分销店" />
           </el-radio-group>
           <div v-if="formDrawer.type == '直营店 || 联营店'">
-            注：公司总部小程序，门店自提+核销
+            注：接入总部小程序，享受门店自提+核销服务，线下线上管好一盘生意
           </div>
           <div v-else-if="formDrawer.type == '加盟店'">
-            注：加盟独立小程序、粉丝、资金全部私有化部署
+            注：独立运营小程序商城，用户数字资产、资金流水完全私有化部署
           </div>
-          <div v-else>注：分销抖音、小红书、快团团，享受一键代发政策</div>
+          <div v-else>
+            注：第三方线上销售渠道如：抖音主播、快团团社群渠道、享受一件代发政策
+          </div>
         </el-form-item>
         <!-- 渠道类型 -->
         <el-form-item label="渠道类型：" prop="type1">

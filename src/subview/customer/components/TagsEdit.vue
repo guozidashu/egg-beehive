@@ -6,23 +6,29 @@
     @close="close"
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item label="等级名称" prop="name">
-        <el-input v-model="form.name" />
+      <el-form-item v-if="type === 1" label="标签分类" prop="name">
+        <el-select v-model="form.select" placeholder="请选择分类">
+          <el-option label="分类1" :value="1" />
+          <el-option label="分类2" :value="2" />
+          <el-option label="分类3" :value="3" />
+        </el-select>
       </el-form-item>
-      <el-form-item label="等级折扣" prop="discount">
-        <el-input v-model="form.discount" />
+      <el-form-item v-if="type === 1" label="标签名称" prop="name">
+        <el-input
+          v-model="form.name"
+          placeholder="请输入名称"
+          style="width: 215px"
+        />
       </el-form-item>
-      <el-form-item label="是否散批" prop="sp">
-        <el-radio-group v-model="form.sp">
-          <el-radio :label="1">关闭</el-radio>
-          <el-radio :label="0">开启</el-radio>
-        </el-radio-group>
+      <el-form-item v-if="type === 2" label="分类名称" prop="name">
+        <el-input
+          v-model="form.name"
+          placeholder="请输入名称"
+          style="width: 215px"
+        />
       </el-form-item>
-      <el-form-item label="折扣散码" prop="discount_sm">
-        <el-input v-model="form.discount_sm" />
-      </el-form-item>
-      <el-form-item label="备注" prop="des">
-        <el-input v-model="form.des" />
+      <el-form-item v-if="type === 2" label="排序" prop="name">
+        <el-input v-model="form.id" style="width: 215px" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -33,29 +39,19 @@
 </template>
 
 <script>
-  import { updateGrade, addGrade } from '@/api/basic'
+  import { updateWave, addWave } from '@/api/basic'
   export default {
-    name: 'LevelDeit',
+    name: 'TagsEdit',
     data() {
       return {
         form: {
           name: '',
+          select: '',
           id: '',
-          discount: '',
-          discount_sm: '',
-          sp: 0,
-          des: '',
         },
+        type: 1,
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
-          discount: [
-            { required: true, trigger: 'blur', message: '请输入折扣' },
-          ],
-          sp: [{ required: true, trigger: 'change', message: '请选择散批' }],
-          discount_sm: [
-            { required: true, trigger: 'blur', message: '请输入折扣散码' },
-          ],
-          des: [{ required: true, trigger: 'blur', message: '请输入备注' }],
         },
         title: '',
         dialogFormVisible: false,
@@ -63,11 +59,20 @@
     },
     created() {},
     methods: {
-      showEdit(row) {
-        if (!row) {
-          this.title = '添加'
+      showEdit(row, type) {
+        this.type = type
+        if (row === 'add') {
+          if (type === 1) {
+            this.title = '添加标签'
+          } else {
+            this.title = '添加分类'
+          }
         } else {
-          this.title = '编辑'
+          if (type === 1) {
+            this.title = '编辑标签'
+          } else {
+            this.title = '编辑分类'
+          }
           this.form = Object.assign({}, row)
         }
         this.dialogFormVisible = true
@@ -81,7 +86,7 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await addGrade(this.form)
+              const { code } = await addWave(this.form)
               if (code != 200) {
                 return
               }
@@ -93,7 +98,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await updateGrade(this.form)
+              const { code } = await updateWave(this.form)
               if (code != 200) {
                 return
               }

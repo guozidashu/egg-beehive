@@ -11,7 +11,7 @@
           <el-form-item label="操作时间：">
             <el-date-picker
               v-model="queryForm.date"
-              align="right"
+              align="left"
               end-placeholder="结束日期"
               :picker-options="pickerOptions"
               range-separator="至"
@@ -26,6 +26,12 @@
               <el-option label="开启" :value="1" />
               <el-option label="关闭" :value="2" />
             </el-select>
+          </el-form-item>
+          <el-form-item label="操作名：">
+            <el-input
+              v-model="queryForm.youxiang"
+              placeholder="请输入操作名信息"
+            />
           </el-form-item>
           <el-form-item>
             <el-button icon="el-icon-search" type="primary" @click="queryData">

@@ -5,15 +5,33 @@
     width="500px"
     @close="close"
   >
-    <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item label="分类名称" prop="name">
-        <el-input v-model="form.date" />
+    <el-form ref="form" label-width="100px" :model="form" :rules="rules">
+      <el-form-item label="选择类型：">
+        <el-radio-group v-model="form.state">
+          <el-radio :label="0">发货</el-radio>
+          <el-radio :label="1">送货</el-radio>
+          <el-radio :label="2">无需配送</el-radio>
+        </el-radio-group>
       </el-form-item>
-      <el-form-item label="备注" prop="name">
+      <el-form-item label="发货类型：">
+        <el-radio-group v-model="form.state1">
+          <el-radio :label="0">手动填写</el-radio>
+          <el-radio :label="1">电子面单打印</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="快递公司：">
+        <el-select v-model="form.state2" placeholder="请选择快递公司">
+          <el-option label="圆通" value="1" />
+          <el-option label="韵达" value="2" />
+          <el-option label="邮政" value="3" />
+          <el-option label="顺丰" value="4" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="快递单号：" prop="name">
         <el-input
-          v-model="form.address"
-          :autosize="{ minRows: 2, maxRows: 4 }"
-          type="textarea"
+          v-model="form.name"
+          placeholder="请选择快递单号"
+          style="width: 215px"
         />
       </el-form-item>
     </el-form>
@@ -25,7 +43,7 @@
 </template>
 
 <script>
-  // import { updateWave, addWave } from '@/api/basic'
+  import { updateWave, addWave } from '@/api/basic'
   export default {
     name: 'BandEdit',
     data() {
@@ -33,25 +51,23 @@
         form: {
           name: '',
           id: '',
+          state: 0,
+          state1: 0,
+          state2: 0,
         },
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
         },
-        title: '',
+        title: '订单发送货',
         dialogFormVisible: false,
       }
     },
     created() {},
     methods: {
       showEdit(row) {
-        if (!row) {
-          this.title = '添加'
-        } else {
-          this.title = '编辑'
+        if (row) {
           this.form = Object.assign({}, row)
         }
-        console.log(666, row)
-        console.log(555, this.form)
         this.dialogFormVisible = true
       },
       close() {
@@ -63,10 +79,10 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              // const { code } = await addWave(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              const { code } = await addWave(this.form)
+              if (code != 200) {
+                return
+              }
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -75,10 +91,10 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              // const { code } = await updateWave(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              const { code } = await updateWave(this.form)
+              if (code != 200) {
+                return
+              }
               this.$baseMessage(
                 '修改成功',
                 'success',

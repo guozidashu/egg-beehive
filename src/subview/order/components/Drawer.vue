@@ -3,13 +3,38 @@
     <div style="padding: 30px 35px 25px">
       <div>
         <p style="font-size: 16px; font-weight: 600">[普通订单]</p>
-        <div style="display: flex">
-          <img
-            :src="avatar"
-            style="width: 50px; height: 50px; margin: 0 10px 10px 0"
-          />
-          <span style="margin: 10px 0 0 0">订单编号：wx310090959855550464</span>
-        </div>
+        <el-row :gutter="20">
+          <el-col :span="12" style="display: flex">
+            <img
+              :src="avatar"
+              style="width: 50px; height: 50px; margin: 0 10px 10px 0"
+            />
+            <span style="margin: 10px 0 0 0">
+              订单编号：wx310090959855550464
+            </span>
+          </el-col>
+
+          <el-col :span="12">
+            <el-button
+              native-type="submit"
+              size="small"
+              style="float: right"
+              type="primary"
+              @click="PrintBtn"
+            >
+              打印
+            </el-button>
+            <el-button
+              native-type="submit"
+              size="small"
+              style="float: right; margin-right: 10px"
+              type="primary"
+              @click="EditBtn"
+            >
+              发送货
+            </el-button>
+          </el-col>
+        </el-row>
       </div>
       <div style="display: flex">
         <div
@@ -196,6 +221,16 @@
       return {
         activeName: 'first',
         listLoading: false,
+        form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: '',
+        },
         listType: 2,
         goosList: [
           {
@@ -261,7 +296,16 @@
       }),
     },
     created() {},
-    methods: {},
+    methods: {
+      PrintBtn() {
+        console.log('打印')
+        this.$emit('drawerPrint', 'multipleTable')
+      },
+      EditBtn() {
+        console.log('编辑')
+        this.$emit('drawerhandleEdit', this.form)
+      },
+    },
   }
 </script>
 <style lang="scss" scoped>

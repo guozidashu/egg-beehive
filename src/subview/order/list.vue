@@ -7,43 +7,38 @@
         <template #Form>
           <el-form-item label="订单状态:">
             <el-select v-model="form.region">
-              <el-option label="全部" value="shanghai" />
-              <el-option label="待收款" value="shanghai" />
-              <el-option label="待发货" value="shanghai" />
-              <el-option label="待收货" value="shanghai" />
-              <el-option label="退货" value="shanghai" />
-              <el-option label="待确认" value="beijing" />
+              <el-option label="全部" value="1" />
+              <el-option label="待收款" value="2" />
+              <el-option label="待发货" value="3" />
+              <el-option label="退货单" value="4" />
+              <el-option label="待确认" value="5" />
             </el-select>
           </el-form-item>
-          <el-form-item label="订单来源:">
-            <el-select v-model="form.region">
-              <el-option label="ERP订单" value="shanghai" />
-              <el-option label="自有商城" value="shanghai2" />
-              <el-option label="淘宝" value="shanghai3" />
-              <el-option label="天猫" value="shanghai4" />
-              <el-option label="抖音" value="shanghai5" />
-              <el-option label="快团团" value="beijing6" />
-              <el-option label="小红书" value="beijing7" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="支付方式:">
-            <el-select v-model="form.region">
-              <el-option label="全部" value="shanghai" />
-              <el-option label="微信支付" value="shanghai1" />
-              <el-option label="支付宝" value="shanghai2" />
-              <el-option label="余额支付" value="shanghai3" />
-              <el-option label="银行卡" value="shanghai4" />
-              <el-option label="信用卡" value="beijing5" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="下单模式:">
+          <el-form-item label="配送方式:">
             <el-select v-model="form.region1">
-              <el-option label="整手" value="shanghai" />
-              <el-option label="散码" value="shanghai1" />
-              <el-option label="混合" value="shanghai2" />
+              <el-option label="全部" value="1" />
+              <el-option label="普通快递" value="2" />
+              <el-option label="门店自提" value="3" />
+              <el-option label="送货上门" value="4" />
             </el-select>
           </el-form-item>
-          <el-form-item label="下单时间:">
+          <el-form-item label="付款状态:">
+            <el-select v-model="form.region2">
+              <el-option label="全部" value="1" />
+              <el-option label="未付款" value="2" />
+              <el-option label="部分付款" value="3" />
+              <el-option label="已付款" value="4" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="发货状态:">
+            <el-select v-model="form.region3">
+              <el-option label="全部" value="1" />
+              <el-option label="未发货" value="2" />
+              <el-option label="部分发货" value="3" />
+              <el-option label="发货完成" value="4" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="订单时间:">
             <el-date-picker
               v-model="form.date"
               align="left"
@@ -55,27 +50,20 @@
               unlink-panels
             />
           </el-form-item>
-          <el-form-item label="会员名称:">
-            <el-input v-model="form.name" style="width: 215px" />
-          </el-form-item>
           <el-form-item label="订单搜索:">
             <el-input
               v-model="form.input3"
               class="input-with-select"
-              placeholder="请输入"
+              placeholder="请输入内容"
             >
               <el-select
                 v-model="form.select"
                 slot="prepend"
-                placeholder="全部"
                 style="width: 100px"
               >
-                <el-option label="代发货" value="1" />
-                <el-option label="待收货" value="2" />
-                <el-option label="待确认" value="3" />
-                <el-option label="退货单" value="4" />
-                <el-option label="代收款" value="5" />
-                <el-option label="已完成" value="6" />
+                <el-option label="客户名称" value="1" />
+                <el-option label="客户电话" value="2" />
+                <el-option label="订单号" value="3" />
               </el-select>
             </el-input>
           </el-form-item>
@@ -86,8 +74,8 @@
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="所有订单" name="first" />
-        <el-tab-pane label="普通订单 (100)" name="second" />
-        <el-tab-pane label=" 商城 (10)" name="three" />
+        <el-tab-pane label="ERP平台 (100)" name="second" />
+        <el-tab-pane label=" 私有商城 (10)" name="three" />
         <el-tab-pane label="第三方订单 (100)" name="four" />
         <el-tab-pane label="门店订单 (10)" name="five" />
       </el-tabs>
@@ -97,9 +85,17 @@
             native-type="submit"
             size="small"
             type="primary"
+            @click="print('multipleTable')"
+          >
+            打印配发单
+          </el-button>
+          <el-button
+            native-type="submit"
+            size="small"
+            type="primary"
             @click="handleDownload"
           >
-            导出
+            导出订单
           </el-button>
         </el-form-item>
       </el-form>
@@ -117,9 +113,15 @@
         <template #List>
           <el-table-column type="selection" />
           <el-table-column label="订单号" prop="orderno" width="120" />
-          <el-table-column label="单据日期" prop="date" sortable width="200" />
+          <el-table-column label="订单日期" prop="date" sortable width="200" />
           <el-table-column label="订单类型" prop="type" width="120" />
-          <el-table-column label="客户名称" prop="username" width="120" />
+          <el-table-column label="客户名称" prop="username" width="120">
+            <template #default="{ row }">
+              <span>{{ row.address }}</span>
+              |
+              <span>{{ row.username }}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="商品信息" prop="inof">
             <template #default="{ row }">
               <div
@@ -148,9 +150,9 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="数量" prop="num" width="80" />
-          <el-table-column label="实际金额" prop="money" width="80" />
-          <el-table-column label="支付方式" prop="pay" width="120" />
+          <el-table-column label="总数量" prop="num" width="80" />
+          <el-table-column label="总金额" prop="money" width="80" />
+          <el-table-column label="配送方式" prop="pay" width="120" />
           <el-table-column label="订单状态" prop="state" width="120">
             <template #default="{ row }">
               <div
@@ -169,13 +171,15 @@
           </el-table-column>
           <el-table-column label="操作" width="100">
             <template #default="{ row }">
+              <el-button
+                v-if="row.state === '待收款'"
+                type="text"
+                @click="handleEdit(row)"
+              >
+                发送货
+              </el-button>
+              <span v-if="row.state === '待收款'">|</span>
               <el-button type="text" @click="handleDetail(row)">详情</el-button>
-              <el-button v-if="row.state === '已完成'" type="text">
-                作废
-              </el-button>
-              <el-button v-if="row.state === '待收款'" type="text">
-                发货
-              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -183,8 +187,9 @@
     </el-card>
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
       <!-- 详情抽屉组件 -->
-      <Drawer />
+      <Drawer @drawerPrint="print" @drawerhandleEdit="handleEdit" />
     </el-drawer>
+    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 
@@ -192,12 +197,17 @@
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
   import Drawer from './components/Drawer'
+  import Edit from './components/ListEdit'
   // import { getList } from '@/api/userManagement'
+  // 打印
+  import { mapActions } from 'vuex'
+  import VabPrint from '@/extra/VabPrint'
   export default {
     name: 'OrderList',
-    components: { Form, List, Drawer },
+    components: { Form, List, Drawer, Edit },
     data() {
       return {
+        filename: '订单列表',
         downloadLoading: false,
         exclList: [],
         pickerOptions: {
@@ -269,15 +279,13 @@
         // 表单数据/列表参数
         form: {
           // 自定义参数
-          orderSta: '全部',
-          paySta: '全部',
-          orderSource: 'ERP订单',
           fold: true,
-          typeSelect: 'order',
-          dataSelect: 'xiadan',
           data: '',
-          orderId: '',
-          select: '',
+          select: '1',
+          region: '1',
+          region2: '1',
+          region3: '1',
+          region1: '1',
           // 公共参数
           pageNo: 1,
           pageSize: 10,
@@ -303,7 +311,8 @@
               },
             ],
             username: '阿白',
-            pay: '微信支付',
+            address: '北京市',
+            pay: '普通快递',
             num: 23,
             money: 345,
             state: '已完成',
@@ -312,6 +321,7 @@
             orderno: 'wx312009361683644416',
             date: '2022-10-13 23:33:48',
             type: '普通订单',
+            address: '北京市',
             inof: [
               {
                 text: 'BY FAR Miranda leather shoulder bag | 默认',
@@ -323,7 +333,7 @@
               },
             ],
             username: '阿蓝',
-            pay: '支付宝支付',
+            pay: '全国配送',
             num: 23,
             money: 345,
             state: '待收款',
@@ -398,6 +408,30 @@
       // 详情抽屉
       handleDetail() {
         this.drawer = true
+      },
+      // 新增修改
+      async handleEdit(row) {
+        console.log(222, row)
+        if (row === 'add') {
+          this.$refs['edit'].showEdit()
+        } else {
+          if (row.id) {
+            this.$refs['edit'].showEdit(row)
+          } else {
+            this.$refs['edit'].showEdit()
+          }
+        }
+      },
+      // 打印
+      ...mapActions({
+        openSideBar: 'settings/openSideBar',
+        foldSideBar: 'settings/foldSideBar',
+      }),
+      async print(val) {
+        console.log(111, val)
+        await this.foldSideBar()
+        await VabPrint(this.$refs[val], { noPrintParent: true })
+        await this.openSideBar()
       },
       // 导出
       handleSelectionChange(val) {
