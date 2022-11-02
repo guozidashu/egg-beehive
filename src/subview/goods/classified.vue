@@ -1,119 +1,148 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <div
-      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
-    >
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
-        <template #Form>
-          <el-form-item label="商品分类" prop="region">
-            <el-select v-model="form.value" placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="状态" prop="region">
-            <el-select v-model="form.value1" placeholder="请选择">
-              <el-option
-                v-for="item in options1"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="分类名称" prop="region">
-            <el-input v-model="form.name" size="small" />
-          </el-form-item>
-        </template>
-      </Form>
-    </div>
-    <el-card shadow="never" style="border: 0">
-      <el-form ref="form" :inline="true" @submit.native.prevent>
-        <el-form-item>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleEdit('add')"
+    <el-row :gutter="20">
+      <el-col :lg="6" :md="8" :sm="24" :xl="4" :xs="24">
+        <el-card
+          shadow="never"
+          style="height: 100%; min-height: calc(80vh); border: 0"
+        >
+          <el-menu
+            class="el-menu-vertical-demo"
+            default-active="0"
+            style="width: 100%; border: 0"
+            @close="handleClose"
+            @open="handleOpen"
           >
-            添加
-          </el-button>
-        </el-form-item>
-      </el-form>
-      <List
-        :list="list"
-        :list-type="listType"
-        :state="listLoading"
-        :total="total"
-        @changePage="changeBtnPage"
-        @changePageSize="changeBtnPageSize"
-        @selectRows="selectBtnRows"
-      >
-        <!-- 表格组件具名插槽 自定义表头 -->
-        <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="序列号"
-            type="index"
-            width="80"
-          />
-          <el-table-column
-            align="center"
-            label="分类名称"
-            prop="date"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="分类图标"
-            prop="name"
-            show-overflow-tooltip
+            <el-menu-item
+              v-for="(item, index) in menuList"
+              :key="index"
+              :index="item.id"
+            >
+              <div
+                @mouseenter="mouseOver(index)"
+                @mouseleave="mouseLeave(index)"
+              >
+                <div slot="title">
+                  <span @click="handleGrouPQuery(item)">{{ item.name }}</span>
+                  <el-dropdown style="float: right" trigger="click">
+                    <span class="el-dropdown-link">
+                      <i
+                        v-if="item.btnIconStatus && item.id != '0'"
+                        class="el-icon-menu"
+                      ></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item>
+                        <span @click="handleEdit(item, 2)">编辑</span>
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <span @click="handleDelete(item, 2)">删除</span>
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </div>
+              </div>
+            </el-menu-item>
+          </el-menu>
+        </el-card>
+      </el-col>
+      <el-col :lg="18" :md="16" :sm="24" :xl="20" :xs="24">
+        <el-card shadow="never" style="border: 0">
+          <el-form ref="form" :inline="true" @submit.native.prevent>
+            <el-form-item>
+              <el-button
+                native-type="submit"
+                size="small"
+                type="primary"
+                @click="handleEdit('add', 1)"
+              >
+                添加款式
+              </el-button>
+              <el-button
+                native-type="submit"
+                size="small"
+                type="primary"
+                @click="handleEdit('add', 2)"
+              >
+                添加分类
+              </el-button>
+            </el-form-item>
+            <el-form-item label="款式名称：" style="float: right">
+              <el-input
+                v-model="addressKeyword"
+                clearable
+                placeholder="请输入款式名称"
+              >
+                <el-button
+                  slot="append"
+                  icon="el-icon-search"
+                  @click="getAddressKeyword"
+                />
+              </el-input>
+            </el-form-item>
+          </el-form>
+          <List
+            :list="list1"
+            :list-type="listType"
+            :state="listLoading"
+            :total="total"
+            @changePage="changeBtnPage"
+            @changePageSize="changeBtnPageSize"
+            @selectRows="selectBtnRows"
           >
-            <template slot-scope="{ row }">
-              <img alt="" :src="row.name" style="width: 36px; height: 36px" />
+            <!-- 表格组件具名插槽 自定义表头 -->
+            <template #List>
+              <el-table-column type="selection" />
+              <el-table-column label="ID" prop="id" />
+              <el-table-column label="款式" prop="name" />
+              <el-table-column label="款式分类" prop="zhekou" />
+              <el-table-column label="使用商品" prop="zhekou" />
+              <el-table-column label="状态" prop="state" width="150">
+                <template #default="{ row }">
+                  <el-switch
+                    v-model="row.state"
+                    active-color="#41B584"
+                    active-text="开启"
+                    :active-value="1"
+                    class="switch"
+                    inactive-color="#D2D2D2"
+                    inactive-text="关闭"
+                    :inactive-value="0"
+                    style="margin: 0 10px"
+                  />
+                </template>
+              </el-table-column>
+              <el-table-column label="创建时间" prop="tiem" />
+              <el-table-column
+                align="center"
+                fixed="right"
+                label="操作"
+                width="85"
+              >
+                <template #default="{ row }">
+                  <el-button type="text" @click="handleEdit(row, 1)">
+                    编辑
+                  </el-button>
+                  <el-button type="text" @click="handleDelete(row, 1)">
+                    删除
+                  </el-button>
+                </template>
+              </el-table-column>
             </template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            label="排序"
-            prop="address"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="状态"
-            prop="address"
-            show-overflow-tooltip
-          />
-          <el-table-column align="center" fixed="right" label="操作" width="85">
-            <template #default="{ row }">
-              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <el-button type="text" @click="handleDelete(row)">删除</el-button>
-            </template>
-          </el-table-column>
-        </template>
-      </List>
-    </el-card>
+          </List>
+        </el-card>
+      </el-col>
+    </el-row>
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 <script>
   import List from '@/subview/components/List'
   import Edit from './components/ClassifiedEdit'
-  import Form from '@/subview/components/Form'
-  // import { getBrandList, editBrand, deleteBrand } from '@/api/basic'
+  // import { getGradeList, editGrade, deleteGrade } from '@/api/basic'
   export default {
     name: 'GoodsClassified',
-    components: { List, Edit, Form },
+    components: { List, Edit },
     data() {
       return {
         // 表单数据/列表参数
@@ -121,245 +150,60 @@
           id: 0,
           name: '',
           pageNo: 1,
-          pageSize: 10,
-          value: '选项9',
-          value1: '',
+          pageSize: 20,
         },
+        menuList: [
+          {
+            id: '0',
+            name: '全部',
+            btnIconStatus: false,
+          },
+          {
+            id: '1',
+            name: '上衣',
+            btnIconStatus: false,
+          },
+          {
+            id: '2',
+            name: '下装',
+            btnIconStatus: false,
+          },
+          {
+            id: '3',
+            name: '连衣裙',
+            btnIconStatus: false,
+          },
+          {
+            id: '4',
+            name: '套装',
+            btnIconStatus: false,
+          },
+          {
+            id: '5',
+            name: '其他',
+            btnIconStatus: false,
+          },
+        ],
         formType: 4,
-        options: [
-          {
-            value: '选项1',
-            label: '美妆个护',
-          },
-          {
-            value: '选项2',
-            label: '服饰分类',
-          },
-          {
-            value: '选项3',
-            label: '电子数码',
-          },
-          {
-            value: '选项4',
-            label: '居家生活',
-          },
-          {
-            value: '选项5',
-            label: '家电电器',
-          },
-          {
-            value: '选项6',
-            label: '出行交通',
-          },
-          {
-            value: '选项7',
-            label: '影音设备',
-          },
-          {
-            value: '选项8',
-            label: '餐厨厨房',
-          },
-          {
-            value: '选项9',
-            label: '热门推荐',
-          },
-        ],
-        options1: [
-          {
-            value: '选项1',
-            label: '显示',
-          },
-          {
-            value: '选项2',
-            label: '隐藏',
-          },
-        ],
-
         // 列表数据相关
         selectRows: [],
-        listType: 3,
+        listType: 1,
+        list1: [
+          {
+            id: 1,
+            name: '上衣',
+            zhekou: '上衣',
+            state: 1,
+            tiem: '2020-12-12 12:12:12',
+          },
+        ],
         list: [
           {
             id: 1,
-            date: '美妆个护',
-            name: 'https://qiniu.crmeb.net/attach/2021/08/f15fd202108091906109162.png',
-            address: '200',
-            editor: '编辑',
-            delete: '删除',
-            children: [
-              {
-                id: 11,
-                date: '清洁护理',
-                name: 'https://qiniu.crmeb.net/attach/2021/10/eaabb202110151234132234.png',
-                address: '100',
-                editor: '编辑',
-                delete: '删除',
-              },
-              {
-                id: 12,
-                date: '香水彩妆',
-                name: 'https://qiniu.crmeb.net/attach/2021/10/1bd68202110151227129162.png',
-                address: '20',
-                editor: '编辑',
-                delete: '删除',
-              },
-            ],
-          },
-          {
-            id: 2,
-            date: '服饰分类',
-            name: 'https://qiniu.crmeb.net/attach/2021/10/eaabb202110151234132234.png',
-            address: '11',
-            editor: '编辑',
-            delete: '删除',
-            children: [
-              {
-                id: 21,
-                date: '居家生活',
-                name: 'https://qiniu.crmeb.net/attach/2021/08/b0b1f20210809190607896.png',
-                address: '12321',
-                editor: '编辑',
-                delete: '删除',
-              },
-              {
-                id: 22,
-                date: '家电电器',
-                name: 'https://qiniu.crmeb.net/attach/2021/12/17/303a531da0edeed4d49189f6028d71b1.jpg',
-                address: '21213',
-                editor: '编辑',
-                delete: '删除',
-              },
-            ],
-          },
-          {
-            id: 3,
-            date: '电子数码',
-            name: 'https://qiniu.crmeb.net/attach/2021/08/03112202108091906082734.png',
-            address: '22',
-            editor: '编辑',
-            delete: '删除',
-            children: [
-              {
-                id: 31,
-                date: '居家生活',
-                name: 'https://qiniu.crmeb.net/attach/2021/08/b0b1f20210809190607896.png',
-                address: '12',
-                editor: '编辑',
-                delete: '删除',
-              },
-              {
-                id: 32,
-                date: '家电电器',
-                name: 'https://qiniu.crmeb.net/attach/2021/12/17/303a531da0edeed4d49189f6028d71b1.jpg',
-                address: '0',
-                editor: '编辑',
-                delete: '删除',
-              },
-            ],
-          },
-          {
-            id: 4,
-            date: '出行交通',
-            name: 'https://qiniu.crmeb.net/attach/2021/10/ecd72202110151227202180.png',
-            address: '213',
-            editor: '编辑',
-            delete: '删除',
-            children: [
-              {
-                id: 41,
-                date: '居家生活',
-                name: 'https://qiniu.crmeb.net/attach/2021/08/b0b1f20210809190607896.png',
-                address: '44',
-                editor: '编辑',
-                delete: '删除',
-              },
-              {
-                id: 42,
-                date: '家电电器',
-                name: 'https://qiniu.crmeb.net/attach/2021/12/17/303a531da0edeed4d49189f6028d71b1.jpg',
-                address: '5',
-                editor: '编辑',
-                delete: '删除',
-              },
-            ],
-          },
-          {
-            id: 5,
-            date: '影音设备',
-            name: '	https://qiniu.crmeb.net/attach/2021/10/6b059202110151227481558.png',
-            address: '89',
-            editor: '编辑',
-            delete: '删除',
-            children: [
-              {
-                id: 51,
-                date: '居家生活',
-                name: 'https://qiniu.crmeb.net/attach/2021/08/b0b1f20210809190607896.png',
-                address: '890',
-                editor: '编辑',
-                delete: '删除',
-              },
-              {
-                id: 52,
-                date: '家电电器',
-                name: 'https://qiniu.crmeb.net/attach/2021/12/17/303a531da0edeed4d49189f6028d71b1.jpg',
-                address: '980',
-                editor: '编辑',
-                delete: '删除',
-              },
-            ],
-          },
-          {
-            id: 6,
-            date: '餐厨厨房',
-            name: 'https://qiniu.crmeb.net/attach/2021/08/5a0f4202108091906099738.png',
-            address: '2',
-            editor: '编辑',
-            delete: '删除',
-            children: [
-              {
-                id: 61,
-                date: '居家生活',
-                name: 'https://qiniu.crmeb.net/attach/2021/08/b0b1f20210809190607896.png',
-                address: '122',
-                editor: '编辑',
-                delete: '删除',
-              },
-              {
-                id: 62,
-                date: '家电电器',
-                name: 'https://qiniu.crmeb.net/attach/2021/12/17/303a531da0edeed4d49189f6028d71b1.jpg',
-                address: '3',
-                editor: '编辑',
-                delete: '删除',
-              },
-            ],
-          },
-          {
-            id: 7,
-            date: '热门推荐',
-            name: 'https://qiniu.crmeb.net/attach/2021/08/03112202108091906082734.png',
-            address: '4',
-            editor: '编辑',
-            delete: '删除',
-            children: [
-              {
-                id: 71,
-                date: '居家生活',
-                name: 'https://qiniu.crmeb.net/attach/2021/08/b0b1f20210809190607896.png',
-                address: '11',
-                editor: '编辑',
-                delete: '删除',
-              },
-              {
-                id: 72,
-                date: '家电电器',
-                name: 'https://qiniu.crmeb.net/attach/2021/12/17/303a531da0edeed4d49189f6028d71b1.jpg',
-                address: '323',
-                editor: '编辑',
-                delete: '删除',
-              },
-            ],
+            name: '上衣',
+            zhekou: '上衣',
+            state: 1,
+            tiem: '2020-12-12 12:12:12',
           },
         ],
         listLoading: false,
@@ -379,18 +223,18 @@
     },
     methods: {
       // 新增修改
-      async handleEdit(row) {
+      async handleEdit(row, type) {
         if (row === 'add') {
-          this.$refs['edit'].showEdit()
+          this.$refs['edit'].showEdit(row, type)
         } else {
           if (row.id) {
-            // const { code, data } = await editBrand({ id: row.id })
+            // const { code, data } = await editGrade({ id: row.id })
             // if (code === 200) {
             //   this.$refs['edit'].showEdit(data)
             // }
-            this.$refs['edit'].showEdit(row)
+            this.$refs['edit'].showEdit(row, type)
           } else {
-            this.$refs['edit'].showEdit()
+            this.$refs['edit'].showEdit(row, type)
           }
         }
       },
@@ -402,7 +246,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            // const { code } = await deleteBrand({ id: row.id })
+            // const { code } = await deleteGrade({ id: row.id })
             // if (code != 200) {
             //   return
             // }
@@ -410,18 +254,18 @@
             this.fetchData()
           })
         } else {
-          // if (this.selectRows.length > 0) {
-          //   const ids = this.selectRows.map((item) => item.id).join()
-          //   this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-          //     const { code } = await deleteBrand(ids)
-          //     if (code != 200) {
-          //       return
-          //     }
-          //     this.fetchData()
-          //   })
-          // } else {
-          //   this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
-          // }
+          if (this.selectRows.length > 0) {
+            // const ids = this.selectRows.map((item) => item.id).join()
+            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
+              // const { code } = await deleteGrade(ids)
+              // if (code != 200) {
+              //   return
+              // }
+              this.fetchData()
+            })
+          } else {
+            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
+          }
         }
       },
       // 列表数据封装函数
@@ -445,10 +289,40 @@
         // this.listLoading = true
         // const {
         //   data: { list, total },
-        // } = await getBrandList(this.form)
+        // } = await getGradeList(this.form)
         // this.list = list
         // this.total = total
         // this.listLoading = false
+        this.total = this.list1.length
+      },
+      handleGrouPQuery(data) {
+        if (data.name === '全部') {
+          this.list1 = this.list
+          this.fetchData()
+        } else {
+          this.list1 = this.list.filter((item) => item.zhekou === data.name)
+          this.fetchData()
+        }
+      },
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath)
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath)
+      },
+      mouseOver(index) {
+        if (this.menuList[index].btnIconStatus == false) {
+          this.menuList[index].btnIconStatus = true
+        } else {
+          this.menuList[index].btnIconStatus = false
+        }
+      },
+      mouseLeave(index) {
+        if (this.menuList[index].btnIconStatus == false) {
+          this.menuList[index].btnIconStatus = true
+        } else {
+          this.menuList[index].btnIconStatus = false
+        }
       },
     },
   }

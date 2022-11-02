@@ -206,7 +206,7 @@
   import Form from '@/subview/components/Form'
   import Edit from './components/ManageEdit'
   import Drawer from './components/ManageDrawer'
-  import { getManagementList } from '@/api/basic'
+  import { getCommonAllList } from '@/api/basic'
   export default {
     name: 'CustomerManage',
     components: { Form, List, Edit, Drawer },
@@ -236,7 +236,18 @@
         // 公共参数
         listType: 1,
         formType: 1,
-        list: [],
+        list: [
+          {
+            id: 1,
+            img: 'https://img.yzcdn.cn/vant/cat.jpeg',
+            name: '张三',
+            level: '普通客户',
+            type: '普通客户',
+            yuantou: '微信公众号',
+            money: '1000',
+            time: '2020-10-10 10:10:10',
+          },
+        ],
         listLoading: false,
         total: 0,
         pickerOptions: {
@@ -316,6 +327,7 @@
     },
     created() {
       this.fetchData()
+      this.selectData()
     },
     methods: {
       // 新增优化圈
@@ -356,13 +368,22 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        this.listLoading = true
+        // this.listLoading = true
+        // const {
+        //   data: { list, total },
+        // } = await getManagementList(this.form)
+        // this.list = list
+        // this.total = total
+        // this.listLoading = false
+      },
+      // 下拉框数据请求
+      async selectData() {
         const {
           data: { list, total },
-        } = await getManagementList(this.form)
-        this.list = list
-        this.total = total
-        this.listLoading = false
+        } = await getCommonAllList({
+          type: 'customer_grade,customer_grade,customer_type,customer_source,customer_tag',
+        })
+        console.log(898989, list, total)
       },
       // 详情抽屉
       handleDetail(row, type) {

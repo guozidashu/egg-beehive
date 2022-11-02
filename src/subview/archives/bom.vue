@@ -74,7 +74,7 @@
   import List from '@/subview/components/List'
   import Edit from './components/BomEdit'
   import Form from '@/subview/components/Form'
-  import { getBomList, editBom, deleteBom } from '@/api/basic'
+  import { editBom, deleteBom } from '@/api/basic'
   export default {
     name: 'ArchivesBom',
     components: { List, Form, Edit },
@@ -171,13 +171,13 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        this.listLoading = true
-        const {
-          data: { list, total },
-        } = await getBomList(this.form)
-        this.list = list
-        this.total = total
-        this.listLoading = false
+        // this.listLoading = true
+        // const {
+        //   data: { list, total },
+        // } = await getBomList(this.form)
+        // this.list = list
+        // this.total = total
+        // this.listLoading = false
       },
     },
   }

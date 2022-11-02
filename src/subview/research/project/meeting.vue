@@ -5,7 +5,7 @@
     >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
-          <el-form-item label="商品名称" prop="region">
+          <el-form-item label="订货名称" prop="region">
             <el-input v-model="form.name" size="small" />
           </el-form-item>
         </template>
@@ -42,14 +42,21 @@
           />
           <el-table-column
             align="center"
-            label="商品ID"
+            label="订货ID"
             prop="id"
             show-overflow-tooltip
             sortable
           />
           <el-table-column
             align="center"
-            label="商品名称"
+            label="年份"
+            prop="year"
+            show-overflow-tooltip
+            sortable
+          />
+          <el-table-column
+            align="center"
+            label="订货名称"
             prop="name"
             show-overflow-tooltip
           />
@@ -72,12 +79,12 @@
 </template>
 <script>
   import List from '@/subview/components/List'
-  import Edit from './components/BrandEdit'
+  import Edit from './components/MeetingEdit'
   import Form from '@/subview/components/Form'
-  // import { getBrandList, editBrand, deleteBrand } from '@/api/basic'
+  import { getMeetingList, editMeeting, deleteMeeting } from '@/api/basic'
   export default {
-    name: 'ArchivesGoods',
-    components: { List, Edit, Form },
+    name: 'ProjectMeeting',
+    components: { List, Form, Edit },
     data() {
       return {
         // 表单数据/列表参数
@@ -109,50 +116,50 @@
     },
     methods: {
       // 新增修改
-      // async handleEdit(row) {
-      //   if (row === 'add') {
-      //     this.$refs['edit'].showEdit()
-      //   } else {
-      //     if (row.id) {
-      //       const { code, data } = await editBrand({ id: row.id })
-      //       if (code === 200) {
-      //         this.$refs['edit'].showEdit(data)
-      //       }
-      //     } else {
-      //       this.$refs['edit'].showEdit()
-      //     }
-      //   }
-      // },
+      async handleEdit(row) {
+        if (row === 'add') {
+          this.$refs['edit'].showEdit()
+        } else {
+          if (row.id) {
+            const { code, data } = await editMeeting({ id: row.id })
+            if (code === 200) {
+              this.$refs['edit'].showEdit(data)
+            }
+          } else {
+            this.$refs['edit'].showEdit()
+          }
+        }
+      },
       // 查询
       handleQuery() {
         this.form.pageNo = 1
       },
       // 删除
-      // handleDelete(row) {
-      //   if (row.id) {
-      //     this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-      //       const { code } = await deleteBrand({ id: row.id })
-      //       if (code != 200) {
-      //         return
-      //       }
-      //       this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
-      //       this.fetchData()
-      //     })
-      //   } else {
-      //     if (this.selectRows.length > 0) {
-      //       const ids = this.selectRows.map((item) => item.id).join()
-      //       this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-      //         const { code } = await deleteBrand(ids)
-      //         if (code != 200) {
-      //           return
-      //         }
-      //         this.fetchData()
-      //       })
-      //     } else {
-      //       this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
-      //     }
-      //   }
-      // },
+      handleDelete(row) {
+        if (row.id) {
+          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
+            const { code } = await deleteMeeting({ id: row.id })
+            if (code != 200) {
+              return
+            }
+            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
+          })
+        } else {
+          if (this.selectRows.length > 0) {
+            const ids = this.selectRows.map((item) => item.id).join()
+            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
+              const { code } = await deleteMeeting(ids)
+              if (code != 200) {
+                return
+              }
+              this.fetchData()
+            })
+          } else {
+            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
+          }
+        }
+      },
       // 列表数据封装函数
 
       // 列表数据改变页数   公共部分
@@ -170,15 +177,15 @@
         console.log(data)
       },
       // 列表数据请求函数 公共部分
-      // async fetchData() {
-      //   this.listLoading = true
-      //   const {
-      //     data: { list, total },
-      //   } = await getBrandList(this.form)
-      //   this.list = list
-      //   this.total = total
-      //   this.listLoading = false
-      // },
+      async fetchData() {
+        this.listLoading = true
+        const {
+          data: { list, total },
+        } = await getMeetingList(this.form)
+        this.list = list
+        this.total = total
+        this.listLoading = false
+      },
     },
   }
 </script>

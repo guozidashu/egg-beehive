@@ -5,9 +5,30 @@
     width="500px"
     @close="close"
   >
-    <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item label="颜色名称" prop="name">
-        <el-input v-model="form.name" style="width: 220px" />
+    <el-form ref="form" label-width="120px" :model="form" :rules="rules">
+      <el-form-item v-if="type === 1" label="颜色组分类" prop="name">
+        <el-select v-model="form.select" placeholder="请选择分类">
+          <el-option label="分类1" :value="1" />
+          <el-option label="分类2" :value="2" />
+          <el-option label="分类3" :value="3" />
+        </el-select>
+      </el-form-item>
+      <el-form-item v-if="type === 1" label="颜色名称" prop="name">
+        <el-input
+          v-model="form.name"
+          placeholder="请输入名称"
+          style="width: 215px"
+        />
+      </el-form-item>
+      <el-form-item v-if="type === 2" label="颜色组名称" prop="name">
+        <el-input
+          v-model="form.name"
+          placeholder="请输入名称"
+          style="width: 215px"
+        />
+      </el-form-item>
+      <el-form-item v-if="type === 2" label="排序" prop="name">
+        <el-input v-model="form.id" style="width: 215px" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -18,31 +39,19 @@
 </template>
 
 <script>
-  import {
-    editColorGroupList,
-    addColorGroupList,
-    editColorList,
-    addColorList,
-  } from '@/api/basic'
+  import { updateWave, addWave } from '@/api/basic'
   export default {
-    name: 'LevelDeit',
+    name: 'TagsEdit',
     data() {
       return {
         form: {
           name: '',
-          id: 0,
-          sort: 1,
+          select: '',
+          id: '',
         },
+        type: 1,
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
-          year: [
-            {
-              type: 'string',
-              required: true,
-              message: '请选择年份',
-              trigger: 'change',
-            },
-          ],
         },
         title: '',
         dialogFormVisible: false,
@@ -50,25 +59,22 @@
     },
     created() {},
     methods: {
-      showEdit(type, row) {
-        if (type == 1) {
-          if (!row) {
-            this.title = '颜色组添加'
+      showEdit(row, type) {
+        this.type = type
+        if (row === 'add') {
+          if (type === 1) {
+            this.title = '添加颜色'
           } else {
-            this.title = '颜色组编辑'
-            this.form = Object.assign({}, row)
+            this.title = '添加颜色组'
           }
         } else {
-          if (!row.id) {
-            this.form.pid = row
-            this.title = '颜色添加'
+          if (type === 1) {
+            this.title = '编辑颜色'
           } else {
-            this.title = '颜色编辑'
-            console.log(row)
-            this.form = Object.assign({}, row)
+            this.title = '编辑颜色组'
           }
+          this.form = Object.assign({}, row)
         }
-
         this.dialogFormVisible = true
       },
       close() {
@@ -79,8 +85,8 @@
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
-            if (this.title === '颜色组添加') {
-              const { code } = await addColorGroupList(this.form)
+            if (this.title === '添加') {
+              const { code } = await addWave(this.form)
               if (code != 200) {
                 return
               }
@@ -91,34 +97,8 @@
               )
               this.$emit('fetch-data')
               this.close()
-            } else if (this.title === '颜色组编辑') {
-              const { code } = await editColorGroupList(this.form)
-              if (code != 200) {
-                return
-              }
-              this.$baseMessage(
-                '修改成功',
-                'success',
-                'vab-hey-message-success'
-              )
-              this.$emit('fetch-data')
-              this.close()
-            } else if (this.title === '颜色添加') {
-              console.log(1111, this.form)
-              const { code } = await addColorList(this.form)
-              if (code != 200) {
-                return
-              }
-              this.$baseMessage(
-                '新增成功',
-                'success',
-                'vab-hey-message-success'
-              )
-              this.$emit('fetch-data')
-              this.close()
-            } else if (this.title === '颜色编辑') {
-              this.form.pid = Number(this.form.pid)
-              const { code } = await editColorList(this.form)
+            } else {
+              const { code } = await updateWave(this.form)
               if (code != 200) {
                 return
               }

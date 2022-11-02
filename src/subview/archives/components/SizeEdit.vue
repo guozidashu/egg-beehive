@@ -5,22 +5,47 @@
     width="500px"
     @close="close"
   >
-    <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item label="组别" prop="pid">
-        <el-select v-model="form.pid" placeholder="请选择组别">
-          <el-option label="童装" :value="1" />
-          <el-option label="服装" :value="2" />
-          <el-option label="鞋子" :value="3" />
+    <el-form ref="form" label-width="120px" :model="form" :rules="rules">
+      <el-form-item v-if="type === 1" label="组别分类" prop="name">
+        <el-select v-model="form.select" placeholder="请选择分类">
+          <el-option label="分类1" :value="1" />
+          <el-option label="分类2" :value="2" />
+          <el-option label="分类3" :value="3" />
         </el-select>
       </el-form-item>
-      <el-form-item label="尺码名称" prop="name">
-        <el-input v-model="form.name" style="width: 220px" />
+      <el-form-item v-if="type === 1" label="尺码组名" prop="name">
+        <el-input
+          v-model="form.name"
+          placeholder="请输入名称"
+          style="width: 215px"
+        />
       </el-form-item>
-      <el-form-item label="类型" prop="lx">
-        <el-checkbox v-model="form.lx">整手</el-checkbox>
+      <el-form-item v-if="type === 1" label="尺码类型" prop="name">
+        <el-radio-group v-model="form.type">
+          <el-radio :label="0">整手</el-radio>
+          <el-radio :label="1">散码</el-radio>
+        </el-radio-group>
       </el-form-item>
-      <el-form-item label="尺码" prop="size">
-        <el-input v-model="form.size" style="width: 220px" />
+      <el-form-item
+        v-if="type === 1 && form.type == 0"
+        label="整手尺码"
+        prop="name"
+      >
+        <el-input
+          v-model="form.name"
+          placeholder="例子：80/90/100/110/120"
+          style="width: 215px"
+        />
+      </el-form-item>
+      <el-form-item v-if="type === 2" label="分类名称" prop="name">
+        <el-input
+          v-model="form.name"
+          placeholder="请输入名称"
+          style="width: 215px"
+        />
+      </el-form-item>
+      <el-form-item v-if="type === 2" label="排序" prop="name">
+        <el-input v-model="form.id" style="width: 215px" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -31,17 +56,17 @@
 </template>
 
 <script>
-  import { updateSize, addSize } from '@/api/basic'
+  import { updateWave, addWave } from '@/api/basic'
   export default {
-    name: 'LevelDeit',
+    name: 'TagsEdit',
     data() {
       return {
         form: {
           name: '',
+          select: '',
           id: '',
-          lx: true,
-          size: '',
         },
+        type: 1,
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
         },
@@ -51,18 +76,21 @@
     },
     created() {},
     methods: {
-      showEdit(row) {
-        if (!row) {
-          this.title = '添加'
-        } else {
-          this.title = '编辑'
-          this.form = Object.assign({}, row)
-          if (row.lx == 1) {
-            this.form.lx = true
+      showEdit(row, type) {
+        this.type = type
+        if (row === 'add') {
+          if (type === 1) {
+            this.title = '添加颜色'
           } else {
-            this.form.lx = false
+            this.title = '添加颜色组'
           }
-          console.log(this.form)
+        } else {
+          if (type === 1) {
+            this.title = '编辑颜色'
+          } else {
+            this.title = '编辑颜色组'
+          }
+          this.form = Object.assign({}, row)
         }
         this.dialogFormVisible = true
       },
@@ -74,20 +102,8 @@
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
-            if (this.form.lx == true) {
-              this.form.lx = 1
-            } else {
-              this.form.lx = 0
-            }
-            if (this.form.lx == true) {
-              this.form.type = '1'
-            } else {
-              this.form.type = '0'
-            }
-            this.form.sizeName = this.form.name
-            this.form.group = this.form.pid
             if (this.title === '添加') {
-              const { code } = await addSize(this.form)
+              const { code } = await addWave(this.form)
               if (code != 200) {
                 return
               }
@@ -99,7 +115,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await updateSize(this.form)
+              const { code } = await updateWave(this.form)
               if (code != 200) {
                 return
               }

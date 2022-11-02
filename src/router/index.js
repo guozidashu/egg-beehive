@@ -45,6 +45,14 @@ export const constantRoutes = [
       hidden: true,
     },
   },
+  {
+    path: '/404',
+    name: '404',
+    component: () => import('@/views/404'),
+    meta: {
+      hidden: true,
+    },
+  },
 ]
 export const asyncRoutes = [
   {
@@ -172,6 +180,24 @@ export const asyncRoutes = [
               // icon: 'home-2-line',
             },
           },
+          {
+            path: 'projectMeeting',
+            name: 'ProjectMeeting',
+            component: () => import('@/subview/research/project/meeting'),
+            meta: {
+              title: '订货会',
+              icon: 'archive-line',
+            },
+          },
+          {
+            path: 'projectBandlist',
+            name: 'ProjectBandlist',
+            component: () => import('@/subview/research/project/bandlist'),
+            meta: {
+              title: '波段管理',
+              icon: 'archive-line',
+            },
+          },
         ],
       },
       {
@@ -193,7 +219,7 @@ export const asyncRoutes = [
         },
         children: [
           {
-            path: 'development',
+            path: 'financialDevelopment',
             name: 'FinancialDevelopment',
             component: () => import('@/subview/research/financial/development'),
             meta: {
@@ -202,7 +228,7 @@ export const asyncRoutes = [
             },
           },
           {
-            path: 'standard',
+            path: 'financialStandard',
             name: 'FinancialStandard',
             component: () => import('@/subview/research/financial/standard'),
             meta: {
@@ -211,7 +237,7 @@ export const asyncRoutes = [
             },
           },
           {
-            path: 'cost',
+            path: 'financialCost',
             name: 'FinancialCost',
             component: () => import('@/subview/research/financial/cost'),
             meta: {
@@ -220,7 +246,7 @@ export const asyncRoutes = [
             },
           },
           {
-            path: 'value',
+            path: 'financialValue',
             name: 'FinancialValue',
             component: () => import('@/subview/research/financial/value'),
             meta: {
@@ -620,6 +646,15 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'financialSubject',
+        name: 'FinancialSubject',
+        component: () => import('@/subview/financial/subject'),
+        meta: {
+          title: '费用科目',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {
@@ -642,33 +677,6 @@ export const asyncRoutes = [
         },
       },
       {
-        path: 'archivesMeeting',
-        name: 'ArchivesMeeting',
-        component: () => import('@/subview/archives/meeting'),
-        meta: {
-          title: '订货会',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'archivesSupplier',
-        name: 'ArchivesSupplier',
-        component: () => import('@/subview/archives/supplier'),
-        meta: {
-          title: '供应商管理',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'archivesCustomer',
-        name: 'ArchivesCustomer',
-        component: () => import('@/subview/archives/customer'),
-        meta: {
-          title: '客户资料',
-          icon: 'archive-line',
-        },
-      },
-      {
         path: 'archivesYear',
         name: 'ArchivesYear',
         component: () => import('@/subview/archives/year'),
@@ -683,24 +691,6 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/seasonal'),
         meta: {
           title: '季节管理',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'archivesGoods',
-        name: 'ArchivesGoods',
-        component: () => import('@/subview/archives/goods'),
-        meta: {
-          title: '商品资料',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'archivesCategory',
-        name: 'ArchivesCategory',
-        component: () => import('@/subview/archives/category'),
-        meta: {
-          title: '款式分类',
           icon: 'archive-line',
         },
       },
@@ -723,15 +713,6 @@ export const asyncRoutes = [
         },
       },
       {
-        path: 'archivesBand',
-        name: 'ArchivesBand',
-        component: () => import('@/subview/archives/band'),
-        meta: {
-          title: '波段管理',
-          icon: 'archive-line',
-        },
-      },
-      {
         path: 'archivesWarehouse',
         name: 'ArchivesWarehouse',
         component: () => import('@/subview/archives/warehouse'),
@@ -746,15 +727,6 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/bom'),
         meta: {
           title: '物料列表',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'archivesSubject',
-        name: 'ArchivesSubject',
-        component: () => import('@/subview/archives/subject'),
-        meta: {
-          title: '会计科目',
           icon: 'archive-line',
         },
       },
@@ -931,6 +903,15 @@ export const asyncRoutes = [
         component: () => import('@/subview/setting/employees'),
         meta: {
           title: '员工管理',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'personal',
+        name: 'Personal',
+        component: () => import('@/subview/setting/personal'),
+        meta: {
+          title: '个人中心',
           icon: 'archive-line',
         },
       },
@@ -1870,12 +1851,14 @@ export const asyncRoutes = [
 const router = createRouter()
 
 function fatteningRoutes(routes) {
+  console.log(1111222)
   return routes.flatMap((route) => {
     return route.children ? fatteningRoutes(route.children) : route
   })
 }
 
 export function resetRouter(routes = constantRoutes) {
+  console.log(999999)
   routes.map((route) => {
     if (route.children) {
       route.children = fatteningRoutes(route.children)
@@ -1885,6 +1868,7 @@ export function resetRouter(routes = constantRoutes) {
 }
 
 function createRouter(routes = constantRoutes) {
+  console.log(88888)
   return new VueRouter({
     base: publicPath,
     mode: routerMode,
@@ -1897,6 +1881,7 @@ function createRouter(routes = constantRoutes) {
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
+  console.log(55565656, this, location)
   return originalPush.call(this, location).catch((err) => err)
 }
 

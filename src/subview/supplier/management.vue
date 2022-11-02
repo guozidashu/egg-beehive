@@ -102,7 +102,7 @@
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
   import Edit from './components/OrderEdit'
-  import { getSupplierManagementList } from '@/api/basic'
+  // import { getSupplierManagementList } from '@/api/basic'
   export default {
     name: 'SupplierOrder',
     components: { List, Form, Edit },
@@ -122,7 +122,19 @@
         // 公共参数
         listType: 1,
         formType: 4,
-        list: [],
+        list: [
+          {
+            id: 1,
+            name: '张三',
+            lx: 1,
+            fenlei: '外协加工厂',
+            yingfu: 100,
+            usename: '张三',
+            tel: '123456789',
+            time: '2020-01-01',
+            isdefault: 1,
+          },
+        ],
         listLoading: false,
         total: 0,
       }
@@ -174,13 +186,13 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        this.listLoading = true
-        const {
-          data: { list, total },
-        } = await getSupplierManagementList(this.form)
-        this.list = list
-        this.total = total
-        this.listLoading = false
+        // this.listLoading = true
+        // const {
+        //   data: { list, total },
+        // } = await getSupplierManagementList(this.form)
+        // this.list = list
+        // this.total = total
+        // this.listLoading = false
       },
     },
   }

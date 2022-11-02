@@ -1,4 +1,15 @@
 import request from '@/utils/request'
+// 新接口
+
+// 下拉框数据获取 common/getBasicInfo
+export function getCommonAllList(data) {
+  return request({
+    url: '/common/getBasicInfo',
+    method: 'post',
+    data,
+  })
+}
+
 // 基础档案模块  增删改查接口
 
 // 客户管理

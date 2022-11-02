@@ -75,9 +75,9 @@
   import List from '@/subview/components/List'
   import Edit from './components/SubjectEdit'
   import Form from '@/subview/components/Form'
-  import { getSubjectList, editSubject, deleteSubject } from '@/api/basic'
+  import { editSubject, deleteSubject } from '@/api/basic'
   export default {
-    name: 'ArchivesSubject',
+    name: 'FinancialSubject',
     components: { List, Form, Edit },
     data() {
       return {
@@ -92,7 +92,12 @@
         // 列表数据相关
         selectRows: [],
         listType: 1,
-        list: [],
+        list: [
+          {
+            id: 1,
+            name: '测试科目',
+          },
+        ],
         listLoading: false,
         total: 0,
       }
@@ -172,13 +177,13 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        this.listLoading = true
-        const {
-          data: { list, total },
-        } = await getSubjectList(this.form)
-        this.list = list
-        this.total = total
-        this.listLoading = false
+        // this.listLoading = true
+        // const {
+        //   data: { list, total },
+        // } = await getSubjectList(this.form)
+        // this.list = list
+        // this.total = total
+        // this.listLoading = false
       },
     },
   }

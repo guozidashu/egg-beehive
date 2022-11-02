@@ -5,8 +5,12 @@
     >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
-          <el-form-item label="季节名称" prop="region">
-            <el-input v-model="form.name" size="small" />
+          <el-form-item label="季节搜索：" prop="region">
+            <el-input
+              v-model="form.name"
+              placeholder="请输入季节搜索"
+              size="small"
+            />
           </el-form-item>
         </template>
       </Form>
@@ -20,7 +24,7 @@
             type="primary"
             @click="handleEdit('add')"
           >
-            添加
+            添加季节
           </el-button>
         </el-form-item>
       </el-form>
@@ -35,42 +39,28 @@
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="ID"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="季节名称"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="商品数量"
-            prop="num"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="备注"
-            prop="rema"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
-          >
+          <el-table-column type="selection" width="55" />
+          <el-table-column label="ID" prop="id" width="80" />
+          <el-table-column label="年份名称" prop="name" width="120" />
+          <el-table-column label="使用商品" prop="num" />
+          <el-table-column label="状态" prop="state" width="150">
+            <template #default="{ row }">
+              <el-switch
+                v-model="row.state"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column label="排序" prop="id" width="80" />
+          <el-table-column label="创建时间" prop="tiem" />
+          <el-table-column align="center" label="操作" width="85">
             <template #default="{ row }">
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
               <el-button type="text" @click="handleDelete(row)">删除</el-button>
@@ -99,7 +89,7 @@
           pageNo: 1,
           pageSize: 10,
         },
-        formType: 4,
+        formType: 3,
         // 列表数据相关
         selectRows: [],
         listType: 1,
@@ -109,24 +99,32 @@
             name: '春季',
             num: 10,
             rema: '春季商品',
+            tiem: '2020-01-01 00:00:00',
+            state: 0,
           },
           {
             id: 2,
             name: '夏季',
             num: 10,
             rema: '夏季商品',
+            tiem: '2020-01-01 00:00:00',
+            state: 0,
           },
           {
             id: 3,
             name: '秋季',
             num: 10,
             rema: '秋季商品',
+            tiem: '2020-01-01 00:00:00',
+            state: 0,
           },
           {
             id: 4,
             name: '冬季',
             num: 10,
             rema: '冬季商品',
+            tiem: '2020-01-01 00:00:00',
+            state: 0,
           },
         ],
         listLoading: false,

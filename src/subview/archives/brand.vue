@@ -6,7 +6,11 @@
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
           <el-form-item label="品牌名称" prop="region">
-            <el-input v-model="form.name" size="small" />
+            <el-input
+              v-model="form.name"
+              placeholder="请输入品牌名称"
+              size="small"
+            />
           </el-form-item>
         </template>
       </Form>
@@ -20,7 +24,7 @@
             type="primary"
             @click="handleEdit('add')"
           >
-            添加
+            添加品牌
           </el-button>
         </el-form-item>
       </el-form>
@@ -35,24 +39,27 @@
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="品牌ID"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="品牌名称"
-            prop="name"
-            show-overflow-tooltip
-          />
+          <el-table-column type="selection" width="50" />
+          <el-table-column label="ID" prop="id" width="80" />
+          <el-table-column label="品牌名称" prop="name" width="120" />
+          <el-table-column label="使用商品" prop="num" width="120" />
+          <el-table-column label="状态" prop="state" width="150">
+            <template #default="{ row }">
+              <el-switch
+                v-model="row.state"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column label="排序" prop="name" width="80" />
+          <el-table-column label="创建时间" prop="tiem" />
           <el-table-column
             align="center"
             label="操作"
@@ -74,7 +81,7 @@
   import List from '@/subview/components/List'
   import Edit from './components/BrandEdit'
   import Form from '@/subview/components/Form'
-  import { getBrandList, editBrand, deleteBrand } from '@/api/basic'
+  import { editBrand, deleteBrand } from '@/api/basic'
   export default {
     name: 'ArchivesBrand',
     components: { List, Edit, Form },
@@ -90,8 +97,17 @@
         formType: 4,
         // 列表数据相关
         selectRows: [],
-        listType: 1,
-        list: [],
+        listType: 2,
+        list: [
+          {
+            id: 1,
+            name: '品牌名称',
+            num: 0,
+            state: 1,
+            sort: 0,
+            time: '2020-01-01 00:00:00',
+          },
+        ],
         listLoading: false,
         total: 0,
       }
@@ -171,13 +187,13 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        this.listLoading = true
-        const {
-          data: { list, total },
-        } = await getBrandList(this.form)
-        this.list = list
-        this.total = total
-        this.listLoading = false
+        // this.listLoading = true
+        // const {
+        //   data: { list, total },
+        // } = await getBrandList(this.form)
+        // this.list = list
+        // this.total = total
+        // this.listLoading = false
       },
     },
   }

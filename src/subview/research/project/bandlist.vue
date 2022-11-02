@@ -5,7 +5,7 @@
     >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
-          <el-form-item label="客户名称" prop="region">
+          <el-form-item label="波段名称" prop="region">
             <el-input v-model="form.name" size="small" />
           </el-form-item>
         </template>
@@ -42,14 +42,14 @@
           />
           <el-table-column
             align="center"
-            label="客户ID"
+            label="波段ID"
             prop="id"
             show-overflow-tooltip
             sortable
           />
           <el-table-column
             align="center"
-            label="客户名称"
+            label="波段名称"
             prop="name"
             show-overflow-tooltip
           />
@@ -70,15 +70,14 @@
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
-
 <script>
   import List from '@/subview/components/List'
-  import Edit from './components/CategoryEdit'
+  import Edit from './components/BandEdit'
   import Form from '@/subview/components/Form'
-  // import { getCategoryList, editCategory, deleteCategory } from '@/api/basic'
+  import { getWaveList, editWave, deleteWave } from '@/api/basic'
   export default {
-    name: 'ArchivesCustomer',
-    components: { List, Form, Edit },
+    name: 'ProjectBandlist',
+    components: { List, Edit, Form },
     data() {
       return {
         // 表单数据/列表参数
@@ -110,50 +109,50 @@
     },
     methods: {
       // 新增修改
-      // async handleEdit(row) {
-      //   if (row === 'add') {
-      //     this.$refs['edit'].showEdit()
-      //   } else {
-      //     if (row.id) {
-      //       const { code, data } = await editCategory({ id: row.id })
-      //       if (code === 200) {
-      //         this.$refs['edit'].showEdit(data.list)
-      //       }
-      //     } else {
-      //       this.$refs['edit'].showEdit()
-      //     }
-      //   }
-      // },
+      async handleEdit(row) {
+        if (row === 'add') {
+          this.$refs['edit'].showEdit()
+        } else {
+          if (row.id) {
+            const { code, data } = await editWave({ id: row.id })
+            if (code === 200) {
+              this.$refs['edit'].showEdit(data)
+            }
+          } else {
+            this.$refs['edit'].showEdit()
+          }
+        }
+      },
       // 查询
       handleQuery() {
         this.form.pageNo = 1
       },
       // 删除
-      // handleDelete(row) {
-      //   if (row.id) {
-      //     this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-      //       const { code } = await deleteCategory({ id: row.id })
-      //       if (code != 200) {
-      //         return
-      //       }
-      //       this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
-      //       this.fetchData()
-      //     })
-      //   } else {
-      //     if (this.selectRows.length > 0) {
-      //       const ids = this.selectRows.map((item) => item.id).join()
-      //       this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-      //         const { code } = await deleteCategory(ids)
-      //         if (code != 200) {
-      //           return
-      //         }
-      //         this.fetchData()
-      //       })
-      //     } else {
-      //       this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
-      //     }
-      //   }
-      // },
+      handleDelete(row) {
+        if (row.id) {
+          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
+            const { code } = await deleteWave({ id: row.id })
+            if (code != 200) {
+              return
+            }
+            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
+          })
+        } else {
+          if (this.selectRows.length > 0) {
+            const ids = this.selectRows.map((item) => item.id).join()
+            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
+              const { code } = await deleteWave(ids)
+              if (code != 200) {
+                return
+              }
+              this.fetchData()
+            })
+          } else {
+            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
+          }
+        }
+      },
       // 列表数据封装函数
 
       // 列表数据改变页数   公共部分
@@ -172,13 +171,13 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getCategoryList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const {
+          data: { list, total },
+        } = await getWaveList(this.form)
+        this.list = list
+        this.total = total
+        this.listLoading = false
       },
     },
   }

@@ -93,7 +93,7 @@
   import List from '@/subview/components/List'
   import Edit from './components/WareHouseEdit'
   import Form from '@/subview/components/Form'
-  import { getWarehouseList, editWarehouse, deleteWarehouse } from '@/api/basic'
+  import { editWarehouse, deleteWarehouse } from '@/api/basic'
   export default {
     name: 'ArchivesWarehouse',
     components: { List, Edit, Form },
@@ -110,7 +110,20 @@
         // 列表数据相关
         selectRows: [],
         listType: 1,
-        list: [],
+        list: [
+          {
+            id: 1,
+            name: '仓库1',
+            mr: 0,
+            position: '库位1',
+          },
+          {
+            id: 2,
+            name: '仓库2',
+            mr: 1,
+            position: '库位2',
+          },
+        ],
         listLoading: false,
         total: 0,
       }
@@ -189,13 +202,13 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        this.listLoading = true
-        const {
-          data: { list, total },
-        } = await getWarehouseList(this.form)
-        this.list = list
-        this.total = total
-        this.listLoading = false
+        // this.listLoading = true
+        // const {
+        //   data: { list, total },
+        // } = await getWarehouseList(this.form)
+        // this.list = list
+        // this.total = total
+        // this.listLoading = false
       },
     },
   }

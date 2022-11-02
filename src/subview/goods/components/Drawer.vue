@@ -2,14 +2,67 @@
   <div class="components-drawer">
     <div style="padding: 30px 35px 25px">
       <div>
-        <p style="font-size: 16px; font-weight: 600">[普通订单]</p>
-        <div style="display: flex">
-          <img
-            :src="avatar"
-            style="width: 50px; height: 50px; margin: 0 10px 10px 0"
-          />
-          <span style="margin: 10px 0 0 0">订单编号：wx310090959855550464</span>
-        </div>
+        <el-row :gutter="20">
+          <el-col :span="12" style="display: flex">
+            <img
+              :src="avatar"
+              style="
+                width: 50px;
+                height: 50px;
+                margin: 0 10px 10px 0;
+                border-radius: 50%;
+              "
+            />
+            <span style="margin: 15px 0 0 0">
+              {{ form.name }}|{{ form.level }}
+            </span>
+          </el-col>
+
+          <el-col :span="12">
+            <vab-icon
+              icon="align-center"
+              style="float: right; margin: 6px 0 0 0"
+            />
+            <el-button
+              native-type="submit"
+              size="small"
+              style="float: right; margin-right: 10px"
+              type="primary"
+              @click="upMembers(2)"
+            >
+              升级会员
+            </el-button>
+            <el-button
+              native-type="submit"
+              size="small"
+              style="float: right; margin-right: 10px"
+              type="primary"
+              @click="upMembers(1)"
+            >
+              积分余额
+            </el-button>
+            <el-button
+              v-if="form.drawerType == 1"
+              native-type="submit"
+              size="small"
+              style="float: right"
+              type="primary"
+              @click="form.drawerType = 2"
+            >
+              编辑
+            </el-button>
+            <el-button
+              v-if="form.drawerType == 2"
+              native-type="submit"
+              size="small"
+              style="float: right"
+              type="primary"
+              @click="form.drawerType = 1"
+            >
+              完成
+            </el-button>
+          </el-col>
+        </el-row>
       </div>
       <div style="display: flex">
         <div
@@ -22,181 +75,283 @@
         </div>
       </div>
     </div>
-    <el-tabs v-model="activeName" class="drawer-tab">
-      <el-tab-pane label="订单信息" name="first">
+    <el-tabs
+      v-model="activeName"
+      style="padding: 0 25px"
+      @tab-click="handleClick"
+    >
+      <el-tab-pane label="客户信息" name="first" />
+      <el-tab-pane label="订单记录" name="second" />
+      <el-tab-pane label=" 发货记录" name="three" />
+      <el-tab-pane label="退货记录" name="four" />
+      <el-tab-pane label="收银记录" name="five" />
+      <el-tab-pane label="持有优惠券" name="six" />
+      <el-tab-pane label=" 积分时间" name="seven" />
+      <el-tab-pane label="签到记录" name="eight" />
+      <el-tab-pane label="欠货统计" name="nine" />
+    </el-tabs>
+    <div v-if="tabLabel == '客户信息'">
+      <div v-if="form.drawerType == 1" class="drawer-tab">
         <div class="conten-warp">
-          <div class="conten-title">用户信息</div>
+          <div class="conten-title">基本信息</div>
           <div class="conten-list-row">
-            <div>用户UID：577</div>
-            <div>用户昵称： 阿白</div>
-            <div>绑定电话： -15236804776</div>
+            <div>用户编号：577</div>
+            <div>真实姓名： 阿白</div>
+            <div>手机号码： -15236804776</div>
+            <div>生日：2001-11-01</div>
+            <div>身份证号： 411425199905053316</div>
+            <div>加入时间： 2022-01-01 10：20:20</div>
+            <div>客户地址： 杭州市滨江区春波小区11栋602</div>
           </div>
         </div>
         <div class="conten-warp">
-          <div class="conten-title">收货信息</div>
-          <div class="conten-list-com">
-            <div>收货人：测试</div>
-            <div>收货电话：186****9581</div>
-            <div>
-              收货地址：辽宁 大连市 甘井子区 凌水街道不想要了不想要了，怎么退款
+          <div class="conten-title">密码</div>
+          <div class="conten-list-row">
+            <div>登录密码：*******</div>
+          </div>
+        </div>
+        <div class="conten-warp">
+          <div class="conten-title">客户概况</div>
+          <div class="conten-list-row">
+            <div>用户状态： 开启</div>
+            <div>客户等级： 钻石会员</div>
+            <div>客户分类： B端合伙人</div>
+            <div style="width: 100%">客户标签： 小红书、00后</div>
+            <div>所在城市： 杭州市</div>
+          </div>
+        </div>
+        <div class="conten-warp">
+          <div class="conten-title">备注</div>
+          <div class="conten-list-row">
+            <div style="width: 100%">
+              备注信息： 1111111111111111111111111111
             </div>
           </div>
         </div>
-        <div class="conten-warp">
-          <div class="conten-title">订单信息</div>
-          <div class="conten-list-row">
-            <div>创建时间： 2022-10-08 16:30:46</div>
-            <div>商品总数： 3</div>
-            <div>商品总价： 297</div>
-            <div>优惠券金额： 0.00</div>
-            <div>积分抵扣： 0.00</div>
-            <div>支付邮费： 0.00</div>
-            <div>会员商品优惠： 0.00</div>
-            <div>推广人： 无/ID 6</div>
-            <div>支付时间： 2022-10-08 16:30:4</div>
-            <div>支付方式： 余额支付</div>
-            <div>第二件半价： -￥49.50</div>
+      </div>
+      <el-form
+        v-if="form.drawerType == 2"
+        ref="form"
+        label-width="120px"
+        :model="form"
+        style="width: 100%"
+      >
+        <div class="drawer-tab">
+          <div class="conten-warp">
+            <div class="conten-title">基本信息</div>
+            <div class="conten-list-com">
+              <el-form-item class="item" label="用户编号：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入用户编号"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="真实姓名：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入真实姓名"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="手机号码：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入手机号码"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="生日：">
+                <el-date-picker
+                  v-model="form.value1"
+                  placeholder="请选择生日"
+                  type="date"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="身份证号：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入身份证号"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="加入时间：">
+                <el-date-picker
+                  v-model="form.value1"
+                  placeholder="请选择加入时间"
+                  type="date"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="客户地址：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入客户地址"
+                  style="width: 215px"
+                />
+              </el-form-item>
+            </div>
           </div>
         </div>
-        <div class="conten-warp">
-          <div class="conten-title">物流信息</div>
-          <div class="conten-list-row">
-            <div>快递公司： 宅急送</div>
-            <div>快递单号： 111111111111111111</div>
+        <div class="drawer-tab">
+          <div class="conten-warp">
+            <div class="conten-title">密码</div>
+            <div class="conten-list-com">
+              <el-form-item class="item" label="登录密码：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入登录密码"
+                  style="width: 215px"
+                />
+              </el-form-item>
+            </div>
           </div>
         </div>
-      </el-tab-pane>
-      <el-tab-pane label="商品信息" name="second">
-        <!-- 表格组件使用 -->
-        <List :list="goosList" :state="listLoading" :type="listType">
-          <!-- 表格组件具名插槽 自定义表头 -->
-          <template #List>
-            <el-table-column
-              align="center"
-              label="商品信息"
-              prop="inof"
-              width="330"
-            >
-              <template #default="{ row }">
-                <div style="display: flex">
-                  <el-image
-                    :src="row.inof.img"
-                    style="width: 50px; height: 50px; margin-right: 20px"
-                  />
-                  <span>{{ row.inof.wenzi }}|{{ row.inof.color }}</span>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="售价"
-              prop="money"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="实付金额"
-              prop="pay"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="数量"
-              prop="num"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="小计"
-              prop="comutp"
-              show-overflow-tooltip
-            />
-          </template>
-        </List>
-      </el-tab-pane>
-      <el-tab-pane label=" 订单记录" name="three">
-        <List :list="orderList" :state="listLoading" :type="listType">
-          <!-- 表格组件具名插槽 自定义表头 -->
-          <template #List>
-            <el-table-column
-              align="center"
-              label="订单ID"
-              prop="id"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="操作记录"
-              prop="log"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="操作时间"
-              prop="time"
-              show-overflow-tooltip
-            />
-          </template>
-        </List>
-      </el-tab-pane>
-      <el-tab-pane label="发货记录" name="four">
-        <List :list="stareList" :state="listLoading" :type="listType">
-          <!-- 表格组件具名插槽 自定义表头 -->
-          <template #List>
-            <el-table-column
-              align="center"
-              label="订单号"
-              prop="id"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="商品信息"
-              prop="inof"
-              width="330"
-            >
-              <template #default="{ row }">
-                <div style="display: flex">
-                  <el-image
-                    :src="row.inof.img"
-                    style="width: 50px; height: 50px; margin-right: 20px"
-                  />
-                  <span>{{ row.inof.wenzi }}|{{ row.inof.color }}</span>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="发货信息"
-              prop="time"
-              show-overflow-tooltip
-            />
-            <el-table-column align="center" label="操作" width="85">
-              <template #default="{ row }">
-                <el-button type="text" @click="handleDetail(row)">
-                  立即核销
-                </el-button>
-                <el-button type="text">更多</el-button>
-              </template>
-            </el-table-column>
-          </template>
-        </List>
-      </el-tab-pane>
-    </el-tabs>
+        <div class="drawer-tab">
+          <div class="conten-warp">
+            <div class="conten-title">客户概况</div>
+            <div class="conten-list-com">
+              <el-form-item class="item" label="用户状态：">
+                <el-switch
+                  v-model="form.sp"
+                  active-color="#41B584"
+                  active-text="开启"
+                  :active-value="1"
+                  class="switch"
+                  inactive-color="#D2D2D2"
+                  inactive-text="关闭"
+                  :inactive-value="0"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="客户等级：">
+                <el-select v-model="form.type1" placeholder="请选择">
+                  <el-option label="黄金" :value="1" />
+                  <el-option label="白银" :value="2" />
+                </el-select>
+              </el-form-item>
+              <el-form-item class="item" label="客户分类：">
+                <el-select v-model="form.type1" placeholder="请选择">
+                  <el-option label="快团团" :value="1" />
+                  <el-option label="微信" :value="2" />
+                </el-select>
+              </el-form-item>
+              <el-form-item class="item" label="客户标签：">
+                <el-select v-model="form.type1" placeholder="请选择">
+                  <el-option label="水瓶座" :value="1" />
+                  <el-option label="金牛座" :value="2" />
+                </el-select>
+              </el-form-item>
+              <el-form-item class="item" label="所在城市：" style="width: 100%">
+                <addressCity @getLawyerListInfo="selectAddress" />
+              </el-form-item>
+            </div>
+          </div>
+        </div>
+        <div class="drawer-tab">
+          <div class="conten-warp">
+            <div class="conten-title">备注</div>
+            <div class="conten-list-com">
+              <el-form-item class="item" label="备注信息：">
+                <el-input
+                  v-model="form.des"
+                  :autosize="{ minRows: 2, maxRows: 4 }"
+                  placeholder="请输入备注"
+                  type="textarea"
+                />
+              </el-form-item>
+            </div>
+          </div>
+        </div>
+      </el-form>
+    </div>
+    <List
+      v-else
+      :list="orderList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column label="id" prop="id" show-overflow-tooltip />
+        <el-table-column label="名称" prop="log" show-overflow-tooltip />
+        <el-table-column label="操作时间" prop="time" show-overflow-tooltip />
+      </template>
+    </List>
+    <el-dialog
+      :append-to-body="true"
+      :before-close="handleClose1"
+      :title="distitle1"
+      :visible.sync="dialogVisible1"
+      width="500PX"
+    >
+      <el-form
+        v-if="distitle1 == '修改积分余额'"
+        label-width="120px"
+        :model="formDrawer"
+      >
+        <el-form-item label="修改余额">
+          <el-radio-group v-model="formDrawer.state">
+            <el-radio :label="0">增加</el-radio>
+            <el-radio :label="1">减少</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="余额">
+          <el-input v-model="name" />
+        </el-form-item>
+        <el-form-item label="修改积分">
+          <el-radio-group v-model="formDrawer.state1">
+            <el-radio :label="0">增加</el-radio>
+            <el-radio :label="1">减少</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="积分">
+          <el-input v-model="name1" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary">确 定</el-button>
+        </el-form-item>
+      </el-form>
+      <el-form v-else label-width="120px" :model="formDrawer">
+        <el-form-item label="选择会员">
+          <el-select v-model="formDrawer.type1">
+            <el-option label="黄金" :value="1" />
+            <el-option label="白银" :value="2" />
+            <el-option label="青铜" :value="3" />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary">确 定</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+  import addressCity from '@/subview/components/City'
   import List from '@/subview/components/List'
   import { mapGetters } from 'vuex'
   export default {
     name: 'ComponentsDrawer',
-    components: { List },
+    components: { addressCity, List },
+    props: {
+      drawerInof: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data() {
       return {
+        dialogVisible1: false,
+        distitle1: '',
         activeName: 'first',
+        tabLabel: '客户信息',
+        form: Object.assign({}, this.drawerInof),
         listLoading: false,
         listType: 2,
+        formDrawer: {
+          state: 0,
+          state1: 0,
+        },
         goosList: [
           {
             inof: {
@@ -237,20 +392,32 @@
         ],
         stalist: [
           {
-            name: '订单状态',
-            value: '待评价',
-          },
-          {
-            name: '实际支付',
+            name: '余额/欠款',
             value: '¥247.50',
           },
           {
-            name: '支付方式',
-            value: '余额支付',
+            name: '总消费次数',
+            value: '800笔',
           },
           {
-            name: '支付时间',
-            value: '2022-10-08 16:30:46',
+            name: '总消费余额',
+            value: '¥24750',
+          },
+          {
+            name: '总发货金额',
+            value: '¥34750',
+          },
+          {
+            name: '总退货余额',
+            value: '¥24750',
+          },
+          {
+            name: '累计收银',
+            value: '¥34750',
+          },
+          {
+            name: '最后一次消费时间',
+            value: '2022-10-1 16:33:41',
           },
         ],
       }
@@ -260,8 +427,40 @@
         avatar: 'user/avatar',
       }),
     },
+    watch: {
+      type(val) {
+        this.type = val
+      },
+      drawerInof: {
+        handler: function (newVal) {
+          this.form = Object.assign({}, newVal)
+          console.log(2222, newVal)
+        },
+        deep: true,
+      },
+    },
     created() {},
-    methods: {},
+    methods: {
+      // 列表数据表头切换监听 自定义部分
+      handleClick(tab) {
+        this.tabLabel = tab.label
+      },
+      selectAddress(selectProvince, selectCity, selectArea) {
+        console.log(selectProvince, selectCity, selectArea)
+      },
+      handleClose1() {
+        this.dialogVisible1 = false
+      },
+      upMembers(type) {
+        if (type == 1) {
+          this.distitle1 = '修改积分余额'
+          this.dialogVisible1 = true
+        } else {
+          this.distitle1 = '升级会员'
+          this.dialogVisible1 = true
+        }
+      },
+    },
   }
 </script>
 <style lang="scss" scoped>
@@ -281,8 +480,7 @@
         color: #303133;
         border-left: 3px solid #1890ff;
       }
-      .conten-list-row,
-      .conten-list-com {
+      .conten-list-row {
         display: flex;
         flex-wrap: wrap;
         div {
@@ -291,9 +489,11 @@
         }
       }
       .conten-list-com {
-        flex-direction: column;
-        div {
-          width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        .item {
+          width: 50%;
+          margin-top: 16px;
         }
       }
     }

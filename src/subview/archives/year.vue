@@ -5,8 +5,12 @@
     >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
-          <el-form-item label="年份名称" prop="region">
-            <el-input v-model="form.name" size="small" />
+          <el-form-item label="年份搜索：" prop="region">
+            <el-input
+              v-model="form.name"
+              placeholder="请输入年份名称"
+              size="small"
+            />
           </el-form-item>
         </template>
       </Form>
@@ -20,7 +24,7 @@
             type="primary"
             @click="handleEdit('add')"
           >
-            添加
+            添加年份
           </el-button>
         </el-form-item>
       </el-form>
@@ -35,30 +39,28 @@
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="年份ID"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="年份名称"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
-          >
+          <el-table-column type="selection" width="55" />
+          <el-table-column label="ID" prop="id" width="80" />
+          <el-table-column label="年份名称" prop="name" width="120" />
+          <el-table-column label="使用商品" prop="num" />
+          <el-table-column label="状态" prop="state" width="150">
+            <template #default="{ row }">
+              <el-switch
+                v-model="row.state"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column label="排序" prop="id" width="80" />
+          <el-table-column label="创建时间" prop="tiem" />
+          <el-table-column align="center" label="操作" width="85">
             <template #default="{ row }">
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
               <el-button type="text" @click="handleDelete(row)">删除</el-button>
@@ -73,7 +75,7 @@
 
 <script>
   import List from '@/subview/components/List'
-  import Edit from './components/SubjectEdit'
+  import Edit from './components/YearEdit'
   import Form from '@/subview/components/Form'
   // import { getSubjectList, editSubject, deleteSubject } from '@/api/basic'
   export default {
@@ -88,11 +90,40 @@
           pageNo: 1,
           pageSize: 10,
         },
-        formType: 4,
+        formType: 3,
         // 列表数据相关
         selectRows: [],
         listType: 1,
-        list: [],
+        list: [
+          {
+            id: 1,
+            name: '2022',
+            num: 10,
+            tiem: '2020-01-01 00:00:00',
+            state: 0,
+          },
+          {
+            id: 2,
+            name: '2021',
+            num: 10,
+            tiem: '2020-01-01 00:00:00',
+            state: 0,
+          },
+          {
+            id: 3,
+            name: '2020',
+            num: 10,
+            tiem: '2020-01-01 00:00:00',
+            state: 0,
+          },
+          {
+            id: 4,
+            name: '2019',
+            num: 10,
+            tiem: '2020-01-01 00:00:00',
+            state: 0,
+          },
+        ],
         listLoading: false,
         total: 0,
       }
@@ -110,50 +141,51 @@
     },
     methods: {
       // 新增修改
-      // async handleEdit(row) {
-      //   if (row === 'add') {
-      //     this.$refs['edit'].showEdit()
-      //   } else {
-      //     if (row.id) {
-      //       const { code, data } = await editSubject({ id: row.id })
-      //       if (code === 200) {
-      //         this.$refs['edit'].showEdit(data)
-      //       }
-      //     } else {
-      //       this.$refs['edit'].showEdit()
-      //     }
-      //   }
-      // },
+      async handleEdit(row) {
+        if (row === 'add') {
+          this.$refs['edit'].showEdit()
+        } else {
+          if (row.id) {
+            // const { code, data } = await editSubject({ id: row.id })
+            // if (code === 200) {
+            //   this.$refs['edit'].showEdit(data)
+            // }
+            this.$refs['edit'].showEdit(row)
+          } else {
+            this.$refs['edit'].showEdit()
+          }
+        }
+      },
       // 查询
       handleQuery() {
         this.form.pageNo = 1
       },
       // 删除
-      // handleDelete(row) {
-      //   if (row.id) {
-      //     this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-      //       const { code } = await deleteSubject({ id: row.id })
-      //       if (code != 200) {
-      //         return
-      //       }
-      //       this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
-      //       this.fetchData()
-      //     })
-      //   } else {
-      //     if (this.selectRows.length > 0) {
-      //       const ids = this.selectRows.map((item) => item.id).join()
-      //       this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-      //         const { code } = await deleteSubject(ids)
-      //         if (code != 200) {
-      //           return
-      //         }
-      //         this.fetchData()
-      //       })
-      //     } else {
-      //       this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
-      //     }
-      //   }
-      // },
+      handleDelete(row) {
+        if (row.id) {
+          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
+            // const { code } = await deleteSubject({ id: row.id })
+            // if (code != 200) {
+            //   return
+            // }
+            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
+          })
+        } else {
+          if (this.selectRows.length > 0) {
+            // const ids = this.selectRows.map((item) => item.id).join()
+            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
+              // const { code } = await deleteSubject(ids)
+              // if (code != 200) {
+              //   return
+              // }
+              this.fetchData()
+            })
+          } else {
+            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
+          }
+        }
+      },
       // 列表数据封装函数
 
       // 列表数据改变页数   公共部分

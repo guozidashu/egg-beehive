@@ -104,7 +104,7 @@
   import Form from '@/subview/components/Form'
   import Edit from './components/EmployeesEdit'
   import Drawer from './components/EmployeesDrawer'
-  import { getStaffList } from '@/api/basic'
+  // import { getStaffList } from '@/api/basic'
   export default {
     name: 'Employees',
     components: { List, Form, Drawer, Edit },
@@ -120,7 +120,18 @@
         },
         formType: 3,
         listType: 1,
-        list: [],
+        list: [
+          {
+            name: '张三',
+            name1: 'zhangsan',
+            status1: '技术部',
+            qx1: '前端开发',
+            qx: '管理员',
+            status: 1,
+            avatar:
+              'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+          },
+        ],
         listLoading: false,
         total: 0,
       }
@@ -161,13 +172,13 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        this.listLoading = true
-        const {
-          data: { list, total },
-        } = await getStaffList(this.form)
-        this.list = list
-        this.total = total
-        this.listLoading = false
+        // this.listLoading = true
+        // const {
+        //   data: { list, total },
+        // } = await getStaffList(this.form)
+        // this.list = list
+        // this.total = total
+        // this.listLoading = false
       },
       // 详情抽屉
       handleDetail() {

@@ -1,91 +1,140 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <div
-      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
-    >
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
-        <template #Form>
-          <el-form-item label="尺码名称" prop="region">
-            <el-input v-model="form.name" size="small" />
-          </el-form-item>
-        </template>
-      </Form>
-    </div>
-    <el-card shadow="never">
-      <el-form ref="form" :inline="true" @submit.native.prevent>
-        <el-form-item>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleEdit('add')"
+    <el-row :gutter="20">
+      <el-col :lg="6" :md="8" :sm="24" :xl="4" :xs="24">
+        <el-card
+          shadow="never"
+          style="height: 100%; min-height: calc(80vh); border: 0"
+        >
+          <el-menu
+            class="el-menu-vertical-demo"
+            default-active="0"
+            style="width: 100%; border: 0"
+            @close="handleClose"
+            @open="handleOpen"
           >
-            添加
-          </el-button>
-        </el-form-item>
-      </el-form>
-      <!-- 表格组件使用 -->
-      <List
-        :list="list"
-        :list-type="listType"
-        :state="listLoading"
-        :total="total"
-        @changePage="changeBtnPage"
-        @changePageSize="changeBtnPageSize"
-        @selectRows="selectBtnRows"
-      >
-        <!-- 表格组件具名插槽 自定义表头 -->
-        <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="尺码ID"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="尺码名称"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="尺码"
-            prop="size"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
+            <el-menu-item
+              v-for="(item, index) in menuList"
+              :key="index"
+              :index="item.id"
+            >
+              <div
+                @mouseenter="mouseOver(index)"
+                @mouseleave="mouseLeave(index)"
+              >
+                <div slot="title">
+                  <span @click="handleGrouPQuery(item)">{{ item.name }}</span>
+                  <span v-if="item.default">默认</span>
+                  <el-dropdown style="float: right" trigger="click">
+                    <span class="el-dropdown-link">
+                      <i
+                        v-if="item.btnIconStatus && item.id != '0'"
+                        class="el-icon-menu"
+                      ></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item>
+                        <span @click="handleEdit(item, 2)">编辑</span>
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <span @click="handleDelete(item, 2)">删除</span>
+                      </el-dropdown-item>
+                      <el-dropdown-item>
+                        <span @click="handleDelete(item, 3)">设置默认</span>
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </div>
+              </div>
+            </el-menu-item>
+          </el-menu>
+        </el-card>
+      </el-col>
+      <el-col :lg="18" :md="16" :sm="24" :xl="20" :xs="24">
+        <el-card shadow="never" style="border: 0">
+          <el-form ref="form" :inline="true" @submit.native.prevent>
+            <el-form-item>
+              <el-button
+                native-type="submit"
+                size="small"
+                type="primary"
+                @click="handleEdit('add', 1)"
+              >
+                添加尺码
+              </el-button>
+              <el-button
+                native-type="submit"
+                size="small"
+                type="primary"
+                @click="handleEdit('add', 2)"
+              >
+                添加分类
+              </el-button>
+            </el-form-item>
+            <el-form-item label="尺码名称：" style="float: right">
+              <el-input
+                v-model="addressKeyword"
+                clearable
+                placeholder="请输入尺码名称"
+              >
+                <el-button
+                  slot="append"
+                  icon="el-icon-search"
+                  @click="getAddressKeyword"
+                />
+              </el-input>
+            </el-form-item>
+          </el-form>
+          <List
+            :list="list1"
+            :list-type="listType"
+            :state="listLoading"
+            :total="total"
+            @changePage="changeBtnPage"
+            @changePageSize="changeBtnPageSize"
+            @selectRows="selectBtnRows"
           >
-            <template #default="{ row }">
-              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <!-- <el-button type="text" @click="handleDelete(row)">删除</el-button> -->
+            <!-- 表格组件具名插槽 自定义表头 -->
+            <template #List>
+              <el-table-column type="selection" />
+              <el-table-column label="ID" prop="id" />
+              <el-table-column label="尺码名称" prop="name" />
+              <el-table-column label="类型" prop="name" />
+              <el-table-column label="组别分类" prop="zhekou" />
+              <el-table-column label="创建时间" prop="tiem" />
+              <el-table-column
+                align="center"
+                fixed="right"
+                label="操作"
+                width="85"
+              >
+                <template #default="{ row }">
+                  <el-button type="text" @click="handleEdit(row, 1)">
+                    编辑
+                  </el-button>
+                  <el-button type="text" @click="handleDelete(row, 1)">
+                    删除
+                  </el-button>
+                  <el-button type="text" @click="handleDelete(row, 1)">
+                    禁止操作
+                  </el-button>
+                </template>
+              </el-table-column>
             </template>
-          </el-table-column>
-        </template>
-      </List>
-    </el-card>
+          </List>
+        </el-card>
+      </el-col>
+    </el-row>
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
-
 <script>
   import List from '@/subview/components/List'
   import Edit from './components/SizeEdit'
-  import Form from '@/subview/components/Form'
-  import { getSizeList, editSize, deleteSize } from '@/api/basic'
+  // import { getGradeList, editGrade, deleteGrade } from '@/api/basic'
   export default {
-    name: 'ArchivesSize',
-    components: { List, Form, Edit },
+    name: 'GoodsClassified',
+    components: { List, Edit },
     data() {
       return {
         // 表单数据/列表参数
@@ -93,12 +142,51 @@
           id: 0,
           name: '',
           pageNo: 1,
-          pageSize: 10,
+          pageSize: 20,
         },
+        menuList: [
+          {
+            id: '0',
+            name: '全部',
+            btnIconStatus: false,
+            default: false,
+          },
+          {
+            id: '1',
+            name: '童装',
+            btnIconStatus: false,
+            default: false,
+          },
+          {
+            id: '2',
+            name: '男装',
+            btnIconStatus: false,
+            default: false,
+          },
+          {
+            id: '3',
+            name: '女装',
+            btnIconStatus: false,
+            default: false,
+          },
+          {
+            id: '4',
+            name: '内衣',
+            btnIconStatus: false,
+            default: false,
+          },
+          {
+            id: '5',
+            name: '女鞋',
+            btnIconStatus: false,
+            default: false,
+          },
+        ],
         formType: 4,
         // 列表数据相关
         selectRows: [],
         listType: 1,
+        list1: [],
         list: [],
         listLoading: false,
         total: 0,
@@ -117,17 +205,18 @@
     },
     methods: {
       // 新增修改
-      async handleEdit(row) {
+      async handleEdit(row, type) {
         if (row === 'add') {
-          this.$refs['edit'].showEdit()
+          this.$refs['edit'].showEdit(row, type)
         } else {
           if (row.id) {
-            const { code, data } = await editSize({ id: row.id })
-            if (code === 200) {
-              this.$refs['edit'].showEdit(data)
-            }
+            // const { code, data } = await editGrade({ id: row.id })
+            // if (code === 200) {
+            //   this.$refs['edit'].showEdit(data)
+            // }
+            this.$refs['edit'].showEdit(row, type)
           } else {
-            this.$refs['edit'].showEdit()
+            this.$refs['edit'].showEdit(row, type)
           }
         }
       },
@@ -136,24 +225,47 @@
         this.form.pageNo = 1
       },
       // 删除
-      handleDelete(row) {
+      handleDelete(row, type) {
         if (row.id) {
-          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await deleteSize({ id: row.id })
-            if (code != 200) {
-              return
-            }
-            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
-            this.fetchData()
-          })
+          if (type === 3) {
+            this.$baseConfirm(
+              '你确定要将当前分类设为默认项吗',
+              null,
+              async () => {
+                // const { code } = await deleteGrade({ id: row.id })
+                // if (code != 200) {
+                //   return
+                // }
+                this.$baseMessage(
+                  '设置成功',
+                  'success',
+                  'vab-hey-message-success'
+                )
+                this.fetchData()
+              }
+            )
+          } else {
+            this.$baseConfirm('你确定要删除当前项吗', null, async () => {
+              // const { code } = await deleteGrade({ id: row.id })
+              // if (code != 200) {
+              //   return
+              // }
+              this.$baseMessage(
+                '删除成功',
+                'success',
+                'vab-hey-message-success'
+              )
+              this.fetchData()
+            })
+          }
         } else {
           if (this.selectRows.length > 0) {
-            const ids = this.selectRows.map((item) => item.id).join()
+            // const ids = this.selectRows.map((item) => item.id).join()
             this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-              const { code } = await deleteSize(ids)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await deleteGrade(ids)
+              // if (code != 200) {
+              //   return
+              // }
               this.fetchData()
             })
           } else {
@@ -179,13 +291,43 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        this.listLoading = true
-        const {
-          data: { list, total },
-        } = await getSizeList(this.form)
-        this.list = list.list_whole.concat(list.list_scatterer)
-        this.total = total
-        this.listLoading = false
+        // this.listLoading = true
+        // const {
+        //   data: { list, total },
+        // } = await getGradeList(this.form)
+        // this.list = list
+        // this.total = total
+        // this.listLoading = false
+        this.total = this.list1.length
+      },
+      handleGrouPQuery(data) {
+        if (data.name === '全部') {
+          this.list1 = this.list
+          this.fetchData()
+        } else {
+          this.list1 = this.list.filter((item) => item.zhekou === data.name)
+          this.fetchData()
+        }
+      },
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath)
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath)
+      },
+      mouseOver(index) {
+        if (this.menuList[index].btnIconStatus == false) {
+          this.menuList[index].btnIconStatus = true
+        } else {
+          this.menuList[index].btnIconStatus = false
+        }
+      },
+      mouseLeave(index) {
+        if (this.menuList[index].btnIconStatus == false) {
+          this.menuList[index].btnIconStatus = true
+        } else {
+          this.menuList[index].btnIconStatus = false
+        }
       },
     },
   }

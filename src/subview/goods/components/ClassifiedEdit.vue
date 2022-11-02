@@ -6,8 +6,29 @@
     @close="close"
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item label="分类名称" prop="name">
-        <el-input v-model="form.name" />
+      <el-form-item v-if="type === 1" label="款式分类" prop="name">
+        <el-select v-model="form.select" placeholder="请选择分类">
+          <el-option label="分类1" :value="1" />
+          <el-option label="分类2" :value="2" />
+          <el-option label="分类3" :value="3" />
+        </el-select>
+      </el-form-item>
+      <el-form-item v-if="type === 1" label="款式名称" prop="name">
+        <el-input
+          v-model="form.name"
+          placeholder="请输入名称"
+          style="width: 215px"
+        />
+      </el-form-item>
+      <el-form-item v-if="type === 2" label="分类名称" prop="name">
+        <el-input
+          v-model="form.name"
+          placeholder="请输入名称"
+          style="width: 215px"
+        />
+      </el-form-item>
+      <el-form-item v-if="type === 2" label="排序" prop="name">
+        <el-input v-model="form.id" style="width: 215px" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -18,15 +39,17 @@
 </template>
 
 <script>
-  // import { updateWave, addWave } from '@/api/basic'
+  import { updateWave, addWave } from '@/api/basic'
   export default {
-    name: 'BandEdit',
+    name: 'TagsEdit',
     data() {
       return {
         form: {
           name: '',
+          select: '',
           id: '',
         },
+        type: 1,
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
         },
@@ -36,11 +59,20 @@
     },
     created() {},
     methods: {
-      showEdit(row) {
-        if (!row) {
-          this.title = '添加'
+      showEdit(row, type) {
+        this.type = type
+        if (row === 'add') {
+          if (type === 1) {
+            this.title = '添加款式'
+          } else {
+            this.title = '添加款式分类'
+          }
         } else {
-          this.title = '编辑'
+          if (type === 1) {
+            this.title = '编辑款式'
+          } else {
+            this.title = '编辑款式分类'
+          }
           this.form = Object.assign({}, row)
         }
         this.dialogFormVisible = true
@@ -54,10 +86,10 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              // const { code } = await addWave(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              const { code } = await addWave(this.form)
+              if (code != 200) {
+                return
+              }
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -66,10 +98,10 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              // const { code } = await updateWave(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              const { code } = await updateWave(this.form)
+              if (code != 200) {
+                return
+              }
               this.$baseMessage(
                 '修改成功',
                 'success',
