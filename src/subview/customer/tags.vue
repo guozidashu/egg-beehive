@@ -6,14 +6,6 @@
           shadow="never"
           style="height: 100%; min-height: calc(80vh); border: 0"
         >
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleEdit('add', 2)"
-          >
-            添加分类
-          </el-button>
           <el-menu
             class="el-menu-vertical-demo"
             default-active="0"
@@ -55,32 +47,6 @@
         </el-card>
       </el-col>
       <el-col :lg="18" :md="16" :sm="24" :xl="20" :xs="24">
-        <div
-          style="
-            padding-top: 1px;
-            margin-bottom: 20px;
-            background-color: #ffffff;
-          "
-        >
-          <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
-            <template #Form>
-              <el-form-item label="标签分类：" prop="region">
-                <el-select v-model="form.type1" placeholder="请选择">
-                  <el-option label="标签1" :value="1" />
-                  <el-option label="标签2" :value="2" />
-                  <el-option label="标签3" :value="3" />
-                </el-select>
-              </el-form-item>
-              <el-form-item label="标签名称：" prop="region">
-                <el-input
-                  v-model="form.name"
-                  placeholder="请输入标签名称"
-                  size="small"
-                />
-              </el-form-item>
-            </template>
-          </Form>
-        </div>
         <el-card shadow="never" style="border: 0">
           <el-form ref="form" :inline="true" @submit.native.prevent>
             <el-form-item>
@@ -92,10 +58,30 @@
               >
                 添加标签
               </el-button>
-
+              <el-button
+                native-type="submit"
+                size="small"
+                type="primary"
+                @click="handleEdit('add', 2)"
+              >
+                添加分类
+              </el-button>
               <el-button native-type="submit" size="small" type="primary">
                 同步企业微信标签
               </el-button>
+            </el-form-item>
+            <el-form-item label="标签名称：" style="float: right">
+              <el-input
+                v-model="addressKeyword"
+                clearable
+                placeholder="请输入标签名称"
+              >
+                <el-button
+                  slot="append"
+                  icon="el-icon-search"
+                  @click="getAddressKeyword"
+                />
+              </el-input>
             </el-form-item>
           </el-form>
           <List
@@ -139,11 +125,10 @@
 <script>
   import List from '@/subview/components/List'
   import Edit from './components/TagsEdit'
-  import Form from '@/subview/components/Form'
   // import { getGradeList, editGrade, deleteGrade } from '@/api/basic'
   export default {
     name: 'CustomerTags',
-    components: { List, Edit, Form },
+    components: { List, Edit },
     data() {
       return {
         // 表单数据/列表参数
