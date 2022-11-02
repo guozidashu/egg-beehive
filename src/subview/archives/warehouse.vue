@@ -5,8 +5,19 @@
     >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
-          <el-form-item label="仓库名称" prop="region">
-            <el-input v-model="form.name" size="small" />
+          <el-form-item label="仓库类型：" prop="region">
+            <el-select v-model="form.type1">
+              <el-option label="仓库1" :value="1" />
+              <el-option label="仓库2" :value="2" />
+              <el-option label="仓库3" :value="3" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="仓库名称：" prop="region">
+            <el-input
+              v-model="form.name"
+              placeholder="请输入仓库名称"
+              size="small"
+            />
           </el-form-item>
         </template>
       </Form>
@@ -20,7 +31,7 @@
             type="primary"
             @click="handleEdit('add')"
           >
-            添加
+            添加仓库
           </el-button>
         </el-form-item>
       </el-form>
@@ -36,50 +47,32 @@
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="仓库ID"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="仓库名称"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="是否默认"
-            prop="mr"
-            show-overflow-tooltip
-          >
+          <el-table-column type="selection" width="55" />
+          <el-table-column label="ID" prop="id" width="80" />
+          <el-table-column label="仓库名称" prop="name" width="150" />
+
+          <el-table-column label="库位" prop="position" width="150" />
+          <el-table-column label="仓库类型" prop="name" width="150" />
+          <el-table-column label="是否默认" prop="mr" width="80">
             <template #default="{ row }">
               <span v-if="row.mr == 0">否</span>
               <span v-else>默认</span>
             </template>
           </el-table-column>
-          <el-table-column
-            align="center"
-            label="库位"
-            prop="position"
-            show-overflow-tooltip
-          />
+          <el-table-column label="备注" prop="position" />
+          <el-table-column label="创建时间" prop="position" />
           <el-table-column
             align="center"
             label="操作"
             show-overflow-tooltip
-            width="85"
+            width="150"
           >
             <template #default="{ row }">
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
               <el-button type="text" @click="handleDelete(row)">删除</el-button>
+              <el-button type="text" @click="handleDelete(row)">
+                禁止操作
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -93,7 +86,7 @@
   import List from '@/subview/components/List'
   import Edit from './components/WareHouseEdit'
   import Form from '@/subview/components/Form'
-  import { editWarehouse, deleteWarehouse } from '@/api/basic'
+  // import { editWarehouse, deleteWarehouse } from '@/api/basic'
   export default {
     name: 'ArchivesWarehouse',
     components: { List, Edit, Form },
@@ -106,7 +99,7 @@
           pageNo: 1,
           pageSize: 10,
         },
-        formType: 4,
+        formType: 3,
         // 列表数据相关
         selectRows: [],
         listType: 1,
@@ -146,10 +139,11 @@
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {
-            const { code, data } = await editWarehouse({ id: row.id })
-            if (code === 200) {
-              this.$refs['edit'].showEdit(data)
-            }
+            // const { code, data } = await editWarehouse({ id: row.id })
+            // if (code === 200) {
+            //   this.$refs['edit'].showEdit(data)
+            // }
+            this.$refs['edit'].showEdit(row)
           } else {
             this.$refs['edit'].showEdit()
           }
@@ -164,21 +158,21 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await deleteWarehouse({ id: row.id })
-            if (code != 200) {
-              return
-            }
+            // const { code } = await deleteWarehouse({ id: row.id })
+            // if (code != 200) {
+            //   return
+            // }
             this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
             this.fetchData()
           })
         } else {
           if (this.selectRows.length > 0) {
-            const ids = this.selectRows.map((item) => item.id).join()
+            // const ids = this.selectRows.map((item) => item.id).join()
             this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-              const { code } = await deleteWarehouse(ids)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await deleteWarehouse(ids)
+              // if (code != 200) {
+              //   return
+              // }
               this.fetchData()
             })
           } else {

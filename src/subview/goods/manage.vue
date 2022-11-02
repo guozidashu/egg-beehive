@@ -159,7 +159,7 @@
   import Form from '@/subview/components/Form'
   import Edit from './components/ManageEdit'
   import Drawer from './components/Drawer'
-  import { getGoodsTypeList } from '@/api/basic'
+  // import { getGoodsTypeList } from '@/api/basic'
   export default {
     name: 'GoodsManage',
     components: { List, Form, Drawer, Edit },
@@ -255,10 +255,10 @@
         // this.listLoading = false
       },
       async getGoodsTypeList() {
-        const {
-          data: { data },
-        } = await getGoodsTypeList(this.form)
-        this.typeData = data
+        // const {
+        //   data: { data },
+        // } = await getGoodsTypeList(this.form)
+        // this.typeData = data
       },
       // 详情抽屉
       handleDetail(row, type) {

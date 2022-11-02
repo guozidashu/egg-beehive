@@ -18,7 +18,7 @@
 </template>
 
 <script>
-  import { updateSubject, addSubject } from '@/api/basic'
+  // import { updateSubject, addSubject } from '@/api/basic'
   export default {
     name: 'LevelDeit',
     data() {
@@ -54,10 +54,10 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await addSubject(this.form)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await addSubject(this.form)
+              // if (code != 200) {
+              //   return
+              // }
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -66,10 +66,10 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await updateSubject(this.form)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await updateSubject(this.form)
+              // if (code != 200) {
+              //   return
+              // }
               this.$baseMessage(
                 '修改成功',
                 'success',

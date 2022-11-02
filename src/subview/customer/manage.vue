@@ -77,14 +77,12 @@
               <el-option label="分类二" value="shanghai" />
             </el-select>
           </el-form-item>
-          <el-form-item v-show="!form.fold" label="销售渠道:">
-            <el-select v-model="form.select3">
-              <el-option label="全部" value="0" />
-              <el-option label="ERP平台" value="shanghai" />
-              <el-option label="微信公众号" value="shanghai" />
-              <el-option label="抖音" value="shanghai" />
-              <el-option label="快团团" value="shanghai" />
-            </el-select>
+          <el-form-item v-show="!form.fold" label="客户标签:">
+            <el-cascader
+              v-model="value"
+              :options="options"
+              @change="handleChange"
+            />
           </el-form-item>
           <el-form-item v-show="!form.fold" label="客户来源:">
             <el-select v-model="form.select4">
@@ -93,7 +91,7 @@
               <el-option label="来源二" value="shanghai" />
             </el-select>
           </el-form-item>
-          <el-form-item v-show="!form.fold" label="订单时间:">
+          <el-form-item v-show="!form.fold" label="加入时间:">
             <el-date-picker
               v-model="form.date"
               align="left"
@@ -217,6 +215,70 @@
         exclList: [],
         drawer: false,
         drawerInof: {},
+        options: [
+          {
+            value: 'zhinan',
+            label: '指南',
+            children: [
+              {
+                value: 'shejiyuanze',
+                label: '设计原则',
+              },
+              {
+                value: 'daohang',
+                label: '导航',
+              },
+            ],
+          },
+          {
+            value: 'zujian',
+            label: '组件',
+            children: [
+              {
+                value: 'basic',
+                label: 'Basic',
+              },
+              {
+                value: 'form',
+                label: 'Form',
+              },
+              {
+                value: 'data',
+                label: 'Data',
+              },
+              {
+                value: 'notice',
+                label: 'Notice',
+              },
+              {
+                value: 'navigation',
+                label: 'Navigation',
+              },
+              {
+                value: 'others',
+                label: 'Others',
+              },
+            ],
+          },
+          {
+            value: 'ziyuan',
+            label: '资源',
+            children: [
+              {
+                value: 'axure',
+                label: 'Axure Components',
+              },
+              {
+                value: 'sketch',
+                label: 'Sketch Templates',
+              },
+              {
+                value: 'jiaohu',
+                label: '组件交互文档',
+              },
+            ],
+          },
+        ],
         activeName: 'first',
         // 表单数据/列表参数
         form: {
@@ -330,6 +392,9 @@
       this.selectData()
     },
     methods: {
+      handleChange(value) {
+        console.log(value)
+      },
       // 新增优化圈
       async addCoupons() {
         this.$refs['edit'].showEdit()

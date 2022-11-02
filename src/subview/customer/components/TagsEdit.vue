@@ -7,10 +7,13 @@
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
       <el-form-item v-if="type === 1" label="标签分类" prop="name">
-        <el-select v-model="form.select" placeholder="请选择分类">
-          <el-option label="分类1" :value="1" />
-          <el-option label="分类2" :value="2" />
-          <el-option label="分类3" :value="3" />
+        <el-select v-model="form.pid" placeholder="请选择分类">
+          <el-option
+            v-for="(item, index) in selectList"
+            :key="index"
+            :label="item.name"
+            :value="item.id"
+          />
         </el-select>
       </el-form-item>
       <el-form-item v-if="type === 1" label="标签名称" prop="name">
@@ -39,16 +42,16 @@
 </template>
 
 <script>
-  import { updateWave, addWave } from '@/api/basic'
+  import { editTagSaveList, getParentTagList } from '@/api/basic'
   export default {
     name: 'TagsEdit',
     data() {
       return {
         form: {
           name: '',
-          select: '',
-          id: '',
+          pid: 0,
         },
+        selectList: [],
         type: 1,
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
@@ -69,13 +72,20 @@
           }
         } else {
           if (type === 1) {
+            console.log(row)
             this.title = '编辑标签'
+            row.pid = row.tag_pid
           } else {
             this.title = '编辑分类'
           }
           this.form = Object.assign({}, row)
         }
         this.dialogFormVisible = true
+        this.getSelectList()
+      },
+      async getSelectList() {
+        let res = await getParentTagList(this.form)
+        this.selectList = res.data
       },
       close() {
         this.$refs['form'].resetFields()
@@ -86,7 +96,7 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await addWave(this.form)
+              const { code } = await editTagSaveList(this.form)
               if (code != 200) {
                 return
               }
@@ -98,7 +108,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await updateWave(this.form)
+              const { code } = await editTagSaveList(this.form)
               if (code != 200) {
                 return
               }

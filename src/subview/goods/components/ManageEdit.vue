@@ -52,7 +52,7 @@
 
 <script>
   import VabUpload from '@/extra/VabUpload'
-  import { updateMeeting, addGoodsList } from '@/api/basic'
+  // import { updateMeeting, addGoodsList } from '@/api/basic'
   export default {
     name: 'LevelDeit',
     components: {
@@ -112,10 +112,10 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await addGoodsList(this.form)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await addGoodsList(this.form)
+              // if (code != 200) {
+              //   return
+              // }
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -124,10 +124,10 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await updateMeeting(this.form)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await updateMeeting(this.form)
+              // if (code != 200) {
+              //   return
+              // }
               this.$baseMessage(
                 '修改成功',
                 'success',

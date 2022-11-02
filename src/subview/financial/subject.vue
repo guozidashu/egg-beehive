@@ -75,7 +75,7 @@
   import List from '@/subview/components/List'
   import Edit from './components/SubjectEdit'
   import Form from '@/subview/components/Form'
-  import { editSubject, deleteSubject } from '@/api/basic'
+  // import { editSubject, deleteSubject } from '@/api/basic'
   export default {
     name: 'FinancialSubject',
     components: { List, Form, Edit },
@@ -120,10 +120,11 @@
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {
-            const { code, data } = await editSubject({ id: row.id })
-            if (code === 200) {
-              this.$refs['edit'].showEdit(data)
-            }
+            // const { code, data } = await editSubject({ id: row.id })
+            // if (code === 200) {
+            //   this.$refs['edit'].showEdit(data)
+            // }
+            this.$refs['edit'].showEdit(row)
           } else {
             this.$refs['edit'].showEdit()
           }
@@ -137,21 +138,21 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await deleteSubject({ id: row.id })
-            if (code != 200) {
-              return
-            }
+            // const { code } = await deleteSubject({ id: row.id })
+            // if (code != 200) {
+            //   return
+            // }
             this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
             this.fetchData()
           })
         } else {
           if (this.selectRows.length > 0) {
-            const ids = this.selectRows.map((item) => item.id).join()
+            // const ids = this.selectRows.map((item) => item.id).join()
             this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-              const { code } = await deleteSubject(ids)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await deleteSubject(ids)
+              // if (code != 200) {
+              //   return
+              // }
               this.fetchData()
             })
           } else {

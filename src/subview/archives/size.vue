@@ -98,7 +98,8 @@
             <template #List>
               <el-table-column type="selection" />
               <el-table-column label="ID" prop="id" />
-              <el-table-column label="尺码名称" prop="name" />
+              <el-table-column label="尺码组名" prop="name" />
+              <el-table-column label="尺码" prop="name" />
               <el-table-column label="类型" prop="name" />
               <el-table-column label="组别分类" prop="zhekou" />
               <el-table-column label="创建时间" prop="tiem" />

@@ -6,16 +6,12 @@
           <el-col :span="12" style="display: flex">
             <img
               :src="avatar"
-              style="
-                width: 50px;
-                height: 50px;
-                margin: 0 10px 10px 0;
-                border-radius: 50%;
-              "
+              style="width: 50px; height: 50px; margin: 0 10px 10px 0"
             />
-            <span style="margin: 15px 0 0 0">
-              {{ form.name }}|{{ form.level }}
-            </span>
+            <div style="margin-top: -5px">
+              <div style="margin: 15px 0 0 0">款号：{{ form.name }}</div>
+              <div>名称：{{ form.name }}</div>
+            </div>
           </el-col>
 
           <el-col :span="12">
@@ -28,18 +24,37 @@
               size="small"
               style="float: right; margin-right: 10px"
               type="primary"
-              @click="upMembers(2)"
+              @click="upMembers(3)"
             >
-              升级会员
+              停售
             </el-button>
             <el-button
               native-type="submit"
               size="small"
               style="float: right; margin-right: 10px"
               type="primary"
+              @click="upMembers(2)"
+            >
+              强制下线
+            </el-button>
+            <el-button
+              v-if="form.drawerType == 1"
+              native-type="submit"
+              size="small"
+              style="float: right"
+              type="primary"
+              @click="print('vab-print-table')"
+            >
+              打印
+            </el-button>
+            <el-button
+              native-type="submit"
+              size="small"
+              style="float: right"
+              type="primary"
               @click="upMembers(1)"
             >
-              积分余额
+              审核
             </el-button>
             <el-button
               v-if="form.drawerType == 1"
@@ -80,52 +95,55 @@
       style="padding: 0 25px"
       @tab-click="handleClick"
     >
-      <el-tab-pane label="客户信息" name="first" />
-      <el-tab-pane label="订单记录" name="second" />
-      <el-tab-pane label=" 发货记录" name="three" />
-      <el-tab-pane label="退货记录" name="four" />
-      <el-tab-pane label="收银记录" name="five" />
-      <el-tab-pane label="持有优惠券" name="six" />
-      <el-tab-pane label=" 积分时间" name="seven" />
-      <el-tab-pane label="签到记录" name="eight" />
-      <el-tab-pane label="欠货统计" name="nine" />
+      <el-tab-pane label="商品信息" name="first" />
+      <el-tab-pane label="客户销售" name="second" />
+      <el-tab-pane label="发货信息" name="three" />
+      <el-tab-pane label="退货信息" name="four" />
+      <el-tab-pane label="入库信息" name="five" />
+      <el-tab-pane label="出库信息" name="six" />
+      <el-tab-pane label="调查信息" name="seven" />
     </el-tabs>
-    <div v-if="tabLabel == '客户信息'">
-      <div v-if="form.drawerType == 1" class="drawer-tab">
+    <div v-if="tabindex == '0'">
+      <div v-if="form.drawerType == 1" ref="vab-print-table" class="drawer-tab">
         <div class="conten-warp">
           <div class="conten-title">基本信息</div>
           <div class="conten-list-row">
-            <div>用户编号：577</div>
-            <div>真实姓名： 阿白</div>
-            <div>手机号码： -15236804776</div>
-            <div>生日：2001-11-01</div>
-            <div>身份证号： 411425199905053316</div>
-            <div>加入时间： 2022-01-01 10：20:20</div>
-            <div>客户地址： 杭州市滨江区春波小区11栋602</div>
-          </div>
-        </div>
-        <div class="conten-warp">
-          <div class="conten-title">密码</div>
-          <div class="conten-list-row">
-            <div>登录密码：*******</div>
-          </div>
-        </div>
-        <div class="conten-warp">
-          <div class="conten-title">客户概况</div>
-          <div class="conten-list-row">
-            <div>用户状态： 开启</div>
-            <div>客户等级： 钻石会员</div>
-            <div>客户分类： B端合伙人</div>
-            <div style="width: 100%">客户标签： 小红书、00后</div>
-            <div>所在城市： 杭州市</div>
-          </div>
-        </div>
-        <div class="conten-warp">
-          <div class="conten-title">备注</div>
-          <div class="conten-list-row">
-            <div style="width: 100%">
-              备注信息： 1111111111111111111111111111
+            <div>商品分类：分类一</div>
+            <div>商品名称： 名称一</div>
+            <div>商品品牌： 品牌一</div>
+            <div>年份：2001</div>
+            <div>季节： 春季</div>
+            <div>上市波段： 2020</div>
+            <div>年龄段： 90后</div>
+            <div>性别： 男</div>
+            <div>
+              商品图片：
+              <img :src="avatar" style="width: 20px; height: 20px" />
             </div>
+          </div>
+        </div>
+        <div class="conten-warp">
+          <div class="conten-title">规格及库位</div>
+          <div class="conten-list-row">
+            <div>颜色：红色</div>
+            <div>尺码：50/60/70</div>
+            <div>商品库位：库位一</div>
+          </div>
+        </div>
+        <div class="conten-warp">
+          <div class="conten-title">价格信息</div>
+          <div class="conten-list-row">
+            <div>采购价： ￥500</div>
+            <div>成本价： ￥500</div>
+            <div>吊牌价： ￥500</div>
+            <div>销售价： ￥500</div>
+          </div>
+        </div>
+        <div class="conten-warp">
+          <div class="conten-title">其他信息</div>
+          <div class="conten-list-row">
+            <div>商品条码： 1111111111111</div>
+            <div>商品状态： 启用</div>
           </div>
         </div>
       </div>
@@ -140,123 +158,261 @@
           <div class="conten-warp">
             <div class="conten-title">基本信息</div>
             <div class="conten-list-com">
-              <el-form-item class="item" label="用户编号：">
+              <el-form-item class="item" label="款号：">
                 <el-input
                   v-model="form.addressKeyword"
-                  placeholder="请输入用户编号"
+                  placeholder="请输入款号"
                   style="width: 215px"
                 />
               </el-form-item>
-              <el-form-item class="item" label="真实姓名：">
+              <el-form-item class="item" label="商品分类：">
+                <el-select v-model="form.brand" placeholder="请选择商品分类">
+                  <el-option
+                    v-for="(item, index) in typeData.brand"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+                <i
+                  class="el-icon-plus"
+                  style="margin-left: 10px; color: #1890ff"
+                ></i>
+              </el-form-item>
+              <el-form-item class="item" label="商品名称：">
                 <el-input
                   v-model="form.addressKeyword"
-                  placeholder="请输入真实姓名"
+                  placeholder="请输入商品名称"
                   style="width: 215px"
                 />
               </el-form-item>
-              <el-form-item class="item" label="手机号码：">
-                <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入手机号码"
-                  style="width: 215px"
-                />
+              <el-form-item class="item" label="商品品牌：">
+                <el-select v-model="form.brand" placeholder="请选择商品品牌：">
+                  <el-option
+                    v-for="(item, index) in typeData.brand"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+                <i
+                  class="el-icon-plus"
+                  style="margin-left: 10px; color: #1890ff"
+                ></i>
               </el-form-item>
-              <el-form-item class="item" label="生日：">
-                <el-date-picker
-                  v-model="form.value1"
-                  placeholder="请选择生日"
-                  type="date"
-                />
+              <el-form-item class="item" label="年份：">
+                <el-select v-model="form.brand" placeholder="请选择年份：">
+                  <el-option
+                    v-for="(item, index) in typeData.brand"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+                <i
+                  class="el-icon-plus"
+                  style="margin-left: 10px; color: #1890ff"
+                ></i>
               </el-form-item>
-              <el-form-item class="item" label="身份证号：">
-                <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入身份证号"
-                  style="width: 215px"
-                />
+              <el-form-item class="item" label="季节：">
+                <el-select v-model="form.brand" placeholder="请选择季节：">
+                  <el-option
+                    v-for="(item, index) in typeData.brand"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+                <i
+                  class="el-icon-plus"
+                  style="margin-left: 10px; color: #1890ff"
+                ></i>
               </el-form-item>
-              <el-form-item class="item" label="加入时间：">
-                <el-date-picker
-                  v-model="form.value1"
-                  placeholder="请选择加入时间"
-                  type="date"
-                />
+              <el-form-item class="item" label="上市波段：">
+                <el-select v-model="form.brand" placeholder="请选择上市波段：">
+                  <el-option
+                    v-for="(item, index) in typeData.brand"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+                <i
+                  class="el-icon-plus"
+                  style="margin-left: 10px; color: #1890ff"
+                ></i>
               </el-form-item>
-              <el-form-item class="item" label="客户地址：">
-                <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入客户地址"
-                  style="width: 215px"
-                />
+              <el-form-item class="item" label="年龄段：">
+                <el-select v-model="form.brand" placeholder="请选择年龄段：">
+                  <el-option
+                    v-for="(item, index) in typeData.brand"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+                <i
+                  class="el-icon-plus"
+                  style="margin-left: 10px; color: #1890ff"
+                ></i>
+              </el-form-item>
+              <el-form-item class="item" label="性别：">
+                <el-select v-model="form.brand" placeholder="请选择性别：">
+                  <el-option label="男" value="1" />
+                  <el-option label="女" value="2" />
+                </el-select>
+              </el-form-item>
+              <el-form-item class="item" label="商品图片：">
+                <el-button
+                  native-type="submit"
+                  size="small"
+                  type="primary"
+                  @click="handleShow()"
+                >
+                  上传
+                </el-button>
               </el-form-item>
             </div>
           </div>
         </div>
         <div class="drawer-tab">
           <div class="conten-warp">
-            <div class="conten-title">密码</div>
+            <div class="conten-title">规格及库位</div>
             <div class="conten-list-com">
-              <el-form-item class="item" label="登录密码：">
+              <el-form-item class="item" label="颜色：">
+                <el-select v-model="form.brand" placeholder="请选择颜色：">
+                  <el-option
+                    v-for="(item, index) in typeData.brand"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+                <i
+                  class="el-icon-plus"
+                  style="margin-left: 10px; color: #1890ff"
+                ></i>
+              </el-form-item>
+              <el-form-item class="item" label="尺码：">
+                <el-select v-model="form.brand" placeholder="请选择尺码：">
+                  <el-option
+                    v-for="(item, index) in typeData.brand"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+                <i
+                  class="el-icon-plus"
+                  style="margin-left: 10px; color: #1890ff"
+                ></i>
+              </el-form-item>
+              <el-form-item class="item" label="商品库位：">
+                <el-select v-model="form.brand" placeholder="请选择库位：">
+                  <el-option
+                    v-for="(item, index) in typeData.brand"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+                <i
+                  class="el-icon-plus"
+                  style="margin-left: 10px; color: #1890ff"
+                ></i>
+              </el-form-item>
+            </div>
+          </div>
+        </div>
+        <div class="drawer-tab">
+          <div class="conten-warp">
+            <div class="conten-title">价格信息</div>
+            <div class="conten-list-com">
+              <el-form-item class="item" label="采购价：">
+                <el-input v-model="form.addressKeyword" style="width: 215px" />
+              </el-form-item>
+              <el-form-item class="item" label="成本价：">
+                <el-input v-model="form.addressKeyword" style="width: 215px" />
+              </el-form-item>
+              <el-form-item class="item" label="吊牌价：">
+                <el-input v-model="form.addressKeyword" style="width: 215px" />
+              </el-form-item>
+              <el-form-item class="item" label="销售价：">
                 <el-input
                   v-model="form.addressKeyword"
-                  placeholder="请输入登录密码"
+                  clearable
                   style="width: 215px"
-                />
+                >
+                  <el-button slot="append" @click="xstype = !xstype">
+                    固定价
+                  </el-button>
+                </el-input>
+                <el-button
+                  v-if="xstype"
+                  native-type="submit"
+                  size="small"
+                  style="margin-left: 10px"
+                  type="primary"
+                  @click="hutype = !hutype"
+                >
+                  <span v-if="hutype">整手</span>
+                  <span v-else>散码</span>
+                </el-button>
+              </el-form-item>
+              <el-form-item v-if="xstype" class="item" style="width: 100%">
+                <List
+                  :list="zhekouList"
+                  :list-type="listType"
+                  :state="listLoading"
+                >
+                  <template #List>
+                    <el-table-column
+                      label="会员名称"
+                      prop="name"
+                      show-overflow-tooltip
+                    />
+                    <el-table-column
+                      label="折扣"
+                      prop="zhekou"
+                      show-overflow-tooltip
+                    />
+                    <el-table-column
+                      label="折扣前"
+                      prop="qian"
+                      show-overflow-tooltip
+                    />
+                    <el-table-column
+                      label="折扣后"
+                      prop="hou"
+                      show-overflow-tooltip
+                    />
+                  </template>
+                </List>
               </el-form-item>
             </div>
           </div>
         </div>
         <div class="drawer-tab">
           <div class="conten-warp">
-            <div class="conten-title">客户概况</div>
+            <div class="conten-title">其他信息</div>
             <div class="conten-list-com">
-              <el-form-item class="item" label="用户状态：">
-                <el-switch
-                  v-model="form.sp"
-                  active-color="#41B584"
-                  active-text="开启"
-                  :active-value="1"
-                  class="switch"
-                  inactive-color="#D2D2D2"
-                  inactive-text="关闭"
-                  :inactive-value="0"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="客户等级：">
-                <el-select v-model="form.type1" placeholder="请选择">
-                  <el-option label="黄金" :value="1" />
-                  <el-option label="白银" :value="2" />
-                </el-select>
-              </el-form-item>
-              <el-form-item class="item" label="客户分类：">
-                <el-select v-model="form.type1" placeholder="请选择">
-                  <el-option label="快团团" :value="1" />
-                  <el-option label="微信" :value="2" />
-                </el-select>
-              </el-form-item>
-              <el-form-item class="item" label="客户标签：">
-                <el-select v-model="form.type1" placeholder="请选择">
-                  <el-option label="水瓶座" :value="1" />
-                  <el-option label="金牛座" :value="2" />
-                </el-select>
-              </el-form-item>
-              <el-form-item class="item" label="所在城市：" style="width: 100%">
-                <addressCity @getLawyerListInfo="selectAddress" />
-              </el-form-item>
-            </div>
-          </div>
-        </div>
-        <div class="drawer-tab">
-          <div class="conten-warp">
-            <div class="conten-title">备注</div>
-            <div class="conten-list-com">
-              <el-form-item class="item" label="备注信息：">
+              <el-form-item class="item" label="商品条码：">
                 <el-input
-                  v-model="form.des"
-                  :autosize="{ minRows: 2, maxRows: 4 }"
-                  placeholder="请输入备注"
-                  type="textarea"
-                />
+                  v-model="form.addressKeyword"
+                  clearable
+                  style="width: 215px"
+                >
+                  <el-button slot="append" icon="el-icon-search">
+                    生成
+                  </el-button>
+                </el-input>
+              </el-form-item>
+              <el-form-item class="item" label="商品状态：">
+                <el-radio-group v-model="form.name">
+                  <el-radio :label="0">启用</el-radio>
+                  <el-radio :label="1">备用</el-radio>
+                  <el-radio :label="2">禁用停售</el-radio>
+                </el-radio-group>
               </el-form-item>
             </div>
           </div>
@@ -276,63 +432,25 @@
         <el-table-column label="操作时间" prop="time" show-overflow-tooltip />
       </template>
     </List>
-    <el-dialog
-      :append-to-body="true"
-      :before-close="handleClose1"
-      :title="distitle1"
-      :visible.sync="dialogVisible1"
-      width="500PX"
-    >
-      <el-form
-        v-if="distitle1 == '修改积分余额'"
-        label-width="120px"
-        :model="formDrawer"
-      >
-        <el-form-item label="修改余额">
-          <el-radio-group v-model="formDrawer.state">
-            <el-radio :label="0">增加</el-radio>
-            <el-radio :label="1">减少</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="余额">
-          <el-input v-model="name" />
-        </el-form-item>
-        <el-form-item label="修改积分">
-          <el-radio-group v-model="formDrawer.state1">
-            <el-radio :label="0">增加</el-radio>
-            <el-radio :label="1">减少</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="积分">
-          <el-input v-model="name1" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary">确 定</el-button>
-        </el-form-item>
-      </el-form>
-      <el-form v-else label-width="120px" :model="formDrawer">
-        <el-form-item label="选择会员">
-          <el-select v-model="formDrawer.type1">
-            <el-option label="黄金" :value="1" />
-            <el-option label="白银" :value="2" />
-            <el-option label="青铜" :value="3" />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary">确 定</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+    <vab-upload
+      ref="vabUpload"
+      :limit="50"
+      name="file"
+      :size="2"
+      url="/upload"
+    />
   </div>
 </template>
 
 <script>
-  import addressCity from '@/subview/components/City'
+  import { mapActions } from 'vuex'
+  import VabPrint from '@/extra/VabPrint'
+  import VabUpload from '@/extra/VabUpload'
   import List from '@/subview/components/List'
   import { mapGetters } from 'vuex'
   export default {
     name: 'ComponentsDrawer',
-    components: { addressCity, List },
+    components: { List, VabUpload },
     props: {
       drawerInof: {
         type: Object,
@@ -341,41 +459,32 @@
     },
     data() {
       return {
+        xstype: false,
+        hutype: false,
         dialogVisible1: false,
         distitle1: '',
         activeName: 'first',
-        tabLabel: '客户信息',
+        tabindex: '0',
         form: Object.assign({}, this.drawerInof),
         listLoading: false,
         listType: 2,
+        typeData: [],
         formDrawer: {
           state: 0,
           state1: 0,
         },
-        goosList: [
+        zhekouList: [
           {
-            inof: {
-              img: 'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-              color: '粉',
-              wenzi:
-                '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            },
-            money: 12,
-            pay: 11,
-            num: 1,
-            comutp: 1.0,
+            name: '普通会员',
+            zhekou: '3.5折',
+            qian: 200,
+            hou: 100,
           },
-        ],
-        stareList: [
           {
-            inof: {
-              img: 'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-              color: '粉',
-              wenzi:
-                '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            },
-            id: 'wx310816471104094208[金家酒便利]',
-            time: '2022-10-10 16:33:41',
+            name: '白银会员',
+            zhekou: '4.5折',
+            qian: 200,
+            hou: 100,
           },
         ],
         orderList: [
@@ -392,32 +501,28 @@
         ],
         stalist: [
           {
-            name: '余额/欠款',
-            value: '¥247.50',
-          },
-          {
-            name: '总消费次数',
-            value: '800笔',
-          },
-          {
-            name: '总消费余额',
+            name: '总销量',
             value: '¥24750',
           },
           {
-            name: '总发货金额',
-            value: '¥34750',
+            name: '总销售额',
+            value: '34750',
           },
           {
-            name: '总退货余额',
-            value: '¥24750',
+            name: '库存数',
+            value: '247',
           },
           {
-            name: '累计收银',
-            value: '¥34750',
+            name: '库存价值',
+            value: '800元',
           },
           {
-            name: '最后一次消费时间',
-            value: '2022-10-1 16:33:41',
+            name: '总发货',
+            value: '500',
+          },
+          {
+            name: '总入库',
+            value: '34750',
           },
         ],
       }
@@ -441,9 +546,22 @@
     },
     created() {},
     methods: {
+      ...mapActions({
+        openSideBar: 'settings/openSideBar',
+        foldSideBar: 'settings/foldSideBar',
+      }),
+      async print(val) {
+        await this.foldSideBar()
+        await VabPrint(this.$refs[val], { noPrintParent: true })
+        await this.openSideBar()
+      },
+      handleShow() {
+        this.$refs['vabUpload'].handleShow()
+      },
       // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
-        this.tabLabel = tab.label
+        console.log(8989, tab)
+        this.tabindex = tab.index
       },
       selectAddress(selectProvince, selectCity, selectArea) {
         console.log(selectProvince, selectCity, selectArea)
@@ -453,11 +571,36 @@
       },
       upMembers(type) {
         if (type == 1) {
-          this.distitle1 = '修改积分余额'
-          this.dialogVisible1 = true
-        } else {
-          this.distitle1 = '升级会员'
-          this.dialogVisible1 = true
+          this.$baseConfirm('你确定要审核当前项吗', null, async () => {
+            // const { code } = await deleteBrand({ id: row.id })
+            // if (code != 200) {
+            //   return
+            // }
+            this.$baseMessage('审核成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
+          })
+        } else if (type == 2) {
+          this.$baseConfirm('你确定要强制下线当前项吗', null, async () => {
+            // const { code } = await deleteBrand({ id: row.id })
+            // if (code != 200) {
+            //   return
+            // }
+            this.$baseMessage(
+              '强制下线成功',
+              'success',
+              'vab-hey-message-success'
+            )
+            this.fetchData()
+          })
+        } else if (type == 3) {
+          this.$baseConfirm('你确定要停售当前项吗', null, async () => {
+            // const { code } = await deleteBrand({ id: row.id })
+            // if (code != 200) {
+            //   return
+            // }
+            this.$baseMessage('停售成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
+          })
         }
       },
     },

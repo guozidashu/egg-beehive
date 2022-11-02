@@ -2,11 +2,22 @@
   <el-dialog
     :title="title"
     :visible.sync="dialogFormVisible"
-    width="500px"
+    width="600px"
     @close="close"
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
       <el-form-item label="仓库名称" prop="name">
+        <el-input v-model="form.name" />
+      </el-form-item>
+      <el-form-item label="仓库类型" prop="mr">
+        <el-radio-group v-model="form.mr">
+          <el-radio :label="1" style="margin: 10px 5px">成品仓库</el-radio>
+          <el-radio :label="0">面料仓库</el-radio>
+          <el-radio :label="2">辅料仓库</el-radio>
+          <el-radio :label="3">样板仓库</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="库位分配" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
       <el-form-item label="是否默认" prop="mr">
@@ -15,8 +26,8 @@
           <el-radio :label="0">开启</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="库位" prop="position">
-        <el-input v-model="form.position" />
+      <el-form-item>
+        注：一种仓库类型，仅可全局默认一个仓库，如需要灵活，可在操作人员设置关联
       </el-form-item>
     </el-form>
     <template #footer>
@@ -27,7 +38,7 @@
 </template>
 
 <script>
-  import { updateWarehouse, addWarehouse } from '@/api/basic'
+  // import { updateWarehouse, addWarehouse } from '@/api/basic'
   export default {
     name: 'DepartmentManagementEdit',
     data() {
@@ -75,10 +86,10 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await addWarehouse(this.form)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await addWarehouse(this.form)
+              // if (code != 200) {
+              //   return
+              // }
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -87,10 +98,10 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await updateWarehouse(this.form)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await updateWarehouse(this.form)
+              // if (code != 200) {
+              //   return
+              // }
               this.$baseMessage(
                 '修改成功',
                 'success',

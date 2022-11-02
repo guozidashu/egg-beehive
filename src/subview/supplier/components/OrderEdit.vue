@@ -88,7 +88,7 @@
 </template>
 
 <script>
-  import { updateWave, addWave } from '@/api/basic'
+  // import { updateWave, addWave } from '@/api/basic'
   export default {
     name: 'BandEdit',
     data() {
@@ -124,10 +124,10 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await addWave(this.form)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await addWave(this.form)
+              // if (code != 200) {
+              //   return
+              // }
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -136,10 +136,10 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await updateWave(this.form)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await updateWave(this.form)
+              // if (code != 200) {
+              //   return
+              // }
               this.$baseMessage(
                 '修改成功',
                 'success',

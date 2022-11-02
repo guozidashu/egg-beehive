@@ -81,7 +81,7 @@
   import List from '@/subview/components/List'
   import Edit from './components/BrandEdit'
   import Form from '@/subview/components/Form'
-  import { editBrand, deleteBrand } from '@/api/basic'
+  // import { editBrand, deleteBrand } from '@/api/basic'
   export default {
     name: 'ArchivesBrand',
     components: { List, Edit, Form },
@@ -130,10 +130,11 @@
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {
-            const { code, data } = await editBrand({ id: row.id })
-            if (code === 200) {
-              this.$refs['edit'].showEdit(data)
-            }
+            // const { code, data } = await editBrand({ id: row.id })
+            // if (code === 200) {
+            //   this.$refs['edit'].showEdit(data)
+            // }
+            this.$refs['edit'].showEdit(row)
           } else {
             this.$refs['edit'].showEdit()
           }
@@ -147,21 +148,21 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await deleteBrand({ id: row.id })
-            if (code != 200) {
-              return
-            }
+            // const { code } = await deleteBrand({ id: row.id })
+            // if (code != 200) {
+            //   return
+            // }
             this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
             this.fetchData()
           })
         } else {
           if (this.selectRows.length > 0) {
-            const ids = this.selectRows.map((item) => item.id).join()
+            // const ids = this.selectRows.map((item) => item.id).join()
             this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-              const { code } = await deleteBrand(ids)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await deleteBrand(ids)
+              // if (code != 200) {
+              //   return
+              // }
               this.fetchData()
             })
           } else {

@@ -377,7 +377,7 @@
 </template>
 
 <script>
-  import { updateGrade, addGrade } from '@/api/basic'
+  // import { updateGrade, addGrade } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'LevelDeit',
@@ -476,10 +476,10 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await addGrade(this.form)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await addGrade(this.form)
+              // if (code != 200) {
+              //   return
+              // }
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -488,10 +488,10 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await updateGrade(this.form)
-              if (code != 200) {
-                return
-              }
+              // const { code } = await updateGrade(this.form)
+              // if (code != 200) {
+              //   return
+              // }
               this.$baseMessage(
                 '修改成功',
                 'success',
