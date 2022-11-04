@@ -41,7 +41,7 @@
 </template>
 
 <script>
-  import { editArchiveList } from '@/api/basic'
+  import { editArchive } from '@/api/basic'
   export default {
     name: 'DepartmentManagementEdit',
     data() {
@@ -82,7 +82,7 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await editArchiveList(this.form)
+              const { code } = await editArchive(this.form)
               if (code != 200) {
                 return
               }
@@ -94,7 +94,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await editArchiveList(this.form)
+              const { code } = await editArchive(this.form)
               if (code != 200) {
                 return
               }

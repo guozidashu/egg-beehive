@@ -77,10 +77,9 @@
     >
       <el-tab-pane label="订单信息" name="first" />
       <el-tab-pane label="商品信息" name="second" />
-      <el-tab-pane label="订单记录" name="three" />
-      <el-tab-pane label="收货记录" name="four" />
-      <el-tab-pane label="退货记录" name="five" />
-      <el-tab-pane label="电子合同" name="six" />
+      <el-tab-pane label="入库记录" name="three" />
+      <el-tab-pane label="退货记录" name="four" />
+      <el-tab-pane label="电子合同" name="five" />
     </el-tabs>
     <el-tabs
       v-else

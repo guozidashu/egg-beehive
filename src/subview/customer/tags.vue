@@ -121,7 +121,7 @@
 <script>
   import List from '@/subview/components/List'
   import Edit from './components/TagsEdit'
-  import { getParentTagList, getTagListList, delTagDelList } from '@/api/basic'
+  import { getParentTag, getTagList, delTagDel } from '@/api/basic'
   export default {
     name: 'CustomerTags',
     components: { List, Edit },
@@ -170,7 +170,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delTagDelList({ id: row.id })
+            const { code } = await delTagDel({ id: row.id })
             if (code != 200) {
               return
             }
@@ -186,7 +186,7 @@
         this.form.pageSize = data
       },
       async fetchData() {
-        const { data } = await getParentTagList(this.form)
+        const { data } = await getParentTag(this.form)
         let list = [
           {
             id: 0,
@@ -204,7 +204,7 @@
         this.listLoading = true
         const {
           data: { data, total },
-        } = await getTagListList(this.form)
+        } = await getTagList(this.form)
         this.list = data
         this.total = total
         this.listLoading = false

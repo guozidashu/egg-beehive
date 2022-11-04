@@ -97,18 +97,16 @@
       <!-- 详情抽屉组件 -->
       <Drawer :drawer-inof="drawerInof" />
     </el-drawer>
-    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 <script>
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
-  import Edit from './components/OrderEdit'
   import Drawer from './components/ManagementDrawer'
   // import { getSupplierManagementList } from '@/api/basic'
   export default {
     name: 'SupplierOrder',
-    components: { List, Form, Edit, Drawer },
+    components: { List, Form, Drawer },
     data() {
       return {
         drawer: false,

@@ -83,7 +83,7 @@
   import List from '@/subview/components/List'
   import Edit from './components/LevelEdit'
   import Form from '@/subview/components/Form'
-  import { getGradeListList } from '@/api/basic'
+  import { getGradeList } from '@/api/basic'
   export default {
     name: 'ArchivesBand',
     components: { List, Edit, Form },
@@ -158,7 +158,7 @@
       // 列表数据请求函数 公共部分
       async fetchData() {
         this.listLoading = true
-        const { data } = await getGradeListList(this.form)
+        const { data } = await getGradeList(this.form)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

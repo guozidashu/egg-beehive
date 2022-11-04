@@ -5,8 +5,29 @@
     >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
-          <el-form-item label="物料名称" prop="region">
-            <el-input v-model="form.name" size="small" />
+          <el-form-item label="供应商搜索">
+            <el-input
+              v-model="form.supplier_name"
+              placeholder="请输入供应商名称"
+              size="small"
+            />
+          </el-form-item>
+          <el-form-item label="物料搜索">
+            <el-input
+              v-model="form.keyword"
+              placeholder="请输入物料名称或物料编号"
+              size="small"
+            />
+          </el-form-item>
+          <el-form-item label="物料分类">
+            <el-select v-model="form.category_id" placeholder="请选择">
+              <el-option
+                v-for="item in material_category"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
           </el-form-item>
         </template>
       </Form>
@@ -18,9 +39,9 @@
             native-type="submit"
             size="small"
             type="primary"
-            @click="handleEdit('add')"
+            @click="handleDetail('add', 3)"
           >
-            添加
+            添加物料
           </el-button>
         </el-form-item>
       </el-form>
@@ -31,69 +52,92 @@
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
-        @selectRows="selectBtnRows"
       >
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="波段ID"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="波段名称"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
-          >
+          <el-table-column type="selection" width="55" />
+          <el-table-column label="ID" prop="material_id" width="80" />
+          <el-table-column label="物料编号" prop="material_sn" width="120" />
+          <el-table-column label="物料图片" width="120">
             <template #default="{ row }">
-              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+              <el-image
+                :preview-src-list="[row.material_pic]"
+                :src="row.material_pic"
+                style="width: 100px; height: 100px"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column label="物料名称" prop="material_name" />
+          <el-table-column label="物料分类" prop="name" width="120" />
+          <el-table-column label="供应商名称" prop="supplier_name" />
+          <el-table-column label="采购价" prop="name" width="120" />
+          <el-table-column label="总采购量" prop="name" width="120" />
+          <el-table-column label="当前库存" prop="material_stock" width="120" />
+          <el-table-column label="状态" prop="name" width="120">
+            <template #default="{ row }">
+              <el-switch
+                v-model="row.status"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
+                @change="turnOnOff(row)"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column fixed="right" label="操作" width="120">
+            <template #default="{ row }">
+              <el-button type="text" @click="handleDetail(row, 1)">
+                详情
+              </el-button>
+              <el-button type="text" @click="handleDetail(row, 2)">
+                编辑
+              </el-button>
               <el-button type="text" @click="handleDelete(row)">删除</el-button>
             </template>
           </el-table-column>
         </template>
       </List>
     </el-card>
-    <edit ref="edit" @fetch-data="fetchData" />
+    <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
+      <!-- 详情抽屉组件 -->
+      <Drawer :drawer-inof="drawerInof" />
+    </el-drawer>
   </div>
 </template>
 <script>
   import List from '@/subview/components/List'
-  import Edit from './components/BomEdit'
   import Form from '@/subview/components/Form'
-  // import { editBom, deleteBom } from '@/api/basic'
+  import Drawer from './components/BomDrawer'
+  import {
+    getCommonAllList,
+    getMaterialList,
+    delMaterialDel,
+    getMaterialInfo,
+  } from '@/api/basic'
   export default {
     name: 'ArchivesBom',
-    components: { List, Form, Edit },
+    components: { List, Form, Drawer },
     data() {
       return {
-        // 表单数据/列表参数
+        drawer: false,
+        drawerInof: {},
         form: {
-          id: 0,
-          name: '',
+          category_id: null,
+          supplier_name: '',
+          keyword: '',
           page: 1,
-          pageSize: 10,
+          page_size: 10,
         },
         formType: 4,
-        // 列表数据相关
-        selectRows: [],
         listType: 1,
         list: [],
         listLoading: false,
         total: 0,
+        material_category: [],
       }
     },
     watch: {
@@ -106,39 +150,38 @@
     },
     created() {
       this.fetchData()
+      this.getSelectData()
     },
     methods: {
-      // 新增修改
-      async handleEdit(row) {
-        if (row === 'add') {
-          this.$refs['edit'].showEdit()
+      // 详情抽屉
+      async handleDetail(row, type) {
+        if (row == 'add') {
+          this.drawerInof = {}
+          this.drawerInof.drawerType = type
         } else {
-          if (row.id) {
-            // const { code, data } = await editBom({ id: row.id })
-            // if (code === 200) {
-            //   this.$refs['edit'].showEdit(data)
-            // }
-            this.$refs['edit'].showEdit(row)
-          } else {
-            this.$refs['edit'].showEdit()
-          }
+          const { data } = await getMaterialInfo({
+            material_id: row.material_id,
+          })
+          this.drawerInof = JSON.parse(JSON.stringify(data[0]))
+          this.drawerInof.drawerType = type
         }
+        this.drawer = true
       },
-      // 查询
       handleQuery() {
         this.form.page = 1
       },
-      // 删除
       handleDelete(row) {
-        if (row.id) {
+        if (row.material_id) {
           this.$baseConfirm(
-            '你确定要删除当前波段吗？</br>删除后将无法恢复，请谨慎操作！',
+            '你确定要删除当前物料吗？</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
-              // const { code } = await deleteBom({ id: row.id })
-              // if (code != 200) {
-              //   return
-              // }
+              const { code } = await delMaterialDel({
+                material_id: row.material_id,
+              })
+              if (code != 200) {
+                return
+              }
               this.$baseMessage(
                 '删除成功',
                 'success',
@@ -149,31 +192,23 @@
           )
         }
       },
-      // 列表数据封装函数
-
-      // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         this.form.page = data
       },
-      // 多选获取数据   公共部分
-      selectBtnRows(data) {
-        this.selectRows = data
-      },
 
-      // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
-        this.form.pageSize = data
-        console.log(data)
+        this.form.page_size = data
       },
-      // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getBomList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const { data } = await getMaterialList(this.form)
+        this.list = data.list.data
+        this.total = data.list.total
+        this.listLoading = false
+      },
+      async getSelectData() {
+        const { data } = await getCommonAllList({ type: 'material_category' })
+        this.material_category = data[0].material_category
       },
     },
   }

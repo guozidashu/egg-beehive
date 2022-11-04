@@ -114,7 +114,7 @@
         this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
         this.fetchData()
       },
-      async handleEdit(row) {
+      handleEdit(row) {
         if (row === 'add') {
           this.$refs['edit'].showEdit()
         } else {

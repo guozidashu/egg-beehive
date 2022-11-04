@@ -88,7 +88,7 @@
   import Edit from './components/WareHouseEdit'
   import Form from '@/subview/components/Form'
   import Drawer from './components/WareHouseDrawer'
-  import { getArchiveList, delArchiveList } from '@/api/basic'
+  import { getArchive, delArchive } from '@/api/basic'
   export default {
     name: 'ArchivesWarehouse',
     components: { List, Edit, Form, Drawer },
@@ -146,7 +146,7 @@
             '你确定要删除当前仓库吗?</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
-              const { code } = await delArchiveList({ id: row.id })
+              const { code } = await delArchive({ id: row.id })
               if (code != 200) {
                 return
               }
@@ -168,7 +168,7 @@
       },
       async fetchData() {
         this.listLoading = true
-        const { data } = await getArchiveList(this.form)
+        const { data } = await getArchive(this.form)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

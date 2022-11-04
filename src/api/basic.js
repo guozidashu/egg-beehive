@@ -9,6 +9,35 @@ export function getCommonAllList(data) {
     data,
   })
 }
+// 物料管理
+export function delMaterialDel(data) {
+  return request({
+    url: '/archive/materialDel',
+    method: 'post',
+    data,
+  })
+}
+export function addMaterialSave(data) {
+  return request({
+    url: '/archive/materialSave',
+    method: 'post',
+    data,
+  })
+}
+export function getMaterialList(data) {
+  return request({
+    url: '/archive/materialList',
+    method: 'post',
+    data,
+  })
+}
+export function getMaterialInfo(data) {
+  return request({
+    url: '/archive/materialInfo',
+    method: 'post',
+    data,
+  })
+}
 // 尺码管理
 export function delSizeDel(data) {
   return request({
@@ -165,14 +194,14 @@ export function getBrandList(data) {
 }
 
 //库位管理
-export function delDepotPositionSaveList(data) {
+export function delDepotPositionSave(data) {
   return request({
     url: '/archive/depotPositionDel',
     method: 'post',
     data,
   })
 }
-export function addDepotPositionSaveList(data) {
+export function addDepotPositionSave(data) {
   return request({
     url: '/archive/depotPositionSave',
     method: 'post',
@@ -188,21 +217,21 @@ export function getDepotPositionSaveList(data) {
 }
 // 仓库管理
 
-export function getArchiveList(data) {
+export function getArchive(data) {
   return request({
     url: '/archive/depotList',
     method: 'post',
     data,
   })
 }
-export function delArchiveList(data) {
+export function delArchive(data) {
   return request({
     url: '/archive/depotDel',
     method: 'post',
     data,
   })
 }
-export function editArchiveList(data) {
+export function editArchive(data) {
   return request({
     url: '/archive/depotSave',
     method: 'post',
@@ -210,28 +239,28 @@ export function editArchiveList(data) {
   })
 }
 // 客户等级
-export function getGradeListList(data) {
+export function getGradeList(data) {
   return request({
     url: '/customer/gradeList',
     method: 'post',
     data,
   })
 }
-export function editGradeListList(data) {
+export function editGradeList(data) {
   return request({
     url: '/customer/gradeSave',
     method: 'post',
     data,
   })
 }
-export function delGradeListList(data) {
+export function delGradeList(data) {
   return request({
     url: '/customer/gradeDel',
     method: 'post',
     data,
   })
 }
-export function getInfoGradeListList(data) {
+export function getInfoGradeList(data) {
   return request({
     url: '/customer/gradeInfo',
     method: 'post',
@@ -239,21 +268,21 @@ export function getInfoGradeListList(data) {
   })
 }
 // 客户分类
-export function getCustomerList(data) {
+export function getCustomer(data) {
   return request({
     url: '/customer/typeList',
     method: 'post',
     data,
   })
 }
-export function editCustomerList(data) {
+export function editCustomer(data) {
   return request({
     url: '/customer/typeSave',
     method: 'post',
     data,
   })
 }
-export function delCustomerList(data) {
+export function delCustomer(data) {
   return request({
     url: '/customer/typeDel',
     method: 'post',
@@ -261,28 +290,28 @@ export function delCustomerList(data) {
   })
 }
 // 客户标签
-export function getParentTagList(data) {
+export function getParentTag(data) {
   return request({
     url: '/customer/getParentTag',
     method: 'post',
     data,
   })
 }
-export function getTagListList(data) {
+export function getTagList(data) {
   return request({
     url: '/customer/tagList',
     method: 'post',
     data,
   })
 }
-export function editTagSaveList(data) {
+export function editTagSave(data) {
   return request({
     url: '/customer/tagSave',
     method: 'post',
     data,
   })
 }
-export function delTagDelList(data) {
+export function delTagDel(data) {
   return request({
     url: '/customer/tagDel',
     method: 'post',

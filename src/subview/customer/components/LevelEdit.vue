@@ -386,7 +386,7 @@
 </template>
 
 <script>
-  import { editGradeListList } from '@/api/basic'
+  import { editGradeList } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'LevelDeit',
@@ -485,7 +485,7 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await editGradeListList(this.form)
+              const { code } = await editGradeList(this.form)
               if (code != 200) {
                 return
               }
@@ -497,7 +497,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await editGradeListList(this.form)
+              const { code } = await editGradeList(this.form)
               if (code != 200) {
                 return
               }

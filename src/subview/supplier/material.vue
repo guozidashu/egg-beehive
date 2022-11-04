@@ -201,8 +201,12 @@
               <el-button type="text" @click="handleDetail(row, 1)">
                 详情
               </el-button>
-              <el-button type="text">收货</el-button>
-              <el-button type="text">退货</el-button>
+              <el-button type="text" @click="handleEdit(row, 1)">
+                收货
+              </el-button>
+              <el-button type="text" @click="handleEdit(row, 2)">
+                退货
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -212,6 +216,7 @@
       <!-- 详情抽屉组件 -->
       <Drawer :drawer-inof="drawerInof" :drawer-type="drawerType" />
     </el-drawer>
+    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 
@@ -219,11 +224,12 @@
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
   import Drawer from './components/OrderDrawer'
+  import edit from './components/MaterialEdit'
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
   export default {
     name: 'SupplierMaterial',
-    components: { List, Form, Drawer },
+    components: { List, Form, Drawer, edit },
     data() {
       return {
         drawer: false,
@@ -408,6 +414,18 @@
             item.inofText = item.inofText + item1.text
           })
         })
+      },
+      handleEdit(row, type) {
+        console.log(row, type)
+        if (row === 'add') {
+          this.$refs['edit'].showEdit(row, type)
+        } else {
+          if (row.id) {
+            this.$refs['edit'].showEdit(row, type)
+          } else {
+            this.$refs['edit'].showEdit(row, type)
+          }
+        }
       },
       // 详情抽屉
       handleDetail(row, type) {

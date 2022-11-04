@@ -201,8 +201,12 @@
               <el-button type="text" @click="handleDetail(row, 1)">
                 详情
               </el-button>
-              <el-button type="text">收货</el-button>
-              <el-button type="text">退货</el-button>
+              <el-button type="text" @click="handleEdit(row, 1)">
+                收货
+              </el-button>
+              <el-button type="text" @click="handleEdit(row, 2)">
+                退货
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -212,10 +216,12 @@
       <!-- 详情抽屉组件 -->
       <Drawer :drawer-inof="drawerInof" :drawer-type="drawerType" />
     </el-drawer>
+    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 
 <script>
+  import edit from './components/MaterialEdit'
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
   import Drawer from './components/OrderDrawer'
@@ -223,7 +229,7 @@
   import VabPrint from '@/extra/VabPrint'
   export default {
     name: 'SupplierProduct',
-    components: { List, Form, Drawer },
+    components: { List, Form, Drawer, edit },
     data() {
       return {
         drawer: false,
@@ -376,6 +382,18 @@
       // 列表表单子组件展开闭合事件  公共部分
       changeBtnSta(data) {
         this.form.fold = data
+      },
+      handleEdit(row, type) {
+        console.log(row, type)
+        if (row === 'add') {
+          this.$refs['edit'].showEdit(row, type)
+        } else {
+          if (row.id) {
+            this.$refs['edit'].showEdit(row, type)
+          } else {
+            this.$refs['edit'].showEdit(row, type)
+          }
+        }
       },
       handleQuery() {},
       // 列表数据封装函数

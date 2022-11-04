@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import { editTagSaveList, getParentTagList } from '@/api/basic'
+  import { editTagSave, getParentTag } from '@/api/basic'
   export default {
     name: 'TagsEdit',
     data() {
@@ -85,7 +85,7 @@
         this.getSelectList()
       },
       async getSelectList() {
-        const { data } = await getParentTagList(this.form)
+        const { data } = await getParentTag(this.form)
         this.selectList = data
       },
       close() {
@@ -97,7 +97,7 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await editTagSaveList(this.form)
+              const { code } = await editTagSave(this.form)
               if (code != 200) {
                 return
               }
@@ -109,7 +109,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await editTagSaveList(this.form)
+              const { code } = await editTagSave(this.form)
               if (code != 200) {
                 return
               }

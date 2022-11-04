@@ -58,7 +58,7 @@
   import List from '@/subview/components/List'
   import Edit from './components/ClassifyEdit'
   import Form from '@/subview/components/Form'
-  import { getCustomerList, delCustomerList } from '@/api/basic'
+  import { getCustomer, delCustomer } from '@/api/basic'
   export default {
     name: 'ArchivesBand',
     components: { List, Edit, Form },
@@ -105,7 +105,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delCustomerList({ id: row.id })
+            const { code } = await delCustomer({ id: row.id })
             if (code != 200) {
               return
             }
@@ -125,7 +125,7 @@
         this.listLoading = true
         const {
           data: { data, total },
-        } = await getCustomerList(this.form)
+        } = await getCustomer(this.form)
         this.list = data
         this.total = total
         this.listLoading = false
