@@ -85,7 +85,7 @@
         form: {
           id: 0,
           name: '',
-          pageNo: 1,
+          page: 1,
           pageSize: 10,
         },
         formType: 4,
@@ -132,7 +132,7 @@
       },
       // 查询
       handleQuery() {
-        this.form.pageNo = 1
+        this.form.page = 1
       },
       // 删除
       handleDelete(row) {
@@ -164,7 +164,7 @@
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        this.form.pageNo = data
+        this.form.page = data
       },
       // 多选获取数据   公共部分
       selectBtnRows(data) {

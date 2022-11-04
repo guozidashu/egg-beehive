@@ -7,11 +7,11 @@
       label-width="100px"
       :model="form"
       size="small"
-      style="margin-top: 18px"
+      style="margin-top: 18px; clear: both"
       @submit.native.prevent
     >
-      <slot name="Form"></slot>
-      <el-form-item style="float: right">
+      <slot name="Form" style="clear: both"></slot>
+      <el-form-item style="float: right; clear: both">
         <el-button
           icon="el-icon-search"
           native-type="submit"

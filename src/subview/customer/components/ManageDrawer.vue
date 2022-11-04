@@ -5,7 +5,7 @@
         <el-row :gutter="20">
           <el-col :span="12" style="display: flex">
             <img
-              :src="avatar"
+              :src="form.img"
               style="
                 width: 50px;
                 height: 50px;
@@ -86,27 +86,63 @@
       <el-tab-pane label="退货记录" name="four" />
       <el-tab-pane label="收银记录" name="five" />
       <el-tab-pane label="持有优惠券" name="six" />
-      <el-tab-pane label=" 积分时间" name="seven" />
+      <el-tab-pane label=" 积分明细" name="seven" />
       <el-tab-pane label="签到记录" name="eight" />
       <el-tab-pane label="欠货统计" name="nine" />
+      <el-tab-pane label="电子合同" name="ten" />
     </el-tabs>
     <div v-if="tabLabel == '客户信息'">
       <div v-if="form.drawerType == 1" class="drawer-tab">
         <div class="conten-warp">
           <div class="conten-title">基本信息</div>
           <div class="conten-list-row">
-            <div>用户编号：577</div>
+            <div>用户编号：57711</div>
             <div>真实姓名： 阿白</div>
-            <div>手机号码： -15236804776</div>
+            <div>
+              <span v-if="!formShow.phonestate">
+                手机号码： {{ '15236804776' | phoneteltm }}
+              </span>
+              <span v-else>手机号码： 15236804776</span>
+              <i
+                v-if="!formShow.phonestate"
+                class="el-icon-view"
+                style="margin-left: 10px"
+                @click="formShow.phonestate = true"
+              ></i>
+              <i
+                v-else
+                class="el-icon-view"
+                style="margin-left: 10px; color: #1890ff"
+                @click="formShow.phonestate = false"
+              ></i>
+            </div>
             <div>生日：2001-11-01</div>
-            <div>身份证号： 411425199905053316</div>
+            <div>
+              <span v-if="!formShow.cardstate">
+                身份证号： {{ '411425199905053315' | peridcardtm }}
+              </span>
+              <span v-else>身份证号： 411425199905053315</span>
+              <i
+                v-if="!formShow.cardstate"
+                class="el-icon-view"
+                style="margin-left: 10px"
+                @click="formShow.cardstate = true"
+              ></i>
+              <i
+                v-else
+                class="el-icon-view"
+                style="margin-left: 10px; color: #1890ff"
+                @click="formShow.cardstate = false"
+              ></i>
+            </div>
             <div>加入时间： 2022-01-01 10：20:20</div>
             <div>客户地址： 杭州市滨江区春波小区11栋602</div>
           </div>
         </div>
         <div class="conten-warp">
-          <div class="conten-title">密码</div>
+          <div class="conten-title">登录账户</div>
           <div class="conten-list-row">
+            <div>登录账户：254784967</div>
             <div>登录密码：*******</div>
           </div>
         </div>
@@ -121,8 +157,13 @@
           </div>
         </div>
         <div class="conten-warp">
-          <div class="conten-title">备注</div>
+          <div class="conten-title">其它信息</div>
           <div class="conten-list-row">
+            <div style="width: 100%">专属客服： 阿白</div>
+            <div style="width: 50%">创建时间： 2020-02-02 10:10:10</div>
+            <div style="width: 50%">操作人员： 阿白</div>
+            <div style="width: 50%">更新时间： 2020-02-02 10:10:10</div>
+            <div style="width: 50%">操作人员： 阿白</div>
             <div style="width: 100%">
               备注信息： 1111111111111111111111111111
             </div>
@@ -194,8 +235,15 @@
         </div>
         <div class="drawer-tab">
           <div class="conten-warp">
-            <div class="conten-title">密码</div>
+            <div class="conten-title">登录账户</div>
             <div class="conten-list-com">
+              <el-form-item class="item" label="登录账户：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入登录账户"
+                  style="width: 215px"
+                />
+              </el-form-item>
               <el-form-item class="item" label="登录密码：">
                 <el-input
                   v-model="form.addressKeyword"
@@ -248,8 +296,14 @@
         </div>
         <div class="drawer-tab">
           <div class="conten-warp">
-            <div class="conten-title">备注</div>
+            <div class="conten-title">其它信息</div>
             <div class="conten-list-com">
+              <el-form-item class="item" label="专属客服：">
+                <el-select v-model="form.type1" placeholder="请选择">
+                  <el-option label="客服1" :value="1" />
+                  <el-option label="客服2" :value="2" />
+                </el-select>
+              </el-form-item>
               <el-form-item class="item" label="备注信息：">
                 <el-input
                   v-model="form.des"
@@ -341,6 +395,10 @@
     },
     data() {
       return {
+        formShow: {
+          cardstate: false,
+          phonestate: false,
+        },
         dialogVisible1: false,
         distitle1: '',
         activeName: 'first',
@@ -400,7 +458,7 @@
             value: '800笔',
           },
           {
-            name: '总消费余额',
+            name: '总消费金额',
             value: '¥24750',
           },
           {

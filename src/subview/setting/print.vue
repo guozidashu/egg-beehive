@@ -280,7 +280,7 @@
         formType: 3,
         form: {
           name: '',
-          pageNo: 1,
+          page: 1,
           pageSize: 10,
           status: 0,
         },
@@ -398,7 +398,7 @@
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        this.form.pageNo = data
+        this.form.page = data
       },
       // 多选获取数据   公共部分
       selectBtnRows(data) {
@@ -422,7 +422,7 @@
       },
       // 查询
       handleQuery() {
-        this.form.pageNo = 1
+        this.form.page = 1
       },
     },
   }

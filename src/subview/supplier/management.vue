@@ -15,12 +15,6 @@
               <el-option label="自厂" :value="5" />
             </el-select>
           </el-form-item>
-          <el-form-item label="供应商类型:">
-            <el-select v-model="form.supplierType1">
-              <el-option label="张三" value="shanghai" />
-              <el-option label="李四" value="shanghai" />
-            </el-select>
-          </el-form-item>
           <el-form-item label="搜索:">
             <el-input
               v-model="form.supplierName"
@@ -38,7 +32,7 @@
             native-type="submit"
             size="small"
             type="primary"
-            @click="handleEdit('add')"
+            @click="handleDetail('add', 2)"
           >
             添加供应商
           </el-button>
@@ -58,7 +52,7 @@
           <el-table-column type="selection" />
           <el-table-column label="ID" prop="id" sortable width="80" />
           <el-table-column label="供应商名称" prop="name" width="150" />
-          <el-table-column label="类别" prop="lx" width="150">
+          <el-table-column label="供应商类别" prop="lx" width="150">
             <template #default="{ row }">
               <span v-if="row.lx === 1">外协加工厂</span>
               <span v-else-if="row.lx === 2">成品采购商</span>
@@ -67,12 +61,12 @@
               <span v-else-if="row.lx === 5">自厂</span>
             </template>
           </el-table-column>
-          <el-table-column label="类型" prop="fenlei" />
+          <el-table-column label="供应商类型" prop="fenlei" />
+          <el-table-column label="联系人" prop="usename" width="100" />
+          <el-table-column label="手机号码" prop="tel" width="200" />
           <el-table-column label="应付款" prop="yingfu" width="80" />
-          <el-table-column label="联系人姓名" prop="usename" width="100" />
-          <el-table-column label="联系方式" prop="tel" width="200" />
           <el-table-column label="创建时间" prop="time" width="200" />
-          <el-table-column label="供应商状态" prop="isdefault" width="100">
+          <el-table-column label="状态" prop="isdefault" width="100">
             <template #default="{ row }">
               <el-switch
                 v-model="row.isdefault"
@@ -88,13 +82,21 @@
           </el-table-column>
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
-              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <el-button type="text">删除</el-button>
+              <el-button type="text" @click="handleDetail(row, 2)">
+                编辑
+              </el-button>
+              <el-button type="text" @click="handleDetail(row, 1)">
+                详情
+              </el-button>
             </template>
           </el-table-column>
         </template>
       </List>
     </el-card>
+    <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
+      <!-- 详情抽屉组件 -->
+      <Drawer :drawer-inof="drawerInof" />
+    </el-drawer>
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
@@ -102,12 +104,15 @@
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
   import Edit from './components/OrderEdit'
+  import Drawer from './components/ManagementDrawer'
   // import { getSupplierManagementList } from '@/api/basic'
   export default {
     name: 'SupplierOrder',
-    components: { List, Form, Edit },
+    components: { List, Form, Edit, Drawer },
     data() {
       return {
+        drawer: false,
+        drawerInof: {},
         activeName: 'first',
         // 表单数据/列表参数
         form: {
@@ -115,13 +120,13 @@
           // 公共参数
           supplierType: '',
           supplierName: '',
-          pageNo: 1,
+          page: 1,
           pageSize: 10,
         },
         // 列表数据相关
         // 公共参数
         listType: 1,
-        formType: 4,
+        formType: 3,
         list: [
           {
             id: 1,
@@ -152,28 +157,12 @@
       this.fetchData()
     },
     methods: {
-      // 新增修改
-      async handleEdit() {
-        this.$refs['edit'].showEdit()
-        // if (row === 'add') {
-        //   this.$refs['edit'].showEdit()
-        // } else {
-        //   if (row.id) {
-        //     const { code, data } = await editWave({ id: row.id })
-        //     if (code === 200) {
-        //       this.$refs['edit'].showEdit(data)
-        //     }
-        //   } else {
-        //     this.$refs['edit'].showEdit()
-        //   }
-        // }
-      },
       handleQuery() {},
       // 列表数据封装函数
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        this.form.pageNo = data
+        this.form.page = data
       },
       // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {
@@ -182,7 +171,7 @@
       // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
         console.log(1111, tab.label)
-        this.form.pageNo = 1
+        this.form.page = 1
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
@@ -193,6 +182,17 @@
         // this.list = list
         // this.total = total
         // this.listLoading = false
+      },
+      // 详情抽屉
+      handleDetail(row, type) {
+        if (row == 'add') {
+          this.drawerInof = {}
+          this.drawerInof.drawerType = type
+        } else {
+          this.drawerInof = JSON.parse(JSON.stringify(row))
+          this.drawerInof.drawerType = type
+        }
+        this.drawer = true
       },
     },
   }

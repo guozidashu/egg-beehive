@@ -5,12 +5,6 @@
     >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
-          <el-form-item label="状态" prop="region">
-            <el-select v-model="form.type1" placeholder="请选择">
-              <el-option label="显示" :value="1" />
-              <el-option label="不显示" :value="2" />
-            </el-select>
-          </el-form-item>
           <el-form-item label="等级名称" prop="region">
             <el-input
               v-model="form.name"
@@ -41,24 +35,27 @@
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
-        @selectRows="selectBtnRows"
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column type="selection" width="50px" />
-          <el-table-column label="等级图标" prop="img" width="150px">
+          <el-table-column label="等级图标" prop="banner" width="150px">
             <template #default="{ row }">
-              <img :src="row.img" style="width: 100px; height: 100px" />
+              <img :src="row.icon" style="width: 100px; height: 100px" />
             </template>
           </el-table-column>
           <el-table-column label="等级名称" prop="name" width="150px" />
-          <el-table-column label="客户数" prop="num" width="80px" />
-          <el-table-column label="整手折扣" prop="zhekou" width="100px" />
-          <el-table-column label="散码折扣" prop="zhekou_sm" width="100px" />
-          <el-table-column label="是否允许散批" prop="sp" width="150px">
+          <el-table-column label="客户数" prop="count" width="80px" />
+          <el-table-column label="整手折扣" prop="discount" width="100px" />
+          <el-table-column
+            label="散码折扣"
+            prop="discount_single"
+            width="100px"
+          />
+          <el-table-column label="是否允许散批" prop="single_buy" width="150px">
             <template #default="{ row }">
               <el-switch
-                v-model="row.sp"
+                v-model="row.single_buy"
                 active-color="#41B584"
                 active-text="开启"
                 :active-value="1"
@@ -69,7 +66,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="备注" prop="des" />
+          <el-table-column label="备注" prop="remark" />
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
@@ -86,7 +83,7 @@
   import List from '@/subview/components/List'
   import Edit from './components/LevelEdit'
   import Form from '@/subview/components/Form'
-  // import { getGradeList, editGrade, deleteGrade } from '@/api/basic'
+  import { getGradeListList } from '@/api/basic'
   export default {
     name: 'ArchivesBand',
     components: { List, Edit, Form },
@@ -94,9 +91,8 @@
       return {
         // 表单数据/列表参数
         form: {
-          id: 0,
           name: '',
-          pageNo: 1,
+          page: 1,
           pageSize: 10,
         },
         formType: 4,
@@ -126,10 +122,6 @@
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {
-            // const { code, data } = await editGrade({ id: row.id })
-            // if (code === 200) {
-            //   this.$refs['edit'].showEdit(data)
-            // }
             this.$refs['edit'].showEdit(row)
           } else {
             this.$refs['edit'].showEdit()
@@ -138,7 +130,7 @@
       },
       // 查询
       handleQuery() {
-        this.form.pageNo = 1
+        this.form.page = 1
       },
       // 删除
       handleDelete(row) {
@@ -151,46 +143,25 @@
             this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
             this.fetchData()
           })
-        } else {
-          if (this.selectRows.length > 0) {
-            // const ids = this.selectRows.map((item) => item.id).join()
-            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-              // const { code } = await deleteGrade(ids)
-              // if (code != 200) {
-              //   return
-              // }
-              this.fetchData()
-            })
-          } else {
-            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
-          }
         }
       },
       // 列表数据封装函数
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        this.form.pageNo = data
+        this.form.page = data
       },
-      // 多选获取数据   公共部分
-      selectBtnRows(data) {
-        this.selectRows = data
-      },
-
       // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
-        console.log(data)
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getGradeList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const { data } = await getGradeListList(this.form)
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
       },
     },
   }

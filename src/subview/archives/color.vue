@@ -16,7 +16,7 @@
             <el-menu-item
               v-for="(item, index) in menuList"
               :key="index"
-              :index="item.id"
+              :index="item.id.toString()"
             >
               <div
                 @mouseenter="mouseOver(index)"
@@ -69,38 +69,36 @@
             </el-form-item>
             <el-form-item label="颜色名称：" style="float: right">
               <el-input
-                v-model="addressKeyword"
+                v-model="form.name"
                 clearable
                 placeholder="请输入颜色名称"
               >
                 <el-button
                   slot="append"
                   icon="el-icon-search"
-                  @click="getAddressKeyword"
+                  @click="handleQuery"
                 />
               </el-input>
             </el-form-item>
           </el-form>
           <List
-            :list="list1"
+            :list="list"
             :list-type="listType"
             :state="listLoading"
             :total="total"
             @changePage="changeBtnPage"
             @changePageSize="changeBtnPageSize"
-            @selectRows="selectBtnRows"
           >
-            <!-- 表格组件具名插槽 自定义表头 -->
             <template #List>
               <el-table-column type="selection" />
               <el-table-column label="ID" prop="id" />
               <el-table-column label="颜色名称" prop="name" />
-              <el-table-column label="颜色组" prop="zhekou" />
+              <el-table-column label="颜色组" prop="group_name" />
               <el-table-column label="使用商品" prop="zhekou" />
-              <el-table-column label="状态" prop="state" width="150">
+              <el-table-column label="状态" prop="status" width="150">
                 <template #default="{ row }">
                   <el-switch
-                    v-model="row.state"
+                    v-model="row.status"
                     active-color="#41B584"
                     active-text="开启"
                     :active-value="1"
@@ -109,10 +107,12 @@
                     inactive-text="关闭"
                     :inactive-value="0"
                     style="margin: 0 10px"
+                    @change="turnOnOff(row)"
                   />
                 </template>
               </el-table-column>
-              <el-table-column label="创建时间" prop="tiem" />
+              <el-table-column label="排序" prop="sort" width="80" />
+              <el-table-column label="创建时间" prop="create_time" />
               <el-table-column
                 align="center"
                 fixed="right"
@@ -139,56 +139,27 @@
 <script>
   import List from '@/subview/components/List'
   import Edit from './components/ColorEdit'
-  // import { getGradeList, editGrade, deleteGrade } from '@/api/basic'
+  import {
+    getColorGroupList,
+    getColorList,
+    delColorDel,
+    delColorGroupDel,
+    addColorSave,
+  } from '@/api/basic'
   export default {
     name: 'GoodsClassified',
     components: { List, Edit },
     data() {
       return {
-        // 表单数据/列表参数
         form: {
-          id: 0,
           name: '',
-          pageNo: 1,
+          pid: 0,
+          page: 1,
           pageSize: 20,
         },
-        menuList: [
-          {
-            id: '0',
-            name: '全部',
-            btnIconStatus: false,
-          },
-          {
-            id: '1',
-            name: '基本色',
-            btnIconStatus: false,
-          },
-          {
-            id: '2',
-            name: '红色系',
-            btnIconStatus: false,
-          },
-          {
-            id: '3',
-            name: '黄色系',
-            btnIconStatus: false,
-          },
-          {
-            id: '4',
-            name: '蓝色系',
-            btnIconStatus: false,
-          },
-          {
-            id: '5',
-            name: '混搭系',
-            btnIconStatus: false,
-          },
-        ],
+        menuList: [],
         formType: 4,
-        // 列表数据相关
-        selectRows: [],
         listType: 1,
-        list1: [],
         list: [],
         listLoading: false,
         total: 0,
@@ -197,7 +168,7 @@
     watch: {
       form: {
         handler: function () {
-          this.fetchData()
+          this.fetchList()
         },
         deep: true,
       },
@@ -206,87 +177,97 @@
       this.fetchData()
     },
     methods: {
-      // 新增修改
+      async turnOnOff(row) {
+        const { code } = await addColorSave(row)
+        if (code != 200) {
+          return
+        }
+        this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
+        this.fetchData()
+      },
       async handleEdit(row, type) {
         if (row === 'add') {
-          this.$refs['edit'].showEdit(row, type)
+          this.$refs['edit'].showEdit(row, type, this.menuList)
         } else {
           if (row.id) {
-            // const { code, data } = await editGrade({ id: row.id })
-            // if (code === 200) {
-            //   this.$refs['edit'].showEdit(data)
-            // }
-            this.$refs['edit'].showEdit(row, type)
+            this.$refs['edit'].showEdit(row, type, this.menuList)
           } else {
-            this.$refs['edit'].showEdit(row, type)
+            this.$refs['edit'].showEdit(row, type, this.menuList)
           }
         }
       },
-      // 查询
       handleQuery() {
-        this.form.pageNo = 1
+        this.form.page = 1
       },
-      // 删除
-      handleDelete(row) {
-        if (row.id) {
-          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            // const { code } = await deleteGrade({ id: row.id })
-            // if (code != 200) {
-            //   return
-            // }
-            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
-            this.fetchData()
-          })
-        } else {
-          if (this.selectRows.length > 0) {
-            // const ids = this.selectRows.map((item) => item.id).join()
-            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-              // const { code } = await deleteGrade(ids)
-              // if (code != 200) {
-              //   return
-              // }
+      handleDelete(row, type) {
+        if (row.id && type === 2) {
+          this.$baseConfirm(
+            '你确定要删除当前颜色组吗？</br>删除后将无法恢复，请谨慎操作！',
+            null,
+            async () => {
+              const { code } = await delColorGroupDel({ id: row.id })
+              if (code != 200) {
+                return
+              }
+              this.$baseMessage(
+                '删除成功',
+                'success',
+                'vab-hey-message-success'
+              )
               this.fetchData()
-            })
-          } else {
-            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
-          }
+            }
+          )
+        } else {
+          this.$baseConfirm(
+            '你确定要删除当前颜色吗？</br>删除后将无法恢复，请谨慎操作！',
+            null,
+            async () => {
+              const { code } = await delColorDel({ id: row.id })
+              if (code != 200) {
+                return
+              }
+              this.$baseMessage(
+                '删除成功',
+                'success',
+                'vab-hey-message-success'
+              )
+              this.fetchData()
+            }
+          )
         }
       },
-      // 列表数据封装函数
-
-      // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        this.form.pageNo = data
+        this.form.page = data
       },
-      // 多选获取数据   公共部分
-      selectBtnRows(data) {
-        this.selectRows = data
-      },
-
-      // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
-        console.log(data)
       },
-      // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getGradeList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
-        this.total = this.list1.length
+        const { data } = await getColorGroupList(this.form)
+        let list = [
+          {
+            id: 0,
+            name: '全部',
+          },
+          ...data,
+        ]
+        list.forEach((item) => {
+          item.btnIconStatus = false
+        })
+        this.menuList = list
+        this.fetchList()
       },
-      handleGrouPQuery(data) {
-        if (data.name === '全部') {
-          this.list1 = this.list
-          this.fetchData()
-        } else {
-          this.list1 = this.list.filter((item) => item.zhekou === data.name)
-          this.fetchData()
-        }
+      async fetchList() {
+        this.listLoading = true
+        const {
+          data: { data, total },
+        } = await getColorList(this.form)
+        this.list = data
+        this.total = total
+        this.listLoading = false
+      },
+      handleGrouPQuery(item) {
+        this.form.pid = item.id
       },
       handleOpen(key, keyPath) {
         console.log(key, keyPath)

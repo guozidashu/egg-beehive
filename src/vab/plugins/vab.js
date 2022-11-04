@@ -119,6 +119,7 @@ Vue.prototype.$baseConfirm = (
     closeOnClickModal: false,
     type: 'warning',
     lockScroll: false,
+    dangerouslyUseHTMLString: true,
   })
     .then(() => {
       if (callback1) {

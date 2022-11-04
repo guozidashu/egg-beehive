@@ -2,29 +2,32 @@
   <el-dialog
     :title="title"
     :visible.sync="dialogFormVisible"
-    width="600px"
+    width="700px"
     @close="close"
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
       <el-form-item label="仓库名称" prop="name">
-        <el-input v-model="form.name" />
+        <el-input v-model="form.name" style="width: 215px" />
       </el-form-item>
-      <el-form-item label="仓库类型" prop="mr">
-        <el-radio-group v-model="form.mr">
-          <el-radio :label="1" style="margin: 10px 5px">成品仓库</el-radio>
-          <el-radio :label="0">面料仓库</el-radio>
-          <el-radio :label="2">辅料仓库</el-radio>
-          <el-radio :label="3">样板仓库</el-radio>
+      <el-form-item label="仓库类型" prop="type_id">
+        <el-radio-group v-model="form.type_id">
+          <el-radio :label="1" style="margin: 10px 5px">样板仓库</el-radio>
+          <el-radio :label="3">成品仓库</el-radio>
+          <el-radio :label="4">面料仓库</el-radio>
+          <el-radio :label="5">辅料仓库</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="库位分配" prop="name">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="是否默认" prop="mr">
-        <el-radio-group v-model="form.mr">
+      <el-form-item label="是否默认" prop="isdefault">
+        <el-radio-group v-model="form.isdefault">
           <el-radio :label="1">关闭</el-radio>
           <el-radio :label="0">开启</el-radio>
         </el-radio-group>
+      </el-form-item>
+      <el-form-item label="排序" prop="sort">
+        <el-input v-model="form.sort" style="width: 215px" />
+      </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model="form.remark" style="width: 215px" />
       </el-form-item>
       <el-form-item>
         注：一种仓库类型，仅可全局默认一个仓库，如需要灵活，可在操作人员设置关联
@@ -38,25 +41,22 @@
 </template>
 
 <script>
-  // import { updateWarehouse, addWarehouse } from '@/api/basic'
+  import { editArchiveList } from '@/api/basic'
   export default {
     name: 'DepartmentManagementEdit',
     data() {
       return {
         form: {
           name: '',
-          id: '',
-          mr: 0,
-          position: '',
+          type_id: 1,
+          isdefault: 0,
+          sort: 0,
+          remark: '',
         },
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
-          mr: [
-            { required: true, trigger: 'change', message: '请选择是否默认' },
-          ],
-          position: [
-            { required: true, trigger: 'blur', message: '请输入库位' },
-          ],
+          sort: [{ required: true, trigger: 'blur', message: '请输入排序' }],
+          remark: [{ required: true, trigger: 'blur', message: '请输入备注' }],
         },
         title: '',
         dialogFormVisible: false,
@@ -69,11 +69,7 @@
           this.title = '添加'
         } else {
           this.title = '编辑'
-          if (row.mr == 1) {
-            this.form = Object.assign({}, row)
-          } else {
-            this.form = Object.assign({}, row)
-          }
+          this.form = Object.assign({}, row)
         }
         this.dialogFormVisible = true
       },
@@ -86,10 +82,10 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              // const { code } = await addWarehouse(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              const { code } = await editArchiveList(this.form)
+              if (code != 200) {
+                return
+              }
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -98,10 +94,10 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              // const { code } = await updateWarehouse(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              const { code } = await editArchiveList(this.form)
+              if (code != 200) {
+                return
+              }
               this.$baseMessage(
                 '修改成功',
                 'success',

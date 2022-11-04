@@ -15,10 +15,14 @@
           </el-col>
 
           <el-col :span="12">
+            <vab-icon
+              icon="align-center"
+              style="float: right; margin: 6px 0 0 0"
+            />
             <el-button
               native-type="submit"
               size="small"
-              style="float: right"
+              style="float: right; margin-right: 10px"
               type="primary"
               @click="PrintBtn"
             >
@@ -53,7 +57,7 @@
           <div class="conten-title">用户信息</div>
           <div class="conten-list-row">
             <div>用户UID：577</div>
-            <div>用户昵称： 阿白</div>
+            <div>客户名称： 阿白</div>
             <div>绑定电话： -15236804776</div>
           </div>
         </div>
@@ -77,10 +81,8 @@
             <div>积分抵扣： 0.00</div>
             <div>支付邮费： 0.00</div>
             <div>会员商品优惠： 0.00</div>
-            <div>推广人： 无/ID 6</div>
             <div>支付时间： 2022-10-08 16:30:4</div>
             <div>支付方式： 余额支付</div>
-            <div>第二件半价： -￥49.50</div>
           </div>
         </div>
         <div class="conten-warp">
@@ -88,6 +90,16 @@
           <div class="conten-list-row">
             <div>快递公司： 宅急送</div>
             <div>快递单号： 111111111111111111</div>
+          </div>
+        </div>
+        <div class="conten-warp">
+          <div class="conten-title">其它信息</div>
+          <div class="conten-list-row">
+            <div style="width: 50%">创建时间： 2020-02-02 10:10:10</div>
+            <div style="width: 50%">操作人员： 阿白</div>
+            <div style="width: 50%">更新时间： 2020-02-02 10:10:10</div>
+            <div style="width: 50%">操作人员： 阿白</div>
+            <div style="width: 100%">订单备注： 11111111111111</div>
           </div>
         </div>
       </el-tab-pane>
@@ -286,6 +298,10 @@
           {
             name: '支付时间',
             value: '2022-10-08 16:30:46',
+          },
+          {
+            name: '累计欠款',
+            value: '¥247.50',
           },
         ],
       }

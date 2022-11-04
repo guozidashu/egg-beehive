@@ -67,7 +67,7 @@
         const {
           data: { list },
         } = await getIconList({
-          pageNo: 1,
+          page: 1,
           pageSize: 32,
         })
         this.iconList = list.map((icon, index) => {

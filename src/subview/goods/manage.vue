@@ -129,7 +129,8 @@
           <el-table-column label="商品名称" prop="name" width="250" />
           <el-table-column label="商品标题" prop="shoptitle" />
           <el-table-column label="款号类别" prop="kuanshi" width="120" />
-          <el-table-column label="商品销售" prop="xiaoshou" width="120" />
+          <el-table-column label="销售价" prop="xiaoshou" width="120" />
+          <el-table-column label="吊牌价" prop="xiaoshou" width="120" />
           <el-table-column label="销量" prop="gongying" width="120" />
           <el-table-column label="库存" prop="gongying" width="100" />
           <el-table-column label="状态" prop="gongying" width="150" />
@@ -173,7 +174,7 @@
           type: '1',
           brand: '',
           // 公共参数
-          pageNo: 1,
+          page: 1,
           pageSize: 10,
           //款式
           kuanshi: '',
@@ -233,7 +234,7 @@
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        this.form.pageNo = data
+        this.form.page = data
       },
       // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {
@@ -242,7 +243,7 @@
       // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
         console.log(1111, tab.label, tab.name)
-        this.form.pageNo = 1
+        this.form.page = 1
       },
       // 列表数据请求函数 公共部分
       async fetchData() {

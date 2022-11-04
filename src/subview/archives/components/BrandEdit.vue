@@ -9,6 +9,22 @@
       <el-form-item label="品牌名称" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
+      <el-form-item label="状态" prop="status">
+        <el-switch
+          v-model="form.status"
+          active-color="#41B584"
+          active-text="开启"
+          :active-value="1"
+          class="switch"
+          inactive-color="#D2D2D2"
+          inactive-text="关闭"
+          :inactive-value="0"
+          style="margin: 0 10px"
+        />
+      </el-form-item>
+      <el-form-item label="排序" prop="sort">
+        <el-input v-model="form.sort" style="width: 215px" />
+      </el-form-item>
     </el-form>
     <template #footer>
       <el-button @click="close">取 消</el-button>
@@ -18,17 +34,17 @@
 </template>
 
 <script>
-  // import { updateBrand, addBrand } from '@/api/basic'
+  import { addBrandSave } from '@/api/basic'
   export default {
     name: 'BrandEdit',
     data() {
       return {
         form: {
-          name: '',
-          id: '',
+          status: 0,
         },
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
+          sort: [{ required: true, trigger: 'blur', message: '请输入排序' }],
         },
         title: '',
         dialogFormVisible: false,
@@ -54,10 +70,11 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              // const { code } = await addBrand(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              this.form.sort = parseInt(this.form.sort)
+              const { code } = await addBrandSave(this.form)
+              if (code != 200) {
+                return
+              }
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -66,10 +83,11 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              // const { code } = await updateBrand(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              this.form.sort = parseInt(this.form.sort)
+              const { code } = await addBrandSave(this.form)
+              if (code != 200) {
+                return
+              }
               this.$baseMessage(
                 '修改成功',
                 'success',

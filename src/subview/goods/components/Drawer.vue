@@ -5,7 +5,7 @@
         <el-row :gutter="20">
           <el-col :span="12" style="display: flex">
             <img
-              :src="avatar"
+              :src="form.img"
               style="width: 50px; height: 50px; margin: 0 10px 10px 0"
             />
             <div style="margin-top: -5px">
@@ -27,15 +27,6 @@
               @click="upMembers(3)"
             >
               停售
-            </el-button>
-            <el-button
-              native-type="submit"
-              size="small"
-              style="float: right; margin-right: 10px"
-              type="primary"
-              @click="upMembers(2)"
-            >
-              强制下线
             </el-button>
             <el-button
               v-if="form.drawerType == 1"
@@ -101,21 +92,25 @@
       <el-tab-pane label="退货信息" name="four" />
       <el-tab-pane label="入库信息" name="five" />
       <el-tab-pane label="出库信息" name="six" />
-      <el-tab-pane label="调查信息" name="seven" />
+      <el-tab-pane label="调整信息" name="seven" />
+      <el-tab-pane label="库存明细" name="eight" />
     </el-tabs>
     <div v-if="tabindex == '0'">
       <div v-if="form.drawerType == 1" ref="vab-print-table" class="drawer-tab">
         <div class="conten-warp">
           <div class="conten-title">基本信息</div>
           <div class="conten-list-row">
-            <div>商品分类：分类一</div>
+            <div>商品款号：wf46546546</div>
             <div>商品名称： 名称一</div>
+            <div>商品标题： 标题一</div>
+            <div>商品分类：分类一</div>
             <div>商品品牌： 品牌一</div>
             <div>年份：2001</div>
             <div>季节： 春季</div>
             <div>上市波段： 2020</div>
             <div>年龄段： 90后</div>
             <div>性别： 男</div>
+            <div>供应商： 供应商</div>
             <div>
               商品图片：
               <img :src="avatar" style="width: 20px; height: 20px" />
@@ -127,7 +122,7 @@
           <div class="conten-list-row">
             <div>颜色：红色</div>
             <div>尺码：50/60/70</div>
-            <div>商品库位：库位一</div>
+            <div>商品条码： 1111111111111</div>
           </div>
         </div>
         <div class="conten-warp">
@@ -140,10 +135,19 @@
           </div>
         </div>
         <div class="conten-warp">
-          <div class="conten-title">其他信息</div>
+          <div class="conten-title">其它信息</div>
           <div class="conten-list-row">
-            <div>商品条码： 1111111111111</div>
-            <div>商品状态： 启用</div>
+            <div style="width: 50%">创建时间： 2020-02-02 10:10:10</div>
+            <div style="width: 50%">操作人员： 阿白</div>
+            <div style="width: 50%">更新时间： 2020-02-02 10:10:10</div>
+            <div style="width: 50%">操作人员： 阿白</div>
+            <div>商品库位：库位一</div>
+            <div>上架商城： 待确认</div>
+            <div>是否同步到聚水潭： 允许</div>
+            <div>库存预警： 预警信息</div>
+            <div>设计师： 阿白</div>
+            <div>设计师编号： 4654646</div>
+            <div>商品状态： 在售</div>
           </div>
         </div>
       </div>
@@ -158,10 +162,29 @@
           <div class="conten-warp">
             <div class="conten-title">基本信息</div>
             <div class="conten-list-com">
-              <el-form-item class="item" label="款号：">
+              <el-form-item
+                class="item"
+                label="商品款号："
+                style="font-size: 12px"
+              >
                 <el-input
                   v-model="form.addressKeyword"
                   placeholder="请输入款号"
+                  style="width: 215px"
+                />
+              </el-form-item>
+
+              <el-form-item class="item" label="商品名称：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入商品名称"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="商品标题：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入商品标题"
                   style="width: 215px"
                 />
               </el-form-item>
@@ -178,13 +201,6 @@
                   class="el-icon-plus"
                   style="margin-left: 10px; color: #1890ff"
                 ></i>
-              </el-form-item>
-              <el-form-item class="item" label="商品名称：">
-                <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入商品名称"
-                  style="width: 215px"
-                />
               </el-form-item>
               <el-form-item class="item" label="商品品牌：">
                 <el-select v-model="form.brand" placeholder="请选择商品品牌：">
@@ -262,6 +278,16 @@
                   <el-option label="女" value="2" />
                 </el-select>
               </el-form-item>
+              <el-form-item class="item" label="供应商：">
+                <el-select v-model="form.brand" placeholder="请选择供应商">
+                  <el-option
+                    v-for="(item, index) in typeData.brand"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+              </el-form-item>
               <el-form-item class="item" label="商品图片：">
                 <el-button
                   native-type="submit"
@@ -307,19 +333,16 @@
                   style="margin-left: 10px; color: #1890ff"
                 ></i>
               </el-form-item>
-              <el-form-item class="item" label="商品库位：">
-                <el-select v-model="form.brand" placeholder="请选择库位：">
-                  <el-option
-                    v-for="(item, index) in typeData.brand"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-                <i
-                  class="el-icon-plus"
-                  style="margin-left: 10px; color: #1890ff"
-                ></i>
+              <el-form-item class="item" label="商品条码：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  clearable
+                  style="width: 215px"
+                >
+                  <el-button slot="append" icon="el-icon-search">
+                    生成
+                  </el-button>
+                </el-input>
               </el-form-item>
             </div>
           </div>
@@ -394,22 +417,59 @@
         </div>
         <div class="drawer-tab">
           <div class="conten-warp">
-            <div class="conten-title">其他信息</div>
+            <div class="conten-title">其它信息</div>
             <div class="conten-list-com">
-              <el-form-item class="item" label="商品条码：">
+              <el-form-item class="item" label="商品库位：">
+                <el-select v-model="form.brand" placeholder="请选择库位：">
+                  <el-option
+                    v-for="(item, index) in typeData.brand"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+                <i
+                  class="el-icon-plus"
+                  style="margin-left: 10px; color: #1890ff"
+                ></i>
+              </el-form-item>
+              <el-form-item class="item" label="上架商城：">
+                <el-radio-group v-model="form.name">
+                  <el-radio :label="0">待确认</el-radio>
+                  <el-radio :label="1">立即上架</el-radio>
+                  <el-radio :label="2">定时上架</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item class="item" label="是否同步到聚水潭：">
+                <el-radio-group v-model="form.name">
+                  <el-radio :label="0">充许</el-radio>
+                  <el-radio :label="1">禁止</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item class="item" label="库存预警：">
                 <el-input
                   v-model="form.addressKeyword"
-                  clearable
+                  placeholder="请输入预警信息"
                   style="width: 215px"
-                >
-                  <el-button slot="append" icon="el-icon-search">
-                    生成
-                  </el-button>
-                </el-input>
+                />
+              </el-form-item>
+              <el-form-item class="item" label="设计师：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入设计师"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="设计师编号：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入设计师编号"
+                  style="width: 215px"
+                />
               </el-form-item>
               <el-form-item class="item" label="商品状态：">
                 <el-radio-group v-model="form.name">
-                  <el-radio :label="0">启用</el-radio>
+                  <el-radio :label="0">在售</el-radio>
                   <el-radio :label="1">备用</el-radio>
                   <el-radio :label="2">禁用停售</el-radio>
                 </el-radio-group>
@@ -607,6 +667,12 @@
   }
 </script>
 <style lang="scss" scoped>
+  ::v-deep {
+    .el-form-item__label,
+    .el-input__inner {
+      font-size: 12px;
+    }
+  }
   .head {
     padding: 30px 35px 25px;
   }

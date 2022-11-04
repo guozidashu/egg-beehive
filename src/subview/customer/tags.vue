@@ -186,13 +186,13 @@
         this.form.pageSize = data
       },
       async fetchData() {
-        let res = await getParentTagList(this.form)
+        const { data } = await getParentTagList(this.form)
         let list = [
           {
             id: 0,
             name: '全部',
           },
-          ...res.data,
+          ...data,
         ]
         list.forEach((item) => {
           item.btnIconStatus = false

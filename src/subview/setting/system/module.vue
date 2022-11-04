@@ -10,7 +10,7 @@
             ref="form"
             class="demo-form"
             label-position="right"
-            label-width="120px"
+            label-width="150px"
             :model="form"
           >
             <el-form-item label="库存计算方式：">
@@ -47,11 +47,94 @@
             <el-form-item label="单位：">
               <el-input v-model="form.name" style="width: 250px" />
             </el-form-item>
-            <el-form-item label="年龄段：">
-              <el-input v-model="form.name" style="width: 250px" />
+            <el-form-item label="库存预警：">
+              <span
+                v-for="(item, index) in tagsList"
+                :key="index"
+                :class="[item.type === 1 ? 'tagsClass' : 'tagsClass1']"
+                @click="handleClickTag(index)"
+              >
+                {{ item.name }}
+              </span>
             </el-form-item>
-            <el-form-item label="性别：">
-              <el-input v-model="form.name" style="width: 250px" />
+            <el-form-item
+              v-if="tagsList[0].type == 2"
+              label="低于安全库存下限："
+              prop="zhekou"
+            >
+              <el-input
+                v-model="form.addressKeyword"
+                clearable
+                style="width: 250px"
+              />
+              <el-button
+                size="small"
+                style="margin-left: 10px"
+                type="text"
+                @click="tagsList[0].type = 1"
+              >
+                删除
+              </el-button>
+            </el-form-item>
+            <el-form-item
+              v-if="tagsList[1].type == 2"
+              label="安全库存上限限内："
+              prop="zhekou"
+            >
+              <el-input
+                v-model="form.addressKeyword"
+                clearable
+                style="width: 250px"
+              />
+              <el-button
+                size="small"
+                style="margin-left: 10px"
+                type="text"
+                @click="tagsList[1].type = 1"
+              >
+                删除
+              </el-button>
+            </el-form-item>
+            <el-form-item
+              v-if="tagsList[2].type == 2"
+              label="高于安全库存上限："
+              prop="zhekou"
+            >
+              <el-input
+                v-model="form.addressKeyword"
+                clearable
+                style="width: 250px"
+              />
+              <el-button
+                size="small"
+                style="margin-left: 10px"
+                type="text"
+                @click="tagsList[2].type = 1"
+              >
+                删除
+              </el-button>
+            </el-form-item>
+            <el-form-item
+              v-if="tagsList[3].type == 2"
+              label="超卖："
+              prop="zhekou"
+            >
+              <el-input
+                v-model="form.addressKeyword"
+                clearable
+                style="width: 250px"
+              />
+              <el-button
+                size="small"
+                style="margin-left: 10px"
+                type="text"
+                @click="tagsList[3].type = 1"
+              >
+                删除
+              </el-button>
+            </el-form-item>
+            <el-form-item>
+              注：商品库存少于预警数量，商品列表库存数量标红显示，如需要发送消息通知，请到消息通知设置
             </el-form-item>
             <el-form-item label="公司地址：">
               <el-input v-model="form.name" style="width: 250px" />
@@ -270,6 +353,12 @@
     components: { Form },
     data() {
       return {
+        tagsList: [
+          { name: '低于安全库存下限', type: 1 },
+          { name: '安全库存上下限内', type: 1 },
+          { name: '高于安全库存上限', type: 1 },
+          { name: '超卖', type: 1 },
+        ],
         activeName: 'first',
         value: true,
         form: {
@@ -327,6 +416,9 @@
       this.fetchData()
     },
     methods: {
+      handleClickTag(index) {
+        this.tagsList[index].type = 2
+      },
       //获取行政区划
       async fetchData() {
         // const {
@@ -357,5 +449,18 @@
     color: #666;
     background-color: #e8f4ff;
     border-radius: 6px;
+  }
+  .tagsClass {
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #dcdfe6;
+    border-radius: 5px;
+  }
+  .tagsClass1 {
+    padding: 5px;
+    margin: 5px;
+    color: #409eff;
+    border: 1px solid #409eff;
+    border-radius: 5px;
   }
 </style>

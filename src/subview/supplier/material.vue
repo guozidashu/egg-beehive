@@ -3,45 +3,17 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+      <Form
+        :form="form"
+        :form-type="formType"
+        @changeSearch="handleQuery"
+        @changeSta="changeBtnSta"
+      >
         <template #Form>
-          <el-form-item label="订单状态:">
-            <el-select v-model="form.region">
-              <el-option label="全部" value="1" />
-              <el-option label="待收款" value="2" />
-              <el-option label="待发货" value="3" />
-              <el-option label="退货单" value="4" />
-              <el-option label="待确认" value="5" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="配送方式:">
-            <el-select v-model="form.region1">
-              <el-option label="全部" value="1" />
-              <el-option label="普通快递" value="2" />
-              <el-option label="门店自提" value="3" />
-              <el-option label="送货上门" value="4" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="付款状态:">
-            <el-select v-model="form.region2">
-              <el-option label="全部" value="1" />
-              <el-option label="未付款" value="2" />
-              <el-option label="部分付款" value="3" />
-              <el-option label="已付款" value="4" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="发货状态:">
-            <el-select v-model="form.region3">
-              <el-option label="全部" value="1" />
-              <el-option label="未发货" value="2" />
-              <el-option label="部分发货" value="3" />
-              <el-option label="发货完成" value="4" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="订单时间:">
+          <el-form-item v-show="form.fold" label="订单时间:">
             <el-date-picker
               v-model="form.date"
-              align="left"
+              align="right"
               end-placeholder="结束日期"
               :picker-options="pickerOptions"
               range-separator="至"
@@ -50,45 +22,76 @@
               unlink-panels
             />
           </el-form-item>
-          <el-form-item label="订单搜索:">
+          <div v-show="!form.fold">
+            <el-form-item label="订单时间:">
+              <el-date-picker
+                v-model="form.date"
+                align="right"
+                end-placeholder="结束日期"
+                :picker-options="pickerOptions"
+                range-separator="至"
+                start-placeholder="开始日期"
+                type="daterange"
+                unlink-panels
+              />
+            </el-form-item>
+            <el-form-item label="供应商:">
+              <el-input
+                v-model="form.search"
+                placeholder="请输入供应商名称"
+                size="small"
+              />
+            </el-form-item>
+          </div>
+
+          <el-form-item v-show="!form.fold" label="供应商类别:">
+            <el-select v-model="form.region">
+              <el-option label="成品采购" value="shanghai" />
+              <el-option label="原料供应商" value="shanghai" />
+              <el-option label="辅料供应商" value="shanghai" />
+              <el-option label="外协加工厂" value="shanghai" />
+              <el-option label="其它供应商" value="shanghai" />
+            </el-select>
+          </el-form-item>
+          <el-form-item v-show="!form.fold" label="订单状态:">
+            <el-select v-model="form.region">
+              <el-option label="全部入库" value="shanghai" />
+              <el-option label="部分入库" value="shanghai" />
+              <el-option label="未入库" value="shanghai" />
+            </el-select>
+          </el-form-item>
+          <el-form-item v-show="!form.fold" label="搜索:">
             <el-input
               v-model="form.input3"
               class="input-with-select"
-              placeholder="请输入内容"
+              placeholder="请输入"
             >
               <el-select
                 v-model="form.select"
                 slot="prepend"
+                placeholder="全部"
                 style="width: 100px"
               >
-                <el-option label="客户名称" value="1" />
-                <el-option label="客户电话" value="2" />
-                <el-option label="订单号" value="3" />
+                <el-option label="订单号" value="5" />
+                <el-option label="物料名称" value="6" />
+                <el-option label="物料编号" value="6" />
               </el-select>
             </el-input>
           </el-form-item>
         </template>
       </Form>
     </div>
-
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="所有订单" name="first" />
-        <el-tab-pane label="ERP平台 (100)" name="second" />
-        <el-tab-pane label=" 私有商城 (10)" name="three" />
-        <el-tab-pane label="第三方订单 (100)" name="four" />
-        <el-tab-pane label="门店订单 (10)" name="five" />
+        <el-tab-pane label="所有订单 (3)" name="first" />
+        <el-tab-pane label="全部入库 (129)" name="second" />
+        <el-tab-pane label="部分入库 (18)" name="three" />
+        <el-tab-pane label="未入库 (18)" name="four" />
+        <el-tab-pane label="预警订单 (2)" name="five" />
+        <el-tab-pane label="延期订单 (2)" name="six" />
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="print('multipleTable')"
-          >
-            打印配发单
-          </el-button>
           <el-button
             native-type="submit"
             size="small"
@@ -97,9 +100,16 @@
           >
             导出订单
           </el-button>
+          <el-button
+            native-type="submit"
+            size="small"
+            type="primary"
+            @click="print('multipleTable')"
+          >
+            打印入库单
+          </el-button>
         </el-form-item>
       </el-form>
-      <!-- 表格组件使用 -->
       <List
         ref="multipleTable"
         :list="list"
@@ -112,17 +122,11 @@
       >
         <template #List>
           <el-table-column type="selection" />
-          <el-table-column label="订单号" prop="orderno" width="120" />
-          <el-table-column label="订单日期" prop="date" sortable width="200" />
-          <el-table-column label="订单类型" prop="type" width="120" />
-          <el-table-column label="客户名称" prop="username" width="120">
-            <template #default="{ row }">
-              <span>{{ row.address }}</span>
-              |
-              <span>{{ row.username }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="商品信息" prop="inof">
+          <el-table-column label="订单号" prop="orderno" sortable width="120" />
+          <el-table-column label="采购日期" prop="data" />
+          <el-table-column label="订单类型" prop="name" width="120" />
+          <el-table-column label="供应商名称" prop="name" width="120" />
+          <el-table-column label="物料信息" prop="inof" width="300">
             <template #default="{ row }">
               <div
                 v-for="(item, index) in row.inof"
@@ -150,9 +154,10 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="总数量" prop="num" width="80" />
-          <el-table-column label="总金额" prop="money" width="80" />
-          <el-table-column label="配送方式" prop="pay" width="120" />
+          <el-table-column label="采购数量" prop="num" width="80" />
+          <el-table-column label="入库数量" prop="num" width="80" />
+          <el-table-column label="金额" prop="money" width="80" />
+          <el-table-column label="预计交货时间" prop="end_time" />
           <el-table-column label="订单状态" prop="state" width="120">
             <template #default="{ row }">
               <div
@@ -169,17 +174,35 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="100">
+          <el-table-column label="完成状态" prop="state1" width="120">
             <template #default="{ row }">
-              <el-button
-                v-if="row.state === '待收款'"
-                type="text"
-                @click="handleEdit(row)"
+              <div
+                style="
+                  width: 80px;
+                  line-height: 22px;
+                  color: #ffa39e;
+                  text-align: center;
+                  background: #fff1f0;
+                  border-color: #ffa39e;
+                "
               >
-                发送货
+                {{ row.state1 }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            align="center"
+            fixed="right"
+            label="操作"
+            show-overflow-tooltip
+            width="150"
+          >
+            <template #default="{ row }">
+              <el-button type="text" @click="handleDetail(row, 1)">
+                详情
               </el-button>
-              <span v-if="row.state === '待收款'">|</span>
-              <el-button type="text" @click="handleDetail(row)">详情</el-button>
+              <el-button type="text">收货</el-button>
+              <el-button type="text">退货</el-button>
             </template>
           </el-table-column>
         </template>
@@ -187,27 +210,26 @@
     </el-card>
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
       <!-- 详情抽屉组件 -->
-      <Drawer @drawerPrint="print" @drawerhandleEdit="handleEdit" />
+      <Drawer :drawer-inof="drawerInof" :drawer-type="drawerType" />
     </el-drawer>
-    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 
 <script>
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
-  import Drawer from './components/Drawer'
-  import Edit from './components/ListEdit'
-  // import { getList } from '@/api/userManagement'
-  // 打印
+  import Drawer from './components/OrderDrawer'
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
   export default {
-    name: 'OrderList',
-    components: { Form, List, Drawer, Edit },
+    name: 'SupplierMaterial',
+    components: { List, Form, Drawer },
     data() {
       return {
-        filename: '订单列表',
+        drawer: false,
+        drawerInof: {},
+        drawerType: 1,
+        filename: '物料采购订单',
         downloadLoading: false,
         exclList: [],
         pickerOptions: {
@@ -275,31 +297,25 @@
           ],
         },
         activeName: 'first',
-        drawer: false,
         // 表单数据/列表参数
         form: {
           // 自定义参数
           fold: true,
-          data: '',
-          select: '1',
-          region: '1',
-          region2: '1',
-          region3: '1',
-          region1: '1',
           // 公共参数
           page: 1,
           pageSize: 10,
         },
         // 列表数据相关
-
         // 公共参数
         listType: 1,
-        formType: 4,
+        formType: 1,
+        // orderno type name inof num money creat_time end_time state
         list: [
           {
             orderno: 'wx312009361683644416',
-            date: '2022-10-13 23:33:48',
-            type: '普通订单',
+            creat_time: '2022-10-13 23:33:48',
+            end_time: '2022-11-13 23:33:48',
+            type: '计划生产',
             inof: [
               {
                 text: 'BY FAR Miranda leather shoulder bag | 默认',
@@ -310,18 +326,18 @@
                 img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
               },
             ],
-            username: '阿白',
-            address: '北京市',
-            pay: '普通快递',
+            name: '阿白',
             num: 23,
             money: 345,
-            state: '已完成',
+            state: '部分入库',
+            state1: '延期一天',
+            data: '2022-10-13 23:33:48',
           },
           {
             orderno: 'wx312009361683644416',
-            date: '2022-10-13 23:33:48',
-            type: '普通订单',
-            address: '北京市',
+            creat_time: '2022-10-13 23:33:48',
+            end_time: '2022-11-13 23:33:48',
+            type: '成品采购',
             inof: [
               {
                 text: 'BY FAR Miranda leather shoulder bag | 默认',
@@ -332,11 +348,12 @@
                 img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
               },
             ],
-            username: '阿蓝',
-            pay: '全国配送',
+            name: '阿白',
             num: 23,
             money: 345,
-            state: '待收款',
+            state: '未入库',
+            state1: '延期一天',
+            data: '2022-10-13 23:33:48',
           },
         ],
         listLoading: false,
@@ -358,36 +375,23 @@
     methods: {
       // 列表表单子组件展开闭合事件  公共部分
       changeBtnSta(data) {
-        console.log(2323233, data)
         this.form.fold = data
       },
-      // 列表表单子组件查询事件   公共部分
-      handleQuery(data) {
-        console.log(6666, data)
-        this.form.page = 1
+      handleQuery() {},
+      // 列表数据封装函数
+
+      // 列表数据改变页数   公共部分
+      changeBtnPage(data) {
+        this.form.page = data
       },
-      // 列表表单单选标签监听  自定义部分
-      changeHandler(data) {
-        console.log(888, data)
-        this.form.page = 1
+      // 列表数据改变每页条数  自定义部分
+      changeBtnPageSize(data) {
+        this.form.pageSize = data
       },
       // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
         console.log(1111, tab.label)
         this.form.page = 1
-      },
-
-      // 列表数据封装函数
-
-      // 列表数据改变页数   公共部分
-      changeBtnPage(data) {
-        console.log(9090909, data)
-        this.form.page = data
-      },
-      // 列表数据改变每页条数  自定义部分
-      changeBtnPageSize(data) {
-        console.log(8080080, data)
-        this.form.pageSize = data
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
@@ -406,21 +410,15 @@
         })
       },
       // 详情抽屉
-      handleDetail() {
-        this.drawer = true
-      },
-      // 新增修改
-      async handleEdit(row) {
-        console.log(222, row)
-        if (row === 'add') {
-          this.$refs['edit'].showEdit()
+      handleDetail(row, type) {
+        if (row == 'add') {
+          this.drawerInof = {}
+          this.drawerInof.drawerType = type
         } else {
-          if (row.id) {
-            this.$refs['edit'].showEdit(row)
-          } else {
-            this.$refs['edit'].showEdit()
-          }
+          this.drawerInof = JSON.parse(JSON.stringify(row))
+          this.drawerInof.drawerType = type
         }
+        this.drawer = true
       },
       // 打印
       ...mapActions({
@@ -444,25 +442,25 @@
           import('@/utils/excel').then((excel) => {
             const tHeader = [
               '订单号',
-              '单据日期',
-              '订单类型',
-              '客户名称',
+              '采购日期',
+              '供应商名称',
               '商品信息',
               '数量',
-              '实际金额',
-              '支付方式',
+              '金额',
+              '预计交货时间',
               '订单状态',
+              '完成状态',
             ]
             const filterVal = [
               'orderno',
-              'date',
-              'type',
-              'username',
+              'data',
+              'name',
               'inofText',
               'num',
               'money',
-              'pay',
+              'end_time',
               'state',
+              'state1',
             ]
             const list = this.exclList
             const data = this.formatJson(filterVal, list)
@@ -484,15 +482,4 @@
     },
   }
 </script>
-<style>
-  .dateArrClass > div ::after {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    width: 5px;
-    height: 5px;
-    content: '';
-    background-color: #1890ff;
-    border-radius: 50%;
-  }
-</style>
+<style lang="scss" scoped></style>

@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="12" style="display: flex">
           <img
-            :src="avatar"
+            :src="form.avatar"
             style="
               width: 50px;
               height: 50px;
@@ -29,13 +29,24 @@
             赠送积分
           </el-button>
           <el-button
+            v-if="form.drawerType == 1"
             native-type="submit"
             size="small"
             style="float: right; margin-right: 10px"
             type="primary"
-            @click="handleEdit('add')"
+            @click="form.drawerType = 2"
           >
             编辑
+          </el-button>
+          <el-button
+            v-if="form.drawerType == 2"
+            native-type="submit"
+            size="small"
+            style="float: right; margin-right: 10px"
+            type="primary"
+            @click="form.drawerType = 1"
+          >
+            完成
           </el-button>
         </el-col>
       </el-row>
@@ -51,8 +62,20 @@
         </el-col>
       </el-row>
     </div>
-    <el-tabs v-model="activeName" class="drawer-tab">
-      <el-tab-pane label="员工信息" name="first">
+    <el-tabs
+      v-model="activeName"
+      style="padding: 0 25px"
+      @tab-click="handleClick"
+    >
+      <el-tab-pane label="员工信息" name="first" />
+      <el-tab-pane label="积分明细" name="second" />
+      <el-tab-pane label="订单明细" name="three" />
+      <el-tab-pane label="签到记录" name="four" />
+      <el-tab-pane label="持有优惠券" name="five" />
+      <el-tab-pane label="排行榜" name="six" />
+    </el-tabs>
+    <div v-if="tabindex == '0'">
+      <div v-if="form.drawerType == 1" class="drawer-tab">
         <div class="conten-warp">
           <div class="conten-title">基本信息</div>
           <div class="conten-list-row">
@@ -66,18 +89,125 @@
           </div>
         </div>
         <div class="conten-warp">
-          <div class="conten-title">密码</div>
+          <div class="conten-title">账户信息</div>
           <div class="conten-list-row">
+            <div>账户信息：25478894698</div>
             <div>登录密码：*******</div>
           </div>
         </div>
         <div class="conten-warp">
-          <div class="conten-title">员工备注</div>
+          <div class="conten-title">其它信息</div>
           <div class="conten-list-row">
-            <div>备注：备注信息</div>
+            <div style="width: 50%">创建时间： 2020-02-02 10:10:10</div>
+            <div style="width: 50%">操作人员： 阿白</div>
+            <div style="width: 50%">更新时间： 2020-02-02 10:10:10</div>
+            <div style="width: 50%">操作人员： 阿白</div>
+            <div style="width: 100%">备注：备注信息</div>
           </div>
         </div>
-      </el-tab-pane>
+      </div>
+      <el-form
+        v-if="form.drawerType == 2"
+        ref="form"
+        label-width="120px"
+        :model="form"
+        style="width: 100%"
+      >
+        <div class="drawer-tab">
+          <div class="conten-warp">
+            <div class="conten-title">基本信息</div>
+            <div class="conten-list-com">
+              <el-form-item class="item" label="用户编号：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入用户编号"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="真实姓名：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入真实姓名"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="手机号码：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入手机号码"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="生日：">
+                <el-date-picker
+                  v-model="form.value1"
+                  placeholder="请选择生日"
+                  type="date"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="性别：">
+                <el-select v-model="form.type1" placeholder="请选择">
+                  <el-option label="男" :value="1" />
+                  <el-option label="女" :value="2" />
+                </el-select>
+              </el-form-item>
+              <el-form-item class="item" label="身份证号：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入身份证号"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="员工地址：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入客户地址"
+                  style="width: 215px"
+                />
+              </el-form-item>
+            </div>
+          </div>
+        </div>
+        <div class="drawer-tab">
+          <div class="conten-warp">
+            <div class="conten-title">账户信息</div>
+            <div class="conten-list-com">
+              <el-form-item class="item" label="登录账户：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入登录账户"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="登录密码：">
+                <el-input
+                  v-model="form.addressKeyword"
+                  placeholder="请输入登录密码"
+                  style="width: 215px"
+                />
+              </el-form-item>
+            </div>
+          </div>
+        </div>
+        <div class="drawer-tab">
+          <div class="conten-warp">
+            <div class="conten-title">其它信息</div>
+            <div class="conten-list-com">
+              <el-form-item class="item" label="备注信息：">
+                <el-input
+                  v-model="form.des"
+                  :autosize="{ minRows: 2, maxRows: 4 }"
+                  placeholder="请输入备注"
+                  type="textarea"
+                />
+              </el-form-item>
+            </div>
+          </div>
+        </div>
+      </el-form>
+    </div>
+    <!-- <el-tabs v-model="activeName">
+      <el-tab-pane label="员工信息" name="first" />
       <el-tab-pane label="积分明细" name="second">
         <List :list="goosList" :list-type="listType" :state="listLoading">
           <template #List>
@@ -161,19 +291,45 @@
           </template>
         </List>
       </el-tab-pane>
-    </el-tabs>
+    </el-tabs> -->
+    <List
+      v-else
+      :list="goosList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column label="来源/用途" prop="inof">
+          <template #default="{ row }">
+            <span>{{ row.wenzi }}|{{ row.color }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="积分变化" prop="money" show-overflow-tooltip />
+        <el-table-column label="变化前积分" prop="pay" show-overflow-tooltip />
+        <el-table-column label="日期" prop="num" show-overflow-tooltip />
+        <el-table-column label="备注" prop="comutp" show-overflow-tooltip />
+      </template>
+    </List>
   </div>
 </template>
 
 <script>
   import List from '@/subview/components/List'
-  import { mapGetters } from 'vuex'
   export default {
     name: 'EmployeesDrawer',
     components: { List },
+    props: {
+      drawerInof: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data() {
       return {
         activeName: 'first',
+        tabindex: '0',
+        form: Object.assign({}, this.drawerInof),
         listLoading: false,
         listType: 2,
         goosList: [
@@ -203,14 +359,6 @@
         ],
         stalist: [
           {
-            name: '余额',
-            value: '¥223.01',
-          },
-          {
-            name: '积分',
-            value: '5000',
-          },
-          {
             name: '总订单数',
             value: '385单',
           },
@@ -223,22 +371,41 @@
             value: '800000元',
           },
           {
+            name: '积分',
+            value: '5000',
+          },
+          {
             name: '员工等级',
             value: '牛人',
           },
         ],
       }
     },
-    computed: {
-      ...mapGetters({
-        avatar: 'user/avatar',
-      }),
+    watch: {
+      type(val) {
+        this.type = val
+      },
+      drawerInof: {
+        handler: function (newVal) {
+          this.form = Object.assign({}, newVal)
+          console.log(2222, newVal)
+        },
+        deep: true,
+      },
     },
     created() {},
-    methods: {},
+    methods: {
+      handleClick(tab) {
+        console.log(8989, tab)
+        this.tabindex = tab.index
+      },
+    },
   }
 </script>
 <style lang="scss" scoped>
+  .head {
+    padding: 30px 35px 25px;
+  }
   .drawer-tab {
     padding: 0 25px;
     .conten-warp {
@@ -252,8 +419,7 @@
         color: #303133;
         border-left: 3px solid #1890ff;
       }
-      .conten-list-row,
-      .conten-list-com {
+      .conten-list-row {
         display: flex;
         flex-wrap: wrap;
         div {
@@ -262,9 +428,11 @@
         }
       }
       .conten-list-com {
-        flex-direction: column;
-        div {
-          width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        .item {
+          width: 50%;
+          margin-top: 16px;
         }
       }
     }

@@ -84,7 +84,7 @@
         form: {
           id: 0,
           name: '',
-          pageNo: 1,
+          page: 1,
           pageSize: 10,
         },
         formType: 4,
@@ -126,39 +126,34 @@
       },
       // 查询
       handleQuery() {
-        this.form.pageNo = 1
+        this.form.page = 1
       },
       // 删除
       handleDelete(row) {
         if (row.id) {
-          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            // const { code } = await deleteBom({ id: row.id })
-            // if (code != 200) {
-            //   return
-            // }
-            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
-            this.fetchData()
-          })
-        } else {
-          if (this.selectRows.length > 0) {
-            // const ids = this.selectRows.map((item) => item.id).join()
-            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-              // const { code } = await deleteBom(ids)
+          this.$baseConfirm(
+            '你确定要删除当前波段吗？</br>删除后将无法恢复，请谨慎操作！',
+            null,
+            async () => {
+              // const { code } = await deleteBom({ id: row.id })
               // if (code != 200) {
               //   return
               // }
+              this.$baseMessage(
+                '删除成功',
+                'success',
+                'vab-hey-message-success'
+              )
               this.fetchData()
-            })
-          } else {
-            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
-          }
+            }
+          )
         }
       },
       // 列表数据封装函数
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        this.form.pageNo = data
+        this.form.page = data
       },
       // 多选获取数据   公共部分
       selectBtnRows(data) {

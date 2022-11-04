@@ -287,7 +287,7 @@
     data() {
       return {
         activeName: '打印吊牌条码',
-        form: { pageNo: 1, pageSize: 10 },
+        form: { page: 1, pageSize: 10 },
         // 列表数据相关
         selectRows: [],
         listType: 1,
@@ -471,7 +471,7 @@
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        this.form.pageNo = data
+        this.form.page = data
       },
       // 多选获取数据   公共部分
       selectBtnRows(data) {

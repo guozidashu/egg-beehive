@@ -30,7 +30,7 @@
             native-type="submit"
             size="small"
             type="primary"
-            @click="handleEdit('add')"
+            @click="handleDetail('add', 2)"
           >
             添加员工
           </el-button>
@@ -85,15 +85,19 @@
           </el-table-column>
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
-              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <el-button type="text" @click="handleDetail(row)">详情</el-button>
+              <el-button type="text" @click="handleDetail(row, 2)">
+                编辑
+              </el-button>
+              <el-button type="text" @click="handleDetail(row, 1)">
+                详情
+              </el-button>
             </template>
           </el-table-column>
         </template>
       </List>
     </el-card>
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
-      <Drawer />
+      <Drawer :drawer-inof="drawerInof" />
     </el-drawer>
     <edit ref="edit" :type-data="typeData" @fetch-data="fetchData" />
   </div>
@@ -110,11 +114,12 @@
     components: { List, Form, Drawer, Edit },
     data() {
       return {
+        drawerInof: {},
         drawer: false,
         typeData: {},
         form: {
           name: '',
-          pageNo: 1,
+          page: 1,
           pageSize: 10,
           status: 0,
         },
@@ -149,22 +154,23 @@
       this.fetchData()
     },
     methods: {
-      // 新增修改
-      async handleEdit(row) {
-        this.$refs.edit.typeData = this.typeData
-        if (row === 'add') {
-          this.$refs['edit'].showEdit()
+      // 详情抽屉
+      handleDetail(row, type) {
+        if (row == 'add') {
+          this.drawerInof = {}
+          this.drawerInof.drawerType = type
         } else {
-          console.log(65466546, row)
-          this.$refs['edit'].showEdit(row)
+          this.drawerInof = JSON.parse(JSON.stringify(row))
+          this.drawerInof.drawerType = type
         }
+        this.drawer = true
       },
       handleQuery() {},
       // 列表数据封装函数
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        this.form.pageNo = data
+        this.form.page = data
       },
       // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {
@@ -179,10 +185,6 @@
         // this.list = list
         // this.total = total
         // this.listLoading = false
-      },
-      // 详情抽屉
-      handleDetail() {
-        this.drawer = true
       },
     },
   }

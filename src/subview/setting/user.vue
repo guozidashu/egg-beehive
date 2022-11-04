@@ -144,7 +144,7 @@
         form: {
           id: 0,
           name: '',
-          pageNo: 1,
+          page: 1,
           pageSize: 10,
         },
         editform: {
@@ -252,7 +252,7 @@
       },
       // 查询
       handleQuery() {
-        this.form.pageNo = 1
+        this.form.page = 1
       },
     },
   }

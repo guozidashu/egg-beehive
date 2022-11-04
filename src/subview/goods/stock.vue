@@ -76,14 +76,14 @@
               <el-option label="品牌2" value="beijing" />
             </el-select>
           </el-form-item>
-          <el-form-item label="统计类型:" prop="region">
+          <el-form-item label="商品分类:" prop="region">
             <el-select
               v-model="goodsForm.region"
               size="small"
               style="width: 150px"
             >
-              <el-option label="浏览量" value="shanghai" />
-              <el-option label="访问数" value="beijing" />
+              <el-option label="上衣" value="shanghai" />
+              <el-option label="童装" value="beijing" />
             </el-select>
           </el-form-item>
           <el-form-item
@@ -320,7 +320,7 @@
             type: 1,
           },
           {
-            title: '销量',
+            title: '库存预警',
             number: 400,
             num: 34.32,
             type: 2,

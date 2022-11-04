@@ -197,7 +197,7 @@
           data: '',
           orderId: '',
           // 公共参数
-          pageNo: 1,
+          page: 1,
           pageSize: 10,
         },
         // 列表数据相关
@@ -268,7 +268,7 @@
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        this.form.pageNo = data
+        this.form.page = data
       },
       // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {
@@ -277,7 +277,7 @@
       // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
         console.log(1111, tab.label)
-        this.form.pageNo = 1
+        this.form.page = 1
       },
       // 列表数据请求函数 公共部分
       async fetchData() {

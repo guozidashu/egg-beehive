@@ -121,7 +121,7 @@
           data: '',
           orderId: '',
           // 公共参数
-          pageNo: 1,
+          page: 1,
           pageSize: 10,
         },
         // 列表数据相关
@@ -177,17 +177,17 @@
       // 列表表单子组件查询事件   公共部分
       handleQuery(data) {
         console.log(6666, data)
-        this.form.pageNo = 1
+        this.form.page = 1
       },
       // 列表表单单选标签监听  自定义部分
       changeHandler(data) {
         console.log(888, data)
-        this.form.pageNo = 1
+        this.form.page = 1
       },
       // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
         console.log(1111, tab.label)
-        this.form.pageNo = 1
+        this.form.page = 1
       },
 
       // 列表数据封装函数
@@ -195,7 +195,7 @@
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         console.log(9090909, data)
-        this.form.pageNo = data
+        this.form.page = data
       },
       // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {

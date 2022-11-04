@@ -3,7 +3,6 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <!-- 表单组件使用 -->
       <Form
         :form="form"
         :form-type="formType"
@@ -25,7 +24,7 @@
                 <el-option label="全部" value="0" />
                 <el-option label="手机号" value="1" />
                 <el-option label="用户昵称" value="2" />
-                <el-option label="客户昵称" value="3" />
+                <el-option label="客户名称" value="3" />
               </el-select>
             </el-input>
           </el-form-item>
@@ -52,26 +51,16 @@
             </el-input>
           </el-form-item>
           <el-form-item v-show="!form.fold" label="客户等级:">
-            <el-input
-              v-model="form.name"
-              class="input-with-select"
-              placeholder="请输入"
-            >
-              <el-select
-                v-model="form.select1"
-                slot="prepend"
-                style="width: 100px"
-              >
-                <el-option label="全部" value="0" />
-                <el-option label="黄金" value="shanghai" />
-                <el-option label="白银" value="shanghai" />
-                <el-option label="钻石" value="shanghai" />
-                <el-option label="青铜" value="shanghai" />
-              </el-select>
-            </el-input>
+            <el-select v-model="form.select1" style="width: 300px">
+              <el-option label="全部" value="0" />
+              <el-option label="黄金" value="shanghai" />
+              <el-option label="白银" value="shanghai" />
+              <el-option label="钻石" value="shanghai" />
+              <el-option label="青铜" value="shanghai" />
+            </el-select>
           </el-form-item>
           <el-form-item v-show="!form.fold" label="客户分类:">
-            <el-select v-model="form.select2">
+            <el-select v-model="form.select2" style="width: 300px">
               <el-option label="全部" value="0" />
               <el-option label="分类一" value="shanghai" />
               <el-option label="分类二" value="shanghai" />
@@ -79,13 +68,14 @@
           </el-form-item>
           <el-form-item v-show="!form.fold" label="客户标签:">
             <el-cascader
-              v-model="value"
+              v-model="form.value"
               :options="options"
+              style="width: 300px"
               @change="handleChange"
             />
           </el-form-item>
           <el-form-item v-show="!form.fold" label="客户来源:">
-            <el-select v-model="form.select4">
+            <el-select v-model="form.select4" style="width: 300px">
               <el-option label="全部" value="0" />
               <el-option label="来源一" value="shanghai" />
               <el-option label="来源二" value="shanghai" />
@@ -159,10 +149,12 @@
           <el-table-column label="ID" prop="id" width="80" />
           <el-table-column label="头像/昵称" prop="img" width="120">
             <template #default="{ row }">
-              <img :src="row.img" style="width: 50px; height: 50px" />
-              <span>
-                {{ row.name }}
-              </span>
+              <div style="display: flex">
+                <img :src="row.img" style="width: 50px; height: 50px" />
+                <div style="margin: 15px 0 0 10px">
+                  {{ row.name }}
+                </div>
+              </div>
             </template>
           </el-table-column>
           <el-table-column label="客户名称" prop="name" width="120" />
@@ -290,7 +282,7 @@
           select4: '0',
           fold: true,
           // 公共参数
-          pageNo: 1,
+          page: 1,
           pageSize: 10,
         },
         // 列表数据相关
@@ -401,7 +393,7 @@
       },
       // 查询
       handleQuery() {
-        this.form.pageNo = 1
+        this.form.page = 1
       },
 
       // 列表表单子组件展开闭合事件  公共部分
@@ -411,12 +403,12 @@
       // 列表表单单选标签监听  自定义部分
       changeHandler(data) {
         console.log(888, data)
-        this.form.pageNo = 1
+        this.form.page = 1
       },
       // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
         console.log(1111, tab.label)
-        this.form.pageNo = 1
+        this.form.page = 1
       },
 
       // 列表数据封装函数
@@ -424,7 +416,7 @@
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         console.log(9090909, data)
-        this.form.pageNo = data
+        this.form.page = data
       },
       // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {

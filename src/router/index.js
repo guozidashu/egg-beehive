@@ -326,11 +326,20 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'supplierOrder',
-        name: 'SupplierOrder',
-        component: () => import('@/subview/supplier/order'),
+        path: 'supplierProduct',
+        name: 'SupplierProduct',
+        component: () => import('@/subview/supplier/product'),
         meta: {
-          title: '采购订单',
+          title: '成品采购订单',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'supplierMaterial',
+        name: 'SupplierMaterial',
+        component: () => import('@/subview/supplier/material'),
+        meta: {
+          title: '物料采购订单',
           icon: 'archive-line',
         },
       },
@@ -463,6 +472,7 @@ export const asyncRoutes = [
     path: '/customer',
     name: 'Customer',
     component: Layout,
+    guard: ['Admin'],
     meta: {
       title: '客户',
       icon: 'archive-line',
@@ -769,6 +779,15 @@ export const asyncRoutes = [
         },
         children: [
           {
+            path: 'systemmodule',
+            name: 'SystemModule',
+            component: () => import('@/subview/setting/system/module'),
+            meta: {
+              title: '模块配置',
+              // icon: 'home-2-line',
+            },
+          },
+          {
             path: 'systemStorage',
             name: 'SystemStorage',
             component: () => import('@/subview/setting/system/storage'),
@@ -783,15 +802,6 @@ export const asyncRoutes = [
             component: () => import('@/subview/setting/system/notice'),
             meta: {
               title: '通知配置',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'systemmodule',
-            name: 'SystemModule',
-            component: () => import('@/subview/setting/system/module'),
-            meta: {
-              title: '模块配置',
               // icon: 'home-2-line',
             },
           },
@@ -1851,14 +1861,12 @@ export const asyncRoutes = [
 const router = createRouter()
 
 function fatteningRoutes(routes) {
-  console.log(1111222)
   return routes.flatMap((route) => {
     return route.children ? fatteningRoutes(route.children) : route
   })
 }
 
 export function resetRouter(routes = constantRoutes) {
-  console.log(999999)
   routes.map((route) => {
     if (route.children) {
       route.children = fatteningRoutes(route.children)
@@ -1868,7 +1876,6 @@ export function resetRouter(routes = constantRoutes) {
 }
 
 function createRouter(routes = constantRoutes) {
-  console.log(88888)
   return new VueRouter({
     base: publicPath,
     mode: routerMode,
@@ -1881,7 +1888,6 @@ function createRouter(routes = constantRoutes) {
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
-  console.log(55565656, this, location)
   return originalPush.call(this, location).catch((err) => err)
 }
 

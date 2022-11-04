@@ -4,6 +4,7 @@ import i18n from './i18n'
 import store from './store'
 import router from './router'
 import '@/vab'
+import '@/utils/filter'
 
 /**
  * @description 正式环境默认使用mock，正式项目记得注释后再打包

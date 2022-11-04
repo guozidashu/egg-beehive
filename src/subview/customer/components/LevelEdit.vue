@@ -24,26 +24,35 @@
             style="width: 415px"
           />
         </el-form-item>
-        <el-form-item label="等级" prop="discount">
+        <el-form-item label="等级权重" prop="discount">
           <el-input-number
             v-model="form.discount"
             controls-position="right"
             :max="10"
             :min="1"
+            step-strictly
             @change="handleChange"
           />
         </el-form-item>
-        <el-form-item label="图标">
+        <el-form-item label="等级图标">
           <el-button type="primary" @click="handleShow()">图标上传</el-button>
         </el-form-item>
         <el-form-item label="会员背景">
           <el-button type="primary" @click="handleShow()">背景上传</el-button>
         </el-form-item>
         <el-form-item label="整手折扣" prop="zhekou">
-          <el-input v-model="form.discount_sm" style="width: 415px" />
+          <el-input
+            v-model="form.discount_sm"
+            placeholder="例：如果想要3.5折，请输入3.5 如果没有折扣，请输入10"
+            style="width: 415px"
+          />
         </el-form-item>
         <el-form-item label="散码折扣" prop="zhekou_sm">
-          <el-input v-model="form.discount_sm" style="width: 415px" />
+          <el-input
+            v-model="form.discount_sm"
+            placeholder="例：如果想要4.5折，请输入4.5 如果没有折扣，请输入10"
+            style="width: 415px"
+          />
         </el-form-item>
         <el-form-item label="能否散批" prop="sp">
           <el-radio-group v-model="form.sp">
@@ -377,7 +386,7 @@
 </template>
 
 <script>
-  // import { updateGrade, addGrade } from '@/api/basic'
+  import { editGradeListList } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'LevelDeit',
@@ -476,10 +485,10 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              // const { code } = await addGrade(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              const { code } = await editGradeListList(this.form)
+              if (code != 200) {
+                return
+              }
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -488,10 +497,10 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              // const { code } = await updateGrade(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              const { code } = await editGradeListList(this.form)
+              if (code != 200) {
+                return
+              }
               this.$baseMessage(
                 '修改成功',
                 'success',

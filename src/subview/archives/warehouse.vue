@@ -6,10 +6,11 @@
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
           <el-form-item label="仓库类型：" prop="region">
-            <el-select v-model="form.type1">
-              <el-option label="仓库1" :value="1" />
-              <el-option label="仓库2" :value="2" />
-              <el-option label="仓库3" :value="3" />
+            <el-select v-model="form.type_id">
+              <el-option label="样板仓库" :value="1" />
+              <el-option label="成品仓库" :value="3" />
+              <el-option label="面料仓库" :value="4" />
+              <el-option label="辅料仓库" :value="5" />
             </el-select>
           </el-form-item>
           <el-form-item label="仓库名称：" prop="region">
@@ -35,7 +36,6 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <!-- 表格组件使用 -->
       <List
         :list="list"
         :list-type="listType"
@@ -43,24 +43,22 @@
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
-        @selectRows="selectBtnRows"
       >
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column type="selection" width="55" />
           <el-table-column label="ID" prop="id" width="80" />
           <el-table-column label="仓库名称" prop="name" width="150" />
 
-          <el-table-column label="库位" prop="position" width="150" />
-          <el-table-column label="仓库类型" prop="name" width="150" />
-          <el-table-column label="是否默认" prop="mr" width="80">
+          <el-table-column label="库位数量" prop="count" width="150" />
+          <el-table-column label="仓库类型" prop="type_name" width="150" />
+          <el-table-column label="是否默认" prop="isdefault" width="80">
             <template #default="{ row }">
-              <span v-if="row.mr == 0">否</span>
+              <span v-if="row.isdefault == 0">否</span>
               <span v-else>默认</span>
             </template>
           </el-table-column>
-          <el-table-column label="备注" prop="position" />
-          <el-table-column label="创建时间" prop="position" />
+          <el-table-column label="备注" prop="remark" />
+          <el-table-column label="创建时间" prop="create_time" />
           <el-table-column
             align="center"
             label="操作"
@@ -70,8 +68,8 @@
             <template #default="{ row }">
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
               <el-button type="text" @click="handleDelete(row)">删除</el-button>
-              <el-button type="text" @click="handleDelete(row)">
-                禁止操作
+              <el-button type="text" @click="handleDetail(row.id)">
+                库位
               </el-button>
             </template>
           </el-table-column>
@@ -79,6 +77,9 @@
       </List>
     </el-card>
     <edit ref="edit" @fetch-data="fetchData" />
+    <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
+      <Drawer :drawer-id="drawerId" />
+    </el-drawer>
   </div>
 </template>
 
@@ -86,37 +87,24 @@
   import List from '@/subview/components/List'
   import Edit from './components/WareHouseEdit'
   import Form from '@/subview/components/Form'
-  // import { editWarehouse, deleteWarehouse } from '@/api/basic'
+  import Drawer from './components/WareHouseDrawer'
+  import { getArchiveList, delArchiveList } from '@/api/basic'
   export default {
     name: 'ArchivesWarehouse',
-    components: { List, Edit, Form },
+    components: { List, Edit, Form, Drawer },
     data() {
       return {
-        // 表单数据/列表参数
+        drawer: false,
+        drawerId: 0,
         form: {
           id: 0,
           name: '',
-          pageNo: 1,
+          page: 1,
           pageSize: 10,
         },
         formType: 3,
-        // 列表数据相关
-        selectRows: [],
         listType: 1,
-        list: [
-          {
-            id: 1,
-            name: '仓库1',
-            mr: 0,
-            position: '库位1',
-          },
-          {
-            id: 2,
-            name: '仓库2',
-            mr: 1,
-            position: '库位2',
-          },
-        ],
+        list: [],
         listLoading: false,
         total: 0,
       }
@@ -133,76 +121,57 @@
       this.fetchData()
     },
     methods: {
-      // 新增修改
-      async handleEdit(row) {
+      // 详情抽屉
+      handleDetail(id) {
+        this.drawerId = id
+        this.drawer = true
+      },
+      handleEdit(row) {
         if (row === 'add') {
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {
-            // const { code, data } = await editWarehouse({ id: row.id })
-            // if (code === 200) {
-            //   this.$refs['edit'].showEdit(data)
-            // }
             this.$refs['edit'].showEdit(row)
           } else {
             this.$refs['edit'].showEdit()
           }
         }
       },
-      // 查询
-      handleQuery(data) {
-        console.log(3232, data)
-        this.form.pageNo = 1
+      handleQuery() {
+        this.form.page = 1
       },
-      // 删除
       handleDelete(row) {
         if (row.id) {
-          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            // const { code } = await deleteWarehouse({ id: row.id })
-            // if (code != 200) {
-            //   return
-            // }
-            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
-            this.fetchData()
-          })
-        } else {
-          if (this.selectRows.length > 0) {
-            // const ids = this.selectRows.map((item) => item.id).join()
-            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-              // const { code } = await deleteWarehouse(ids)
-              // if (code != 200) {
-              //   return
-              // }
+          this.$baseConfirm(
+            '你确定要删除当前仓库吗?</br>删除后将无法恢复，请谨慎操作！',
+            null,
+            async () => {
+              const { code } = await delArchiveList({ id: row.id })
+              if (code != 200) {
+                return
+              }
+              this.$baseMessage(
+                '删除成功',
+                'success',
+                'vab-hey-message-success'
+              )
               this.fetchData()
-            })
-          } else {
-            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
-          }
+            }
+          )
         }
       },
-      // 列表数据封装函数
-
-      // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        this.form.pageNo = data
+        this.form.page = data
       },
-      // 多选获取数据   公共部分
-      selectBtnRows(data) {
-        this.selectRows = data
-      },
-      // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
-      // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getWarehouseList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const { data } = await getArchiveList(this.form)
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
       },
     },
   }

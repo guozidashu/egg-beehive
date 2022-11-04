@@ -31,7 +31,7 @@
         />
       </el-form-item>
       <el-form-item v-if="type === 2" label="排序" prop="name">
-        <el-input v-model="form.id" style="width: 215px" />
+        <el-input v-model="form.sort" style="width: 215px" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -50,6 +50,7 @@
         form: {
           name: '',
           pid: 0,
+          sort: 0,
         },
         selectList: [],
         type: 1,
@@ -84,8 +85,8 @@
         this.getSelectList()
       },
       async getSelectList() {
-        let res = await getParentTagList(this.form)
-        this.selectList = res.data
+        const { data } = await getParentTagList(this.form)
+        this.selectList = data
       },
       close() {
         this.$refs['form'].resetFields()

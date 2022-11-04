@@ -6,11 +6,14 @@
     @close="close"
   >
     <el-form ref="form" label-width="120px" :model="form" :rules="rules">
-      <el-form-item v-if="type === 1" label="颜色组分类" prop="name">
-        <el-select v-model="form.select" placeholder="请选择分类">
-          <el-option label="分类1" :value="1" />
-          <el-option label="分类2" :value="2" />
-          <el-option label="分类3" :value="3" />
+      <el-form-item v-if="type === 1" label="颜色组分类" prop="pid">
+        <el-select v-model="form.pid" placeholder="请选择分类">
+          <el-option
+            v-for="item in selectList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
         </el-select>
       </el-form-item>
       <el-form-item v-if="type === 1" label="颜色名称" prop="name">
@@ -20,6 +23,25 @@
           style="width: 215px"
         />
       </el-form-item>
+      <el-form-item v-if="type === 1" label="编号" prop="sn">
+        <el-input v-model="form.sn" style="width: 215px" />
+      </el-form-item>
+      <el-form-item v-if="type === 1" label="状态" prop="status">
+        <el-switch
+          v-model="form.status"
+          active-color="#41B584"
+          active-text="开启"
+          :active-value="1"
+          class="switch"
+          inactive-color="#D2D2D2"
+          inactive-text="关闭"
+          :inactive-value="0"
+          style="margin: 0 10px"
+        />
+      </el-form-item>
+      <el-form-item v-if="type === 1" label="排序" prop="sort">
+        <el-input v-model="form.sort" style="width: 215px" />
+      </el-form-item>
       <el-form-item v-if="type === 2" label="颜色组名称" prop="name">
         <el-input
           v-model="form.name"
@@ -27,8 +49,8 @@
           style="width: 215px"
         />
       </el-form-item>
-      <el-form-item v-if="type === 2" label="排序" prop="name">
-        <el-input v-model="form.id" style="width: 215px" />
+      <el-form-item v-if="type === 2" label="排序" prop="sort">
+        <el-input v-model="form.sort" style="width: 215px" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -39,19 +61,22 @@
 </template>
 
 <script>
-  // import { updateWave, addWave } from '@/api/basic'
+  import { addColorSave, addColorGroupSave } from '@/api/basic'
   export default {
     name: 'TagsEdit',
     data() {
       return {
         form: {
-          name: '',
-          select: '',
-          id: '',
+          status: 0,
         },
+        selectList: [],
         type: 1,
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
+          sort: [{ required: true, trigger: 'blur', message: '请输入排序' }],
+          sn: [{ required: true, trigger: 'blur', message: '请输入编号' }],
+          pid: [{ required: true, trigger: 'blur', message: '请选择分类' }],
+          status: [{ required: true, trigger: 'blur', message: '请选择状态' }],
         },
         title: '',
         dialogFormVisible: false,
@@ -59,8 +84,10 @@
     },
     created() {},
     methods: {
-      showEdit(row, type) {
+      showEdit(row, type, list) {
         this.type = type
+        let temp = JSON.parse(JSON.stringify(list))
+        this.selectList = temp.splice(1)
         if (row === 'add') {
           if (type === 1) {
             this.title = '添加颜色'
@@ -86,10 +113,17 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              // const { code } = await addWave(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              if (this.type === 1) {
+                const { code } = await addColorSave(this.form)
+                if (code != 200) {
+                  return
+                }
+              } else {
+                const { code } = await addColorGroupSave(this.form)
+                if (code != 200) {
+                  return
+                }
+              }
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -98,10 +132,17 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              // const { code } = await updateWave(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              if (this.type === 1) {
+                const { code } = await addColorSave(this.form)
+                if (code != 200) {
+                  return
+                }
+              } else {
+                const { code } = await addColorGroupSave(this.form)
+                if (code != 200) {
+                  return
+                }
+              }
               this.$baseMessage(
                 '修改成功',
                 'success',
