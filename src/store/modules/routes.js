@@ -2,19 +2,20 @@
  * @description 路由拦截状态管理，目前两种模式：all模式与intelligence模式，其中partialRoutes是菜单暂未使用
  */
 import Vue from 'vue'
-import { asyncRoutes, constantRoutes, resetRouter } from '@/router'
-import { getList } from '@/api/router'
+import { asyncRoutes, resetRouter } from '@/router'
 import { convertRouter, filterRoutes } from '@/utils/routes'
-import { authentication, rolesControl } from '@/config'
+import { authentication } from '@/config'
 import { isArray } from '@/utils/validate'
 
 const state = () => ({
   routes: [],
   activeName: '',
+  roleBtnList: [],
 })
 const getters = {
   routes: (state) => state.routes,
   activeName: (state) => state.activeName,
+  roleBtnList: (state) => state.roleBtnList,
 }
 const mutations = {
   /**
@@ -49,6 +50,14 @@ const mutations = {
   changeActiveName(state, activeName) {
     state.activeName = activeName
   },
+  /**
+   * @description 存储 权限按钮组
+   * @param {*} state
+   * @param roleBtnList
+   */
+  roleBtnList(state, roleBtnList) {
+    state.roleBtnList = roleBtnList
+  },
 }
 const actions = {
   /**
@@ -57,16 +66,42 @@ const actions = {
    * @param mode
    * @returns
    */
-  async setRoutes({ commit }, mode = 'none') {
+  async setRoutes({ commit, rootState }) {
     // 默认前端路由
     let routes = [...asyncRoutes]
-    // 设置游客路由关闭路由拦截(不需要可以删除)
-    const control = mode === 'visit' ? false : rolesControl
     // 设置后端路由(不需要可以删除)
     if (authentication === 'all') {
-      const {
-        data: { list },
-      } = await getList()
+      let list = rootState['user'].userRouteList
+      let newlist = []
+      list.forEach((item) => {
+        if (item.guard.length != 0) {
+          let temp = {}
+          temp.name = item.name
+          temp.guard = item.guard
+          newlist.push(temp)
+        }
+        if (item.children.length != 0) {
+          item.children.forEach((item1) => {
+            if (item1.guard.length != 0) {
+              let temp = {}
+              temp.name = item1.name
+              temp.guard = item1.guard
+              newlist.push(temp)
+            }
+            if (item1.children.length != 0) {
+              item1.children.forEach((item2) => {
+                if (item2.guard.length != 0) {
+                  let temp = {}
+                  temp.name = item2.name
+                  temp.guard = item2.guard
+                  newlist.push(temp)
+                }
+              })
+            }
+          })
+        }
+      })
+      commit('roleBtnList', newlist)
       if (!isArray(list))
         Vue.prototype.$baseMessage(
           '路由格式返回有误！',
@@ -78,7 +113,7 @@ const actions = {
       routes = convertRouter(list)
     }
     // 根据权限和rolesControl过滤路由
-    const accessRoutes = filterRoutes([...constantRoutes, ...routes], control)
+    const accessRoutes = filterRoutes(routes)
     // 设置菜单所需路由
     commit('setRoutes', JSON.parse(JSON.stringify(accessRoutes)))
     // 根据可访问路由重置Vue Router

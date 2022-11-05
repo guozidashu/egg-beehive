@@ -13,11 +13,13 @@ const state = () => ({
   token: getToken(),
   username: '游客',
   avatar: 'https://i.gtimg.cn/club/item/face/img/2/15922_100.gif',
+  userRouteList: [],
 })
 const getters = {
   token: (state) => state.token,
   username: (state) => state.username,
   avatar: (state) => state.avatar,
+  userRouteList: (state) => state.userRouteList,
 }
 const mutations = {
   /**
@@ -44,6 +46,14 @@ const mutations = {
    */
   setAvatar(state, avatar) {
     state.avatar = avatar
+  },
+  /**
+   * @description 设置路由数组
+   * @param {*} state
+   * @param {*} userRouteList
+   */
+  setUserRouteList(state, userRouteList) {
+    state.userRouteList = userRouteList
   },
 }
 const actions = {
@@ -143,14 +153,11 @@ const actions = {
    * @returns
    */
   async getUserInfo({ commit }) {
-    // dispatch
-    // const {
-    //   data: { username, avatar, roles, permissions },
-    // } = await getUserInfo()
     const { code, data } = await getUserInfo()
     if (code != 200) {
       return
     }
+    if (data.list.auth_info) commit('setUserRouteList', data.list.auth_info)
     /**
      * 检验返回数据是否正常，无对应参数，将使用默认用户名,头像,Roles和Permissions
      * username {String}
@@ -159,8 +166,8 @@ const actions = {
      * ability {List}
      */
     if (
-      data.list[0].username &&
-      !isString(data.list[0].username)
+      data.list.username &&
+      !isString(data.list.username)
       // ||
       // (avatar && !isString(avatar)) ||
       // (roles && !isArray(roles)) ||
@@ -171,9 +178,10 @@ const actions = {
       throw err
     } else {
       // 如不使用username用户名,可删除以下代码
-      if (data.list[0].username) commit('setUsername', data.list[0].username)
+      if (data.list.username) commit('setUsername', data.list.username)
       // 如不使用avatar头像,可删除以下代码
-      if (data.list[0].image) commit('setAvatar', data.list[0].image)
+      if (data.list.image) commit('setAvatar', data.list.image)
+
       // 如不使用roles权限控制,可删除以下代码
       // if (roles) dispatch('acl/setRole', roles, { root: true })
       // 如不使用permissions权限控制,可删除以下代码

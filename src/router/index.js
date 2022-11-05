@@ -944,6 +944,15 @@ export const asyncRoutes = [
         },
       },
       {
+        path: 'administrator',
+        name: 'Administrator',
+        component: () => import('@/subview/setting/administrator'),
+        meta: {
+          title: '用户管理',
+          icon: 'archive-line',
+        },
+      },
+      {
         path: 'distribution',
         name: 'Distribution',
         component: () => import('@/subview/setting/distribution'),

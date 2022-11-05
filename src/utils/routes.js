@@ -10,14 +10,16 @@ import qs from 'qs'
  * @returns {*}
  */
 export function convertRouter(asyncRoutes) {
-  return asyncRoutes.map((route) => {
+  asyncRoutes.map((route) => {
     if (route.component) {
       if (route.component === 'Layout') {
         route.component = (resolve) => require(['@/vab/layouts'], resolve)
       } else {
-        const index = route.component.indexOf('views')
+        const index = route.component.indexOf('subview')
         const path =
-          index > 0 ? route.component.slice(index) : `views/${route.component}`
+          index > 0
+            ? route.component.slice(index)
+            : `subview/${route.component}`
         route.component = (resolve) => require([`@/${path}`], resolve)
       }
     }
@@ -26,6 +28,7 @@ export function convertRouter(asyncRoutes) {
     if (route.children && route.children.length === 0) delete route.children
     return route
   })
+  return asyncRoutes
 }
 
 /**

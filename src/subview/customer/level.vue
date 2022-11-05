@@ -19,6 +19,7 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
+            v-has-permi="['btn:pre:del']"
             native-type="submit"
             size="small"
             type="primary"
@@ -85,7 +86,7 @@
   import Form from '@/subview/components/Form'
   import { getGradeList } from '@/api/basic'
   export default {
-    name: 'ArchivesBand',
+    name: 'CustomerLevel',
     components: { List, Edit, Form },
     data() {
       return {

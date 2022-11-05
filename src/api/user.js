@@ -12,7 +12,13 @@ export async function login(data) {
     data,
   })
 }
-
+export async function getVerify() {
+  return request({
+    url: '/verify',
+    method: 'post',
+    responseType: 'blob',
+  })
+}
 export async function socialLogin(data) {
   if (loginRSA) {
     data = await encryptedData(data)

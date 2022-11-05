@@ -99,7 +99,7 @@
   import Branch from '@/subview/components/Branch'
   import TextLabels from '@/subview/components/TextLabels'
   export default {
-    name: 'GoodsStatistical',
+    name: 'CustomerStatistical',
     components: { ChinaMap, List, VabChart, Branch, TextLabels },
     data() {
       return {
@@ -299,60 +299,70 @@
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
             title: '成交用户数',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
             title: '成交销售额',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
             title: '所有客户',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
             title: '欠款客户',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
             title: '普通会员',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: true,
           },
           {
             title: '黄金会员',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: true,
           },
           {
             title: '白金会员',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: true,
           },
           {
             title: '钻石会员',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: true,
           },
           {
             title: '黑钻SVP',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: true,
           },
         ],
         initOptions: {

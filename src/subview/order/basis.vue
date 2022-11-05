@@ -227,24 +227,28 @@
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
             title: '销售额',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
             title: '退货数量',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
             title: '退货金额',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
         ],
         tableData: [

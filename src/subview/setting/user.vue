@@ -67,7 +67,7 @@
                   size="small"
                   style="margin-left: 125px; color: #999"
                   type="text"
-                  @click="handleDetail"
+                  @click="handleDetail(item.id)"
                 >
                   分配权限
                 </el-button>
@@ -102,7 +102,7 @@
     </div>
 
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
-      <Drawer />
+      <Drawer :drawer-id="drawerId" />
     </el-drawer>
     <el-dialog
       :title="title"
@@ -131,21 +131,20 @@
 <script>
   import Form from '@/subview/components/Form'
   import Drawer from './components/UserDrawer'
+  import { getRoleList } from '@/api/basic'
   export default {
     name: 'User',
     components: { Form, Drawer },
     data() {
       return {
+        drawerId: 0,
         drawer: false,
         // 表单数据/列表参数
         dialogFormVisible: false,
         title: '',
         formType: 3,
         form: {
-          id: 0,
           name: '',
-          page: 1,
-          pageSize: 10,
         },
         editform: {
           name: '',
@@ -153,63 +152,41 @@
         editrules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
         },
-        cartList: [
-          {
-            id: 1,
-            name: '系统管理员',
-            num: 1,
-            title: '拥有系统所有权限',
-            number: 10,
-            btnIconStatus: false,
-            cartSta: false,
-            userlist: [
-              {
-                id: 1,
-                name: '李二',
-                avatar:
-                  'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-              },
-            ],
-          },
-          {
-            id: 2,
-            name: '网管',
-            num: 3,
-            title: '拥有网管权限',
-            number: 100,
-            btnIconStatus: false,
-            cartSta: false,
-            userlist: [
-              {
-                id: 1,
-                name: '李二',
-                avatar:
-                  'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-              },
-              {
-                id: 1,
-                name: '张三',
-                avatar:
-                  'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-              },
-              {
-                id: 1,
-                name: '李四',
-                avatar:
-                  'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-              },
-            ],
-          },
-        ],
+        cartList: [],
         activeName: 'first',
       }
     },
-    watch: {},
-    created() {},
+    watch: {
+      form: {
+        //表单筛选条件变化实时刷新列表
+        handler: function () {
+          this.fetchData()
+        },
+        deep: true,
+      },
+    },
+    created() {
+      this.fetchData()
+    },
     methods: {
       // 详情抽屉
-      handleDetail() {
+      handleDetail(index) {
+        this.drawerId = index
         this.drawer = true
+      },
+      // 树形数据转为一维数组
+      getOneArr(arr) {
+        let data = JSON.parse(JSON.stringify(arr))
+        let newData = []
+        const callback = (item) => {
+          ;(item.children || (item.children = [])).map((v) => {
+            callback(v)
+          })
+          delete item.children
+          newData.push(item)
+        }
+        data.map((v) => callback(v))
+        return newData
       },
       handleDelete() {
         this.$baseConfirm('确认是否删除系统管理员?', null, () => {
@@ -253,6 +230,15 @@
       // 查询
       handleQuery() {
         this.form.page = 1
+      },
+      // 列表数据请求函数 公共部分
+      async fetchData() {
+        const { data } = await getRoleList(this.form)
+        data.forEach((item) => {
+          item.cartSta = false
+          item.btnIconStatus = false
+        })
+        this.cartList = data
       },
     },
   }

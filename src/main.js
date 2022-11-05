@@ -5,6 +5,8 @@ import store from './store'
 import router from './router'
 import '@/vab'
 import '@/utils/filter'
+import hasPermi from '@/utils/hasPermi'
+Vue.use(hasPermi)
 
 /**
  * @description 正式环境默认使用mock，正式项目记得注释后再打包

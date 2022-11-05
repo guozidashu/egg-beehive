@@ -59,9 +59,9 @@
             </el-input>
           </el-form-item>
           <!-- 验证码验证逻辑需自行开发，如不需要验证码功能建议注释 -->
-          <el-form-item prop="verificationCode">
+          <el-form-item prop="verify">
             <el-input
-              v-model.trim="form.verificationCode"
+              v-model.trim="form.verify"
               :placeholder="translateTitle('验证码') + previewText"
               tabindex="3"
               type="text"
@@ -96,7 +96,7 @@
   import { mapActions, mapGetters } from 'vuex'
   import { translateTitle } from '@/utils/i18n'
   import { isPassword } from '@/utils/validate'
-
+  import { getVerify } from '@/api/user'
   export default {
     name: 'Login',
     directives: {
@@ -125,7 +125,7 @@
         form: {
           username: '',
           password: '',
-          verificationCode: '',
+          verify: '',
         },
         rules: {
           username: [
@@ -142,19 +142,19 @@
               validator: validatePassword,
             },
           ],
-          /* verificationCode: [
+          verify: [
             {
               required: true,
               trigger: 'blur',
               message: '验证码不能空',
             },
-          ], */
+          ],
         },
         loading: false,
         passwordType: 'password',
         redirect: undefined,
         timer: 0,
-        codeUrl: 'https://meta.gaizi.top/QYAPI/index.php/platform/verify',
+        codeUrl: '',
         previewText: '',
       }
     },
@@ -171,11 +171,19 @@
         immediate: true,
       },
     },
+    created() {
+      this.getVerifyImg()
+    },
     mounted() {
       this.form.username = 'admin'
-      this.form.password = '1234567'
+      this.form.password = 'admin888'
     },
     methods: {
+      getVerifyImg() {
+        getVerify().then((res) => {
+          this.codeUrl = window.URL.createObjectURL(res)
+        })
+      },
       ...mapActions({
         login: 'user/login',
       }),
@@ -198,6 +206,7 @@
           if (valid)
             try {
               this.loading = true
+              console.log(132132132)
               await this.login(this.form).catch(() => {})
               await this.$router.push(this.handleRoute())
             } finally {
@@ -206,7 +215,7 @@
         })
       },
       changeCode() {
-        this.codeUrl = `https://meta.gaizi.top/QYAPI/index.php/platform/verify?timestamp=${new Date().getTime()}`
+        this.getVerifyImg()
       },
     },
   }
@@ -354,6 +363,8 @@
         position: absolute;
         top: 4px;
         right: 4px;
+        width: 150px;
+        height: 40px;
         cursor: pointer;
         border-radius: $base-border-radius;
       }

@@ -9,6 +9,50 @@ export function getCommonAllList(data) {
     data,
   })
 }
+// 权限管理
+export function getRoleInfo(data) {
+  return request({
+    url: '/admin/roleInfo',
+    method: 'post',
+    data,
+  })
+}
+export function addRoleSave(data) {
+  return request({
+    url: '/admin/roleSave',
+    method: 'post',
+    data,
+  })
+}
+export function getRoleList(data) {
+  return request({
+    url: '/admin/roleList',
+    method: 'post',
+    data,
+  })
+}
+// 用户管理
+export function getAdminInfo(data) {
+  return request({
+    url: '/admin/adminInfo',
+    method: 'post',
+    data,
+  })
+}
+export function addAdminSave(data) {
+  return request({
+    url: '/admin/adminSave',
+    method: 'post',
+    data,
+  })
+}
+export function getAdminList(data) {
+  return request({
+    url: '/admin/adminList',
+    method: 'post',
+    data,
+  })
+}
 // 物料管理
 export function delMaterialDel(data) {
   return request({

@@ -5,11 +5,11 @@
     >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
-          <el-form-item label="分类名称" prop="region">
+          <el-form-item label="搜索:">
             <el-input
-              v-model="form.name"
-              placeholder="请输入分类名称"
-              size="small"
+              v-model="form.username"
+              placeholder="请输入用户名称"
+              style="width: 215px"
             />
           </el-form-item>
         </template>
@@ -19,16 +19,16 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
-            v-has-permi="['btn:pre:del']"
             native-type="submit"
             size="small"
             type="primary"
             @click="handleEdit('add')"
           >
-            添加客户分类
+            添加用户
           </el-button>
         </el-form-item>
       </el-form>
+      <!-- 表格组件使用 -->
       <List
         :list="list"
         :list-type="listType"
@@ -37,16 +37,27 @@
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
+        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column align="center" type="selection" />
-          <el-table-column label="id" prop="id" width="80px" />
-          <el-table-column label="分类名称" prop="name" width="150px" />
-          <el-table-column label="客户数" prop="count" width="100px" />
-          <el-table-column label="分类说明（备注）" prop="remark" />
-          <el-table-column align="center" fixed="right" label="操作" width="85">
+          <el-table-column type="selection" />
+          <el-table-column label="ID" prop="id" width="80" />
+          <el-table-column label="用户名称" prop="username" width="120" />
+          <el-table-column label="状态" prop="status" width="100">
+            <template #default="{ row }">
+              <span v-if="row.status == 1">正常</span>
+              <span v-else>禁用</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="创建时间" prop="create_time" width="150" />
+          <el-table-column label="角色名称" prop="group_name" />
+          <el-table-column
+            align="center"
+            fixed="right"
+            label="操作"
+            width="100"
+          >
             <template #default="{ row }">
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <el-button type="text" @click="handleDelete(row)">删除</el-button>
             </template>
           </el-table-column>
         </template>
@@ -55,22 +66,32 @@
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
+
 <script>
   import List from '@/subview/components/List'
-  import Edit from './components/ClassifyEdit'
   import Form from '@/subview/components/Form'
-  import { getCustomer, delCustomer } from '@/api/basic'
+  import Edit from './components/AdministratorEdit'
+  import { getAdminList, addAdminSave } from '@/api/basic'
   export default {
-    name: 'CustomerClassify',
-    components: { List, Edit, Form },
+    name: 'Administrator',
+    components: { List, Form, Edit },
     data() {
       return {
         form: {
-          name: '',
+          username: '',
           page: 1,
-          pageSize: 10,
+          page_size: 10,
         },
-        formType: 4,
+        formDrawer: {
+          name: '',
+          phone: '',
+          dizhi: '',
+          img: '',
+          status: 0,
+          address: '',
+          title: '',
+        },
+        formType: 3,
         listType: 1,
         list: [],
         listLoading: false,
@@ -79,6 +100,7 @@
     },
     watch: {
       form: {
+        //表单筛选条件变化实时刷新列表
         handler: function () {
           this.fetchData()
         },
@@ -100,38 +122,33 @@
           }
         }
       },
-      handleQuery() {
-        this.form.page = 1
-      },
-      handleDelete(row) {
-        if (row.id) {
-          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delCustomer({ id: row.id })
-            if (code != 200) {
-              return
-            }
-            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
-            this.fetchData()
-          })
+      async turnOnOff(row) {
+        const { code } = await addAdminSave(row)
+        if (code != 200) {
+          return
         }
+        this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
+        this.fetchData()
       },
+      handleQuery() {},
+      // 列表数据封装函数
+
+      // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         this.form.page = data
       },
+      // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
-        console.log(data)
       },
+      // 列表数据请求函数 公共部分
       async fetchData() {
         this.listLoading = true
-        const {
-          data: { data, total },
-        } = await getCustomer(this.form)
-        this.list = data
-        this.total = total
+        const { data } = await getAdminList(this.form)
+        this.list = data.data
+        this.total = data.total
         this.listLoading = false
       },
     },
   }
 </script>
-<style lang="scss" scoped></style>

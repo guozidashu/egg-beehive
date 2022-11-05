@@ -52,6 +52,7 @@ router.beforeEach(async (to, from, next) => {
     if (routesWhiteList.includes(to.path)) {
       // 设置游客路由(不需要可以删除)
       if (supportVisit && !store.getters['routes/routes'].length) {
+        console.log(666666)
         await store.dispatch('routes/setRoutes', 'visit')
         next({ ...to, replace: true })
       } else next()

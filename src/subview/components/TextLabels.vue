@@ -24,7 +24,7 @@
           >
             {{ item.num }}
           </div>
-          <div>
+          <div v-if="item.typeSta">
             <span v-if="item.type === 1">环比增长：</span>
             <span v-else>环比减少：</span>
             <i v-if="item.type === 1" style="font-size: 12px; color: #f5222d">

@@ -5,12 +5,9 @@
       <p>设置角色对应的后台管理权限以及功能操作</p>
     </div>
     <el-form ref="ruleForm" :model="formData">
-      <el-table
-        border
-        :data="tableData"
-        :span-method="objectSpanMethod"
-        style="width: 100%; margin-top: 20px"
-      >
+      <el-table border :data="list" style="width: 100%; margin-top: 20px">
+        <!-- :span-method="objectSpanMethod" -->
+
         <el-table-column label="一级">
           <template slot="header">
             <el-checkbox
@@ -26,7 +23,7 @@
               v-model="formData[scope.row.yijiid]"
               @change="checkChange(scope.row.yijiid, scope.row, 1)"
             >
-              {{ scope.row.yiji }}
+              {{ scope.row.title }}
             </el-checkbox>
           </template>
         </el-table-column>
@@ -36,7 +33,7 @@
               v-model="formData[row.erjiid]"
               @change="checkChange(row.erjiid, row, 2)"
             >
-              {{ row.erji }}
+              {{ row.title }}
             </el-checkbox>
           </template>
         </el-table-column>
@@ -47,7 +44,7 @@
               v-model="formData[row.sanjiid]"
               @change="checkChange(row.sanjiid, row, 3)"
             >
-              {{ row.sanji }}
+              {{ row.title }}
             </el-checkbox>
           </template>
         </el-table-column>
@@ -82,10 +79,20 @@
 </template>
 
 <script>
+  import { getRoleInfo } from '@/api/basic'
   export default {
     name: 'Dashboard',
+    props: {
+      drawerId: {
+        type: Number,
+        default: 0,
+      },
+    },
     data() {
       return {
+        listLoading: false,
+        list: [],
+        id: this.drawerId,
         quanxuan: true,
         formData: {},
         tableData: [
@@ -161,10 +168,31 @@
       }
     },
     created() {
-      this.getSpanArr(this.tableData)
+      this.fetchData()
     },
     mounted() {},
     methods: {
+      // 列表数据请求函数 公共部分
+      async fetchData() {
+        this.listLoading = true
+        const { data } = await getRoleInfo({ id: this.id })
+        const arr = []
+        const fn = (data) => {
+          data.forEach((item) => {
+            if (item.children.length == 0) {
+              arr.push(item)
+            }
+            if (item.children) {
+              fn(item.children)
+            }
+          })
+        }
+        fn(data.list)
+        console.log(8779789, arr)
+        this.list = arr
+        this.listLoading = false
+        this.getSpanArr(this.list)
+      },
       objectSpanMethod({ rowIndex, columnIndex }) {
         if (columnIndex === 0) {
           const _row = this.spanArr[rowIndex]
@@ -198,7 +226,7 @@
           } else {
             //如果不是第一条记录，则判断它与前一条记录是否相等
             //根据相同 扣分类别名称 进行合并,根据需要可进行修改
-            if (data[i].yiji === data[i - 1].yiji) {
+            if (data[i].pid === data[i - 1].pid) {
               //如果相等，则向spanArr中添入元素0，并将前一位元素＋１，表示合并行数＋１
               this.spanArr[this.pos] += 1
               this.spanArr.push(0)
@@ -207,14 +235,14 @@
               this.pos = i
             }
 
-            if (data[i].erji === data[i - 1].erji) {
-              //如果相等，则向spanArr中添入元素0，并将前一位元素＋１，表示合并行数＋１
-              this.spanArr2[this.pos2] += 1
-              this.spanArr2.push(0)
-            } else {
-              this.spanArr2.push(1)
-              this.pos2 = i
-            }
+            // if (data[i].erji === data[i - 1].erji) {
+            //   //如果相等，则向spanArr中添入元素0，并将前一位元素＋１，表示合并行数＋１
+            //   this.spanArr2[this.pos2] += 1
+            //   this.spanArr2.push(0)
+            // } else {
+            //   this.spanArr2.push(1)
+            //   this.pos2 = i
+            // }
           }
         }
       },
