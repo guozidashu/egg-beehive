@@ -16,7 +16,7 @@
   import Target from './components/Target'
 
   export default {
-    name: 'FinancialValue',
+    name: 'FinancialOverview',
     components: {
       Order,
       Target,

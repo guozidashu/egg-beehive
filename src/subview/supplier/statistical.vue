@@ -44,47 +44,7 @@
         </el-form-item>
       </el-form>
       <div style="display: flex; flex-wrap: wrap">
-        <div
-          v-for="(item, index) in goodsStaList"
-          :key="index"
-          style="display: flex; width: 20%; margin-bottom: 30px"
-        >
-          <vab-icon
-            icon="bar-chart-box-fill"
-            style="margin-right: 15px; font-size: 32px; color: #3bdfdf"
-          />
-          <div style="display: flex; flex-direction: column; margin-top: 5px">
-            <div>
-              {{ item.title }}
-              <vab-icon
-                icon="album-line"
-                style="position: relative; top: -2px; font-size: 14px"
-              />
-            </div>
-            <div
-              style="
-                padding: 10px 0;
-                font-size: 30px;
-                font-weight: 400;
-                color: rgba(0, 0, 0, 0.85);
-              "
-            >
-              {{ item.num }}
-            </div>
-            <div>
-              <span v-if="item.type === 1">环比增长：</span>
-              <span v-else>环比减少：</span>
-              <i v-if="item.type === 1" style="font-size: 12px; color: #f5222d">
-                {{ item.number }}%
-                <vab-icon icon="arrow-drop-up-fill" />
-              </i>
-              <i v-else style="font-size: 12px; color: #39c15b">
-                {{ item.number }}%
-                <vab-icon icon="arrow-drop-down-fill" />
-              </i>
-            </div>
-          </div>
-        </div>
+        <TextLabels ref="multipleTable" :list="goodsStaList" />
       </div>
       <vab-chart
         :init-options="initOptions"
@@ -101,7 +61,15 @@
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">商品排行</span>
+        <el-radio-group
+          v-model="tabslist"
+          class="card-header-tag"
+          style="float: right; margin-top: 5px"
+        >
+          <el-radio-button label="成品采购排行" />
+          <el-radio-button label="面料采购排行" />
+          <el-radio-button label="辅料采购排行" />
+        </el-radio-group>
         <el-form-item style="margin-right: 0">
           <el-form-item label="统计类型:" prop="region">
             <el-select
@@ -115,18 +83,22 @@
           </el-form-item>
           <el-form-item
             label="时间筛选:"
-            style="margin-right: 0; font-size: 12px"
+            style="float: right; margin-right: 0; font-size: 12px"
           >
             <el-date-picker
               v-model="goodsForm.date"
-              size="small"
-              style="width: 250px"
+              align="right"
+              end-placeholder="结束日期"
+              :picker-options="pickerOptions"
+              range-separator="至"
+              start-placeholder="开始日期"
               type="daterange"
+              unlink-panels
             />
             <el-button
               native-type="submit"
               size="small"
-              style="margin: 0 0 0 20px"
+              style="margin: 0 20px"
               type="primary"
             >
               查询
@@ -134,78 +106,82 @@
           </el-form-item>
         </el-form-item>
       </el-form>
-      <List :list="goosList" :state="listLoading" :type="listType">
-        <!-- 表格组件具名插槽 自定义表头 -->
+      <List
+        v-if="typeList == 2"
+        :list="goosList"
+        :list-type="listType"
+        :state="listLoading"
+      >
         <template #List>
           <el-table-column
             align="center"
-            label="商品图片"
-            prop="image"
-            show-overflow-tooltip
-          >
+            label="排行"
+            type="index"
+            width="50"
+          />
+          <el-table-column label="商品图片" prop="image" width="200">
             <template #default="{ row }">
               <el-image :src="row.image" />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="商品名称" prop="store_name" />
+          <el-table-column label="商品名称" prop="store_name" width="200" />
+          <el-table-column label="商品款号" prop="visit" width="100" />
+          <el-table-column label="采购价" prop="user" width="100" />
+          <el-table-column label="入库时间" prop="cart" width="120" />
+          <el-table-column label="采购件数" prop="orders" width="100" />
+          <el-table-column label="采购金额" prop="orders" width="100" />
+          <el-table-column label="最后一次入库时间" prop="profit" />
+          <el-table-column label="超期状态" prop="pay" />
           <el-table-column
             align="center"
-            label="浏览量"
-            prop="visit"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="访客数"
-            prop="user"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="加购件数"
-            prop="cart"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="下单件数"
-            prop="orders"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="支付件数"
-            prop="pay"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="支付金额"
-            prop="price"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="毛利率(%)"
-            prop="profit"
-            show-overflow-tooltip
-          >
-            <template #default="{ row }">{{ row.profit * 100 }}%</template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            label="收藏数"
-            prop="collect"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
+            fixed="right"
             label="操作"
-            show-overflow-tooltip
-            width="85"
+            width="100"
           >
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">查看</el-button>
+              <el-button type="text" @click="handleDetail(row)">
+                商品详情
+              </el-button>
+            </template>
+          </el-table-column>
+        </template>
+      </List>
+      <List
+        v-if="typeList == 1"
+        :list="goosList"
+        :list-type="listType"
+        :state="listLoading"
+      >
+        <template #List>
+          <el-table-column
+            align="center"
+            label="排行"
+            type="index"
+            width="50"
+          />
+          <el-table-column label="物料图片" prop="image" width="200">
+            <template #default="{ row }">
+              <el-image :src="row.image" />
+            </template>
+          </el-table-column>
+          <el-table-column label="物料名称" prop="store_name" width="200" />
+          <el-table-column label="物料编号" prop="visit" width="100" />
+          <el-table-column label="采购价" prop="user" width="100" />
+          <el-table-column label="入库时间" prop="cart" width="120" />
+          <el-table-column label="采购数量" prop="orders" width="100" />
+          <el-table-column label="采购金额" prop="orders" width="100" />
+          <el-table-column label="最后一次入库时间" prop="profit" />
+          <el-table-column label="超期状态" prop="pay" />
+          <el-table-column
+            align="center"
+            fixed="right"
+            label="操作"
+            width="100"
+          >
+            <template #default="{ row }">
+              <el-button type="text" @click="handleDetail(row)">
+                商品详情
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -217,11 +193,14 @@
 <script>
   import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
+  import TextLabels from '@/subview/components/TextLabels'
   export default {
     name: 'GoodsStatistical',
-    components: { List, VabChart },
+    components: { List, VabChart, TextLabels },
     data() {
       return {
+        tabslist: '成品采购排行',
+        typeList: 1,
         pickerOptions: {
           cellClassName: (time) => {
             if (
@@ -368,64 +347,74 @@
         goodsForm: {},
         goodsStaList: [
           {
-            title: '商品数量',
+            title: '总采购数量',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: false,
           },
           {
-            title: '商品数量',
+            title: '成品采购数量',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: false,
           },
           {
-            title: '商品数量',
+            title: '成品采购金额',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: false,
           },
           {
-            title: '商品数量',
+            title: '面料采购数量',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: false,
           },
           {
-            title: '商品数量',
+            title: '面料采购金额',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: false,
           },
           {
-            title: '成本金额',
+            title: '总采购金额',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: false,
           },
           {
-            title: '成本金额',
+            title: '辅料采购数量',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: false,
           },
           {
-            title: '成本金额',
+            title: '辅料采购金额',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: false,
           },
           {
-            title: '成本金额',
+            title: '总退货数量',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: false,
           },
           {
-            title: '成本金额',
+            title: '总退货金额',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: false,
           },
         ],
         initOptions: {
@@ -439,7 +428,14 @@
             },
           },
           legend: {
-            data: ['商品浏览量', '商品访客量', '支付金额', '退款金额'],
+            data: [
+              '成品采购数',
+              '面料采购数',
+              '辅料采购数',
+              '成品采购金额',
+              '面料采购金额',
+              '辅料采购金额',
+            ],
           },
           grid: {
             left: '3%',
@@ -506,7 +502,7 @@
           ],
           series: [
             {
-              name: '商品浏览量',
+              name: '成品采购数',
               type: 'line',
               stack: 'Total',
               smooth: true,
@@ -521,7 +517,7 @@
               },
             },
             {
-              name: '商品访客量',
+              name: '面料采购数',
               type: 'line',
               stack: 'Total',
               smooth: true,
@@ -535,8 +531,10 @@
               },
             },
             {
-              name: '支付金额',
-              type: 'bar',
+              name: '辅料采购数',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
               data: [
                 0, 10.09, 0, 4.43, 74.25, 157.1, 0, 0, 47.04, 0, 0, 1473.6, 0,
                 0, 0, 377.2, 0.11, 0.67, 0.11, 85.18, 0, 0.1, 0, 0, 0, 0, 0,
@@ -547,7 +545,7 @@
               },
             },
             {
-              name: '退款金额',
+              name: '成品采购金额',
               type: 'bar',
               data: [
                 0, 0, 0, 0.02, 0, 0, 3798.02, 0, 0.01, 0, 7001, 1151.36, 0,
@@ -555,12 +553,45 @@
                 299, 11696.1, 0, 2665, 0, 15242.36,
               ],
               itemStyle: {
-                color: '#1890FF',
+                color: '#FFC833',
+              },
+            },
+            {
+              name: '面料采购金额',
+              type: 'bar',
+              data: [
+                0, 0, 0, 0.02, 0, 0, 3798.02, 0, 0.01, 0, 7001, 1151.36, 0,
+                4494.1, 1002679, 6131.7, 0, 0, 0, 59.1, 0, 1000050.14, 0, 403,
+                299, 11696.1, 0, 2665, 0, 15242.36,
+              ],
+              itemStyle: {
+                color: '#FF6C87',
+              },
+            },
+            {
+              name: '辅料采购金额',
+              type: 'bar',
+              data: [
+                0, 0, 0, 0.02, 0, 0, 3798.02, 0, 0.01, 0, 7001, 1151.36, 0,
+                4494.1, 1002679, 6131.7, 0, 0, 0, 59.1, 0, 1000050.14, 0, 403,
+                299, 11696.1, 0, 2665, 0, 15242.36,
+              ],
+              itemStyle: {
+                color: '#55DF7E',
               },
             },
           ],
         },
       }
+    },
+    watch: {
+      tabslist(val) {
+        if (val == '成品采购排行') {
+          this.typeList = 2
+        } else {
+          this.typeList = 1
+        }
+      },
     },
     created() {},
     methods: {

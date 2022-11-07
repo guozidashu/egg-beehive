@@ -66,31 +66,34 @@
       >
         <span style="margin-top: 10px; font-size: 16px">商品排行</span>
         <el-form-item style="margin-right: 0">
-          <el-form-item label="品牌:" prop="region">
+          <el-form-item label="统计类型:" prop="region">
             <el-select
               v-model="goodsForm.region"
               size="small"
               style="width: 150px"
             >
-              <el-option label="品牌1" value="shanghai" />
-              <el-option label="品牌2" value="beijing" />
+              <el-option label="类型1" value="shanghai" />
+              <el-option label="类型2" value="beijing" />
             </el-select>
           </el-form-item>
-          <el-form-item label="类别:" prop="region">
-            <el-select
-              v-model="goodsForm.region"
-              size="small"
-              style="width: 150px"
-            >
-              <el-option label="类别1" value="shanghai" />
-              <el-option label="类别2" value="beijing" />
-            </el-select>
-          </el-form-item>
-          <el-form-item style="margin-right: 0; font-size: 12px">
+          <el-form-item
+            label="时间筛选:"
+            style="float: right; margin-right: 0; font-size: 12px"
+          >
+            <el-date-picker
+              v-model="goodsForm.date"
+              align="right"
+              end-placeholder="结束日期"
+              :picker-options="pickerOptions"
+              range-separator="至"
+              start-placeholder="开始日期"
+              type="daterange"
+              unlink-panels
+            />
             <el-button
               native-type="submit"
               size="small"
-              style="margin: 0 0 0 20px"
+              style="margin: 0 20px"
               type="primary"
             >
               查询
@@ -99,18 +102,29 @@
         </el-form-item>
       </el-form>
       <List :list="goosList" :list-type="listType" :state="listLoading">
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
+          <el-table-column
+            align="center"
+            label="排行"
+            type="index"
+            width="50"
+          />
           <el-table-column label="商品图片" prop="image" width="200">
             <template #default="{ row }">
               <el-image :src="row.image" />
             </template>
           </el-table-column>
           <el-table-column label="商品名称" prop="store_name" />
-          <el-table-column label="销量" prop="visit" width="100" />
-          <el-table-column label="销售金额" prop="user" width="100" />
-          <el-table-column label="类别" prop="cart" width="120" />
-          <el-table-column label="利润" prop="orders" width="100" />
+          <el-table-column label="商品款号" prop="visit" width="100" />
+          <el-table-column label="吊牌价" prop="user" width="100" />
+          <el-table-column label="上架时间" prop="cart" width="120" />
+          <el-table-column label="下单件数" prop="orders" width="100" />
+          <el-table-column label="下单金额" prop="orders" width="100" />
+          <el-table-column label="毛利率(%)" prop="profit">
+            <template #default="{ row }">{{ row.profit * 100 }}%</template>
+          </el-table-column>
+          <el-table-column label="库存数" prop="pay" />
+          <el-table-column label="状态" prop="pay" />
           <el-table-column
             align="center"
             fixed="right"
@@ -283,74 +297,39 @@
         goodsForm: {},
         goodsStaList: [
           {
-            title: '今日上新',
+            title: '商品统计',
             number: 200,
             num: 10,
             type: 1,
-            typeSta: true,
+            typeSta: false,
           },
           {
-            title: '昨日上新',
+            title: '在售商品sku数',
             number: 200,
             num: 20,
             type: 1,
-            typeSta: true,
+            typeSta: false,
           },
           {
-            title: '仓库中',
+            title: '已售罄商品数',
             number: 200,
             num: 100,
             type: 1,
-            typeSta: true,
-          },
-          {
-            title: '生产中',
-            number: 200,
-            num: 100,
-            type: 1,
-            typeSta: true,
-          },
-          {
-            title: '出售中',
-            number: 200,
-            num: 100,
-            type: 1,
-            typeSta: true,
+            typeSta: false,
           },
           {
             title: '库存预警',
-            number: 400,
-            num: 34.32,
-            type: 2,
-            typeSta: true,
+            number: 200,
+            num: 100,
+            type: 1,
+            typeSta: false,
           },
           {
-            title: '待确认',
-            number: 400,
-            num: 34.32,
-            type: 2,
-            typeSta: true,
-          },
-          {
-            title: '总库存',
-            number: 400,
-            num: 34.32,
-            type: 2,
-            typeSta: true,
-          },
-          {
-            title: '现货成本',
-            number: 400,
-            num: 34.32,
-            type: 2,
-            typeSta: true,
-          },
-          {
-            title: '生产中成本',
-            number: 400,
-            num: 34.32,
-            type: 2,
-            typeSta: true,
+            title: '待确认上架',
+            number: 200,
+            num: 100,
+            type: 1,
+            typeSta: false,
           },
         ],
         initOptions: {
@@ -364,7 +343,7 @@
             },
           },
           legend: {
-            data: ['上衣', '裤子', '连衣裙', '童装'],
+            data: ['在售商品数', '已售罄商品数', '库存预警', '待确认上架'],
           },
           grid: {
             left: '3%',
@@ -431,7 +410,7 @@
           ],
           series: [
             {
-              name: '上衣',
+              name: '在售商品数',
               type: 'line',
               stack: 'Total',
               smooth: true,
@@ -446,7 +425,7 @@
               },
             },
             {
-              name: '裤子',
+              name: '已售罄商品数',
               type: 'line',
               stack: 'Total',
               smooth: true,
@@ -460,7 +439,7 @@
               },
             },
             {
-              name: '连衣裙',
+              name: '库存预警',
               type: 'bar',
               data: [
                 0, 10.09, 0, 4.43, 74.25, 157.1, 0, 0, 47.04, 0, 0, 1473.6, 0,
@@ -472,7 +451,7 @@
               },
             },
             {
-              name: '童装',
+              name: '待确认上架',
               type: 'bar',
               data: [
                 0, 0, 0, 0.02, 0, 0, 3798.02, 0, 0.01, 0, 7001, 1151.36, 0,
@@ -493,7 +472,6 @@
       handleDetail() {},
       // 导出
       handleDownload() {
-        console.log(888, this.goodsStaList)
         this.downloadLoading = true
         import('@/utils/excel').then((excel) => {
           const tHeader = ['名称', '数量', '环比数量']

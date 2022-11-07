@@ -1,30 +1,28 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <div
-      style="
-        padding: 20px 20px 20px 20px;
-        margin-bottom: 20px;
-        background-color: white;
-      "
-    >
+    <div style="padding: 20px; margin-bottom: 20px; background-color: white">
       <el-form
         ref="form"
         :inline="true"
         label-width="80px"
         :model="goodsForm"
-        style="display: flex; justify-content: space-between"
+        style="clear: both"
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">商品概况</span>
+        <span style="margin-top: 10px; font-size: 16px">客户概况</span>
         <el-form-item
           label="时间筛选:"
-          style="margin-right: 0; font-size: 12px"
+          style="float: right; margin-right: 0; font-size: 12px"
         >
           <el-date-picker
             v-model="goodsForm.date"
-            size="small"
-            style="width: 250px"
+            align="right"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+            range-separator="至"
+            start-placeholder="开始日期"
             type="daterange"
+            unlink-panels
           />
           <el-button
             native-type="submit"
@@ -34,178 +32,66 @@
           >
             查询
           </el-button>
-          <el-button native-type="submit" size="small" type="primary">
+          <el-button
+            native-type="submit"
+            size="small"
+            type="primary"
+            @click="handleDownload"
+          >
             导出
           </el-button>
         </el-form-item>
+        <el-form-item label="客户渠道:" style="float: right">
+          <el-select v-model="goodsForm.region">
+            <el-option label="渠道1" value="shanghai" />
+            <el-option label="渠道2" value="shanghai" />
+          </el-select>
+        </el-form-item>
       </el-form>
-      <div style="display: flex; flex-wrap: wrap">
-        <div
-          v-for="(item, index) in goodsStaList"
-          :key="index"
-          style="display: flex; width: 20%; margin-bottom: 30px"
-        >
-          <vab-icon
-            icon="bar-chart-box-fill"
-            style="margin-right: 15px; font-size: 32px; color: #3bdfdf"
-          />
-          <div style="display: flex; flex-direction: column; margin-top: 5px">
-            <div>
-              {{ item.title }}
-              <vab-icon
-                icon="album-line"
-                style="position: relative; top: -2px; font-size: 14px"
-              />
-            </div>
-            <div
-              style="
-                padding: 10px 0;
-                font-size: 30px;
-                font-weight: 400;
-                color: rgba(0, 0, 0, 0.85);
-              "
-            >
-              {{ item.num }}
-            </div>
-            <div>
-              <span v-if="item.type === 1">环比增长：</span>
-              <span v-else>环比减少：</span>
-              <i v-if="item.type === 1" style="font-size: 12px; color: #f5222d">
-                {{ item.number }}%
-                <vab-icon icon="arrow-drop-up-fill" />
-              </i>
-              <i v-else style="font-size: 12px; color: #39c15b">
-                {{ item.number }}%
-                <vab-icon icon="arrow-drop-down-fill" />
-              </i>
-            </div>
-          </div>
-        </div>
-      </div>
+      <TextLabels
+        ref="multipleTable"
+        :list="goodsStaList"
+        :width="goodsStaWidth"
+      />
       <vab-chart
         :init-options="initOptions"
         :option="option"
         style="width: 100%; height: 400px"
       />
     </div>
-    <div style="padding: 20px; background-color: white">
-      <el-form
-        ref="form"
-        :inline="true"
-        label-width="80px"
-        :model="goodsForm"
-        style="display: flex; justify-content: space-between"
-        @submit.native.prevent
+    <div style="display: flex; width: 100%">
+      <div
+        style="
+          display: flex;
+          flex: 7;
+          padding: 20px;
+          margin-right: 20px;
+          background-color: white;
+        "
       >
-        <span style="margin-top: 10px; font-size: 16px">商品排行</span>
-        <el-form-item style="margin-right: 0">
-          <el-form-item label="统计类型:" prop="region">
-            <el-select
-              v-model="goodsForm.region"
-              size="small"
-              style="width: 150px"
-            >
-              <el-option label="浏览量" value="shanghai" />
-              <el-option label="访问数" value="beijing" />
-            </el-select>
-          </el-form-item>
-          <el-form-item
-            label="时间筛选:"
-            style="margin-right: 0; font-size: 12px"
-          >
-            <el-date-picker
-              v-model="goodsForm.date"
-              size="small"
-              style="width: 250px"
-              type="daterange"
-            />
-            <el-button
-              native-type="submit"
-              size="small"
-              style="margin: 0 0 0 20px"
-              type="primary"
-            >
-              查询
-            </el-button>
-          </el-form-item>
-        </el-form-item>
-      </el-form>
-      <List :list="goosList" :state="listLoading" :type="listType">
-        <!-- 表格组件具名插槽 自定义表头 -->
-        <template #List>
-          <el-table-column
-            align="center"
-            label="商品图片"
-            prop="image"
-            show-overflow-tooltip
-          >
-            <template #default="{ row }">
-              <el-image :src="row.image" />
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="商品名称" prop="store_name" />
-          <el-table-column
-            align="center"
-            label="浏览量"
-            prop="visit"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="访客数"
-            prop="user"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="加购件数"
-            prop="cart"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="下单件数"
-            prop="orders"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="支付件数"
-            prop="pay"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="支付金额"
-            prop="price"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="毛利率(%)"
-            prop="profit"
-            show-overflow-tooltip
-          >
-            <template #default="{ row }">{{ row.profit * 100 }}%</template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            label="收藏数"
-            prop="collect"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
-          >
-            <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">查看</el-button>
-            </template>
-          </el-table-column>
-        </template>
-      </List>
+        <china-map style="width: 30%" :title="mapTitle" />
+        <List
+          :list="goosList"
+          :list-type="listType"
+          :state="listLoading"
+          style="width: 70%; padding-right: 0 20px"
+        >
+          <template #List>
+            <el-table-column label="EPR城市" prop="store_name" />
+            <el-table-column label="累计用户数" prop="visit" sortable />
+            <el-table-column label="新增用户数" prop="user" sortable />
+            <el-table-column label="贡献销售额" prop="cart" />
+            <el-table-column label="贡献值" prop="orders" />
+          </template>
+        </List>
+      </div>
+      <div style="flex: 3; padding: 20px; background-color: white">
+        <branch
+          :list="branchList"
+          :style-chart="styleObj"
+          :title="branchTitle"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -213,151 +99,261 @@
 <script>
   import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
+  import ChinaMap from '@/subview/components/ChinaMap'
+  import Branch from '@/subview/components/Branch'
+  import TextLabels from '@/subview/components/TextLabels'
   export default {
-    name: 'GoodsStatistical',
-    components: { List, VabChart },
+    name: 'CustomerStatistical',
+    components: { ChinaMap, List, VabChart, Branch, TextLabels },
     data() {
       return {
+        pickerOptions: {
+          cellClassName: (time) => {
+            if (
+              new Date().getDate() === time.getDate() &&
+              new Date().getMonth() === time.getMonth() &&
+              new Date().getFullYear() === time.getFullYear()
+            ) {
+              return 'dateArrClass' // 返回值设置的是我们添加的类名
+            }
+          },
+          shortcuts: [
+            {
+              text: '今天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date()
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '昨天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 1
+                end.setTime(start)
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '最近7天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 7
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '最近30天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 30
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '本月',
+              onClick(picker) {
+                const end = new Date()
+                const start =
+                  new Date().getTime() -
+                  3600 * 1000 * 24 * (new Date().getDate() - 1)
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '本年',
+              onClick(picker) {
+                const start = new Date(new Date().getFullYear(), 0, 1)
+                const end = new Date()
+                picker.$emit('pick', [start, end])
+              },
+            },
+          ],
+        },
         listLoading: false,
-        listType: 2,
+        listType: 4,
+        branchTitle: '客户等级分析',
+        mapTitle: '客户区域分布',
+        styleObj: {
+          width: '400px',
+          height: '500px',
+          legendx: 0,
+          legendy: 450,
+          center: ['50%', '50%'],
+        },
+        branchList: [
+          { value: 1048, name: '普通会员' },
+          { value: 735, name: '黄金会员' },
+          { value: 580, name: '钻石会员' },
+          { value: 484, name: '白金会员' },
+          { value: 300, name: '黑钻svp' },
+        ],
         goosList: [
           {
             visit: '507',
             user: 215,
             cart: '20',
             orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
+            store_name: '广东',
           },
           {
             visit: '507',
             user: 215,
             cart: '20',
             orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
+            store_name: '苏州',
           },
           {
             visit: '507',
             user: 215,
             cart: '20',
             orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
+            store_name: '杭州',
           },
           {
             visit: '507',
             user: 215,
             cart: '20',
             orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
+            store_name: '北京',
           },
           {
             visit: '507',
             user: 215,
             cart: '20',
             orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
+            store_name: '上海',
+          },
+          {
+            visit: '507',
+            user: 215,
+            cart: '20',
+            orders: '14',
+            store_name: '广东',
+          },
+          {
+            visit: '507',
+            user: 215,
+            cart: '20',
+            orders: '14',
+            store_name: '苏州',
+          },
+          {
+            visit: '507',
+            user: 215,
+            cart: '20',
+            orders: '14',
+            store_name: '杭州',
+          },
+          {
+            visit: '507',
+            user: 215,
+            cart: '20',
+            orders: '14',
+            store_name: '北京',
+          },
+          {
+            visit: '507',
+            user: 215,
+            cart: '20',
+            orders: '14',
+            store_name: '上海',
+          },
+          {
+            visit: '507',
+            user: 215,
+            cart: '20',
+            orders: '14',
+            store_name: '广东',
+          },
+          {
+            visit: '507',
+            user: 215,
+            cart: '20',
+            orders: '14',
+            store_name: '苏州',
+          },
+          {
+            visit: '507',
+            user: 215,
+            cart: '20',
+            orders: '14',
+            store_name: '杭州',
+          },
+          {
+            visit: '507',
+            user: 215,
+            cart: '20',
+            orders: '14',
+            store_name: '北京',
+          },
+          {
+            visit: '507',
+            user: 215,
+            cart: '20',
+            orders: '14',
+            store_name: '上海',
           },
         ],
         goodsForm: {},
+        goodsStaWidth: '25%',
         goodsStaList: [
           {
-            title: '商品数量',
+            title: '新增客户数',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
-            title: '商品数量',
+            title: '下单用户数',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
-            title: '商品数量',
+            title: '成交销售额',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
-            title: '商品数量',
+            title: '全部客户',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
-            title: '商品数量',
+            title: '欠款客户',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
-            title: '成本金额',
+            title: '沉睡客户',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: true,
           },
           {
-            title: '成本金额',
+            title: '活跃客户',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: true,
           },
           {
-            title: '成本金额',
+            title: '即将流失客户',
             number: 400,
             num: 34.32,
             type: 2,
-          },
-          {
-            title: '成本金额',
-            number: 400,
-            num: 34.32,
-            type: 2,
-          },
-          {
-            title: '成本金额',
-            number: 400,
-            num: 34.32,
-            type: 2,
+            typeSta: true,
           },
         ],
         initOptions: {
@@ -371,7 +367,7 @@
             },
           },
           legend: {
-            data: ['商品浏览量', '商品访客量', '支付金额', '退款金额'],
+            data: ['新增用户数', '下单用户数', '欠款客户', '销售额'],
           },
           grid: {
             left: '3%',
@@ -438,7 +434,7 @@
           ],
           series: [
             {
-              name: '商品浏览量',
+              name: '新增用户数',
               type: 'line',
               stack: 'Total',
               smooth: true,
@@ -453,7 +449,7 @@
               },
             },
             {
-              name: '商品访客量',
+              name: '下单用户数',
               type: 'line',
               stack: 'Total',
               smooth: true,
@@ -467,7 +463,7 @@
               },
             },
             {
-              name: '支付金额',
+              name: '欠款客户',
               type: 'bar',
               data: [
                 0, 10.09, 0, 4.43, 74.25, 157.1, 0, 0, 47.04, 0, 0, 1473.6, 0,
@@ -479,12 +475,12 @@
               },
             },
             {
-              name: '退款金额',
+              name: '销售额',
               type: 'bar',
               data: [
                 0, 0, 0, 0.02, 0, 0, 3798.02, 0, 0.01, 0, 7001, 1151.36, 0,
-                4494.1, 1002679, 6131.7, 0, 0, 0, 59.1, 0, 1000050.14, 0, 403,
-                299, 11696.1, 0, 2665, 0, 15242.36,
+                4494.1, 102679, 6131.7, 0, 0, 0, 59.1, 0, 10050.14, 0, 403, 299,
+                11696.1, 0, 2665, 0, 15242.36,
               ],
               itemStyle: {
                 color: '#1890FF',
@@ -498,6 +494,24 @@
     methods: {
       // 详情抽屉
       handleDetail() {},
+      // 导出
+      handleDownload() {
+        console.log(888, this.goodsStaList)
+        import('@/utils/excel').then((excel) => {
+          const tHeader = ['名称', '数量', '环比数量']
+          const filterVal = ['title', 'num', 'number']
+          const list = this.goodsStaList
+          const data = this.formatJson(filterVal, list)
+          excel.export_json_to_excel({
+            header: tHeader,
+            data,
+            filename: this.filename,
+          })
+        })
+      },
+      formatJson(filterVal, jsonData) {
+        return jsonData.map((v) => filterVal.map((j) => v[j]))
+      },
     },
   }
 </script>

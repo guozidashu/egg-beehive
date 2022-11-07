@@ -5,7 +5,7 @@
     width="500px"
     @close="close"
   >
-    <el-form ref="form" label-width="80px" :model="form" :rules="rules">
+    <el-form ref="form" label-width="120px" :model="form" :rules="rules">
       <el-form-item label="权限分组:">
         <el-select v-model="form.group_id" placeholder="请选择" prop="group_id">
           <el-option

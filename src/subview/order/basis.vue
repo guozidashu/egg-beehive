@@ -48,7 +48,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <TextLabels ref="multipleTable" :list="goodsStaList" :width="textwidth" />
+      <TextLabels ref="multipleTable" :list="goodsStaList" />
       <p>营业趋势</p>
       <vab-chart
         :init-options="initOptions"
@@ -57,85 +57,87 @@
       />
     </div>
 
-    <div style="display: flex; justify-content: space-between">
-      <div
-        style="
-          width: 50%;
-          padding: 20px;
-          margin-right: 20px;
-          background-color: white;
-        "
+    <div style="padding: 20px; background-color: white">
+      <el-form
+        ref="form"
+        :inline="true"
+        label-width="80px"
+        :model="goodsForm"
+        style="display: flex; justify-content: space-between"
+        @submit.native.prevent
       >
-        <div style="margin-bottom: 20px">
-          <span style="font-size: 24px">订单来源分析</span>
-          <el-button
-            native-type="submit"
-            size="small"
-            style="float: right"
-            type="primary"
-            @click="staType = !staType"
+        <span style="margin-top: 10px; font-size: 16px">订单数据明细</span>
+        <el-form-item style="margin-right: 0">
+          <el-form-item label="统计类型:" prop="region">
+            <el-select
+              v-model="goodsForm.region"
+              size="small"
+              style="width: 150px"
+            >
+              <el-option label="浏览量" value="shanghai" />
+              <el-option label="访问数" value="beijing" />
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            label="时间筛选:"
+            style="margin-right: 0; font-size: 12px"
           >
-            切换样式
-          </el-button>
-        </div>
-        <el-table v-if="staType" :data="tableData" height="480px">
+            <el-date-picker
+              v-model="goodsForm.date"
+              size="small"
+              style="width: 250px"
+              type="daterange"
+            />
+            <el-button
+              native-type="submit"
+              size="small"
+              style="margin: 0 0 0 20px"
+              type="primary"
+            >
+              查询
+            </el-button>
+          </el-form-item>
+        </el-form-item>
+      </el-form>
+      <List :list="goosList" :list-type="listType" :state="listLoading">
+        <!-- 显示20条 -->
+        <template #List>
+          <el-table-column label="日期" prop="time" />
+          <el-table-column label="销售金额" prop="visit" width="200" />
+          <el-table-column label="订单数" prop="visit" width="100" />
+          <el-table-column label="销售件数" prop="user" width="100" />
+          <el-table-column label="发货件数" prop="cart" width="120" />
+          <el-table-column label="日单价" prop="orders" width="100" />
+          <el-table-column label="成交客户数" prop="pay" />
+          <el-table-column label="利润" prop="pay" />
+          <el-table-column label="毛利率(%)" prop="profit">
+            <template #default="{ row }">{{ row.profit * 100 }}%</template>
+          </el-table-column>
           <el-table-column
             align="center"
-            label="序号"
-            type="index"
-            width="80"
-          />
-          <el-table-column label="来源" prop="title" width="200px" />
-          <el-table-column label="金额" prop="num" width="200px" />
-          <el-table-column label="占比率">
-            <template #default="{ row }">
-              <el-progress :color="row.color" :percentage="row.percentage" />
-            </template>
-          </el-table-column>
-        </el-table>
-        <Branch v-else :list="branchList" :style-chart="styleObj" />
-      </div>
-      <div style="width: 49%; padding: 20px; background-color: white">
-        <div style="margin-bottom: 20px">
-          <span style="font-size: 24px">订单类型分析</span>
-          <el-button
-            native-type="submit"
-            size="small"
-            style="float: right"
-            type="primary"
-            @click="staType1 = !staType1"
+            fixed="right"
+            label="操作"
+            width="100"
           >
-            切换样式
-          </el-button>
-        </div>
-        <el-table v-if="staType1" :data="tableData" height="480px">
-          <el-table-column
-            align="center"
-            label="序号"
-            type="index"
-            width="80"
-          />
-          <el-table-column label="来源" prop="title" width="200px" />
-          <el-table-column label="金额" prop="num" width="200px" />
-          <el-table-column label="占比率">
             <template #default="{ row }">
-              <el-progress :color="row.color" :percentage="row.percentage" />
+              <el-button type="text" @click="handleDetail(row)">
+                查看订单
+              </el-button>
             </template>
           </el-table-column>
-        </el-table>
-        <Branch v-else :list="branchList" :style-chart="styleObj" />
-      </div>
+        </template>
+      </List>
     </div>
   </div>
 </template>
 
 <script>
+  import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
-  import Branch from '@/subview/components/Branch'
   import TextLabels from '@/subview/components/TextLabels'
   export default {
     name: 'GoodsStatistical',
-    components: { VabChart, Branch, TextLabels },
+    components: { VabChart, TextLabels, List },
     data() {
       return {
         pickerOptions: {
@@ -206,7 +208,6 @@
         staType: true,
         staType1: false,
         listType: 2,
-        textwidth: '25%',
         styleObj: {
           width: '400px',
           height: '400px',
@@ -223,70 +224,39 @@
         ],
         goodsStaList: [
           {
-            title: '数量',
+            title: '订单数',
             number: 200,
             num: 94.32,
             type: 1,
-            typeSta: true,
+            typeSta: false,
           },
           {
-            title: '销售额',
+            title: '销售件数',
             number: 200,
             num: 94.32,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+          },
+          {
+            title: '销售金额',
+            number: 200,
+            num: 94.32,
+            type: 1,
+            typeSta: false,
           },
           {
             title: '退货数量',
             number: 200,
             num: 94.32,
             type: 1,
-            typeSta: true,
+            typeSta: false,
           },
           {
             title: '退货金额',
             number: 200,
             num: 94.32,
             type: 1,
-            typeSta: true,
-          },
-        ],
-        tableData: [
-          {
-            title: '小程序',
-            num: 20,
-            percentage: 50,
-            color: '#95de64',
-          },
-          {
-            title: '小程序',
-            num: 20,
-            percentage: 8,
-            color: '#69c0ff',
-          },
-          {
-            title: '小程序',
-            num: 20,
-            percentage: 76,
-            color: '#1890FF',
-          },
-          {
-            title: '小程序',
-            num: 20,
-            percentage: 100,
-            color: '#ffc069',
-          },
-          {
-            title: '小程序',
-            num: 20,
-            percentage: 25,
-            color: '#5cdbd3',
-          },
-          {
-            title: '小程序',
-            num: 20,
-            percentage: 1,
-            color: '#b37feb',
+            typeSta: false,
           },
         ],
         goosList: [
@@ -300,6 +270,7 @@
             cost: '2388.00',
             profit: '-1.00',
             collect: '4',
+            time: '2020-12-12',
             store_name:
               '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
             image:
@@ -308,6 +279,39 @@
           {
             visit: '507',
             user: 215,
+            cart: '20',
+            orders: '14',
+            pay: '12',
+            price: '1.04',
+            cost: '2388.00',
+            profit: '-1.00',
+            time: '2020-12-12',
+            collect: '4',
+            store_name:
+              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
+            image:
+              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
+          },
+          {
+            visit: '507',
+            user: 215,
+            time: '2020-12-12',
+            cart: '20',
+            orders: '14',
+            pay: '12',
+            price: '1.04',
+            cost: '2388.00',
+            profit: '-1.00',
+            collect: '4',
+            store_name:
+              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
+            image:
+              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
+          },
+          {
+            visit: '507',
+            user: 215,
+            time: '2020-12-12',
             cart: '20',
             orders: '14',
             pay: '12',
@@ -327,36 +331,7 @@
             orders: '14',
             pay: '12',
             price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
+            time: '2020-12-12',
             cost: '2388.00',
             profit: '-1.00',
             collect: '4',
@@ -380,7 +355,7 @@
             },
           },
           legend: {
-            data: ['数量', '销售额', '退货数量', '退货金额'],
+            data: ['销售件数', '销售金额', '退货数量', '退货金额'],
           },
           grid: {
             left: '3%',
@@ -447,7 +422,7 @@
           ],
           series: [
             {
-              name: '数量',
+              name: '销售件数',
               type: 'line',
               stack: 'Total',
               smooth: true,
@@ -462,7 +437,7 @@
               },
             },
             {
-              name: '销售额',
+              name: '销售金额',
               type: 'line',
               stack: 'Total',
               smooth: true,

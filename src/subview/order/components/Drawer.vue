@@ -151,7 +151,7 @@
           </template>
         </List>
       </el-tab-pane>
-      <el-tab-pane label=" 订单记录" name="three">
+      <el-tab-pane label=" 操作记录" name="three">
         <List :list="orderList" :state="listLoading" :type="listType">
           <!-- 表格组件具名插槽 自定义表头 -->
           <template #List>

@@ -979,6 +979,15 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'menu',
+        name: 'Menu',
+        component: () => import('@/subview/setting/menu'),
+        meta: {
+          title: '菜单管理',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {

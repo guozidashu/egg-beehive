@@ -16,15 +16,25 @@
         @submit.native.prevent
       >
         <span style="margin-top: 10px; font-size: 16px">商品概况</span>
+        <el-form-item label="品牌:" prop="region" style="float: right">
+          <el-select v-model="goodsForm.region" size="small">
+            <el-option label="品牌1" value="shanghai" />
+            <el-option label="品牌2" value="beijing" />
+          </el-select>
+        </el-form-item>
         <el-form-item
           label="时间筛选:"
-          style="margin-right: 0; font-size: 12px"
+          style="float: right; margin-right: 0; font-size: 12px"
         >
           <el-date-picker
             v-model="goodsForm.date"
-            size="small"
-            style="width: 250px"
+            align="right"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+            range-separator="至"
+            start-placeholder="开始日期"
             type="daterange"
+            unlink-panels
           />
           <el-button
             native-type="submit"
@@ -40,47 +50,7 @@
         </el-form-item>
       </el-form>
       <div style="display: flex; flex-wrap: wrap">
-        <div
-          v-for="(item, index) in goodsStaList"
-          :key="index"
-          style="display: flex; width: 20%; margin-bottom: 30px"
-        >
-          <vab-icon
-            icon="bar-chart-box-fill"
-            style="margin-right: 15px; font-size: 32px; color: #3bdfdf"
-          />
-          <div style="display: flex; flex-direction: column; margin-top: 5px">
-            <div>
-              {{ item.title }}
-              <vab-icon
-                icon="album-line"
-                style="position: relative; top: -2px; font-size: 14px"
-              />
-            </div>
-            <div
-              style="
-                padding: 10px 0;
-                font-size: 30px;
-                font-weight: 400;
-                color: rgba(0, 0, 0, 0.85);
-              "
-            >
-              {{ item.num }}
-            </div>
-            <div>
-              <span v-if="item.type === 1">环比增长：</span>
-              <span v-else>环比减少：</span>
-              <i v-if="item.type === 1" style="font-size: 12px; color: #f5222d">
-                {{ item.number }}%
-                <vab-icon icon="arrow-drop-up-fill" />
-              </i>
-              <i v-else style="font-size: 12px; color: #39c15b">
-                {{ item.number }}%
-                <vab-icon icon="arrow-drop-down-fill" />
-              </i>
-            </div>
-          </div>
-        </div>
+        <TextLabels ref="multipleTable" :list="goodsStaList" />
       </div>
       <vab-chart
         :init-options="initOptions"
@@ -99,6 +69,16 @@
       >
         <span style="margin-top: 10px; font-size: 16px">商品排行</span>
         <el-form-item style="margin-right: 0">
+          <el-form-item label="品牌:" prop="region">
+            <el-select
+              v-model="goodsForm.region"
+              size="small"
+              style="width: 150px"
+            >
+              <el-option label="品牌1" value="shanghai" />
+              <el-option label="品牌2" value="beijing" />
+            </el-select>
+          </el-form-item>
           <el-form-item label="统计类型:" prop="region">
             <el-select
               v-model="goodsForm.region"
@@ -130,78 +110,39 @@
           </el-form-item>
         </el-form-item>
       </el-form>
-      <List :list="goosList" :state="listLoading" :type="listType">
-        <!-- 表格组件具名插槽 自定义表头 -->
+      <List :list="goosList" :list-type="listType" :state="listLoading">
         <template #List>
           <el-table-column
             align="center"
-            label="商品图片"
-            prop="image"
-            show-overflow-tooltip
-          >
+            label="排行"
+            type="index"
+            width="50"
+          />
+          <el-table-column label="商品图片" prop="image" width="200">
             <template #default="{ row }">
               <el-image :src="row.image" />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="商品名称" prop="store_name" />
-          <el-table-column
-            align="center"
-            label="浏览量"
-            prop="visit"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="访客数"
-            prop="user"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="加购件数"
-            prop="cart"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="下单件数"
-            prop="orders"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="支付件数"
-            prop="pay"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="支付金额"
-            prop="price"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="毛利率(%)"
-            prop="profit"
-            show-overflow-tooltip
-          >
+          <el-table-column label="商品名称" prop="store_name" width="200" />
+          <el-table-column label="商品款号" prop="visit" width="100" />
+          <el-table-column label="上架时间" prop="user" width="100" />
+          <el-table-column label="本期销量" prop="cart" width="120" />
+          <el-table-column label="本期销售额" prop="orders" width="100" />
+          <el-table-column label="毛利率(%)" prop="profit">
             <template #default="{ row }">{{ row.profit * 100 }}%</template>
           </el-table-column>
+          <el-table-column label="上架天数" prop="pay" />
+          <el-table-column label="预计可售天数" prop="pay" />
           <el-table-column
             align="center"
-            label="收藏数"
-            prop="collect"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
+            fixed="right"
             label="操作"
-            show-overflow-tooltip
-            width="85"
+            width="100"
           >
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">查看</el-button>
+              <el-button type="text" @click="handleDetail(row)">
+                商品详情
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -211,15 +152,80 @@
 </template>
 
 <script>
+  import TextLabels from '@/subview/components/TextLabels'
   import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
   export default {
     name: 'GoodsStatistical',
-    components: { List, VabChart },
+    components: { List, VabChart, TextLabels },
     data() {
       return {
         listLoading: false,
         listType: 2,
+        pickerOptions: {
+          cellClassName: (time) => {
+            if (
+              new Date().getDate() === time.getDate() &&
+              new Date().getMonth() === time.getMonth() &&
+              new Date().getFullYear() === time.getFullYear()
+            ) {
+              return 'dateArrClass' // 返回值设置的是我们添加的类名
+            }
+          },
+          shortcuts: [
+            {
+              text: '今天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date()
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '昨天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 1
+                end.setTime(start)
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '最近7天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 7
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '最近30天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 30
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '本月',
+              onClick(picker) {
+                const end = new Date()
+                const start =
+                  new Date().getTime() -
+                  3600 * 1000 * 24 * (new Date().getDate() - 1)
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '本年',
+              onClick(picker) {
+                const start = new Date(new Date().getFullYear(), 0, 1)
+                const end = new Date()
+                picker.$emit('pick', [start, end])
+              },
+            },
+          ],
+        },
         goosList: [
           {
             visit: '507',
@@ -300,64 +306,74 @@
         goodsForm: {},
         goodsStaList: [
           {
-            title: '商品数量',
+            title: '今日上新',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
-            title: '商品数量',
+            title: '商品数',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
-            title: '商品数量',
+            title: '商品sku数',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
-            title: '商品数量',
+            title: '销售款数',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
-            title: '商品数量',
+            title: '件单价',
             number: 200,
             num: 94.32,
             type: 1,
+            typeSta: true,
           },
           {
-            title: '成本金额',
+            title: '销售数量',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: true,
           },
           {
-            title: '成本金额',
+            title: '销售金额',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: true,
           },
           {
-            title: '成本金额',
+            title: '退货数量',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: true,
           },
           {
-            title: '成本金额',
+            title: '退货金额',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: true,
           },
           {
-            title: '成本金额',
+            title: '实际交易金额',
             number: 400,
             num: 34.32,
             type: 2,
+            typeSta: true,
           },
         ],
         initOptions: {
@@ -371,7 +387,7 @@
             },
           },
           legend: {
-            data: ['商品浏览量', '商品访客量', '支付金额', '退款金额'],
+            data: ['销售数量', '销售金额', '退货数量', '退货金额'],
           },
           grid: {
             left: '3%',
@@ -438,7 +454,7 @@
           ],
           series: [
             {
-              name: '商品浏览量',
+              name: '销售数量',
               type: 'line',
               stack: 'Total',
               smooth: true,
@@ -453,7 +469,7 @@
               },
             },
             {
-              name: '商品访客量',
+              name: '销售金额',
               type: 'line',
               stack: 'Total',
               smooth: true,
@@ -467,7 +483,7 @@
               },
             },
             {
-              name: '支付金额',
+              name: '退货数量',
               type: 'bar',
               data: [
                 0, 10.09, 0, 4.43, 74.25, 157.1, 0, 0, 47.04, 0, 0, 1473.6, 0,
@@ -479,7 +495,7 @@
               },
             },
             {
-              name: '退款金额',
+              name: '退货金额',
               type: 'bar',
               data: [
                 0, 0, 0, 0.02, 0, 0, 3798.02, 0, 0.01, 0, 7001, 1151.36, 0,

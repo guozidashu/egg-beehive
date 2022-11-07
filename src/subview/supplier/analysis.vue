@@ -72,7 +72,10 @@
           <template #List>
             <el-table-column label="Top省份" prop="store_name" />
             <el-table-column label="累计供应商数" prop="visit" />
-            <el-table-column label="新增供应商数" prop="user" />
+            <el-table-column label="新增供应商数" prop="visit" />
+            <el-table-column label="占比" prop="user">
+              <template #default="{ row }">{{ row.user * 100 }}%</template>
+            </el-table-column>
           </template>
         </List>
       </div>
@@ -85,7 +88,51 @@
       </div>
     </div>
     <div style="padding: 20px; margin-top: 20px; background-color: white">
-      <p style="margin-top: 10px; font-size: 16px">供应商排行</p>
+      <el-form
+        ref="form"
+        :inline="true"
+        label-width="80px"
+        :model="goodsForm"
+        style="display: flex; justify-content: space-between"
+        @submit.native.prevent
+      >
+        <span style="margin-top: 10px; font-size: 16px">供应商排行</span>
+        <el-form-item style="margin-right: 0">
+          <el-form-item label="统计类型:" prop="region">
+            <el-select
+              v-model="goodsForm.region"
+              size="small"
+              style="width: 150px"
+            >
+              <el-option label="浏览量" value="shanghai" />
+              <el-option label="访问数" value="beijing" />
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            label="时间筛选:"
+            style="float: right; margin-right: 0; font-size: 12px"
+          >
+            <el-date-picker
+              v-model="goodsForm.date"
+              align="right"
+              end-placeholder="结束日期"
+              :picker-options="pickerOptions"
+              range-separator="至"
+              start-placeholder="开始日期"
+              type="daterange"
+              unlink-panels
+            />
+            <el-button
+              native-type="submit"
+              size="small"
+              style="margin: 0 20px"
+              type="primary"
+            >
+              查询
+            </el-button>
+          </el-form-item>
+        </el-form-item>
+      </el-form>
       <List :list="goosList" :list-type="listType" :state="listLoading">
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
