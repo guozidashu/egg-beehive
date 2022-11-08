@@ -18,10 +18,8 @@
               "
             />
             <div style="margin-top: -5px">
-              <div style="margin: 15px 0 0 0">
-                供应商名称：{{ form.su_name }}
-              </div>
-              <div>订单编号：{{ form.sn }}</div>
+              <div style="margin: 15px 0 0 0">供应商名称：{{ form.name }}</div>
+              <div>订单编号：{{ form.name }}</div>
             </div>
           </el-col>
 
@@ -61,29 +59,13 @@
         </el-row>
       </div>
       <div style="display: flex">
-        <div style="display: flex; flex: 1; flex-direction: column">
-          <span style="margin-bottom: 12px">订单状态</span>
-          <span>{{ form.order_status }}</span>
-        </div>
-        <div style="display: flex; flex: 1; flex-direction: column">
-          <span style="margin-bottom: 12px">订单数量</span>
-          <span>{{ form.num }}</span>
-        </div>
-        <div style="display: flex; flex: 1; flex-direction: column">
-          <span style="margin-bottom: 12px">订单金额</span>
-          <span>{{ form.total }}</span>
-        </div>
-        <div style="display: flex; flex: 1; flex-direction: column">
-          <span style="margin-bottom: 12px">预计交货时间</span>
-          <span>{{ form.expected_date }}</span>
-        </div>
-        <div style="display: flex; flex: 1; flex-direction: column">
-          <span style="margin-bottom: 12px">超期状态</span>
-          <span>{{ form.delay }}</span>
-        </div>
-        <div style="display: flex; flex: 1; flex-direction: column">
-          <span style="margin-bottom: 12px">延期预警</span>
-          <span>暂无</span>
+        <div
+          v-for="(item, index) in stalist"
+          :key="index"
+          style="display: flex; flex: 1; flex-direction: column"
+        >
+          <span style="margin-bottom: 12px">{{ item.name }}</span>
+          <span>{{ item.value }}</span>
         </div>
       </div>
     </div>
@@ -93,12 +75,11 @@
       style="padding: 0 25px"
       @tab-click="handleClick"
     >
-      <el-tab-pane label="订单信息" name="0" />
-      <el-tab-pane label="成品信息" name="1" />
-      <el-tab-pane label="订单记录" name="2" />
-      <el-tab-pane label="入库记录" name="3" />
-      <el-tab-pane label="退货记录" name="4" />
-      <el-tab-pane label="电子合同" name="5" />
+      <el-tab-pane label="订单信息" name="first" />
+      <el-tab-pane label="商品信息" name="second" />
+      <el-tab-pane label="入库记录" name="three" />
+      <el-tab-pane label="退货记录" name="four" />
+      <el-tab-pane label="电子合同" name="five" />
     </el-tabs>
     <el-tabs
       v-else
@@ -106,132 +87,63 @@
       style="padding: 0 25px"
       @tab-click="handleClick"
     >
-      <el-tab-pane label="订单信息" name="0" />
-      <el-tab-pane label="物料信息" name="1" />
-      <el-tab-pane label="订单记录" name="2" />
-      <el-tab-pane label="入库记录" name="3" />
-      <el-tab-pane label="退货记录" name="4" />
-      <el-tab-pane label="电子合同" name="5" />
+      <el-tab-pane label="订单信息" name="first" />
+      <el-tab-pane label="物料信息" name="second" />
+      <el-tab-pane label="订单记录" name="three" />
+      <el-tab-pane label="收货记录" name="four" />
+      <el-tab-pane label="退货记录" name="five" />
+      <el-tab-pane label="电子合同" name="six" />
     </el-tabs>
-    <div v-if="search_type == '0'">
+    <div v-if="tabindex == '0'">
       <div ref="vab-print-table" class="drawer-tab">
         <div class="conten-warp">
           <div class="conten-title">供应商信息</div>
           <div class="conten-list-row">
-            <div>供应商UID：{{ form.su_id }}</div>
-            <div>供应商名称：{{ form.su_name }}</div>
-            <div>绑定电话： -{{ form.tel }}</div>
-            <div>供应商等级： {{ form.grade_name }}</div>
-            <div>供应商类别： {{ form.sut_name }}</div>
+            <div>供应商UID：6565</div>
+            <div>供应商名称： 名称一</div>
+            <div>绑定电话： -1526804776</div>
+            <div>供应商等级： 等级一</div>
+            <div>供应商类别： 类别一</div>
           </div>
         </div>
         <div class="conten-warp">
           <div class="conten-title">订单信息</div>
           <div class="conten-list-row">
-            <div>创建时间：{{ form.add_date }}</div>
-            <div>商品总数：{{ form.num }}</div>
-            <div>商品总价：{{ form.total }}</div>
-            <div>支付时间：暂无</div>
-            <div>支付邮费：暂无</div>
-            <div>结算方式：暂无</div>
+            <div>创建时间：2020-12-12 10:10:10</div>
+            <div>商品总数：50</div>
+            <div>商品总价：2000</div>
+            <div>支付时间：2020-12-12 10:10:10</div>
+            <div>支付邮费：50</div>
+            <div>结算方式：月结</div>
           </div>
         </div>
         <div class="conten-warp">
           <div class="conten-title">其它信息</div>
           <div class="conten-list-row">
-            <div style="width: 50%">创建时间： {{ form.add_date }}</div>
-            <div style="width: 50%">操作人员： 暂无</div>
-            <div style="width: 50%">更新时间： 暂无</div>
-            <div style="width: 50%">操作人员： 暂无</div>
-            <div v-if="form.is_void == 0" style="width: 50%">
-              订单状态： 正常
-            </div>
-            <div v-if="form.is_void == 1" style="width: 50%">
-              订单状态： 作废
-            </div>
-            <div style="width: 50%">跟单人员： 暂无</div>
-            <div style="width: 100%">备注： {{ form.remark }}</div>
+            <div style="width: 50%">创建时间： 2020-02-02 10:10:10</div>
+            <div style="width: 50%">操作人员： 阿白</div>
+            <div style="width: 50%">更新时间： 2020-02-02 10:10:10</div>
+            <div style="width: 50%">操作人员： 阿白</div>
+            <div style="width: 50%">订单状态： 作废</div>
+            <div style="width: 50%">跟单人员： 阿白</div>
+            <div style="width: 100%">备注： 1111111111111111</div>
           </div>
         </div>
       </div>
     </div>
     <List
-      v-if="search_type == '1'"
+      v-else
       :list="orderList"
       :list-type="listType"
       :state="listLoading"
       style="margin: 20px"
     >
       <template #List>
-        <el-table-column
-          v-if="drawerType == 2"
-          label="编号"
-          prop="sn"
-          show-overflow-tooltip
-        />
-        <el-table-column
-          v-else
-          label="编号"
-          prop="material_sn"
-          show-overflow-tooltip
-        />
-        <el-table-column label="数量" prop="num" show-overflow-tooltip />
-        <el-table-column label="单价" prop="price" show-overflow-tooltip />
-        <el-table-column label="总价格" prop="total" show-overflow-tooltip />
+        <el-table-column label="id" prop="id" show-overflow-tooltip />
+        <el-table-column label="名称" prop="log" show-overflow-tooltip />
+        <el-table-column label="操作时间" prop="time" show-overflow-tooltip />
       </template>
     </List>
-    <div v-if="search_type == '2'" style="margin-left: 20px">暂无</div>
-    <List
-      v-if="search_type == '3'"
-      :list="orderList"
-      :list-type="listType"
-      :state="listLoading"
-      style="margin: 20px"
-    >
-      <template #List>
-        <el-table-column
-          label="供应商姓名"
-          prop="su_name"
-          show-overflow-tooltip
-        />
-        <el-table-column label="编号" prop="sn" show-overflow-tooltip />
-        <el-table-column label="数量" prop="num" show-overflow-tooltip />
-        <el-table-column
-          label="创建时间"
-          prop="create_time"
-          show-overflow-tooltip
-        />
-        <el-table-column
-          label="入库时间"
-          prop="add_date"
-          show-overflow-tooltip
-        />
-      </template>
-    </List>
-    <List
-      v-if="search_type == '4'"
-      :list="orderList"
-      :list-type="listType"
-      :state="listLoading"
-      style="margin: 20px"
-    >
-      <template #List>
-        <el-table-column
-          label="供应商姓名"
-          prop="su_name"
-          show-overflow-tooltip
-        />
-        <el-table-column label="仓库" prop="w_name" show-overflow-tooltip />
-        <el-table-column label="编号" prop="sn" show-overflow-tooltip />
-        <el-table-column label="数量" prop="num" show-overflow-tooltip />
-        <el-table-column
-          label="退货时间"
-          prop="add_date"
-          show-overflow-tooltip
-        />
-      </template>
-    </List>
-    <div v-if="search_type == '5'" style="margin-left: 20px">暂无</div>
   </div>
 </template>
 
@@ -240,12 +152,6 @@
   import VabPrint from '@/extra/VabPrint'
   import List from '@/subview/components/List'
   import { mapGetters } from 'vuex'
-  import {
-    editFinishCancellation,
-    editPurchaseCancellation,
-    getFinishDetail,
-    getPurchaseDetail,
-  } from '@/api/basic'
   export default {
     name: 'ComponentsDrawer',
     components: { List },
@@ -262,8 +168,8 @@
     data() {
       return {
         type: this.drawerType,
-        activeName: '0',
-        search_type: '0',
+        activeName: 'first',
+        tabindex: '0',
         form: Object.assign({}, this.drawerInof),
         listLoading: false,
         listType: 2,
@@ -286,7 +192,44 @@
             hou: 100,
           },
         ],
-        orderList: [],
+        orderList: [
+          {
+            id: 4525,
+            log: '用户付款成功',
+            time: '2022-10-10 16:33:41',
+          },
+          {
+            id: 4525,
+            log: '用户付款成功',
+            time: '2022-10-10 16:33:41',
+          },
+        ],
+        stalist: [
+          {
+            name: '订单状态',
+            value: '未入库',
+          },
+          {
+            name: '订单数量',
+            value: '34750',
+          },
+          {
+            name: '订单金额',
+            value: '￥800',
+          },
+          {
+            name: '预计交货时间',
+            value: '2022-01-02 10:10:10',
+          },
+          {
+            name: '完成状态',
+            value: '状态一',
+          },
+          {
+            name: '延期预警',
+            value: '延期一天',
+          },
+        ],
       }
     },
     computed: {
@@ -320,30 +263,9 @@
         await this.openSideBar()
       },
       // 列表数据表头切换监听 自定义部分
-      async handleClick(tab) {
-        this.listLoading = true
-        this.search_type = tab.name
-        if (tab.name == 0) {
-          return
-        }
-        if (this.drawerType == 2) {
-          const { data } = await getFinishDetail({
-            search_type: tab.name, //搜索条件 1成品信息 2订单记录 3入库记录 4退货记录 5电子合同
-            id: this.drawerInof.id, //物料采购订单id
-            page: 1,
-            pageSize: 20,
-          })
-          this.orderList = data.data
-        } else {
-          const { data } = await getPurchaseDetail({
-            search_type: tab.name, //搜索条件 1物料信息 2订单记录 3入库记录 4退货记录 5电子合同
-            id: this.drawerInof.id, //物料采购订单id
-            page: 1,
-            pageSize: 20,
-          })
-          this.orderList = data.data
-        }
-        this.listLoading = false
+      handleClick(tab) {
+        console.log(8989, tab)
+        this.tabindex = tab.index
       },
       selectAddress(selectProvince, selectCity, selectArea) {
         console.log(selectProvince, selectCity, selectArea)
@@ -351,28 +273,16 @@
       upMembers(type) {
         if (type == 1) {
           this.$baseConfirm('你确定要作废吗？', null, async () => {
-            if (this.drawerType == 2) {
-              const { code } = await editFinishCancellation({
-                id: this.form.id,
-              })
-              if (code != 200) {
-                return
-              }
-            } else {
-              const { code } = await editPurchaseCancellation({
-                id: this.form.id,
-              })
-              if (code != 200) {
-                return
-              }
-            }
-
+            // const { code } = await deleteBrand({ id: row.id })
+            // if (code != 200) {
+            //   return
+            // }
             this.$baseMessage('作废成功', 'success', 'vab-hey-message-success')
             this.btntype = 2
-            this.$emit('fetch-data')
+            this.fetchData()
           })
         } else if (type == 3) {
-          this.$baseConfirm('你确定要提醒发货吗？接口暂无', null, async () => {
+          this.$baseConfirm('你确定要提醒发货吗', null, async () => {
             // const { code } = await deleteBrand({ id: row.id })
             // if (code != 200) {
             //   return

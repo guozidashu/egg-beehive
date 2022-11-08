@@ -25,7 +25,7 @@
           native-type="submit"
           size="small"
           type="primary"
-          @click="resetForm('form')"
+          @click="handleQuery"
         >
           重置
         </el-button>
@@ -106,7 +106,7 @@
     >
       <slot name="Form"></slot>
       <el-form-item style="margin-left: 20px">
-        <el-button @click="resetForm('form')">重置</el-button>
+        <el-button @click="resetForm">重置</el-button>
         <el-button
           icon="el-icon-search"
           native-type="submit"

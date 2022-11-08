@@ -1,102 +1,100 @@
 <template>
   <div class="components-drawer">
-    <div v-if="form.drawerType != 3">
-      <div style="padding: 30px 35px 25px">
-        <div>
-          <el-row :gutter="20">
-            <el-col :span="12" style="display: flex">
-              <img
-                :src="form.img"
-                style="width: 50px; height: 50px; margin: 0 10px 10px 0"
-              />
-              <div style="margin-top: -5px">
-                <div style="margin: 15px 0 0 0">款号：{{ form.name }}</div>
-                <div>名称：{{ form.name }}</div>
-              </div>
-            </el-col>
+    <div style="padding: 30px 35px 25px">
+      <div>
+        <el-row :gutter="20">
+          <el-col :span="12" style="display: flex">
+            <img
+              :src="form.img"
+              style="width: 50px; height: 50px; margin: 0 10px 10px 0"
+            />
+            <div style="margin-top: -5px">
+              <div style="margin: 15px 0 0 0">款号：{{ form.name }}</div>
+              <div>名称：{{ form.name }}</div>
+            </div>
+          </el-col>
 
-            <el-col :span="12">
-              <vab-icon
-                icon="align-center"
-                style="float: right; margin: 6px 0 0 0"
-              />
-              <el-button
-                native-type="submit"
-                size="small"
-                style="float: right; margin-right: 10px"
-                type="primary"
-                @click="upMembers(3)"
-              >
-                停售
-              </el-button>
-              <el-button
-                v-if="form.drawerType == 1"
-                native-type="submit"
-                size="small"
-                style="float: right"
-                type="primary"
-                @click="print('vab-print-table')"
-              >
-                打印
-              </el-button>
-              <el-button
-                native-type="submit"
-                size="small"
-                style="float: right"
-                type="primary"
-                @click="upMembers(1)"
-              >
-                审核
-              </el-button>
-              <el-button
-                v-if="form.drawerType == 1"
-                native-type="submit"
-                size="small"
-                style="float: right"
-                type="primary"
-                @click="form.drawerType = 2"
-              >
-                编辑
-              </el-button>
-              <el-button
-                v-if="form.drawerType == 2"
-                native-type="submit"
-                size="small"
-                style="float: right"
-                type="primary"
-                @click="form.drawerType = 1"
-              >
-                完成
-              </el-button>
-            </el-col>
-          </el-row>
-        </div>
-        <div style="display: flex">
-          <div
-            v-for="(item, index) in stalist"
-            :key="index"
-            style="display: flex; flex: 1; flex-direction: column"
-          >
-            <span style="margin-bottom: 12px">{{ item.name }}</span>
-            <span>{{ item.value }}</span>
-          </div>
+          <el-col :span="12">
+            <vab-icon
+              icon="align-center"
+              style="float: right; margin: 6px 0 0 0"
+            />
+            <el-button
+              native-type="submit"
+              size="small"
+              style="float: right; margin-right: 10px"
+              type="primary"
+              @click="upMembers(3)"
+            >
+              停售
+            </el-button>
+            <el-button
+              v-if="form.drawerType == 1"
+              native-type="submit"
+              size="small"
+              style="float: right"
+              type="primary"
+              @click="print('vab-print-table')"
+            >
+              打印
+            </el-button>
+            <el-button
+              native-type="submit"
+              size="small"
+              style="float: right"
+              type="primary"
+              @click="upMembers(1)"
+            >
+              审核
+            </el-button>
+            <el-button
+              v-if="form.drawerType == 1"
+              native-type="submit"
+              size="small"
+              style="float: right"
+              type="primary"
+              @click="form.drawerType = 2"
+            >
+              编辑
+            </el-button>
+            <el-button
+              v-if="form.drawerType == 2"
+              native-type="submit"
+              size="small"
+              style="float: right"
+              type="primary"
+              @click="form.drawerType = 1"
+            >
+              完成
+            </el-button>
+          </el-col>
+        </el-row>
+      </div>
+      <div style="display: flex">
+        <div
+          v-for="(item, index) in stalist"
+          :key="index"
+          style="display: flex; flex: 1; flex-direction: column"
+        >
+          <span style="margin-bottom: 12px">{{ item.name }}</span>
+          <span>{{ item.value }}</span>
         </div>
       </div>
-      <el-tabs
-        v-model="activeName"
-        style="padding: 0 25px"
-        @tab-click="handleClick"
-      >
-        <el-tab-pane label="商品信息" name="first" />
-        <el-tab-pane label="客户销售" name="second" />
-        <el-tab-pane label="发货信息" name="three" />
-        <el-tab-pane label="退货信息" name="four" />
-        <el-tab-pane label="入库信息" name="five" />
-        <el-tab-pane label="出库信息" name="six" />
-        <el-tab-pane label="调整信息" name="seven" />
-        <el-tab-pane label="库存明细" name="eight" />
-      </el-tabs>
     </div>
+    <el-tabs
+      v-model="activeName"
+      style="padding: 0 25px"
+      @tab-click="handleClick"
+    >
+      <el-tab-pane label="商品信息" name="first" />
+      <el-tab-pane label="客户销售" name="second" />
+      <el-tab-pane label="发货信息" name="three" />
+      <el-tab-pane label="退货信息" name="four" />
+      <el-tab-pane label="入库信息" name="five" />
+      <el-tab-pane label="出库信息" name="six" />
+      <el-tab-pane label="调整信息" name="seven" />
+      <el-tab-pane label="库存明细" name="eight" />
+    </el-tabs>
     <div v-if="tabindex == '0'">
       <div v-if="form.drawerType == 1" ref="vab-print-table" class="drawer-tab">
         <div class="conten-warp">
@@ -154,7 +152,7 @@
         </div>
       </div>
       <el-form
-        v-if="form.drawerType == 2 || form.drawerType == 3"
+        v-if="form.drawerType == 2"
         ref="form"
         label-width="120px"
         :model="form"
@@ -170,7 +168,7 @@
                 style="font-size: 12px"
               >
                 <el-input
-                  v-model="form.sn"
+                  v-model="form.addressKeyword"
                   placeholder="请输入款号"
                   style="width: 215px"
                 />
@@ -178,22 +176,22 @@
 
               <el-form-item class="item" label="商品名称：">
                 <el-input
-                  v-model="form.name"
+                  v-model="form.addressKeyword"
                   placeholder="请输入商品名称"
                   style="width: 215px"
                 />
               </el-form-item>
               <el-form-item class="item" label="商品标题：">
                 <el-input
-                  v-model="form.shoptitle"
+                  v-model="form.addressKeyword"
                   placeholder="请输入商品标题"
                   style="width: 215px"
                 />
               </el-form-item>
-              <el-form-item class="item" label="商品款式：">
-                <el-select v-model="form.category" placeholder="请选择商品款式">
+              <el-form-item class="item" label="商品分类：">
+                <el-select v-model="form.brand" placeholder="请选择商品分类">
                   <el-option
-                    v-for="(item, index) in selectData[4].category"
+                    v-for="(item, index) in typeData.brand"
                     :key="index"
                     :label="item.name"
                     :value="item.id"
@@ -207,7 +205,7 @@
               <el-form-item class="item" label="商品品牌：">
                 <el-select v-model="form.brand" placeholder="请选择商品品牌：">
                   <el-option
-                    v-for="(item, index) in selectData[0].brand"
+                    v-for="(item, index) in typeData.brand"
                     :key="index"
                     :label="item.name"
                     :value="item.id"
@@ -219,9 +217,9 @@
                 ></i>
               </el-form-item>
               <el-form-item class="item" label="年份：">
-                <el-select v-model="form.year" placeholder="请选择年份：">
+                <el-select v-model="form.brand" placeholder="请选择年份：">
                   <el-option
-                    v-for="(item, index) in selectData[1].year"
+                    v-for="(item, index) in typeData.brand"
                     :key="index"
                     :label="item.name"
                     :value="item.id"
@@ -233,9 +231,9 @@
                 ></i>
               </el-form-item>
               <el-form-item class="item" label="季节：">
-                <el-select v-model="form.season" placeholder="请选择季节：">
+                <el-select v-model="form.brand" placeholder="请选择季节：">
                   <el-option
-                    v-for="(item, index) in selectData[2].season"
+                    v-for="(item, index) in typeData.brand"
                     :key="index"
                     :label="item.name"
                     :value="item.id"
@@ -247,9 +245,9 @@
                 ></i>
               </el-form-item>
               <el-form-item class="item" label="上市波段：">
-                <el-select v-model="form.band" placeholder="请选择上市波段：">
+                <el-select v-model="form.brand" placeholder="请选择上市波段：">
                   <el-option
-                    v-for="(item, index) in selectData[3].band"
+                    v-for="(item, index) in typeData.brand"
                     :key="index"
                     :label="item.name"
                     :value="item.id"
@@ -261,9 +259,9 @@
                 ></i>
               </el-form-item>
               <el-form-item class="item" label="年龄段：">
-                <el-select v-model="form.agegroup" placeholder="请选择年龄段：">
+                <el-select v-model="form.brand" placeholder="请选择年龄段：">
                   <el-option
-                    v-for="(item, index) in selectData[5].agegroup"
+                    v-for="(item, index) in typeData.brand"
                     :key="index"
                     :label="item.name"
                     :value="item.id"
@@ -275,10 +273,19 @@
                 ></i>
               </el-form-item>
               <el-form-item class="item" label="性别：">
-                <el-select v-model="form.gender" placeholder="请选择性别：">
-                  <el-option label="女" value="1" />
-                  <el-option label="男" value="2" />
-                  <el-option label="中" value="3" />
+                <el-select v-model="form.brand" placeholder="请选择性别：">
+                  <el-option label="男" value="1" />
+                  <el-option label="女" value="2" />
+                </el-select>
+              </el-form-item>
+              <el-form-item class="item" label="供应商：">
+                <el-select v-model="form.brand" placeholder="请选择供应商">
+                  <el-option
+                    v-for="(item, index) in typeData.brand"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
                 </el-select>
               </el-form-item>
               <el-form-item class="item" label="商品图片：">
@@ -299,20 +306,23 @@
             <div class="conten-title">规格及库位</div>
             <div class="conten-list-com">
               <el-form-item class="item" label="颜色：">
-                <el-cascader
-                  v-model="form.colorid"
-                  :options="selectData[6].color"
-                  :props="{ expandTrigger: 'hover' }"
-                />
+                <el-select v-model="form.brand" placeholder="请选择颜色：">
+                  <el-option
+                    v-for="(item, index) in typeData.brand"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
                 <i
                   class="el-icon-plus"
                   style="margin-left: 10px; color: #1890ff"
                 ></i>
               </el-form-item>
               <el-form-item class="item" label="尺码：">
-                <el-select v-model="form.sizeid" placeholder="请选择尺码：">
+                <el-select v-model="form.brand" placeholder="请选择尺码：">
                   <el-option
-                    v-for="(item, index) in selectData[3].band"
+                    v-for="(item, index) in typeData.brand"
                     :key="index"
                     :label="item.name"
                     :value="item.id"
@@ -342,33 +352,37 @@
             <div class="conten-title">价格信息</div>
             <div class="conten-list-com">
               <el-form-item class="item" label="采购价：">
-                <el-input v-model="form.purchase_price" style="width: 215px" />
+                <el-input v-model="form.addressKeyword" style="width: 215px" />
               </el-form-item>
               <el-form-item class="item" label="成本价：">
                 <el-input v-model="form.addressKeyword" style="width: 215px" />
               </el-form-item>
               <el-form-item class="item" label="吊牌价：">
-                <el-input v-model="form.sale_price" style="width: 215px" />
+                <el-input v-model="form.addressKeyword" style="width: 215px" />
               </el-form-item>
               <el-form-item class="item" label="销售价：">
-                <el-input v-model="form.price" clearable style="width: 215px">
-                  <el-button slot="append" @click="changeType(1)">
+                <el-input
+                  v-model="form.addressKeyword"
+                  clearable
+                  style="width: 215px"
+                >
+                  <el-button slot="append" @click="xstype = !xstype">
                     固定价
                   </el-button>
                 </el-input>
                 <el-button
-                  v-if="lockSta"
+                  v-if="xstype"
                   native-type="submit"
                   size="small"
                   style="margin-left: 10px"
                   type="primary"
-                  @click="changeType(2)"
+                  @click="hutype = !hutype"
                 >
-                  <span v-if="lxSta">整手</span>
+                  <span v-if="hutype">整手</span>
                   <span v-else>散码</span>
                 </el-button>
               </el-form-item>
-              <el-form-item v-if="lockSta" class="item" style="width: 100%">
+              <el-form-item v-if="xstype" class="item" style="width: 100%">
                 <List
                   :list="zhekouList"
                   :list-type="listType"
@@ -408,7 +422,7 @@
               <el-form-item class="item" label="商品库位：">
                 <el-select v-model="form.brand" placeholder="请选择库位：">
                   <el-option
-                    v-for="(item, index) in selectData[3].band"
+                    v-for="(item, index) in typeData.brand"
                     :key="index"
                     :label="item.name"
                     :value="item.id"
@@ -502,23 +516,19 @@
         type: Object,
         default: () => {},
       },
-      selectList: {
-        type: Object,
-        default: () => {},
-      },
     },
     data() {
       return {
-        lxSta: false,
-        lockSta: false,
+        xstype: false,
+        hutype: false,
         dialogVisible1: false,
         distitle1: '',
         activeName: 'first',
         tabindex: '0',
         form: Object.assign({}, this.drawerInof),
-        selectData: Object.assign({}, this.selectList),
         listLoading: false,
         listType: 2,
+        typeData: [],
         formDrawer: {
           state: 0,
           state1: 0,
@@ -589,14 +599,7 @@
       drawerInof: {
         handler: function (newVal) {
           this.form = Object.assign({}, newVal)
-          console.log(111111, newVal)
-        },
-        deep: true,
-      },
-      selectList: {
-        handler: function (newVal) {
-          this.selectData = Object.assign({}, newVal)
-          console.log(2222222, newVal)
+          console.log(2222, newVal)
         },
         deep: true,
       },
@@ -619,24 +622,6 @@
       handleClick(tab) {
         console.log(8989, tab)
         this.tabindex = tab.index
-      },
-      changeType(val) {
-        if (val == 1) {
-          this.lockSta = !this.lockSta
-          console.log(this.form.lock_price)
-          if (this.form.lock_price != 1) {
-            this.form.lock_price = 1
-          } else {
-            this.form.lock_price = 0
-          }
-        } else {
-          this.lxSta = !this.lxSta
-          if (this.form.type != 1) {
-            this.form.type = 1
-          } else {
-            this.form.type = 0
-          }
-        }
       },
       selectAddress(selectProvince, selectCity, selectArea) {
         console.log(selectProvince, selectCity, selectArea)

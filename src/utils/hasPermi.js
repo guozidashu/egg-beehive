@@ -25,11 +25,9 @@ hasPermi.install = (Vue) => {
         //没有权限-移除页面上的控件
         if (!hasPermissions) {
           {
-            //  清除点击事件
-            el.onclick = null
-            //  按钮样式禁用
+            console.log('没有权限-移除')
             el.className += ' is-disabled'
-            el.disabled = true
+            // el.parentNode && el.parentNode.removeChild(el)
           }
         } else {
           el.parentNode && el.parentNode.removeChild(el)

@@ -8,13 +8,12 @@
         :form-type="formType"
         @changeSearch="handleQuery"
         @changeSta="changeBtnSta"
-        @resetForm="resetForm"
       >
         <template #Form>
           <el-form-item v-show="form.fold" label="订单时间:">
             <el-date-picker
               v-model="form.date"
-              align="left"
+              align="right"
               end-placeholder="结束日期"
               :picker-options="pickerOptions"
               range-separator="至"
@@ -26,8 +25,8 @@
           <div v-show="!form.fold">
             <el-form-item label="订单时间:">
               <el-date-picker
-                v-model="form.create_time"
-                align="left"
+                v-model="form.date"
+                align="right"
                 end-placeholder="结束日期"
                 :picker-options="pickerOptions"
                 range-separator="至"
@@ -38,7 +37,7 @@
             </el-form-item>
             <el-form-item label="供应商:">
               <el-input
-                v-model="form.name"
+                v-model="form.search"
                 placeholder="请输入供应商名称"
                 size="small"
               />
@@ -46,40 +45,36 @@
           </div>
 
           <el-form-item v-show="!form.fold" label="供应商类别:">
-            <el-select v-model="form.type">
-              <el-option
-                v-for="item in supplier_type"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
+            <el-select v-model="form.region">
+              <el-option label="成品采购" value="shanghai" />
+              <el-option label="原料供应商" value="shanghai" />
+              <el-option label="辅料供应商" value="shanghai" />
+              <el-option label="外协加工厂" value="shanghai" />
+              <el-option label="其它供应商" value="shanghai" />
             </el-select>
           </el-form-item>
           <el-form-item v-show="!form.fold" label="订单状态:">
-            <el-select v-model="form.order_type">
-              <el-option label="全部" value="0" />
-              <el-option label="全部入库" value="1" />
-              <el-option label="部分入库" value="2" />
-              <el-option label="未入库" value="3" />
-              <el-option label="预警订单" value="4" />
-              <el-option label="延期订单" value="5" />
+            <el-select v-model="form.region">
+              <el-option label="全部入库" value="shanghai" />
+              <el-option label="部分入库" value="shanghai" />
+              <el-option label="未入库" value="shanghai" />
             </el-select>
           </el-form-item>
           <el-form-item v-show="!form.fold" label="搜索:">
             <el-input
-              v-model="form.keywords"
+              v-model="form.input3"
               class="input-with-select"
               placeholder="请输入"
             >
               <el-select
-                v-model="form.search_type"
+                v-model="form.select"
                 slot="prepend"
                 placeholder="全部"
                 style="width: 100px"
               >
-                <el-option label="订单号" value="sn" />
-                <el-option label="商品名称" value="goods_name" />
-                <el-option label="商品编号" value="goods_sn" />
+                <el-option label="订单号" value="5" />
+                <el-option label="商品名称" value="6" />
+                <el-option label="商品编号" value="6" />
               </el-select>
             </el-input>
           </el-form-item>
@@ -88,42 +83,12 @@
     </div>
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane
-          v-if="form.order_type == 0"
-          :label="'所有订单 (' + total + ')'"
-          name="0"
-        />
-        <el-tab-pane v-else :label="'所有订单 ( 0)'" name="0" />
-        <el-tab-pane
-          v-if="form.order_type == 1"
-          :label="'全部入库 (' + total + ')'"
-          name="1"
-        />
-        <el-tab-pane v-else :label="'全部入库 ( 0)'" name="1" />
-        <el-tab-pane
-          v-if="form.order_type == 2"
-          :label="'部分入库 (' + total + ')'"
-          name="2"
-        />
-        <el-tab-pane v-else :label="'部分入库 ( 0)'" name="2" />
-        <el-tab-pane
-          v-if="form.order_type == 3"
-          :label="'未入库 (' + total + ')'"
-          name="3"
-        />
-        <el-tab-pane v-else :label="'未入库 ( 0)'" name="3" />
-        <el-tab-pane
-          v-if="form.order_type == 4"
-          :label="'预警订单 (' + total + ')'"
-          name="4"
-        />
-        <el-tab-pane v-else :label="'预警订单 ( 0)'" name="4" />
-        <el-tab-pane
-          v-if="form.order_type == 5"
-          :label="'延期订单 (' + total + ')'"
-          name="5"
-        />
-        <el-tab-pane v-else :label="'延期订单 ( 0)'" name="5" />
+        <el-tab-pane label="所有订单 (3)" name="first" />
+        <el-tab-pane label="全部入库 (129)" name="second" />
+        <el-tab-pane label="部分入库 (18)" name="three" />
+        <el-tab-pane label="未入库 (18)" name="four" />
+        <el-tab-pane label="预警订单 (2)" name="five" />
+        <el-tab-pane label="延期订单 (2)" name="six" />
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -157,14 +122,19 @@
       >
         <template #List>
           <el-table-column type="selection" />
-          <el-table-column label="订单号" prop="sn" sortable width="120" />
-          <el-table-column label="采购日期" prop="add_date" />
-          <el-table-column label="供应商名称" prop="su_name" width="120" />
-          <el-table-column label="商品信息" prop="info" width="300">
+          <el-table-column label="订单号" prop="orderno" sortable width="120" />
+          <el-table-column label="采购日期" prop="data" />
+          <el-table-column label="订单类型" prop="name" width="120" />
+          <el-table-column label="供应商名称" prop="name" width="120" />
+          <el-table-column label="商品信息" prop="inof" width="300">
             <template #default="{ row }">
-              <div style="display: flex">
+              <div
+                v-for="(item, index) in row.inof"
+                :key="index"
+                style="display: flex"
+              >
                 <img
-                  :src="row.info.img"
+                  :src="item.img"
                   style="
                     width: 30px;
                     height: 30px;
@@ -179,16 +149,16 @@
                     white-space: nowrap;
                   "
                 >
-                  {{ row.info.name }}
+                  {{ item.text }}
                 </p>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="采购数量" prop="num" width="80" />
-          <el-table-column label="入库数量" prop="receipt_num" width="80" />
-          <el-table-column label="金额" prop="total" width="80" />
-          <el-table-column label="预计交货时间" prop="expected_date" />
-          <el-table-column label="订单状态" prop="order_status" width="120">
+          <el-table-column label="入库数量" prop="num" width="80" />
+          <el-table-column label="金额" prop="money" width="80" />
+          <el-table-column label="预计交货时间" prop="end_time" />
+          <el-table-column label="订单状态" prop="state" width="120">
             <template #default="{ row }">
               <div
                 style="
@@ -200,11 +170,11 @@
                   border-color: #ffa39e;
                 "
               >
-                {{ row.order_status }}
+                {{ row.state }}
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="超期状态" prop="delay" width="120">
+          <el-table-column label="完成状态" prop="state1" width="120">
             <template #default="{ row }">
               <div
                 style="
@@ -216,7 +186,7 @@
                   border-color: #ffa39e;
                 "
               >
-                {{ row.delay }}
+                {{ row.state1 }}
               </div>
             </template>
           </el-table-column>
@@ -257,12 +227,9 @@
   import Drawer from './components/OrderDrawer'
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
-  import { getFinishList, getCommonAllList } from '@/api/basic'
-  import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'SupplierProduct',
     components: { List, Form, Drawer, edit },
-    mixins: [datajosn],
     data() {
       return {
         drawer: false,
@@ -271,30 +238,137 @@
         filename: '成品采购订单',
         downloadLoading: false,
         exclList: [],
-
-        activeName: '0',
-        supplier_type: [],
+        pickerOptions: {
+          cellClassName: (time) => {
+            if (
+              new Date().getDate() === time.getDate() &&
+              new Date().getMonth() === time.getMonth() &&
+              new Date().getFullYear() === time.getFullYear()
+            ) {
+              return 'dateArrClass' // 返回值设置的是我们添加的类名
+            }
+          },
+          shortcuts: [
+            {
+              text: '今天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date()
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '昨天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 1
+                end.setTime(start)
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '最近7天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 7
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '最近30天',
+              onClick(picker) {
+                const end = new Date()
+                const start = new Date().getTime() - 3600 * 1000 * 24 * 30
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '本月',
+              onClick(picker) {
+                const end = new Date()
+                const start =
+                  new Date().getTime() -
+                  3600 * 1000 * 24 * (new Date().getDate() - 1)
+                picker.$emit('pick', [start, end])
+              },
+            },
+            {
+              text: '本年',
+              onClick(picker) {
+                const start = new Date(new Date().getFullYear(), 0, 1)
+                const end = new Date()
+                picker.$emit('pick', [start, end])
+              },
+            },
+          ],
+        },
+        activeName: 'first',
+        // 表单数据/列表参数
         form: {
+          // 自定义参数
           fold: true,
+          // 公共参数
           page: 1,
           pageSize: 10,
-          name: '',
-          type: '',
-          create_time: [],
-          search_type: 'sn',
-          keywords: '',
-          order_type: '0',
         },
+        // 列表数据相关
         // 公共参数
         listType: 1,
         formType: 1,
-        list: [],
+        // orderno type name inof num money creat_time end_time state
+        list: [
+          {
+            orderno: 'wx312009361683644416',
+            creat_time: '2022-10-13 23:33:48',
+            end_time: '2022-11-13 23:33:48',
+            type: '计划生产',
+            inof: [
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+            ],
+            name: '阿白',
+            num: 23,
+            money: 345,
+            state: '部分入库',
+            state1: '延期一天',
+            data: '2022-10-13 23:33:48',
+          },
+          {
+            orderno: 'wx312009361683644416',
+            creat_time: '2022-10-13 23:33:48',
+            end_time: '2022-11-13 23:33:48',
+            type: '成品采购',
+            inof: [
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+              {
+                text: 'BY FAR Miranda leather shoulder bag | 默认',
+                img: 'https://s-pro.crmeb.net/uploads/attach/2022/08/20220829/37f1bc531c111a41e1c038074e2ff649.jpg',
+              },
+            ],
+            name: '阿白',
+            num: 23,
+            money: 345,
+            state: '未入库',
+            state1: '延期一天',
+            data: '2022-10-13 23:33:48',
+          },
+        ],
         listLoading: false,
         total: 0,
       }
     },
     watch: {
       form: {
+        //表单筛选条件变化实时刷新列表
         handler: function () {
           this.fetchData()
         },
@@ -302,11 +376,10 @@
       },
     },
     created() {
-      this.getSelectData()
       this.fetchData()
-      console.log(this.form.order_type == this.activeName)
     },
     methods: {
+      // 列表表单子组件展开闭合事件  公共部分
       changeBtnSta(data) {
         this.form.fold = data
       },
@@ -322,35 +395,39 @@
           }
         }
       },
-      handleQuery() {
-        this.form.page = 1
-      },
+      handleQuery() {},
+      // 列表数据封装函数
+
+      // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         this.form.page = data
       },
+      // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
+      // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
-        this.form.order_type = tab.name
+        console.log(1111, tab.label)
+        this.form.page = 1
       },
-      resetForm() {
-        this.form = this.$options.data().form
-      },
+      // 列表数据请求函数 公共部分
       async fetchData() {
-        this.listLoading = true
-        const { data } = await getFinishList(this.form)
-        this.list = data.data
-        this.total = data.total
-        this.listLoading = false
+        // this.listLoading = true
+        // const {
+        //   data: { list, total },
+        // } = await getList(this.form)
+        // this.list = list
+        // this.total = total
+        // this.listLoading = false
         this.list.forEach((item) => {
-          item.inofText = item.info.name
+          item.inofText = ''
+          item.inof.forEach((item1) => {
+            item.inofText = item.inofText + item1.text
+          })
         })
       },
-      async getSelectData() {
-        const { data } = await getCommonAllList({ type: 'supplier_type' })
-        this.supplier_type = data[0].supplier_type
-      },
+      // 详情抽屉
       handleDetail(row, type) {
         if (row == 'add') {
           this.drawerInof = {}
@@ -359,7 +436,6 @@
           this.drawerInof = JSON.parse(JSON.stringify(row))
           this.drawerInof.drawerType = type
         }
-        console.log(89898, this.drawerInof)
         this.drawer = true
       },
       // 打印
@@ -387,24 +463,22 @@
               '采购日期',
               '供应商名称',
               '商品信息',
-              '采购数量',
-              '入库数量',
+              '数量',
               '金额',
               '预计交货时间',
               '订单状态',
               '完成状态',
             ]
             const filterVal = [
-              'sn',
-              'add_date',
-              'su_name',
+              'orderno',
+              'data',
+              'name',
               'inofText',
               'num',
-              'receipt_num',
-              'total',
-              'expected_date',
-              'order_status',
-              'delay',
+              'money',
+              'end_time',
+              'state',
+              'state1',
             ]
             const list = this.exclList
             const data = this.formatJson(filterVal, list)
