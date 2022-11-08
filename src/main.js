@@ -6,7 +6,11 @@ import router from './router'
 import '@/vab'
 import '@/utils/filter'
 import hasPermi from '@/utils/hasPermi'
-Vue.use(hasPermi)
+
+import QyComponent from '@/qy/qy.js'
+
+// Vue.use(QyComponent)
+Vue.use(hasPermi, QyComponent)
 
 /**
  * @description 正式环境默认使用mock，正式项目记得注释后再打包
@@ -22,6 +26,7 @@ if (process.env.NODE_ENV === 'production' && !isExternal(baseURL)) {
 if (pwa) require('./registerServiceWorker')
 
 Vue.config.productionTip = false
+
 new Vue({
   el: '#app',
   i18n,

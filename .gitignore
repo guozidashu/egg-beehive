@@ -1,1 +1,6 @@
 node_modules
+.idea/ERP_Admin.iml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml

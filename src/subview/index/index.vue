@@ -1,5 +1,6 @@
 <template>
   <div class="index-container">
+    <qy-city />
     <el-row :gutter="20">
       <page-header />
       <TextTags :list="textTagList" />
@@ -21,7 +22,6 @@
     </el-row>
   </div>
 </template>
-
 <script>
   import PageHeader from './components/PageHeader'
   import TextTags from './componentscopy/TextTags'

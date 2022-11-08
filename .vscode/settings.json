@@ -1,6 +1,6 @@
 {
   "[vue]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "Vue.volar"
   },
   "editor.quickSuggestions": {
     "strings": true
@@ -30,7 +30,7 @@
   },
   "stylelint.validate": ["html", "vue", "js", "scss"],
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
