@@ -130,7 +130,7 @@
           supplier_name: '',
           keyword: '',
           page: 1,
-          page_size: 10,
+          pageSize: 10,
         },
         formType: 4,
         listType: 1,

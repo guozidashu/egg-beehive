@@ -5,7 +5,7 @@
         ref="form"
         :inline="true"
         label-width="100px"
-        :model="goodsForm"
+        :model="form"
         style="clear: both"
         @submit.native.prevent
       >
@@ -17,7 +17,7 @@
           style="float: right; margin-right: 0; font-size: 12px"
         >
           <el-date-picker
-            v-model="goodsForm.date"
+            v-model="form.create_time"
             align="right"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"
@@ -44,13 +44,21 @@
           </el-button>
         </el-form-item>
         <el-form-item label="供应商类别:" style="float: right">
-          <el-select v-model="goodsForm.region">
-            <el-option label="类别1" value="shanghai" />
-            <el-option label="类别2" value="shanghai" />
+          <el-select v-model="form.type">
+            <el-option
+              v-for="item in supplier_type"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
       </el-form>
-      <TextLabels ref="multipleTable" :list="goodsStaList" />
+      <TextLabels
+        ref="multipleTable"
+        :list="supplier_case"
+        :width="supplier_width"
+      />
     </div>
     <div style="display: flex; width: 100%">
       <div
@@ -62,19 +70,19 @@
           background-color: white;
         "
       >
-        <china-map style="width: 30%" :title="mapTitle" />
+        <china-map :list="chainList" style="width: 30%" :title="mapTitle" />
         <List
-          :list="areaList"
+          :list="chainList"
           :list-type="listType"
           :state="listLoading"
           style="width: 70%"
         >
           <template #List>
-            <el-table-column label="Top省份" prop="store_name" />
-            <el-table-column label="累计供应商数" prop="visit" />
-            <el-table-column label="新增供应商数" prop="visit" />
+            <el-table-column label="Top省份" prop="name" />
+            <el-table-column label="累计供应商数" prop="value" />
+            <el-table-column label="新增供应商数" prop="add_count" />
             <el-table-column label="占比" prop="user">
-              <template #default="{ row }">{{ row.user * 100 }}%</template>
+              <template #default="{ row }">{{ row.add_count * 100 }}%</template>
             </el-table-column>
           </template>
         </List>
@@ -92,18 +100,14 @@
         ref="form"
         :inline="true"
         label-width="80px"
-        :model="goodsForm"
+        :model="form"
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
         <span style="margin-top: 10px; font-size: 16px">供应商排行</span>
         <el-form-item style="margin-right: 0">
           <el-form-item label="统计类型:" prop="region">
-            <el-select
-              v-model="goodsForm.region"
-              size="small"
-              style="width: 150px"
-            >
+            <el-select v-model="form.region" size="small" style="width: 150px">
               <el-option label="浏览量" value="shanghai" />
               <el-option label="访问数" value="beijing" />
             </el-select>
@@ -113,7 +117,7 @@
             style="float: right; margin-right: 0; font-size: 12px"
           >
             <el-date-picker
-              v-model="goodsForm.date"
+              v-model="form.date"
               align="right"
               end-placeholder="结束日期"
               :picker-options="pickerOptions"
@@ -133,7 +137,7 @@
           </el-form-item>
         </el-form-item>
       </el-form>
-      <List :list="goosList" :list-type="listType" :state="listLoading">
+      <List :list="supplier_rank" :list-type="listType" :state="listLoading">
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column
@@ -144,12 +148,20 @@
           />
           <el-table-column
             label="供应商名称"
-            prop="store_name"
+            prop="name"
             show-overflow-tooltip
           />
-          <el-table-column label="类别" prop="visit" show-overflow-tooltip />
-          <el-table-column label="入库数量" prop="user" show-overflow-tooltip />
-          <el-table-column label="入库金额" prop="cart" show-overflow-tooltip />
+          <el-table-column
+            label="类别"
+            prop="type_name"
+            show-overflow-tooltip
+          />
+          <el-table-column label="入库数量" prop="num" show-overflow-tooltip />
+          <el-table-column
+            label="入库金额"
+            prop="total"
+            show-overflow-tooltip
+          />
           <el-table-column
             label="准时交货率"
             prop="orders"
@@ -182,95 +194,26 @@
   import TextLabels from '@/subview/components/TextLabels'
   import ChinaMap from '@/subview/components/ChinaMap'
   import Branch from '@/subview/components/Branch'
+  import { getDissectList, getCommonAllList } from '@/api/basic'
+  import mapjson from '@/assets/assets_josn/mapjson'
+  import datajosn from '@/assets/assets_josn/datajosn'
+  import publicjosn from '@/assets/assets_josn/publicjosn'
+
   export default {
     name: 'GoodsStatistical',
     components: { ChinaMap, List, Branch, TextLabels },
+    mixins: [mapjson, datajosn, publicjosn],
     data() {
       return {
         downloadLoading: false,
-        pickerOptions: {
-          cellClassName: (time) => {
-            if (
-              new Date().getDate() === time.getDate() &&
-              new Date().getMonth() === time.getMonth() &&
-              new Date().getFullYear() === time.getFullYear()
-            ) {
-              return 'dateArrClass' // 返回值设置的是我们添加的类名
-            }
-          },
-          shortcuts: [
-            {
-              text: '今天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '昨天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 1
-                end.setTime(start)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近7天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 7
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近30天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 30
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本月',
-              onClick(picker) {
-                const end = new Date()
-                const start =
-                  new Date().getTime() -
-                  3600 * 1000 * 24 * (new Date().getDate() - 1)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本年',
-              onClick(picker) {
-                const start = new Date(new Date().getFullYear(), 0, 1)
-                const end = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-          ],
-        },
         listLoading: false,
         listType: 4,
-        branchTitle: '供应商类别占比',
-        mapTitle: '供应商域分布',
-        goodsForm: {},
-        styleObj: {
-          width: '400px',
-          height: '500px',
-          legendx: 0,
-          legendy: 450,
-          center: ['50%', '50%'],
+        mapTitle: '供应商地域分布',
+        supplier_type: [],
+        form: {
+          name: '',
+          type: '',
         },
-        branchList: [
-          { value: 1048, name: '外协加工厂' },
-          { value: 580, name: '成品采购商' },
-          { value: 484, name: '面辅料供应商' },
-          { value: 300, name: '其他' },
-          { value: 300, name: '自厂' },
-        ],
         areaList: [
           {
             visit: '507',
@@ -378,119 +321,34 @@
             store_name: '上海',
           },
         ],
-        goosList: [
-          {
-            visit: '自产',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name: '供应商',
-          },
-          {
-            visit: '加工',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name: '供应商',
-          },
-          {
-            visit: '加工',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name: '供应商',
-          },
-          {
-            visit: '加工',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name: '供应商',
-          },
-          {
-            visit: '成品',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name: '供应商',
-          },
-        ],
-        goodsStaList: [
-          {
-            title: '新增供应商',
-            number: 200,
-            num: 94.32,
-            type: 1,
-            typeSta: true,
-          },
-          {
-            title: '所有供应商',
-            number: 200,
-            num: 94.32,
-            type: 1,
-            typeSta: true,
-          },
-          {
-            title: '成品供应商',
-            number: 200,
-            num: 94.32,
-            type: 1,
-            typeSta: true,
-          },
-          {
-            title: '面辅供应商',
-            number: 200,
-            num: 94.32,
-            type: 1,
-            typeSta: true,
-          },
-          {
-            title: '外协加工厂',
-            number: 200,
-            num: 94.32,
-            type: 1,
-            typeSta: true,
-          },
-        ],
+        supplier_rank: [],
+        supplier_width: '25%',
+        supplier_case: [],
+        branchTitle: '供应商类别占比',
+        styleObj: {
+          width: '400px',
+          height: '500px',
+          legendx: 0,
+          legendy: 450,
+          center: ['50%', '50%'],
+        },
+        branchList: [],
       }
     },
-    created() {},
+    created() {
+      this.getSelectData()
+      this.fetchData()
+    },
     methods: {
       // 详情抽屉
       handleDetail() {},
       // 导出
       handleDownload() {
-        console.log(888, this.goodsStaList)
         this.downloadLoading = true
         import('@/utils/excel').then((excel) => {
           const tHeader = ['名称', '数量', '环比数量']
           const filterVal = ['title', 'num', 'number']
-          const list = this.goodsStaList
+          const list = this.supplier_case
           const data = this.formatJson(filterVal, list)
           excel.export_json_to_excel({
             header: tHeader,
@@ -498,6 +356,62 @@
             filename: this.filename,
           })
         })
+      },
+      async fetchData() {
+        this.listLoading = true
+        const { data } = await getDissectList(this.form)
+        let arr = [
+          {
+            id: 0,
+            title: '所有供应商',
+            num: 200,
+            count: data.supplier_case.all_count,
+            typeSta: true,
+          },
+        ]
+        data.supplier_case.type_count.forEach((item, index) => {
+          if (index < 3) {
+            item.typeSta = true
+            item.num = item.count
+            item.title = item.name
+            arr.push(item)
+          }
+        })
+        this.supplier_case = arr
+
+        let temp = {}
+        data.supplier_type.forEach((item) => {
+          temp.value = item.count
+          temp.name = item.name
+          this.branchList.push(temp)
+          temp = {}
+        })
+        let chainList = JSON.parse(JSON.stringify(this.chainList))
+        chainList.forEach((item, index) => {
+          data.supplier_area.forEach((item1) => {
+            if (item.name == item1.province) {
+              let obj = {}
+              obj.value = item1.count
+              obj.add_count = item1.add_count
+              chainList[index] = Object.assign({}, item, obj)
+            } else {
+              let obj = {}
+              obj.value = 0
+              obj.add_count = 0
+              chainList[index] = Object.assign({}, item, obj)
+            }
+          })
+        })
+        chainList.sort((a, b) => {
+          return b.value - a.value
+        })
+        this.chainList = chainList
+        this.supplier_rank = data.supplier_rank
+        this.listLoading = false
+      },
+      async getSelectData() {
+        const { data } = await getCommonAllList({ type: 'supplier_type' })
+        this.supplier_type = data[0].supplier_type
       },
       formatJson(filterVal, jsonData) {
         return jsonData.map((v) => filterVal.map((j) => v[j]))

@@ -21,7 +21,7 @@
           style="margin-right: 0; font-size: 12px"
         >
           <el-date-picker
-            v-model="goodsForm.date"
+            v-model="goodsForm.create_time"
             align="right"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"
@@ -194,77 +194,15 @@
   import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
   import TextLabels from '@/subview/components/TextLabels'
+  import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'GoodsStatistical',
     components: { List, VabChart, TextLabels },
+    mixins: [datajosn],
     data() {
       return {
         tabslist: '成品采购排行',
         typeList: 1,
-        pickerOptions: {
-          cellClassName: (time) => {
-            if (
-              new Date().getDate() === time.getDate() &&
-              new Date().getMonth() === time.getMonth() &&
-              new Date().getFullYear() === time.getFullYear()
-            ) {
-              return 'dateArrClass' // 返回值设置的是我们添加的类名
-            }
-          },
-          shortcuts: [
-            {
-              text: '今天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '昨天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 1
-                end.setTime(start)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近7天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 7
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近30天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 30
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本月',
-              onClick(picker) {
-                const end = new Date()
-                const start =
-                  new Date().getTime() -
-                  3600 * 1000 * 24 * (new Date().getDate() - 1)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本年',
-              onClick(picker) {
-                const start = new Date(new Date().getFullYear(), 0, 1)
-                const end = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-          ],
-        },
         listLoading: false,
         listType: 2,
         goosList: [

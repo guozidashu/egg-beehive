@@ -80,7 +80,7 @@
         form: {
           username: '',
           page: 1,
-          page_size: 10,
+          pageSize: 10,
         },
         formDrawer: {
           name: '',

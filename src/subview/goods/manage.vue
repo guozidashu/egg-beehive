@@ -4,6 +4,7 @@
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
       <Form
+        v-if="selectList[0]"
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -11,9 +12,9 @@
       >
         <template #Form>
           <el-form-item label="款式类别:">
-            <el-select v-model="form.kuanshi" placeholder="请选择类别款式">
+            <el-select v-model="form.category" placeholder="请选择类别款式">
               <el-option
-                v-for="(item, index) in typeData.goods_category"
+                v-for="(item, index) in selectList[4].category"
                 :key="index"
                 :label="item.name"
                 :value="item.id"
@@ -23,7 +24,7 @@
           <el-form-item label="品牌:">
             <el-select v-model="form.brand" placeholder="请选择品牌">
               <el-option
-                v-for="(item, index) in typeData.brand"
+                v-for="(item, index) in selectList[0].brand"
                 :key="index"
                 :label="item.name"
                 :value="item.id"
@@ -31,18 +32,19 @@
             </el-select>
           </el-form-item>
           <el-form-item label="年份:">
-            <el-date-picker
-              v-model="form.nianfen"
-              placeholder="请选择年份"
-              style="width: 215px"
-              type="year"
-              value-format="yyyy"
-            />
+            <el-select v-model="form.year" placeholder="请选择年份">
+              <el-option
+                v-for="(item, index) in selectList[1].year"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="季节:">
-            <el-select v-model="form.jijie" placeholder="请选择季节">
+            <el-select v-model="form.season" placeholder="请选择季节">
               <el-option
-                v-for="(item, index) in typeData.schedule_record"
+                v-for="(item, index) in selectList[2].season"
                 :key="index"
                 :label="item.name"
                 :value="item.id"
@@ -50,26 +52,19 @@
             </el-select>
           </el-form-item>
           <el-form-item label="尺码类型:">
-            <el-select v-model="form.region1">
-              <el-option label="整手" value="1" />
-              <el-option label="散码" value="2" />
-              <el-option label="混合" value="2" />
+            <el-select v-model="form.type">
+              <el-option label="整手" value="0" />
+              <el-option label="散码" value="1" />
             </el-select>
           </el-form-item>
-          <el-form-item label="供应商:">
-            <el-select v-model="form.jijie" placeholder="请选择供应商">
+          <el-form-item label="上市波段:">
+            <el-select v-model="form.band" placeholder="请选择波段">
               <el-option
-                v-for="(item, index) in typeData.schedule_record"
+                v-for="(item, index) in selectList[3].band"
                 :key="index"
                 :label="item.name"
                 :value="item.id"
               />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="上市波段:">
-            <el-select v-model="form.region" placeholder="请选择波段">
-              <el-option label="波段1" value="1" />
-              <el-option label="波段2" value="2" />
             </el-select>
           </el-form-item>
           <el-form-item label="商品搜索:">
@@ -83,14 +78,14 @@
       </Form>
     </div>
     <el-card shadow="never" style="border: 0">
-      <el-tabs v-model="form.type" @tab-click="handleClick">
-        <el-tab-pane label="全部商品 (3)" name="1" />
-        <el-tab-pane label="仓库中 (129)" name="2" />
-        <el-tab-pane label=" 已售罄 (18)" name="3" />
-        <el-tab-pane label="库存预警 (2)" name="4" />
-        <el-tab-pane label="待确认 (10)" name="5" />
-        <el-tab-pane label="自营商城 (2)" name="6" />
-        <el-tab-pane label="第三方平台 (10)" name="7" />
+      <el-tabs v-model="form.list_type" @tab-click="handleClick">
+        <el-tab-pane label="全部商品 (3)" name="0" />
+        <el-tab-pane label="仓库中 (129)" name="1" />
+        <el-tab-pane label=" 已售罄 (18)" name="2" />
+        <el-tab-pane label="库存预警 (2)" name="3" />
+        <el-tab-pane label="待确认 (10)" name="4" />
+        <el-tab-pane label="自营商城 (2)" name="5" />
+        <el-tab-pane label="第三方平台 (10)" name="6" />
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -98,7 +93,7 @@
             native-type="submit"
             size="small"
             type="primary"
-            @click="handleDetail('add', 2)"
+            @click="handleDetail('add', 3)"
           >
             添加商品
           </el-button>
@@ -119,21 +114,31 @@
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column type="selection" />
-          <el-table-column prop="ID" width="80" />
-          <el-table-column label="款号" prop="kuanshi" width="80" />
+          <el-table-column label="商品Id" prop="id" width="80" />
+          <el-table-column label="款号" prop="sn" width="80" />
           <el-table-column label="商品图" prop="img" width="80">
             <template #default="{ row }">
               <img :src="row.img" style="width: 50px; height: 50px" />
             </template>
           </el-table-column>
-          <el-table-column label="商品名称" prop="name" width="250" />
+          <el-table-column label="商品名称" prop="name" width="180" />
           <el-table-column label="商品标题" prop="shoptitle" />
-          <el-table-column label="款号类别" prop="kuanshi" width="120" />
-          <el-table-column label="销售价" prop="xiaoshou" width="120" />
-          <el-table-column label="吊牌价" prop="xiaoshou" width="120" />
-          <el-table-column label="销量" prop="gongying" width="120" />
-          <el-table-column label="库存" prop="gongying" width="100" />
-          <el-table-column label="状态" prop="gongying" width="150" />
+          <el-table-column label="款号类别" prop="type" width="120">
+            <template #default="{ row }">
+              <span v-if="row.type == 0">整手</span>
+              <span v-else-if="row.type == 1">散码</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="销售价" prop="price" width="120" />
+          <el-table-column label="吊牌价" prop="sale_price" width="120" />
+          <el-table-column label="销量" prop="xl_num" width="120" />
+          <el-table-column label="库存" prop="xh_num" width="100" />
+          <el-table-column label="状态" prop="status" width="150">
+            <template #default="{ row }">
+              <span v-if="row.type == 0">下架</span>
+              <span v-else-if="row.type == 1">上架</span>
+            </template>
+          </el-table-column>
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row, 1)">
@@ -149,9 +154,9 @@
     </el-card>
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
       <!-- 详情抽屉组件 -->
-      <Drawer :drawer-inof="drawerInof" />
+      <Drawer :drawer-inof="drawerInof" :select-list="selectList" />
     </el-drawer>
-    <edit ref="edit" :type-data="typeData" @fetch-data="fetchData" />
+    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 
@@ -160,54 +165,38 @@
   import Form from '@/subview/components/Form'
   import Edit from './components/ManageEdit'
   import Drawer from './components/Drawer'
-  // import { getGoodsTypeList } from '@/api/basic'
+  import { getGoodList, getCommonAllList } from '@/api/basic'
+  import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
     name: 'GoodsManage',
     components: { List, Form, Drawer, Edit },
+    mixins: [publicjosn],
     data() {
       return {
         drawer: false,
         drawerInof: {},
-        // 表单数据/列表参数
         form: {
-          // 自定义参数
-          type: '1',
-          brand: '',
-          // 公共参数
           page: 1,
           pageSize: 10,
-          //款式
-          kuanshi: '',
-          //年份
-          nianfen: '',
-          //季节
-          jijie: '',
-          //商品名称
-          name: '',
+          list_type: 0, // 列表类型 0=全部 1=仓库中 2=已售完 3=库存预警 4=待确认 5=自营商城 6=第三方平台
+          category: '', //款式分类
+          brand: '', //品牌
+          year: '', //年份
+          season: '', //季节
+          type: '', //尺码类型 0整手  1散码
+          band: '', //波段
+          name: '', //商品名称
         },
-        // 列表数据相关
-        // 公共参数
         listType: 1,
         formType: 4,
-        list: [
-          {
-            ID: 1,
-            kuanshi: '123',
-            img: 'https://img.yzcdn.cn/vant/apple-1.jpg',
-            name: '商品名称',
-            shoptitle: '商品标题',
-            xiaoshou: '商品销售',
-            gongying: '供应商',
-          },
-        ],
-        typeData: [],
+        list: [],
+        selectList: [],
         listLoading: false,
         total: 0,
       }
     },
     watch: {
       form: {
-        //表单筛选条件变化实时刷新列表
         handler: function () {
           this.fetchData()
         },
@@ -215,13 +204,11 @@
       },
     },
     created() {
-      this.fetchData()
       this.getGoodsTypeList()
+      this.fetchData()
     },
     methods: {
-      // 新增修改
       async handleEdit(row) {
-        this.$refs.edit.typeData = this.typeData
         if (row === 'add') {
           this.$refs['edit'].showEdit()
         } else {
@@ -230,36 +217,34 @@
         }
       },
       handleQuery() {},
-      // 列表数据封装函数
-
-      // 列表数据改变页数   公共部分
-      changeBtnPage(data) {
-        this.form.page = data
-      },
-      // 列表数据改变每页条数  自定义部分
-      changeBtnPageSize(data) {
-        this.form.pageSize = data
-      },
       // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
-        console.log(1111, tab.label, tab.name)
-        this.form.page = 1
+        this.form.list_type = tab.name
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getGoodsManagementList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const { data } = await getGoodList(this.form)
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
       },
       async getGoodsTypeList() {
-        // const {
-        //   data: { data },
-        // } = await getGoodsTypeList(this.form)
-        // this.typeData = data
+        const { data } = await getCommonAllList({
+          type: 'brand,year,season,band,category,agegroup,color,size',
+        })
+        data[6].color.forEach((item) => {
+          item.value = item.id
+          item.label = item.name
+          if (item.children) {
+            item.children.forEach((item2) => {
+              item2.value = item2.id
+              item2.label = item2.name
+            })
+          }
+        })
+
+        this.selectList = data
       },
       // 详情抽屉
       handleDetail(row, type) {
