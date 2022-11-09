@@ -180,17 +180,17 @@
         const arr = []
         const fn = (data) => {
           data.forEach((item) => {
-            if (item.checked) {
-              this.formData[item.id] = true
-              if (item.guard != 0) {
-                item.guard.forEach((item2) => {
-                  if (item2.checked) {
-                    this.formData[item2.id] = true
-                  }
-                })
-              }
-            }
-            if (item.children.length == 0) {
+            // if (item.checked) {
+            //   this.formData[item.id] = true
+            //   if (item.guard != 0) {
+            //     item.guard.forEach((item2) => {
+            //       if (item2.checked) {
+            //         this.formData[item2.id] = true
+            //       }
+            //     })
+            //   }
+            // }
+            if (!item.children) {
               if (item.ppid) {
                 item.Oneid = item.ppid
                 item.Twoid = item.pid

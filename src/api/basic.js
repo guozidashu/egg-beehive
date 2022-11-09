@@ -9,6 +9,195 @@ export function getCommonAllList(data) {
     data,
   })
 }
+//获取仓库
+export function getWarehouseList(data) {
+  return request({
+    url: '/common/getWarehouseList',
+    method: 'post',
+    data,
+  })
+}
+//获取库位
+export function getWarehousePositionList(data) {
+  return request({
+    url: '/common/getWarehousePositionList',
+    method: 'post',
+    data,
+  })
+}
+
+//商品父分类
+export function getCategoryMainList(data) {
+  return request({
+    url: '/goods/categoryMainList',
+    method: 'post',
+    data,
+  })
+}
+export function editCategoryMainSave(data) {
+  return request({
+    url: '/goods/categoryMainSave',
+    method: 'post',
+    data,
+  })
+}
+export function delCategoryMainDel(data) {
+  return request({
+    url: '/goods/categoryMainDel',
+    method: 'post',
+    data,
+  })
+}
+//商品子分类
+export function getCategorySonList(data) {
+  return request({
+    url: '/goods/categorySonList',
+    method: 'post',
+    data,
+  })
+}
+export function editCategorySonSave(data) {
+  return request({
+    url: '/goods/categorySonSave',
+    method: 'post',
+    data,
+  })
+}
+export function delCategorySonDel(data) {
+  return request({
+    url: '/goods/categorySonDel',
+    method: 'post',
+    data,
+  })
+}
+export function editCategorySonStatus(data) {
+  return request({
+    url: '/goods/categorySonStatus',
+    method: 'post',
+    data,
+  })
+}
+//商品管理
+export function getGoodList(data) {
+  return request({
+    url: '/goods/goodList',
+    method: 'post',
+    data,
+  })
+}
+export function editGoodSave(data) {
+  return request({
+    url: '/goods/goodSave',
+    method: 'post',
+    data,
+  })
+}
+
+export function getGoodTotalDetails(data) {
+  return request({
+    url: '/goods/goodTotalDetails',
+    method: 'post',
+    data,
+  })
+}
+export function getGoodBasicsDetails(data) {
+  return request({
+    url: '/goods/goodBasicsDetails',
+    method: 'post',
+    data,
+  })
+}
+export function getGoodOrderDetails(data) {
+  return request({
+    url: '/goods/goodOrderDetails',
+    method: 'post',
+    data,
+  })
+}
+
+export function editGoodBatchLower(data) {
+  return request({
+    url: '/goods/goodBatchLower',
+    method: 'post',
+    data,
+  })
+}
+
+// 供应商分析
+export function getDissectList(data) {
+  return request({
+    url: '/supplier/dissectList',
+    method: 'post',
+    data,
+  })
+}
+// 供应商管理
+export function getSupplierList(data) {
+  return request({
+    url: '/supplier/supplierList',
+    method: 'post',
+    data,
+  })
+}
+export function editSupplierDetail(data) {
+  return request({
+    url: '/supplier/supplierDetail',
+    method: 'post',
+    data,
+  })
+}
+
+// 成品采购订单
+export function getFinishDetail(data) {
+  return request({
+    url: '/supplier/finishDetail',
+    method: 'post',
+    data,
+  })
+}
+export function editFinishCancellation(data) {
+  return request({
+    url: '/supplier/finishCancellation',
+    method: 'post',
+    data,
+  })
+}
+export function getFinishList(data) {
+  return request({
+    url: '/supplier/finishList',
+    method: 'post',
+    data,
+  })
+}
+// 物料采购订单
+export function getPurchaseDetail(data) {
+  return request({
+    url: '/supplier/purchaseDetail',
+    method: 'post',
+    data,
+  })
+}
+export function editPurchaseCancellation(data) {
+  return request({
+    url: '/supplier/purchaseCancellation',
+    method: 'post',
+    data,
+  })
+}
+export function editPurchaseShipment(data) {
+  return request({
+    url: '/supplier/purchaseShipment',
+    method: 'post',
+    data,
+  })
+}
+export function getPurchaseList(data) {
+  return request({
+    url: '/supplier/purchaseList',
+    method: 'post',
+    data,
+  })
+}
 // 权限管理
 export function getRoleInfo(data) {
   return request({

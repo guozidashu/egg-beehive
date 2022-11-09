@@ -16,37 +16,43 @@
         @submit.native.prevent
       >
         <span style="margin-top: 10px; font-size: 16px">商品概况</span>
-        <el-form-item label="品牌:" prop="region" style="float: right">
-          <el-select v-model="goodsForm.region" size="small">
-            <el-option label="品牌1" value="shanghai" />
-            <el-option label="品牌2" value="beijing" />
-          </el-select>
-        </el-form-item>
-        <el-form-item
-          label="时间筛选:"
-          style="float: right; margin-right: 0; font-size: 12px"
-        >
-          <el-date-picker
-            v-model="goodsForm.date"
-            align="right"
-            end-placeholder="结束日期"
-            :picker-options="pickerOptions"
-            range-separator="至"
-            start-placeholder="开始日期"
-            type="daterange"
-            unlink-panels
-          />
-          <el-button
-            native-type="submit"
-            size="small"
-            style="margin: 0 20px"
-            type="primary"
-          >
-            查询
-          </el-button>
-          <el-button native-type="submit" size="small" type="primary">
-            导出
-          </el-button>
+
+        <el-form-item style="float: right; margin-right: 0; font-size: 12px">
+          <el-form-item label="类型:" prop="region">
+            <el-select v-model="goodsForm.region" size="small">
+              <el-option label="整手" value="shanghai" />
+              <el-option label="散码" value="beijing" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="品牌:" prop="region">
+            <el-select v-model="goodsForm.region" size="small">
+              <el-option label="品牌1" value="shanghai" />
+              <el-option label="品牌2" value="beijing" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="时间筛选:" prop="region">
+            <el-date-picker
+              v-model="goodsForm.date"
+              align="right"
+              end-placeholder="结束日期"
+              :picker-options="pickerOptions"
+              range-separator="至"
+              start-placeholder="开始日期"
+              type="daterange"
+              unlink-panels
+            />
+            <el-button
+              native-type="submit"
+              size="small"
+              style="margin: 0 20px"
+              type="primary"
+            >
+              查询
+            </el-button>
+            <el-button native-type="submit" size="small" type="primary">
+              导出
+            </el-button>
+          </el-form-item>
         </el-form-item>
       </el-form>
       <div style="display: flex; flex-wrap: wrap">
@@ -69,22 +75,20 @@
       >
         <span style="margin-top: 10px; font-size: 16px">商品排行</span>
         <el-form-item style="margin-right: 0">
+          <el-form-item label="类型:" prop="region">
+            <el-select v-model="goodsForm.region" size="small">
+              <el-option label="整手" value="shanghai" />
+              <el-option label="散码" value="beijing" />
+            </el-select>
+          </el-form-item>
           <el-form-item label="品牌:" prop="region">
-            <el-select
-              v-model="goodsForm.region"
-              size="small"
-              style="width: 150px"
-            >
+            <el-select v-model="goodsForm.region" size="small">
               <el-option label="品牌1" value="shanghai" />
               <el-option label="品牌2" value="beijing" />
             </el-select>
           </el-form-item>
           <el-form-item label="统计类型:" prop="region">
-            <el-select
-              v-model="goodsForm.region"
-              size="small"
-              style="width: 150px"
-            >
+            <el-select v-model="goodsForm.region" size="small">
               <el-option label="浏览量" value="shanghai" />
               <el-option label="访问数" value="beijing" />
             </el-select>
@@ -313,7 +317,7 @@
             typeSta: true,
           },
           {
-            title: '商品数',
+            title: '商品销售数',
             number: 200,
             num: 94.32,
             type: 1,
@@ -334,7 +338,7 @@
             typeSta: true,
           },
           {
-            title: '件单价',
+            title: '平均单价',
             number: 200,
             num: 94.32,
             type: 1,

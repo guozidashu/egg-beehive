@@ -51,7 +51,7 @@
   </div>
 </template>
 <script>
-  import city from '@/assets/address.json'
+  import city from '@/assets/assets_josn/address.json'
   export default {
     name: 'City',
     data() {

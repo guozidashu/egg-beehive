@@ -71,7 +71,12 @@ const actions = {
     let routes = [...asyncRoutes]
     // 设置后端路由(不需要可以删除)
     if (authentication === 'all') {
-      let list = rootState['user'].userRouteList
+      let arr = rootState['user'].userRouteList
+      console.log(222, arr)
+      let list = []
+      for (let i in arr) {
+        list.push(arr[i]) //
+      }
       let newlist = []
       list.forEach((item) => {
         if (item.guard.length != 0) {
@@ -101,6 +106,7 @@ const actions = {
           })
         }
       })
+      console.log(123456, newlist)
       commit('roleBtnList', newlist)
       if (!isArray(list))
         Vue.prototype.$baseMessage(

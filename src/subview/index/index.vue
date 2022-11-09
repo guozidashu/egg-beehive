@@ -1,6 +1,5 @@
 <template>
   <div class="index-container">
-    <qy-city />
     <el-row :gutter="20">
       <page-header />
       <TextTags :list="textTagList" />
@@ -22,6 +21,7 @@
     </el-row>
   </div>
 </template>
+
 <script>
   import PageHeader from './components/PageHeader'
   import TextTags from './componentscopy/TextTags'
@@ -30,6 +30,7 @@
   import NewCustomer from './componentscopy/NewCustomer'
   import MemberList from './componentscopy/MemberList'
   import UserChart from './componentscopy/UserChart'
+  // import QyQy from '@/qy/components/QyQy.vue
 
   export default {
     name: 'Index',
@@ -41,6 +42,7 @@
       NewCustomer,
       MemberList,
       UserChart,
+      // QyQy,
     },
     data() {
       return {
@@ -122,7 +124,6 @@
             width: 100%;
             height: 127px;
           }
-
           .card-footer-tag {
             position: absolute;
             right: $base-margin;

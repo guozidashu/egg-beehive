@@ -3,7 +3,12 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+      <Form
+        :form="form"
+        :form-type="formType"
+        @changeSearch="handleQuery"
+        @resetForm="resetForm"
+      >
         <template #Form>
           <el-form-item label="订单状态:">
             <el-select v-model="form.region">
@@ -376,7 +381,9 @@
         console.log(1111, tab.label)
         this.form.page = 1
       },
-
+      resetForm() {
+        this.form = this.$options.data().form
+      },
       // 列表数据封装函数
 
       // 列表数据改变页数   公共部分

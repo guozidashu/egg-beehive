@@ -7,3 +7,5 @@
 新增自定义指令（判断权限按钮）js 文件
 文件目录 utils-hasPermi （自定义指令禁用按钮设置）
 新增 后端接口路由过滤，在 store - user 获取用户信息 module 中储存 路由列表， 然后在路由 route module 中调用路由列表数据 进行路由过滤，配置，重置
+新增 josn 混入 中国地图， 全国省市区，时间选择器
+目录@/assets/assets_josn

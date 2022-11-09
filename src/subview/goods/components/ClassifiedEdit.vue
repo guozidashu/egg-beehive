@@ -7,10 +7,13 @@
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
       <el-form-item v-if="type === 1" label="款式分类" prop="name">
-        <el-select v-model="form.select" placeholder="请选择分类">
-          <el-option label="分类1" :value="1" />
-          <el-option label="分类2" :value="2" />
-          <el-option label="分类3" :value="3" />
+        <el-select v-model="form.pid" placeholder="请选择分类">
+          <el-option
+            v-for="(item, index) in selectList"
+            :key="index"
+            :label="item.name"
+            :value="item.id"
+          />
         </el-select>
       </el-form-item>
       <el-form-item v-if="type === 1" label="款式名称" prop="name">
@@ -39,16 +42,21 @@
 </template>
 
 <script>
-  // import { updateWave, addWave } from '@/api/basic'
+  import {
+    editCategorySonSave,
+    editCategoryMainSave,
+    getCategoryMainList,
+  } from '@/api/basic'
   export default {
     name: 'TagsEdit',
     data() {
       return {
         form: {
           name: '',
-          select: '',
-          id: '',
+          pid: 0,
+          sort: 0,
         },
+        selectList: [],
         type: 1,
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
@@ -63,19 +71,25 @@
         this.type = type
         if (row === 'add') {
           if (type === 1) {
-            this.title = '添加款式'
+            this.title = '添加标签'
           } else {
-            this.title = '添加款式分类'
+            this.title = '添加分类'
           }
         } else {
           if (type === 1) {
-            this.title = '编辑款式'
+            this.title = '编辑标签'
           } else {
-            this.title = '编辑款式分类'
+            this.title = '编辑分类'
           }
           this.form = Object.assign({}, row)
         }
+
         this.dialogFormVisible = true
+        this.getSelectList()
+      },
+      async getSelectList() {
+        const { data } = await getCategoryMainList(this.form)
+        this.selectList = data
       },
       close() {
         this.$refs['form'].resetFields()
@@ -86,10 +100,18 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              // const { code } = await addWave(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              if (this.type === 1) {
+                const { code } = await editCategorySonSave(this.form)
+                if (code != 200) {
+                  return
+                }
+              } else {
+                const { code } = await editCategoryMainSave(this.form)
+                if (code != 200) {
+                  return
+                }
+              }
+
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -98,10 +120,18 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              // const { code } = await updateWave(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              if (this.type === 1) {
+                const { code } = await editCategorySonSave(this.form)
+                if (code != 200) {
+                  return
+                }
+              } else {
+                const { code } = await editCategoryMainSave(this.form)
+                if (code != 200) {
+                  return
+                }
+              }
+
               this.$baseMessage(
                 '修改成功',
                 'success',

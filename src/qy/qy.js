@@ -1,7 +1,8 @@
-import QyCity from '@/qy/components/qy-city'
-
+import QyQy from '@/qy/components/QyQy'
+import QyColorSelect from '@/qy/components/QyColorSelect'
 export default {
   install(Vue) {
-    Vue.component('QyCity', QyCity)
+    Vue.component('QyQy', QyQy)
+    Vue.component('QyColorSelect', QyColorSelect)
   },
 }

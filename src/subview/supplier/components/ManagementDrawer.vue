@@ -1,131 +1,164 @@
 d
 <template>
   <div class="components-drawer">
-    <div style="padding: 30px 35px 25px">
-      <div>
-        <el-row :gutter="20">
-          <el-col :span="12" style="display: flex">
-            <img
-              :src="avatar"
-              style="width: 50px; height: 50px; margin: 0 10px 10px 0"
-            />
-            <p>成都 | 老何</p>
-          </el-col>
+    <div v-if="form.drawerType != 3">
+      <div style="padding: 0 20px 20px 20px">
+        <div>
+          <el-row :gutter="20">
+            <el-col :span="12" style="display: flex">
+              <img
+                :src="avatar"
+                style="width: 50px; height: 50px; margin: 0 10px 10px 0"
+              />
+              <p>成都 | 老何</p>
+            </el-col>
 
-          <el-col :span="12">
-            <vab-icon
-              icon="align-center"
-              style="float: right; margin: 6px 0 0 0"
-            />
-            <el-button
-              v-if="form.drawerType == 1"
-              native-type="submit"
-              size="small"
-              style="float: right; margin-right: 10px"
-              type="primary"
-              @click="print('vab-print-table')"
-            >
-              打印
-            </el-button>
-            <el-button
-              v-if="form.drawerType == 1"
-              native-type="submit"
-              size="small"
-              style="float: right; margin-right: 10px"
-              type="primary"
-              @click="form.drawerType = 2"
-            >
-              编辑
-            </el-button>
-            <el-button
-              v-if="form.drawerType == 2"
-              native-type="submit"
-              size="small"
-              style="float: right; margin-right: 10px"
-              type="primary"
-              @click="form.drawerType = 1"
-            >
-              完成
-            </el-button>
-          </el-col>
-        </el-row>
-      </div>
-      <div style="display: flex">
-        <div
-          v-for="(item, index) in stalist"
-          :key="index"
-          style="display: flex; flex: 1; flex-direction: column"
-        >
-          <span style="margin-bottom: 12px">{{ item.name }}</span>
-          <span>{{ item.value }}</span>
+            <el-col :span="12">
+              <vab-icon
+                icon="align-center"
+                style="float: right; margin: 6px 0 0 0"
+              />
+              <el-button
+                v-if="form.drawerType == 1"
+                native-type="submit"
+                size="small"
+                style="float: right; margin-right: 10px"
+                type="primary"
+                @click="print('vab-print-table')"
+              >
+                打印
+              </el-button>
+              <el-button
+                v-if="form.drawerType == 1"
+                native-type="submit"
+                size="small"
+                style="float: right; margin-right: 10px"
+                type="primary"
+                @click="form.drawerType = 2"
+              >
+                编辑
+              </el-button>
+              <el-button
+                v-if="form.drawerType == 2"
+                native-type="submit"
+                size="small"
+                style="float: right; margin-right: 10px"
+                type="primary"
+                @click="form.drawerType = 1"
+              >
+                完成
+              </el-button>
+            </el-col>
+          </el-row>
+        </div>
+        <div style="display: flex">
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">应付款</span>
+            <span>￥{{ form.arrears }}</span>
+          </div>
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">总采购数量</span>
+            <span>{{ form.product_num }}</span>
+          </div>
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">总采购金额</span>
+            <span>￥{{ form.material_total }}</span>
+          </div>
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">总退货数量</span>
+            <span>{{ form.product_return_num }}</span>
+          </div>
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">总退货金额</span>
+            <span>￥{{ form.material_return_total }}</span>
+          </div>
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">累计付款</span>
+            <span>暂无</span>
+          </div>
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">供应商等级</span>
+            <span>{{ form.grade_name }}</span>
+          </div>
         </div>
       </div>
+      <el-tabs
+        v-model="activeName"
+        style="padding: 0 25px"
+        @tab-click="handleClick"
+      >
+        <el-tab-pane label="供应商信息" name="0" />
+        <el-tab-pane label="订单记录" name="1" />
+        <el-tab-pane label="入库信息 " name="2" />
+        <el-tab-pane label="退货记录" name="3" />
+        <el-tab-pane label="付款记录" name="4" />
+        <el-tab-pane label="对账单记录" name="5" />
+      </el-tabs>
     </div>
-    <el-tabs
-      v-model="activeName"
-      style="padding: 0 25px"
-      @tab-click="handleClick"
-    >
-      <el-tab-pane label="供应商信息" name="first" />
-      <el-tab-pane label="订单记录" name="second" />
-      <el-tab-pane label="收货信息" name="three" />
-      <el-tab-pane label="退货记录" name="four" />
-      <el-tab-pane label="付款记录" name="five" />
-      <el-tab-pane label="对账单记录" name="six" />
-    </el-tabs>
-    <div v-if="tabindex == '0'">
+    <div v-if="search_type == '0'">
       <div v-if="form.drawerType == 1" ref="vab-print-table" class="drawer-tab">
         <div class="conten-warp">
           <div class="conten-title">基本信息</div>
           <div class="conten-list-row">
-            <div>供应商编号：5656</div>
-            <div>供应商名称： 名称一</div>
-            <div>手机号码： -15236804776</div>
-            <div>客户地址：浙江省杭州市滨江区</div>
+            <div>供应商编号：{{ form.sn }}</div>
+            <div>供应商名称： {{ form.name }}</div>
+            <div>手机号码： -{{ form.tel }}</div>
+            <div>客户地址：暂无</div>
           </div>
         </div>
         <div class="conten-warp">
           <div class="conten-title">供应商概况</div>
           <div class="conten-list-row">
-            <div>供应商类别：类别一</div>
-            <div>供应商等级：黄金</div>
-            <div>供应商类型：类型一</div>
-            <div>供应商标签：90后、金牛座</div>
-            <div>所在城市：杭州市</div>
+            <div>供应商类别：{{ form.type_name }}</div>
+            <div>供应商等级：{{ form.grade_name }}</div>
+            <div>
+              供应商类型：
+              <span v-for="item in form.craft_name" :key="item">
+                {{ item }}
+              </span>
+              <span v-for="item in form.produce_name" :key="item">
+                {{ item }}
+              </span>
+            </div>
+            <div>供应商标签：{{ form.tag_name }}</div>
+            <div>所在城市：暂无</div>
           </div>
         </div>
         <div class="conten-warp">
           <div class="conten-title">账户信息</div>
           <div class="conten-list-row">
-            <div>密码：*******</div>
+            <div>密码：暂无</div>
           </div>
         </div>
         <div class="conten-warp">
           <div class="conten-title">账户资金</div>
           <div class="conten-list-row">
-            <div>账户名称： 月月</div>
-            <div>账号： 2547894967</div>
-            <div>账号类型： 银行卡号</div>
-            <div>开户行名称： 杭州市滨江支行</div>
-            <div>开户行地址： 滨江区春波小区605号</div>
-            <div>结算方式： 月结</div>
+            <div>账户名称： 暂无</div>
+            <div>账号： 暂无</div>
+            <div>账号类型： 暂无</div>
+            <div>开户行名称： 暂无</div>
+            <div>开户行地址： 暂无</div>
+            <div>结算方式： 暂无</div>
           </div>
         </div>
         <div class="conten-warp">
           <div class="conten-title">其它信息</div>
           <div class="conten-list-row">
-            <div style="width: 50%">创建时间： 2020-02-02 10:10:10</div>
-            <div style="width: 50%">操作人员： 阿白</div>
-            <div style="width: 50%">更新时间： 2020-02-02 10:10:10</div>
-            <div style="width: 50%">操作人员： 阿白</div>
-            <div style="width: 50%">供应商状态： 合作中</div>
-            <div style="width: 50%">期初欠款： ￥200</div>
-            <div style="width: 100%">备注： 1111111111111111</div>
+            <div style="width: 50%">创建时间：{{ form.create_time }}</div>
+            <div style="width: 50%">操作人员： 暂无</div>
+            <div style="width: 50%">更新时间： 暂无</div>
+            <div style="width: 50%">操作人员： 暂无</div>
+            <div v-if="form.status == 1" style="width: 50%">
+              供应商状态： 合作中
+            </div>
+            <div v-else style="width: 50%">供应商状态： 终止合作</div>
+            <div style="width: 50%">期初欠款： 暂无</div>
+            <div style="width: 100%">备注： 暂无</div>
           </div>
         </div>
       </div>
       <el-form
-        v-if="form.drawerType == 2"
+        v-if="form.drawerType == 2 || form.drawerType == 3"
         ref="form"
         label-width="120px"
         :model="form"
@@ -366,16 +399,83 @@ d
       </el-form>
     </div>
     <List
-      v-else
+      v-if="search_type == '1'"
       :list="orderList"
       :list-type="listType"
       :state="listLoading"
       style="margin: 20px"
     >
       <template #List>
-        <el-table-column label="id" prop="id" show-overflow-tooltip />
-        <el-table-column label="名称" prop="log" show-overflow-tooltip />
-        <el-table-column label="操作时间" prop="time" show-overflow-tooltip />
+        <el-table-column label="编号" prop="sn" show-overflow-tooltip />
+        <el-table-column label="数量" prop="num" show-overflow-tooltip />
+        <el-table-column
+          label="入库时间"
+          prop="add_date"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          label="创建时间"
+          prop="create_time"
+          show-overflow-tooltip
+        />
+      </template>
+    </List>
+    <List
+      v-if="search_type == '2' || search_type == '3'"
+      :list="orderList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column label="编号" prop="sn" show-overflow-tooltip />
+        <el-table-column label="数量" prop="num" show-overflow-tooltip />
+        <el-table-column
+          label="入库时间"
+          prop="add_date"
+          show-overflow-tooltip
+        />
+        <el-table-column label="价格" prop="total" show-overflow-tooltip />
+      </template>
+    </List>
+    <List
+      v-if="search_type == '4'"
+      :list="orderList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column label="备注" prop="remark" show-overflow-tooltip />
+        <el-table-column label="价格" prop="total" show-overflow-tooltip />
+        <el-table-column label="标题" prop="title" show-overflow-tooltip />
+      </template>
+    </List>
+    <List
+      v-if="search_type == '5'"
+      :list="orderList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column
+          label="开始时间"
+          prop="start_date"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          label="结束时间"
+          prop="end_date"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          label="创建时间"
+          prop="create_time"
+          show-overflow-tooltip
+        />
+        <el-table-column label="价格" prop="price" show-overflow-tooltip />
+        <el-table-column label="pdf文件" prop="pdf" show-overflow-tooltip />
       </template>
     </List>
     <vab-upload
@@ -394,6 +494,7 @@ d
   import VabUpload from '@/extra/VabUpload'
   import List from '@/subview/components/List'
   import { mapGetters } from 'vuex'
+  import { editSupplierDetail } from '@/api/basic'
   export default {
     name: 'ComponentsDrawer',
     components: { List, VabUpload },
@@ -409,8 +510,8 @@ d
         hutype: false,
         dialogVisible1: false,
         distitle1: '',
-        activeName: 'first',
-        tabindex: '0',
+        activeName: '0',
+        search_type: '0',
         form: Object.assign({}, this.drawerInof),
         listLoading: false,
         listType: 2,
@@ -433,48 +534,7 @@ d
             hou: 100,
           },
         ],
-        orderList: [
-          {
-            id: 4525,
-            log: '用户付款成功',
-            time: '2022-10-10 16:33:41',
-          },
-          {
-            id: 4525,
-            log: '用户付款成功',
-            time: '2022-10-10 16:33:41',
-          },
-        ],
-        stalist: [
-          {
-            name: '应付款',
-            value: '¥24750',
-          },
-          {
-            name: '总采购数量',
-            value: '34750',
-          },
-          {
-            name: '总采购金额',
-            value: '¥2471',
-          },
-          {
-            name: '总退货数量',
-            value: '800',
-          },
-          {
-            name: '总退货金额',
-            value: '￥500',
-          },
-          {
-            name: '累计付款',
-            value: '￥34750',
-          },
-          {
-            name: '供应商等级',
-            value: '黄金',
-          },
-        ],
+        orderList: [],
       }
     },
     computed: {
@@ -509,8 +569,20 @@ d
         this.$refs['vabUpload'].handleShow()
       },
       // 列表数据表头切换监听 自定义部分
-      handleClick(tab) {
-        this.tabindex = tab.index
+      async handleClick(tab) {
+        this.listLoading = true
+        this.search_type = tab.name
+        if (tab.name == 0) {
+          return
+        }
+        const { data } = await editSupplierDetail({
+          search_type: tab.name, //搜索条件 1订单记录 2入库信息 3退货记录 4付款记录 5对账单记录
+          id: this.drawerInof.id, //物料采购订单id
+          page: 1,
+          pageSize: 20,
+        })
+        this.orderList = data.data
+        this.listLoading = false
       },
     },
   }

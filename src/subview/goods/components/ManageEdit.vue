@@ -27,12 +27,12 @@
       </el-form-item>
       <el-form-item label="类别款式:">
         <el-select v-model="form.kuanshi" placeholder="请选择类别款式">
-          <el-option
+          <!-- <el-option
             v-for="(item, index) in typeData.goods_category"
             :key="index"
             :label="item.name"
             :value="item.id"
-          />
+          /> -->
         </el-select>
       </el-form-item>
     </el-form>
