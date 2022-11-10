@@ -9,6 +9,28 @@ export function getCommonAllList(data) {
     data,
   })
 }
+// 菜单管理
+export function getMenuList(data) {
+  return request({
+    url: '/menu/menuList',
+    method: 'post',
+    data,
+  })
+}
+export function editMenuSave(data) {
+  return request({
+    url: '/menu/menuSave',
+    method: 'post',
+    data,
+  })
+}
+export function delMenuDel(data) {
+  return request({
+    url: '/menu/menuDel',
+    method: 'post',
+    data,
+  })
+}
 //获取仓库
 export function getWarehouseList(data) {
   return request({

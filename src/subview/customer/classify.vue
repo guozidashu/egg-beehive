@@ -19,7 +19,7 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
-            v-has-permi="['btn:pre:del']"
+            v-has-permi="['btn:CustomerClassify:add']"
             native-type="submit"
             size="small"
             type="primary"
@@ -46,7 +46,13 @@
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <el-button type="text" @click="handleDelete(row)">删除</el-button>
+              <el-button
+                v-has-permi="['btn:CustomerClassify:del']"
+                type="text"
+                @click="handleDelete(row)"
+              >
+                删除
+              </el-button>
             </template>
           </el-table-column>
         </template>

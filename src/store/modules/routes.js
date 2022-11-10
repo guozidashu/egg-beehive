@@ -72,7 +72,7 @@ const actions = {
     // 设置后端路由(不需要可以删除)
     if (authentication === 'all') {
       let arr = rootState['user'].userRouteList
-      console.log(222, arr)
+      console.log('用户信息获取到，转化路由数组', arr)
       let list = []
       for (let i in arr) {
         list.push(arr[i]) //
@@ -106,7 +106,6 @@ const actions = {
           })
         }
       })
-      console.log(123456, newlist)
       commit('roleBtnList', newlist)
       if (!isArray(list))
         Vue.prototype.$baseMessage(

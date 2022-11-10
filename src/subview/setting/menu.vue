@@ -22,73 +22,22 @@
             row-key="path"
             :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
           >
-            <el-table-column
-              label="标题"
-              prop="meta.title"
-              show-overflow-tooltip
-            />
+            <el-table-column label="标题" prop="title" show-overflow-tooltip />
             <el-table-column label="name" prop="name" show-overflow-tooltip />
             <el-table-column label="路径" prop="path" show-overflow-tooltip />
-            <el-table-column label="是否隐藏" show-overflow-tooltip>
-              <template #default="{ row }">
-                {{ row.meta.hidden ? '是' : '否' }}
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="是否隐藏当前节点"
-              show-overflow-tooltip
-              width="100"
-            >
-              <template #default="{ row }">
-                {{ row.meta.levelHidden ? '是' : '否' }}
-              </template>
-            </el-table-column>
             <el-table-column
               label="vue文件路径"
               prop="component"
               show-overflow-tooltip
             />
-            <el-table-column label="重定向" show-overflow-tooltip>
-              <template #default="{ row }">
-                {{ row.redirect ? row.redirect : '无' }}
-              </template>
-            </el-table-column>
             <el-table-column label="图标" show-overflow-tooltip>
               <template #default="{ row }">
-                <vab-icon
-                  v-if="row.meta && row.meta.icon"
-                  :icon="row.meta.icon"
-                />
+                <vab-icon v-if="row.icon" :icon="row.icon" />
               </template>
             </el-table-column>
             <el-table-column label="是否固定" show-overflow-tooltip>
               <template #default="{ row }">
                 {{ row.meta && row.meta.noClosable ? '是' : '否' }}
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="是否无缓存"
-              show-overflow-tooltip
-              width="120"
-            >
-              <template #default="{ row }">
-                {{ row.meta && row.meta.noKeepAlive ? '是' : '否' }}
-              </template>
-            </el-table-column>
-            <el-table-column label="badge" show-overflow-tooltip>
-              <template #default="{ row }">
-                <el-tag
-                  v-if="row.meta && row.meta.badge"
-                  effect="dark"
-                  type="danger"
-                >
-                  {{ row.meta.badge }}
-                </el-tag>
-              </template>
-            </el-table-column>
-            <el-table-column label="dot" show-overflow-tooltip>
-              <template #default="{ row }">
-                {{ row.meta && row.meta.dot ? '是' : '否' }}
               </template>
             </el-table-column>
             <el-table-column label="操作" show-overflow-tooltip width="185">
@@ -119,6 +68,7 @@
 
 <script>
   import Edit from './components/MenuManagementEdit'
+  import { getMenuList, delMenuDel } from '@/api/basic'
   export default {
     name: 'MenuManagement',
     components: { Edit },
@@ -129,97 +79,7 @@
           children: 'children',
           label: 'label',
         },
-        list: [
-          {
-            path: '/',
-            name: 'Root',
-            component: 'Layout',
-            meta: {
-              title: '首页',
-              icon: 'home-2-line',
-              breadcrumbHidden: true,
-            },
-            children: [
-              {
-                path: 'index',
-                name: 'Index',
-                component: '@subview/index/index',
-                meta: {
-                  title: '首页',
-                  icon: 'home-2-line',
-                  noClosable: true,
-                },
-              },
-              {
-                path: 'dashboard',
-                name: 'Dashboard',
-                component: '@subview/index/board',
-                meta: {
-                  title: '看板',
-                  icon: 'dashboard-line',
-                },
-              },
-            ],
-          },
-          {
-            path: '/customer',
-            name: 'Customer',
-            component: 'Layout',
-            guard: ['Admin'],
-            meta: {
-              title: '客户',
-              icon: 'archive-line',
-              breadcrumbHidden: true,
-            },
-            children: [
-              {
-                path: 'customerManage',
-                name: 'CustomerManage',
-                component: '@subview/customer/manage',
-                meta: {
-                  title: '客户管理',
-                  icon: 'archive-line',
-                },
-              },
-              {
-                path: 'customerLevel',
-                name: 'CustomerLevel',
-                component: '@subview/customer/level',
-                meta: {
-                  title: '客户等级',
-                  icon: 'archive-line',
-                },
-              },
-              {
-                path: 'customerClassify',
-                name: 'CustomerClassify',
-                component: '@subview/customer/classify',
-                meta: {
-                  title: '客户分类',
-                  icon: 'archive-line',
-                },
-              },
-              {
-                path: 'customerTags',
-                name: 'CustomerTags',
-                component: '@subview/customer/tags',
-                meta: {
-                  title: '客户标签',
-                  icon: 'archive-line',
-                },
-              },
-              {
-                path: 'customerStatistical',
-                name: 'CustomerStatistical',
-                component: '@subview/customer/statistical',
-                meta: {
-                  title: '客户统计',
-                  icon: 'archive-line',
-                },
-              },
-            ],
-          },
-        ],
+        list: [],
         listLoading: false,
       }
     },
@@ -228,7 +88,7 @@
       //   data: { list },
       // } = await getTree()
       // this.data = list
-      // await this.fetchData()
+      this.fetchData()
     },
     methods: {
       handleEdit(row) {
@@ -241,20 +101,19 @@
       handleDelete(row) {
         if (row.path) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            // const { msg } = await doDelete({ paths: row.path })
-            // this.$baseMessage(msg, 'success', 'vab-hey-message-success')
+            const { msg } = await delMenuDel({ id: row.id })
+            this.$baseMessage(msg, 'success', 'vab-hey-message-success')
             await this.fetchData()
           })
         }
       },
-      // async fetchData(role) {
-      //   this.listLoading = true
-      //   const {
-      //     data: { list },
-      //   } = await getList({ role })
-      //   this.list = list
-      //   this.listLoading = false
-      // },
+      async fetchData(role) {
+        this.listLoading = true
+        const { data } = await getMenuList({ role })
+        console.log(data)
+        this.list = data
+        this.listLoading = false
+      },
       handleNodeClick({ role }) {
         this.fetchData(role)
       },

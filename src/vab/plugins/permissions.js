@@ -28,6 +28,7 @@ router.beforeEach(async (to, from, next) => {
   if (!loginInterception) hasToken = true
 
   if (hasToken) {
+    console.log('何时进入hasToken')
     if (store.getters['routes/routes'].length) {
       // 禁止已登录用户返回登录页
       if (to.path === '/login') {
@@ -40,6 +41,7 @@ router.beforeEach(async (to, from, next) => {
         // config/setting.config.js loginInterception为false(关闭登录拦截时)时，创建虚拟角色
         else await store.dispatch('user/setVirtualRoles')
         // 根据路由模式获取路由并根据权限过滤
+        console.log('未获取到路由，重新获取')
         await store.dispatch('routes/setRoutes', authentication)
         next({ ...to, replace: true })
       } catch (err) {
@@ -52,7 +54,6 @@ router.beforeEach(async (to, from, next) => {
     if (routesWhiteList.includes(to.path)) {
       // 设置游客路由(不需要可以删除)
       if (supportVisit && !store.getters['routes/routes'].length) {
-        console.log(666666)
         await store.dispatch('routes/setRoutes', 'visit')
         next({ ...to, replace: true })
       } else next()

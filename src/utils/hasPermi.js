@@ -5,24 +5,27 @@ hasPermi.install = (Vue) => {
   Vue.directive('hasPermi', {
     inserted(el, binding) {
       //获取绑定值
-      console.log(98989898989, el, binding)
       const { value } = binding
-      // TODO 匹配规则，在页面写的要对应这个匹配规则
-      const all_permission = '*:*:*'
-      //获取用户权限数据
-      const permissions = store.getters['routes/roleBtnList']
-      console.log('权限数组', permissions)
+      //获取用户权限数据并修正
+      let arr = store.getters['routes/roleBtnList']
+      let arr1 = []
+      arr.forEach((item) => {
+        if (item.guard) {
+          item.guard.forEach((item1) => {
+            arr1.push('btn:' + item.name + ':' + item1)
+          })
+        }
+      })
       if (value && value instanceof Array && value.length > 0) {
         //权限标志
         const permissionFlag = value
-        //判断用户是否有此权限
-        const hasPermissions = permissions.some((permission) => {
-          console.log('permission', permission)
-          return (
-            all_permission === permission || permissionFlag.includes(permission)
-          )
+
+        const hasPermissions = arr1.some((role) => {
+          return permissionFlag[0] === role
         })
-        //没有权限-移除页面上的控件
+
+        console.log(hasPermissions)
+        // 没有权限-移除页面上的控件
         if (!hasPermissions) {
           {
             //  清除点击事件
@@ -31,9 +34,6 @@ hasPermi.install = (Vue) => {
             el.className += ' is-disabled'
             el.disabled = true
           }
-        } else {
-          el.parentNode && el.parentNode.removeChild(el)
-          throw new Error(`请设置数组操作权限`)
         }
       }
     },

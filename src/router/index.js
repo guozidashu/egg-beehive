@@ -237,9 +237,9 @@ export const asyncRoutes = [
             },
           },
           {
-            path: 'financialCost',
-            name: 'FinancialCost',
-            component: () => import('@/subview/research/financial/cost'),
+            path: 'financialCosts',
+            name: 'FinancialCosts',
+            component: () => import('@/subview/research/financial/costs'),
             meta: {
               title: '部门成本分析',
               // icon: 'home-2-line',

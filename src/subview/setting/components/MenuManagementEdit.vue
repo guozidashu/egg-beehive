@@ -12,8 +12,8 @@
       :model="form"
       :rules="rules"
     >
-      <el-form-item label="父级Id" prop="parentId">
-        <el-input v-model="form.parentId" />
+      <el-form-item label="父级Id" prop="pid">
+        <el-input v-model="form.pid" />
       </el-form-item>
       <el-form-item label="name" prop="name">
         <el-input v-model="form.name" />
@@ -24,25 +24,19 @@
       <el-form-item label="vue文件路径" prop="component">
         <el-input v-model="form.component" />
       </el-form-item>
-      <el-form-item label="重定向">
-        <el-input v-model="form.redirect" />
-      </el-form-item>
-      <el-form-item label="标题" prop="meta.title">
-        <el-input v-model="form.meta.title" />
+      <el-form-item label="标题" prop="title">
+        <el-input v-model="form.title" />
       </el-form-item>
       <el-form-item label="图标">
-        <el-popover
-          popper-class="icon-selector-popper"
-          trigger="hover"
-          width="292"
-        >
-          <template #reference>
-            <el-input v-model="form.meta.icon" />
-          </template>
-          <vab-icon-selector @handle-icon="handleIcon" />
-        </el-popover>
+        <el-input v-model="form.icon" />
       </el-form-item>
-      <el-form-item label="badge">
+      <el-form-item label="类型">
+        <el-input v-model="form.type" />
+      </el-form-item>
+      <el-form-item label="等级">
+        <el-input v-model="form.level" />
+      </el-form-item>
+      <!-- <el-form-item label="badge">
         <el-input v-model="form.meta.badge" />
       </el-form-item>
       <el-form-item label="dot">
@@ -65,7 +59,7 @@
       </el-form-item>
       <el-form-item label="不显示当前标签页">
         <el-switch v-model="form.meta.tabHidden" />
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <template #footer>
       <el-button @click="close">取 消</el-button>
@@ -75,40 +69,29 @@
 </template>
 
 <script>
-  import VabIconSelector from '@/extra/VabIconSelector'
-  import { doEdit } from '@/api/menuManagement'
+  import { editMenuSave } from '@/api/basic'
 
   export default {
     name: 'MenuManagementEdit',
-    components: { VabIconSelector },
     data() {
       return {
         form: {
-          meta: {
-            title: '',
-            icon: '',
-            badge: '',
-            dot: '',
-            hidden: '',
-            levelHidden: '',
-            isCustomSvg: '',
-            noClosable: '',
-            noKeepAlive: '',
-            tabHidden: '',
-          },
+          //id: 1, // 菜单id 编辑时传
+          pid: null, // 父级id
+          path: null, // 路径
+          name: null, // 名称
+          component: null, // 路由
+          title: null, // 标题
+          icon: null, // 图标
         },
         rules: {
-          parentId: [
-            { required: true, trigger: 'blur', message: '请输入父级id' },
-          ],
+          pid: [{ required: true, trigger: 'blur', message: '请输入父级id' }],
           name: [{ required: true, trigger: 'blur', message: '请输入name' }],
           path: [{ required: true, trigger: 'blur', message: '请输入path' }],
           component: [
             { required: true, trigger: 'blur', message: '请输入component' },
           ],
-          'meta.title': [
-            { required: true, trigger: 'blur', message: '请输入标题' },
-          ],
+          title: [{ required: true, trigger: 'blur', message: '请输入标题' }],
         },
         title: '',
         dialogFormVisible: false,
@@ -135,7 +118,7 @@
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
-            const { msg } = await doEdit(this.form)
+            const { msg } = await editMenuSave(this.form)
             this.$baseMessage(msg, 'success', 'vab-hey-message-success')
             this.$emit('fetch-data')
             this.close()

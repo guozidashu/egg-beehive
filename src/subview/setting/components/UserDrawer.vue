@@ -14,12 +14,19 @@
       >
         <el-table-column label="一级">
           <template slot="header">
-            <el-checkbox v-model="formData[0]">全选</el-checkbox>
+            <el-checkbox
+              v-model="formData[-1]"
+              :data-a="checked1"
+              @change="checkChange('', formData[-1], -1)"
+            >
+              全选
+            </el-checkbox>
           </template>
 
           <template slot-scope="scope">
             <el-checkbox
               v-model="formData[scope.row.Oneid]"
+              :data-a="checked"
               @change="checkChange(scope.row, formData[scope.row.Oneid], 1)"
             >
               {{ scope.row.OneName }}
@@ -30,6 +37,7 @@
           <template #default="{ row }">
             <el-checkbox
               v-model="formData[row.Twoid]"
+              :data-a="checked"
               @change="checkChange(row, formData[row.Twoid], 2)"
             >
               {{ row.TwoName }}
@@ -41,6 +49,7 @@
             <div v-if="row.ppid">
               <el-checkbox
                 v-model="formData[row.id]"
+                :data-a="checked"
                 @change="checkChange(row, formData[row.id], 3)"
               >
                 {{ row.title }}
@@ -55,6 +64,7 @@
               v-for="(item, index) in row.guard"
               :key="index"
               v-model="formData[item.id]"
+              :data-a="checked"
               @change="checkChange(row, formData[item.id], 4)"
             >
               {{ item.title }}
@@ -91,82 +101,34 @@
     },
     data() {
       return {
+        checkedAll: false,
         listLoading: false,
-        list: [],
         id: this.drawerId,
-        quanxuan: true,
+        checked: false,
+        checked1: false,
+        list: [],
         formData: {},
-        tableData: [
-          {
-            yiji: '首页',
-            erji: '首页',
-            yijiid: 1,
-            erjiid: 2,
-            gongneng: [
-              { gongnnegname: '功能一', gongnengid: 3 },
-              { gongnnegname: '功能二', gongnengid: 4 },
-            ],
-          },
-          {
-            yiji: '系统设置',
-            erji: '员工管理',
-            yijiid: 5,
-            erjiid: 6,
-            gongneng: [
-              { gongnnegname: '功能一', gongnengid: 7 },
-              { gongnnegname: '功能二', gongnengid: 8 },
-            ],
-          },
-          {
-            yiji: '系统设置',
-            erji: '角色管理',
-            yijiid: 5,
-            erjiid: 9,
-            gongneng: [
-              { gongnnegname: '功能一', gongnengid: 10 },
-              { gongnnegname: '功能二', gongnengid: 11 },
-            ],
-          },
-          {
-            yiji: '系统设置',
-            erji: '用户管理',
-            yijiid: 5,
-            erjiid: 12,
-            gongneng: [
-              { gongnnegname: '功能一', gongnengid: 13 },
-              { gongnnegname: '功能二', gongnengid: 14 },
-            ],
-          },
-          {
-            yiji: '系统设置',
-            erji: '渠道管理',
-            sanji: '微信',
-            yijiid: 5,
-            erjiid: 15,
-            sanjiid: 16,
-            gongneng: [
-              { gongnnegname: '功能一', gongnengid: 17 },
-              { gongnnegname: '功能二', gongnengid: 18 },
-            ],
-          },
-          {
-            yiji: '系统设置',
-            erji: '渠道管理',
-            sanji: '支付宝',
-            yijiid: 5,
-            erjiid: 15,
-            sanjiid: 19,
-            gongneng: [
-              { gongnnegname: '功能一', gongnengid: 20 },
-              { gongnnegname: '功能二', gongnengid: 21 },
-            ],
-          },
-        ],
         spanArr: [], //一个空的数组，用于存放每一行记录的合并数
         pos: '', //pos是spanArr的索引,需要合并行下标
         spanArr2: [],
         pos2: '',
       }
+    },
+    watch: {
+      drawerId: {
+        handler: function (newVal) {
+          this.id = newVal
+          this.id = newVal
+          this.list = []
+          this.formData = {}
+          this.spanArr = []
+          this.pos = ''
+          this.spanArr2 = []
+          this.pos2 = ''
+          this.fetchData()
+        },
+        deep: true,
+      },
     },
     created() {
       this.fetchData()
@@ -180,22 +142,12 @@
         const arr = []
         const fn = (data) => {
           data.forEach((item) => {
-            // if (item.checked) {
-            //   this.formData[item.id] = true
-            //   if (item.guard != 0) {
-            //     item.guard.forEach((item2) => {
-            //       if (item2.checked) {
-            //         this.formData[item2.id] = true
-            //       }
-            //     })
-            //   }
-            // }
             if (!item.children) {
               if (item.ppid) {
-                item.Oneid = item.ppid
-                item.Twoid = item.pid
-                item.OneName = item.ppname
-                item.TwoName = item.pname
+                item.Oneid = item.pid
+                item.Twoid = item.ppid
+                item.OneName = item.pname
+                item.TwoName = item.ppname
               } else {
                 item.Oneid = item.pid
                 item.Twoid = item.id
@@ -210,6 +162,38 @@
           })
         }
         fn(data.list)
+        arr.forEach((item) => {
+          if (item.ppid) {
+            if (item.checked) {
+              this.formData[item.pid] = item.checked
+              this.formData[item.ppid] = item.checked
+              this.formData[item.id] = item.checked
+            } else {
+              this.formData[item.pid] = item.checked
+              this.formData[item.ppid] = item.checked
+              this.formData[item.id] = item.checked
+            }
+          } else {
+            if (item.checked) {
+              this.formData[item.pid] = item.checked
+              this.formData[item.id] = item.checked
+            } else {
+              this.formData[item.pid] = item.checked
+              this.formData[item.id] = item.checked
+            }
+          }
+          if (!item.children) {
+            item.guard.forEach((item2) => {
+              this.formData[item2.id] = item2.checked
+            })
+          } else {
+            item.children.forEach((item2) => {
+              item2.guard.forEach((item3) => {
+                this.formData[item3.id] = item3.checked
+              })
+            })
+          }
+        })
         this.list = arr
         this.listLoading = false
         this.getSpanArr(this.list)
@@ -273,17 +257,32 @@
       // 提交选中内容
       async submitRole() {
         let list = []
-
-        Object.keys(this.formData).map((item) => {
-          list.push(Number(item))
-        })
-        const { data } = await addRoleSave({ id: this.id, auth: list })
-        console.log(data)
+        // 对象转数组
+        for (const key in this.formData) {
+          if (this.formData[key]) {
+            list.push(key)
+          }
+        }
+        const { code } = await addRoleSave({ id: this.id, auth: list })
+        if (code != 200) {
+          return
+        }
+        this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
       },
+
       // 多选框选中效果
       checkChange(row, checked, type) {
-        if (type === 1) {
-          console.log(row, checked, type)
+        if (type === -1) {
+          this.list.forEach((item) => {
+            this.formData[item.Oneid] = checked
+            this.formData[item.Twoid] = checked
+            this.formData[item.id] = checked
+            item.guard.forEach((item1) => {
+              this.formData[item1.id] = checked
+            })
+          })
+          this.checked1 = !this.checked1
+        } else if (type === 1) {
           this.list.forEach((item) => {
             if (row.Oneid == item.Oneid) {
               this.formData[item.Oneid] = checked
@@ -295,7 +294,6 @@
             }
           })
         } else if (type === 2) {
-          console.log(row, checked, type)
           let temp = false
           this.list.forEach((item) => {
             if (row.Twoid == item.Twoid) {
@@ -313,7 +311,6 @@
           })
           this.formData[row.Oneid] = temp
         } else if (type === 3) {
-          console.log(row, checked, type)
           let temp = false
           this.list.forEach((item) => {
             if (row.id == item.id) {
@@ -340,7 +337,6 @@
           })
           this.formData[row.Oneid] = temp1
         } else if (type === 4) {
-          console.log(row, checked, type)
           if (checked) {
             this.formData[row.Oneid] = checked
             this.formData[row.Twoid] = checked
@@ -382,6 +378,7 @@
             }
           }
         }
+        this.checked = !this.checked
         this.$forceUpdate()
       },
     },

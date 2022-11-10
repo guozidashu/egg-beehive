@@ -23,15 +23,6 @@
                 style="float: right; margin: 6px 0 0 0"
               />
               <el-button
-                native-type="submit"
-                size="small"
-                style="float: right; margin: 0 10px"
-                type="primary"
-                @click="upMembers(3)"
-              >
-                停售
-              </el-button>
-              <el-button
                 v-if="form.drawerType == 1"
                 native-type="submit"
                 size="small"
@@ -40,15 +31,6 @@
                 @click="print('vab-print-table')"
               >
                 打印
-              </el-button>
-              <el-button
-                native-type="submit"
-                size="small"
-                style="float: right"
-                type="primary"
-                @click="upMembers(1)"
-              >
-                审核
               </el-button>
               <el-button
                 v-if="form.drawerType == 1"
@@ -284,6 +266,7 @@
                   style="margin-left: 10px; color: #1890ff"
                 ></i>
               </el-form-item>
+
               <el-form-item class="item" label="季节：">
                 <el-select v-model="form.season" placeholder="请选择季节：">
                   <el-option
@@ -352,12 +335,18 @@
             <div class="conten-list-com">
               <el-form-item class="item" label="颜色：">
                 <qy-color-select v-model="form.colorid" />
+                <div style="margin: -33px 0 0 90px; width: 200px">
+                  <span v-for="(item, idex) in colorNameList" :key="idex">
+                    {{ item }}
+                  </span>
+                </div>
               </el-form-item>
               <el-form-item class="item" label="尺码：">
                 <el-cascader
                   v-model="form.sizeid"
+                  collapse-tags
                   :options="selectData.size"
-                  :props="{ expandTrigger: 'hover' }"
+                  :props="{ multiple: true }"
                 />
                 <i
                   class="el-icon-plus"
@@ -382,7 +371,7 @@
                   style="margin-left: 10px; color: #1890ff"
                 ></i>
               </el-form-item>
-              <el-form-item class="item" label="库位：">
+              <el-form-item v-show="form.warehouse" class="item" label="库位：">
                 <el-select
                   v-model="form.position"
                   filterable
@@ -399,17 +388,6 @@
                   class="el-icon-plus"
                   style="margin-left: 10px; color: #1890ff"
                 ></i>
-              </el-form-item>
-              <el-form-item class="item" label="商品条码：">
-                <el-input
-                  v-model="form.addressKeyword"
-                  clearable
-                  style="width: 215px"
-                >
-                  <el-button slot="append" icon="el-icon-search">
-                    生成
-                  </el-button>
-                </el-input>
               </el-form-item>
             </div>
           </div>
@@ -429,21 +407,10 @@
               </el-form-item>
               <el-form-item class="item" label="销售价：">
                 <el-input v-model="form.price" clearable style="width: 215px">
-                  <el-button slot="append" @click="changeType(1)">
+                  <el-button slot="append" @click="changeType()">
                     固定价
                   </el-button>
                 </el-input>
-                <el-button
-                  v-if="lockSta"
-                  native-type="submit"
-                  size="small"
-                  style="margin-left: 10px"
-                  type="primary"
-                  @click="changeType(2)"
-                >
-                  <span v-if="lxSta">整手</span>
-                  <span v-else>散码</span>
-                </el-button>
               </el-form-item>
               <el-form-item v-if="lockSta" class="item" style="width: 100%">
                 <List
@@ -453,25 +420,38 @@
                 >
                   <template #List>
                     <el-table-column
-                      label="会员名称"
+                      label="会员等级"
                       prop="name"
                       show-overflow-tooltip
                     />
                     <el-table-column
-                      label="折扣"
-                      prop="zhekou"
+                      label="整手折扣"
+                      prop="discount"
                       show-overflow-tooltip
                     />
                     <el-table-column
-                      label="折扣前"
-                      prop="qian"
+                      label="金额"
+                      prop="price"
+                      show-overflow-tooltip
+                    >
+                      <template #default="{ row }">
+                        <el-input v-model="row.price" />
+                      </template>
+                    </el-table-column>
+                    <el-table-column
+                      label="散码折扣"
+                      prop="discount_single"
                       show-overflow-tooltip
                     />
                     <el-table-column
-                      label="折扣后"
-                      prop="hou"
+                      label="金额"
+                      prop="price1"
                       show-overflow-tooltip
-                    />
+                    >
+                      <template #default="{ row }">
+                        <el-input v-model="row.price1" />
+                      </template>
+                    </el-table-column>
                   </template>
                 </List>
               </el-form-item>
@@ -482,36 +462,29 @@
           <div class="conten-warp">
             <div class="conten-title">其它信息</div>
             <div class="conten-list-com">
-              <el-form-item class="item" label="上架商城：">
+              <el-form-item class="item" label="商品状态：">
                 <el-radio-group v-model="form.status">
                   <el-radio :label="1">上架</el-radio>
                   <el-radio :label="0">下架</el-radio>
                 </el-radio-group>
               </el-form-item>
-              <el-form-item class="item" label="是否同步到聚水潭：">
+              <el-form-item class="item" label="库存预警：">
+                <el-input
+                  v-model="form.goods_stock_warning"
+                  placeholder="请输入预警信息"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <!-- <el-form-item class="item" label="是否同步到聚水潭：">
                 <el-radio-group v-model="form.name">
                   <el-radio :label="0">充许</el-radio>
                   <el-radio :label="1">禁止</el-radio>
                 </el-radio-group>
               </el-form-item>
-              <el-form-item class="item" label="库存预警：">
-                <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入预警信息"
-                  style="width: 215px"
-                />
-              </el-form-item>
               <el-form-item class="item" label="设计师：">
                 <el-input
                   v-model="form.addressKeyword"
                   placeholder="请输入设计师"
-                  style="width: 215px"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="设计师编号：">
-                <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入设计师编号"
                   style="width: 215px"
                 />
               </el-form-item>
@@ -521,7 +494,7 @@
                   <el-radio :label="1">备用</el-radio>
                   <el-radio :label="2">禁用停售</el-radio>
                 </el-radio-group>
-              </el-form-item>
+              </el-form-item> -->
             </div>
           </div>
         </div>
@@ -621,6 +594,7 @@
   import List from '@/subview/components/List'
   import {
     getWarehouseList,
+    getGradeList,
     getWarehousePositionList,
     getGoodTotalDetails,
     getGoodBasicsDetails,
@@ -642,12 +616,12 @@
     },
     data() {
       return {
-        lxSta: false,
         lockSta: false,
         activeName: '0',
         tabindex: '0',
         goodsAllNum: {},
         goodsDetails: {},
+        colorNameList: [],
         form: Object.assign({}, this.drawerInof),
         selectData: Object.assign({}, this.selectList),
         listLoading: false,
@@ -655,20 +629,7 @@
         ids: undefined,
         WarehouseList: [],
         WarehousePositionList: [],
-        zhekouList: [
-          {
-            name: '普通会员',
-            zhekou: '3.5折',
-            qian: 200,
-            hou: 100,
-          },
-          {
-            name: '白银会员',
-            zhekou: '4.5折',
-            qian: 200,
-            hou: 100,
-          },
-        ],
+        zhekouList: [],
         orderList: [],
       }
     },
@@ -688,6 +649,46 @@
         },
         deep: true,
         immediate: true,
+      },
+      'form.price': {
+        handler: function (newVal) {
+          console.log(1111, newVal)
+          this.zhekouList.forEach((item) => {
+            console.log(1111, 232)
+            item.price = this.form.price * item.discount
+            item.price1 = this.form.price * item.discount_single
+          })
+        },
+        deep: true,
+      },
+      'form.colorid': {
+        handler: function (newVal) {
+          console.log(newVal)
+          if (!this.form.colorid) {
+            return
+          }
+          if (this.colorNameList.length == 3) {
+            return
+          }
+          let arr = []
+          let temp = 0
+          this.form.colorid.forEach((item) => {
+            this.selectData.color.forEach((item1) => {
+              item1.children.forEach((item2) => {
+                if (item == item2.id) {
+                  if (temp == 2) {
+                    arr.push('等颜色')
+                    return
+                  }
+                  temp = temp + 1
+                  arr.push(item2.name)
+                }
+              })
+            })
+          })
+          this.colorNameList = arr
+        },
+        deep: true,
       },
       selectList: {
         handler: function (newVal) {
@@ -745,57 +746,28 @@
         this.orderList = data.list.data
         this.listLoading = false
       },
-      changeType(val) {
-        if (val == 1) {
-          this.lockSta = !this.lockSta
-          console.log(this.form.lock_price)
-          if (this.form.lock_price != 1) {
-            this.form.lock_price = 1
-          } else {
-            this.form.lock_price = 0
-          }
+      async changeType() {
+        if (!this.form.price) {
+          this.$baseMessage(
+            '请先输入销售价',
+            'success',
+            'vab-hey-message-success'
+          )
+          return
+        }
+        this.lockSta = !this.lockSta
+        if (this.form.lock_price != 1) {
+          this.form.lock_price = 1
         } else {
-          this.lxSta = !this.lxSta
-          if (this.form.type != 1) {
-            this.form.type = 1
-          } else {
-            this.form.type = 0
-          }
+          this.form.lock_price = 0
         }
-      },
-      upMembers(type) {
-        if (type == 1) {
-          this.$baseConfirm('你确定要审核当前项吗', null, async () => {
-            // const { code } = await deleteBrand({ id: row.id })
-            // if (code != 200) {
-            //   return
-            // }
-            this.$baseMessage('审核成功', 'success', 'vab-hey-message-success')
-            this.fetchData()
-          })
-        } else if (type == 2) {
-          this.$baseConfirm('你确定要强制下线当前项吗', null, async () => {
-            // const { code } = await deleteBrand({ id: row.id })
-            // if (code != 200) {
-            //   return
-            // }
-            this.$baseMessage(
-              '强制下线成功',
-              'success',
-              'vab-hey-message-success'
-            )
-            this.fetchData()
-          })
-        } else if (type == 3) {
-          this.$baseConfirm('你确定要停售当前项吗', null, async () => {
-            // const { code } = await deleteBrand({ id: row.id })
-            // if (code != 200) {
-            //   return
-            // }
-            this.$baseMessage('停售成功', 'success', 'vab-hey-message-success')
-            this.fetchData()
-          })
-        }
+        const { data } = await getGradeList()
+        data.data.forEach((item) => {
+          console.log(1111, 232)
+          item.price = this.form.price * item.discount
+          item.price1 = this.form.price * item.discount_single
+        })
+        this.zhekouList = data.data
       },
     },
   }
@@ -807,11 +779,14 @@
       font-size: 12px;
     }
   }
+
   .head {
     padding: 30px 35px 25px;
   }
+
   .drawer-tab {
     padding: 0 25px;
+
     .conten-warp {
       padding: 25px 0;
       border-bottom: 1px dashed #eee;
@@ -823,17 +798,21 @@
         color: #303133;
         border-left: 3px solid #1890ff;
       }
+
       .conten-list-row {
         display: flex;
         flex-wrap: wrap;
+
         div {
           width: 33%;
           margin-top: 16px;
         }
       }
+
       .conten-list-com {
         display: flex;
         flex-wrap: wrap;
+
         .item {
           width: 50%;
           margin-top: 16px;
