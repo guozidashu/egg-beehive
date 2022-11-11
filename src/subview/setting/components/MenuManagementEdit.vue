@@ -21,7 +21,24 @@
       <el-form-item label="路径" prop="path">
         <el-input v-model="form.path" />
       </el-form-item>
-      <el-form-item label="vue文件路径" prop="component">
+      <el-form-item label="等级">
+        <el-select v-model="form.level" style="width: 200px">
+          <el-option label="一级菜单" :value="1" />
+          <el-option label="二级菜单" :value="2" />
+          <el-option label="三级级菜单" :value="3" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="是否有vue文件路径">
+        <el-select v-model="form.isState" style="width: 200px">
+          <el-option label="是" :value="1" />
+          <el-option label="否" :value="2" />
+        </el-select>
+      </el-form-item>
+      <el-form-item
+        v-if="form.isState == 1"
+        label="vue文件路径"
+        prop="component"
+      >
         <el-input v-model="form.component" />
       </el-form-item>
       <el-form-item label="标题" prop="title">
@@ -33,9 +50,7 @@
       <el-form-item label="类型">
         <el-input v-model="form.type" />
       </el-form-item>
-      <el-form-item label="等级">
-        <el-input v-model="form.level" />
-      </el-form-item>
+
       <!-- <el-form-item label="badge">
         <el-input v-model="form.meta.badge" />
       </el-form-item>
@@ -83,6 +98,7 @@
           component: null, // 路由
           title: null, // 标题
           icon: null, // 图标
+          isState: 1, // 是否有vue文件路径
         },
         rules: {
           pid: [{ required: true, trigger: 'blur', message: '请输入父级id' }],
@@ -120,8 +136,8 @@
           if (valid) {
             const { msg } = await editMenuSave(this.form)
             this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-            this.$emit('fetch-data')
             this.close()
+            this.$emit('fetch-data')
           }
         })
       },

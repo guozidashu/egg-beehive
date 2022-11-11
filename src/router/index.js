@@ -95,28 +95,6 @@ export const asyncRoutes = [
       },
     ],
   },
-  // {
-  //   path: '/indexcopy',
-  //   name: 'IndexCopy',
-  //   component: Layout,
-  //   meta: {
-  //     title: '首页',
-  //     icon: 'error-warning-line',
-  //     levelHidden: true,
-  //   },
-  //   children: [
-  //     {
-  //       path: '',
-  //       name: 'IndexCopy',
-  //       component: () => import('@/subview/index/indexcopy'),
-  //       meta: {
-  //         title: '首页',
-  //         icon: 'error-warning-line',
-  //         // tabHidden: true,
-  //       },
-  //     },
-  //   ],
-  // },
   {
     path: '/research',
     name: 'Research',
@@ -180,24 +158,15 @@ export const asyncRoutes = [
               // icon: 'home-2-line',
             },
           },
-          {
-            path: 'projectMeeting',
-            name: 'ProjectMeeting',
-            component: () => import('@/subview/research/project/meeting'),
-            meta: {
-              title: '订货会',
-              icon: 'archive-line',
-            },
-          },
-          {
-            path: 'projectBandlist',
-            name: 'ProjectBandlist',
-            component: () => import('@/subview/research/project/bandlist'),
-            meta: {
-              title: '波段管理',
-              icon: 'archive-line',
-            },
-          },
+          // {
+          //   path: 'projectMeeting',
+          //   name: 'ProjectMeeting',
+          //   component: () => import('@/subview/research/project/meeting'),
+          //   meta: {
+          //     title: '订货会',
+          //     icon: 'archive-line',
+          //   },
+          // },
         ],
       },
       {
@@ -264,6 +233,56 @@ export const asyncRoutes = [
           title: '研发大盘',
           icon: 'archive-line',
         },
+      },
+      {
+        path: 'integral',
+        name: 'Integral',
+        meta: {
+          title: '积分管理',
+          icon: 'archive-line',
+        },
+        children: [
+          {
+            path: 'integralGoods',
+            name: 'IntegralGoods',
+            component: () => import('@/subview/research/integral/goods'),
+            meta: {
+              title: '积分商品管理',
+            },
+          },
+          {
+            path: 'integralOrder',
+            name: 'IntegralOrder',
+            component: () => import('@/subview/research/integral/order'),
+            meta: {
+              title: '积分订单管理',
+            },
+          },
+          {
+            path: 'integralRecord',
+            name: 'IntegralRecord',
+            component: () => import('@/subview/research/integral/record'),
+            meta: {
+              title: '员工积分记录',
+            },
+          },
+          {
+            path: 'integralRanking',
+            name: 'IntegralRanking',
+            component: () => import('@/subview/research/integral/ranking'),
+            meta: {
+              title: '员工积分排行',
+            },
+          },
+          {
+            path: 'integralRules',
+            name: 'IntegralRules',
+            component: () => import('@/subview/research/integral/rules'),
+            meta: {
+              title: '积分规则',
+            },
+          },
+        ],
       },
     ],
   },
@@ -353,11 +372,20 @@ export const asyncRoutes = [
         },
       },
       {
-        path: 'supplierStatistical',
-        name: 'SupplierStatistical',
-        component: () => import('@/subview/supplier/statistical'),
+        path: 'supplierProductStatistical',
+        name: 'SupplierProductStatistical',
+        component: () => import('@/subview/supplier/productstatistical'),
         meta: {
-          title: '采购统计',
+          title: '成品采购统计',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'supplierMaterialStatistical',
+        name: 'SupplierMaterialStatistical',
+        component: () => import('@/subview/supplier/materialstatistical'),
+        meta: {
+          title: '物料采购统计',
           icon: 'archive-line',
         },
       },
@@ -701,6 +729,15 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/seasonal'),
         meta: {
           title: '季节管理',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'archivesBandlist',
+        name: 'ArchivesBandlist',
+        component: () => import('@/subview/archives/bandlist'),
+        meta: {
+          title: '波段管理',
           icon: 'archive-line',
         },
       },

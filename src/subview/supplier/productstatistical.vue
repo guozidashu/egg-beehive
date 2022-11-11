@@ -196,7 +196,7 @@
   import TextLabels from '@/subview/components/TextLabels'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    name: 'GoodsStatistical',
+    name: 'SupplierProductStatistical',
     components: { List, VabChart, TextLabels },
     mixins: [datajosn],
     data() {

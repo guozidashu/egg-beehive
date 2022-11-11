@@ -71,12 +71,8 @@ const actions = {
     let routes = [...asyncRoutes]
     // 设置后端路由(不需要可以删除)
     if (authentication === 'all') {
-      let arr = rootState['user'].userRouteList
-      console.log('用户信息获取到，转化路由数组', arr)
-      let list = []
-      for (let i in arr) {
-        list.push(arr[i]) //
-      }
+      let list = rootState['user'].userRouteList
+      console.log('list', list)
       let newlist = []
       list.forEach((item) => {
         if (item.guard.length != 0) {
@@ -118,7 +114,9 @@ const actions = {
       routes = convertRouter(list)
     }
     // 根据权限和rolesControl过滤路由
+    console.log(2222, routes)
     const accessRoutes = filterRoutes(routes)
+    console.log(1111, accessRoutes)
     // 设置菜单所需路由
     commit('setRoutes', JSON.parse(JSON.stringify(accessRoutes)))
     // 根据可访问路由重置Vue Router

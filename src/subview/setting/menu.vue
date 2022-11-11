@@ -92,7 +92,9 @@
     },
     methods: {
       handleEdit(row) {
-        if (row.path && row.component) {
+        console.log(1111, row)
+        if (row.path) {
+          row.isState = 1
           this.$refs['edit'].showEdit(row)
         } else {
           this.$refs['edit'].showEdit()
@@ -123,6 +125,7 @@
 
 <style lang="scss" scoped>
   $base: '.menu-management';
+
   #{$base}-container {
     padding: 0 !important;
     background: $base-color-background !important;
