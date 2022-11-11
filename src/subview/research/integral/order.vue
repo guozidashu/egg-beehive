@@ -1,5 +1,16 @@
 <template>
   <div style="background-color: #f6f8f9">
+    <div
+      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+    >
+      <Form :form="form" :form-type="formType">
+        <template #Form>
+          <el-form-item label="订单号" prop="region">
+            <el-input v-model="form.name" size="small" />
+          </el-form-item>
+        </template>
+      </Form>
+    </div>
     <el-card shadow="never" style="border: 0">
       <List
         :list="list"
@@ -8,7 +19,6 @@
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
-        @selectRows="selectBtnRows"
       >
         <template #List>
           <el-table-column
@@ -60,7 +70,14 @@
             width="85"
           >
             <template #default="{ row }">
-              <el-button type="text" @click="handleDelete(row)">核销</el-button>
+              <el-button
+                v-if="row.status != 1"
+                type="text"
+                @click="handleDelete(row)"
+              >
+                核销
+              </el-button>
+              <span v-else>已核销</span>
             </template>
           </el-table-column>
         </template>
@@ -70,17 +87,19 @@
 </template>
 <script>
   import List from '@/subview/components/List'
-  // import { getWaveList, editWave, deleteWave } from '@/api/basic'
+  import Form from '@/subview/components/Form'
+  import { getIntegralOrderList, editIntegralRuleSave } from '@/api/basic'
   export default {
     name: 'ProjectBandlist',
-    components: { List },
+    components: { List, Form },
     data() {
       return {
         form: {
           page: 1,
           pageSize: 10,
+          order_sn: '',
         },
-        selectRows: [],
+        formType: 4,
         listType: 1,
         list: [],
         listLoading: false,
@@ -99,14 +118,13 @@
       this.fetchData()
     },
     methods: {
-      // 删除
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要核销当前项吗', null, async () => {
-            // const { code } = await deleteWave({ id: row.id })
-            // if (code != 200) {
-            //   return
-            // }
+            const { code } = await editIntegralRuleSave({ id: row.id })
+            if (code != 200) {
+              return
+            }
             this.$baseMessage('核销成功', 'success', 'vab-hey-message-success')
             this.fetchData()
           })
@@ -117,11 +135,6 @@
       changeBtnPage(data) {
         this.form.page = data
       },
-      // 多选获取数据   公共部分
-      selectBtnRows(data) {
-        this.selectRows = data
-      },
-
       // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
@@ -129,13 +142,11 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getWaveList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const { data } = await getIntegralOrderList(this.form)
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
       },
     },
   }

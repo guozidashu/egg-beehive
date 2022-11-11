@@ -1,10 +1,138 @@
 import request from '@/utils/request'
 // 新接口
 
+//获取仓库
+export function getWarehouseList(data) {
+  return request({
+    url: '/common/getWarehouseList',
+    method: 'post',
+    data,
+  })
+}
+//获取库位
+export function getWarehousePositionList(data) {
+  return request({
+    url: '/common/getWarehousePositionList',
+    method: 'post',
+    data,
+  })
+}
 // 下拉框数据获取 common/getBasicInfo
 export function getCommonAllList(data) {
   return request({
     url: '/common/getBasicInfo',
+    method: 'post',
+    data,
+  })
+}
+// 积分订单管理
+export function getIntegralOrderList(data) {
+  return request({
+    url: '/research/integralOrderList',
+    method: 'post',
+    data,
+  })
+}
+export function editIntegralOrderVerification(data) {
+  return request({
+    url: '/research/integralOrderVerification',
+    method: 'post',
+    data,
+  })
+}
+// 员工积分记录
+export function getEmployeeIntegralList(data) {
+  return request({
+    url: '/research/EmployeeIntegralList',
+    method: 'post',
+    data,
+  })
+}
+// 员工积分排行
+export function getEmployeeIntegralRank(data) {
+  return request({
+    url: '/research/EmployeeIntegralRank',
+    method: 'post',
+    data,
+  })
+}
+// 积分规则
+export function getIntegralRule(data) {
+  return request({
+    url: '/research/IntegralRule',
+    method: 'post',
+    data,
+  })
+}
+export function editIntegralRuleSave(data) {
+  return request({
+    url: '/research/IntegralRuleSave',
+    method: 'post',
+    data,
+  })
+}
+// 积分管理
+export function getIntegralGoodsList(data) {
+  return request({
+    url: '/research/integralGoodsList',
+    method: 'post',
+    data,
+  })
+}
+export function editIntegralGoodsSave(data) {
+  return request({
+    url: '/research/integralGoodsSave',
+    method: 'post',
+    data,
+  })
+}
+export function delIntegralGoodsDel(data) {
+  return request({
+    url: '/research/integralGoodsDel',
+    method: 'post',
+    data,
+  })
+}
+// 成品采购统计
+export function getFinishCountList(data) {
+  return request({
+    url: '/supplier/finishCountList',
+    method: 'post',
+    data,
+  })
+}
+export function getFinishCountRank(data) {
+  return request({
+    url: '/supplier/finishCountRank',
+    method: 'post',
+    data,
+  })
+}
+export function getFinishGoodDetail(data) {
+  return request({
+    url: '/supplier/finishGoodDetail',
+    method: 'post',
+    data,
+  })
+}
+// 物料采购统计
+export function getMaterialCountListt(data) {
+  return request({
+    url: '/supplier/materialCountList',
+    method: 'post',
+    data,
+  })
+}
+export function getMaterialCountRank(data) {
+  return request({
+    url: '/supplier/materialCountRank',
+    method: 'post',
+    data,
+  })
+}
+export function getMaterialMaterialDetail(data) {
+  return request({
+    url: '/supplier/materialMaterialDetail',
     method: 'post',
     data,
   })
@@ -27,22 +155,6 @@ export function editMenuSave(data) {
 export function delMenuDel(data) {
   return request({
     url: '/menu/menuDel',
-    method: 'post',
-    data,
-  })
-}
-//获取仓库
-export function getWarehouseList(data) {
-  return request({
-    url: '/common/getWarehouseList',
-    method: 'post',
-    data,
-  })
-}
-//获取库位
-export function getWarehousePositionList(data) {
-  return request({
-    url: '/common/getWarehousePositionList',
     method: 'post',
     data,
   })

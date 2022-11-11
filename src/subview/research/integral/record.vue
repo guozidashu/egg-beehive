@@ -8,7 +8,6 @@
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
-        @selectRows="selectBtnRows"
       >
         <template #List>
           <el-table-column
@@ -22,7 +21,11 @@
             prop="id"
             show-overflow-tooltip
             sortable
-          />
+          >
+            <template #default="{ row }">
+              <el-image :src="row.avatar" />
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="姓名"
@@ -32,19 +35,19 @@
           <el-table-column
             align="center"
             label="积分"
-            prop="name"
+            prop="integral"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
             label="积分来源"
-            prop="name"
+            prop="remark"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
             label="时间"
-            prop="name"
+            prop="create_time"
             show-overflow-tooltip
           />
         </template>
@@ -54,6 +57,7 @@
 </template>
 <script>
   import List from '@/subview/components/List'
+  import { getEmployeeIntegralList } from '@/api/basic'
   export default {
     name: 'ProjectBandlist',
     components: { List },
@@ -88,11 +92,6 @@
       changeBtnPage(data) {
         this.form.page = data
       },
-      // 多选获取数据   公共部分
-      selectBtnRows(data) {
-        this.selectRows = data
-      },
-
       // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
@@ -100,13 +99,11 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getWaveList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const { data } = await getEmployeeIntegralList(this.form)
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
       },
     },
   }

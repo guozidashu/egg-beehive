@@ -1,131 +1,113 @@
 <template>
-  <div style="background-color: #f6f8f9">
-    <el-card shadow="never" style="border: 0">
-      <List
-        :list="list"
-        :list-type="listType"
-        :state="listLoading"
-        :total="total"
-        @changePage="changeBtnPage"
-        @changePageSize="changeBtnPageSize"
-        @selectRows="selectBtnRows"
+  <div>
+    <!-- 转化后 -->
+    <div style="padding: 20px">
+      <el-radio-group v-model="type">
+        <el-radio-button label="reward" />
+        <el-radio-button label="deduction" />
+      </el-radio-group>
+      <el-button
+        native-type="submit"
+        size="small"
+        style="margin-left: 20px"
+        type="primary"
       >
-        <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
+        提交
+      </el-button>
+    </div>
+    <el-table border :data="transData">
+      <el-table-column
+        v-for="(item, index) in transTitle"
+        :key="index"
+        align="center"
+        :label="item"
+      >
+        <template slot-scope="scope">
+          <el-input
+            v-if="Number(scope.row[index])"
+            v-model="scope.row[index]"
           />
-          <el-table-column
-            align="center"
-            label="岗位"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="商品分类大类"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="奖励积分/件"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="淘汰扣除积分/件"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
-          >
-            <template #default="{ row }">
-              <el-button type="text" @click="handleDelete(row)">确认</el-button>
-            </template>
-          </el-table-column>
+          <span v-else>{{ scope.row[index] }}</span>
         </template>
-      </List>
-    </el-card>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
+
 <script>
-  import List from '@/subview/components/List'
-  // import { getWaveList, editWave, deleteWave } from '@/api/basic'
+  import { getIntegralRule } from '@/api/basic'
   export default {
-    name: 'ProjectBandlist',
-    components: { List },
     data() {
       return {
         form: {
-          page: 1,
-          pageSize: 10,
+          type: 'reward',
         },
-        selectRows: [],
-        listType: 1,
-        list: [],
-        listLoading: false,
-        total: 0,
+        type: 'reward',
+        // originData 为后端原始正常的数据, 此数据按正常表格展示 一行一行的数据
+        // 保证数组里每一个对象中的字段顺序, 从上到下 一次对应显示表格中的从左到右
+        originData: [
+          // 属性名对应 transTitle的属性 值对应奖惩的数值
+          {
+            type: '5',
+            num: '5',
+            average: '5',
+          },
+          {
+            type: '5',
+            num: '5',
+            average: '5',
+          },
+          {
+            type: '5',
+            num: '5',
+            average: '5',
+          },
+        ],
+        originTitle: ['分类一', '分类2', '分类3'], // 竖列 标题
+        transTitle: ['', '岗位', '版市', '设计师'], // 横列 标题
+        transData: [],
       }
     },
     watch: {
-      form: {
-        handler: function () {
-          this.fetchData()
+      type: {
+        handler: function (newVal) {
+          console.log(newVal)
         },
         deep: true,
       },
     },
     created() {
       this.fetchData()
+      // 数组按矩阵思路, 变成转置矩阵
+      let matrixData = this.originData.map((row) => {
+        let arr = []
+        for (let key in row) {
+          arr.push(row[key])
+        }
+        return arr
+      })
+      console.log(matrixData)
+      // 加入标题拼接最终的数据
+      this.transData = matrixData[0].map((col, i) => {
+        return [
+          this.originTitle[i],
+          ...matrixData.map((row) => {
+            return row[i]
+          }),
+        ]
+      })
+      console.log(this.transData)
     },
     methods: {
-      // 删除
-      handleDelete(row) {
-        if (row.id) {
-          this.$baseConfirm('你确定要确认当前项吗', null, async () => {
-            // const { code } = await deleteWave({ id: row.id })
-            // if (code != 200) {
-            //   return
-            // }
-            this.$baseMessage('确认成功', 'success', 'vab-hey-message-success')
-            this.fetchData()
-          })
-        }
-      },
-
-      // 列表数据改变页数   公共部分
-      changeBtnPage(data) {
-        this.form.page = data
-      },
-      // 多选获取数据   公共部分
-      selectBtnRows(data) {
-        this.selectRows = data
-      },
-
-      // 列表数据改变每页条数  公共部分
-      changeBtnPageSize(data) {
-        this.form.pageSize = data
-        console.log(data)
-      },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getWaveList(this.form)
-        // this.list = list
-        // this.total = total
+        this.listLoading = true
+        const { data } = await getIntegralRule(this.form)
+        console.log(data)
+        // this.list = data.data
+        // this.total = data.total
         // this.listLoading = false
       },
     },
   }
 </script>
-<style lang="scss" scoped></style>

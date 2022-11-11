@@ -11,7 +11,7 @@
         ref="form"
         :inline="true"
         label-width="80px"
-        :model="goodsForm"
+        :model="form"
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
@@ -21,7 +21,7 @@
           style="margin-right: 0; font-size: 12px"
         >
           <el-date-picker
-            v-model="goodsForm.create_time"
+            v-model="form.date"
             align="right"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"
@@ -43,9 +43,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <div style="display: flex; flex-wrap: wrap">
-        <TextLabels ref="multipleTable" :list="goodsStaList" />
-      </div>
+      <TextLabels ref="multipleTable" :list="goodsStaList" :width="textwidth" />
       <vab-chart
         :init-options="initOptions"
         :option="option"
@@ -57,36 +55,17 @@
         ref="form"
         :inline="true"
         label-width="80px"
-        :model="goodsForm"
+        :model="form"
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <el-radio-group
-          v-model="tabslist"
-          class="card-header-tag"
-          style="float: right; margin-top: 5px"
-        >
-          <el-radio-button label="成品采购排行" />
-          <el-radio-button label="面料采购排行" />
-          <el-radio-button label="辅料采购排行" />
-        </el-radio-group>
         <el-form-item style="margin-right: 0">
-          <el-form-item label="统计类型:" prop="region">
-            <el-select
-              v-model="goodsForm.region"
-              size="small"
-              style="width: 150px"
-            >
-              <el-option label="浏览量" value="shanghai" />
-              <el-option label="访问数" value="beijing" />
-            </el-select>
-          </el-form-item>
           <el-form-item
             label="时间筛选:"
             style="float: right; margin-right: 0; font-size: 12px"
           >
             <el-date-picker
-              v-model="goodsForm.date"
+              v-model="form.date1"
               align="right"
               end-placeholder="结束日期"
               :picker-options="pickerOptions"
@@ -106,12 +85,7 @@
           </el-form-item>
         </el-form-item>
       </el-form>
-      <List
-        v-if="typeList == 2"
-        :list="goosList"
-        :list-type="listType"
-        :state="listLoading"
-      >
+      <List :list="list" :list-type="listType" :state="listLoading">
         <template #List>
           <el-table-column
             align="center"
@@ -119,59 +93,25 @@
             type="index"
             width="50"
           />
-          <el-table-column label="商品图片" prop="image" width="200">
+          <el-table-column label="商品图片" prop="img" width="200">
             <template #default="{ row }">
-              <el-image :src="row.image" />
+              <el-image :src="row.img" />
             </template>
           </el-table-column>
-          <el-table-column label="商品名称" prop="store_name" width="200" />
-          <el-table-column label="商品款号" prop="visit" width="100" />
-          <el-table-column label="采购价" prop="user" width="100" />
-          <el-table-column label="入库时间" prop="cart" width="120" />
-          <el-table-column label="采购件数" prop="orders" width="100" />
-          <el-table-column label="采购金额" prop="orders" width="100" />
-          <el-table-column label="最后一次入库时间" prop="profit" />
-          <el-table-column label="超期状态" prop="pay" />
-          <el-table-column
-            align="center"
-            fixed="right"
-            label="操作"
-            width="100"
-          >
+          <el-table-column label="商品名称" prop="name" width="200" />
+          <el-table-column label="商品款号" prop="sn" width="100" />
+          <el-table-column label="采购价" prop="purchase_price" width="100" />
+          <el-table-column label="入库时间" prop="add_date" width="120" />
+          <el-table-column label="采购件数" prop="num" width="100" />
+          <el-table-column label="采购金额" prop="total" width="100" />
+          <el-table-column label="最后一次入库时间">
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">
-                商品详情
-              </el-button>
+              {{ row.lasttime.add_date }}
             </template>
           </el-table-column>
-        </template>
-      </List>
-      <List
-        v-if="typeList == 1"
-        :list="goosList"
-        :list-type="listType"
-        :state="listLoading"
-      >
-        <template #List>
-          <el-table-column
-            align="center"
-            label="排行"
-            type="index"
-            width="50"
-          />
-          <el-table-column label="物料图片" prop="image" width="200">
-            <template #default="{ row }">
-              <el-image :src="row.image" />
-            </template>
+          <el-table-column label="超期状态" prop="pay">
+            <template #default="{ row }">暂无{{ row.id }}</template>
           </el-table-column>
-          <el-table-column label="物料名称" prop="store_name" width="200" />
-          <el-table-column label="物料编号" prop="visit" width="100" />
-          <el-table-column label="采购价" prop="user" width="100" />
-          <el-table-column label="入库时间" prop="cart" width="120" />
-          <el-table-column label="采购数量" prop="orders" width="100" />
-          <el-table-column label="采购金额" prop="orders" width="100" />
-          <el-table-column label="最后一次入库时间" prop="profit" />
-          <el-table-column label="超期状态" prop="pay" />
           <el-table-column
             align="center"
             fixed="right"
@@ -194,6 +134,11 @@
   import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
   import TextLabels from '@/subview/components/TextLabels'
+  import {
+    getFinishCountList,
+    getFinishCountRank,
+    getFinishGoodDetail,
+  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'SupplierProductStatistical',
@@ -201,96 +146,15 @@
     mixins: [datajosn],
     data() {
       return {
-        tabslist: '成品采购排行',
-        typeList: 1,
         listLoading: false,
         listType: 2,
-        goosList: [
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-        ],
-        goodsForm: {},
+        list: [],
+        textwidth: '25%',
+        form: {
+          date: this.getPastTime(1),
+          date1: this.getPastTime(1),
+        },
         goodsStaList: [
-          {
-            title: '总采购数量',
-            number: 200,
-            num: 94.32,
-            type: 1,
-            typeSta: false,
-          },
           {
             title: '成品采购数量',
             number: 200,
@@ -303,41 +167,6 @@
             number: 200,
             num: 94.32,
             type: 1,
-            typeSta: false,
-          },
-          {
-            title: '面料采购数量',
-            number: 200,
-            num: 94.32,
-            type: 1,
-            typeSta: false,
-          },
-          {
-            title: '面料采购金额',
-            number: 200,
-            num: 94.32,
-            type: 1,
-            typeSta: false,
-          },
-          {
-            title: '总采购金额',
-            number: 400,
-            num: 34.32,
-            type: 2,
-            typeSta: false,
-          },
-          {
-            title: '辅料采购数量',
-            number: 400,
-            num: 34.32,
-            type: 2,
-            typeSta: false,
-          },
-          {
-            title: '辅料采购金额',
-            number: 400,
-            num: 34.32,
-            type: 2,
             typeSta: false,
           },
           {
@@ -523,18 +352,34 @@
       }
     },
     watch: {
-      tabslist(val) {
-        if (val == '成品采购排行') {
-          this.typeList = 2
-        } else {
-          this.typeList = 1
-        }
+      form: {
+        handler: function () {
+          this.fetchData()
+        },
+        deep: true,
       },
     },
-    created() {},
+    created() {
+      this.fetchData()
+    },
     methods: {
-      // 详情抽屉
-      handleDetail() {},
+      async fetchData() {
+        this.listLoading = true
+        const { data } = await getFinishCountList({ time: this.form.date })
+        console.log(data)
+        this.fetchList()
+      },
+      async fetchList() {
+        const { data } = await getFinishCountRank({ time: this.form.date1 })
+        console.log(data)
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
+      },
+      async handleDetail(row) {
+        const { data } = await getFinishGoodDetail({ id: row.id })
+        console.log(data)
+      },
     },
   }
 </script>

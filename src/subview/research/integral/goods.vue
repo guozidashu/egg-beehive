@@ -43,10 +43,14 @@
           <el-table-column
             align="center"
             label="图片"
-            prop="id"
+            prop="pic"
             show-overflow-tooltip
             sortable
-          />
+          >
+            <template #default="{ row }">
+              <el-image :src="row.pic" />
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="商品名称"
@@ -56,25 +60,30 @@
           <el-table-column
             align="center"
             label="积分"
-            prop="name"
+            prop="integral"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
             label="库存"
-            prop="name"
+            prop="stock"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
             label="上下架"
-            prop="name"
+            prop="status"
             show-overflow-tooltip
-          />
+          >
+            <template #default="{ row }">
+              <span v-if="row.status == 1">上架</span>
+              <span v-else>下架</span>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="添加时间"
-            prop="name"
+            prop="create_time"
             show-overflow-tooltip
           />
           <el-table-column
@@ -98,7 +107,7 @@
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
   import Edit from './components/GoodsEdit'
-  // import { getWaveList, editWave, deleteWave } from '@/api/basic'
+  import { getIntegralGoodsList, delIntegralGoodsDel } from '@/api/basic'
   export default {
     name: 'ProjectBandlist',
     components: { List, Form, Edit },
@@ -138,10 +147,6 @@
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {
-            // const { code, data } = await editWave({ id: row.id })
-            // if (code === 200) {
-            //   this.$refs['edit'].showEdit(data)
-            // }
             this.$refs['edit'].showEdit(row)
           } else {
             this.$refs['edit'].showEdit()
@@ -156,26 +161,13 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            // const { code } = await deleteWave({ id: row.id })
-            // if (code != 200) {
-            //   return
-            // }
+            const { code } = await delIntegralGoodsDel({ id: row.id })
+            if (code != 200) {
+              return
+            }
             this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
             this.fetchData()
           })
-        } else {
-          if (this.selectRows.length > 0) {
-            // const ids = this.selectRows.map((item) => item.id).join()
-            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-              // const { code } = await deleteWave(ids)
-              // if (code != 200) {
-              //   return
-              // }
-              this.fetchData()
-            })
-          } else {
-            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
-          }
         }
       },
       // 列表数据封装函数
@@ -196,13 +188,11 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getWaveList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const { data } = await getIntegralGoodsList(this.form)
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
       },
     },
   }
