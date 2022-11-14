@@ -95,6 +95,28 @@ d
         <el-tab-pane label="对账单记录" name="5" />
       </el-tabs>
     </div>
+    <div v-if="form.drawerType == 3">
+      <el-button
+        v-if="form.drawerType == 1"
+        native-type="submit"
+        size="small"
+        style="float: right; margin-right: 10px"
+        type="primary"
+        @click="form.drawerType = 2"
+      >
+        编辑
+      </el-button>
+      <el-button
+        v-if="form.drawerType == 2 || form.drawerType == 3"
+        native-type="submit"
+        size="small"
+        style="float: right; margin-right: 10px"
+        type="primary"
+        @click="form.drawerType = 1"
+      >
+        完成
+      </el-button>
+    </div>
     <div v-if="search_type == '0'">
       <div v-if="form.drawerType == 1" ref="vab-print-table" class="drawer-tab">
         <div class="conten-warp">

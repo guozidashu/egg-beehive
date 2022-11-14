@@ -104,8 +104,8 @@
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">供应商排行</span>
-        <el-form-item style="margin-right: 0">
+        <span style="margin: 10px 0; font-size: 16px">供应商排行</span>
+        <!-- <el-form-item style="margin-right: 0">
           <el-form-item label="统计类型:" prop="region">
             <el-select v-model="form.region" size="small" style="width: 150px">
               <el-option label="浏览量" value="shanghai" />
@@ -135,7 +135,7 @@
               查询
             </el-button>
           </el-form-item>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <List :list="supplier_rank" :list-type="listType" :state="listLoading">
         <!-- 表格组件具名插槽 自定义表头 -->
@@ -211,7 +211,7 @@
         mapTitle: '供应商地域分布',
         supplier_type: [],
         form: {
-          name: '',
+          create_time: this.getPastTime(1),
           type: '',
         },
         areaList: [
@@ -334,6 +334,15 @@
         },
         branchList: [],
       }
+    },
+    watch: {
+      form: {
+        handler: function () {
+          this.branchList = []
+          this.fetchData()
+        },
+        deep: true,
+      },
     },
     created() {
       this.getSelectData()

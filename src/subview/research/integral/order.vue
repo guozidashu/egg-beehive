@@ -88,7 +88,10 @@
 <script>
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
-  import { getIntegralOrderList, editIntegralRuleSave } from '@/api/basic'
+  import {
+    getIntegralOrderList,
+    editIntegralOrderVerification,
+  } from '@/api/basic'
   export default {
     name: 'ProjectBandlist',
     components: { List, Form },
@@ -121,7 +124,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要核销当前项吗', null, async () => {
-            const { code } = await editIntegralRuleSave({ id: row.id })
+            const { code } = await editIntegralOrderVerification({ id: row.id })
             if (code != 200) {
               return
             }

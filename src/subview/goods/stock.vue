@@ -16,14 +16,18 @@
         @submit.native.prevent
       >
         <span style="margin-top: 10px; font-size: 16px">库存统计</span>
-        <el-form-item label="统计类型:" prop="region">
+        <el-form-item label="统计类型:">
           <el-select
-            v-model="goodsForm.region"
+            v-model="goodsForm.category"
             size="small"
             style="width: 150px"
           >
-            <el-option label="上衣" value="shanghai" />
-            <el-option label="童装" value="beijing" />
+            <el-option
+              v-for="(item, index) in selectList.category"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
       </el-form>
@@ -37,7 +41,7 @@
         "
       >
         <Branch :list="branchList" :style-chart="styleObj" />
-        <Branch :list="branchList" :style-chart="styleObj" />
+        <Branch :list="branchList1" :style-chart="styleObj" />
       </div>
       <!-- <vab-chart
         :init-options="initOptions"
@@ -50,54 +54,71 @@
         ref="form"
         :inline="true"
         label-width="80px"
-        :model="goodsForm"
+        :model="goodsForm1"
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
         <span style="margin-top: 10px; font-size: 16px">库存排行</span>
         <el-form-item style="margin-right: 0">
-          <el-form-item label="品牌:" prop="region">
+          <el-form-item label="品牌:">
             <el-select
-              v-model="goodsForm.region"
+              v-model="goodsForm1.brand"
               size="small"
               style="width: 150px"
             >
-              <el-option label="品牌1" value="shanghai" />
-              <el-option label="品牌2" value="beijing" />
+              <el-option
+                v-for="(item, index) in selectList.brand"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
             </el-select>
           </el-form-item>
-          <el-form-item label="商品分类:" prop="region">
+          <el-form-item label="商品分类:">
             <el-select
-              v-model="goodsForm.region"
+              v-model="goodsForm1.category"
               size="small"
               style="width: 150px"
             >
-              <el-option label="上衣" value="shanghai" />
-              <el-option label="童装" value="beijing" />
+              <el-option
+                v-for="(item, index) in selectList.category"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
             </el-select>
           </el-form-item>
         </el-form-item>
       </el-form>
-      <List :list="goosList" :list-type="listType" :state="listLoading">
+      <List :list="list" :list-type="listType" :state="listLoading">
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column label="商品图片" prop="image" width="200">
+          <el-table-column
+            align="center"
+            label="排行"
+            type="index"
+            width="50"
+          />
+          <el-table-column label="商品图片" prop="img" width="200">
             <template #default="{ row }">
-              <el-image :src="row.image" />
+              <el-image :src="row.img" />
             </template>
           </el-table-column>
-          <el-table-column label="商品款号" prop="store_name" />
-          <el-table-column label="商品名称" prop="store_name" />
-          <el-table-column label="吊牌价" prop="user" width="100" />
-          <el-table-column label="库存数" prop="visit" width="100" />
-          <el-table-column label="库存金额" prop="user" width="100" />
-          <el-table-column label="成本价" prop="user" width="100" />
-          <el-table-column label="库存成本金额" prop="orders" width="120" />
-          <el-table-column label="上架日期" prop="pay" />
-          <el-table-column label="周期天数" prop="orders" width="100" />
-          <el-table-column label=" 库存占比" prop="profit" width="100">
-            <template #default="{ row }">{{ row.profit * 100 }}%</template>
-          </el-table-column>
+          <el-table-column label="商品款号" prop="sn" />
+          <el-table-column label="商品名称" prop="name" />
+          <el-table-column label="吊牌价" prop="sale_price" width="100" />
+          <el-table-column label="库存数" prop="total_stock" width="100" />
+          <el-table-column label="库存金额" prop="stock_amount" width="100" />
+          <el-table-column label="成本价" prop="cost_price" width="100" />
+          <el-table-column label="库存成本金额" prop="stock_cost" width="120" />
+          <el-table-column label="上架日期" prop="created" />
+          <el-table-column label="周期天数" prop="cycle_days" width="100" />
+          <el-table-column
+            label=" 库存占比"
+            prop="stock_proportion"
+            width="100"
+          />
+
           <el-table-column align="center" label="操作" width="85">
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">查看</el-button>
@@ -113,78 +134,21 @@
   import List from '@/subview/components/List'
   import Branch from '@/subview/components/Branch'
   import TextLabels from '@/subview/components/TextLabels'
+  import {
+    getCommonAllList,
+    getStockStatistics,
+    getStockCircular,
+    getStockRank,
+  } from '@/api/basic'
   export default {
     name: 'GoodsStatistical',
     components: { List, Branch, TextLabels },
     data() {
       return {
-        pickerOptions: {
-          cellClassName: (time) => {
-            if (
-              new Date().getDate() === time.getDate() &&
-              new Date().getMonth() === time.getMonth() &&
-              new Date().getFullYear() === time.getFullYear()
-            ) {
-              return 'dateArrClass' // 返回值设置的是我们添加的类名
-            }
-          },
-          shortcuts: [
-            {
-              text: '今天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '昨天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 1
-                end.setTime(start)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近7天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 7
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近30天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 30
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本月',
-              onClick(picker) {
-                const end = new Date()
-                const start =
-                  new Date().getTime() -
-                  3600 * 1000 * 24 * (new Date().getDate() - 1)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本年',
-              onClick(picker) {
-                const start = new Date(new Date().getFullYear(), 0, 1)
-                const end = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-          ],
-        },
         listLoading: false,
         listType: 2,
-        goosList: [
+        selectList: [],
+        list: [
           {
             visit: '507',
             user: 215,
@@ -261,14 +225,23 @@
               'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
           },
         ],
-        goodsForm: {},
+        goodsForm: {
+          category: '',
+        },
+        goodsForm1: {
+          page: 1,
+          pageSize: 10,
+          category: '', //款式分类
+          brand: '', //品牌
+        },
         goodsStaList: [
           {
-            title: '待发欠货',
+            title: '待发货',
             number: 200,
             num: 94.32,
             type: 1,
             typeSta: false,
+            name: 'consignment_stock',
           },
           {
             title: '现存库存',
@@ -276,6 +249,7 @@
             num: 94.32,
             type: 1,
             typeSta: false,
+            name: 'spot_stock',
           },
           {
             title: '生产中库存',
@@ -283,6 +257,7 @@
             num: 94.32,
             type: 1,
             typeSta: false,
+            name: 'production_stock',
           },
           {
             title: '可售库存',
@@ -290,6 +265,7 @@
             num: 94.32,
             type: 1,
             typeSta: false,
+            name: 'available_stock',
           },
           {
             title: '总库存',
@@ -297,6 +273,7 @@
             num: 94.32,
             type: 1,
             typeSta: false,
+            name: 'total_stock',
           },
           {
             title: '库存预警',
@@ -304,6 +281,7 @@
             num: 34.32,
             type: 2,
             typeSta: false,
+            name: 'warning_stock',
           },
           {
             title: '现货库存成本',
@@ -311,6 +289,7 @@
             num: 34.32,
             type: 2,
             typeSta: false,
+            name: 'present_price',
           },
           {
             title: '生产中库存成本',
@@ -318,6 +297,7 @@
             num: 34.32,
             type: 2,
             typeSta: false,
+            name: 'reproduction_price',
           },
           {
             title: '可售库存成本',
@@ -325,6 +305,7 @@
             num: 34.32,
             type: 2,
             typeSta: false,
+            name: 'available_price',
           },
           {
             title: '总库存成本',
@@ -332,6 +313,7 @@
             num: 34.32,
             type: 2,
             typeSta: false,
+            name: 'total_price',
           },
         ],
         styleObj: {
@@ -341,26 +323,80 @@
           legendy: 350,
           center: ['50%', '50%'],
         },
-        branchList: [
-          { value: 1048, name: '上衣' },
-          { value: 735, name: '裤子' },
-          { value: 580, name: '连衣裙' },
-          { value: 484, name: '内衣' },
-          { value: 300, name: '鞋子' },
-        ],
-        branchList1: [
-          { value: 1048, name: '2022' },
-          { value: 735, name: '2021' },
-          { value: 580, name: '2020' },
-          { value: 484, name: '2019' },
-          { value: 300, name: '2018' },
-        ],
+        branchList: [],
+        branchList1: [],
       }
     },
-    created() {},
+    watch: {
+      goodsForm: {
+        handler: function () {
+          this.fetchData()
+        },
+        deep: true,
+      },
+      goodsForm1: {
+        handler: function () {
+          this.tableData()
+        },
+        deep: true,
+      },
+    },
+    created() {
+      this.getGoodsTypeList()
+      this.fetchData()
+      this.getCircular()
+      this.tableData()
+    },
     methods: {
       // 详情抽屉
       handleDetail() {},
+      // 列表数据请求函数 公共部分
+      async fetchData() {
+        const { data } = await getStockStatistics({
+          category_id: this.goodsForm.category,
+        })
+        this.goodsStaList.forEach((item) => {
+          for (let i in data) {
+            if (item.name == i) {
+              if (data[i] == null) {
+                data[i] = 0
+                item.num = data[i]
+              } else {
+                item.num = data[i]
+              }
+            }
+          }
+        })
+      },
+      async tableData() {
+        this.listLoading = true
+        const { data } = await getStockRank(this.goodsForm1)
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
+      },
+      async getCircular() {
+        const { data } = await getStockCircular()
+        console.log(data)
+        data.category_stock_data.forEach((item) => {
+          this.branchList.push({
+            value: item.category_stock_num,
+            name: item.category_name,
+          })
+        })
+        data.year_stock_data.forEach((item) => {
+          this.branchList1.push({
+            value: item.year_stock_num,
+            name: item.year_name,
+          })
+        })
+      },
+      async getGoodsTypeList() {
+        const { data } = await getCommonAllList({
+          type: 'brand,category',
+        })
+        this.selectList = data
+      },
       // 导出
       handleDownload() {
         console.log(888, this.goodsStaList)

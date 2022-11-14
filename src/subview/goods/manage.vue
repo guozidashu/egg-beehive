@@ -165,7 +165,13 @@
         </template>
       </List>
     </el-card>
-    <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
+    <el-drawer
+      :before-close="handleClose"
+      size="50%"
+      :title="title"
+      :visible.sync="drawer"
+      :wrapper-closable="false"
+    >
       <!-- 详情抽屉组件 -->
       <Drawer :drawer-inof="drawerInof" :select-list="selectList" />
     </el-drawer>
@@ -190,6 +196,7 @@
     mixins: [publicjosn],
     data() {
       return {
+        title: '',
         drawer: false,
         drawerInof: {},
         form: {
@@ -244,20 +251,33 @@
         const { data } = await getCommonAllList({
           type: 'brand,year,season,band,category,agegroup,color,size',
         })
-        data.size.forEach((item) => {
-          item.value = item.id
-          item.label = item.name
-          if (item.children) {
-            item.children.forEach((item2) => {
-              item2.value = item2.id
-              item2.label = item2.name
-            })
-          }
-        })
+        // data.size.forEach((item) => {
+        //   item.value = item.id
+        //   item.label = item.name
+        //   if (item.children) {
+        //     item.children.unshift({
+        //       id: 0,
+        //       label: '无',
+        //       name: '无',
+        //       value: 0,
+        //     })
+        //     item.children.forEach((item2) => {
+        //       item2.value = item2.id
+        //       item2.label = item2.name
+        //     })
+        //   }
+        // })
         this.selectList = data
       },
       // 详情抽屉
       handleDetail(row, type) {
+        if (type === 1) {
+          this.title = '商品详情'
+        } else if (type === 2) {
+          this.title = '编辑商品'
+        } else {
+          this.title = '添加商品'
+        }
         if (row == 'add') {
           this.drawerInof = {}
           this.drawerInof.drawerType = type
@@ -266,6 +286,9 @@
           this.drawerInof.drawerType = type
         }
         this.drawer = true
+      },
+      handleClose() {
+        this.drawer = false
       },
       resetForm() {
         this.form = this.$options.data().form

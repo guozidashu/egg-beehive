@@ -60,20 +60,20 @@
         ref="form"
         :inline="true"
         label-width="80px"
-        :model="goodsForm"
+        :model="goodsForm1"
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
         <span style="margin-top: 10px; font-size: 16px">商品排行</span>
         <el-form-item style="margin-right: 0">
-          <el-form-item label="统计类型:" prop="region">
+          <el-form-item label="类型:" prop="region">
             <el-select
-              v-model="goodsForm.region"
+              v-model="goodsForm1.type"
               size="small"
               style="width: 150px"
             >
-              <el-option label="类型1" value="shanghai" />
-              <el-option label="类型2" value="beijing" />
+              <el-option label="整手" value="0" />
+              <el-option label="散码" value="1" />
             </el-select>
           </el-form-item>
           <el-form-item
@@ -81,7 +81,7 @@
             style="float: right; margin-right: 0; font-size: 12px"
           >
             <el-date-picker
-              v-model="goodsForm.date"
+              v-model="goodsForm1.date"
               align="right"
               end-placeholder="结束日期"
               :picker-options="pickerOptions"
@@ -109,22 +109,31 @@
             type="index"
             width="50"
           />
-          <el-table-column label="商品图片" prop="image" width="200">
+          <el-table-column label="商品图片" prop="img" width="200">
             <template #default="{ row }">
-              <el-image :src="row.image" />
+              <el-image :src="row.img" />
             </template>
           </el-table-column>
-          <el-table-column label="商品名称" prop="store_name" />
-          <el-table-column label="商品款号" prop="visit" width="100" />
-          <el-table-column label="吊牌价" prop="user" width="100" />
-          <el-table-column label="上架时间" prop="cart" width="120" />
-          <el-table-column label="下单件数" prop="orders" width="100" />
-          <el-table-column label="下单金额" prop="orders" width="100" />
-          <el-table-column label="毛利率(%)" prop="profit">
+          <el-table-column label="商品名称" prop="name" />
+          <el-table-column label="商品款号" prop="sn" width="100" />
+          <el-table-column label="吊牌价" prop="sale_price" width="100" />
+          <el-table-column label="上架时间" prop="created" width="120">
+            <template #default="{ row }">
+              {{ row.created | formatTime }}
+            </template>
+          </el-table-column>
+          <el-table-column label="下单件数" prop="order_num" width="100" />
+          <el-table-column label="下单金额" prop="order_total" width="100" />
+          <el-table-column label="毛利率(%)" prop="gross_profit">
             <template #default="{ row }">{{ row.profit * 100 }}%</template>
           </el-table-column>
-          <el-table-column label="库存数" prop="pay" />
-          <el-table-column label="状态" prop="pay" />
+          <el-table-column label="库存数" prop="total_stock" />
+          <el-table-column label="状态" prop="status">
+            <template #default="{ row }">
+              <span v-if="row.sstatus == 1">上架</span>
+              <span v-else>下架</span>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             fixed="right"
@@ -145,201 +154,161 @@
   import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
   import TextLabels from '@/subview/components/TextLabels'
+  import datajosn from '@/assets/assets_josn/datajosn'
+  import { getGoodStatistics, getGoodLineChart, getGoodRank } from '@/api/basic'
   export default {
     name: 'GoodsStatistical',
     components: { List, VabChart, TextLabels },
+    mixins: [datajosn],
     data() {
       return {
+        filename: '商品统计',
         downloadLoading: false,
-        pickerOptions: {
-          cellClassName: (time) => {
-            if (
-              new Date().getDate() === time.getDate() &&
-              new Date().getMonth() === time.getMonth() &&
-              new Date().getFullYear() === time.getFullYear()
-            ) {
-              return 'dateArrClass' // 返回值设置的是我们添加的类名
-            }
-          },
-          shortcuts: [
-            {
-              text: '今天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '昨天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 1
-                end.setTime(start)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近7天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 7
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近30天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 30
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本月',
-              onClick(picker) {
-                const end = new Date()
-                const start =
-                  new Date().getTime() -
-                  3600 * 1000 * 24 * (new Date().getDate() - 1)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本年',
-              onClick(picker) {
-                const start = new Date(new Date().getFullYear(), 0, 1)
-                const end = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-          ],
-        },
         listLoading: false,
         listType: 2,
-        goosList: [
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-        ],
-        goodsForm: {},
+        goosList: [],
+        goodsForm: {
+          date: this.getPastTime(1),
+        },
+        goodsForm1: {
+          page: 1,
+          pageSize: 10,
+          start_time: '', // 开始时间
+          end_time: '', // 结束时间
+          type: '', // 类型 0整手  1散码
+          date: this.getPastTime(1),
+        },
+        dateList: [],
+        dataAllList: {
+          sku_total: [],
+          out_total: [],
+          warn_total: [],
+          down_total: [],
+        },
         goodsStaList: [
           {
             title: '商品统计',
             number: 200,
-            num: 10,
+            num: 0,
             type: 1,
             typeSta: false,
+            name: 'good_total',
           },
           {
             title: '在售商品sku数',
             number: 200,
-            num: 20,
+            num: 0,
             type: 1,
             typeSta: false,
+            name: 'sku_total',
           },
           {
             title: '已售罄商品数',
             number: 200,
-            num: 100,
+            num: 0,
             type: 1,
             typeSta: false,
+            name: 'out_total',
           },
           {
             title: '库存预警',
             number: 200,
-            num: 100,
+            num: 0,
             type: 1,
             typeSta: false,
+            name: 'warn_total',
           },
           {
             title: '待确认上架',
             number: 200,
-            num: 100,
+            num: 0,
             type: 1,
             typeSta: false,
+            name: 'down_total',
           },
         ],
         initOptions: {
           renderer: 'svg',
         },
-        option: {
+        option: {},
+      }
+    },
+    watch: {
+      goodsForm: {
+        handler: function () {
+          this.fetchData()
+          this.chartData()
+        },
+        deep: true,
+      },
+      goodsForm1: {
+        handler: function () {
+          this.tableData()
+        },
+        deep: true,
+      },
+    },
+    created() {
+      this.fetchData()
+      this.chartData()
+      this.tableData()
+    },
+    methods: {
+      async tableData() {
+        this.listLoading = true
+        this.goodsForm1.start_time = this.goodsForm1.date[0]
+        this.goodsForm1.end_time = this.goodsForm1.date[1]
+        const { data } = await getGoodRank(this.goodsForm1)
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
+      },
+      async fetchData() {
+        const { data } = await getGoodStatistics({
+          start_time: this.goodsForm.date[0],
+          end_time: this.goodsForm.date[1],
+        })
+        this.goodsStaList.forEach((item) => {
+          for (let i in data) {
+            if (item.name == i) {
+              if (data[i] == null) {
+                data[i] = 0
+                item.num = data[i]
+              } else {
+                item.num = data[i]
+              }
+            }
+          }
+        })
+      },
+      async chartData() {
+        const { data } = await getGoodLineChart({
+          time: this.goodsForm.date,
+        })
+        let arr = []
+        data.forEach((item) => {
+          for (let i in item) {
+            this.dateList.push(i)
+            arr.push(item[i])
+          }
+        })
+        arr.forEach((item) => {
+          for (let i in item) {
+            if (i != 'time_range' && this.dataAllList[i] !== undefined) {
+              if (item[i] == null) {
+                item[i] = 0
+                this.dataAllList[i].push(item[i])
+              } else {
+                this.dataAllList[i].push(item[i])
+              }
+            }
+          }
+        })
+        this.option = {
           tooltip: {
-            trigger: 'axis', //触发类型；轴触发，axis则鼠标hover到一条柱状图显示全部数据，item则鼠标hover到折线点显示相应数据，
+            trigger: 'axis',
             axisPointer: {
-              type: 'cross', // 十字准星指示器
+              type: 'cross',
             },
           },
           legend: {
@@ -359,38 +328,7 @@
           xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: [
-              '09-11',
-              '09-12',
-              '09-13',
-              '09-14',
-              '09-15',
-              '09-16',
-              '09-17',
-              '09-18',
-              '09-19',
-              '09-20',
-              '09-21',
-              '09-22',
-              '09-23',
-              '09-24',
-              '09-25',
-              '09-26',
-              '09-27',
-              '09-28',
-              '09-29',
-              '09-30',
-              '10-01',
-              '10-02',
-              '10-03',
-              '10-04',
-              '10-05',
-              '10-06',
-              '10-07',
-              '10-08',
-              '10-09',
-              '10-10',
-            ],
+            data: this.dateList,
           },
           yAxis: [
             {
@@ -414,11 +352,7 @@
               type: 'line',
               stack: 'Total',
               smooth: true,
-              data: [
-                27, 49, 102, 669, 141, 507, 115, 71, 164, 155, 212, 358, 478,
-                468, 310, 194, 376, 231, 606, 731, 82, 495, 121, 124, 603, 254,
-                434, 2262, 786, 211,
-              ],
+              data: this.dataAllList.sku_total,
               yAxisIndex: 1,
               itemStyle: {
                 color: '#FFC833',
@@ -429,10 +363,7 @@
               type: 'line',
               stack: 'Total',
               smooth: true,
-              data: [
-                10, 15, 32, 34, 34, 33, 19, 19, 29, 36, 34, 45, 60, 51, 29, 40,
-                43, 45, 29, 41, 15, 21, 24, 24, 25, 18, 26, 39, 31, 21,
-              ],
+              data: this.dataAllList.out_total,
               yAxisIndex: 1,
               itemStyle: {
                 color: '#FF6C87',
@@ -441,11 +372,7 @@
             {
               name: '库存预警',
               type: 'bar',
-              data: [
-                0, 10.09, 0, 4.43, 74.25, 157.1, 0, 0, 47.04, 0, 0, 1473.6, 0,
-                0, 0, 377.2, 0.11, 0.67, 0.11, 85.18, 0, 0.1, 0, 0, 0, 0, 0,
-                0.18, 0, 0,
-              ],
+              data: this.dataAllList.warn_total,
               itemStyle: {
                 color: '#55DF7E',
               },
@@ -453,29 +380,22 @@
             {
               name: '待确认上架',
               type: 'bar',
-              data: [
-                0, 0, 0, 0.02, 0, 0, 3798.02, 0, 0.01, 0, 7001, 1151.36, 0,
-                4494.1, 1002679, 6131.7, 0, 0, 0, 59.1, 0, 1000050.14, 0, 403,
-                299, 11696.1, 0, 2665, 0, 15242.36,
-              ],
+              data: this.dataAllList.down_total,
               itemStyle: {
                 color: '#1890FF',
               },
             },
           ],
-        },
-      }
-    },
-    created() {},
-    methods: {
+        }
+      },
       // 详情抽屉
       handleDetail() {},
       // 导出
       handleDownload() {
         this.downloadLoading = true
         import('@/utils/excel').then((excel) => {
-          const tHeader = ['名称', '数量', '环比数量']
-          const filterVal = ['title', 'num', 'number']
+          const tHeader = ['名称', '数量']
+          const filterVal = ['title', 'num']
           const list = this.goodsStaList
           const data = this.formatJson(filterVal, list)
           excel.export_json_to_excel({

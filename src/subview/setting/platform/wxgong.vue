@@ -176,44 +176,51 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="微支付模式：">
-            <el-radio-group v-model="form.resource2">
+            <el-radio-group v-model="form.resource21">
               <el-radio label="普通模式" />
               <el-radio label="服务商模式" />
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="支付商户号：">
-            <el-input v-model="form.name2" style="width: 40%" />
-          </el-form-item>
-          <el-form-item label="支付秘钥：">
-            <el-input v-model="form.name3" style="width: 40%" />
-            <span style="margin-left: 10px">
-              <span style="color: #999">请在</span>
-              <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
-              <span style="color: #999">
-                [账户中心]-[API安全]中设置[API密钥]
+          <div v-if="form.resource21 == '普通模式'">
+            <el-form-item label="支付商户号：">
+              <el-input v-model="form.name2" style="width: 40%" />
+            </el-form-item>
+            <el-form-item label="支付秘钥：">
+              <el-input v-model="form.name3" style="width: 40%" />
+              <span style="margin-left: 10px">
+                <span style="color: #999">请在</span>
+                <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
+                <span style="color: #999">
+                  [账户中心]-[API安全]中设置[API密钥]
+                </span>
               </span>
-            </span>
-          </el-form-item>
-          <el-form-item label="PEM证书：">
-            <el-button type="primary" @click="handleShow()">上传</el-button>
-            <span style="margin-left: 10px">
-              <span style="color: #999">apiclient_cert.pem 请在</span>
-              <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
-              <span style="color: #999">
-                [账户中心]-[API安全]中设置[API证书]，设置完成后上传
+            </el-form-item>
+            <el-form-item label="PEM证书：">
+              <el-button type="primary" @click="handleShow()">上传</el-button>
+              <span style="margin-left: 10px">
+                <span style="color: #999">apiclient_cert.pem 请在</span>
+                <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
+                <span style="color: #999">
+                  [账户中心]-[API安全]中设置[API证书]，设置完成后上传
+                </span>
               </span>
-            </span>
-          </el-form-item>
-          <el-form-item label="证书秘钥：">
-            <el-button type="primary" @click="handleShow()">上传</el-button>
-            <span style="margin-left: 10px">
-              <span style="color: #999">apiclient_key.pem 请在</span>
-              <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
-              <span style="color: #999">
-                [账户中心]-[API安全]中设置[API证书]，设置完成后上传
+            </el-form-item>
+            <el-form-item label="证书秘钥：">
+              <el-button type="primary" @click="handleShow()">上传</el-button>
+              <span style="margin-left: 10px">
+                <span style="color: #999">apiclient_key.pem 请在</span>
+                <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
+                <span style="color: #999">
+                  [账户中心]-[API安全]中设置[API证书]，设置完成后上传
+                </span>
               </span>
-            </span>
-          </el-form-item>
+            </el-form-item>
+          </div>
+          <div v-else>
+            <el-form-item label="支付商户号：">
+              <el-input v-model="form.name2" style="width: 40%" />
+            </el-form-item>
+          </div>
           <el-form-item>
             <el-button type="primary" @click="submitForm('form')">
               保存
@@ -252,6 +259,7 @@
           resource: '',
           description: '',
           area: [],
+          resource21: '普通模式',
         },
       }
     },

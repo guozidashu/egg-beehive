@@ -4,8 +4,6 @@
       <el-tabs v-model="activeName" style="font-size: 16px; font-weight: 600">
         <el-tab-pane label="小程序绑定" name="小程序绑定" />
         <el-tab-pane label="支付设置" name="支付设置" />
-        <el-tab-pane label="订阅消息设置" name="订阅消息设置" />
-        <el-tab-pane label="服务类目" name="服务类目" />
       </el-tabs>
       <div v-if="activeName == '小程序绑定'">
         <div
@@ -131,154 +129,57 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="微支付模式：">
-            <el-radio-group v-model="form.resource2">
+            <el-radio-group v-model="form.resource21">
               <el-radio label="普通模式" />
               <el-radio label="服务商模式" />
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="支付商户号：">
-            <el-input v-model="form.name2" style="width: 40%" />
-          </el-form-item>
-          <el-form-item label="支付秘钥：">
-            <el-input v-model="form.name3" style="width: 40%" />
-            <span style="margin-left: 10px">
-              <span style="color: #999">请在</span>
-              <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
-              <span style="color: #999">
-                [账户中心]-[API安全]中设置[API密钥]
+          <div v-if="form.resource21 == '普通模式'">
+            <el-form-item label="支付商户号：">
+              <el-input v-model="form.name2" style="width: 40%" />
+            </el-form-item>
+            <el-form-item label="支付秘钥：">
+              <el-input v-model="form.name3" style="width: 40%" />
+              <span style="margin-left: 10px">
+                <span style="color: #999">请在</span>
+                <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
+                <span style="color: #999">
+                  [账户中心]-[API安全]中设置[API密钥]
+                </span>
               </span>
-            </span>
-          </el-form-item>
-          <el-form-item label="PEM证书：">
-            <el-button type="primary" @click="handleShow()">上传</el-button>
-            <span style="margin-left: 10px">
-              <span style="color: #999">apiclient_cert.pem 请在</span>
-              <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
-              <span style="color: #999">
-                [账户中心]-[API安全]中设置[API证书]，设置完成后上传
+            </el-form-item>
+            <el-form-item label="PEM证书：">
+              <el-button type="primary" @click="handleShow()">上传</el-button>
+              <span style="margin-left: 10px">
+                <span style="color: #999">apiclient_cert.pem 请在</span>
+                <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
+                <span style="color: #999">
+                  [账户中心]-[API安全]中设置[API证书]，设置完成后上传
+                </span>
               </span>
-            </span>
-          </el-form-item>
-          <el-form-item label="证书秘钥：">
-            <el-button type="primary" @click="handleShow()">上传</el-button>
-            <span style="margin-left: 10px">
-              <span style="color: #999">apiclient_key.pem 请在</span>
-              <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
-              <span style="color: #999">
-                [账户中心]-[API安全]中设置[API证书]，设置完成后上传
+            </el-form-item>
+            <el-form-item label="证书秘钥：">
+              <el-button type="primary" @click="handleShow()">上传</el-button>
+              <span style="margin-left: 10px">
+                <span style="color: #999">apiclient_key.pem 请在</span>
+                <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
+                <span style="color: #999">
+                  [账户中心]-[API安全]中设置[API证书]，设置完成后上传
+                </span>
               </span>
-            </span>
-          </el-form-item>
+            </el-form-item>
+          </div>
+          <div v-else>
+            <el-form-item label="支付商户号：">
+              <el-input v-model="form.name2" style="width: 40%" />
+            </el-form-item>
+          </div>
           <el-form-item>
             <el-button type="primary" @click="submitForm('form')">
               保存
             </el-button>
           </el-form-item>
         </el-form>
-      </div>
-      <div v-else-if="activeName == '订阅消息设置'">
-        <div
-          style="
-            padding: 8px 16px;
-            margin-bottom: 20px;
-            font-size: 12px;
-            line-height: 22px;
-            color: #666;
-            background-color: #e8f4ff;
-            border-radius: 6px;
-          "
-        >
-          <p>服务类目请添加[商家自营 > 服装/鞋/箱包]</p>
-        </div>
-        <el-form
-          ref="form"
-          label-position="right"
-          label-width="160px"
-          :model="form"
-          style="width: 100%"
-        >
-          <el-form-item label="订单发货通知">
-            <el-input v-model="form.name2" style="width: 40%" />
-            <el-button style="margin: 0 10px" @click="handleShow()">
-              添加
-            </el-button>
-            <span style="color: #999">
-              配置关键字：商品名称、快递公司、快递单号、收货地址
-            </span>
-          </el-form-item>
-          <el-form-item label="退款成功通知">
-            <el-input v-model="form.name2" style="width: 40%" />
-            <el-button style="margin: 0 10px" @click="handleShow()">
-              添加
-            </el-button>
-            <span style="color: #999">
-              配置关键字：退款金额、商品名称、订单编号
-            </span>
-          </el-form-item>
-          <el-form-item label="退款申请驳回通知">
-            <el-input v-model="form.name2" style="width: 40%" />
-            <el-button style="margin: 0 10px" @click="handleShow()">
-              添加
-            </el-button>
-            <span style="color: #999">
-              配置关键字：退款金额、商品名称、订单编号
-            </span>
-          </el-form-item>
-          <el-form-item label="提现成功通知">
-            <el-input v-model="form.name2" style="width: 40%" />
-            <el-button style="margin: 0 10px" @click="handleShow()">
-              添加
-            </el-button>
-            <span style="color: #999">
-              配置关键字：提现金额、打款方式、发放时间
-            </span>
-          </el-form-item>
-          <el-form-item label="提现失败通知">
-            <el-input v-model="form.name2" style="width: 40%" />
-            <el-button style="margin: 0 10px" @click="handleShow()">
-              添加
-            </el-button>
-            <span style="color: #999">
-              配置关键字：提现金额、申请时间、原因
-            </span>
-          </el-form-item>
-          <el-form-item label="拼团成功通知">
-            <el-input v-model="form.name2" style="width: 40%" />
-            <el-button style="margin: 0 10px" @click="handleShow()">
-              添加
-            </el-button>
-            <span style="color: #999">
-              配置关键字：商品名称、团长、成团人数
-            </span>
-          </el-form-item>
-          <el-form-item label="审核结果通知">
-            <el-input v-model="form.name2" style="width: 40%" />
-            <el-button style="margin: 0 10px" @click="handleShow()">
-              添加
-            </el-button>
-            <span style="color: #999">
-              配置关键字：审核内容、审核结果、审核说明
-            </span>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="submitForm('form')">
-              保存
-            </el-button>
-          </el-form-item>
-        </el-form>
-      </div>
-      <div v-else>
-        <List :list="orderList" :list-type="listType" :state="listLoading">
-          <template #List>
-            <el-table-column label="类目名称" prop="log" />
-            <el-table-column
-              align="center"
-              label="状态"
-              prop="time"
-              width="100"
-            />
-          </template>
-        </List>
       </div>
     </el-card>
     <vab-upload
@@ -293,12 +194,10 @@
 
 <script>
   import VabUpload from '@/extra/VabUpload'
-  import List from '@/subview/components/List'
   export default {
     name: 'PlatformWxxiao',
     components: {
       VabUpload,
-      List,
     },
     data() {
       return {
@@ -325,6 +224,7 @@
           resource: '',
           description: '',
           area: [],
+          resource21: '普通模式',
         },
       }
     },

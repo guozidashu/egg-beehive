@@ -1,7 +1,7 @@
 <template>
   <div class="components-drawer">
     <div v-if="form.drawerType != 3">
-      <div style="padding: 30px 35px 25px">
+      <div style="padding: 0 20px 20px 20px">
         <div>
           <el-row :gutter="20">
             <el-col :span="12" style="display: flex">
@@ -26,7 +26,7 @@
                 v-if="form.drawerType == 1"
                 native-type="submit"
                 size="small"
-                style="float: right"
+                style="float: right; margin-right: 10px"
                 type="primary"
                 @click="print('vab-print-table')"
               >
@@ -36,9 +36,9 @@
                 v-if="form.drawerType == 1"
                 native-type="submit"
                 size="small"
-                style="float: right"
+                style="float: right; margin-right: 10px"
                 type="primary"
-                @click="form.drawerType = 2"
+                @click="changeTypeBtn(2)"
               >
                 编辑
               </el-button>
@@ -46,9 +46,9 @@
                 v-if="form.drawerType == 2"
                 native-type="submit"
                 size="small"
-                style="float: right"
+                style="float: right; margin-right: 10px"
                 type="primary"
-                @click="form.drawerType = 1"
+                @click="changeTypeBtn(1)"
               >
                 完成
               </el-button>
@@ -96,6 +96,28 @@
         <el-tab-pane label="调整信息" name="6" />
         <el-tab-pane label="库存明细" name="7" />
       </el-tabs>
+    </div>
+    <div v-if="form.drawerType == 3">
+      <el-button
+        v-if="form.drawerType == 1"
+        native-type="submit"
+        size="small"
+        style="float: right; margin-right: 10px"
+        type="primary"
+        @click="changeTypeBtn(2)"
+      >
+        编辑
+      </el-button>
+      <el-button
+        v-if="form.drawerType == 2 || form.drawerType == 3"
+        native-type="submit"
+        size="small"
+        style="float: right; margin-right: 10px"
+        type="primary"
+        @click="changeTypeBtn(1)"
+      >
+        完成
+      </el-button>
     </div>
     <div v-if="tabindex == '0'">
       <div v-if="form.drawerType == 1" ref="vab-print-table" class="drawer-tab">
@@ -335,23 +357,28 @@
             <div class="conten-list-com">
               <el-form-item class="item" label="颜色：">
                 <qy-color-select v-model="form.colorid" />
-                <div style="margin: -33px 0 0 90px; width: 200px">
+                <div style="width: 200px; margin: -33px 0 0 90px">
                   <span v-for="(item, idex) in colorNameList" :key="idex">
                     {{ item }}
                   </span>
                 </div>
               </el-form-item>
               <el-form-item class="item" label="尺码：">
-                <el-cascader
+                <qy-size-select v-model="form.sizeid" />
+                <div style="width: 200px; margin: -33px 0 0 90px">
+                  <span v-for="(item, idex) in sizeNameList" :key="idex">
+                    {{ item }}
+                  </span>
+                </div>
+                <!-- <el-cascader
                   v-model="form.sizeid"
                   collapse-tags
                   :options="selectData.size"
-                  :props="{ multiple: true }"
                 />
                 <i
                   class="el-icon-plus"
                   style="margin-left: 10px; color: #1890ff"
-                ></i>
+                ></i> -->
               </el-form-item>
               <el-form-item class="item" label="仓库">
                 <el-select
@@ -400,7 +427,7 @@
                 <el-input v-model="form.purchase_price" style="width: 215px" />
               </el-form-item>
               <el-form-item class="item" label="成本价：">
-                <el-input v-model="form.addressKeyword" style="width: 215px" />
+                <el-input v-model="form.cost_price" style="width: 215px" />
               </el-form-item>
               <el-form-item class="item" label="吊牌价：">
                 <el-input v-model="form.sale_price" style="width: 215px" />
@@ -599,6 +626,7 @@
     getGoodTotalDetails,
     getGoodBasicsDetails,
     getGoodOrderDetails,
+    editGoodSave,
   } from '@/api/basic'
   import { mapGetters } from 'vuex'
   export default {
@@ -622,6 +650,7 @@
         goodsAllNum: {},
         goodsDetails: {},
         colorNameList: [],
+        sizeNameList: [],
         form: Object.assign({}, this.drawerInof),
         selectData: Object.assign({}, this.selectList),
         listLoading: false,
@@ -651,10 +680,8 @@
         immediate: true,
       },
       'form.price': {
-        handler: function (newVal) {
-          console.log(1111, newVal)
+        handler: function () {
           this.zhekouList.forEach((item) => {
-            console.log(1111, 232)
             item.price = this.form.price * item.discount
             item.price1 = this.form.price * item.discount_single
           })
@@ -662,31 +689,54 @@
         deep: true,
       },
       'form.colorid': {
-        handler: function (newVal) {
-          console.log(newVal)
+        handler: function () {
           if (!this.form.colorid) {
             return
           }
-          if (this.colorNameList.length == 3) {
-            return
-          }
           let arr = []
-          let temp = 0
           this.form.colorid.forEach((item) => {
             this.selectData.color.forEach((item1) => {
               item1.children.forEach((item2) => {
                 if (item == item2.id) {
-                  if (temp == 2) {
-                    arr.push('等颜色')
-                    return
-                  }
-                  temp = temp + 1
                   arr.push(item2.name)
                 }
               })
             })
           })
+          if (arr.length >= 3) {
+            arr = arr.slice(0, 2)
+            arr.push('等颜色')
+          }
           this.colorNameList = arr
+        },
+        deep: true,
+      },
+      'form.sizeid': {
+        handler: function () {
+          if (!this.form.sizeid) {
+            return
+          }
+          let arr = []
+          this.form.sizeid.forEach((item) => {
+            this.selectData.size.forEach((item1) => {
+              if (item.pid == item1.id) {
+                item1.children.forEach((item2) => {
+                  if (item.id == item2.id) {
+                    arr.push(item2.name)
+                  }
+                })
+              } else {
+                if (item.id == item1.id) {
+                  arr.push(item1.name)
+                }
+              }
+            })
+          })
+          if (arr.length >= 3) {
+            arr = arr.slice(0, 2)
+            arr.push('等尺码')
+          }
+          this.sizeNameList = arr
         },
         deep: true,
       },
@@ -706,8 +756,11 @@
         this.goodsAllNum = data
       },
       async getGoodsDetail() {
+        let temp = this.form.drawerType
         const { data } = await getGoodBasicsDetails({ good_id: this.form.id })
         this.goodsDetails = data
+        this.form = data
+        this.form.drawerType = temp
       },
       async selectProvinceFun(e) {
         const { data } = await getWarehousePositionList({ warehouse_id: e })
@@ -716,6 +769,48 @@
       async initSelect() {
         const { data } = await getWarehouseList()
         this.WarehouseList = data.list
+      },
+      async changeTypeBtn() {
+        if (this.lockSta) {
+          this.form.lock_price = 1
+          console.log(7878787, this.zhekouList)
+          let arr = []
+          let arr1 = []
+          this.zhekouList.forEach((item) => {
+            arr.push({
+              level_id: item.id,
+              price: item.price,
+            })
+            arr1.push({
+              level_id: item.id,
+              price: item.price1,
+            })
+          })
+          this.form.prices = arr
+          this.form.prices_sm = arr1
+        } else {
+          this.form.lock_price = 0
+        }
+        console.log()
+        if (this.form.sizeid != undefined) {
+          if (this.form.sizeid[0].type == 'zs') {
+            this.form.sizeid = this.form.sizeid.map((item) => {
+              return item.id
+            })
+          } else {
+            this.form.sizeid_sm = this.form.sizeid
+            this.form.sizeid_sm = this.form.sizeid_sm.map((item) => {
+              return item.id
+            })
+            this.form.sizeid = []
+          }
+        }
+        this.form.img = '1'
+        this.id = 0
+        const { data } = await editGoodSave(this.form)
+        console.log(999999, data)
+        // this.form.drawerType = e
+        this.$forceUpdate()
       },
       // 打印
       ...mapActions({
@@ -763,7 +858,6 @@
         }
         const { data } = await getGradeList()
         data.data.forEach((item) => {
-          console.log(1111, 232)
           item.price = this.form.price * item.discount
           item.price1 = this.form.price * item.discount_single
         })

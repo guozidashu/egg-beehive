@@ -25,6 +25,50 @@ export function getCommonAllList(data) {
     data,
   })
 }
+// 商品统计
+export function getGoodStatistics(data) {
+  return request({
+    url: '/goods/goodStatistics',
+    method: 'post',
+    data,
+  })
+}
+export function getGoodLineChart(data) {
+  return request({
+    url: '/goods/goodLineChart',
+    method: 'post',
+    data,
+  })
+}
+export function getGoodRank(data) {
+  return request({
+    url: '/goods/goodRank',
+    method: 'post',
+    data,
+  })
+}
+// 库存统计
+export function getStockStatistics(data) {
+  return request({
+    url: '/goods/stockStatistics',
+    method: 'post',
+    data,
+  })
+}
+export function getStockCircular(data) {
+  return request({
+    url: '/goods/stockCircular',
+    method: 'post',
+    data,
+  })
+}
+export function getStockRank(data) {
+  return request({
+    url: '/goods/stockRank',
+    method: 'post',
+    data,
+  })
+}
 // 积分订单管理
 export function getIntegralOrderList(data) {
   return request({

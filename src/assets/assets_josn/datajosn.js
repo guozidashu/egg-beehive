@@ -26,7 +26,9 @@ export default {
             text: '昨天',
             onClick(picker) {
               const end = new Date()
-              const start = new Date().getTime() - 3600 * 1000 * 24 * 1
+              const start = new Date(
+                new Date().getTime() - 3600 * 1000 * 24 * 1
+              )
               end.setTime(start)
               picker.$emit('pick', [start, end])
             },
@@ -35,7 +37,9 @@ export default {
             text: '最近7天',
             onClick(picker) {
               const end = new Date()
-              const start = new Date().getTime() - 3600 * 1000 * 24 * 7
+              const start = new Date(
+                new Date().getTime() - 3600 * 1000 * 24 * 7
+              )
               picker.$emit('pick', [start, end])
             },
           },
@@ -43,7 +47,9 @@ export default {
             text: '最近30天',
             onClick(picker) {
               const end = new Date()
-              const start = new Date().getTime() - 3600 * 1000 * 24 * 30
+              const start = new Date(
+                new Date().getTime() - 3600 * 1000 * 24 * 30
+              )
               picker.$emit('pick', [start, end])
             },
           },
@@ -51,9 +57,11 @@ export default {
             text: '本月',
             onClick(picker) {
               const end = new Date()
-              const start =
+              const start = new Date(
                 new Date().getTime() -
-                3600 * 1000 * 24 * (new Date().getDate() - 1)
+                  3600 * 1000 * 24 * (new Date().getDate() - 1)
+              )
+
               picker.$emit('pick', [start, end])
             },
           },
