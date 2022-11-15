@@ -693,6 +693,51 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'financialCustomerVoucher',
+        name: 'FinancialCustomerVoucher',
+        component: () => import('@/subview/financial/customerVoucher'),
+        meta: {
+          title: '客户收款单',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'financialSupplierReceipt',
+        name: 'FinancialSupplierReceipt',
+        component: () => import('@/subview/financial/supplierReceipt'),
+        meta: {
+          title: '供应商收款单',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'financialBillList',
+        name: 'FinancialBillList',
+        component: () => import('@/subview/financial/billList'),
+        meta: {
+          title: '费用单',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'financialCorporateAccount',
+        name: 'FinancialCorporateAccount',
+        component: () => import('@/subview/financial/corporateAccount'),
+        meta: {
+          title: '结算账户',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'financialCategory',
+        name: 'FinancialCategory',
+        component: () => import('@/subview/financial/category'),
+        meta: {
+          title: '收支分类',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {

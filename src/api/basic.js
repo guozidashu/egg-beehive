@@ -25,6 +25,163 @@ export function getCommonAllList(data) {
     data,
   })
 }
+// 收支类别
+export function getCategoryList(data) {
+  return request({
+    url: '/finance/categoryList',
+    method: 'post',
+    data,
+  })
+}
+export function editCategorySave(data) {
+  return request({
+    url: '/finance/categorySave',
+    method: 'post',
+    data,
+  })
+}
+export function delCategoryDel(data) {
+  return request({
+    url: '/finance/categoryDel',
+    method: 'post',
+    data,
+  })
+}
+// 会计科目
+export function getAccountList(data) {
+  return request({
+    url: '/finance/accountList',
+    method: 'post',
+    data,
+  })
+}
+export function editAccountSave(data) {
+  return request({
+    url: '/finance/accountSave',
+    method: 'post',
+    data,
+  })
+}
+export function delAccountDel(data) {
+  return request({
+    url: '/finance/accountDel',
+    method: 'post',
+    data,
+  })
+}
+// 结算账户
+export function getCorporateAccountList(data) {
+  return request({
+    url: '/finance/corporateAccountList',
+    method: 'post',
+    data,
+  })
+}
+export function editCorporateAccountSavee(data) {
+  return request({
+    url: '/finance/corporateAccountSave',
+    method: 'post',
+    data,
+  })
+}
+export function delCorporateAccountDel(data) {
+  return request({
+    url: '/finance/corporateAccountDel',
+    method: 'post',
+    data,
+  })
+}
+// 费用单
+export function getBillList(data) {
+  return request({
+    url: '/finance/billList',
+    method: 'post',
+    data,
+  })
+}
+export function editBillSave(data) {
+  return request({
+    url: '/finance/billSave',
+    method: 'post',
+    data,
+  })
+}
+export function delBillOut(data) {
+  return request({
+    url: '/finance/billOut',
+    method: 'post',
+    data,
+  })
+}
+// 供应商收款单
+export function getSupplierVoucherList(data) {
+  return request({
+    url: '/finance/supplierVoucherList',
+    method: 'post',
+    data,
+  })
+}
+// 客户收款单
+export function getCustomerVoucherList(data) {
+  return request({
+    url: '/finance/customerVoucherList',
+    method: 'post',
+    data,
+  })
+}
+//客户分析
+export function getInformationCustomerList(data) {
+  return request({
+    url: '/information/customerList',
+    method: 'post',
+    data,
+  })
+}
+//订单分析
+export function getInformationOrderList(data) {
+  return request({
+    url: '/information/orderList',
+    method: 'post',
+    data,
+  })
+}
+// 订单列表
+export function getOrderList(data) {
+  return request({
+    url: '/order/List',
+    method: 'post',
+    data,
+  })
+}
+export function getOrderCount(data) {
+  return request({
+    url: '/order/getOrderCount',
+    method: 'post',
+    data,
+  })
+}
+export function getOrderDetail(data) {
+  return request({
+    url: '/order/Detail',
+    method: 'post',
+    data,
+  })
+}
+// 订单统计
+export function getOrderCountList(data) {
+  return request({
+    url: '/order/CountList',
+    method: 'post',
+    data,
+  })
+}
+export function getOrderCountDetail(data) {
+  return request({
+    url: '/order/CountDetail',
+    method: 'post',
+    data,
+  })
+}
 // 商品统计
 export function getGoodStatistics(data) {
   return request({
@@ -256,6 +413,13 @@ export function editCategorySonStatus(data) {
   })
 }
 //商品管理
+export function getGoodTabTotal(data) {
+  return request({
+    url: '/goods/goodTabTotal',
+    method: 'post',
+    data,
+  })
+}
 export function getGoodList(data) {
   return request({
     url: '/goods/goodList',

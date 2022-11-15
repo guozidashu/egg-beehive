@@ -70,7 +70,12 @@
           background-color: white;
         "
       >
-        <china-map :list="chainList" style="width: 30%" :title="mapTitle" />
+        <china-map
+          :list="chainList"
+          :map-type="mapType"
+          style="width: 30%"
+          :title="mapTitle"
+        />
         <List
           :list="chainList"
           :list-type="listType"
@@ -209,6 +214,17 @@
         listLoading: false,
         listType: 4,
         mapTitle: '供应商地域分布',
+        mapType: {
+          trigger: 'item',
+          formatter(params) {
+            let res = ` <ul>
+    <li><span>地区:</span> <span> ${params.data.name}</span></li>
+    <li><span>新增供应商:</span> <span> ${params.data.add_count}</span></li>
+    <li><span>总供应商:</span> <span> ${params.data.value}</span></li>
+  </ul>`
+            return res
+          },
+        },
         supplier_type: [],
         form: {
           create_time: this.getPastTime(1),

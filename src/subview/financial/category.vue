@@ -58,7 +58,7 @@
                 type="primary"
                 @click="handleEdit('add', 1)"
               >
-                添加科目
+                添加收支
               </el-button>
               <el-button
                 native-type="submit"
@@ -69,20 +69,14 @@
                 添加分类
               </el-button>
             </el-form-item>
-            <el-form-item label="科目名称：" style="float: right">
+            <el-form-item label="收支名称：" style="float: right">
               <el-input
                 v-model="form.name"
                 clearable
-                placeholder="请输入科目名称"
+                placeholder="请输入收支名称"
               >
                 <el-button slot="append" icon="el-icon-search" />
               </el-input>
-            </el-form-item>
-            <el-form-item label="类别：" style="float: right">
-              <el-select v-model="form.type" placeholder="请选择">
-                <el-option label="收" :value="1" />
-                <el-option label="支" :value="2" />
-              </el-select>
             </el-form-item>
           </el-form>
           <List
@@ -134,7 +128,7 @@
 <script>
   import List from '@/subview/components/List'
   import Edit from './components/SubjectEdit'
-  import { getAccountList, delAccountDel } from '@/api/basic'
+  import { getCategoryList, delCategoryDel } from '@/api/basic'
   export default {
     name: 'CustomerTags',
     components: { List, Edit },
@@ -144,7 +138,6 @@
           page: 1,
           pageSize: 10,
           id: 0, // 父级id （取父级时传0）
-          type: null, // 类别 1收 2支
           name: '', // 科目名称
         },
         menuList: [],
@@ -184,7 +177,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delAccountDel({ id: row.id })
+            const { code } = await delCategoryDel({ id: row.id })
             if (code != 200) {
               return
             }
@@ -202,7 +195,7 @@
       async fetchData(type) {
         if (type == 1) {
           this.form.id = 0
-          const { data } = await getAccountList(this.form)
+          const { data } = await getCategoryList(this.form)
           let list = [
             {
               id: 0,
@@ -216,7 +209,7 @@
           this.menuList = list
           this.fetchData(2)
         } else {
-          const { data } = await getAccountList(this.form)
+          const { data } = await getCategoryList(this.form)
           this.list = data.data
           this.total = data.total
         }

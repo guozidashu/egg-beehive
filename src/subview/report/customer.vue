@@ -15,7 +15,7 @@
           style="float: right; margin-right: 0; font-size: 12px"
         >
           <el-date-picker
-            v-model="goodsForm.date"
+            v-model="goodsForm.time"
             align="right"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"
@@ -27,14 +27,6 @@
           <el-button
             native-type="submit"
             size="small"
-            style="margin: 0 20px"
-            type="primary"
-          >
-            查询
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
             type="primary"
             @click="handleDownload"
           >
@@ -42,9 +34,13 @@
           </el-button>
         </el-form-item>
         <el-form-item label="客户渠道:" style="float: right">
-          <el-select v-model="goodsForm.region">
-            <el-option label="渠道1" value="shanghai" />
-            <el-option label="渠道2" value="shanghai" />
+          <el-select v-model="goodsForm.source" placeholder="请选择客户渠道">
+            <el-option
+              v-for="(item, index) in selectList.customer_source"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
       </el-form>
@@ -69,7 +65,12 @@
           background-color: white;
         "
       >
-        <china-map style="width: 30%" :title="mapTitle" />
+        <china-map
+          :list="chainList"
+          :map-type="mapType"
+          style="width: 30%"
+          :title="mapTitle"
+        />
         <List
           :list="goosList"
           :list-type="listType"
@@ -77,11 +78,11 @@
           style="width: 70%; padding-right: 0 20px"
         >
           <template #List>
-            <el-table-column label="EPR城市" prop="store_name" />
-            <el-table-column label="累计用户数" prop="visit" sortable />
-            <el-table-column label="新增用户数" prop="user" sortable />
-            <el-table-column label="贡献销售额" prop="cart" />
-            <el-table-column label="贡献值" prop="orders" />
+            <el-table-column label="EPR城市" prop="province" />
+            <el-table-column label="累计用户数" prop="count" />
+            <el-table-column label="新增用户数" prop="add_count" />
+            <el-table-column label="贡献销售额" prop="sale" />
+            <el-table-column label="贡献值" prop="all_sale" />
           </template>
         </List>
       </div>
@@ -102,79 +103,46 @@
   import ChinaMap from '@/subview/components/ChinaMap'
   import Branch from '@/subview/components/Branch'
   import TextLabels from '@/subview/components/TextLabels'
+  import { getCommonAllList, getInformationCustomerList } from '@/api/basic'
+  import datajosn from '@/assets/assets_josn/datajosn'
+  import mapjson from '@/assets/assets_josn/mapjson'
   export default {
     name: 'CustomerStatistical',
     components: { ChinaMap, List, VabChart, Branch, TextLabels },
+    mixins: [datajosn, mapjson],
     data() {
       return {
-        pickerOptions: {
-          cellClassName: (time) => {
-            if (
-              new Date().getDate() === time.getDate() &&
-              new Date().getMonth() === time.getMonth() &&
-              new Date().getFullYear() === time.getFullYear()
-            ) {
-              return 'dateArrClass' // 返回值设置的是我们添加的类名
-            }
-          },
-          shortcuts: [
-            {
-              text: '今天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '昨天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 1
-                end.setTime(start)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近7天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 7
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近30天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 30
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本月',
-              onClick(picker) {
-                const end = new Date()
-                const start =
-                  new Date().getTime() -
-                  3600 * 1000 * 24 * (new Date().getDate() - 1)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本年',
-              onClick(picker) {
-                const start = new Date(new Date().getFullYear(), 0, 1)
-                const end = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-          ],
+        dateList: [],
+        dataAllList: {
+          add_customer: [],
+          sale_customer: [],
+          sale_arrears: [],
+          sum_final_amount: [],
         },
+        branchList: [],
+        goosList: [],
+        goodsForm: {
+          source: null,
+          time: this.getPastTime(1),
+        },
+        selectList: [],
         listLoading: false,
         listType: 4,
         branchTitle: '客户等级分析',
         mapTitle: '客户区域分布',
+        mapType: {
+          trigger: 'item',
+          formatter(params) {
+            let res = ` <ul>
+    <li><span>EPR城市:</span> <span> ${params.data.name}</span></li>
+    <li><span>累计用户数:</span> <span> ${params.data.value}</span></li>
+    <li><span>新增用户数:</span> <span> ${params.data.add_count}</span></li>
+    <li><span>贡献销售额:</span> <span> ${params.data.sale}</span></li>
+    <li><span>贡献值:</span> <span> ${params.data.all_sale}</span></li>
+  </ul>`
+            return res
+          },
+        },
         styleObj: {
           width: '400px',
           height: '500px',
@@ -182,184 +150,142 @@
           legendy: 450,
           center: ['50%', '50%'],
         },
-        branchList: [
-          { value: 1048, name: '普通会员' },
-          { value: 735, name: '黄金会员' },
-          { value: 580, name: '钻石会员' },
-          { value: 484, name: '白金会员' },
-          { value: 300, name: '黑钻svp' },
-        ],
-        goosList: [
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '广东',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '苏州',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '杭州',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '北京',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '上海',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '广东',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '苏州',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '杭州',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '北京',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '上海',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '广东',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '苏州',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '杭州',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '北京',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '上海',
-          },
-        ],
-        goodsForm: {},
         goodsStaWidth: '25%',
         goodsStaList: [
           {
             title: '新增客户数',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+            name: 'add_customer',
           },
           {
             title: '下单用户数',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+            name: 'sale_customer',
           },
           {
             title: '成交销售额',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+            name: 'sum_final_amount',
           },
           {
             title: '全部客户',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+            name: 'all_customer',
           },
           {
             title: '欠款客户',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+            name: 'sale_arrears',
           },
           {
             title: '沉睡客户',
             number: 400,
-            num: 34.32,
+            num: 0,
             type: 2,
-            typeSta: true,
+            typeSta: false,
+            name: 'sleep_customer',
           },
           {
             title: '活跃客户',
             number: 400,
-            num: 34.32,
+            num: 0,
             type: 2,
-            typeSta: true,
+            typeSta: false,
+            name: 'active_customer',
           },
           {
             title: '即将流失客户',
             number: 400,
-            num: 34.32,
+            num: 0,
             type: 2,
-            typeSta: true,
+            typeSta: false,
+            name: 'off_customer',
           },
         ],
         initOptions: {
           renderer: 'svg',
         },
-        option: {
+        option: {},
+      }
+    },
+    watch: {
+      goodsForm: {
+        handler: function () {
+          this.goosList = []
+          this.branchList = []
+          this.dateList = []
+          this.dataAllList = {
+            add_customer: [],
+            sale_customer: [],
+            sale_arrears: [],
+            sum_final_amount: [],
+          }
+          this.fetchData()
+        },
+        deep: true,
+      },
+    },
+    created() {
+      this.getTypeList()
+      this.fetchData()
+    },
+    methods: {
+      async getTypeList() {
+        const { data } = await getCommonAllList({
+          type: 'customer_source',
+        })
+        this.selectList = data
+      },
+      async fetchData() {
+        this.listLoading = true
+        const { data } = await getInformationCustomerList(this.goodsForm)
+        this.goodsStaList.forEach((item) => {
+          for (let i in data.list) {
+            if (item.name == i) {
+              if (data.list[i] == null) {
+                data.list[i] = 0
+                item.num = data.list[i]
+              } else {
+                item.num = data.list[i]
+              }
+            }
+          }
+        })
+        let arr = []
+        data.line_date.forEach((item) => {
+          for (let i in item) {
+            this.dateList.push(i)
+            arr.push(item[i])
+          }
+        })
+        arr.forEach((item) => {
+          for (let i in item) {
+            if (i != 'time_range' && this.dataAllList[i] !== undefined) {
+              if (item[i] == null) {
+                item[i] = 0
+                this.dataAllList[i].push(item[i])
+              } else {
+                this.dataAllList[i].push(item[i])
+              }
+            }
+          }
+        })
+        this.option = {
           tooltip: {
             trigger: 'axis', //触发类型；轴触发，axis则鼠标hover到一条柱状图显示全部数据，item则鼠标hover到折线点显示相应数据，
             axisPointer: {
@@ -383,38 +309,7 @@
           xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: [
-              '09-11',
-              '09-12',
-              '09-13',
-              '09-14',
-              '09-15',
-              '09-16',
-              '09-17',
-              '09-18',
-              '09-19',
-              '09-20',
-              '09-21',
-              '09-22',
-              '09-23',
-              '09-24',
-              '09-25',
-              '09-26',
-              '09-27',
-              '09-28',
-              '09-29',
-              '09-30',
-              '10-01',
-              '10-02',
-              '10-03',
-              '10-04',
-              '10-05',
-              '10-06',
-              '10-07',
-              '10-08',
-              '10-09',
-              '10-10',
-            ],
+            data: this.dateList,
           },
           yAxis: [
             {
@@ -438,11 +333,7 @@
               type: 'line',
               stack: 'Total',
               smooth: true,
-              data: [
-                27, 49, 102, 669, 141, 507, 115, 71, 164, 155, 212, 358, 478,
-                468, 310, 194, 376, 231, 606, 731, 82, 495, 121, 124, 603, 254,
-                434, 2262, 786, 211,
-              ],
+              data: this.dataAllList.add_customer,
               yAxisIndex: 1,
               itemStyle: {
                 color: '#FFC833',
@@ -453,10 +344,7 @@
               type: 'line',
               stack: 'Total',
               smooth: true,
-              data: [
-                10, 15, 32, 34, 34, 33, 19, 19, 29, 36, 34, 45, 60, 51, 29, 40,
-                43, 45, 29, 41, 15, 21, 24, 24, 25, 18, 26, 39, 31, 21,
-              ],
+              data: this.dataAllList.sale_customer,
               yAxisIndex: 1,
               itemStyle: {
                 color: '#FF6C87',
@@ -465,11 +353,7 @@
             {
               name: '欠款客户',
               type: 'bar',
-              data: [
-                0, 10.09, 0, 4.43, 74.25, 157.1, 0, 0, 47.04, 0, 0, 1473.6, 0,
-                0, 0, 377.2, 0.11, 0.67, 0.11, 85.18, 0, 0.1, 0, 0, 0, 0, 0,
-                0.18, 0, 0,
-              ],
+              data: this.dataAllList.sale_arrears,
               itemStyle: {
                 color: '#55DF7E',
               },
@@ -477,26 +361,49 @@
             {
               name: '销售额',
               type: 'bar',
-              data: [
-                0, 0, 0, 0.02, 0, 0, 3798.02, 0, 0.01, 0, 7001, 1151.36, 0,
-                4494.1, 102679, 6131.7, 0, 0, 0, 59.1, 0, 10050.14, 0, 403, 299,
-                11696.1, 0, 2665, 0, 15242.36,
-              ],
+              data: this.dataAllList.sum_final_amount,
               itemStyle: {
                 color: '#1890FF',
               },
             },
           ],
-        },
-      }
-    },
-    created() {},
-    methods: {
-      // 详情抽屉
-      handleDetail() {},
+        }
+        let temp1 = {}
+        data.levels.forEach((item) => {
+          temp1.name = item.name
+          temp1.value = item.count
+          this.branchList.push(temp1)
+          temp1 = {}
+        })
+        this.goosList = data.customer_area
+        this.listLoading = false
+        let chainList = JSON.parse(JSON.stringify(this.chainList))
+        chainList.forEach((item, index) => {
+          data.customer_area.forEach((item1) => {
+            if (item.name == item1.province) {
+              let obj = {}
+              obj.value = item1.count
+              obj.add_count = item1.add_count
+              obj.sale = item1.sale
+              obj.all_sale = item1.all_sale
+              chainList[index] = Object.assign({}, item, obj)
+            } else {
+              let obj = {}
+              obj.value = 0
+              obj.add_count = 0
+              obj.sale = 0
+              obj.all_sale = 0
+              chainList[index] = Object.assign({}, item, obj)
+            }
+          })
+        })
+        chainList.sort((a, b) => {
+          return b.value - a.value
+        })
+        this.chainList = chainList
+      },
       // 导出
       handleDownload() {
-        console.log(888, this.goodsStaList)
         import('@/utils/excel').then((excel) => {
           const tHeader = ['名称', '数量', '环比数量']
           const filterVal = ['title', 'num', 'number']

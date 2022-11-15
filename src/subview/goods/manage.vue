@@ -78,13 +78,19 @@
     </div>
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="form.list_type" @tab-click="handleClick">
-        <el-tab-pane label="全部商品 (3)" name="0" />
-        <el-tab-pane label="仓库中 (129)" name="1" />
-        <el-tab-pane label=" 已售罄 (18)" name="2" />
-        <el-tab-pane label="库存预警 (2)" name="3" />
-        <el-tab-pane label="待确认 (10)" name="4" />
-        <el-tab-pane label="自营商城 (2)" name="5" />
-        <el-tab-pane label="第三方平台 (10)" name="6" />
+        <el-tab-pane :label="'全部商品 (' + tatleData.total + ')'" name="0" />
+        <el-tab-pane
+          :label="'仓库中 (' + tatleData.in_warehouse + ')'"
+          name="1"
+        />
+        <el-tab-pane :label="'已售罄 (' + tatleData.sold_out + ')'" name="2" />
+        <el-tab-pane :label="'库存预警 (' + tatleData.warning + ')'" name="3" />
+        <el-tab-pane :label="'待确认 (' + tatleData.confirmed + ')'" name="4" />
+        <el-tab-pane :label="'自营商城 (' + tatleData.support + ')'" name="5" />
+        <el-tab-pane
+          :label="'第三方平台 (' + tatleData.tripartite + ')'"
+          name="6"
+        />
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -188,6 +194,7 @@
     getGoodList,
     getCommonAllList,
     editGoodBatchLower,
+    getGoodTabTotal,
   } from '@/api/basic'
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
@@ -199,6 +206,15 @@
         title: '',
         drawer: false,
         drawerInof: {},
+        tatleData: {
+          total: null, // 全部
+          in_warehouse: null, // 仓库中
+          sold_out: null, // 已售完
+          warning: null, // 预警
+          confirmed: null, // 待确认
+          support: null, // 自营
+          tripartite: null, // 第三方
+        },
         form: {
           page: 1,
           pageSize: 10,
@@ -231,6 +247,7 @@
     created() {
       this.getGoodsTypeList()
       this.fetchData()
+      this.getTatolData()
     },
     methods: {
       handleQuery() {},
@@ -242,31 +259,18 @@
       async fetchData() {
         this.listLoading = true
         const { data } = await getGoodList(this.form)
-        // const { data } = await getGoodTotalDetails(this.form)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
+      },
+      async getTatolData() {
+        const { data } = await getGoodTabTotal()
+        this.tatleData = data
       },
       async getGoodsTypeList() {
         const { data } = await getCommonAllList({
           type: 'brand,year,season,band,category,agegroup,color,size',
         })
-        // data.size.forEach((item) => {
-        //   item.value = item.id
-        //   item.label = item.name
-        //   if (item.children) {
-        //     item.children.unshift({
-        //       id: 0,
-        //       label: '无',
-        //       name: '无',
-        //       value: 0,
-        //     })
-        //     item.children.forEach((item2) => {
-        //       item2.value = item2.id
-        //       item2.label = item2.name
-        //     })
-        //   }
-        // })
         this.selectList = data
       },
       // 详情抽屉

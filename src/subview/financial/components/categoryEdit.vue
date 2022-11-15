@@ -6,7 +6,7 @@
     @close="close"
   >
     <el-form ref="form" label-width="120px" :model="form" :rules="rules">
-      <el-form-item v-if="type === 1" label="科目分类" prop="pid">
+      <el-form-item v-if="type === 1" label="收支分类" prop="pid">
         <el-select v-model="form.pid" placeholder="请选择分类">
           <el-option
             v-for="(item, index) in selectList"
@@ -16,17 +16,17 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="科目编号：" prop="sn">
+      <el-form-item label="收支编号：" prop="sn">
         <el-input
           v-model="form.sn"
-          placeholder="请输入科目编号："
+          placeholder="请输入收支编号："
           style="width: 215px"
         />
       </el-form-item>
-      <el-form-item label="科目名称：" prop="name">
+      <el-form-item label="收支名称：" prop="name">
         <el-input
           v-model="form.name"
-          placeholder="请输入科目名称"
+          placeholder="请输入收支名称"
           style="width: 215px"
         />
       </el-form-item>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-  import { editAccountSave, getAccountList } from '@/api/basic'
+  import { editCategorySave, getCategoryList } from '@/api/basic'
   export default {
     name: 'TagsEdit',
     data() {
@@ -61,9 +61,9 @@
         type: 1,
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
-          sn: [{ required: true, trigger: 'blur', message: '请输入科目编号' }],
+          sn: [{ required: true, trigger: 'blur', message: '请输入收支编号' }],
           type: [{ required: true, trigger: 'blur', message: '请选择类别' }],
-          pid: [{ required: true, trigger: 'blur', message: '请选择科目分类' }],
+          pid: [{ required: true, trigger: 'blur', message: '请选择收支分类' }],
         },
         title: '',
         dialogFormVisible: false,
@@ -92,7 +92,7 @@
         this.getSelectList()
       },
       async getSelectList() {
-        const { data } = await getAccountList({
+        const { data } = await getCategoryList({
           page: 1,
           pageSize: 10,
           id: 0, // 父级id （取父级时传0）
@@ -113,7 +113,7 @@
               if (this.type == 2) {
                 this.form.pid = 0
               }
-              const { code } = await editAccountSave(this.form)
+              const { code } = await editCategorySave(this.form)
               if (code != 200) {
                 return
               }
@@ -125,7 +125,7 @@
               this.$emit('fetch-data', 1)
               this.close()
             } else {
-              const { code } = await editAccountSave(this.form)
+              const { code } = await editCategorySave(this.form)
               if (code != 200) {
                 return
               }

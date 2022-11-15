@@ -17,6 +17,10 @@
       VabChart,
     },
     props: {
+      mapType: {
+        type: Object,
+        default: () => {},
+      },
       title: {
         type: String,
         default: '',
@@ -66,17 +70,7 @@
           title: {
             text: this.title,
           },
-          tooltip: {
-            trigger: 'item',
-            formatter(params) {
-              let res = ` <ul>
-    <li><span>地区:</span> <span> ${params.data.name}</span></li>
-    <li><span>新增供应商:</span> <span> ${params.data.add_count}</span></li>
-    <li><span>总供应商:</span> <span> ${params.data.value}</span></li>
-  </ul>`
-              return res
-            },
-          },
+          tooltip: this.mapType,
           dataRange: {
             y: 50,
             min: 0,

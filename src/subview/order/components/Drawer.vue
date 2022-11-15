@@ -2,16 +2,14 @@
   <div class="components-drawer">
     <div style="padding: 30px 35px 25px">
       <div>
-        <p style="font-size: 16px; font-weight: 600">[普通订单]</p>
+        <p style="font-size: 16px; font-weight: 600">[{{ form.order_type }}]</p>
         <el-row :gutter="20">
           <el-col :span="12" style="display: flex">
             <img
               :src="avatar"
               style="width: 50px; height: 50px; margin: 0 10px 10px 0"
             />
-            <span style="margin: 10px 0 0 0">
-              订单编号：wx310090959855550464
-            </span>
+            <span style="margin: 10px 0 0 0">订单编号：{{ form.sn }}</span>
           </el-col>
 
           <el-col :span="12">
@@ -28,7 +26,7 @@
             >
               打印
             </el-button>
-            <el-button
+            <!-- <el-button
               native-type="submit"
               size="small"
               style="float: right; margin-right: 10px"
@@ -36,186 +34,220 @@
               @click="EditBtn"
             >
               发送货
-            </el-button>
+            </el-button> -->
           </el-col>
         </el-row>
       </div>
       <div style="display: flex">
-        <div
-          v-for="(item, index) in stalist"
-          :key="index"
-          style="display: flex; flex: 1; flex-direction: column"
-        >
-          <span style="margin-bottom: 12px">{{ item.name }}</span>
-          <span>{{ item.value }}</span>
+        <div style="display: flex; flex: 1; flex-direction: column">
+          <span style="margin-bottom: 12px">订单状态</span>
+          <span>{{ form.order_status1 }}</span>
+        </div>
+        <div style="display: flex; flex: 1; flex-direction: column">
+          <span style="margin-bottom: 12px">实际支付</span>
+          <span>暂无</span>
+        </div>
+        <div style="display: flex; flex: 1; flex-direction: column">
+          <span style="margin-bottom: 12px">支付方式</span>
+          <span>暂无</span>
+        </div>
+        <div style="display: flex; flex: 1; flex-direction: column">
+          <span style="margin-bottom: 12px">支付时间</span>
+          <span>暂无</span>
+        </div>
+        <div style="display: flex; flex: 1; flex-direction: column">
+          <span style="margin-bottom: 12px">累计欠款</span>
+          <span>{{ form.sale_arrears }}</span>
         </div>
       </div>
     </div>
-    <el-tabs v-model="activeName" class="drawer-tab">
-      <el-tab-pane label="订单信息" name="first">
+    <el-tabs v-model="search_type" class="drawer-tab" @tab-click="handleClick">
+      <el-tab-pane label="订单信息" name="0">
         <div class="conten-warp">
           <div class="conten-title">用户信息</div>
           <div class="conten-list-row">
-            <div>用户UID：577</div>
-            <div>客户名称： 阿白</div>
-            <div>绑定电话： -15236804776</div>
+            <div>用户UID：{{ form.uid }}</div>
+            <div>客户名称： {{ form.name }}</div>
+            <div>
+              <span v-if="!formShow.phonestate">
+                绑定电话： {{ form.mobile | phoneteltm }}
+              </span>
+              <span v-else>绑定电话：{{ form.mobile }}</span>
+              <i
+                v-if="!formShow.phonestate"
+                class="el-icon-view"
+                style="margin-left: 10px"
+                @click="formShow.phonestate = true"
+              ></i>
+              <i
+                v-else
+                class="el-icon-view"
+                style="margin-left: 10px; color: #1890ff"
+                @click="formShow.phonestate = false"
+              ></i>
+            </div>
           </div>
         </div>
         <div class="conten-warp">
           <div class="conten-title">收货信息</div>
           <div class="conten-list-com">
-            <div>收货人：测试</div>
-            <div>收货电话：186****9581</div>
-            <div>
-              收货地址：辽宁 大连市 甘井子区 凌水街道不想要了不想要了，怎么退款
-            </div>
+            <div>收货人：{{ form.consignee }}</div>
+            <div>收货电话：{{ form.uid }}</div>
+            <div>收货地址：{{ form.consignee_address }}</div>
           </div>
         </div>
         <div class="conten-warp">
           <div class="conten-title">订单信息</div>
           <div class="conten-list-row">
-            <div>创建时间： 2022-10-08 16:30:46</div>
-            <div>商品总数： 3</div>
-            <div>商品总价： 297</div>
-            <div>优惠券金额： 0.00</div>
-            <div>积分抵扣： 0.00</div>
-            <div>支付邮费： 0.00</div>
-            <div>会员商品优惠： 0.00</div>
-            <div>支付时间： 2022-10-08 16:30:4</div>
-            <div>支付方式： 余额支付</div>
+            <div>创建时间： {{ form.create_time }}</div>
+            <div>商品总数： {{ form.sum_num }}</div>
+            <div>商品总价： {{ form.sum_price }}</div>
+            <div>优惠券金额： 暂无</div>
+            <div>积分抵扣： 暂无</div>
+            <div>支付邮费： 暂无</div>
+            <div>会员商品优惠： 暂无</div>
+            <div>支付时间： 暂无</div>
+            <div>支付方式： 暂无</div>
           </div>
         </div>
         <div class="conten-warp">
           <div class="conten-title">物流信息</div>
           <div class="conten-list-row">
-            <div>快递公司： 宅急送</div>
-            <div>快递单号： 111111111111111111</div>
+            <div>快递公司： {{ form.delivery.company_name }}</div>
+            <div>快递单号： {{ form.delivery.express_number }}</div>
           </div>
         </div>
         <div class="conten-warp">
           <div class="conten-title">其它信息</div>
           <div class="conten-list-row">
-            <div style="width: 50%">创建时间： 2020-02-02 10:10:10</div>
-            <div style="width: 50%">操作人员： 阿白</div>
-            <div style="width: 50%">更新时间： 2020-02-02 10:10:10</div>
-            <div style="width: 50%">操作人员： 阿白</div>
-            <div style="width: 100%">订单备注： 11111111111111</div>
+            <div style="width: 50%">创建时间： {{ form.create_time }}</div>
+            <div style="width: 50%">操作人员： 暂无</div>
+            <div style="width: 50%">更新时间： 暂无</div>
+            <div style="width: 50%">操作人员： 暂无</div>
+            <div style="width: 100%">订单备注： 暂无</div>
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="商品信息" name="second">
-        <!-- 表格组件使用 -->
-        <List :list="goosList" :state="listLoading" :type="listType">
+      <el-tab-pane label="商品信息" name="1">
+        <List :list="orderList" :list-type="listType" :state="listLoading">
           <!-- 表格组件具名插槽 自定义表头 -->
           <template #List>
             <el-table-column
               align="center"
-              label="商品信息"
-              prop="inof"
-              width="330"
-            >
-              <template #default="{ row }">
-                <div style="display: flex">
-                  <el-image
-                    :src="row.inof.img"
-                    style="width: 50px; height: 50px; margin-right: 20px"
-                  />
-                  <span>{{ row.inof.wenzi }}|{{ row.inof.color }}</span>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="售价"
-              prop="money"
+              label="商品编号"
+              prop="sn"
               show-overflow-tooltip
             />
             <el-table-column
               align="center"
-              label="实付金额"
-              prop="pay"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="数量"
+              label="商品数量"
               prop="num"
               show-overflow-tooltip
             />
             <el-table-column
               align="center"
-              label="小计"
-              prop="comutp"
+              label="商品单价"
+              prop="price"
+              show-overflow-tooltip
+            />
+            <el-table-column
+              align="center"
+              label="商品总金额"
+              prop="total"
               show-overflow-tooltip
             />
           </template>
         </List>
       </el-tab-pane>
-      <el-tab-pane label=" 操作记录" name="three">
-        <List :list="orderList" :state="listLoading" :type="listType">
-          <!-- 表格组件具名插槽 自定义表头 -->
-          <template #List>
-            <el-table-column
-              align="center"
-              label="订单ID"
-              prop="id"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="操作记录"
-              prop="log"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="操作时间"
-              prop="time"
-              show-overflow-tooltip
-            />
-          </template>
-        </List>
-      </el-tab-pane>
-      <el-tab-pane label="发货记录" name="four">
-        <List :list="stareList" :state="listLoading" :type="listType">
+      <el-tab-pane label=" 操作记录" name="2">
+        <List :list="orderList" :list-type="listType" :state="listLoading">
           <!-- 表格组件具名插槽 自定义表头 -->
           <template #List>
             <el-table-column
               align="center"
               label="订单号"
-              prop="id"
+              prop="ordersn"
               show-overflow-tooltip
             />
             <el-table-column
               align="center"
-              label="商品信息"
-              prop="inof"
-              width="330"
-            >
-              <template #default="{ row }">
-                <div style="display: flex">
-                  <el-image
-                    :src="row.inof.img"
-                    style="width: 50px; height: 50px; margin-right: 20px"
-                  />
-                  <span>{{ row.inof.wenzi }}|{{ row.inof.color }}</span>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="发货信息"
-              prop="time"
+              label="订单金额"
+              prop="total"
               show-overflow-tooltip
             />
-            <el-table-column align="center" label="操作" width="85">
-              <template #default="{ row }">
-                <el-button type="text" @click="handleDetail(row)">
-                  立即核销
-                </el-button>
-                <el-button type="text">更多</el-button>
-              </template>
-            </el-table-column>
+            <el-table-column
+              align="center"
+              label="客户名称"
+              prop="name"
+              show-overflow-tooltip
+            />
+            <el-table-column
+              align="center"
+              label="创建时间"
+              prop="ctime"
+              show-overflow-tooltip
+            />
+            <el-table-column
+              align="center"
+              label="备注"
+              prop="remark"
+              show-overflow-tooltip
+            />
+          </template>
+        </List>
+      </el-tab-pane>
+      <el-tab-pane label="发货记录" name="3">
+        <List :list="orderList" :list-type="listType" :state="listLoading">
+          <!-- 表格组件具名插槽 自定义表头 -->
+          <template #List>
+            <el-table-column
+              align="center"
+              label="快递公司"
+              prop="company_name"
+              show-overflow-tooltip
+            />
+            <el-table-column
+              align="center"
+              label="快递单号"
+              prop="express_number"
+              show-overflow-tooltip
+            />
+            <el-table-column
+              align="center"
+              label="订单号"
+              prop="sn"
+              show-overflow-tooltip
+            />
+            <el-table-column
+              align="center"
+              label="创建时间"
+              prop="ctime"
+              show-overflow-tooltip
+            />
+            <el-table-column
+              align="center"
+              label="商品数量"
+              prop="num"
+              show-overflow-tooltip
+            />
+            <el-table-column
+              align="center"
+              label="商品金额"
+              prop="total"
+              show-overflow-tooltip
+            />
+            <el-table-column
+              align="center"
+              label="最终支付"
+              prop="final_amount"
+              show-overflow-tooltip
+            />
+            <el-table-column
+              align="center"
+              label="备注"
+              prop="remark"
+              show-overflow-tooltip
+            />
           </template>
         </List>
       </el-tab-pane>
@@ -226,84 +258,26 @@
 <script>
   import List from '@/subview/components/List'
   import { mapGetters } from 'vuex'
+  import { getOrderDetail } from '@/api/basic'
   export default {
     name: 'ComponentsDrawer',
     components: { List },
+    props: {
+      drawerInof: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data() {
       return {
-        activeName: 'first',
-        listLoading: false,
-        form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: '',
+        formShow: {
+          phonestate: false,
         },
+        search_type: '0',
+        form: Object.assign({}, this.drawerInof),
+        listLoading: false,
         listType: 2,
-        goosList: [
-          {
-            inof: {
-              img: 'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-              color: '粉',
-              wenzi:
-                '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            },
-            money: 12,
-            pay: 11,
-            num: 1,
-            comutp: 1.0,
-          },
-        ],
-        stareList: [
-          {
-            inof: {
-              img: 'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-              color: '粉',
-              wenzi:
-                '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            },
-            id: 'wx310816471104094208[金家酒便利]',
-            time: '2022-10-10 16:33:41',
-          },
-        ],
-        orderList: [
-          {
-            id: 4525,
-            log: '用户付款成功',
-            time: '2022-10-10 16:33:41',
-          },
-          {
-            id: 4525,
-            log: '用户付款成功',
-            time: '2022-10-10 16:33:41',
-          },
-        ],
-        stalist: [
-          {
-            name: '订单状态',
-            value: '待评价',
-          },
-          {
-            name: '实际支付',
-            value: '¥247.50',
-          },
-          {
-            name: '支付方式',
-            value: '余额支付',
-          },
-          {
-            name: '支付时间',
-            value: '2022-10-08 16:30:46',
-          },
-          {
-            name: '累计欠款',
-            value: '¥247.50',
-          },
-        ],
+        orderList: [],
       }
     },
     computed: {
@@ -311,8 +285,39 @@
         avatar: 'user/avatar',
       }),
     },
+    watch: {
+      drawerInof: {
+        handler: function (newVal) {
+          this.form = Object.assign({}, newVal)
+        },
+        deep: true,
+        immediate: true,
+      },
+      search_type: {
+        handler: function (newVal) {
+          if (newVal != 0) {
+            this.orderDetail()
+          }
+        },
+        deep: true,
+      },
+    },
     created() {},
     methods: {
+      async orderDetail() {
+        this.listLoading = true
+        const { data } = await getOrderDetail({
+          search_type: this.search_type,
+          id: this.form.id,
+          page: 1,
+          pageSize: 20,
+        })
+        this.orderList = data.data
+        this.listLoading = false
+      },
+      handleClick(tab) {
+        this.search_type = tab.name
+      },
       PrintBtn() {
         console.log('打印')
         this.$emit('drawerPrint', 'multipleTable')

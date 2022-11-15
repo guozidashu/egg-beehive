@@ -231,10 +231,16 @@
                   style="width: 215px"
                 />
               </el-form-item>
-
               <el-form-item class="item" label="商品名称：">
                 <el-input
                   v-model="form.name"
+                  placeholder="请输入商品名称"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="商品描述：">
+                <el-input
+                  v-model="form.content"
                   placeholder="请输入商品名称"
                   style="width: 215px"
                 />
@@ -303,6 +309,7 @@
                   style="margin-left: 10px; color: #1890ff"
                 ></i>
               </el-form-item>
+
               <el-form-item class="item" label="上市波段：">
                 <el-select v-model="form.band" placeholder="请选择上市波段：">
                   <el-option
@@ -333,9 +340,9 @@
               </el-form-item>
               <el-form-item class="item" label="性别：">
                 <el-select v-model="form.gender" placeholder="请选择性别：">
-                  <el-option label="女" value="1" />
-                  <el-option label="男" value="2" />
-                  <el-option label="中" value="3" />
+                  <el-option label="女" :value="1" />
+                  <el-option label="男" :value="2" />
+                  <el-option label="中" :value="3" />
                 </el-select>
               </el-form-item>
               <el-form-item class="item" label="商品图片：">
@@ -355,7 +362,11 @@
           <div class="conten-warp">
             <div class="conten-title">规格及库位</div>
             <div class="conten-list-com">
-              <el-form-item class="item" label="颜色：">
+              <el-form-item
+                v-if="form.drawerType == 3"
+                class="item"
+                label="颜色："
+              >
                 <qy-color-select v-model="form.colorid" />
                 <div style="width: 200px; margin: -33px 0 0 90px">
                   <span v-for="(item, idex) in colorNameList" :key="idex">
@@ -363,22 +374,35 @@
                   </span>
                 </div>
               </el-form-item>
-              <el-form-item class="item" label="尺码：">
+              <el-form-item
+                v-if="form.drawerType == 3"
+                class="item"
+                label="尺码："
+              >
                 <qy-size-select v-model="form.sizeid" />
                 <div style="width: 200px; margin: -33px 0 0 90px">
                   <span v-for="(item, idex) in sizeNameList" :key="idex">
                     {{ item }}
                   </span>
                 </div>
-                <!-- <el-cascader
-                  v-model="form.sizeid"
-                  collapse-tags
-                  :options="selectData.size"
-                />
-                <i
-                  class="el-icon-plus"
-                  style="margin-left: 10px; color: #1890ff"
-                ></i> -->
+              </el-form-item>
+              <el-form-item
+                v-if="form.drawerType == 2"
+                class="item"
+                label="颜色："
+              >
+                <span v-for="(item, idex) in form.color_name" :key="idex">
+                  {{ item }}
+                </span>
+              </el-form-item>
+              <el-form-item
+                v-if="form.drawerType == 2"
+                class="item"
+                label="尺码："
+              >
+                <span v-for="(item, idex) in form.size_name" :key="idex">
+                  {{ item }}
+                </span>
               </el-form-item>
               <el-form-item class="item" label="仓库">
                 <el-select
@@ -432,12 +456,23 @@
               <el-form-item class="item" label="吊牌价：">
                 <el-input v-model="form.sale_price" style="width: 215px" />
               </el-form-item>
-              <el-form-item class="item" label="销售价：">
+              <el-form-item
+                v-if="form.drawerType == 3"
+                class="item"
+                label="销售价："
+              >
                 <el-input v-model="form.price" clearable style="width: 215px">
                   <el-button slot="append" @click="changeType()">
                     固定价
                   </el-button>
                 </el-input>
+              </el-form-item>
+              <el-form-item
+                v-if="form.drawerType == 2"
+                class="item"
+                label="销售价："
+              >
+                <el-input v-model="form.price" clearable style="width: 215px" />
               </el-form-item>
               <el-form-item v-if="lockSta" class="item" style="width: 100%">
                 <List
@@ -760,6 +795,14 @@
         const { data } = await getGoodBasicsDetails({ good_id: this.form.id })
         this.goodsDetails = data
         this.form = data
+        this.form.category = data.category_id
+        this.form.brand = data.brand_id
+        this.form.year = data.year_id
+        this.form.season = data.season_id
+        this.form.agegroup = data.agegroup_id
+        this.form.band = data.band_id
+        this.form.warehouse = data.warehouse_id
+        this.form.position = data.position_id
         this.form.drawerType = temp
       },
       async selectProvinceFun(e) {
@@ -770,7 +813,12 @@
         const { data } = await getWarehouseList()
         this.WarehouseList = data.list
       },
-      async changeTypeBtn() {
+      async changeTypeBtn(e) {
+        if (e != 1) {
+          this.form.drawerType = e
+          this.$forceUpdate()
+          return
+        }
         if (this.lockSta) {
           this.form.lock_price = 1
           console.log(7878787, this.zhekouList)
@@ -791,26 +839,38 @@
         } else {
           this.form.lock_price = 0
         }
-        console.log()
         if (this.form.sizeid != undefined) {
           if (this.form.sizeid[0].type == 'zs') {
             this.form.sizeid = this.form.sizeid.map((item) => {
               return item.id
             })
           } else {
+            let temp = ''
             this.form.sizeid_sm = this.form.sizeid
             this.form.sizeid_sm = this.form.sizeid_sm.map((item) => {
+              temp = item.pid
               return item.id
             })
-            this.form.sizeid = []
+            this.form.sizeid = [temp]
           }
         }
         this.form.img = '1'
-        this.id = 0
-        const { data } = await editGoodSave(this.form)
-        console.log(999999, data)
-        // this.form.drawerType = e
-        this.$forceUpdate()
+        if (this.form.id == undefined) {
+          this.form.id = 0
+          const { code } = await editGoodSave(this.form)
+          if (code == 200) {
+            this.$baseMessage('新增成功', 'success', 'vab-hey-message-success')
+            this.form.drawerType = e
+            this.$forceUpdate()
+          }
+        } else {
+          const { code } = await editGoodSave(this.form)
+          if (code == 200) {
+            this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
+            this.form.drawerType = e
+            this.$forceUpdate()
+          }
+        }
       },
       // 打印
       ...mapActions({
