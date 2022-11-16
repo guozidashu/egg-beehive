@@ -280,9 +280,6 @@
             </el-form-item>
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="商城配置" name="five">
-          <Form />
-        </el-tab-pane>
         <el-tab-pane label="SCRM配置" name="six">
           <p style="font-weight: 700">将以下信息复制到圈域宝SCRM后台</p>
           <el-form
@@ -347,10 +344,8 @@
 
 <script>
   // import { getList } from '@/api/area'
-  import Form from './components/store'
   export default {
     name: 'SystemModule',
-    components: { Form },
     data() {
       return {
         tagsList: [

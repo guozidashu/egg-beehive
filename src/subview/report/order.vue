@@ -18,7 +18,7 @@
         <span style="margin-top: 10px; font-size: 16px">订单数据分析</span>
 
         <el-form-item style="margin-right: 0; font-size: 12px">
-          <el-form-item label="品牌:" prop="region">
+          <el-form-item label="品牌:" prop="brand">
             <el-select v-model="goodsForm.brand" placeholder="请选择品牌">
               <el-option
                 v-for="(item, index) in selectList.brand"
@@ -28,7 +28,7 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="时间筛选:" prop="region">
+          <el-form-item label="时间筛选:" prop="time">
             <el-date-picker
               v-model="goodsForm.time"
               align="right"
@@ -424,8 +424,8 @@
       handleDownload() {
         console.log(888, this.goodsStaList)
         import('@/utils/excel').then((excel) => {
-          const tHeader = ['名称', '数量', '环比数量']
-          const filterVal = ['title', 'num', 'number']
+          const tHeader = ['名称', '数量']
+          const filterVal = ['title', 'num']
           const list = this.goodsStaList
           const data = this.formatJson(filterVal, list)
           excel.export_json_to_excel({

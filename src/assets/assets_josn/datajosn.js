@@ -93,6 +93,12 @@ export default {
         }
       }
     },
+    // 获取最近一周的时间
+    getWeenTime() {
+      const end = new Date()
+      const start = new Date(new Date().getTime() - 3600 * 1000 * 24 * 7)
+      return [start, end]
+    },
     // 获取过去几个月的时间
     getPastTime(month) {
       let time = new Date()

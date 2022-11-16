@@ -3,20 +3,22 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
-        :form="form"
-        :form-type="formType"
-        @changeSearch="handleQuery"
-        @resetForm="resetForm"
-      >
+      <Form :form="form" :form-type="formType">
         <template #Form>
-          <el-form-item label="供应商名称" prop="region">
-            <el-input v-model="form.name" size="small" />
+          <el-form-item label="角色:">
+            <el-select v-model="form.role_id" size="small">
+              <el-option
+                v-for="(item, index) in selectList.role"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
           </el-form-item>
-          <el-form-item label="日期筛选" prop="region">
+          <el-form-item label="日期筛选:">
             <el-date-picker
               v-model="form.date"
-              align="right"
+              align="left"
               end-placeholder="结束日期"
               :picker-options="pickerOptions"
               range-separator="至"
@@ -24,12 +26,6 @@
               type="daterange"
               unlink-panels
             />
-          </el-form-item>
-          <el-form-item label="状态：">
-            <el-select v-model="form.is_void" placeholder="请选择">
-              <el-option label="正常" :value="0" />
-              <el-option label="已作废" :value="1" />
-            </el-select>
           </el-form-item>
         </template>
       </Form>
@@ -43,7 +39,6 @@
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column
             align="center"
@@ -52,66 +47,57 @@
           />
           <el-table-column
             align="center"
-            label="供应商名称"
-            prop="supplier_name"
+            label="用户ID"
+            prop="user_id"
+            show-overflow-tooltip
+            sortable
+          />
+          <el-table-column
+            align="center"
+            label="用户名称"
+            prop="user_name"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="日期"
-            prop="ctime"
+            label="完成价值"
+            prop="complete_worth"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="金额"
-            prop="total"
+            label="淘汰价值"
+            prop="out_worth"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="收款方式"
-            prop="alipay_amount"
-            show-overflow-tooltip
-          >
-            <template #default="{ row }">
-              <div>支付宝:{{ row.alipay_amount }}</div>
-              <div>微信:{{ row.wechat_amount }}</div>
-              <div>现金:{{ row.cash_amount }}</div>
-              <div>银行卡:{{ row.bank_amount }}</div>
-              <div>信用卡:{{ row.credit_amount }}</div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            label="备注"
-            prop="remark"
+            label="订单状态"
+            prop="employee_worth"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="状态"
-            prop="is_void"
+            label="用户价值"
+            prop="name"
             show-overflow-tooltip
-          >
-            <template #default="{ row }">
-              <span v-if="row.is_void == 1">已作废</span>
-              <span v-else>正常</span>
-            </template>
-          </el-table-column>
+          />
         </template>
       </List>
     </el-card>
   </div>
 </template>
-
 <script>
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
-  import { getSupplierVoucherList } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
+  import {
+    getEmployeeCostAnalysis,
+    editIntegralOrderVerification,
+    getCommonAllList,
+  } from '@/api/basic'
   export default {
-    name: 'FinancialSupplierReceipt',
+    name: 'EmployeeValue',
     components: { List, Form },
     mixins: [datajosn],
     data() {
@@ -119,18 +105,13 @@
         form: {
           page: 1,
           pageSize: 10,
-          date: [],
-          name: '', // 供应商名
-          is_void: null, // 是否作废 0=否 1=是
+          date: ['', ''],
+          role_id: null,
         },
+        selectList: [],
         formType: 4,
         listType: 1,
-        list: [
-          {
-            id: 1,
-            name: '测试科目',
-          },
-        ],
+        list: [],
         listLoading: false,
         total: 0,
       }
@@ -144,28 +125,48 @@
       },
     },
     created() {
+      this.getTypeList()
       this.fetchData()
     },
     methods: {
-      resetForm() {
-        this.form = this.$options.data().form
+      handleDelete(row) {
+        if (row.id) {
+          this.$baseConfirm('你确定要核销当前项吗', null, async () => {
+            const { code } = await editIntegralOrderVerification({ id: row.id })
+            if (code != 200) {
+              return
+            }
+            this.$baseMessage('核销成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
+          })
+        }
       },
-      handleQuery() {
-        this.fetchData()
+      async getTypeList() {
+        const { data } = await getCommonAllList({
+          type: 'role',
+        })
+        this.selectList = data
       },
+      // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         this.form.page = data
       },
+      // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
+      // 列表数据请求函数 公共部分
       async fetchData() {
         this.listLoading = true
-        this.form.start_time = this.form.date[0]
-        this.form.end_time = this.form.date[1]
-        const { data } = await getSupplierVoucherList(this.form)
-        this.list = data.data
-        this.total = data.total
+        const { data } = await getEmployeeCostAnalysis({
+          page: this.form.page,
+          pageSize: this.form.pageSize,
+          start_date: this.form.date[0], // 开始时间
+          end_date: this.form.date[1], // 结束时间
+          role_id: this.form.role_id, // 季节id
+        })
+        this.list = data.data.data
+        this.total = data.data.total
         this.listLoading = false
       },
     },

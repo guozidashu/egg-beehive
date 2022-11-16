@@ -18,21 +18,25 @@
         <span style="margin-top: 10px; font-size: 16px">商品概况</span>
 
         <el-form-item style="float: right; margin-right: 0; font-size: 12px">
-          <el-form-item label="类型:" prop="region">
-            <el-select v-model="goodsForm.region" size="small">
-              <el-option label="整手" value="shanghai" />
-              <el-option label="散码" value="beijing" />
+          <el-form-item label="类型:" prop="type">
+            <el-select v-model="goodsForm.type" size="small">
+              <el-option label="整手" :value="0" />
+              <el-option label="散码" :value="1" />
             </el-select>
           </el-form-item>
-          <el-form-item label="品牌:" prop="region">
-            <el-select v-model="goodsForm.region" size="small">
-              <el-option label="品牌1" value="shanghai" />
-              <el-option label="品牌2" value="beijing" />
+          <el-form-item label="品牌:" prop="brand">
+            <el-select v-model="goodsForm.brand" placeholder="请选择品牌">
+              <el-option
+                v-for="(item, index) in selectList.brand"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
             </el-select>
           </el-form-item>
-          <el-form-item label="时间筛选:" prop="region">
+          <el-form-item label="时间筛选:" prop="time">
             <el-date-picker
-              v-model="goodsForm.date"
+              v-model="goodsForm.time"
               align="right"
               end-placeholder="结束日期"
               :picker-options="pickerOptions"
@@ -46,10 +50,8 @@
               size="small"
               style="margin: 0 20px"
               type="primary"
+              @click="handleDownload"
             >
-              查询
-            </el-button>
-            <el-button native-type="submit" size="small" type="primary">
               导出
             </el-button>
           </el-form-item>
@@ -69,47 +71,47 @@
         ref="form"
         :inline="true"
         label-width="80px"
-        :model="goodsForm"
+        :model="goodsForm1"
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
         <span style="margin-top: 10px; font-size: 16px">商品排行</span>
         <el-form-item style="margin-right: 0">
-          <el-form-item label="类型:" prop="region">
-            <el-select v-model="goodsForm.region" size="small">
-              <el-option label="整手" value="shanghai" />
-              <el-option label="散码" value="beijing" />
+          <el-form-item label="类型:" prop="type">
+            <el-select v-model="goodsForm1.type" size="small">
+              <el-option label="整手" :value="0" />
+              <el-option label="散码" :value="1" />
             </el-select>
           </el-form-item>
-          <el-form-item label="品牌:" prop="region">
-            <el-select v-model="goodsForm.region" size="small">
-              <el-option label="品牌1" value="shanghai" />
-              <el-option label="品牌2" value="beijing" />
+          <el-form-item label="品牌:" prop="brand">
+            <el-select v-model="goodsForm1.brand" placeholder="请选择品牌">
+              <el-option
+                v-for="(item, index) in selectList.brand"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
             </el-select>
           </el-form-item>
-          <el-form-item label="统计类型:" prop="region">
-            <el-select v-model="goodsForm.region" size="small">
-              <el-option label="浏览量" value="shanghai" />
-              <el-option label="访问数" value="beijing" />
-            </el-select>
-          </el-form-item>
-          <el-form-item
-            label="时间筛选:"
-            style="margin-right: 0; font-size: 12px"
-          >
+          <el-form-item label="时间筛选:" prop="time">
             <el-date-picker
-              v-model="goodsForm.date"
-              size="small"
-              style="width: 250px"
+              v-model="goodsForm1.time"
+              align="right"
+              end-placeholder="结束日期"
+              :picker-options="pickerOptions"
+              range-separator="至"
+              start-placeholder="开始日期"
               type="daterange"
+              unlink-panels
             />
             <el-button
               native-type="submit"
               size="small"
-              style="margin: 0 0 0 20px"
+              style="margin: 0 20px"
               type="primary"
+              @click="handleDownload"
             >
-              查询
+              导出
             </el-button>
           </el-form-item>
         </el-form-item>
@@ -124,19 +126,19 @@
           />
           <el-table-column label="商品图片" prop="image" width="200">
             <template #default="{ row }">
-              <el-image :src="row.image" />
+              <el-image :src="row.img" />
             </template>
           </el-table-column>
-          <el-table-column label="商品名称" prop="store_name" width="200" />
-          <el-table-column label="商品款号" prop="visit" width="100" />
-          <el-table-column label="上架时间" prop="user" width="100" />
-          <el-table-column label="本期销量" prop="cart" width="120" />
-          <el-table-column label="本期销售额" prop="orders" width="100" />
+          <el-table-column label="商品名称" prop="name" width="200" />
+          <el-table-column label="商品款号" prop="sn" width="100" />
+          <el-table-column label="上架时间" prop="upper_time" width="100" />
+          <el-table-column label="本期销量" prop="sum_num" width="120" />
+          <el-table-column label="本期销售额" prop="sum_total" width="100" />
           <el-table-column label="毛利率(%)" prop="profit">
             <template #default="{ row }">{{ row.profit * 100 }}%</template>
           </el-table-column>
-          <el-table-column label="上架天数" prop="pay" />
-          <el-table-column label="预计可售天数" prop="pay" />
+          <el-table-column label="上架天数" prop="upper_day" />
+          <el-table-column label="预计可售天数" prop="expect_day" />
           <el-table-column
             align="center"
             fixed="right"
@@ -159,231 +161,201 @@
   import TextLabels from '@/subview/components/TextLabels'
   import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
+  import { getCommonAllList, getGoodsList, getGoodsRank } from '@/api/basic'
+  import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'GoodsStatistical',
     components: { List, VabChart, TextLabels },
+    mixins: [datajosn],
     data() {
       return {
+        filename: '商品数据分析',
         listLoading: false,
         listType: 2,
-        pickerOptions: {
-          cellClassName: (time) => {
-            if (
-              new Date().getDate() === time.getDate() &&
-              new Date().getMonth() === time.getMonth() &&
-              new Date().getFullYear() === time.getFullYear()
-            ) {
-              return 'dateArrClass' // 返回值设置的是我们添加的类名
-            }
-          },
-          shortcuts: [
-            {
-              text: '今天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '昨天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 1
-                end.setTime(start)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近7天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 7
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近30天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 30
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本月',
-              onClick(picker) {
-                const end = new Date()
-                const start =
-                  new Date().getTime() -
-                  3600 * 1000 * 24 * (new Date().getDate() - 1)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本年',
-              onClick(picker) {
-                const start = new Date(new Date().getFullYear(), 0, 1)
-                const end = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-          ],
+        goosList: [],
+        goodsForm: {
+          type: 0,
+          brand: 0,
+          time: this.getPastTime(1),
         },
-        goosList: [
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-        ],
-        goodsForm: {},
+        goodsForm1: {
+          page: 1,
+          pageSize: 20,
+          type: 0,
+          brand: 0,
+          time: this.getPastTime(1),
+        },
+        selectList: [],
+        dateList: [],
+        dataAllList: {
+          sale_num: [],
+          sale_total: [],
+          return_num: [],
+          return_total: [],
+        },
         goodsStaList: [
           {
             title: '今日上新',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+            name: 'today_new',
           },
           {
             title: '商品销售数',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+            name: 'goods_num',
           },
           {
             title: '商品sku数',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+            name: 'goods_sku',
           },
           {
-            title: '销售款数',
+            title: '商品款数',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+            name: 'goods_style_num',
           },
           {
-            title: '平均单价',
+            title: '客单价',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+            name: 'price_one',
           },
           {
             title: '销售数量',
             number: 400,
-            num: 34.32,
+            num: 0,
             type: 2,
-            typeSta: true,
+            typeSta: false,
+            name: 'sale_num',
           },
           {
             title: '销售金额',
             number: 400,
-            num: 34.32,
+            num: 0,
             type: 2,
-            typeSta: true,
+            typeSta: false,
+            name: 'sale_total',
           },
           {
             title: '退货数量',
             number: 400,
-            num: 34.32,
+            num: 0,
             type: 2,
-            typeSta: true,
+            typeSta: false,
           },
           {
             title: '退货金额',
             number: 400,
-            num: 34.32,
+            num: 0,
             type: 2,
-            typeSta: true,
+            typeSta: false,
+            name: 'return_total',
           },
           {
             title: '实际交易金额',
             number: 400,
-            num: 34.32,
+            num: 0,
             type: 2,
-            typeSta: true,
+            typeSta: false,
+            name: 'real_total',
           },
         ],
         initOptions: {
           renderer: 'svg',
         },
-        option: {
+        option: {},
+      }
+    },
+    watch: {
+      goodsForm: {
+        handler: function () {
+          this.tableData = []
+          this.branchList = []
+          this.dateList = []
+          this.dataAllList = {
+            sale_num: [],
+            sale_total: [],
+            return_num: [],
+            return_total: [],
+          }
+          this.fetchData()
+        },
+        deep: true,
+      },
+      goodsForm1: {
+        handler: function () {
+          this.getTableList()
+        },
+        deep: true,
+      },
+    },
+    created() {
+      this.getTypeList()
+      this.fetchData()
+      this.getTableList()
+    },
+    methods: {
+      async getTypeList() {
+        const { data } = await getCommonAllList({
+          type: 'brand',
+        })
+        this.selectList = data
+      },
+      async getTableList() {
+        this.listLoading = true
+        const { data } = await getGoodsRank(this.goodsForm1)
+        this.goosList = data.data
+        this.listLoading = false
+      },
+      async fetchData() {
+        const { data } = await getGoodsList(this.goodsForm)
+        this.goodsStaList.forEach((item) => {
+          for (let i in data.list) {
+            if (item.name == i) {
+              if (data.list[i] == null) {
+                data.list[i] = 0
+                item.num = data.list[i]
+              } else {
+                item.num = data.list[i]
+              }
+            }
+          }
+        })
+        let arr = []
+        data.line_date.forEach((item) => {
+          for (let i in item) {
+            this.dateList.push(i)
+            arr.push(item[i])
+          }
+        })
+        console.log(8888888, this.dateList)
+        arr.forEach((item) => {
+          for (let i in item) {
+            if (i != 'time_range' && this.dataAllList[i] !== undefined) {
+              if (item[i] == null) {
+                item[i] = 0
+                this.dataAllList[i].push(item[i])
+              } else {
+                this.dataAllList[i].push(item[i])
+              }
+            }
+          }
+        })
+        this.option = {
           tooltip: {
             trigger: 'axis', //触发类型；轴触发，axis则鼠标hover到一条柱状图显示全部数据，item则鼠标hover到折线点显示相应数据，
             axisPointer: {
@@ -407,38 +379,7 @@
           xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: [
-              '09-11',
-              '09-12',
-              '09-13',
-              '09-14',
-              '09-15',
-              '09-16',
-              '09-17',
-              '09-18',
-              '09-19',
-              '09-20',
-              '09-21',
-              '09-22',
-              '09-23',
-              '09-24',
-              '09-25',
-              '09-26',
-              '09-27',
-              '09-28',
-              '09-29',
-              '09-30',
-              '10-01',
-              '10-02',
-              '10-03',
-              '10-04',
-              '10-05',
-              '10-06',
-              '10-07',
-              '10-08',
-              '10-09',
-              '10-10',
-            ],
+            data: this.dateList,
           },
           yAxis: [
             {
@@ -462,11 +403,7 @@
               type: 'line',
               stack: 'Total',
               smooth: true,
-              data: [
-                27, 49, 102, 669, 141, 507, 115, 71, 164, 155, 212, 358, 478,
-                468, 310, 194, 376, 231, 606, 731, 82, 495, 121, 124, 603, 254,
-                434, 2262, 786, 211,
-              ],
+              data: this.dataAllList.sale_num,
               yAxisIndex: 1,
               itemStyle: {
                 color: '#FFC833',
@@ -477,10 +414,7 @@
               type: 'line',
               stack: 'Total',
               smooth: true,
-              data: [
-                10, 15, 32, 34, 34, 33, 19, 19, 29, 36, 34, 45, 60, 51, 29, 40,
-                43, 45, 29, 41, 15, 21, 24, 24, 25, 18, 26, 39, 31, 21,
-              ],
+              data: this.dataAllList.sale_total,
               yAxisIndex: 1,
               itemStyle: {
                 color: '#FF6C87',
@@ -489,11 +423,7 @@
             {
               name: '退货数量',
               type: 'bar',
-              data: [
-                0, 10.09, 0, 4.43, 74.25, 157.1, 0, 0, 47.04, 0, 0, 1473.6, 0,
-                0, 0, 377.2, 0.11, 0.67, 0.11, 85.18, 0, 0.1, 0, 0, 0, 0, 0,
-                0.18, 0, 0,
-              ],
+              data: this.dataAllList.return_num,
               itemStyle: {
                 color: '#55DF7E',
               },
@@ -501,23 +431,31 @@
             {
               name: '退货金额',
               type: 'bar',
-              data: [
-                0, 0, 0, 0.02, 0, 0, 3798.02, 0, 0.01, 0, 7001, 1151.36, 0,
-                4494.1, 1002679, 6131.7, 0, 0, 0, 59.1, 0, 1000050.14, 0, 403,
-                299, 11696.1, 0, 2665, 0, 15242.36,
-              ],
+              data: this.dataAllList.return_total,
               itemStyle: {
                 color: '#1890FF',
               },
             },
           ],
-        },
-      }
-    },
-    created() {},
-    methods: {
-      // 详情抽屉
-      handleDetail() {},
+        }
+      },
+      // 导出
+      handleDownload() {
+        import('@/utils/excel').then((excel) => {
+          const tHeader = ['名称', '数量']
+          const filterVal = ['title', 'num']
+          const list = this.goodsStaList
+          const data = this.formatJson(filterVal, list)
+          excel.export_json_to_excel({
+            header: tHeader,
+            data,
+            filename: this.filename,
+          })
+        })
+      },
+      formatJson(filterVal, jsonData) {
+        return jsonData.map((v) => filterVal.map((j) => v[j]))
+      },
     },
   }
 </script>

@@ -216,6 +216,9 @@
           this.menuList = list
           this.fetchData(2)
         } else {
+          if (this.form.id == 0) {
+            this.form.id = -1
+          }
           const { data } = await getAccountList(this.form)
           this.list = data.data
           this.total = data.total

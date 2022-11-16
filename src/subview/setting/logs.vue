@@ -10,7 +10,7 @@
         >
           <el-form-item label="操作时间：">
             <el-date-picker
-              v-model="queryForm.date"
+              v-model="queryForm.create_time"
               align="left"
               end-placeholder="结束日期"
               :picker-options="pickerOptions"
@@ -20,17 +20,13 @@
               unlink-panels
             />
           </el-form-item>
-          <el-form-item label="日志类型：">
-            <el-select v-model="queryForm.searchType" placeholder="请选择">
-              <el-option label="全部" :value="0" />
-              <el-option label="开启" :value="1" />
-              <el-option label="关闭" :value="2" />
-            </el-select>
+          <el-form-item label="操作名称：">
+            <el-input v-model="queryForm.name" placeholder="请输入操作名信息" />
           </el-form-item>
-          <el-form-item label="操作名：">
+          <el-form-item label="操作人：">
             <el-input
-              v-model="queryForm.youxiang"
-              placeholder="请输入操作名信息"
+              v-model="queryForm.admin_name"
+              placeholder="请输入操作人"
             />
           </el-form-item>
           <el-form-item>
@@ -48,15 +44,15 @@
     <el-table v-loading="listLoading" :data="list">
       <el-table-column
         align="center"
-        label="日志类型"
-        prop="type"
+        label="操作名称"
+        prop="name"
         show-overflow-tooltip
         width="230px"
       />
       <el-table-column
         align="center"
         label="操作人"
-        prop="account"
+        prop="admin_name"
         show-overflow-tooltip
       />
       <el-table-column
@@ -80,7 +76,7 @@
       <el-table-column
         align="center"
         label="操作时间"
-        prop="datetime"
+        prop="create_time"
         show-overflow-tooltip
       />
       <template #empty>
@@ -103,103 +99,33 @@
 </template>
 
 <script>
-  // import { getList } from '@/api/systemLog'
-
+  import { getLogList } from '@/api/basic'
+  import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'Logs',
+    mixins: [datajosn],
     data() {
       return {
-        pickerOptions: {
-          cellClassName: (time) => {
-            if (
-              new Date().getDate() === time.getDate() &&
-              new Date().getMonth() === time.getMonth() &&
-              new Date().getFullYear() === time.getFullYear()
-            ) {
-              return 'dateArrClass' // 返回值设置的是我们添加的类名
-            }
-          },
-          shortcuts: [
-            {
-              text: '今天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '昨天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 1
-                end.setTime(start)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近7天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 7
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近30天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 30
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本月',
-              onClick(picker) {
-                const end = new Date()
-                const start =
-                  new Date().getTime() -
-                  3600 * 1000 * 24 * (new Date().getDate() - 1)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本年',
-              onClick(picker) {
-                const start = new Date(new Date().getFullYear(), 0, 1)
-                const end = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-          ],
-        },
-        list: [
-          {
-            type: '数据库日志',
-            account: 'editor',
-            executeResult: 'dos攻击',
-            ip: '173.199.147.72',
-            datetime: '2003-11-11 18:31:11',
-          },
-          {
-            type: '操作日志',
-            account: 'editor',
-            executeResult: '登录成功',
-            ip: '173.199.147.72',
-            datetime: '2003-11-11 18:31:11',
-          },
-        ],
+        list: [],
         listLoading: false,
         layout: 'total, sizes, prev, pager, next, jumper',
         total: 0,
         queryForm: {
-          account: '',
-          searchDate: '',
-          searchType: 0,
+          name: '', //操作名称
+          admin_name: '', //操作人
+          create_time: [],
           page: 1,
           pageSize: 10,
         },
       }
+    },
+    watch: {
+      queryForm: {
+        handler: function () {
+          this.fetchData()
+        },
+        deep: true,
+      },
     },
     created() {
       this.fetchData()
@@ -218,13 +144,11 @@
         this.fetchData()
       },
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getList(this.queryForm)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const { data } = await getLogList(this.queryForm)
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
       },
     },
   }

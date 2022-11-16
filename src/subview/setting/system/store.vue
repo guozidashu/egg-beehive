@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding: 20px">
     <div class="textCss">
       <p style="font-weight: 600">使用说明</p>
     </div>
@@ -13,7 +13,7 @@
       <el-radio-button label="文本自定义" />
       <el-radio-button label="登录设置" />
       <el-radio-button label="注册协议" />
-      <el-radio-button label="配置管理" />
+      <!-- <el-radio-button label="配置管理" /> -->
     </el-radio-group>
     <basicSetting v-if="activeName == '基础配置'" />
     <management v-if="activeName == '财务设置'" />
@@ -22,7 +22,7 @@
     <textTT v-if="activeName == '文本自定义'" />
     <loginGin v-if="activeName == '登录设置'" />
     <fuwenben v-if="activeName == '注册协议'" />
-    <accessory v-if="activeName == '配置管理'" />
+    <!-- <accessory v-if="activeName == '配置管理'" /> -->
     <!-- <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="基础配置" name="first" />
       <el-tab-pane label="财务设置" name="two">
@@ -50,23 +50,24 @@
   </div>
 </template>
 <script>
-  import basicSetting from './peizhi/basicSetting.vue'
-  import management from './peizhi/management.vue'
-  import jifen from './peizhi/jifen.vue'
-  import distribution from './peizhi/distribution.vue'
-  import textTT from './peizhi/textTT.vue'
-  import accessory from './peizhi/accessory.vue'
-  //  import logging from './peizhi/logging.vue'
-  import loginGin from './peizhi/loginGin.vue'
-  import fuwenben from './peizhi/fuwenben.vue'
+  import basicSetting from './components/basicSetting.vue'
+  import management from './components/management.vue'
+  import jifen from './components/jifen.vue'
+  import distribution from './components/distribution.vue'
+  import textTT from './components/textTT.vue'
+  // import accessory from './components/accessory.vue'
+  //  import logging from './components/logging.vue'
+  import loginGin from './components/loginGin.vue'
+  import fuwenben from './components/fuwenben.vue'
   export default {
+    name: 'SystemStore',
     components: {
       basicSetting,
       management,
       jifen,
       distribution,
       textTT,
-      accessory,
+      // accessory,
       //  logging,
       loginGin,
       fuwenben,

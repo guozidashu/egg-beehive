@@ -3,7 +3,12 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form :form="form" :form-type="formType">
+      <Form
+        :form="form"
+        :form-type="formType"
+        @changeSearch="handleQuery"
+        @resetForm="resetForm"
+      >
         <template #Form>
           <el-form-item label="订单号" prop="region">
             <el-input v-model="form.name" size="small" />
@@ -121,6 +126,12 @@
       this.fetchData()
     },
     methods: {
+      handleQuery() {
+        this.fetchData()
+      },
+      resetForm() {
+        this.form = this.$options.data().form
+      },
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要核销当前项吗', null, async () => {

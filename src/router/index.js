@@ -178,7 +178,6 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
-      // 开发核价单 标准核价单 部门成本分析 员工价值分析 development standard cost value
       {
         path: 'financial',
         name: 'Financial',
@@ -280,6 +279,58 @@ export const asyncRoutes = [
             component: () => import('@/subview/research/integral/rules'),
             meta: {
               title: '积分规则',
+            },
+          },
+        ],
+      },
+      {
+        path: 'employeeValue',
+        name: 'EmployeeValue',
+        component: () => import('@/subview/research/employeeValue'),
+        meta: {
+          title: '员工价值',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'productPlanning',
+        name: 'ProductPlanning',
+        component: () => import('@/subview/research/productPlanning'),
+        meta: {
+          title: '商品企划',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'costAnalysis',
+        name: 'CostAnalysis',
+        meta: {
+          title: '成本分析',
+          icon: 'archive-line',
+        },
+        children: [
+          {
+            path: 'costAnalysisStyle',
+            name: 'CostAnalysisStyle',
+            component: () => import('@/subview/research/costAnalysis/style'),
+            meta: {
+              title: '款式分析',
+            },
+          },
+          {
+            path: 'costAnalysisBand',
+            name: 'CostAnalysisBand',
+            component: () => import('@/subview/research/costAnalysis/band'),
+            meta: {
+              title: '波段分析',
+            },
+          },
+          {
+            path: 'costAnalysisJobs',
+            name: 'CostAnalysisJobs',
+            component: () => import('@/subview/research/costAnalysis/jobs'),
+            meta: {
+              title: '岗位分析',
             },
           },
         ],
@@ -880,7 +931,7 @@ export const asyncRoutes = [
           },
           {
             path: 'systemNotice',
-            name: 'systemNotice',
+            name: 'SystemNotice',
             component: () => import('@/subview/setting/system/notice'),
             meta: {
               title: '通知配置',
@@ -889,7 +940,7 @@ export const asyncRoutes = [
           },
           {
             path: 'systemPay',
-            name: 'systemPay',
+            name: 'SystemPay',
             component: () => import('@/subview/setting/system/pay'),
             meta: {
               title: '支付配置',
@@ -898,10 +949,19 @@ export const asyncRoutes = [
           },
           {
             path: 'systemInterface',
-            name: 'systemInterface',
+            name: 'SystemInterface',
             component: () => import('@/subview/setting/system/interface'),
             meta: {
               title: '开放接口',
+              // icon: 'home-2-line',
+            },
+          },
+          {
+            path: 'systemStore',
+            name: 'SystemStore',
+            component: () => import('@/subview/setting/system/store'),
+            meta: {
+              title: '商城配置',
               // icon: 'home-2-line',
             },
           },

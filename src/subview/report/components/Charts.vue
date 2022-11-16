@@ -23,6 +23,7 @@
     },
     data() {
       return {
+        data1: JSON.parse(JSON.stringify(this.data)),
         initOptions: {
           renderer: 'svg',
         },
@@ -49,19 +50,7 @@
               saveAsImage: {},
             },
           },
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: [
-              '09-11',
-              '09-12',
-              '09-13',
-              '09-14',
-              '09-15',
-              '09-16',
-              '09-17',
-            ],
-          },
+          xAxis: this.data.xAxis,
           yAxis: [
             {
               type: 'value',
@@ -81,6 +70,16 @@
           series: this.data.series,
         },
       }
+    },
+    watch: {
+      data: {
+        handler: function (newval) {
+          this.data1 = JSON.parse(JSON.stringify(newval))
+          this.$forceUpdate()
+        },
+        deep: true,
+        immediate: true,
+      },
     },
   }
 </script>

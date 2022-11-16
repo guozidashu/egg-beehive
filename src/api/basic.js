@@ -17,10 +17,128 @@ export function getWarehousePositionList(data) {
     data,
   })
 }
-// 下拉框数据获取 common/getBasicInfo
+//获取设计师
+export function getgetDesignerList(data) {
+  return request({
+    url: '/common/getDesignerList',
+    method: 'post',
+    data,
+  })
+}
+// 下拉框数据获取
 export function getCommonAllList(data) {
   return request({
     url: '/common/getBasicInfo',
+    method: 'post',
+    data,
+  })
+}
+// 上边全是基础数据接口
+
+// 下边是业务数据接口
+// 员工价值
+export function getCategoryCostAnalysis(data) {
+  return request({
+    url: '/research/categoryCostAnalysis',
+    method: 'post',
+    data,
+  })
+}
+// 成本分析
+export function getEmployeeCostAnalysis(data) {
+  return request({
+    url: '/research/employeeCostAnalysis',
+    method: 'post',
+    data,
+  })
+}
+export function getBandCostAnalysis(data) {
+  return request({
+    url: '/research/bandCostAnalysis',
+    method: 'post',
+    data,
+  })
+}
+export function getPositionCostAnalysis(data) {
+  return request({
+    url: '/research/positionCostAnalysis',
+    method: 'post',
+    data,
+  })
+}
+// 商品企划
+export function getPlanList(data) {
+  return request({
+    url: '/research/planList',
+    method: 'post',
+    data,
+  })
+}
+export function getPlanDetails(data) {
+  return request({
+    url: '/research/planDetails',
+    method: 'post',
+    data,
+  })
+}
+// 日志列表
+export function getLogList(data) {
+  return request({
+    url: '/admin/LogList',
+    method: 'post',
+    data,
+  })
+}
+// 员工列表
+export function getEmployeeList(data) {
+  return request({
+    url: '/employee/employeeList',
+    method: 'post',
+    data,
+  })
+}
+export function editEmployeeSave(data) {
+  return request({
+    url: '/employee/employeeSave',
+    method: 'post',
+    data,
+  })
+}
+export function delEmployeeSync(data) {
+  return request({
+    url: '/employee/employeeSync',
+    method: 'post',
+    data,
+  })
+}
+// 交易分析
+export function getTradeList(data) {
+  return request({
+    url: '/information/TradeList',
+    method: 'post',
+    data,
+  })
+}
+// 交易概况
+export function getTradeBasic(data) {
+  return request({
+    url: '/information/TradeBasic',
+    method: 'post',
+    data,
+  })
+}
+// 商品分析
+export function getGoodsList(data) {
+  return request({
+    url: '/information/goodsList',
+    method: 'post',
+    data,
+  })
+}
+// 商品排行
+export function getGoodsRank(data) {
+  return request({
+    url: '/information/goodsRank',
     method: 'post',
     data,
   })

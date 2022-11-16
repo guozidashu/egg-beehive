@@ -16,10 +16,20 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="收支编号：" prop="sn">
+      <el-form-item label="会计科目" prop="account_id">
+        <el-select v-model="form.account_id" placeholder="请选择会计科目">
+          <el-option
+            v-for="(item, index) in typeList"
+            :key="index"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="排序" prop="sort">
         <el-input
-          v-model="form.sn"
-          placeholder="请输入收支编号："
+          v-model="form.sort"
+          placeholder="请输入排序："
           style="width: 215px"
         />
       </el-form-item>
@@ -45,25 +55,34 @@
 </template>
 
 <script>
-  import { editCategorySave, getCategoryList } from '@/api/basic'
+  import {
+    editCategorySave,
+    getCategoryList,
+    getAccountList,
+  } from '@/api/basic'
   export default {
     name: 'TagsEdit',
     data() {
       return {
         form: {
           id: 0, // 主键id (新增时传0),
-          pid: null, // 父级id (添加主科目传0)
+          pid: null, // 父级id (添加主分类传0)
           name: '', // 名称
-          sn: '', // 会计科目编号
+          account_id: null, // 归属会计科目id
+          sort: null, // 排序
           type: null, // 类别 1收 2支
         },
         selectList: [],
+        typeList: [],
         type: 1,
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
-          sn: [{ required: true, trigger: 'blur', message: '请输入收支编号' }],
+          sort: [{ required: true, trigger: 'blur', message: '请输入排序' }],
           type: [{ required: true, trigger: 'blur', message: '请选择类别' }],
           pid: [{ required: true, trigger: 'blur', message: '请选择收支分类' }],
+          account_id: [
+            { required: true, trigger: 'blur', message: '请选择会计科目' },
+          ],
         },
         title: '',
         dialogFormVisible: false,
@@ -90,16 +109,26 @@
 
         this.dialogFormVisible = true
         this.getSelectList()
+        this.getTypeList()
       },
       async getSelectList() {
         const { data } = await getCategoryList({
           page: 1,
           pageSize: 10,
-          id: 0, // 父级id （取父级时传0）
-          type: 1, // 类别 1收 2支
-          name: '', // 科目名称
+          id: 0, // 父级id （取父级时传0）-1 = 所有子分类
+          name: '', // 分类名称
         })
         this.selectList = data.data
+      },
+      async getTypeList() {
+        const { data } = await getAccountList({
+          page: 1,
+          pageSize: 10,
+          id: 0, // 父级id （取父级时传0）
+          type: null, // 类别 1收 2支
+          name: '', // 科目名称
+        })
+        this.typeList = data.data
       },
       close() {
         this.$refs['form'].resetFields()

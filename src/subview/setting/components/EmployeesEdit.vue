@@ -9,20 +9,24 @@
       <el-form-item label="员工姓名:" prop="name">
         <el-input v-model="form.name" style="width: 215px" />
       </el-form-item>
-      <el-form-item label="账号:" prop="name1">
-        <el-input v-model="form.name1" style="width: 215px" />
-      </el-form-item>
-      <el-form-item label="岗位:" prop="qx">
-        <el-select v-model="form.qx">
-          <el-option label="设计师" :value="1" />
-          <el-option label="管理员" :value="2" />
+      <el-form-item label="岗位:" prop="role">
+        <el-select v-model="form.role" collapse-tags multiple>
+          <el-option
+            v-for="(item, index) in selectList.role"
+            :key="index"
+            :label="item.name"
+            :value="item.id"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="部门:" prop="status1">
-        <el-select v-model="form.status1">
-          <el-option label="研发部" :value="1" />
-          <el-option label="技术部" :value="2" />
-          <el-option label="销售部" :value="3" />
+      <el-form-item label="部门:" prop="department_id">
+        <el-select v-model="form.department_id">
+          <el-option
+            v-for="(item, index) in selectList.department"
+            :key="index"
+            :label="item.name"
+            :value="item.id"
+          />
         </el-select>
       </el-form-item>
       <el-form-item label="状态:">
@@ -47,24 +51,26 @@
 </template>
 
 <script>
-  // import { updateMeeting, addGoodsList } from '@/api/basic'
+  import { editEmployeeSave, getCommonAllList } from '@/api/basic'
   export default {
     name: 'EmployeesEdit',
     data() {
       return {
         typeData: [],
         form: {
-          name: '',
-          name1: '',
-          qx: '',
-          status1: '',
-          status: '',
+          id: null, // 员工id（新增时传空）
+          department_id: 1, // 部门id
+          name: '', // 员工名称
+          role: '', // 岗位
+          status: 1, // 状态 1正常 2禁用
         },
+        selectList: [],
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
-          name1: [{ required: true, trigger: 'blur', message: '请输入账号' }],
-          qx: [{ required: true, trigger: 'blur', message: '请选择岗位' }],
-          status1: [{ required: true, trigger: 'blur', message: '请选择部门' }],
+          role: [{ required: true, trigger: 'blur', message: '请选择岗位' }],
+          department_id: [
+            { required: true, trigger: 'blur', message: '请选择部门' },
+          ],
         },
         title: '',
         dialogFormVisible: false,
@@ -78,8 +84,19 @@
         } else {
           this.title = '编辑'
           this.form = Object.assign({}, row)
+          if (this.form.role != null) {
+            this.form.role = this.form.role.split(',')
+            this.form.role = this.form.role.map(Number)
+          }
         }
         this.dialogFormVisible = true
+        this.getTypeList()
+      },
+      async getTypeList() {
+        const { data } = await getCommonAllList({
+          type: 'role,department',
+        })
+        this.selectList = data
       },
       handleShow() {
         this.$refs['vabUpload'].handleShow()
@@ -93,10 +110,10 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              // const { code } = await addGoodsList(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              const { code } = await editEmployeeSave(this.form)
+              if (code != 200) {
+                return
+              }
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -105,10 +122,16 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              // const { code } = await updateMeeting(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              const { code } = await editEmployeeSave({
+                id: this.form.id,
+                department_id: this.form.department_id,
+                name: this.form.name,
+                role: this.form.role,
+                status: this.form.status,
+              })
+              if (code != 200) {
+                return
+              }
               this.$baseMessage(
                 '修改成功',
                 'success',

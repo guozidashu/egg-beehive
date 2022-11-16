@@ -65,11 +65,11 @@
       </template>
     </el-table>
     <el-table
-      v-if="listType === 3"
+      v-if="listType === 6"
       v-loading="state"
       border
       :data="list"
-      row-key="id"
+      row-key="category_id"
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       @selection-change="setSelectRows"
     >

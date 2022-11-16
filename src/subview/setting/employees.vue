@@ -5,14 +5,6 @@
     >
       <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
-          <el-form-item label="状态:">
-            <el-select v-model="form.status">
-              <el-option label="全部" :value="0" />
-              <el-option label="开启" :value="1" />
-              <el-option label="关闭" :value="2" />
-            </el-select>
-          </el-form-item>
-          <!-- 搜索框 -->
           <el-form-item label="搜索:">
             <el-input
               v-model="form.name"
@@ -30,13 +22,26 @@
             native-type="submit"
             size="small"
             type="primary"
-            @click="handleDetail('add', 2)"
+            @click="handleEdit('add')"
           >
             添加员工
           </el-button>
+          <!-- <el-button
+            native-type="submit"
+            size="small"
+            type="primary"
+            @click="handleDetail('add', 2)"
+          >
+            添加员工
+          </el-button> -->
         </el-form-item>
         <el-form-item>
-          <el-button native-type="submit" size="small" type="primary">
+          <el-button
+            native-type="submit"
+            size="small"
+            type="primary"
+            @click="handleTb"
+          >
             同步数据
           </el-button>
         </el-form-item>
@@ -52,23 +57,28 @@
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column align="center" label="头像" prop="name" width="150">
+          <el-table-column
+            align="center"
+            label="头像"
+            prop="avatar"
+            show-overflow-tooltip
+          >
             <template #default="{ row }">
               <img :src="row.avatar" style="width: 50px; height: 50px" />
             </template>
           </el-table-column>
-          <el-table-column label="员工姓名" prop="name" width="150" />
-          <el-table-column label="（用户名）账号" prop="name1" width="150" />
-          <el-table-column label="所在部门" prop="status1" width="150" />
-          <el-table-column label="岗位" prop="qx1" width="150" />
-          <el-table-column label="角色权限" prop="qx" width="150" />
-          <el-table-column label="最后一次登录" prop="qx1">
-            <template #default="{ row }">
-              <div>2022-11-01 12:02:02</div>
-              <div>192.168.31.173:10000 {{ row.qx1 }}</div>
-            </template>
-          </el-table-column>
-          <el-table-column label="状态" prop="status" width="100">
+          <el-table-column label="员工姓名" prop="name" show-overflow-tooltip />
+          <el-table-column
+            label="权限"
+            prop="department_name"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            label="岗位"
+            prop="role_name"
+            show-overflow-tooltip
+          />
+          <el-table-column label="状态" prop="status" show-overflow-tooltip>
             <template #default="{ row }">
               <el-switch
                 v-model="row.status"
@@ -85,21 +95,22 @@
           </el-table-column>
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row, 2)">
+              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+              <!-- <el-button type="text" @click="handleDetail(row, 2)">
                 编辑
               </el-button>
               <el-button type="text" @click="handleDetail(row, 1)">
                 详情
-              </el-button>
+              </el-button> -->
             </template>
           </el-table-column>
         </template>
       </List>
     </el-card>
-    <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
+    <!-- <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
       <Drawer :drawer-inof="drawerInof" />
-    </el-drawer>
-    <edit ref="edit" :type-data="typeData" @fetch-data="fetchData" />
+    </el-drawer> -->
+    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 
@@ -107,43 +118,29 @@
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
   import Edit from './components/EmployeesEdit'
-  import Drawer from './components/EmployeesDrawer'
-  // import { getStaffList } from '@/api/basic'
+  // import Drawer from './components/EmployeesDrawer'
+  import { getEmployeeList, delEmployeeSync } from '@/api/basic'
   export default {
     name: 'Employees',
-    components: { List, Form, Drawer, Edit },
+    components: { List, Form, Edit },
     data() {
       return {
         drawerInof: {},
         drawer: false,
-        typeData: {},
         form: {
           name: '',
           page: 1,
           pageSize: 10,
-          status: 0,
         },
         formType: 3,
         listType: 1,
-        list: [
-          {
-            name: '张三',
-            name1: 'zhangsan',
-            status1: '技术部',
-            qx1: '前端开发',
-            qx: '管理员',
-            status: 1,
-            avatar:
-              'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-          },
-        ],
+        list: [],
         listLoading: false,
         total: 0,
       }
     },
     watch: {
       form: {
-        //表单筛选条件变化实时刷新列表
         handler: function () {
           this.fetchData()
         },
@@ -154,37 +151,57 @@
       this.fetchData()
     },
     methods: {
-      // 详情抽屉
-      handleDetail(row, type) {
-        if (row == 'add') {
-          this.drawerInof = {}
-          this.drawerInof.drawerType = type
+      async handleEdit(row) {
+        if (row === 'add') {
+          this.$refs['edit'].showEdit()
         } else {
-          this.drawerInof = JSON.parse(JSON.stringify(row))
-          this.drawerInof.drawerType = type
+          if (row.id) {
+            this.$refs['edit'].showEdit(row)
+          } else {
+            this.$refs['edit'].showEdit()
+          }
         }
-        this.drawer = true
       },
-      handleQuery() {},
-      // 列表数据封装函数
+      async handleTb() {
+        this.listLoading = true
+        const { code } = await delEmployeeSync()
+        if (code != 200) {
+          return
+        }
+        console.log()
+        this.$message({
+          message: '同步成功',
+          type: 'success',
+        })
+        this.fetchData()
+      },
+      // 详情抽屉
+      // handleDetail(row, type) {
+      //   if (row == 'add') {
+      //     this.drawerInof = {}
+      //     this.drawerInof.drawerType = type
+      //   } else {
+      //     this.drawerInof = JSON.parse(JSON.stringify(row))
+      //     this.drawerInof.drawerType = type
+      //   }
+      //   this.drawer = true
+      // },
+      handleQuery() {
+        this.fetchData()
+      },
 
-      // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         this.form.page = data
       },
-      // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
-      // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getStaffList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const { data } = await getEmployeeList(this.form)
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
       },
     },
   }

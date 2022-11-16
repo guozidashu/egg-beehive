@@ -89,13 +89,13 @@
           >
             <template #List>
               <el-table-column type="selection" />
-              <el-table-column label="科目ID" prop="id">
+              <el-table-column label="收支ID" prop="id">
                 <template #default="{ row }">
                   <span>{{ row.id }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="会计科目编号" prop="sn" />
-              <el-table-column label="科目名称" prop="name" />
+              <el-table-column label="归属会计科目名称" prop="account_name" />
+              <el-table-column label="收支名称" prop="name" />
               <el-table-column label="类别" prop="type">
                 <template #default="{ row }">
                   <span v-if="row.type == 1">收</span>
@@ -127,7 +127,7 @@
 </template>
 <script>
   import List from '@/subview/components/List'
-  import Edit from './components/SubjectEdit'
+  import Edit from './components/categoryEdit'
   import { getCategoryList, delCategoryDel } from '@/api/basic'
   export default {
     name: 'CustomerTags',
@@ -138,7 +138,7 @@
           page: 1,
           pageSize: 10,
           id: 0, // 父级id （取父级时传0）
-          name: '', // 科目名称
+          name: '', // 收支名称
         },
         menuList: [],
         formType: 4,
@@ -209,6 +209,9 @@
           this.menuList = list
           this.fetchData(2)
         } else {
+          if (this.form.id == 0) {
+            this.form.id = -1
+          }
           const { data } = await getCategoryList(this.form)
           this.list = data.data
           this.total = data.total
