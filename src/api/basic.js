@@ -33,9 +33,240 @@ export function getCommonAllList(data) {
     data,
   })
 }
+//获取系统基础配置
+export function getConfig(data) {
+  return request({
+    url: '/common/getConfig',
+    method: 'post',
+    data,
+  })
+}
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+// 商城配置
+export function editShopConfig(data) {
+  return request({
+    url: '/setting/shopConfig',
+    method: 'post',
+    data,
+  })
+}
+export function getShopConfigInfo(data) {
+  return request({
+    url: '/setting/shopConfigInfo',
+    method: 'post',
+    data,
+  })
+}
+// 模块设置
+export function editScrmConfig(data) {
+  return request({
+    url: '/setting/scrmConfig',
+    method: 'post',
+    data,
+  })
+}
+export function editProduceConfig(data) {
+  return request({
+    url: '/setting/produceConfig',
+    method: 'post',
+    data,
+  })
+}
+export function editWeComeConfig(data) {
+  return request({
+    url: '/setting/weComeConfig',
+    method: 'post',
+    data,
+  })
+}
+export function getWeComeConfigInfo(data) {
+  return request({
+    url: '/setting/getWeComeConfigInfo',
+    method: 'post',
+    data,
+  })
+}
+export function editDesignConfig(data) {
+  return request({
+    url: '/setting/designConfig',
+    method: 'post',
+    data,
+  })
+}
+export function getDesignConfigInfo(data) {
+  return request({
+    url: '/setting/getDesignConfigInfo',
+    method: 'post',
+    data,
+  })
+}
+export function editAgentErpConfig(data) {
+  return request({
+    url: '/setting/agentErpConfig',
+    method: 'post',
+    data,
+  })
+}
+export function getAgentErpInfo(data) {
+  return request({
+    url: '/setting/getAgentErpInfo',
+    method: 'post',
+    data,
+  })
+}
+export function editErpConfig(data) {
+  return request({
+    url: '/setting/erpConfig',
+    method: 'post',
+    data,
+  })
+}
+export function getErpInfo(data) {
+  return request({
+    url: '/setting/getErpInfo',
+    method: 'post',
+    data,
+  })
+}
+// 存储设置
+export function editLocalStore(data) {
+  return request({
+    url: '/setting/localStore',
+    method: 'post',
+    data,
+  })
+}
+export function editALiYunOss(data) {
+  return request({
+    url: '/setting/aLiYunOss',
+    method: 'post',
+    data,
+  })
+}
+export function editTencentOss(data) {
+  return request({
+    url: '/setting/tencentOss',
+    method: 'post',
+    data,
+  })
+}
+export function editQiNiuOss(data) {
+  return request({
+    url: '/setting/qiNiuOss',
+    method: 'post',
+    data,
+  })
+}
+// 开放接口
+export function gitJuShuiTanInfo(data) {
+  return request({
+    url: '/setting/juShuiTanInfo',
+    method: 'post',
+    data,
+  })
+}
+
+export function editJuShuiTan(data) {
+  return request({
+    url: '/setting/juShuiTan',
+    method: 'post',
+    data,
+  })
+}
+export function editWangDianTong(data) {
+  return request({
+    url: '/setting/wangDianTong',
+    method: 'post',
+    data,
+  })
+}
+export function editBoJun(data) {
+  return request({
+    url: '/setting/boJun',
+    method: 'post',
+    data,
+  })
+}
+export function editBaiSheng(data) {
+  return request({
+    url: '/setting/baiSheng',
+    method: 'post',
+    data,
+  })
+}
+export function editZiRi(data) {
+  return request({
+    url: '/setting/ziRi',
+    method: 'post',
+    data,
+  })
+}
+// 销售渠道
+export function editWeChatOfficialAccounts(data) {
+  return request({
+    url: '/admin/weChatOfficialAccounts',
+    method: 'post',
+    data,
+  })
+}
+export function editWeChatApplet(data) {
+  return request({
+    url: '/admin/WeChatApplet',
+    method: 'post',
+    data,
+  })
+}
+export function editWechatVideo(data) {
+  return request({
+    url: '/admin/wechatVideo',
+    method: 'post',
+    data,
+  })
+}
+export function editAliPay(data) {
+  return request({
+    url: '/admin/aliPay',
+    method: 'post',
+    data,
+  })
+}
+export function editMoveApp(data) {
+  return request({
+    url: '/admin/moveApp',
+    method: 'post',
+    data,
+  })
+}
+export function editQuickly(data) {
+  return request({
+    url: '/admin/quickly',
+    method: 'post',
+    data,
+  })
+}
+export function editTopLine(data) {
+  return request({
+    url: '/admin/topLine',
+    method: 'post',
+    data,
+  })
+}
+export function editTiktokShop(data) {
+  return request({
+    url: '/admin/tiktokShop',
+    method: 'post',
+    data,
+  })
+}
+export function editLittleRedBook(data) {
+  return request({
+    url: '/admin/littleRedBook',
+    method: 'post',
+    data,
+  })
+}
 // 员工价值
 export function getCategoryCostAnalysis(data) {
   return request({

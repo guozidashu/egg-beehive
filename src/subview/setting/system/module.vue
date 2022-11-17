@@ -1,338 +1,300 @@
 <template>
   <div class="comprehensive-form-container">
     <el-card class="tabs-card" shadow="hover">
-      <el-tabs v-model="activeName">
-        <el-tab-pane label="ERP配置" name="first">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="ERP配置" name="ERP配置">
           <div class="textCss">
             <p style="font-weight: 600">使用说明</p>
           </div>
           <el-form
-            ref="form"
+            ref="form1"
             class="demo-form"
             label-position="right"
             label-width="150px"
-            :model="form"
+            :model="form1"
+            :rules="rules1"
           >
-            <el-form-item label="库存计算方式：">
-              <el-radio-group v-model="form.resource1">
-                <el-radio label="开单扣库存" />
-                <el-radio label="发货扣库存" />
+            <el-form-item label="关联商城标识符" prop="shopid">
+              <el-input v-model="form1.shopid" />
+            </el-form-item>
+            <el-form-item label="扣库存类型">
+              <el-radio-group v-model="form1.inventory_type">
+                <el-radio :label="0">开单扣库存</el-radio>
+                <el-radio :label="1">开单扣库存</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="欠款计算方式：">
-              <el-radio-group v-model="form.resource4">
-                <el-radio label="开单扣款" />
-                <el-radio label="发货扣款" />
+            <el-form-item label="扣款类型">
+              <el-radio-group v-model="form1.arrears_type">
+                <el-radio :label="0">开单扣款</el-radio>
+                <el-radio :label="1">发货扣款</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="金额格式：">
-              <el-radio-group v-model="form.resource5">
-                <el-radio label="取整" />
-                <el-radio label="保留1位" />
-                <el-radio label="保留2位" />
+            <el-form-item label="是否允许负库存">
+              <el-radio-group v-model="form1.unstock">
+                <el-radio :label="0">不允许</el-radio>
+                <el-radio :label="1">允许</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="无库存可开单：">
-              <el-radio-group v-model="form.resource2">
-                <el-radio label="关闭" />
-                <el-radio label="开启" />
+            <el-form-item label="公司地址" prop="company_address">
+              <el-input v-model="form1.company_address" />
+            </el-form-item>
+            <el-form-item label="电话" prop="company_tel">
+              <el-input v-model="form1.company_tel" />
+            </el-form-item>
+            <el-form-item label="微信" prop="company_wechat">
+              <el-input v-model="form1.company_wechat" />
+            </el-form-item>
+            <el-form-item label="支付宝" prop="company_alipay">
+              <el-input v-model="form1.company_alipay" />
+            </el-form-item>
+            <el-form-item label="银行卡号" prop="company_bank_account">
+              <el-input v-model="form1.company_bank_account" />
+            </el-form-item>
+            <el-form-item label="打印机类型">
+              <el-radio-group v-model="form1.printer_type">
+                <el-radio :label="1">蓝牙</el-radio>
+                <el-radio :label="2">针式</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="商品列表默认：">
-              <el-radio-group v-model="form.resource3">
-                <el-radio label="整手" />
-                <el-radio label="散码" />
+            <el-form-item label="库存监控人id" prop="monitor_id">
+              <el-input v-model="form1.monitor_id" />
+            </el-form-item>
+            <el-form-item label="商品列表默认显示">
+              <el-radio-group v-model="form1.goods_list_type">
+                <el-radio :label="1">整手</el-radio>
+                <el-radio :label="2">散码</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="单位：">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item label="库存预警：">
-              <span
-                v-for="(item, index) in tagsList"
-                :key="index"
-                :class="[item.type === 1 ? 'tagsClass' : 'tagsClass1']"
-                @click="handleClickTag(index)"
-              >
-                {{ item.name }}
-              </span>
+            <el-form-item label="单据显示">
+              <el-radio-group v-model="form1.show_type">
+                <el-radio :label="1">自己</el-radio>
+                <el-radio :label="2">全部</el-radio>
+              </el-radio-group>
             </el-form-item>
             <el-form-item
-              v-if="tagsList[0].type == 2"
-              label="低于安全库存下限："
-              prop="zhekou"
+              label="采购延期预警天数"
+              prop="purchase_delay_warning"
             >
-              <el-input
-                v-model="form.addressKeyword"
-                clearable
-                style="width: 250px"
-              />
-              <el-button
-                size="small"
-                style="margin-left: 10px"
-                type="text"
-                @click="tagsList[0].type = 1"
-              >
-                删除
-              </el-button>
+              <el-input v-model="form1.purchase_delay_warning" />
             </el-form-item>
             <el-form-item
-              v-if="tagsList[1].type == 2"
-              label="安全库存上限限内："
-              prop="zhekou"
+              label="商品现货库存小于多少时预警"
+              prop="goods_stock_warning"
             >
-              <el-input
-                v-model="form.addressKeyword"
-                clearable
-                style="width: 250px"
-              />
+              <el-input v-model="form1.goods_stock_warning" />
+            </el-form-item>
+            <el-form-item>
               <el-button
-                size="small"
-                style="margin-left: 10px"
-                type="text"
-                @click="tagsList[1].type = 1"
-              >
-                删除
-              </el-button>
-            </el-form-item>
-            <el-form-item
-              v-if="tagsList[2].type == 2"
-              label="高于安全库存上限："
-              prop="zhekou"
-            >
-              <el-input
-                v-model="form.addressKeyword"
-                clearable
-                style="width: 250px"
-              />
-              <el-button
-                size="small"
-                style="margin-left: 10px"
-                type="text"
-                @click="tagsList[2].type = 1"
-              >
-                删除
-              </el-button>
-            </el-form-item>
-            <el-form-item
-              v-if="tagsList[3].type == 2"
-              label="超卖："
-              prop="zhekou"
-            >
-              <el-input
-                v-model="form.addressKeyword"
-                clearable
-                style="width: 250px"
-              />
-              <el-button
-                size="small"
-                style="margin-left: 10px"
-                type="text"
-                @click="tagsList[3].type = 1"
-              >
-                删除
-              </el-button>
-            </el-form-item>
-            <el-form-item>
-              注：商品库存少于预警数量，商品列表库存数量标红显示，如需要发送消息通知，请到消息通知设置
-            </el-form-item>
-            <el-form-item label="公司地址：">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item label="电话：">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item label="微信：">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item label="支付宝：">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item label="银行卡号：">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="submitForm('form')">
-                提交
-              </el-button>
-            </el-form-item>
-          </el-form>
-        </el-tab-pane>
-        <el-tab-pane label="生产配置" name="second">
-          <div class="textCss">
-            <p style="font-weight: 600">使用说明</p>
-          </div>
-          <el-form
-            ref="form"
-            class="demo-form"
-            label-position="right"
-            label-width="180px"
-            :model="form"
-          >
-            <el-form-item label="生产协同参数保留参数">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="submitForm('form')">
-                提交
-              </el-button>
-            </el-form-item>
-          </el-form>
-        </el-tab-pane>
-        <el-tab-pane label="研发配置" name="three">
-          <div class="textCss">
-            <p style="font-weight: 600">使用说明</p>
-          </div>
-          <el-form
-            ref="form"
-            class="demo-form"
-            label-position="right"
-            label-width="180px"
-            :model="form"
-          >
-            <el-form-item label="生产协同参数保留参数">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="submitForm('form')">
-                提交
-              </el-button>
-            </el-form-item>
-          </el-form>
-        </el-tab-pane>
-        <el-tab-pane label="企业微信配置" name="four">
-          <div class="textCss">
-            <p style="font-weight: 600">使用说明</p>
-          </div>
-          <el-form
-            ref="form"
-            class="demo-form"
-            label-position="right"
-            label-width="140px"
-            :model="form"
-          >
-            <div style="font-weight: 600">企业微信基础配置</div>
-            <el-divider />
-            <el-form-item label="企微ID">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item>
-              <span style="color: #999">
-                企业微信ID，前往企业微信后台【我的企业】企业信息中可查看
-              </span>
-            </el-form-item>
-            <div style="font-weight: 600">企业微信通讯录配置</div>
-            <el-divider />
-            <div class="textCss">
-              <p>
-                1.请先登录企业微信:https://work.weixin.qq.com
-                客户与上下游->客户联系->关联微信开发者ID。2.请必须绑定微信开放平台
-              </p>
-            </div>
-            <el-form-item label="Token">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item>
-              <span style="color: #999">通讯录事件接收服务器token</span>
-            </el-form-item>
-            <el-form-item label="EncodingAESKey">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item>
-              <span style="color: #999">企业微信通讯录EncodingAESKey</span>
-            </el-form-item>
-            <el-form-item label="服务器地址">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-
-            <div style="font-weight: 600">企业微信客户设置</div>
-            <el-divider />
-            <el-form-item label="Secret">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item>
-              <span style="color: #999">
-                企业微信客户secret，可前往【客户与上下游】查看secret
-              </span>
-            </el-form-item>
-            <div style="font-weight: 600">企业微信自建应用设置</div>
-            <el-divider />
-            <el-form-item label="应用AgentId">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item>
-              <span style="color: #999">
-                企业微信自建应用AgentId，可前往【应用管理】进行自建应用
-              </span>
-            </el-form-item>
-            <el-form-item label="应用Secret">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item>
-              <span style="color: #999">
-                企业微信自建应用secret，可前往【应用管理】自建应用应用内查看secret
-              </span>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="submitForm('form')">
-                提交
-              </el-button>
-            </el-form-item>
-          </el-form>
-        </el-tab-pane>
-        <el-tab-pane label="SCRM配置" name="six">
-          <p style="font-weight: 700">将以下信息复制到圈域宝SCRM后台</p>
-          <el-form
-            ref="form"
-            class="demo-form"
-            label-position="right"
-            label-width="140px"
-            :model="form"
-          >
-            <div class="textCss">
-              <p>
-                用于对接圈域宝SCRM，实现聊天中向客户一键发送商品、优惠券等，查看客户购买的商城订单信息、购物车的商品等，使用该功能需要先购买圈域宝的企业私域
-                SCRM 用户增长系统
-              </p>
-            </div>
-            <el-form-item label="功能启用：">
-              <el-radio-group v-model="form.resource1">
-                <el-radio label="开启" />
-                <el-radio label="关闭" />
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="ERP应用密钥：">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item label="请求地址：">
-              <el-input v-model="form.name" style="width: 250px" />
-              <span style="margin-left: 20px; color: #999">
-                请求地址： 开启并填入地址后需要一段时间同步会员信息
-              </span>
-            </el-form-item>
-            <el-form-item label="店铺域名：">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item label="店铺ID：">
-              <el-input v-model="form.name" style="width: 250px" />
-            </el-form-item>
-            <el-form-item label="API_KEY">
-              <el-input
-                v-model="form.name"
-                placeholder="已隐藏内容，点击查看或编辑"
-                style="width: 250px"
-              />
-              <el-button
-                style="margin-left: 20px"
+                style="margin-top: 10px"
                 type="primary"
-                @click="submitForm('form')"
+                @click="submitForm('form1')"
               >
-                重置
+                保存
               </el-button>
             </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="代开发应用配置" name="代开发应用配置">
+          <div class="textCss">
+            <p style="font-weight: 600">使用说明</p>
+          </div>
+          <el-form
+            ref="form2"
+            class="demo-form"
+            label-position="right"
+            label-width="150px"
+            :model="form2"
+            :rules="rules2"
+          >
+            <el-form-item label="应用名" prop="name">
+              <el-input v-model="form2.name" />
+            </el-form-item>
+            <el-form-item label="代开发应用id" prop="agent_id">
+              <el-input v-model="form2.agent_id" />
+            </el-form-item>
+            <el-form-item label="永久密钥" prop="secret">
+              <el-input v-model="form2.secret" />
+            </el-form-item>
+            <el-form-item label="token失效时间" prop="token_expire_time">
+              <el-input v-model="form2.token_expire_time" />
+            </el-form-item>
+            <el-form-item label="token" prop="access_token">
+              <el-input v-model="form2.access_token" />
+            </el-form-item>
+            <el-form-item label="jsapi_ticket" prop="jsapi_ticket">
+              <el-input v-model="form2.jsapi_ticket" />
+            </el-form-item>
+            <el-form-item label="ticket过期时间" prop="ticket_expire_time">
+              <el-input v-model="form2.ticket_expire_time" />
+            </el-form-item>
+            <el-form-item label="agent应用模式下" prop="agent_jsapi_ticket">
+              <el-input v-model="form2.agent_jsapi_ticket" />
+            </el-form-item>
+            <el-form-item
+              label="agent应用模式下 - 过期时间"
+              prop="agent_ticket_expire_time"
+            >
+              <el-input v-model="form2.agent_ticket_expire_time" />
+            </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="submitForm('form')">
-                提交
+              <el-button
+                style="margin-top: 10px"
+                type="primary"
+                @click="submitForm('form2')"
+              >
+                保存
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="研发配置" name="研发配置">
+          <div class="textCss">
+            <p style="font-weight: 600">使用说明</p>
+          </div>
+          <el-form
+            ref="form3"
+            class="demo-form"
+            label-position="right"
+            label-width="150px"
+            :model="form3"
+            :rules="rules3"
+          >
+            <el-form-item label="应用标识符" prop="identifier">
+              <el-input v-model="form3.identifier" />
+            </el-form-item>
+            <el-form-item label="应用名" prop="name">
+              <el-input v-model="form3.name" />
+            </el-form-item>
+            <el-form-item label="代开发应用id" prop="agent_id">
+              <el-input v-model="form3.agent_id" />
+            </el-form-item>
+            <el-form-item label="永久密钥" prop="secret">
+              <el-input v-model="form3.secret" />
+            </el-form-item>
+            <el-form-item label="token失效时间" prop="token_expire_time">
+              <el-input v-model="form3.token_expire_time" />
+            </el-form-item>
+            <el-form-item label="token" prop="access_token">
+              <el-input v-model="form3.access_token" />
+            </el-form-item>
+            <el-form-item label="jsapi_ticket" prop="jsapi_ticket">
+              <el-input v-model="form3.jsapi_ticket" />
+            </el-form-item>
+            <el-form-item label="ticket过期时间" prop="ticket_expire_time">
+              <el-input v-model="form3.ticket_expire_time" />
+            </el-form-item>
+            <el-form-item label="agent应用模式下" prop="agent_jsapi_ticket">
+              <el-input v-model="form3.agent_jsapi_ticket" />
+            </el-form-item>
+            <el-form-item
+              label="agent应用模式下 - 过期时间"
+              prop="agent_ticket_expire_time"
+            >
+              <el-input v-model="form3.agent_ticket_expire_time" />
+            </el-form-item>
+            <el-form-item>
+              <el-button
+                style="margin-top: 10px"
+                type="primary"
+                @click="submitForm('form3')"
+              >
+                保存
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="企业微信配置" name="企业微信配置">
+          <div class="textCss">
+            <p style="font-weight: 600">使用说明</p>
+          </div>
+          <el-form
+            ref="form4"
+            class="demo-form"
+            label-position="right"
+            label-width="150px"
+            :model="form4"
+            :rules="rules4"
+          >
+            <el-form-item label="客户企业微信id" prop="corpid">
+              <el-input v-model="form4.corpid" />
+            </el-form-item>
+            <el-form-item label="通讯录密钥" prop="txl_secret">
+              <el-input v-model="form4.txl_secret" />
+            </el-form-item>
+            <el-form-item>
+              <el-button
+                style="margin-top: 10px"
+                type="primary"
+                @click="submitForm('form4')"
+              >
+                保存
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="生产配置" name="生产配置">
+          <div class="textCss">
+            <p style="font-weight: 600">使用说明</p>
+          </div>
+          <el-form
+            ref="form5"
+            class="demo-form"
+            label-position="right"
+            label-width="150px"
+            :model="form5"
+            :rules="rules5"
+          >
+            <el-form-item label="应用名" prop="name">
+              <el-input v-model="form5.name" />
+            </el-form-item>
+            <el-form-item>
+              <el-button
+                style="margin-top: 10px"
+                type="primary"
+                @click="submitForm('form5')"
+              >
+                保存
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="SCRM配置" name="SCRM配置">
+          <div class="textCss">
+            <p style="font-weight: 600">使用说明</p>
+          </div>
+          <el-form
+            ref="form6"
+            class="demo-form"
+            label-position="right"
+            label-width="150px"
+            :model="form6"
+            :rules="rules6"
+          >
+            <el-form-item label="功能是否开启">
+              <el-radio-group v-model="form6.state">
+                <el-radio :label="0">否</el-radio>
+                <el-radio :label="1">是</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="ERP密钥" prop="erp_secret">
+              <el-input v-model="form6.erp_secret" />
+            </el-form-item>
+            <el-form-item label="请求地址" prop="url">
+              <el-input v-model="form6.url" />
+            </el-form-item>
+            <el-form-item label="店铺域名" prop="store_domain">
+              <el-input v-model="form6.store_domain" />
+            </el-form-item>
+            <el-form-item label="apikey" prop="api_key">
+              <el-input v-model="form6.api_key" />
+            </el-form-item>
+            <el-form-item>
+              <el-button
+                style="margin-top: 10px"
+                type="primary"
+                @click="submitForm('form6')"
+              >
+                保存
               </el-button>
             </el-form-item>
           </el-form>
@@ -343,66 +305,334 @@
 </template>
 
 <script>
-  // import { getList } from '@/api/area'
+  import {
+    getConfig,
+    getErpInfo,
+    editErpConfig,
+    getAgentErpInfo,
+    editAgentErpConfig,
+    getDesignConfigInfo,
+    editDesignConfig,
+    getWeComeConfigInfo,
+    editWeComeConfig,
+    editProduceConfig,
+    editScrmConfig,
+  } from '@/api/basic'
   export default {
     name: 'SystemModule',
     data() {
       return {
-        tagsList: [
-          { name: '低于安全库存下限', type: 1 },
-          { name: '安全库存上下限内', type: 1 },
-          { name: '高于安全库存上限', type: 1 },
-          { name: '超卖', type: 1 },
-        ],
-        activeName: 'first',
-        value: true,
-        form: {
-          name: '',
-          region: '',
-          date: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          description: '',
-          area: [],
-          value: true,
+        activeName: 'ERP配置',
+        form1: {
+          shopid: null, //关联商城标识符
+          inventory_type: 1, //0开单扣库存1发货扣库存
+          arrears_type: 1, //0开单扣款1发货扣款
+          unstock: 1, //是否允许负库存1
+          company_address: null, //公司地址
+          company_tel: null, //电话
+          company_wechat: null, //微信
+          company_alipay: null, //支付宝
+          company_bank_account: null, //银行卡号
+          printer_type: 1, //打印机类型 2针式1蓝牙
+          monitor_id: null, //库存监控人id
+          goods_list_type: 1, //商品列表默认显示1整手 2散码
+          show_type: 1, //单据显示1自己 2全部
+          purchase_delay_warning: null, //采购延期预警天数，延期几天开始预警
+          goods_stock_warning: null, //商品现货库存小于多少时预警
         },
-        areaOptions: [],
-        rules: {
-          name: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
+        rules1: {
+          shopid: [
             {
-              min: 3,
-              max: 5,
-              message: '长度在 3 到 5 个字符',
+              required: true,
+              message: '请输入关联商城标识符',
               trigger: 'blur',
             },
           ],
-          region: [
-            { required: true, message: '请选择活动区域', trigger: 'change' },
-          ],
-          date: [
+          company_address: [
             {
-              type: 'date',
               required: true,
-              message: '请选择日期',
-              trigger: 'change',
+              message: '请输入公司地址',
+              trigger: 'blur',
             },
           ],
-          type: [
+          company_tel: [
             {
-              type: 'array',
               required: true,
-              message: '请至少选择一个活动性质',
-              trigger: 'change',
+              message: '请输入电话',
+              trigger: 'blur',
             },
           ],
-          resource: [
-            { required: true, message: '请选择活动资源', trigger: 'change' },
+          company_wechat: [
+            {
+              required: true,
+              message: '请输入微信',
+              trigger: 'blur',
+            },
           ],
-          description: [
-            { required: true, message: '请填写活动形式', trigger: 'blur' },
+          company_alipay: [
+            {
+              required: true,
+              message: '请输入支付宝',
+              trigger: 'blur',
+            },
+          ],
+          company_bank_account: [
+            {
+              required: true,
+              message: '请输入银行卡号',
+              trigger: 'blur',
+            },
+          ],
+          monitor_id: [
+            {
+              required: true,
+              message: '请输入库存监控人id',
+              trigger: 'blur',
+            },
+          ],
+          purchase_delay_warning: [
+            {
+              required: true,
+              message: '请输入采购延期预警天数，延期几天开始预警',
+              trigger: 'blur',
+            },
+          ],
+          goods_stock_warning: [
+            {
+              required: true,
+              message: '请输入商品现货库存小于多少时预警',
+              trigger: 'blur',
+            },
+          ],
+        },
+        form2: {
+          name: null, //应用名
+          agent_id: null, //代开发应用id
+          secret: null, //永久密钥
+          token_expire_time: null, //token失效时间
+          access_token: null, //token
+          jsapi_ticket: null, //jsapi_ticket
+          ticket_expire_time: null, //ticket过期时间
+          agent_jsapi_ticket: null, //agent应用模式下
+          agent_ticket_expire_time: null, //agent应用模式下 - 过期时间
+        },
+        rules2: {
+          name: [
+            {
+              required: true,
+              message: '请输入应用名',
+              trigger: 'blur',
+            },
+          ],
+          agent_id: [
+            {
+              required: true,
+              message: '请输入代开发应用id',
+              trigger: 'blur',
+            },
+          ],
+          secret: [
+            {
+              required: true,
+              message: '请输入永久密钥',
+              trigger: 'blur',
+            },
+          ],
+          token_expire_time: [
+            {
+              required: true,
+              message: '请输入token失效时间',
+              trigger: 'blur',
+            },
+          ],
+          access_token: [
+            {
+              required: true,
+              message: '请输入token',
+              trigger: 'blur',
+            },
+          ],
+          jsapi_ticket: [
+            {
+              required: true,
+              message: '请输入jsapi_ticket',
+              trigger: 'blur',
+            },
+          ],
+          ticket_expire_time: [
+            {
+              required: true,
+              message: '请输入ticket过期时间',
+              trigger: 'blur',
+            },
+          ],
+          agent_jsapi_ticket: [
+            {
+              required: true,
+              message: '请输入agent应用模式下',
+              trigger: 'blur',
+            },
+          ],
+          agent_ticket_expire_time: [
+            {
+              required: true,
+              message: '请输入agent应用模式下 - 过期时间',
+              trigger: 'blur',
+            },
+          ],
+        },
+        form3: {
+          id: null,
+          identifier: null, // 应用标识符
+          name: null, // 应用名
+          agent_id: null, // 代开发应用id
+          secret: null, // 永久密钥
+          token_expire_time: null, // token失效时间
+          access_token: null, // token
+          jsapi_ticket: null, // jsapi_ticket
+          ticket_expire_time: null, // ticket过期时间
+          agent_jsapi_ticket: null, // agent应用模式下
+          agent_ticket_expire_time: null, // agent应用模式下 - 过期时间
+        },
+        rules3: {
+          identifier: [
+            {
+              required: true,
+              message: '请输入应用标识符',
+              trigger: 'blur',
+            },
+          ],
+          name: [
+            {
+              required: true,
+              message: '请输入应用名',
+              trigger: 'blur',
+            },
+          ],
+          agent_id: [
+            {
+              required: true,
+              message: '请输入代开发应用id',
+              trigger: 'blur',
+            },
+          ],
+          secret: [
+            {
+              required: true,
+              message: '请输入永久密钥',
+              trigger: 'blur',
+            },
+          ],
+          token_expire_time: [
+            {
+              required: true,
+              message: '请输入token失效时间',
+              trigger: 'blur',
+            },
+          ],
+          access_token: [
+            {
+              required: true,
+              message: '请输入token',
+              trigger: 'blur',
+            },
+          ],
+          jsapi_ticket: [
+            {
+              required: true,
+              message: '请输入jsapi_ticket',
+              trigger: 'blur',
+            },
+          ],
+          ticket_expire_time: [
+            {
+              required: true,
+              message: '请输入ticket过期时间',
+              trigger: 'blur',
+            },
+          ],
+          agent_jsapi_ticket: [
+            {
+              required: true,
+              message: '请输入agent应用模式下',
+              trigger: 'blur',
+            },
+          ],
+          agent_ticket_expire_time: [
+            {
+              required: true,
+              message: '请输入agent应用模式下 - 过期时间',
+              trigger: 'blur',
+            },
+          ],
+        },
+        form4: {
+          corpid: null, //客户企业微信id
+          txl_secret: null, //通讯录密钥
+        },
+        rules4: {
+          corpid: [
+            {
+              required: true,
+              message: '请输入客户企业微信id',
+              trigger: 'blur',
+            },
+          ],
+          txl_secret: [
+            {
+              required: true,
+              message: '请输入通讯录密钥',
+              trigger: 'blur',
+            },
+          ],
+        },
+        form5: {
+          name: null,
+        },
+        rules5: {
+          name: [
+            {
+              required: true,
+              message: '请输入应用名',
+              trigger: 'blur',
+            },
+          ],
+        },
+        form6: {
+          state: '0', //功能是否开启 0 否 1是
+          erp_secret: 'o4QmxajJbZ6PV-eCISgyPaQXMBKeyZGhgEV0NFAtzpg', //ERP密钥
+          url: 'o4QmxajJbZ6PV-eCISgyPaQXMBKeyZGhgEV0NFAtzpg', //请求地址
+          store_domain: 'o4QmxajJbZ6PV-eCISgyPaQXMBKeyZGhgEV0NFAtzpg', //店铺域名
+          api_key: 'o4QmxajJbZ6PV-eCISgyPaQXMBKeyZGhgEV0NFAtzpg', //apikey
+        },
+        rules6: {
+          erp_secret: [
+            {
+              required: true,
+              message: '请输入ERP密钥',
+              trigger: 'blur',
+            },
+          ],
+          url: [
+            {
+              required: true,
+              message: '请输入请求地址',
+              trigger: 'blur',
+            },
+          ],
+          store_domain: [
+            {
+              required: true,
+              message: '请输入店铺域名',
+              trigger: 'blur',
+            },
+          ],
+          api_key: [
+            {
+              required: true,
+              message: '请输入apikey',
+              trigger: 'blur',
+            },
           ],
         },
       }
@@ -411,22 +641,92 @@
       this.fetchData()
     },
     methods: {
-      handleClickTag(index) {
-        this.tagsList[index].type = 2
+      handleClick() {
+        this.fetchData()
       },
-      //获取行政区划
       async fetchData() {
-        // const {
-        //   data: { list },
-        // } = await getList()
-        // this.areaOptions = list
+        if (this.activeName == 'ERP配置') {
+          const { data } = await getErpInfo()
+          if (data !== null) {
+            this.form1 = data
+          }
+        } else if (this.activeName == '代开发应用配置') {
+          const { data } = await getAgentErpInfo()
+          if (data !== null) {
+            this.form2 = data
+          }
+        } else if (this.activeName == '研发配置') {
+          const { data } = await getDesignConfigInfo()
+          if (data !== null) {
+            this.form3 = data
+          }
+        } else if (this.activeName == '企业微信配置') {
+          const { data } = await getWeComeConfigInfo()
+          if (data !== null) {
+            this.form4 = data
+          }
+        } else if (this.activeName == '生产配置') {
+          const { data } = await getConfig({ key: 'produce' })
+          if (data !== null) {
+            let temp = JSON.parse(data)
+            this.form5 = temp
+          }
+        } else if (this.activeName == 'SCRM配置') {
+          const { data } = await getConfig({ key: 'scrm' })
+          if (data !== null) {
+            let temp = JSON.parse(data)
+            this.form6 = temp
+            this.form6.state = Number(this.form6.state)
+          }
+        }
       },
       submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
+        this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            alert('submit!')
+            if (formName == 'form1') {
+              const { code } = await editErpConfig(this.form1)
+              if (code === 200) {
+                this.$message.success('保存成功')
+              } else {
+                this.$message.error('保存失败')
+              }
+            } else if (formName == 'form2') {
+              const { code } = await editAgentErpConfig(this.form2)
+              if (code === 200) {
+                this.$message.success('保存成功')
+              } else {
+                this.$message.error('保存失败')
+              }
+            } else if (formName == 'form3') {
+              const { code } = await editDesignConfig(this.form3)
+              if (code === 200) {
+                this.$message.success('保存成功')
+              } else {
+                this.$message.error('保存失败')
+              }
+            } else if (formName == 'form4') {
+              const { code } = await editWeComeConfig(this.form4)
+              if (code === 200) {
+                this.$message.success('保存成功')
+              } else {
+                this.$message.error('保存失败')
+              }
+            } else if (formName == 'form5') {
+              const { code } = await editProduceConfig(this.form5)
+              if (code === 200) {
+                this.$message.success('保存成功')
+              } else {
+                this.$message.error('保存失败')
+              }
+            } else if (formName == 'form6') {
+              const { code } = await editScrmConfig(this.form6)
+              if (code === 200) {
+                this.$message.success('保存成功')
+              } else {
+                this.$message.error('保存失败')
+              }
+            }
           } else {
-            // eslint-disable-next-line no-console
             console.log('error submit!!')
           }
         })

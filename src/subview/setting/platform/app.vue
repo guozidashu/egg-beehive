@@ -27,13 +27,14 @@
         label-position="right"
         label-width="160px"
         :model="form"
+        :rules="rules"
         style="width: 100%"
       >
-        <el-form-item label="AppID：">
-          <el-input v-model="form.name" style="width: 40%" />
+        <el-form-item label="AppID：" prop="id">
+          <el-input v-model="form.id" style="width: 40%" />
         </el-form-item>
-        <el-form-item label="AppSecret：">
-          <el-input v-model="form.name1" style="width: 40%" />
+        <el-form-item label="AppSecret：" prop="secret">
+          <el-input v-model="form.secret" style="width: 40%" />
         </el-form-item>
       </el-form>
       <div style="font-weight: 600">微信支付设置</div>
@@ -43,25 +44,43 @@
         label-position="right"
         label-width="160px"
         :model="form"
+        :rules="rules"
         style="width: 100%"
       >
         <el-form-item label="微支付状态">
-          <el-radio-group v-model="form.resource1">
-            <el-radio label="开启" />
-            <el-radio label="关闭" />
-          </el-radio-group>
+          <el-switch
+            v-model="form.state"
+            active-color="#41B584"
+            active-text="开启"
+            :active-value="1"
+            class="switch"
+            inactive-color="#D2D2D2"
+            inactive-text="关闭"
+            :inactive-value="2"
+          />
         </el-form-item>
         <el-form-item label="微支付模式">
-          <el-radio-group v-model="form.resource2">
-            <el-radio label="普通模式" />
-            <el-radio label="服务商模式" />
+          <el-radio-group v-model="form.pay_model">
+            <el-radio :label="1">普通模式</el-radio>
+            <el-radio :label="2">服务商模式</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="支付商户号：">
-          <el-input v-model="form.name2" style="width: 40%" />
+        <el-form-item
+          v-if="form.pay_model == 1"
+          label="支付商户号："
+          prop="mchid"
+        >
+          <el-input v-model="form.mchid" style="width: 40%" />
         </el-form-item>
-        <el-form-item label="支付秘钥：">
-          <el-input v-model="form.name3" style="width: 40%" />
+        <el-form-item
+          v-if="form.pay_model == 2"
+          label="支付商户号："
+          prop="sub_mchid"
+        >
+          <el-input v-model="form.sub_mchid" style="width: 40%" />
+        </el-form-item>
+        <el-form-item label="支付秘钥：" prop="wxpay_mchkey">
+          <el-input v-model="form.wxpay_mchkey" style="width: 40%" />
           <span style="margin-left: 10px">
             <span style="color: #999">请在</span>
             <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
@@ -96,29 +115,36 @@
         label-position="right"
         label-width="160px"
         :model="form"
+        :rules="rules"
         style="width: 100%"
       >
-        <el-form-item label="微支付状态">
-          <el-radio-group v-model="form.resource3">
-            <el-radio label="开启" />
-            <el-radio label="关闭" />
-          </el-radio-group>
+        <el-form-item label="支付宝支付状态">
+          <el-switch
+            v-model="form.alipay_state"
+            active-color="#41B584"
+            active-text="开启"
+            :active-value="1"
+            class="switch"
+            inactive-color="#D2D2D2"
+            inactive-text="关闭"
+            :inactive-value="2"
+          />
           <span style="margin-left: 10px" @click="jumpZFB">接入指引</span>
         </el-form-item>
-        <el-form-item label="APPID：">
-          <el-input v-model="form.name4" style="width: 40%" />
+        <el-form-item label="APPID：" prop="alipay_appid">
+          <el-input v-model="form.alipay_appid" style="width: 40%" />
           <span style="margin-left: 10px; color: #999">
             支付宝分配给开发者的应用ID
           </span>
         </el-form-item>
-        <el-form-item label="开发者私钥：">
-          <el-input v-model="form.name5" style="width: 40%" />
+        <el-form-item label="开发者私钥：" prop="private_key">
+          <el-input v-model="form.private_key" style="width: 40%" />
           <span style="margin-left: 10px; color: #999">
             请填写开发者私钥去头去尾去回车，一行字符串
           </span>
         </el-form-item>
-        <el-form-item label="支付宝公钥：">
-          <el-input v-model="form.name6" style="width: 40%" />
+        <el-form-item label="支付宝公钥：" prop="public_key">
+          <el-input v-model="form.public_key" style="width: 40%" />
           <span style="margin-left: 10px; color: #999">
             请填写支付宝公钥，一行字符串
           </span>
@@ -139,6 +165,7 @@
 </template>
 
 <script>
+  import { getConfig, editMoveApp } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'PlatformApp',
@@ -148,20 +175,72 @@
     data() {
       return {
         form: {
-          name: '',
-          state: '',
-          date: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          description: '',
-          area: [],
+          id: null, //应用id
+          state: 2, //微支付状态 1开启 2关闭
+          secret: null, //应用secret
+          pay_model: 1, //1普通模式 2服务商模式
+          mchid: null, //普通模式支付商户号
+          sub_mchid: null, //服务商模式支付商户号
+          wxpay_mchkey: null, //支付秘钥
+          wxpay_apiclient_cert: null, //PEM证书
+          wxpay_apiclient_key: null, //证书秘钥
+          alipay_state: 2, //支付宝支付状态 1开启 2关闭
+          alipay_appid: null, //支付宝appid
+          private_key: null, //开发者私钥
+          public_key: null, //支付宝公钥
+        },
+        rules: {
+          id: [{ required: true, message: '请输入App应用ID', trigger: 'blur' }],
+          secret: [
+            {
+              required: true,
+              message: '请输入App应用Secret',
+              trigger: 'blur',
+            },
+          ],
+          mchid: [
+            { required: true, message: '请输入支付商户号', trigger: 'blur' },
+          ],
+          sub_mchid: [
+            { required: true, message: '请输入支付商户号', trigger: 'blur' },
+          ],
+          wxpay_mchkey: [
+            { required: true, message: '请输入支付秘钥', trigger: 'blur' },
+          ],
+          alipay_appid: [
+            { required: true, message: '请输入支付宝appid', trigger: 'blur' },
+          ],
+          private_key: [
+            { required: true, message: '请输入开发者私钥', trigger: 'blur' },
+          ],
+          public_key: [
+            { required: true, message: '请输入支付宝公钥', trigger: 'blur' },
+          ],
         },
       }
     },
-    created() {},
+    created() {
+      this.fetchData()
+    },
     methods: {
+      async fetchData() {
+        const { data } = await getConfig({ key: 'move_app' })
+        if (data !== null) {
+          this.form = JSON.parse(data)
+        }
+      },
+      submitForm(formName) {
+        this.$refs[formName].validate(async (valid) => {
+          if (valid) {
+            const { code } = await editMoveApp(this.form)
+            if (code === 200) {
+              this.$message.success('保存成功')
+            } else {
+              this.$message.error('保存失败')
+            }
+          }
+        })
+      },
       handleShow() {
         this.$refs['vabUpload'].handleShow()
       },

@@ -25,13 +25,17 @@
         label-position="right"
         label-width="160px"
         :model="form"
+        :rules="rules"
         style="width: 100%"
       >
-        <el-form-item label="小程序ID：">
-          <el-input v-model="form.name" style="width: 40%" />
+        <el-form-item label="小程序ID：" prop="id">
+          <el-input v-model="form.id" style="width: 40%" />
         </el-form-item>
-        <el-form-item label="开发者私钥：">
-          <el-input v-model="form.name2" style="width: 40%" />
+        <el-form-item label="小程序应用Secret：" prop="secret">
+          <el-input v-model="form.secret" style="width: 40%" />
+        </el-form-item>
+        <el-form-item label="开发者私钥：" prop="private_key">
+          <el-input v-model="form.private_key" style="width: 40%" />
           <span style="margin-left: 10px">
             <span style="color: #999">
               请填写开发者私钥去头去尾去空格，一行字符串，
@@ -39,26 +43,32 @@
             <span @click="jumpZFB">接入指引</span>
           </span>
         </el-form-item>
-        <el-form-item label="支付宝公钥：">
-          <el-input v-model="form.name3" style="width: 40%" />
+        <el-form-item label="支付宝公钥：" prop="public_key">
+          <el-input v-model="form.public_key" style="width: 40%" />
           <span style="margin-left: 10px; color: #999">
             请填写支付宝公钥，一行字符串
           </span>
         </el-form-item>
-        <el-form-item label="小程序名称：">
-          <el-input v-model="form.name4" style="width: 40%" />
+        <el-form-item label="小程序名称：" prop="name">
+          <el-input v-model="form.name" style="width: 40%" />
         </el-form-item>
         <el-form-item label="小程序头像：">
           <el-button type="primary" @click="handleShow()">图片上传</el-button>
         </el-form-item>
-        <el-form-item label="小程序码：">
+        <el-form-item label="小程序二维码">
           <el-button type="primary" @click="handleShow()">图片上传</el-button>
         </el-form-item>
         <el-form-item label="小程序支付状态">
-          <el-radio-group v-model="form.resource1">
-            <el-radio label="开启" />
-            <el-radio label="关闭" />
-          </el-radio-group>
+          <el-switch
+            v-model="form.state"
+            active-color="#41B584"
+            active-text="开启"
+            :active-value="1"
+            class="switch"
+            inactive-color="#D2D2D2"
+            inactive-text="关闭"
+            :inactive-value="2"
+          />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('form')">保存</el-button>
@@ -77,6 +87,7 @@
 </template>
 
 <script>
+  import { getConfig, editAliPay } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'PlatformZfbxiao',
@@ -86,20 +97,73 @@
     data() {
       return {
         form: {
-          name: '',
-          state: '',
-          date: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          description: '',
-          area: [],
+          id: null, //应用id
+          secret: null, //应用secret
+          private_key: null, //开发者私钥
+          public_key: null, //支付宝公钥
+          name: null, //小程序名称
+          avatar: '3', //小程序头像
+          code: '3', //小程序码
+          state: 1, //支付状态 1开启 2关闭
+        },
+        rules: {
+          id: [
+            { required: true, message: '请输入支付宝应用ID', trigger: 'blur' },
+          ],
+          secret: [
+            {
+              required: true,
+              message: '请输入支付宝应用Secret',
+              trigger: 'blur',
+            },
+          ],
+          private_key: [
+            {
+              required: true,
+              message: '请输入开发者私钥',
+              trigger: 'blur',
+            },
+          ],
+          public_key: [
+            {
+              required: true,
+              message: '请输入支付宝公钥',
+              trigger: 'blur',
+            },
+          ],
+          name: [
+            {
+              required: true,
+              message: '请输入小程序名称',
+              trigger: 'blur',
+            },
+          ],
         },
       }
     },
-    created() {},
+    created() {
+      this.fetchData()
+    },
     methods: {
+      async fetchData() {
+        const { data } = await getConfig({ key: 'aliPay' })
+        console.log(data)
+        if (data !== null) {
+          this.form = JSON.parse(data)
+        }
+      },
+      submitForm(formName) {
+        this.$refs[formName].validate(async (valid) => {
+          if (valid) {
+            const { code } = await editAliPay(this.form)
+            if (code === 200) {
+              this.$message.success('保存成功')
+            } else {
+              this.$message.error('保存失败')
+            }
+          }
+        })
+      },
       handleShow() {
         this.$refs['vabUpload'].handleShow()
       },

@@ -112,7 +112,7 @@
           <el-table-column label="成本价" prop="cost_price" width="100" />
           <el-table-column label="库存成本金额" prop="stock_cost" width="120" />
           <el-table-column label="上架日期" prop="created" />
-          <el-table-column label="周期天数" prop="cycle_days" width="100" />
+          <el-table-column label="周转天数" prop="cycle_days" width="100" />
           <el-table-column
             label=" 库存占比"
             prop="stock_proportion"

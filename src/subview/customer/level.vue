@@ -19,7 +19,6 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
-            v-has-permi="['btn:pre:del']"
             native-type="submit"
             size="small"
             type="primary"

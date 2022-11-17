@@ -25,31 +25,17 @@
         label-position="right"
         label-width="160px"
         :model="form"
+        :rules="rules"
         style="width: 40%"
       >
-        <el-form-item label="视频号ID：">
-          <el-input v-model="form.name" />
+        <el-form-item label="视频号应用ID：" prop="id">
+          <el-input v-model="form.id" />
         </el-form-item>
-        <el-form-item label="开发者私钥：">
-          <el-input v-model="form.name" />
+        <el-form-item label="视频号应用Secret：" prop="secret">
+          <el-input v-model="form.secret" />
         </el-form-item>
-        <el-form-item label="视频号公钥：">
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item label="视频号名称：">
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item label="视频号头像：">
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item label="视频号码：">
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item label="视频号支付状态">
-          <el-radio-group v-model="form.resource1">
-            <el-radio label="开启" />
-            <el-radio label="关闭" />
-          </el-radio-group>
+        <el-form-item label="视频号应用Key：" prop="key">
+          <el-input v-model="form.key" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('form')">确认</el-button>
@@ -60,26 +46,57 @@
 </template>
 
 <script>
+  import { getConfig, editWechatVideo } from '@/api/basic'
   export default {
     name: 'PlatformVideo',
     data() {
       return {
-        formType: '本地储存',
         form: {
-          name: '',
-          state: '',
-          date: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          description: '',
-          area: [],
+          id: null, //应用id
+          secret: null, //应用secret
+          key: null, //应用key
+        },
+        rules: {
+          id: [
+            { required: true, message: '请输入视频号应用ID', trigger: 'blur' },
+          ],
+          secret: [
+            {
+              required: true,
+              message: '请输入视频号应用Secret',
+              trigger: 'blur',
+            },
+          ],
+          key: [
+            { required: true, message: '请输入视频号应用Key', trigger: 'blur' },
+          ],
         },
       }
     },
-    created() {},
-    methods: {},
+    created() {
+      this.fetchData()
+    },
+    methods: {
+      async fetchData() {
+        const { data } = await getConfig({ key: 'wechat_video' })
+        console.log(data)
+        if (data !== null) {
+          this.form = JSON.parse(data)
+        }
+      },
+      submitForm(formName) {
+        this.$refs[formName].validate(async (valid) => {
+          if (valid) {
+            const { code } = await editWechatVideo(this.form)
+            if (code === 200) {
+              this.$message.success('保存成功')
+            } else {
+              this.$message.error('保存失败')
+            }
+          }
+        })
+      },
+    },
   }
 </script>
 

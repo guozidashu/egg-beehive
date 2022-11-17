@@ -1,7 +1,7 @@
 <template>
   <div class="comprehensive-form-container">
     <el-card class="tabs-card" shadow="hover">
-      <el-tabs v-model="activeName">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="本地存储" name="本地存储" />
         <el-tab-pane label="阿里云存储" name="阿里云存储" />
         <el-tab-pane label="腾讯云存储" name="腾讯云存储" />
@@ -28,22 +28,96 @@
         v-html="listText[3].text"
       ></div>
       <el-form
-        v-if="activeName === '本地存储'"
         ref="form"
         label-position="right"
         label-width="160px"
         :model="form"
+        :rules="rules"
         style="width: 40%; margin-top: 20px"
       >
-        <el-form-item label="默认状态">
-          <span v-if="form.value" style="margin-right: 10px">开启</span>
-          <el-switch
-            v-model="form.value"
-            active-color="#13ce66"
-            disabled
-            inactive-color="#ff4949"
-          />
-        </el-form-item>
+        <div v-if="activeName === '本地存储'">
+          <el-form-item label="接口是否开启">
+            <el-switch
+              v-model="form.state"
+              active-color="#41B584"
+              active-text="开启"
+              :active-value="1"
+              class="switch"
+              inactive-color="#D2D2D2"
+              inactive-text="关闭"
+              :inactive-value="0"
+            />
+          </el-form-item>
+        </div>
+        <div v-if="activeName === '阿里云存储'">
+          <el-form-item label="access_key_id" prop="access_key_id">
+            <el-input v-model="form.access_key_id" />
+          </el-form-item>
+          <el-form-item label="access_key_secret" prop="access_key_secret">
+            <el-input v-model="form.access_key_secret" />
+          </el-form-item>
+          <el-form-item label="访问链接" prop="url">
+            <el-input v-model="form.url" />
+          </el-form-item>
+          <el-form-item label="存储桶" prop="bucket">
+            <el-input v-model="form.bucket" />
+          </el-form-item>
+          <el-form-item label="是否启用图片压缩">
+            <el-switch
+              v-model="form.photo_reduce"
+              active-color="#41B584"
+              active-text="开启"
+              :active-value="1"
+              class="switch"
+              inactive-color="#D2D2D2"
+              inactive-text="关闭"
+              :inactive-value="0"
+            />
+          </el-form-item>
+        </div>
+        <div v-if="activeName === '腾讯云存储'">
+          <el-form-item label="app_id" prop="app_id1">
+            <el-input v-model="form.app_id1" />
+          </el-form-item>
+          <el-form-item label="secret_id" prop="secret_id1">
+            <el-input v-model="form.secret_id1" />
+          </el-form-item>
+          <el-form-item label="secret_key" prop="secret_key1">
+            <el-input v-model="form.secret_key1" />
+          </el-form-item>
+          <el-form-item label="访问链接" prop="url1">
+            <el-input v-model="form.url1" />
+          </el-form-item>
+          <el-form-item label="存储桶" prop="bucket1">
+            <el-input v-model="form.bucket1" />
+          </el-form-item>
+        </div>
+        <div v-if="activeName === '七牛云存储'">
+          <el-form-item label="access_key_id" prop="access_key_id2">
+            <el-input v-model="form.access_key_id2" />
+          </el-form-item>
+          <el-form-item label="access_key_secret" prop="access_key_secret2">
+            <el-input v-model="form.access_key_secret2" />
+          </el-form-item>
+          <el-form-item label="访问链接" prop="url2">
+            <el-input v-model="form.url2" />
+          </el-form-item>
+          <el-form-item label="存储桶" prop="bucket2">
+            <el-input v-model="form.bucket2" />
+          </el-form-item>
+          <el-form-item label="是否启用图片压缩">
+            <el-switch
+              v-model="form.photo_reduce2"
+              active-color="#41B584"
+              active-text="开启"
+              :active-value="1"
+              class="switch"
+              inactive-color="#D2D2D2"
+              inactive-text="关闭"
+              :inactive-value="0"
+            />
+          </el-form-item>
+        </div>
         <el-form-item>
           <el-button
             style="margin-top: 10px"
@@ -54,89 +128,136 @@
           </el-button>
         </el-form-item>
       </el-form>
-
-      <el-form
-        v-if="activeName !== '本地存储'"
-        ref="form"
-        label-position="right"
-        label-width="160px"
-        :model="form"
-        style="width: 40%; margin-top: 20px"
-      >
-        <el-form-item v-if="activeName === '七牛云存储'" label="AccessKey">
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item v-if="activeName === '七牛云存储'" label="Secret">
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item v-if="activeName === '阿里云存储'" label="Access Key ID">
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item
-          v-if="activeName === '阿里云存储'"
-          label="Access Key Secret"
-        >
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item v-if="activeName === '腾讯云存储'" label="App ID">
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item v-if="activeName === '腾讯云存储'" label="Secret ID ">
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item v-if="activeName === '腾讯云存储'" label="Secret Key ">
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item v-if="activeName === '腾讯云存储'" label="存储地域 ">
-          <el-select v-model="form.region" placeholder="请选择存储地域">
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="存储空间(Bucket)">
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item label="访问URL">
-          <el-input v-model="form.ur" placeholder="请输入网址">
-            <template slot="prepend">Http://</template>
-          </el-input>
-        </el-form-item>
-        <el-form-item v-if="activeName !== '腾讯云存储'" label="图片压缩">
-          <el-radio-group v-model="form.state">
-            <el-radio label="启用" />
-            <el-radio label="关闭" />
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item
-          v-if="activeName !== '腾讯云存储' && form.state === '启用'"
-          label="压缩样式代码"
-        >
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('form')">确认</el-button>
-        </el-form-item>
-      </el-form>
     </el-card>
   </div>
 </template>
 
 <script>
+  import {
+    getConfig,
+    editLocalStore,
+    editALiYunOss,
+    editTencentOss,
+    editQiNiuOss,
+  } from '@/api/basic'
   export default {
     name: 'SystemStorage',
     data() {
       return {
         activeName: '本地存储',
         form: {
-          name: '',
-          state: '',
-          date: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          description: '',
-          area: [],
+          state: 0, //接口是否开启
+
+          access_key_id: null, //access_key_id
+          access_key_secret: null, //access_key_secret
+          url: null, //访问链接
+          bucket: null, //存储桶
+          photo_reduce: 0, //是否启用图片压缩 0否 1是
+
+          app_id1: null, //app_id
+          secret_id1: null, //secret_id
+          secret_key1: null, //secret_key
+          url1: null, //访问链接
+          bucket1: null, //存储桶
+
+          access_key_id2: null, //access_key_id
+          access_key_secret2: null, //access_key_secret
+          url2: null, //访问链接
+          bucket2: null, //存储桶
+          photo_reduce2: 0, //是否启用图片压缩 0否 1是
+        },
+        rules: {
+          access_key_id: [
+            {
+              required: true,
+              message: '请输入access_key_id',
+              trigger: 'blur',
+            },
+          ],
+          access_key_secret: [
+            {
+              required: true,
+              message: '请输入access_key_secret',
+              trigger: 'blur',
+            },
+          ],
+          url: [
+            {
+              required: true,
+              message: '请输入访问链接',
+              trigger: 'blur',
+            },
+          ],
+          bucket: [
+            {
+              required: true,
+              message: '请输入存储桶',
+              trigger: 'blur',
+            },
+          ],
+          app_id1: [
+            {
+              required: true,
+              message: '请输入app_id',
+              trigger: 'blur',
+            },
+          ],
+          secret_id1: [
+            {
+              required: true,
+              message: '请输入secret_id',
+              trigger: 'blur',
+            },
+          ],
+          secret_key1: [
+            {
+              required: true,
+              message: '请输入secret_key',
+              trigger: 'blur',
+            },
+          ],
+          url1: [
+            {
+              required: true,
+              message: '请输入访问链接',
+              trigger: 'blur',
+            },
+          ],
+          bucket1: [
+            {
+              required: true,
+              message: '请输入存储桶',
+              trigger: 'blur',
+            },
+          ],
+          access_key_id2: [
+            {
+              required: true,
+              message: '请输入access_key_id',
+              trigger: 'blur',
+            },
+          ],
+          access_key_secret2: [
+            {
+              required: true,
+              message: '请输入access_key_secret',
+              trigger: 'blur',
+            },
+          ],
+          url2: [
+            {
+              required: true,
+              message: '请输入访问链接',
+              trigger: 'blur',
+            },
+          ],
+          bucket2: [
+            {
+              required: true,
+              message: '请输入存储桶',
+              trigger: 'blur',
+            },
+          ],
         },
         listText: [
           {
@@ -170,8 +291,111 @@
         ],
       }
     },
-    created() {},
-    methods: {},
+    created() {
+      this.fetchData()
+    },
+    methods: {
+      async handleClick() {
+        this.fetchData()
+      },
+      async fetchData() {
+        if (this.activeName == '本地存储') {
+          const { data } = await getConfig({ key: 'local_store' })
+          if (data !== null) {
+            let temp = JSON.parse(data)
+            this.form.state = Number(temp.state)
+          }
+        } else if (this.activeName == '阿里云存储') {
+          const { data } = await getConfig({ key: 'aliyun_oss' })
+          if (data !== null) {
+            let temp = JSON.parse(data)
+            this.form.access_key_id = temp.access_key_id
+            this.form.access_key_secret = temp.access_key_secret
+            this.form.url = temp.url
+            this.form.bucket = temp.bucket
+            this.form.photo_reduce = Number(temp.photo_reduce)
+          }
+        } else if (this.activeName == '腾讯云存储') {
+          const { data } = await getConfig({ key: 'tencent_oss' })
+          if (data !== null) {
+            let temp = JSON.parse(data)
+            this.form.app_id1 = temp.app_id
+            this.form.secret_id1 = temp.secret_id
+            this.form.secret_key1 = temp.secret_key
+            this.form.url1 = temp.url
+            this.form.bucket1 = temp.bucket
+          }
+        } else if (this.activeName == '七牛云存储') {
+          const { data } = await getConfig({ key: 'qiniu_oss' })
+          if (data !== null) {
+            let temp = JSON.parse(data)
+            this.form.access_key_id2 = temp.access_key_id
+            this.form.access_key_secret2 = temp.access_key_secret
+            this.form.url2 = temp.url
+            this.form.bucket2 = temp.bucket
+            this.form.photo_reduce2 = Number(temp.photo_reduce)
+          }
+        }
+
+        console.log(this.form)
+      },
+      submitForm(formName) {
+        this.$refs[formName].validate(async (valid) => {
+          if (valid) {
+            console.log(this.activeName)
+            if (this.activeName == '本地存储') {
+              const { code } = await editLocalStore({
+                state: this.form.state, //接口是否开启
+              })
+              if (code === 200) {
+                this.$message.success('保存成功')
+              } else {
+                this.$message.error('保存失败')
+              }
+            } else if (this.activeName == '阿里云存储') {
+              const { code } = await editALiYunOss({
+                access_key_id: this.form.access_key_id, //access_key_id
+                access_key_secret: this.form.access_key_secret, //access_key_secret
+                url: this.form.url, //访问链接
+                bucket: this.form.bucket, //存储桶
+                photo_reduce: this.form.photo_reduce, //是否启用图片压缩 0否 1是
+              })
+              if (code === 200) {
+                this.$message.success('保存成功')
+              } else {
+                this.$message.error('保存失败')
+              }
+            } else if (this.activeName == '腾讯云存储') {
+              const { code } = await editTencentOss({
+                app_id: this.form.app_id1, //app_id
+                secret_id: this.form.secret_id1, //secret_id
+                secret_key: this.form.secret_key1, //secret_key
+                url: this.form.url1, //访问链接
+                bucket: this.form.bucket1, //存储桶
+              })
+              if (code === 200) {
+                this.$message.success('保存成功')
+              } else {
+                this.$message.error('保存失败')
+              }
+            } else if (this.activeName == '七牛云存储') {
+              const { code } = await editQiNiuOss({
+                access_key_id: this.form.access_key_id2, //access_key_id
+                access_key_secret: this.form.access_key_secret2, //access_key_secret
+                url: this.form.url2, //访问链接
+                bucket: this.form.bucket2, //存储桶
+                photo_reduce: this.form.photo_reduce2, //是否启用图片压缩 0否 1是
+              })
+              if (code === 200) {
+                this.$message.success('保存成功')
+              } else {
+                this.$message.error('保存失败')
+              }
+            }
+          }
+        })
+      },
+    },
   }
 </script>
 

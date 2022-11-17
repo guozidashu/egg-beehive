@@ -27,16 +27,17 @@
         label-position="right"
         label-width="160px"
         :model="form"
+        :rules="rules"
         style="width: 100%"
       >
-        <el-form-item label="AppID：">
+        <el-form-item label="AppID：" prop="id">
+          <el-input v-model="form.id" style="width: 40%" />
+        </el-form-item>
+        <el-form-item label="AppSecret：" prop="secret">
+          <el-input v-model="form.secret" style="width: 40%" />
+        </el-form-item>
+        <el-form-item label="小程序名称：" prop="name">
           <el-input v-model="form.name" style="width: 40%" />
-        </el-form-item>
-        <el-form-item label="AppSecret：">
-          <el-input v-model="form.name1" style="width: 40%" />
-        </el-form-item>
-        <el-form-item label="小程序名称：">
-          <el-input v-model="form.name2" style="width: 40%" />
         </el-form-item>
         <el-form-item label="小程序头像：">
           <el-button type="primary" @click="handleShow()">图片上传</el-button>
@@ -52,22 +53,29 @@
         label-position="right"
         label-width="160px"
         :model="form"
+        :rules="rules"
         style="width: 100%"
       >
         <el-form-item label="支付状态">
-          <el-radio-group v-model="form.resource1">
-            <el-radio label="开启" />
-            <el-radio label="关闭" />
-          </el-radio-group>
+          <el-switch
+            v-model="form.state"
+            active-color="#41B584"
+            active-text="开启"
+            :active-value="1"
+            class="switch"
+            inactive-color="#D2D2D2"
+            inactive-text="关闭"
+            :inactive-value="2"
+          />
         </el-form-item>
-        <el-form-item label="Token(令牌)：">
-          <el-input v-model="form.name5" style="width: 40%" />
+        <el-form-item label="Token(令牌)：" prop="pay_token">
+          <el-input v-model="form.pay_token" style="width: 40%" />
         </el-form-item>
-        <el-form-item label="商户号：">
-          <el-input v-model="form.name6" style="width: 40%" />
+        <el-form-item label="商户号：" prop="merchant_code">
+          <el-input v-model="form.merchant_code" style="width: 40%" />
         </el-form-item>
-        <el-form-item label="SALT：">
-          <el-input v-model="form.name7" style="width: 40%" />
+        <el-form-item label="SALT：" prop="salt">
+          <el-input v-model="form.salt" style="width: 40%" />
         </el-form-item>
         <el-form-item label="服务器地址：">
           <span>https://new.shopvvv.cn</span>
@@ -90,6 +98,7 @@
 
 <script>
   import VabUpload from '@/extra/VabUpload'
+  import { getConfig, editTopLine } from '@/api/basic'
   export default {
     name: 'PlatformTtxiao',
     components: {
@@ -98,20 +107,86 @@
     data() {
       return {
         form: {
-          name: '',
-          state: '',
-          date: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          description: '',
-          area: [],
+          id: null, //应用id
+          secret: null, //应用secret
+          name: null, //小程序名称
+          avatar: null, //小程序头像
+          code: null, //小程序码
+          state: 1, //支付状态 1开启 2关闭
+          pay_token: null, //支付token
+          merchant_code: null, //商户号
+          salt: null, //支付sal
+        },
+        rules: {
+          id: [{ required: true, message: '请输头条应用ID', trigger: 'blur' }],
+          secret: [
+            {
+              required: true,
+              message: '请输头条应用Secret',
+              trigger: 'blur',
+            },
+          ],
+          name: [
+            {
+              required: true,
+              message: '请输头条小程序名称',
+              trigger: 'blur',
+            },
+          ],
+          state: [
+            {
+              required: true,
+              message: '请输头条支付状态',
+              trigger: 'blur',
+            },
+          ],
+          pay_token: [
+            {
+              required: true,
+              message: '请输头条支付Token',
+              trigger: 'blur',
+            },
+          ],
+          merchant_code: [
+            {
+              required: true,
+              message: '请输头条商户号',
+              trigger: 'blur',
+            },
+          ],
+          salt: [
+            {
+              required: true,
+              message: '请输头条支付SALT',
+              trigger: 'blur',
+            },
+          ],
         },
       }
     },
-    created() {},
+    created() {
+      this.fetchData()
+    },
     methods: {
+      async fetchData() {
+        const { data } = await getConfig({ key: 'top_line' })
+        if (data !== null) {
+          this.form = JSON.parse(data)
+        }
+        console.log(111111, this.form)
+      },
+      submitForm(formName) {
+        this.$refs[formName].validate(async (valid) => {
+          if (valid) {
+            const { code } = await editTopLine(this.form)
+            if (code === 200) {
+              this.$message.success('保存成功')
+            } else {
+              this.$message.error('保存失败')
+            }
+          }
+        })
+      },
       handleShow() {
         this.$refs['vabUpload'].handleShow()
       },
