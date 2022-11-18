@@ -13,11 +13,11 @@
             </el-select>
           </el-form-item>
           <el-form-item label="合作模式:">
-            <el-select v-model="form.status1">
-              <el-option label="直营店" :value="0" />
-              <el-option label="联营店" :value="1" />
-              <el-option label="加盟店" :value="2" />
-              <el-option label="分销数字店" :value="3" />
+            <el-select v-model="form.cooperate_type">
+              <el-option label="直营店" :value="1" />
+              <el-option label="联营店" :value="2" />
+              <el-option label="加盟店" :value="3" />
+              <el-option label="分销店" :value="4" />
             </el-select>
           </el-form-item>
           <el-form-item label="搜索:">
@@ -56,18 +56,50 @@
         <template #List>
           <el-table-column type="selection" />
           <el-table-column label="ID" prop="id" width="80" />
-          <el-table-column label="门店图片" prop="img" width="150">
+          <el-table-column label="门店图片" prop="pic" width="150">
             <template slot-scope="{ row }">
-              <img :src="row.img" style="width: 100px; height: 100px" />
+              <img :src="row.pic[0]" style="width: 100px; height: 100px" />
             </template>
           </el-table-column>
           <el-table-column label="门店名称" prop="name" width="120" />
-          <el-table-column label="联系人" prop="usename" width="100" />
+          <el-table-column label="联系人" prop="person" width="100" />
           <el-table-column label="联系电话" prop="phone" width="150" />
-          <el-table-column label="门店地址" prop="dizhi" />
-          <el-table-column label="合作模式" prop="moshi" width="120" />
-          <el-table-column label="营业时间" prop="time" />
-          <el-table-column label="营业状态" prop="zhuangtai" width="150" />
+          <el-table-column label="门店地址" prop="dizhi">
+            <template #default="{ row }">
+              {{ row.province }}{{ row.city }}{{ row.district }}
+            </template>
+          </el-table-column>
+          <el-table-column label="合作模式" prop="cooperate_type" width="120">
+            <template #default="{ row }">
+              <span v-if="row.status == 1">直营店</span>
+              <span v-else-if="row.status == 2">联营店</span>
+              <span v-else-if="row.status == 3">加盟店</span>
+              <span v-else-if="row.status == 4">分销店</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="营业时间" prop="business_hours">
+            <template #default="{ row }">
+              <div v-for="(item, index) in row.business_hours" :key="index">
+                {{ item }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="营业状态" prop="status" width="150">
+            <template #default="{ row }">
+              <el-switch
+                v-model="row.status"
+                active-color="#41B584"
+                active-text="营业"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="停业"
+                :inactive-value="0"
+                style="margin: 0 10px"
+                @change="turnOnOff(row)"
+              />
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             fixed="right"
@@ -83,7 +115,7 @@
       </List>
     </el-card>
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
-      <Drawer :form="formDrawer" />
+      <Drawer :form="formDrawer" @shuxiandata="refresh" />
     </el-drawer>
   </div>
 </template>
@@ -92,7 +124,8 @@
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
   import Drawer from './components/StoresDrawer'
-  // import { getStaffList } from '@/api/basic'
+  import { parseTime } from '@/utils'
+  import { getStoreList, editChangeStatus } from '@/api/basic'
   export default {
     name: 'Employees',
     components: { List, Form, Drawer },
@@ -101,69 +134,16 @@
         drawer: false,
         typeData: {},
         form: {
-          name: '',
+          name: null, //门店名称
+          status: 0, //1开启2关闭0全部
+          cooperate_type: null, //1直营店 2联营店 3加盟店 4分销店
           page: 1,
           pageSize: 10,
-          status: 0,
-          status1: 0,
         },
-        formDrawer: {
-          name: '',
-          phone: '',
-          dizhi: '',
-          img: '',
-          status: 0,
-          address: '',
-          title: '',
-        },
+        formDrawer: {},
         formType: 3,
         listType: 1,
-        list: [
-          {
-            id: '1',
-            name: '下沙店',
-            zhuangtai: '营业中',
-            phone: '268-1185',
-            dizhi: '下沙街道白羊小区门口2栋11-11',
-            usename: '张三',
-            moshi: '自营',
-            time: '2022-03-15 14:06',
-            img: 'https://img0.baidu.com/it/u=286715445,3841954973&fm=253&fmt=auto&app=120&f=JPEG?w=674&h=500',
-          },
-          {
-            id: '2',
-            name: '西湖店',
-            zhuangtai: '营业中',
-            phone: '268-1185',
-            usename: '张三',
-            moshi: '自营',
-            dizhi: '西华文化中心广场C座A-1',
-            time: '2022-03-15 14:06',
-            img: 'https://img0.baidu.com/it/u=4178934027,994064546&fm=253&fmt=auto&app=120&f=JPEG?w=700&h=458',
-          },
-          {
-            id: '3',
-            name: '金沙湖店',
-            zhuangtai: '营业中',
-            phone: '268-1185',
-            usename: '张三',
-            moshi: '自营',
-            dizhi: '幸福里小区门口边上3-11',
-            time: '2022-03-15 14:06',
-            img: 'https://img2.baidu.com/it/u=2634194466,1574358241&fm=253&fmt=auto&app=120&f=JPEG?w=668&h=504',
-          },
-          {
-            id: '4',
-            name: '尚品折扣店',
-            zhuangtai: '营业中',
-            phone: '268-1185',
-            usename: '张三',
-            moshi: '自营',
-            dizhi: '尚品商场2楼-3-0-2',
-            time: '2022-03-15 14:06',
-            img: 'https://img2.baidu.com/it/u=2677049865,3831399706&fm=253&fmt=auto&app=138&f=JPEG?w=468&h=312',
-          },
-        ],
+        list: [],
         listLoading: false,
         total: 0,
       }
@@ -181,26 +161,45 @@
       this.fetchData()
     },
     methods: {
-      handleQuery() {},
-      // 列表数据封装函数
-
-      // 列表数据改变页数   公共部分
+      handleQuery() {
+        this.fetchData()
+      },
       changeBtnPage(data) {
         this.form.page = data
       },
-      // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
-      // 列表数据请求函数 公共部分
+      async turnOnOff(row) {
+        const { code } = await editChangeStatus({ id: row.id })
+        if (code != 200) {
+          return
+        }
+        this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
+        this.fetchData()
+      },
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getStaffList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const { data } = await getStoreList(this.form)
+        let list = data.data
+        list.forEach((item) => {
+          console.log(item.business_hours)
+          if (item.business_hours != null) {
+            item.business_hours = JSON.parse(item.business_hours)
+            let arr = []
+            item.business_hours.forEach((item) => {
+              arr.push(parseTime(item, '{y}-{m}-{d} {h}:{i}'))
+            })
+            item.business_hours = arr
+          }
+        })
+
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
+      },
+      refresh() {
+        this.fetchData()
       },
       // 详情抽屉
       handleDetail(row) {

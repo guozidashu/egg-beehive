@@ -3,10 +3,47 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form :form="form" :form-type="formType">
+      <Form
+        :form="form"
+        :form-type="formType"
+        @changeSearch="handleQuery"
+        @resetForm="resetForm"
+      >
         <template #Form>
-          <el-form-item label="订单号" prop="region">
-            <el-input v-model="form.name" size="small" />
+          <el-form-item label="品牌分类:">
+            <el-select v-model="form.brand_id" size="small">
+              <el-option
+                v-for="(item, index) in selectList.brand"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="设计种类:">
+            <el-select v-model="form.design_type" size="small">
+              <el-option label="头版" :value="1" />
+              <el-option label="复色" :value="2" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="支付类型:">
+            <el-select v-model="form.paytype" size="small">
+              <el-option label="签单" :value="1" />
+              <el-option label="现金" :value="2" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="订单类型:">
+            <el-select v-model="form.order_type" size="small">
+              <el-option label="设计中" :value="1" />
+              <el-option label="设计完成" :value="2" />
+              <el-option label="制版中" :value="3" />
+              <el-option label="制版完成" :value="4" />
+              <el-option label="剪板中" :value="5" />
+              <el-option label="剪板完成" :value="6" />
+              <el-option label="样衣中" :value="7" />
+              <el-option label="样衣完成" :value="8" />
+              <el-option label="审核完成" :value="9" />
+            </el-select>
           </el-form-item>
         </template>
       </Form>
@@ -28,58 +65,33 @@
           />
           <el-table-column
             align="center"
-            label="订单编号"
-            prop="id"
+            label="名称"
+            prop="designer_name"
             show-overflow-tooltip
             sortable
           />
           <el-table-column
             align="center"
-            label="积分商品"
-            prop="name"
+            label="编号"
+            prop="design_sn"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="数量"
-            prop="name"
+            label="创建时间"
+            prop="designer_end_time"
             show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="总积分"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="订单状态"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="下单时间"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
           >
             <template #default="{ row }">
-              <el-button
-                v-if="row.status != 1"
-                type="text"
-                @click="handleDelete(row)"
-              >
-                核销
-              </el-button>
-              <span v-else>已核销</span>
+              {{ row.designer_end_time | formatTime }}
             </template>
           </el-table-column>
+          <el-table-column
+            align="center"
+            label="备注"
+            prop="designer_remark"
+            show-overflow-tooltip
+          />
         </template>
       </List>
     </el-card>
@@ -88,10 +100,7 @@
 <script>
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
-  import {
-    getIntegralOrderList,
-    editIntegralOrderVerification,
-  } from '@/api/basic'
+  import { getPlannedList, getCommonAllList } from '@/api/basic'
   export default {
     name: 'ProjectBandlist',
     components: { List, Form },
@@ -100,8 +109,12 @@
         form: {
           page: 1,
           pageSize: 10,
-          order_sn: '',
+          design_type: '', //1头版 2复色
+          brand_id: '', //1品牌id
+          paytype: '', //1签单 2现金
+          order_type: '', //1设计中 2设计完成 3制版中 4制版完成 5剪板中 6剪板完成 7样衣中 8样衣完成 9审核完成
         },
+        selectList: [],
         formType: 4,
         listType: 1,
         list: [],
@@ -118,22 +131,16 @@
       },
     },
     created() {
+      this.getTypeList()
       this.fetchData()
     },
     methods: {
-      handleDelete(row) {
-        if (row.id) {
-          this.$baseConfirm('你确定要核销当前项吗', null, async () => {
-            const { code } = await editIntegralOrderVerification({ id: row.id })
-            if (code != 200) {
-              return
-            }
-            this.$baseMessage('核销成功', 'success', 'vab-hey-message-success')
-            this.fetchData()
-          })
-        }
+      handleQuery() {
+        this.fetchData()
       },
-
+      resetForm() {
+        this.form = this.$options.data().form
+      },
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         this.form.page = data
@@ -142,10 +149,16 @@
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
+      async getTypeList() {
+        const { data } = await getCommonAllList({
+          type: 'brand',
+        })
+        this.selectList = data
+      },
       // 列表数据请求函数 公共部分
       async fetchData() {
         this.listLoading = true
-        const { data } = await getIntegralOrderList(this.form)
+        const { data } = await getPlannedList(this.form)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

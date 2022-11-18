@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form ref="form" label-width="120px">
-      <el-form-item label="详细地址：">
+      <el-form-item label="搜索地址：">
         <el-input
           v-model="addressKeyword"
           clearable
@@ -31,6 +31,12 @@
 <script>
   import { TMap } from '@/api/map'
   export default {
+    props: {
+      longitude: {
+        type: Array,
+        default: () => [],
+      },
+    },
     data() {
       return {
         map: null,
@@ -43,6 +49,23 @@
           addr: '',
         },
       }
+    },
+    watch: {
+      longitude: {
+        handler: function (newVal) {
+          console.log(777777, newVal)
+          this.shopInfo.lng = newVal[0]
+          this.shopInfo.lat = newVal[1]
+        },
+        deep: true,
+        immediate: true,
+      },
+      shopInfo: {
+        handler: function (newVal) {
+          this.$emit('getshopInfo', newVal)
+        },
+        deep: true,
+      },
     },
     mounted() {
       this.$nextTick(() => {
@@ -78,7 +101,6 @@
           that.getAddress = new qq.maps.Geocoder({
             complete: function (result) {
               that.map.setCenter(result.detail.location)
-              console.log(result.detail.location)
               that.shopInfo.lng = result.detail.location.lng
               that.shopInfo.lat = result.detail.location.lat
               that.$emit('getPlace', that.shopInfo)
@@ -95,7 +117,6 @@
               that.addressKeyword = result.detail.address
               that.shopInfo.addr = result.detail.address
               that.$emit('getPlace', that.shopInfo)
-              console.log(that.shopInfo)
             },
           })
         })

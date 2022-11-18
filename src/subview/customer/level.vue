@@ -63,6 +63,7 @@
                 inactive-color="#D2D2D2"
                 inactive-text="关闭"
                 :inactive-value="0"
+                @change="turnOnOff(row)"
               />
             </template>
           </el-table-column>
@@ -83,7 +84,12 @@
   import List from '@/subview/components/List'
   import Edit from './components/LevelEdit'
   import Form from '@/subview/components/Form'
-  import { getGradeList } from '@/api/basic'
+  import {
+    getGradeList,
+    getInfoGradeList,
+    delGradeList,
+    editGradeList,
+  } from '@/api/basic'
   export default {
     name: 'CustomerLevel',
     components: { List, Edit, Form },
@@ -122,7 +128,8 @@
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {
-            this.$refs['edit'].showEdit(row)
+            const { data } = await getInfoGradeList({ id: row.id })
+            this.$refs['edit'].showEdit(data)
           } else {
             this.$refs['edit'].showEdit()
           }
@@ -136,14 +143,22 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            // const { code } = await deleteGrade({ id: row.id })
-            // if (code != 200) {
-            //   return
-            // }
+            const { code } = await delGradeList({ id: row.id })
+            if (code != 200) {
+              return
+            }
             this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
             this.fetchData()
           })
         }
+      },
+      async turnOnOff(row) {
+        const { code } = await editGradeList(row)
+        if (code != 200) {
+          return
+        }
+        this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
+        this.fetchData()
       },
       // 列表数据封装函数
 

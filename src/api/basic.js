@@ -44,6 +44,37 @@ export function getConfig(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+
+// 研发进度
+export function getPlannedList(data) {
+  return request({
+    url: '/research/plannedList',
+    method: 'post',
+    data,
+  })
+}
+// 门店列表
+export function getStoreList(data) {
+  return request({
+    url: '/setting/storeList',
+    method: 'post',
+    data,
+  })
+}
+export function editStoreSave(data) {
+  return request({
+    url: '/setting/storeSave',
+    method: 'post',
+    data,
+  })
+}
+export function editChangeStatus(data) {
+  return request({
+    url: '/setting/changeStatus',
+    method: 'post',
+    data,
+  })
+}
 // 商城配置
 export function editShopConfig(data) {
   return request({
@@ -837,7 +868,13 @@ export function editSupplierDetail(data) {
     data,
   })
 }
-
+export function editSupplierSave(data) {
+  return request({
+    url: '/supplier/supplierSave',
+    method: 'post',
+    data,
+  })
+}
 // 成品采购订单
 export function getFinishDetail(data) {
   return request({

@@ -102,7 +102,7 @@ d
         size="small"
         style="float: right; margin-right: 10px"
         type="primary"
-        @click="form.drawerType = 2"
+        @click="changeTypeBtn(2)"
       >
         编辑
       </el-button>
@@ -112,7 +112,7 @@ d
         size="small"
         style="float: right; margin-right: 10px"
         type="primary"
-        @click="form.drawerType = 1"
+        @click="changeTypeBtn(1)"
       >
         完成
       </el-button>
@@ -196,29 +196,42 @@ d
                 style="font-size: 12px"
               >
                 <el-input
-                  v-model="form.addressKeyword"
+                  v-model="form.sn"
                   placeholder="请输入编号"
                   style="width: 215px"
                 />
               </el-form-item>
               <el-form-item class="item" label="供应商名称：">
                 <el-input
-                  v-model="form.addressKeyword"
+                  v-model="form.name"
                   placeholder="请输入名称"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="联系人：">
+                <el-input
+                  v-model="form.contact_name"
+                  placeholder="请输入联系人"
                   style="width: 215px"
                 />
               </el-form-item>
               <el-form-item class="item" label="手机号码：">
                 <el-input
-                  v-model="form.addressKeyword"
+                  v-model="form.tel"
                   placeholder="请输入手机号码"
                   style="width: 215px"
                 />
               </el-form-item>
-              <el-form-item class="item" label="客户地址：">
+              <el-form-item label="供应商地址：">
+                <addressCity
+                  :adrress="form.address1"
+                  @getLawyerListInfo="selectAddress"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="供应商详细地址：">
                 <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入客户地址"
+                  v-model="form.addr"
+                  placeholder="请输入供应商地址"
                   style="width: 215px"
                 />
               </el-form-item>
@@ -231,12 +244,12 @@ d
             <div class="conten-list-com">
               <el-form-item class="item" label="供应商类别：">
                 <el-select
-                  v-model="form.brand"
+                  v-model="form.type"
                   placeholder="请选择供应商类别："
                   style="width: 215px"
                 >
                   <el-option
-                    v-for="(item, index) in typeData.brand"
+                    v-for="(item, index) in selectData.supplier_type"
                     :key="index"
                     :label="item.name"
                     :value="item.id"
@@ -245,26 +258,12 @@ d
               </el-form-item>
               <el-form-item class="item" label="供应商等级：">
                 <el-select
-                  v-model="form.brand"
+                  v-model="form.grade_id"
                   placeholder="请选择供应商等级："
                   style="width: 215px"
                 >
                   <el-option
-                    v-for="(item, index) in typeData.brand"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-              <el-form-item class="item" label="供应商类型：">
-                <el-select
-                  v-model="form.brand"
-                  placeholder="请选择供应商类型："
-                  style="width: 215px"
-                >
-                  <el-option
-                    v-for="(item, index) in typeData.brand"
+                    v-for="(item, index) in selectData.supplier_grade"
                     :key="index"
                     :label="item.name"
                     :value="item.id"
@@ -273,12 +272,12 @@ d
               </el-form-item>
               <el-form-item class="item" label="供应商标签：">
                 <el-select
-                  v-model="form.brand"
+                  v-model="form.tag"
                   placeholder="请选择供应商标签："
                   style="width: 215px"
                 >
                   <el-option
-                    v-for="(item, index) in typeData.brand"
+                    v-for="(item, index) in selectData.supplier_tag"
                     :key="index"
                     :label="item.name"
                     :value="item.id"
@@ -289,12 +288,41 @@ d
                   style="margin-left: 10px; color: #1890ff"
                 ></i>
               </el-form-item>
-              <el-form-item class="item" label="所在城市：">
-                <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入所在城市"
+              <el-form-item class="item" label="工艺类型：">
+                <el-select
+                  v-model="form.craft_type"
+                  placeholder="请选择工艺类型："
                   style="width: 215px"
-                />
+                >
+                  <el-option
+                    v-for="(item, index) in selectData.craft_type"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+                <i
+                  class="el-icon-plus"
+                  style="margin-left: 10px; color: #1890ff"
+                ></i>
+              </el-form-item>
+              <el-form-item class="item" label="工序类型：">
+                <el-select
+                  v-model="form.produce_type"
+                  placeholder="请选择工序类型："
+                  style="width: 215px"
+                >
+                  <el-option
+                    v-for="(item, index) in selectData.produce_type"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+                <i
+                  class="el-icon-plus"
+                  style="margin-left: 10px; color: #1890ff"
+                ></i>
               </el-form-item>
             </div>
           </div>
@@ -303,9 +331,16 @@ d
           <div class="conten-warp">
             <div class="conten-title">账户信息</div>
             <div class="conten-list-com">
+              <el-form-item class="item" label="用户名：">
+                <el-input
+                  v-model="form.user_name"
+                  placeholder="请输入用户名"
+                  style="width: 215px"
+                />
+              </el-form-item>
               <el-form-item class="item" label="登录密码：">
                 <el-input
-                  v-model="form.addressKeyword"
+                  v-model="form.password"
                   placeholder="请输入密码"
                   style="width: 215px"
                 />
@@ -317,61 +352,46 @@ d
           <div class="conten-warp">
             <div class="conten-title">账户资金</div>
             <div class="conten-list-com">
-              <el-form-item class="item" label="账户名称：">
+              <el-form-item class="item" label="开户人：">
                 <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入账户名称"
+                  v-model="form.account_name"
+                  placeholder="请输入开户人"
                   style="width: 215px"
                 />
               </el-form-item>
               <el-form-item class="item" label="账号：">
                 <el-input
-                  v-model="form.addressKeyword"
+                  v-model="form.account_no"
                   placeholder="请输入账户"
                   style="width: 215px"
                 />
               </el-form-item>
               <el-form-item class="item" label="账户类型：">
                 <el-select
-                  v-model="form.brand"
+                  v-model="form.account_type"
                   placeholder="请选择账户类型："
                   style="width: 215px"
                 >
-                  <el-option
-                    v-for="(item, index) in typeData.brand"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
+                  <el-option label="银行卡" :value="1" />
+                  <el-option label="支付宝" :value="2" />
+                  <el-option label="微信" :value="3" />
+                  <el-option label="现金" :value="4" />
+                  <el-option label="信用卡" :value="5" />
                 </el-select>
               </el-form-item>
               <el-form-item class="item" label="开户行名称：">
                 <el-input
-                  v-model="form.addressKeyword"
+                  v-model="form.bank_name"
                   placeholder="请输入开户行名称"
                   style="width: 215px"
                 />
               </el-form-item>
               <el-form-item class="item" label="开户行地址：">
                 <el-input
-                  v-model="form.addressKeyword"
+                  v-model="form.bank_address"
                   placeholder="请输入开户行地址"
                   style="width: 215px"
                 />
-              </el-form-item>
-              <el-form-item class="item" label="结算方式：">
-                <el-select
-                  v-model="form.brand"
-                  placeholder="请选择结算方式："
-                  style="width: 215px"
-                >
-                  <el-option
-                    v-for="(item, index) in typeData.brand"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
               </el-form-item>
             </div>
           </div>
@@ -380,36 +400,22 @@ d
           <div class="conten-warp">
             <div class="conten-title">其它信息</div>
             <div class="conten-list-com">
-              <el-form-item class="item" label="跟单人员：">
-                <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入跟单人员"
-                  style="width: 215px"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="操作人员：">
-                <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入操作人员"
-                  style="width: 215px"
-                />
-              </el-form-item>
               <el-form-item class="item" label="供应商状态：">
-                <el-radio-group v-model="form.name">
-                  <el-radio :label="0">合作中</el-radio>
-                  <el-radio :label="1">放弃</el-radio>
+                <el-radio-group v-model="form.status">
+                  <el-radio :label="0">禁用</el-radio>
+                  <el-radio :label="1">启用</el-radio>
                 </el-radio-group>
               </el-form-item>
-              <el-form-item class="item" label="月初欠款：">
+              <el-form-item class="item" label="期初余额：">
                 <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入月初欠款"
+                  v-model="form.initial_amount"
+                  placeholder="请输入期初余额"
                   style="width: 215px"
                 />
               </el-form-item>
               <el-form-item class="item" label="备注：">
                 <el-input
-                  v-model="form.addressKeyword"
+                  v-model="form.remark"
                   placeholder="请输入备注"
                   style="width: 100%"
                   type="textarea"
@@ -516,10 +522,15 @@ d
   import VabUpload from '@/extra/VabUpload'
   import List from '@/subview/components/List'
   import { mapGetters } from 'vuex'
-  import { editSupplierDetail } from '@/api/basic'
+  import {
+    editSupplierDetail,
+    getCommonAllList,
+    editSupplierSave,
+  } from '@/api/basic'
+  import addressCity from '@/subview/components/City.vue'
   export default {
     name: 'ComponentsDrawer',
-    components: { List, VabUpload },
+    components: { List, VabUpload, addressCity },
     props: {
       drawerInof: {
         type: Object,
@@ -528,6 +539,7 @@ d
     },
     data() {
       return {
+        selectData: [],
         xstype: false,
         hutype: false,
         dialogVisible1: false,
@@ -571,12 +583,20 @@ d
       drawerInof: {
         handler: function (newVal) {
           this.form = Object.assign({}, newVal)
+          this.form.address1 = [
+            this.form.province,
+            this.form.city,
+            this.form.district,
+          ]
           console.log(2222, newVal)
         },
         deep: true,
+        immediate: true,
       },
     },
-    created() {},
+    created() {
+      this.getSelectData()
+    },
     methods: {
       ...mapActions({
         openSideBar: 'settings/openSideBar',
@@ -586,6 +606,43 @@ d
         await this.foldSideBar()
         await VabPrint(this.$refs[val], { noPrintParent: true })
         await this.openSideBar()
+      },
+      async getSelectData() {
+        const { data } = await getCommonAllList({
+          type: 'supplier_type,craft_type,produce_type,supplier_tag,supplier_grade',
+        })
+        this.selectData = data
+      },
+      selectAddress(selectProvince, selectCity, selectArea) {
+        this.form.province = selectProvince
+        this.form.city = selectCity
+        this.form.district = selectArea
+      },
+      async changeTypeBtn(e) {
+        if (e != 1) {
+          this.form.drawerType = e
+          this.$forceUpdate()
+          return
+        } else {
+          console.log(1111, this.form)
+          this.form.drawerType = e
+        }
+        if (this.form.id == undefined) {
+          this.form.id = 0
+          const { code } = await editSupplierSave(this.form)
+          if (code == 200) {
+            this.$baseMessage('新增成功', 'success', 'vab-hey-message-success')
+            this.form.drawerType = e
+            this.$forceUpdate()
+          }
+        } else {
+          const { code } = await editSupplierSave(this.form)
+          if (code == 200) {
+            this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
+            this.form.drawerType = e
+            this.$forceUpdate()
+          }
+        }
       },
       handleShow() {
         this.$refs['vabUpload'].handleShow()

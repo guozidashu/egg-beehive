@@ -54,6 +54,12 @@
   import city from '@/assets/assets_josn/address.json'
   export default {
     name: 'City',
+    props: {
+      adrress: {
+        type: Array,
+        default: () => [],
+      },
+    },
     data() {
       return {
         // 整个省市县数据
@@ -66,6 +72,21 @@
         selectCity: '',
         selectArea: '',
       }
+    },
+    watch: {
+      adrress: {
+        handler: function (newVal) {
+          // 根据传入的地址，获取省市县
+          this.selectProvince = newVal[0]
+          this.selectCity = newVal[1]
+          this.selectArea = newVal[2]
+          this.selectProvinceFun(this.selectProvince)
+          this.selectCityFun(this.selectCity)
+          this.selectAreaFun(this.selectArea)
+        },
+        deep: true,
+        immediate: true,
+      },
     },
     methods: {
       // 省份 市 县联动

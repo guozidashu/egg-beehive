@@ -12,8 +12,8 @@
       @tab-click="handleClick"
     >
       <el-tab-pane label="基础信息" name="first" />
-      <el-tab-pane label="升级策略" name="second" />
-      <el-tab-pane label="降级策略" name="three" />
+      <!-- <el-tab-pane label="升级策略" name="second" />
+      <el-tab-pane label="降级策略" name="three" /> -->
     </el-tabs>
     <el-form ref="form" label-width="120px" :model="form" :rules="rules">
       <div v-if="tabLabel == '基础信息'">
@@ -24,9 +24,9 @@
             style="width: 415px"
           />
         </el-form-item>
-        <el-form-item label="等级权重" prop="discount">
+        <el-form-item label="等级权重" prop="sort">
           <el-input-number
-            v-model="form.discount"
+            v-model="form.sort"
             controls-position="right"
             :max="10"
             :min="1"
@@ -40,29 +40,29 @@
         <el-form-item label="会员背景">
           <el-button type="primary" @click="handleShow()">背景上传</el-button>
         </el-form-item>
-        <el-form-item label="整手折扣" prop="zhekou">
+        <el-form-item label="整手折扣" prop="discount">
           <el-input
-            v-model="form.discount_sm"
+            v-model="form.discount"
             placeholder="例：如果想要3.5折，请输入3.5 如果没有折扣，请输入10"
             style="width: 415px"
           />
         </el-form-item>
-        <el-form-item label="散码折扣" prop="zhekou_sm">
+        <el-form-item label="散码折扣" prop="discount_single">
           <el-input
-            v-model="form.discount_sm"
+            v-model="form.discount_single"
             placeholder="例：如果想要4.5折，请输入4.5 如果没有折扣，请输入10"
             style="width: 415px"
           />
         </el-form-item>
-        <el-form-item label="能否散批" prop="sp">
-          <el-radio-group v-model="form.sp">
+        <el-form-item label="能否散批" prop="single_buy">
+          <el-radio-group v-model="form.single_buy">
             <el-radio :label="1">关闭</el-radio>
             <el-radio :label="0">开启</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="等级说明" prop="des">
+        <el-form-item label="等级说明" prop="remark">
           <el-input
-            v-model="form.des"
+            v-model="form.remark"
             :autosize="{ minRows: 2, maxRows: 4 }"
             placeholder="请输入等级说明"
             style="width: 415px"
@@ -407,27 +407,31 @@
         activeName: 'first',
         tabLabel: '基础信息',
         form: {
-          name: '',
-          id: '',
-          discount: '',
-          discount_sm: '',
-          sp: 0,
-          des: '',
-          sdfjh: 0,
+          id: '', //编辑时用
+          sort: null, //排序
+          name: null, //等级名称
+          icon: '1.jpg', //图片地址
+          banner: '1.jpg', //banner图
+          discount: null, //整手折扣
+          discount_single: null, //散码折扣
+          single_buy: 0, //是否散批 1是 0否
+          remark: null, //等级说明
         },
         rules: {
-          name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
+          sort: [
+            { required: true, message: '请输入排序', trigger: 'blur' },
+            { type: 'number', message: '排序必须为数字值' },
+          ],
+          name: [
+            { required: true, message: '请输入等级名称', trigger: 'blur' },
+          ],
           discount: [
-            { required: true, trigger: 'blur', message: '请选择等级' },
+            { required: true, message: '请输入整手折扣', trigger: 'blur' },
           ],
-          sp: [{ required: true, trigger: 'change', message: '请选择散批' }],
-          zhekou_sm: [
-            { required: true, trigger: 'blur', message: '请输入散码折扣' },
+          discount_single: [
+            { required: true, message: '请输入散码折扣', trigger: 'blur' },
           ],
-          zhekou: [
-            { required: true, trigger: 'blur', message: '请输入整手折扣' },
-          ],
-          des: [{ required: true, trigger: 'blur', message: '请输入备注' }],
+          remark: [{ required: true, message: '请输入备注', trigger: 'blur' }],
         },
         title: '',
         dialogFormVisible: false,
@@ -472,6 +476,7 @@
           this.title = '添加会员等级'
         } else {
           this.title = '编辑'
+          console.log(78787878, row)
           this.form = Object.assign({}, row)
         }
         this.dialogFormVisible = true
