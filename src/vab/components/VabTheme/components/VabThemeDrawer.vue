@@ -60,6 +60,11 @@
         <el-form-item :label="translateTitle('主题')">
           <el-select v-model="theme.themeName" @change="updateTheme">
             <el-option
+              key="ceshi"
+              :label="translateTitle('测试')"
+              value="ceshi"
+            />
+            <el-option
               key="blue-black"
               :label="translateTitle('蓝黑')"
               value="blue-black"

@@ -8,23 +8,24 @@
         :form-type="formType"
         @changeSearch="handleQuery"
         @changeSta="changeBtnSta"
+        @resetForm="resetForm"
       >
         <template #Form>
           <el-form-item v-show="form.fold" label="用户搜索:">
             <el-input
-              v-model="form.name"
+              v-model="form.keywords"
               class="input-with-select"
               placeholder="请输入"
             >
               <el-select
-                v-model="form.select"
+                v-model="form.search_type"
                 slot="prepend"
                 style="width: 100px"
               >
-                <el-option label="全部" value="0" />
-                <el-option label="手机号" value="1" />
-                <el-option label="用户昵称" value="2" />
-                <el-option label="客户名称" value="3" />
+                <el-option label="手机号" value="mobile" />
+                <el-option label="用户昵称" value="nick_name" />
+                <el-option label="客户名称" value="name" />
+                <el-option label="客户账号" value="account" />
               </el-select>
             </el-input>
           </el-form-item>
@@ -51,39 +52,45 @@
             </el-input>
           </el-form-item>
           <el-form-item v-show="!form.fold" label="客户等级:">
-            <el-select v-model="form.select1" style="width: 300px">
-              <el-option label="全部" value="0" />
-              <el-option label="黄金" value="shanghai" />
-              <el-option label="白银" value="shanghai" />
-              <el-option label="钻石" value="shanghai" />
-              <el-option label="青铜" value="shanghai" />
+            <el-select v-model="form.level" style="width: 300px">
+              <el-option
+                v-for="(item, index) in selectDataList.customer_grade"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
             </el-select>
           </el-form-item>
           <el-form-item v-show="!form.fold" label="客户分类:">
-            <el-select v-model="form.select2" style="width: 300px">
-              <el-option label="全部" value="0" />
-              <el-option label="分类一" value="shanghai" />
-              <el-option label="分类二" value="shanghai" />
+            <el-select v-model="form.type" style="width: 300px">
+              <el-option
+                v-for="(item, index) in selectDataList.customer_type"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
             </el-select>
           </el-form-item>
           <el-form-item v-show="!form.fold" label="客户标签:">
             <el-cascader
-              v-model="form.value"
-              :options="options"
+              v-model="form.tag"
+              :options="selectDataList.customer_tag"
               style="width: 300px"
-              @change="handleChange"
             />
           </el-form-item>
           <el-form-item v-show="!form.fold" label="客户来源:">
-            <el-select v-model="form.select4" style="width: 300px">
-              <el-option label="全部" value="0" />
-              <el-option label="来源一" value="shanghai" />
-              <el-option label="来源二" value="shanghai" />
+            <el-select v-model="form.source" style="width: 300px">
+              <el-option
+                v-for="(item, index) in selectDataList.customer_source"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
             </el-select>
           </el-form-item>
           <el-form-item v-show="!form.fold" label="加入时间:">
             <el-date-picker
-              v-model="form.date"
+              v-model="form.create_time"
               align="left"
               end-placeholder="结束日期"
               :picker-options="pickerOptions"
@@ -112,7 +119,7 @@
             native-type="submit"
             size="small"
             type="primary"
-            @click="handleDetail('add', 2)"
+            @click="handleDetail('add', 3)"
           >
             添加客户
           </el-button>
@@ -147,23 +154,23 @@
         <template #List>
           <el-table-column type="selection" />
           <el-table-column label="ID" prop="id" width="80" />
-          <el-table-column label="头像/昵称" prop="img" width="120">
+          <el-table-column label="头像/昵称" width="120">
             <template #default="{ row }">
               <div style="display: flex">
-                <img :src="row.img" style="width: 50px; height: 50px" />
+                <img :src="row.avatar" style="width: 50px; height: 50px" />
                 <div style="margin: 15px 0 0 10px">
-                  {{ row.name }}
+                  {{ row.nick_name }}
                 </div>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="客户名称" prop="name" width="120" />
-          <el-table-column label="客户等级" prop="level" width="120" />
-          <el-table-column label="客户分类" prop="type" width="120" />
-          <el-table-column label="客户来源" prop="yuantou" />
+          <el-table-column label="客户等级" prop="grade_name" width="120" />
+          <el-table-column label="客户分类" prop="type_name" width="120" />
+          <el-table-column label="客户来源" prop="source_name" />
           <el-table-column label="成交额" prop="money" width="120" />
-          <el-table-column label="余额/欠款" prop="money" width="200" />
-          <el-table-column label="加入时间" prop="time" />
+          <el-table-column label="余额/欠款" prop="final_count" width="200" />
+          <el-table-column label="加入时间" prop="create_time" />
           <el-table-column
             align="center"
             fixed="right"
@@ -184,7 +191,13 @@
       </List>
     </el-card>
     <edit ref="edit" @fetch-data="fetchData" />
-    <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
+    <el-drawer
+      :before-close="handleClose"
+      size="50%"
+      :title="title"
+      :visible.sync="drawer"
+      :wrapper-closable="false"
+    >
       <!-- 详情抽屉组件 -->
       <Drawer :drawer-inof="drawerInof" />
     </el-drawer>
@@ -196,98 +209,33 @@
   import Form from '@/subview/components/Form'
   import Edit from './components/ManageEdit'
   import Drawer from './components/ManageDrawer'
-  import { getCommonAllList } from '@/api/basic'
+  import { getCommonAllList, getCustomerList } from '@/api/basic'
+  import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'CustomerManage',
     components: { Form, List, Edit, Drawer },
+    mixins: [datajosn],
     data() {
       return {
+        title: '',
+        selectDataList: [],
         filename: '客户列表',
         downloadLoading: false,
         exclList: [],
         drawer: false,
         drawerInof: {},
-        options: [
-          {
-            value: 'zhinan',
-            label: '指南',
-            children: [
-              {
-                value: 'shejiyuanze',
-                label: '设计原则',
-              },
-              {
-                value: 'daohang',
-                label: '导航',
-              },
-            ],
-          },
-          {
-            value: 'zujian',
-            label: '组件',
-            children: [
-              {
-                value: 'basic',
-                label: 'Basic',
-              },
-              {
-                value: 'form',
-                label: 'Form',
-              },
-              {
-                value: 'data',
-                label: 'Data',
-              },
-              {
-                value: 'notice',
-                label: 'Notice',
-              },
-              {
-                value: 'navigation',
-                label: 'Navigation',
-              },
-              {
-                value: 'others',
-                label: 'Others',
-              },
-            ],
-          },
-          {
-            value: 'ziyuan',
-            label: '资源',
-            children: [
-              {
-                value: 'axure',
-                label: 'Axure Components',
-              },
-              {
-                value: 'sketch',
-                label: 'Sketch Templates',
-              },
-              {
-                value: 'jiaohu',
-                label: '组件交互文档',
-              },
-            ],
-          },
-        ],
         activeName: 'first',
-        // 表单数据/列表参数
         form: {
-          // 自定义参数
-          select: '0',
-          select1: '0',
-          select2: '0',
-          select3: '0',
-          select4: '0',
-          fold: true,
-          // 公共参数
+          search_type: 'mobile', //搜索条件 mobile nick_name name account
+          keywords: null, //搜索内容
+          level: null, //等级id
+          type: null, //客户分类
+          source: null, //客户来源
+          tag: null, //标签id
+          create_time: [], //加入时间区间搜索
           page: 1,
-          pageSize: 10,
+          page_size: 10,
         },
-        // 列表数据相关
-
-        // 公共参数
         listType: 1,
         formType: 1,
         list: [
@@ -304,70 +252,6 @@
         ],
         listLoading: false,
         total: 0,
-        pickerOptions: {
-          cellClassName: (time) => {
-            if (
-              new Date().getDate() === time.getDate() &&
-              new Date().getMonth() === time.getMonth() &&
-              new Date().getFullYear() === time.getFullYear()
-            ) {
-              return 'dateArrClass' // 返回值设置的是我们添加的类名
-            }
-          },
-          shortcuts: [
-            {
-              text: '今天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '昨天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 1
-                end.setTime(start)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近7天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 7
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近30天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 30
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本月',
-              onClick(picker) {
-                const end = new Date()
-                const start =
-                  new Date().getTime() -
-                  3600 * 1000 * 24 * (new Date().getDate() - 1)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本年',
-              onClick(picker) {
-                const start = new Date(new Date().getFullYear(), 0, 1)
-                const end = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-          ],
-        },
       }
     },
     watch: {
@@ -384,66 +268,66 @@
       this.selectData()
     },
     methods: {
-      handleChange(value) {
-        console.log(value)
-      },
       // 新增优化圈
       async addCoupons() {
         this.$refs['edit'].showEdit()
       },
-      // 查询
+      resetForm() {
+        this.form = this.$options.data().form
+      },
+      handleClose() {
+        this.drawer = false
+      },
       handleQuery() {
         this.form.page = 1
       },
-
-      // 列表表单子组件展开闭合事件  公共部分
       changeBtnSta(data) {
         this.form.fold = data
       },
-      // 列表表单单选标签监听  自定义部分
-      changeHandler(data) {
-        console.log(888, data)
-        this.form.page = 1
-      },
-      // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
         console.log(1111, tab.label)
         this.form.page = 1
       },
-
-      // 列表数据封装函数
-
-      // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        console.log(9090909, data)
         this.form.page = data
       },
-      // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {
-        console.log(8080080, data)
         this.form.pageSize = data
       },
-      // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getManagementList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const { data } = await getCustomerList(this.form)
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
       },
       // 下拉框数据请求
       async selectData() {
-        const {
-          data: { list, total },
-        } = await getCommonAllList({
-          type: 'customer_grade,customer_grade,customer_type,customer_source,customer_tag',
+        const { data } = await getCommonAllList({
+          type: 'customer_grade,customer_type,customer_source,customer_tag',
         })
-        console.log(898989, list, total)
+        data.customer_tag.forEach((item) => {
+          item.value = item.id
+          item.label = item.name
+          if (item.child.length > 0) {
+            item.child.forEach((item1) => {
+              item1.value = item1.id
+              item1.label = item1.name
+            })
+            item.children = item.child
+          }
+        })
+        this.selectDataList = data
       },
       // 详情抽屉
       handleDetail(row, type) {
+        if (type === 1) {
+          this.title = '客户详情'
+        } else if (type === 2) {
+          this.title = '客户供应商'
+        } else {
+          this.title = '客户供应商'
+        }
         if (row == 'add') {
           this.drawerInof = {}
           this.drawerInof.drawerType = type
@@ -465,7 +349,6 @@
           import('@/utils/excel').then((excel) => {
             const tHeader = [
               'ID',
-              '头像',
               '昵称',
               '客户名称',
               '客户等级',
@@ -477,15 +360,14 @@
             ]
             const filterVal = [
               'id',
-              'des',
+              'nick_name',
               'name',
-              'name',
-              'level',
-              'des',
-              'des',
+              'grade_name',
+              'type_name',
+              'source_name',
               'money',
-              'money',
-              'des',
+              'final_count',
+              'create_time',
             ]
             const list = this.exclList
             const data = this.formatJson(filterVal, list)

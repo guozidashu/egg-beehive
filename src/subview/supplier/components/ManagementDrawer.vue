@@ -6,11 +6,7 @@ d
         <div>
           <el-row :gutter="20">
             <el-col :span="12" style="display: flex">
-              <img
-                :src="avatar"
-                style="width: 50px; height: 50px; margin: 0 10px 10px 0"
-              />
-              <p>成都 | 老何</p>
+              <p>{{ form.name }}</p>
             </el-col>
 
             <el-col :span="12">
@@ -34,7 +30,7 @@ d
                 size="small"
                 style="float: right; margin-right: 10px"
                 type="primary"
-                @click="form.drawerType = 2"
+                @click="changeTypeBtn(2)"
               >
                 编辑
               </el-button>
@@ -44,7 +40,7 @@ d
                 size="small"
                 style="float: right; margin-right: 10px"
                 type="primary"
-                @click="form.drawerType = 1"
+                @click="changeTypeBtn(1)"
               >
                 完成
               </el-button>
@@ -124,8 +120,12 @@ d
           <div class="conten-list-row">
             <div>供应商编号：{{ form.sn }}</div>
             <div>供应商名称： {{ form.name }}</div>
+            <div>联系人：{{ form.contact_name }}</div>
             <div>手机号码： -{{ form.tel }}</div>
-            <div>客户地址：暂无</div>
+            <div>
+              供应商地址：{{ form.province }}{{ form.city }}{{ form.district }}
+            </div>
+            <div>供应商详细地址：{{ form.addr }}</div>
           </div>
         </div>
         <div class="conten-warp">
@@ -133,34 +133,36 @@ d
           <div class="conten-list-row">
             <div>供应商类别：{{ form.type_name }}</div>
             <div>供应商等级：{{ form.grade_name }}</div>
+            <div>供应商标签：{{ form.tag_name }}</div>
             <div>
-              供应商类型：
+              工艺类型：
               <span v-for="item in form.craft_name" :key="item">
                 {{ item }}
               </span>
+            </div>
+            <div>
+              工序类型：
               <span v-for="item in form.produce_name" :key="item">
                 {{ item }}
               </span>
             </div>
-            <div>供应商标签：{{ form.tag_name }}</div>
-            <div>所在城市：暂无</div>
           </div>
         </div>
         <div class="conten-warp">
           <div class="conten-title">账户信息</div>
           <div class="conten-list-row">
-            <div>密码：暂无</div>
+            <div>账户名：{{ form.user_name }}</div>
+            <div>密码：{{ form.password }}</div>
           </div>
         </div>
         <div class="conten-warp">
           <div class="conten-title">账户资金</div>
           <div class="conten-list-row">
-            <div>账户名称： 暂无</div>
-            <div>账号： 暂无</div>
-            <div>账号类型： 暂无</div>
-            <div>开户行名称： 暂无</div>
-            <div>开户行地址： 暂无</div>
-            <div>结算方式： 暂无</div>
+            <div>开户人： {{ form.account_name }}</div>
+            <div>账号： {{ form.account_no }}</div>
+            <div>账号类型： {{ form.account_type }}</div>
+            <div>开户行名称： {{ form.bank_name }}</div>
+            <div>开户行地址： {{ form.bank_address }}</div>
           </div>
         </div>
         <div class="conten-warp">
@@ -173,9 +175,13 @@ d
             <div v-if="form.status == 1" style="width: 50%">
               供应商状态： 合作中
             </div>
-            <div v-else style="width: 50%">供应商状态： 终止合作</div>
-            <div style="width: 50%">期初欠款： 暂无</div>
-            <div style="width: 100%">备注： 暂无</div>
+            <div v-else style="width: 50%">
+              供应商状态：
+              <span v-if="form.status == '1'">启用</span>
+              <span v-else>禁用</span>
+            </div>
+            <div style="width: 50%">期初欠款： {{ form.initial_amount }}</div>
+            <div style="width: 100%">备注： {{ form.remark }}</div>
           </div>
         </div>
       </div>
@@ -291,6 +297,7 @@ d
               <el-form-item class="item" label="工艺类型：">
                 <el-select
                   v-model="form.craft_type"
+                  multiple
                   placeholder="请选择工艺类型："
                   style="width: 215px"
                 >
@@ -309,6 +316,7 @@ d
               <el-form-item class="item" label="工序类型：">
                 <el-select
                   v-model="form.produce_type"
+                  multiple
                   placeholder="请选择工序类型："
                   style="width: 215px"
                 >
@@ -540,10 +548,6 @@ d
     data() {
       return {
         selectData: [],
-        xstype: false,
-        hutype: false,
-        dialogVisible1: false,
-        distitle1: '',
         activeName: '0',
         search_type: '0',
         form: Object.assign({}, this.drawerInof),
@@ -588,7 +592,21 @@ d
             this.form.city,
             this.form.district,
           ]
-          console.log(2222, newVal)
+          console.log()
+          if (this.form.produce_type != undefined) {
+            if (this.form.produce_type.indexOf(',') != -1) {
+              this.form.produce_type = this.form.produce_type.split(',')
+            } else {
+              this.form.produce_type = [Number(this.form.produce_type)]
+            }
+          }
+          if (this.form.produce_type != undefined) {
+            if (this.form.craft_type.indexOf(',') != -1) {
+              this.form.craft_type = this.form.craft_type.split(',')
+            } else {
+              this.form.craft_type = [Number(this.form.craft_type)]
+            }
+          }
         },
         deep: true,
         immediate: true,
@@ -619,6 +637,7 @@ d
         this.form.district = selectArea
       },
       async changeTypeBtn(e) {
+        console.log(89898989, e)
         if (e != 1) {
           this.form.drawerType = e
           this.$forceUpdate()

@@ -1,7 +1,59 @@
 <template>
   <div style="background-color: #f6f8f9">
     <el-card shadow="never" style="border: 0">
-      <List
+      <el-row :gutter="20">
+        <el-col v-for="(item, index) in list" :key="index" :span="6">
+          <el-card class="box-card" shadow="hover">
+            <div slot="header" class="clearfix">
+              <span>{{ item.name }}</span>
+              <el-button
+                style="float: right; padding: 3px"
+                type="text"
+                @click="handleDelete(item)"
+              >
+                删除
+              </el-button>
+              <el-button
+                style="float: right; padding: 3px"
+                type="text"
+                @click="handleEdit(item)"
+              >
+                编辑
+              </el-button>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+              <img
+                :src="item.avatar"
+                style="width: 50px; height: 50px; margin: 20px 0 0 20px"
+              />
+              <div>
+                <div style="margin: 5px">积分：{{ item.integral }}</div>
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    margin: 5px;
+                  "
+                >
+                  <div>积分来源：</div>
+                  <div
+                    style="
+                      width: 200px;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                    "
+                  >
+                    {{ item.remark }}
+                  </div>
+                </div>
+                <div style="margin: 5px">时间：{{ item.create_time }}</div>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+      <!-- <List
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -51,16 +103,16 @@
             show-overflow-tooltip
           />
         </template>
-      </List>
+      </List> -->
     </el-card>
   </div>
 </template>
 <script>
-  import List from '@/subview/components/List'
+  // import List from '@/subview/components/List'
   import { getEmployeeIntegralList } from '@/api/basic'
   export default {
     name: 'ProjectBandlist',
-    components: { List },
+    // components: { List },
     data() {
       return {
         // 表单数据/列表参数

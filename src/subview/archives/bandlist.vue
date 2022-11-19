@@ -74,7 +74,7 @@
   import List from '@/subview/components/List'
   import Edit from './components/BandEdit'
   import Form from '@/subview/components/Form'
-  // import { getWaveList, editWave, deleteWave } from '@/api/basic'
+  import { getBandList, delBandDel } from '@/api/basic'
   export default {
     name: 'ProjectBandlist',
     components: { List, Edit, Form },
@@ -114,10 +114,6 @@
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {
-            // const { code, data } = await editWave({ id: row.id })
-            // if (code === 200) {
-            //   this.$refs['edit'].showEdit(data)
-            // }
             this.$refs['edit'].showEdit(row)
           } else {
             this.$refs['edit'].showEdit()
@@ -132,26 +128,13 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            // const { code } = await deleteWave({ id: row.id })
-            // if (code != 200) {
-            //   return
-            // }
+            const { code } = await delBandDel({ id: row.id })
+            if (code != 200) {
+              return
+            }
             this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
             this.fetchData()
           })
-        } else {
-          if (this.selectRows.length > 0) {
-            // const ids = this.selectRows.map((item) => item.id).join()
-            this.$baseConfirm('你确定要删除选中项吗', null, async () => {
-              // const { code } = await deleteWave(ids)
-              // if (code != 200) {
-              //   return
-              // }
-              this.fetchData()
-            })
-          } else {
-            this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
-          }
         }
       },
       // 列表数据封装函数
@@ -172,13 +155,12 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getWaveList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
+        this.listLoading = true
+        const { data } = await getBandList(this.form)
+        console.log(787878, data.data)
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
       },
     },
   }

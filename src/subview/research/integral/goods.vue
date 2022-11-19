@@ -29,7 +29,47 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <List
+      <el-row :gutter="20">
+        <el-col v-for="(item, index) in list" :key="index" :span="6">
+          <el-card class="box-card" shadow="hover">
+            <div slot="header" class="clearfix">
+              <span>{{ item.name }}</span>
+              <el-button
+                style="float: right; padding: 3px"
+                type="text"
+                @click="handleDelete(item)"
+              >
+                删除
+              </el-button>
+              <el-button
+                style="float: right; padding: 3px"
+                type="text"
+                @click="handleEdit(item)"
+              >
+                编辑
+              </el-button>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+              <img
+                :src="item.pic"
+                style="width: 50px; height: 50px; margin: 20px 0 0 20px"
+              />
+              <div>
+                <div style="margin: 5px">积分：{{ item.integral }}</div>
+                <div style="margin: 5px">
+                  库存：
+                  <el-tag v-if="item.stock == 1">开启</el-tag>
+                  <el-tag v-else type="danger">关闭</el-tag>
+                </div>
+                <div style="margin: 5px">状态：{{ item.status }}</div>
+                <div style="margin: 5px">时间：{{ item.create_time }}</div>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+
+      <!-- <List
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -38,7 +78,6 @@
         @changePageSize="changeBtnPageSize"
         @selectRows="selectBtnRows"
       >
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column
             align="center"
@@ -103,19 +142,18 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </List> -->
     </el-card>
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 <script>
-  import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
   import Edit from './components/GoodsEdit'
   import { getIntegralGoodsList, delIntegralGoodsDel } from '@/api/basic'
   export default {
     name: 'ProjectBandlist',
-    components: { List, Form, Edit },
+    components: { Form, Edit },
     data() {
       return {
         // 表单数据/列表参数
@@ -128,10 +166,10 @@
         formType: 4,
         // 列表数据相关
         selectRows: [],
-        listType: 1,
+        // listType: 1,
         list: [],
-        listLoading: false,
-        total: 0,
+        // listLoading: false,
+        // total: 0,
       }
     },
     watch: {
@@ -195,11 +233,11 @@
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
-        this.listLoading = true
+        // this.listLoading = true
         const { data } = await getIntegralGoodsList(this.form)
         this.list = data.data
-        this.total = data.total
-        this.listLoading = false
+        // this.total = data.total
+        // this.listLoading = false
       },
     },
   }

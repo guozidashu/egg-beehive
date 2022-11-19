@@ -8,7 +8,6 @@ body.vab-theme-blue-white {
   $base-color-blue-light: mix($base-color-white, $base-color-blue, 90%);
 
   @import '../default.scss';
-
   @mixin container {
     color: #515a6e !important;
     background: $base-menu-background !important;

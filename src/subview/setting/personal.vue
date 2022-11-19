@@ -11,15 +11,6 @@
             <div class="personal-center-user-info-description">
               {{ form.description }}
             </div>
-            <div class="personal-center-user-info-follow">
-              <a href="#" target="_blank">
-                <el-button round type="primary">
-                  <vab-icon icon="group-line" />
-                  积分商城
-                </el-button>
-              </a>
-            </div>
-
             <ul class="personal-center-user-info-list">
               <li>
                 <vab-icon icon="user-3-line" />
@@ -88,39 +79,6 @@
                   <div>绑定微信</div>
                   <div class="personal-center-item-content-second">
                     当前未绑定绑定微信账号
-                  </div>
-                </div>
-                <el-link type="primary">更换绑定</el-link>
-              </div>
-              <el-divider />
-              <div class="personal-center-item">
-                <vab-icon icon="alipay-line" style="color: #1476fe" />
-                <div class="personal-center-item-content">
-                  <div>绑定支付宝</div>
-                  <div class="personal-center-item-content-second">
-                    当前未绑定绑定支付宝账号
-                  </div>
-                </div>
-                <el-link type="primary">更换绑定</el-link>
-              </div>
-              <el-divider />
-              <div class="personal-center-item">
-                <vab-icon icon="weibo-line" style="color: #ffd440" />
-                <div class="personal-center-item-content">
-                  <div>绑定企业微信</div>
-                  <div class="personal-center-item-content-second">
-                    当前未绑定绑定企业微信账号
-                  </div>
-                </div>
-                <el-link type="primary">更换绑定</el-link>
-              </div>
-              <el-divider />
-              <div class="personal-center-item">
-                <vab-icon icon="github-line" />
-                <div class="personal-center-item-content">
-                  <div>绑定账号密码</div>
-                  <div class="personal-center-item-content-second">
-                    当前未绑定绑定账号密码
                   </div>
                 </div>
                 <el-link type="primary">更换绑定</el-link>

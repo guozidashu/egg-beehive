@@ -9,22 +9,22 @@
       </el-tabs>
       <div
         v-if="activeName == '本地存储'"
-        class="textCss"
+        class="textCss ceshi-color ceshi-background"
         v-html="listText[0].text"
       ></div>
       <div
         v-if="activeName == '阿里云存储'"
-        class="textCss"
+        class="textCss ceshi-color ceshi-background"
         v-html="listText[1].text"
       ></div>
       <div
         v-if="activeName == '腾讯云存储'"
-        class="textCss"
+        class="textCss ceshi-color ceshi-background"
         v-html="listText[2].text"
       ></div>
       <div
         v-if="activeName == '七牛云存储'"
-        class="textCss"
+        class="textCss ceshi-color ceshi-background"
         v-html="listText[3].text"
       ></div>
       <el-form

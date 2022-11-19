@@ -10,6 +10,7 @@
         @resetForm="resetForm"
       >
         <template #Form>
+          <div class="ceshi">china 中国制造</div>
           <el-form-item label="订单号" prop="region">
             <el-input v-model="form.name" size="small" />
           </el-form-item>
@@ -34,9 +35,8 @@
           <el-table-column
             align="center"
             label="订单编号"
-            prop="id"
+            prop="order_sn"
             show-overflow-tooltip
-            sortable
           />
           <el-table-column
             align="center"
@@ -47,25 +47,30 @@
           <el-table-column
             align="center"
             label="数量"
-            prop="name"
+            prop="num"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
             label="总积分"
-            prop="name"
+            prop="integral"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
             label="订单状态"
-            prop="name"
+            prop="status"
             show-overflow-tooltip
-          />
+          >
+            <template #default="{ row }">
+              <el-tag v-if="row.status == 1">开启</el-tag>
+              <el-tag v-else type="danger">关闭</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="下单时间"
-            prop="name"
+            prop="create_time"
             show-overflow-tooltip
           />
           <el-table-column
@@ -165,4 +170,8 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .ceshi {
+    font-family: 'my-mac' !important;
+  }
+</style>

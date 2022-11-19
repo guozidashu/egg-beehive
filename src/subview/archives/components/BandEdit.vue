@@ -9,6 +9,16 @@
       <el-form-item label="波段名称" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
+      <el-form-item label="排序" prop="sort">
+        <el-input v-model="form.sort" />
+      </el-form-item>
+      <!-- status: 1, //1启用 0 禁用 -->
+      <el-form-item label="状态" prop="status">
+        <el-radio-group v-model="form.status">
+          <el-radio :label="1">启用</el-radio>
+          <el-radio :label="0">禁用</el-radio>
+        </el-radio-group>
+      </el-form-item>
     </el-form>
     <template #footer>
       <el-button @click="close">取 消</el-button>
@@ -18,17 +28,19 @@
 </template>
 
 <script>
-  // import { updateWave, addWave } from '@/api/basic'
+  import { editBandSave } from '@/api/basic'
   export default {
     name: 'BandEdit',
     data() {
       return {
         form: {
-          name: '',
-          id: '',
+          sort: null, //排序
+          status: 1, //1启用 0 禁用
+          name: '', //名称
         },
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
+          sort: [{ required: true, trigger: 'blur', message: '请输入排序' }],
         },
         title: '',
         dialogFormVisible: false,
@@ -41,6 +53,7 @@
           this.title = '添加'
         } else {
           this.title = '编辑'
+          console.log(7878787, row)
           this.form = Object.assign({}, row)
         }
         this.dialogFormVisible = true
@@ -54,10 +67,10 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              // const { code } = await addWave(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              const { code } = await editBandSave(this.form)
+              if (code != 200) {
+                return
+              }
               this.$baseMessage(
                 '新增成功',
                 'success',
@@ -66,10 +79,10 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              // const { code } = await updateWave(this.form)
-              // if (code != 200) {
-              //   return
-              // }
+              const { code } = await editBandSave(this.form)
+              if (code != 200) {
+                return
+              }
               this.$baseMessage(
                 '修改成功',
                 'success',

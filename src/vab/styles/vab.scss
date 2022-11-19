@@ -31,6 +31,7 @@
 }
 
 html {
+ 
   body,
   body[class*='vab-theme-'] {
     position: relative;
@@ -44,7 +45,6 @@ html {
     background: $base-color-background;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-
     #app {
       height: 100vh;
       overflow: auto;

@@ -1,106 +1,150 @@
 <template>
   <div class="components-drawer">
-    <div style="padding: 30px 35px 25px">
-      <div>
-        <el-row :gutter="20">
-          <el-col :span="12" style="display: flex">
-            <img
-              :src="form.img"
-              style="
-                width: 50px;
-                height: 50px;
-                margin: 0 10px 10px 0;
-                border-radius: 50%;
-              "
-            />
-            <span style="margin: 15px 0 0 0">
-              {{ form.name }}|{{ form.level }}
-            </span>
-          </el-col>
+    <div v-if="form.drawerType != 3">
+      <div style="padding: 0 25px">
+        <div>
+          <el-row :gutter="20">
+            <el-col :span="12" style="display: flex">
+              <img
+                :src="form.avatar"
+                style="
+                  width: 50px;
+                  height: 50px;
+                  margin: 0 10px 10px 0;
+                  border-radius: 50%;
+                "
+              />
+              <span style="margin: 15px 0 0 0">
+                {{ form.name }}|{{ form.grade_name }}
+              </span>
+            </el-col>
 
-          <el-col :span="12">
-            <vab-icon
-              icon="align-center"
-              style="float: right; margin: 6px 0 0 0"
-            />
-            <el-button
-              native-type="submit"
-              size="small"
-              style="float: right; margin-right: 10px"
-              type="primary"
-              @click="upMembers(2)"
-            >
-              升级会员
-            </el-button>
-            <el-button
-              native-type="submit"
-              size="small"
-              style="float: right; margin-right: 10px"
-              type="primary"
-              @click="upMembers(1)"
-            >
-              积分余额
-            </el-button>
-            <el-button
-              v-if="form.drawerType == 1"
-              native-type="submit"
-              size="small"
-              style="float: right"
-              type="primary"
-              @click="form.drawerType = 2"
-            >
-              编辑
-            </el-button>
-            <el-button
-              v-if="form.drawerType == 2"
-              native-type="submit"
-              size="small"
-              style="float: right"
-              type="primary"
-              @click="form.drawerType = 1"
-            >
-              完成
-            </el-button>
-          </el-col>
-        </el-row>
-      </div>
-      <div style="display: flex">
-        <div
-          v-for="(item, index) in stalist"
-          :key="index"
-          style="display: flex; flex: 1; flex-direction: column"
-        >
-          <span style="margin-bottom: 12px">{{ item.name }}</span>
-          <span>{{ item.value }}</span>
+            <el-col :span="12">
+              <vab-icon
+                icon="align-center"
+                style="float: right; margin: 6px 0 0 0"
+              />
+              <el-button
+                native-type="submit"
+                size="small"
+                style="float: right; margin-right: 10px"
+                type="primary"
+                @click="upMembers(2)"
+              >
+                升级会员
+              </el-button>
+              <el-button
+                native-type="submit"
+                size="small"
+                style="float: right; margin-right: 10px"
+                type="primary"
+                @click="upMembers(1)"
+              >
+                积分余额
+              </el-button>
+              <el-button
+                v-if="form.drawerType == 1"
+                native-type="submit"
+                size="small"
+                style="float: right"
+                type="primary"
+                @click="changeTypeBtn(2)"
+              >
+                编辑
+              </el-button>
+              <el-button
+                v-if="form.drawerType == 2"
+                native-type="submit"
+                size="small"
+                style="float: right"
+                type="primary"
+                @click="changeTypeBtn(1)"
+              >
+                完成
+              </el-button>
+            </el-col>
+          </el-row>
+        </div>
+        <div style="display: flex">
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">余额/欠款</span>
+            <span>￥{{ form.delivery_arrears }}</span>
+          </div>
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">总消费次数</span>
+            <span>{{ form.count_num }}</span>
+          </div>
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">总消费金额</span>
+            <span>￥{{ form.final_count }}</span>
+          </div>
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">总发货金额</span>
+            <span>{{ form.sum_delivery_money }}</span>
+          </div>
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">总退货金额</span>
+            <span>￥{{ form.sum_return_money }}</span>
+          </div>
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">累计收银</span>
+            <span>{{ form.sum_voucher_money }}</span>
+          </div>
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">最后一次消费时间</span>
+            <span>{{ form.last_use_time }}</span>
+          </div>
         </div>
       </div>
+      <el-tabs
+        v-model="activeName"
+        style="padding: 0 25px"
+        @tab-click="handleClick"
+      >
+        <el-tab-pane label="客户信息" name="0" />
+        <el-tab-pane label="订单记录" name="1" />
+        <el-tab-pane label="发货记录" name="2" />
+        <el-tab-pane label="退货记录" name="3" />
+        <el-tab-pane label="收银记录" name="4" />
+        <el-tab-pane label="持有优惠券" name="5" />
+        <el-tab-pane label="积分明细" name="6" />
+        <el-tab-pane label="签到记录" name="7" />
+        <el-tab-pane label="欠货统计" name="8" />
+        <el-tab-pane label="电子合同" name="9" />
+      </el-tabs>
     </div>
-    <el-tabs
-      v-model="activeName"
-      style="padding: 0 25px"
-      @tab-click="handleClick"
-    >
-      <el-tab-pane label="客户信息" name="first" />
-      <el-tab-pane label="订单记录" name="second" />
-      <el-tab-pane label=" 发货记录" name="three" />
-      <el-tab-pane label="退货记录" name="four" />
-      <el-tab-pane label="收银记录" name="five" />
-      <el-tab-pane label="持有优惠券" name="six" />
-      <el-tab-pane label=" 积分明细" name="seven" />
-      <el-tab-pane label="签到记录" name="eight" />
-      <el-tab-pane label="欠货统计" name="nine" />
-      <el-tab-pane label="电子合同" name="ten" />
-    </el-tabs>
+    <div v-if="form.drawerType == 3" style="margin-bottom: 20px">
+      <el-button
+        v-if="form.drawerType == 1"
+        native-type="submit"
+        size="small"
+        style="float: right; margin-right: 10px"
+        type="primary"
+        @click="changeTypeBtn(2)"
+      >
+        编辑
+      </el-button>
+      <el-button
+        v-if="form.drawerType == 2 || form.drawerType == 3"
+        native-type="submit"
+        size="small"
+        style="float: right; margin-right: 10px"
+        type="primary"
+        @click="changeTypeBtn(1)"
+      >
+        完成
+      </el-button>
+    </div>
     <div v-if="tabLabel == '客户信息'">
       <div v-if="form.drawerType == 1" class="drawer-tab">
         <div class="conten-warp">
           <div class="conten-title">基本信息</div>
           <div class="conten-list-row">
-            <div>用户编号：57711</div>
-            <div>真实姓名： 阿白</div>
+            <div>用户编号：{{ form.sn }}</div>
+            <div>真实姓名： {{ form.name }}</div>
             <div>
               <span v-if="!formShow.phonestate">
-                手机号码： {{ '15236804776' | phoneteltm }}
+                手机号码： {{ form.mobile | phoneteltm }}
               </span>
               <span v-else>手机号码： 15236804776</span>
               <i
@@ -116,62 +160,45 @@
                 @click="formShow.phonestate = false"
               ></i>
             </div>
-            <div>生日：2001-11-01</div>
+            <div>生日：{{ form.birthday }}</div>
+            <div>加入时间： {{ form.create_time }}</div>
             <div>
-              <span v-if="!formShow.cardstate">
-                身份证号： {{ '411425199905053315' | peridcardtm }}
-              </span>
-              <span v-else>身份证号： 411425199905053315</span>
-              <i
-                v-if="!formShow.cardstate"
-                class="el-icon-view"
-                style="margin-left: 10px"
-                @click="formShow.cardstate = true"
-              ></i>
-              <i
-                v-else
-                class="el-icon-view"
-                style="margin-left: 10px; color: #1890ff"
-                @click="formShow.cardstate = false"
-              ></i>
+              客户地址： {{ form.province }}{{ form.city }}{{ form.district }}
             </div>
-            <div>加入时间： 2022-01-01 10：20:20</div>
-            <div>客户地址： 杭州市滨江区春波小区11栋602</div>
+            <div>客户详情地址： {{ form.addr }}</div>
           </div>
         </div>
         <div class="conten-warp">
           <div class="conten-title">登录账户</div>
           <div class="conten-list-row">
-            <div>登录账户：254784967</div>
-            <div>登录密码：*******</div>
+            <div>登录账户：{{ form.account }}</div>
+            <div>登录密码：{{ form.password }}</div>
           </div>
         </div>
         <div class="conten-warp">
           <div class="conten-title">客户概况</div>
           <div class="conten-list-row">
-            <div>用户状态： 开启</div>
-            <div>客户等级： 钻石会员</div>
-            <div>客户分类： B端合伙人</div>
-            <div style="width: 100%">客户标签： 小红书、00后</div>
-            <div>所在城市： 杭州市</div>
+            <div>
+              用户状态：
+              <span v-if="form.status == 1">开启</span>
+              <span>关闭</span>
+            </div>
+            <div>客户等级： {{ form.grade_name }}</div>
+            <div>客户分类： {{ form.type_name }}</div>
+            <div style="width: 100%">客户标签： {{ form.tag_name }}</div>
+            <div>客户来源： {{ form.source_name }}</div>
           </div>
         </div>
         <div class="conten-warp">
           <div class="conten-title">其它信息</div>
           <div class="conten-list-row">
-            <div style="width: 100%">专属客服： 阿白</div>
-            <div style="width: 50%">创建时间： 2020-02-02 10:10:10</div>
-            <div style="width: 50%">操作人员： 阿白</div>
-            <div style="width: 50%">更新时间： 2020-02-02 10:10:10</div>
-            <div style="width: 50%">操作人员： 阿白</div>
-            <div style="width: 100%">
-              备注信息： 1111111111111111111111111111
-            </div>
+            <div style="width: 100%">专属客服： {{ form.service }}</div>
+            <div style="width: 100%">备注信息： {{ form.remark }}</div>
           </div>
         </div>
       </div>
       <el-form
-        v-if="form.drawerType == 2"
+        v-if="form.drawerType == 2 || form.drawerType == 3"
         ref="form"
         label-width="120px"
         :model="form"
@@ -183,50 +210,49 @@
             <div class="conten-list-com">
               <el-form-item class="item" label="用户编号：">
                 <el-input
-                  v-model="form.addressKeyword"
+                  v-model="form.sn"
                   placeholder="请输入用户编号"
                   style="width: 215px"
                 />
               </el-form-item>
               <el-form-item class="item" label="真实姓名：">
                 <el-input
-                  v-model="form.addressKeyword"
+                  v-model="form.name"
                   placeholder="请输入真实姓名"
                   style="width: 215px"
                 />
               </el-form-item>
               <el-form-item class="item" label="手机号码：">
                 <el-input
-                  v-model="form.addressKeyword"
+                  v-model="form.mobile"
                   placeholder="请输入手机号码"
                   style="width: 215px"
                 />
               </el-form-item>
               <el-form-item class="item" label="生日：">
                 <el-date-picker
-                  v-model="form.value1"
+                  v-model="form.birthday"
                   placeholder="请选择生日"
                   type="date"
                 />
               </el-form-item>
-              <el-form-item class="item" label="身份证号：">
-                <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入身份证号"
-                  style="width: 215px"
-                />
-              </el-form-item>
               <el-form-item class="item" label="加入时间：">
                 <el-date-picker
-                  v-model="form.value1"
+                  v-model="form.create_time"
                   placeholder="请选择加入时间"
                   type="date"
                 />
               </el-form-item>
-              <el-form-item class="item" label="客户地址：">
+              <el-form-item label="客户地址：">
+                <addressCity
+                  :adrress="form.address1"
+                  @getLawyerListInfo="selectAddress"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="客户详情地址：">
                 <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入客户地址"
+                  v-model="form.addr"
+                  placeholder="请输入客户详情地址"
                   style="width: 215px"
                 />
               </el-form-item>
@@ -239,14 +265,14 @@
             <div class="conten-list-com">
               <el-form-item class="item" label="登录账户：">
                 <el-input
-                  v-model="form.addressKeyword"
+                  v-model="form.account"
                   placeholder="请输入登录账户"
                   style="width: 215px"
                 />
               </el-form-item>
               <el-form-item class="item" label="登录密码：">
                 <el-input
-                  v-model="form.addressKeyword"
+                  v-model="form.password"
                   placeholder="请输入登录密码"
                   style="width: 215px"
                 />
@@ -260,7 +286,7 @@
             <div class="conten-list-com">
               <el-form-item class="item" label="用户状态：">
                 <el-switch
-                  v-model="form.sp"
+                  v-model="form.status"
                   active-color="#41B584"
                   active-text="开启"
                   :active-value="1"
@@ -271,25 +297,40 @@
                 />
               </el-form-item>
               <el-form-item class="item" label="客户等级：">
-                <el-select v-model="form.type1" placeholder="请选择">
-                  <el-option label="黄金" :value="1" />
-                  <el-option label="白银" :value="2" />
+                <el-select v-model="form.level" placeholder="请选择">
+                  <el-option
+                    v-for="(item, index) in selectData.customer_grade"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
                 </el-select>
               </el-form-item>
               <el-form-item class="item" label="客户分类：">
-                <el-select v-model="form.type1" placeholder="请选择">
-                  <el-option label="快团团" :value="1" />
-                  <el-option label="微信" :value="2" />
+                <el-select v-model="form.type" placeholder="请选择">
+                  <el-option
+                    v-for="(item, index) in selectData.customer_type"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
                 </el-select>
               </el-form-item>
               <el-form-item class="item" label="客户标签：">
-                <el-select v-model="form.type1" placeholder="请选择">
-                  <el-option label="水瓶座" :value="1" />
-                  <el-option label="金牛座" :value="2" />
-                </el-select>
+                <el-cascader
+                  v-model="form.tag"
+                  :options="selectData.customer_tag"
+                />
               </el-form-item>
-              <el-form-item class="item" label="所在城市：" style="width: 100%">
-                <addressCity @getLawyerListInfo="selectAddress" />
+              <el-form-item class="item" label="客户来源：">
+                <el-select v-model="form.customer_source" placeholder="请选择">
+                  <el-option
+                    v-for="(item, index) in selectData.customer_source"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
               </el-form-item>
             </div>
           </div>
@@ -299,14 +340,18 @@
             <div class="conten-title">其它信息</div>
             <div class="conten-list-com">
               <el-form-item class="item" label="专属客服：">
-                <el-select v-model="form.type1" placeholder="请选择">
-                  <el-option label="客服1" :value="1" />
-                  <el-option label="客服2" :value="2" />
+                <el-select v-model="form.service" placeholder="请选择">
+                  <el-option
+                    v-for="(item, index) in selectData.customer_service"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
                 </el-select>
               </el-form-item>
               <el-form-item class="item" label="备注信息：">
                 <el-input
-                  v-model="form.des"
+                  v-model="form.remark"
                   :autosize="{ minRows: 2, maxRows: 4 }"
                   placeholder="请输入备注"
                   type="textarea"
@@ -318,16 +363,72 @@
       </el-form>
     </div>
     <List
-      v-else
+      v-if="tabLabel == '订单记录'"
       :list="orderList"
       :list-type="listType"
       :state="listLoading"
       style="margin: 20px"
     >
       <template #List>
-        <el-table-column label="id" prop="id" show-overflow-tooltip />
-        <el-table-column label="名称" prop="log" show-overflow-tooltip />
-        <el-table-column label="操作时间" prop="time" show-overflow-tooltip />
+        <el-table-column label="订单ID" prop="id" show-overflow-tooltip />
+        <el-table-column label="编号" prop="sn" show-overflow-tooltip />
+        <el-table-column label="创建时间" prop="ctime" show-overflow-tooltip />
+      </template>
+    </List>
+    <List
+      v-if="tabLabel == '发货记录'"
+      :list="orderList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column label="订单ID" prop="id" show-overflow-tooltip />
+        <el-table-column label="编号" prop="sn" show-overflow-tooltip />
+        <el-table-column label="发货时间" prop="ctime" show-overflow-tooltip />
+      </template>
+    </List>
+    <List
+      v-if="tabLabel == '退货记录'"
+      :list="orderList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column label="订单ID" prop="id" show-overflow-tooltip />
+        <el-table-column label="编号" prop="sn" show-overflow-tooltip />
+        <el-table-column label="退货时间" prop="ctime" show-overflow-tooltip />
+      </template>
+    </List>
+    <List
+      v-if="tabLabel == '收银记录'"
+      :list="orderList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column label="标题" prop="title" show-overflow-tooltip />
+        <el-table-column label="金额" prop="discount" show-overflow-tooltip />
+        <el-table-column label="创建时间" prop="ctime" show-overflow-tooltip />
+      </template>
+    </List>
+    <List
+      v-if="tabLabel == '欠货统计'"
+      :list="orderList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column
+          label="商品名称"
+          prop="good_name"
+          show-overflow-tooltip
+        />
+        <el-table-column label="欠货数量" prop="num" show-overflow-tooltip />
+        <el-table-column label="创建时间" prop="ctime" show-overflow-tooltip />
       </template>
     </List>
     <el-dialog
@@ -384,6 +485,11 @@
   import addressCity from '@/subview/components/City'
   import List from '@/subview/components/List'
   import { mapGetters } from 'vuex'
+  import {
+    getCommonAllList,
+    editCustomerSave,
+    getCustomerInfoList,
+  } from '@/api/basic'
   export default {
     name: 'ComponentsDrawer',
     components: { addressCity, List },
@@ -395,13 +501,14 @@
     },
     data() {
       return {
+        selectData: [],
         formShow: {
           cardstate: false,
           phonestate: false,
         },
         dialogVisible1: false,
         distitle1: '',
-        activeName: 'first',
+        activeName: '0',
         tabLabel: '客户信息',
         form: Object.assign({}, this.drawerInof),
         listLoading: false,
@@ -410,44 +517,9 @@
           state: 0,
           state1: 0,
         },
-        goosList: [
-          {
-            inof: {
-              img: 'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-              color: '粉',
-              wenzi:
-                '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            },
-            money: 12,
-            pay: 11,
-            num: 1,
-            comutp: 1.0,
-          },
-        ],
-        stareList: [
-          {
-            inof: {
-              img: 'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-              color: '粉',
-              wenzi:
-                '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            },
-            id: 'wx310816471104094208[金家酒便利]',
-            time: '2022-10-10 16:33:41',
-          },
-        ],
-        orderList: [
-          {
-            id: 4525,
-            log: '用户付款成功',
-            time: '2022-10-10 16:33:41',
-          },
-          {
-            id: 4525,
-            log: '用户付款成功',
-            time: '2022-10-10 16:33:41',
-          },
-        ],
+        goosList: [],
+        stareList: [],
+        orderList: [],
         stalist: [
           {
             name: '余额/欠款',
@@ -492,19 +564,83 @@
       drawerInof: {
         handler: function (newVal) {
           this.form = Object.assign({}, newVal)
+          this.form.address1 = [
+            this.form.province,
+            this.form.city,
+            this.form.district,
+          ]
           console.log(2222, newVal)
         },
         deep: true,
+        immediate: true,
       },
     },
-    created() {},
+    created() {
+      this.getSelectData()
+    },
     methods: {
+      async changeTypeBtn(e) {
+        console.log(89898989, e)
+        if (e != 1) {
+          this.form.drawerType = e
+          this.$forceUpdate()
+          return
+        } else {
+          console.log(1111, this.form)
+          this.form.drawerType = e
+        }
+        if (this.form.id == undefined) {
+          this.form.id = 0
+          const { code } = await editCustomerSave(this.form)
+          if (code == 200) {
+            this.$baseMessage('新增成功', 'success', 'vab-hey-message-success')
+            this.form.drawerType = e
+            this.$forceUpdate()
+          }
+        } else {
+          const { code } = await editCustomerSave(this.form)
+          if (code == 200) {
+            this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
+            this.form.drawerType = e
+            this.$forceUpdate()
+          }
+        }
+      },
+      async getSelectData() {
+        const { data } = await getCommonAllList({
+          type: 'customer_grade,customer_type,customer_source,customer_tag,customer_service',
+        })
+        data.customer_tag.forEach((item) => {
+          item.value = item.id
+          item.label = item.name
+          if (item.child.length > 0) {
+            item.child.forEach((item1) => {
+              item1.value = item1.id
+              item1.label = item1.name
+            })
+            item.children = item.child
+          }
+        })
+        this.selectData = data
+      },
       // 列表数据表头切换监听 自定义部分
-      handleClick(tab) {
+      async handleClick(tab) {
+        this.listLoading = true
         this.tabLabel = tab.label
+        if (tab.name == 0) {
+          return
+        }
+        const { data } = await getCustomerInfoList({
+          type: tab.name, //搜索条件 1订单记录 2入库信息 3退货记录 4付款记录 5对账单记录
+          id: this.drawerInof.id, //物料采购订单id
+        })
+        this.orderList = data.data
+        this.listLoading = false
       },
       selectAddress(selectProvince, selectCity, selectArea) {
-        console.log(selectProvince, selectCity, selectArea)
+        this.form.province = selectProvince
+        this.form.city = selectCity
+        this.form.district = selectArea
       },
       handleClose1() {
         this.dialogVisible1 = false

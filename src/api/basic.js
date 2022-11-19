@@ -44,7 +44,50 @@ export function getConfig(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
-
+// 波段管理
+export function getBandList(data) {
+  return request({
+    url: '/archive/bandList',
+    method: 'post',
+    data,
+  })
+}
+export function editBandSave(data) {
+  return request({
+    url: '/archive/bandSave',
+    method: 'post',
+    data,
+  })
+}
+export function delBandDel(data) {
+  return request({
+    url: '/archive/bandDel',
+    method: 'post',
+    data,
+  })
+}
+// 客户管理
+export function editCustomerSave(data) {
+  return request({
+    url: '/customer/Save',
+    method: 'post',
+    data,
+  })
+}
+export function getCustomerInfoList(data) {
+  return request({
+    url: '/customer/infoList',
+    method: 'post',
+    data,
+  })
+}
+export function getCustomerList(data) {
+  return request({
+    url: '/customer/List',
+    method: 'post',
+    data,
+  })
+}
 // 研发进度
 export function getPlannedList(data) {
   return request({

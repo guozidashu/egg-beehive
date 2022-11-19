@@ -63,7 +63,7 @@
         this.active = val
       },
       personalCenter() {
-        this.$router.push('/setting/personalCenter')
+        this.$router.push('/setting/personal')
       },
       async logout() {
         await this._logout()
