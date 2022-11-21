@@ -44,6 +44,90 @@ export function getConfig(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+// 账户信息
+
+export function getAccountDetail(data) {
+  return request({
+    url: '/admin/accountDetail',
+    method: 'post',
+    data,
+  })
+}
+export function editAdminAccountSave(data) {
+  return request({
+    url: '/admin/accountSave',
+    method: 'post',
+    data,
+  })
+}
+// 吊牌打印
+export function getPrintSn(data) {
+  return request({
+    url: '/archive/printSn',
+    method: 'post',
+    data,
+  })
+}
+export function getPrintList(data) {
+  return request({
+    url: '/archive/printList',
+    method: 'post',
+    data,
+  })
+}
+export function getGoodBarcode(data) {
+  return request({
+    url: '/archive/getGoodBarcode',
+    method: 'post',
+    data,
+  })
+}
+export function getStockPrint(data) {
+  return request({
+    url: '/archive/stockPrint',
+    method: 'post',
+    data,
+  })
+}
+// 财务分析
+export function getFinanceCostCount(data) {
+  return request({
+    url: '/information/financeCostCount',
+    method: 'post',
+    data,
+  })
+}
+export function getFinanceListd(data) {
+  return request({
+    url: '/information/financeList',
+    method: 'post',
+    data,
+  })
+}
+// 首页
+export function getHomePageList(data) {
+  return request({
+    url: '/homePage/list',
+    method: 'post',
+    data,
+  })
+}
+export function getHomePageBoard(data) {
+  return request({
+    url: '/homePage/board',
+    method: 'post',
+    data,
+  })
+}
+// 客户统计
+export function getCountList(data) {
+  return request({
+    url: '/customer/countList',
+    method: 'post',
+    data,
+  })
+}
+
 // 波段管理
 export function getBandList(data) {
   return request({

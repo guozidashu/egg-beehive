@@ -13,10 +13,10 @@
         <template #header>
           <vab-icon icon="line-chart-line" />
           {{ item.title }}
-          <el-tag v-if="item.type === 1" class="card-header-tag" type="danger">
+          <!-- <el-tag v-if="item.type === 1" class="card-header-tag" type="danger">
             今日
           </el-tag>
-          <el-tag v-else class="card-header-tag" type="success">今日</el-tag>
+          <el-tag v-else class="card-header-tag" type="success">今日</el-tag> -->
         </template>
         <div>
           <p
@@ -46,7 +46,7 @@
             </i>
           </p>
         </div>
-        <div class="bottom">
+        <!-- <div class="bottom">
           <span>
             本月销售额
             <el-tag
@@ -60,7 +60,7 @@
               {{ item.money }}
             </el-tag>
           </span>
-        </div>
+        </div> -->
       </el-card>
     </el-col>
   </div>

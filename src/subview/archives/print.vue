@@ -30,89 +30,100 @@
         >
           <el-form-item label="商品搜索">
             <el-input
-              v-model="form.name2"
+              v-model="form.keywords"
               placeholder="请输入商品名称"
               style="width: 215px; margin-right: 10px"
             />
-            <el-button type="primary" @click="handleShow()">查询</el-button>
+            <el-button type="primary" @click="handlePrintSn()">查询</el-button>
           </el-form-item>
-          <el-form-item label="货号">
-            <el-radio-group v-model="form.radio3" size="small">
-              <el-radio-button label="QY001" />
-              <el-radio-button label="QY002" />
-              <el-radio-button label="QY003" />
+          <el-form-item v-if="CommoditySn.length > 0" label="商品编码">
+            <el-radio-group v-model="form.sn" size="small">
+              <el-radio-button
+                v-for="(item, index) in CommoditySn"
+                :key="index"
+                :label="item"
+              />
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="颜色">
-            <el-radio-group v-model="form.radio3" size="small">
-              <el-radio-button label="红色" />
-              <el-radio-button label="黄色" />
-              <el-radio-button label="绿色" />
+          <el-form-item v-if="colorList.length > 0" label="颜色">
+            <el-radio-group v-model="form.colorid" size="small">
+              <el-radio-button
+                v-for="(item, index) in colorList"
+                :key="index"
+                :label="item.id"
+              >
+                {{ item.name }}
+              </el-radio-button>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="尺码">
-            <el-radio-group v-model="form.radio3" size="small">
-              <el-radio-button label="80" />
-              <el-radio-button label="90" />
-              <el-radio-button label="100" />
-              <el-radio-button label="120" />
-              <el-radio-button label="140" />
+          <el-form-item v-if="sizeList.length > 0" label="尺码">
+            <el-radio-group v-model="form.sizeid" size="small">
+              <el-radio-button
+                v-for="(item, index) in sizeList"
+                :key="index"
+                :label="item.id"
+              >
+                {{ item.name }}
+              </el-radio-button>
             </el-radio-group>
           </el-form-item>
-          <el-form-item>
-            <div style="display: flex">
-              <el-tooltip placement="top">
-                <img
-                  slot="content"
-                  src="https://img0.baidu.com/it/u=2876562511,1995269794&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-                  style="width: 200px; height: 200px; margin: 10px"
-                />
-                <img
-                  src="https://img0.baidu.com/it/u=2876562511,1995269794&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-                  style="width: 80px; height: 80px; margin-right: 20px"
-                />
-              </el-tooltip>
-              <div>
-                <div>商品名称：夏季清爽套装玩转珍格格</div>
-                <div>商品编码：QY0454234</div>
+
+          <div v-if="goodsInof != null">
+            <el-form-item>
+              <div style="display: flex">
+                <el-tooltip placement="top">
+                  <img
+                    slot="content"
+                    :src="goodsInof.goods_img"
+                    style="width: 200px; height: 200px; margin: 10px"
+                  />
+                  <img
+                    :src="goodsInof.goods_img"
+                    style="width: 80px; height: 80px; margin-right: 20px"
+                  />
+                </el-tooltip>
+                <div>
+                  <div>商品名称：{{ goodsInof.goods_name }}</div>
+                  <div>商品编码：{{ goodsInof.barcode }}</div>
+                </div>
               </div>
-            </div>
-          </el-form-item>
-          <el-form-item label="打印种类">
-            <el-radio-group v-model="form.radio2" size="small">
-              <el-radio label="打印吊牌" />
-              <el-radio label="打印条码" />
-              <el-radio label="BT打印" />
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="打印模板">
-            <el-select
-              v-model="form.status1"
-              style="width: 150px; margin-right: 10px"
-            >
-              <el-option label="110x90mm" :value="1" />
-              <el-option label="120x90mm" :value="2" />
-              <el-option label="130x90mm" :value="3" />
-            </el-select>
-            <el-radio v-model="form.radio1" border label="1">
-              默认使用模板设置的打印机
-            </el-radio>
-          </el-form-item>
-          <el-form-item label="打印数量">
-            <el-input
-              v-model="form.num"
-              style="width: 50px; margin-right: 10px"
-            />
-            <el-button type="primary" @click="print('vab-print-table')">
-              打印预览
-            </el-button>
-            <el-button type="primary">立即打印</el-button>
-          </el-form-item>
-          <el-form-item label="自定义打印内容">
-            <el-input v-model="form.content" style="width: 215px" />
-          </el-form-item>
+            </el-form-item>
+            <el-form-item label="打印种类">
+              <el-radio-group v-model="form.radio2" size="small">
+                <el-radio label="打印吊牌" />
+                <el-radio label="打印条码" />
+                <el-radio label="BT打印" />
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="打印模板">
+              <el-select
+                v-model="form.status1"
+                style="width: 150px; margin-right: 10px"
+              >
+                <el-option label="110x90mm" :value="1" />
+                <el-option label="120x90mm" :value="2" />
+                <el-option label="130x90mm" :value="3" />
+              </el-select>
+              <el-radio v-model="form.radio1" border label="1">
+                默认使用模板设置的打印机
+              </el-radio>
+            </el-form-item>
+            <el-form-item label="打印数量">
+              <el-input
+                v-model="form.num"
+                style="width: 50px; margin-right: 10px"
+              />
+              <el-button type="primary" @click="print('vab-print-table')">
+                打印预览
+              </el-button>
+              <el-button type="primary">立即打印</el-button>
+            </el-form-item>
+            <el-form-item label="自定义打印内容">
+              <el-input v-model="form.content" style="width: 215px" />
+            </el-form-item>
+          </div>
         </el-form>
-        <div style="width: 50%">
+        <div v-if="goodsInof != null" style="width: 50%">
           <el-card shadow="hover" style="width: 50%; margin-left: 25%">
             <div
               ref="vab-print-table"
@@ -125,16 +136,24 @@
             >
               <h3 style="color: #000019; text-align: center">合格证</h3>
               <p style="font-size: 12px; color: #000">
-                商品款号：
-                <span>G23GZ8080</span>
+                商品编码：
+                <span>{{ form.sn }}</span>
               </p>
               <p style="font-size: 12px; color: #000">
                 产品名称：
-                <span>童装</span>
+                <span>{{ goodsInof.goods_name }}</span>
               </p>
               <p style="font-size: 12px; color: #000">
                 规格：
                 <span>M</span>
+              </p>
+              <p style="font-size: 12px; color: #000">
+                商品颜色：
+                <span>{{ colorNanme }}</span>
+              </p>
+              <p style="font-size: 12px; color: #000">
+                商品尺码：
+                <span>{{ sizeNanme }}</span>
               </p>
               <p style="font-size: 12px; color: #000">
                 执行标准：
@@ -144,10 +163,7 @@
                 安全类别：
                 <span>FT32133-2019</span>
               </p>
-              <p style="font-size: 12px; color: #000">
-                商品颜色：
-                <span>红色</span>
-              </p>
+
               <p style="font-size: 12px; color: #000">
                 质量等级：
                 <span>合格品</span>
@@ -180,21 +196,15 @@
       </div>
       <div v-else style="margin-top: 20px">
         <el-form ref="form" label-position="right" :model="form">
-          <el-form-item>
-            <el-select
-              v-model="form.status1"
-              style="width: 150px; margin-right: 10px"
-            >
-              <el-option label="采购单" :value="1" />
-              <el-option label="生产计划单" :value="2" />
-              <el-option label="外发加工单" :value="3" />
-            </el-select>
+          <el-form-item label="成品采购单：">
             <el-input
-              v-model="form.name2"
-              placeholder="粘到这里"
+              v-model="form1.order_sn"
+              placeholder="订单号粘到这里"
               style="width: 215px; margin-right: 10px"
             />
-            <el-button type="primary" @click="handleShow()">导入商品</el-button>
+            <el-button type="primary" @click="handleStockPrint()">
+              导入商品
+            </el-button>
             <el-button
               class="el-icon-printer"
               type="primary"
@@ -207,7 +217,7 @@
             </el-button>
           </el-form-item>
         </el-form>
-        <div ref="vab-print-table1">
+        <div v-if="list.length > 0" ref="vab-print-table1">
           <List
             :list="list"
             :list-type="listType"
@@ -220,12 +230,10 @@
             <!-- 表格组件具名插槽 自定义表头 -->
             <template #List>
               <el-table-column type="selection" width="55" />
-              <el-table-column
-                align="center"
-                label="图片"
-                prop="img"
-                width="220"
-              >
+              "name": "73-90", "img":
+              "https://img.wechatboss.com/Fnjf-kda-MuL6GAZk1rcWnB0eYyw", "sn":
+              "WZ32001", "barcode": "wz32001-0-0015-73-90", "df_num": 182
+              <el-table-column align="center" label="图片" prop="img">
                 <template slot-scope="{ row }">
                   <img
                     alt=""
@@ -242,32 +250,15 @@
               />
               <el-table-column
                 align="center"
-                label="款号"
-                prop="model"
-                width="220"
-              />
-              <el-table-column
-                label="颜色"
-                prop="color"
-                show-overflow-tooltip
-                width="220"
-              />
-              <el-table-column
-                align="center"
-                label="尺码"
-                prop="size"
-                width="220"
-              />
-              <el-table-column
-                align="center"
-                label="数量"
-                prop="num"
-                width="220"
-              />
-              <el-table-column
-                align="center"
                 label="商品编码"
-                prop="bianma"
+                prop="sn"
+                width="220"
+              />
+              <el-table-column align="center" label="款号" prop="barcode" />
+              <el-table-column
+                label="数量"
+                prop="df_num"
+                show-overflow-tooltip
                 width="220"
               />
             </template>
@@ -282,177 +273,101 @@
   import List from '@/subview/components/List'
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
+  import {
+    getPrintSn,
+    getPrintList,
+    getGoodBarcode,
+    getStockPrint,
+  } from '@/api/basic'
   export default {
     components: { List },
     data() {
       return {
         activeName: '打印吊牌条码',
-        form: { page: 1, pageSize: 10 },
+        form: { keywords: 'WZ32001', sizeid: null, colorid: null },
+        goodsInof: null,
+        sizeNanme: '',
+        colorNanme: '',
+        form1: { order_sn: 'asas111', page: 1, pageSize: 20 },
+
+        CommoditySn: [],
+        colorList: [],
+        sizeList: [],
         // 列表数据相关
         selectRows: [],
         listType: 1,
-        list: [
-          {
-            img: 'https://img0.baidu.com/it/u=1895837640,2691329714&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '黑色',
-            model: '2022款',
-            size: 'XXL',
-            num: '99',
-            bianma: 'xz1289088980234234',
-          },
-          {
-            img: 'https://img1.baidu.com/it/u=2138195331,3860457921&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '黄色色',
-            model: '2021款',
-            size: 'S',
-            num: '10',
-            bianma: 'xz1289088980234234',
-          },
-          {
-            img: 'https://img2.baidu.com/it/u=4128009961,2011864989&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '白色',
-            model: '2022款',
-            size: 'XL',
-            num: '1000',
-            bianma: 'xz1289088980234234',
-          },
-          {
-            img: 'https://img1.baidu.com/it/u=3985309804,2360825202&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '黑色',
-            model: '2022款',
-            size: 'M',
-            num: '999',
-            bianma: 'xz1289088980234234',
-          },
-          {
-            img: 'https://img2.baidu.com/it/u=82239579,3679411218&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '黄色',
-            model: '2022款',
-            size: 'L',
-            num: '199',
-            bianma: 'xz1289088980234234',
-          },
-          {
-            img: 'https://img0.baidu.com/it/u=1895837640,2691329714&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '黑色',
-            model: '2022款',
-            size: 'XXL',
-            num: '99',
-            bianma: 'xz1289088980234234',
-          },
-          {
-            img: 'https://img1.baidu.com/it/u=2138195331,3860457921&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '黄色色',
-            model: '2021款',
-            size: 'S',
-            num: '10',
-            bianma: 'xz1289088980234234',
-          },
-          {
-            img: 'https://img2.baidu.com/it/u=4128009961,2011864989&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '白色',
-            model: '2022款',
-            size: 'XL',
-            num: '1000',
-            bianma: 'xz1289088980234234',
-          },
-          {
-            img: 'https://img1.baidu.com/it/u=3985309804,2360825202&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '黑色',
-            model: '2022款',
-            size: 'M',
-            num: '999',
-            bianma: 'xz1289088980234234',
-          },
-          {
-            img: 'https://img2.baidu.com/it/u=82239579,3679411218&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '黄色',
-            model: '2022款',
-            size: 'L',
-            num: '199',
-            bianma: 'xz1289088980234234',
-          },
-          {
-            img: 'https://img0.baidu.com/it/u=1895837640,2691329714&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '黑色',
-            model: '2022款',
-            size: 'XXL',
-            num: '99',
-            bianma: 'xz1289088980234234',
-          },
-          {
-            img: 'https://img1.baidu.com/it/u=2138195331,3860457921&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '黄色色',
-            model: '2021款',
-            size: 'S',
-            num: '10',
-            bianma: 'xz1289088980234234',
-          },
-          {
-            img: 'https://img2.baidu.com/it/u=4128009961,2011864989&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '白色',
-            model: '2022款',
-            size: 'XL',
-            num: '1000',
-            bianma: 'xz1289088980234234',
-          },
-          {
-            img: 'https://img1.baidu.com/it/u=3985309804,2360825202&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '黑色',
-            model: '2022款',
-            size: 'M',
-            num: '999',
-            bianma: 'xz1289088980234234',
-          },
-          {
-            img: 'https://img2.baidu.com/it/u=82239579,3679411218&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '黄色',
-            model: '2022款',
-            size: 'L',
-            num: '199',
-            bianma: 'xz1289088980234234',
-          },
-          {
-            img: 'https://img0.baidu.com/it/u=1895837640,2691329714&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            name: '请开启 JavaScript 功能来使用 CRMEB。',
-            color: '黑色',
-            model: '2022款',
-            size: 'XXL',
-            num: '99',
-            bianma: 'xz1289088980234234',
-          },
-        ],
+        list: [],
         listLoading: false,
         total: 0,
       }
     },
     watch: {
-      form: {
+      'form.sn': {
         handler: function () {
-          this.fetchData()
+          this.handlePrintList()
+        },
+        deep: true,
+      },
+      form: {
+        handler: function (newvlaue) {
+          if (
+            newvlaue.sizeid != null &&
+            newvlaue.colorid != null &&
+            newvlaue.sn != null
+          ) {
+            this.sizeNanme = this.sizeList.filter(
+              (item) => item.id == newvlaue.sizeid
+            )[0].name
+            this.colorNanme = this.colorList.filter(
+              (item) => item.id == newvlaue.colorid
+            )[0].name
+            this.handleGoodBarcode()
+          }
+        },
+        deep: true,
+      },
+      form1: {
+        handler: function () {
+          this.handleStockPrint()
         },
         deep: true,
       },
     },
-    created() {
-      this.fetchData()
-    },
+    created() {},
     methods: {
+      async handlePrintSn() {
+        if (this.form.keywords == '') {
+          this.$message.error('请输入商品编码')
+          return
+        }
+        const { data } = await getPrintSn({ keywords: this.form.keywords })
+        this.CommoditySn = data
+      },
+      async handlePrintList() {
+        this.form.sizeid = null
+        this.form.colorid = null
+        this.goodsInof = null
+        this.sizeList = []
+        this.colorList = []
+        const { data } = await getPrintList({ sn: this.form.sn })
+        this.colorList = data.color
+        this.sizeList = data.size
+      },
+      async handleGoodBarcode() {
+        const { data } = await getGoodBarcode({
+          sn: this.form.sn, //商品编码
+          colorid: this.form.colorid, //颜色id
+          sizeid: this.form.sizeid, //尺码id
+        })
+        this.goodsInof = data
+      },
+      async handleStockPrint() {
+        this.listLoading = true
+        const { data } = await getStockPrint(this.form1)
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
+      },
       ...mapActions({
         openSideBar: 'settings/openSideBar',
         foldSideBar: 'settings/foldSideBar',
@@ -471,7 +386,7 @@
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        this.form.page = data
+        this.form1.page = data
       },
       // 多选获取数据   公共部分
       selectBtnRows(data) {
@@ -480,18 +395,8 @@
 
       // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
-        this.form.pageSize = data
+        this.form1.pageSize = data
         console.log(data)
-      },
-      // 列表数据请求函数 公共部分
-      async fetchData() {
-        // this.listLoading = true
-        // const {
-        //   data: { list, total },
-        // } = await getWaveList(this.form)
-        // this.list = list
-        // this.total = total
-        // this.listLoading = false
       },
     },
   }

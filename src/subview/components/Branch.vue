@@ -73,5 +73,14 @@
         },
       }
     },
+    watch: {
+      list: {
+        handler: function (newval) {
+          this.option.series[0].data = newval
+        },
+        deep: true,
+        immediate: true,
+      },
+    },
   }
 </script>

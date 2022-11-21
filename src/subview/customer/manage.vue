@@ -35,19 +35,19 @@
             style="display: block"
           >
             <el-input
-              v-model="form.name"
+              v-model="form.keywords"
               class="input-with-select"
               placeholder="请输入"
             >
               <el-select
-                v-model="form.select"
+                v-model="form.search_type"
                 slot="prepend"
                 style="width: 100px"
               >
-                <el-option label="全部" value="0" />
-                <el-option label="手机号" value="1" />
-                <el-option label="用户昵称" value="2" />
-                <el-option label="客户昵称" value="3" />
+                <el-option label="手机号" value="mobile" />
+                <el-option label="用户昵称" value="nick_name" />
+                <el-option label="客户名称" value="name" />
+                <el-option label="客户账号" value="account" />
               </el-select>
             </el-input>
           </el-form-item>
@@ -75,6 +75,7 @@
             <el-cascader
               v-model="form.tag"
               :options="selectDataList.customer_tag"
+              :show-all-levels="false"
               style="width: 300px"
             />
           </el-form-item>
@@ -236,6 +237,17 @@
           page: 1,
           page_size: 10,
         },
+        form1: {
+          search_type: 'mobile', //搜索条件 mobile nick_name name account
+          keywords: null, //搜索内容
+          level: null, //等级id
+          type: null, //客户分类
+          source: null, //客户来源
+          tag: null, //标签id
+          create_time: [], //加入时间区间搜索
+          page: 1,
+          page_size: 10,
+        },
         listType: 1,
         formType: 1,
         list: [
@@ -257,7 +269,15 @@
     watch: {
       form: {
         //表单筛选条件变化实时刷新列表
-        handler: function () {
+        handler: function (newval) {
+          this.form1 = JSON.parse(JSON.stringify(newval))
+          if (newval.tag != undefined) {
+            if (newval.tag.length == 2) {
+              this.form1.tag = newval.tag[1]
+            } else {
+              this.form1.tag = null
+            }
+          }
           this.fetchData()
         },
         deep: true,
@@ -296,7 +316,7 @@
       },
       async fetchData() {
         this.listLoading = true
-        const { data } = await getCustomerList(this.form)
+        const { data } = await getCustomerList(this.form1)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
@@ -339,12 +359,10 @@
       },
       // 导出
       handleSelectionChange(val) {
-        console.log(111, val)
         this.exclList = val
       },
       handleDownload() {
         if (this.exclList.length) {
-          console.log(888, this.exclList)
           this.downloadLoading = true
           import('@/utils/excel').then((excel) => {
             const tHeader = [

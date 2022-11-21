@@ -1,8 +1,40 @@
 <template>
   <div style="background-color: #f6f8f9">
     <div style="padding: 20px; margin-bottom: 20px; background-color: white">
-      <p style="margin-top: 10px; font-size: 16px">今日概况</p>
-      <TextLabels :list="goodsStaList" />
+      <el-form
+        ref="form"
+        :inline="true"
+        label-width="80px"
+        :model="goodsForm"
+        style="display: flex; justify-content: space-between"
+        @submit.native.prevent
+      >
+        <span style="margin-top: 10px; font-size: 16px">今日概况</span>
+        <el-form-item
+          label="时间筛选:"
+          style="margin-right: 0; font-size: 12px"
+        >
+          <el-date-picker
+            v-model="goodsForm.time"
+            align="right"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+            range-separator="至"
+            start-placeholder="开始日期"
+            type="daterange"
+            unlink-panels
+          />
+          <el-button
+            native-type="submit"
+            size="small"
+            type="primary"
+            @click="handleDownload"
+          >
+            导出
+          </el-button>
+        </el-form-item>
+      </el-form>
+      <TextLabels :list="goodsStaList" :width="goodsWidth" />
       <vab-chart
         :init-options="initOptions"
         :option="option"
@@ -10,26 +42,27 @@
       />
     </div>
     <el-row>
-      <BoardText />
+      <BoardText :list="goosList" :list1="goosList1" />
     </el-row>
     <el-row :gutter="20">
       <el-col :lg="12" :md="24" :sm="24" :xl="12" :xs="24">
-        <ProductAnalysis />
+        <ProductAnalysis :list="branchList" />
       </el-col>
       <el-col :lg="12" :md="24" :sm="24" :xl="12" :xs="24">
-        <DeliveryWarning />
+        <DeliveryWarning :list="branchList1" />
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-  // import List from '@/subview/components/List'
+  import datajosn from '@/assets/assets_josn/datajosn'
   import VabChart from '@/extra/VabChart'
   import TextLabels from '@/subview/components/TextLabels'
   import BoardText from './componentscopy/BoardText'
   import ProductAnalysis from './componentscopy/ProductAnalysis'
   import DeliveryWarning from './componentscopy/DeliveryWarning'
+  import { getHomePageBoard } from '@/api/basic'
   export default {
     name: 'Board',
     components: {
@@ -39,129 +72,138 @@
       ProductAnalysis,
       DeliveryWarning,
     },
+    mixins: [datajosn],
     data() {
       return {
         listLoading: false,
         listType: 2,
-        goosList: [
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '12',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
+        goosList: [],
+        goosList1: [],
+        branchList: [],
+        branchList1: [
+          { value: 0, name: '今日发货订单数' },
+          { value: 0, name: '昨日发货订单数' },
+          { value: 0, name: '未发货订单数' },
         ],
-        goodsForm: {},
+        goodsForm: {
+          time: this.getPastTime(1),
+        },
+        goodsWidth: '16%',
+        dateList: [],
+        dataAllList: {
+          sale_num: [],
+          sale_total: [],
+          return_num: [],
+          return_total: [],
+          delivery_num: [],
+          delivery_total: [],
+        },
         goodsStaList: [
           {
             title: '销售金额',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+            name: 'sale_total',
           },
           {
             title: '销售件数',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+            name: 'sale_num',
           },
           {
             title: '发货金额',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+            name: 'delivery_total',
           },
           {
             title: '发货件数',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+            name: 'delivery_num',
           },
           {
             title: '退货金额',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
-            typeSta: true,
+            typeSta: false,
+            name: 'return_total',
+          },
+          {
+            title: '退货件数',
+            number: 200,
+            num: 0,
+            type: 1,
+            typeSta: false,
+            name: 'return_num',
           },
         ],
         initOptions: {
           renderer: 'svg',
         },
-        option: {
+        option: {},
+      }
+    },
+    watch: {
+      goodsForm: {
+        handler: function () {
+          this.branchList = []
+          this.dateList = []
+          this.dataAllList = {
+            sale_num: [],
+            sale_total: [],
+            return_num: [],
+            return_total: [],
+            delivery_num: [],
+            delivery_total: [],
+          }
+          this.fetchData()
+        },
+        deep: true,
+      },
+    },
+    created() {
+      this.fetchData()
+    },
+    methods: {
+      async fetchData() {
+        const { data } = await getHomePageBoard(this.goodsForm)
+        this.goodsStaList[0].num = data.list.sale_total
+        this.goodsStaList[1].num = data.list.sale_num
+        this.goodsStaList[2].num = data.list.delivery_total
+        this.goodsStaList[3].num = data.list.delivery_num
+        this.goodsStaList[4].num = data.list.return_total
+        this.goodsStaList[5].num = data.list.return_num
+        let arr = []
+        data.line_date.forEach((item) => {
+          for (let i in item) {
+            this.dateList.push(i)
+            arr.push(item[i])
+          }
+        })
+        arr.forEach((item) => {
+          for (let i in item) {
+            if (i != 'time_range' && this.dataAllList[i] !== undefined) {
+              if (item[i] == null) {
+                item[i] = 0
+                this.dataAllList[i].push(item[i])
+              } else {
+                this.dataAllList[i].push(item[i])
+              }
+            }
+          }
+        })
+        this.option = {
           tooltip: {
             trigger: 'axis', //触发类型；轴触发，axis则鼠标hover到一条柱状图显示全部数据，item则鼠标hover到折线点显示相应数据，
             axisPointer: {
@@ -169,7 +211,14 @@
             },
           },
           legend: {
-            data: ['今日', '昨日', '颜色', '上周'],
+            data: [
+              '销售金额',
+              '销售件数',
+              '发货金额',
+              '发货件数',
+              '退货金额',
+              '退货件数',
+            ],
           },
           grid: {
             left: '3%',
@@ -185,38 +234,7 @@
           xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: [
-              '09-11',
-              '09-12',
-              '09-13',
-              '09-14',
-              '09-15',
-              '09-16',
-              '09-17',
-              '09-18',
-              '09-19',
-              '09-20',
-              '09-21',
-              '09-22',
-              '09-23',
-              '09-24',
-              '09-25',
-              '09-26',
-              '09-27',
-              '09-28',
-              '09-29',
-              '09-30',
-              '10-01',
-              '10-02',
-              '10-03',
-              '10-04',
-              '10-05',
-              '10-06',
-              '10-07',
-              '10-08',
-              '10-09',
-              '10-10',
-            ],
+            data: this.dateList,
           },
           yAxis: [
             {
@@ -236,70 +254,101 @@
           ],
           series: [
             {
-              name: '今日',
+              name: '销售金额',
               type: 'line',
               stack: 'Total',
               smooth: true,
-              data: [
-                27, 49, 102, 669, 141, 507, 115, 71, 164, 155, 212, 358, 478,
-                468, 310, 194, 376, 231, 606, 731, 82, 495, 121, 124, 603, 254,
-                434, 2262, 786, 211,
-              ],
+              data: this.dataAllList.sale_total,
               yAxisIndex: 1,
               itemStyle: {
                 color: '#FFC833',
               },
             },
             {
-              name: '昨日',
+              name: '销售件数',
               type: 'line',
               stack: 'Total',
               smooth: true,
-              data: [
-                10, 15, 32, 34, 34, 33, 19, 19, 29, 36, 34, 45, 60, 51, 29, 40,
-                43, 45, 29, 41, 15, 21, 24, 24, 25, 18, 26, 39, 31, 21,
-              ],
+              data: this.dataAllList.sale_num,
               yAxisIndex: 1,
               itemStyle: {
                 color: '#FF6C87',
               },
             },
             {
-              name: '颜色',
+              name: '发货金额',
               type: 'line',
               stack: 'Total',
               smooth: true,
-              data: [
-                0, 10.09, 0, 4.43, 74.25, 157.1, 0, 0, 47.04, 0, 0, 1473.6, 0,
-                0, 0, 377.2, 0.11, 0.67, 0.11, 85.18, 0, 0.1, 0, 0, 0, 0, 0,
-                0.18, 0, 0,
-              ],
+              data: this.dataAllList.delivery_total,
               itemStyle: {
                 color: '#55DF7E',
               },
             },
             {
-              name: '上周',
+              name: '发货件数',
               type: 'line',
               stack: 'Total',
               smooth: true,
-              data: [
-                0, 0, 0, 0.02, 0, 0, 3798.02, 0, 0.01, 0, 7001, 1151.36, 0,
-                4494.1, 10079, 6131.7, 0, 0, 0, 59.1, 0, 10050.14, 0, 403, 299,
-                11696.1, 0, 2665, 0, 15242.36,
-              ],
+              data: this.dataAllList.delivery_num,
+              itemStyle: {
+                color: '#1890FF',
+              },
+            },
+            {
+              name: '退货金额',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
+              data: this.dataAllList.return_total,
+              itemStyle: {
+                color: '#55DF7E',
+              },
+            },
+            {
+              name: '退货件数',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
+              data: this.dataAllList.return_num,
               itemStyle: {
                 color: '#1890FF',
               },
             },
           ],
-        },
-      }
-    },
-    created() {},
-    methods: {
-      // 详情抽屉
-      handleDetail() {},
+        }
+        this.goosList = data.list.goods_ranch.data
+        this.goosList1 = data.list.customer_ranch.data
+        data.list.source.forEach((item) => {
+          this.branchList.push({
+            value: item.sale_num,
+            name: item.name,
+            sale_price: item.sale_price,
+            all_total: item.all_total,
+            all_sum: item.all_sum,
+          })
+        })
+        this.branchList1[0].value = data.list.today_shipped_num
+        this.branchList1[1].value = data.list.yesterday_shipped_num
+        this.branchList1[2].value = data.list.unshipped_num.sum
+      },
+      handleDownload() {
+        this.downloadLoading = true
+        import('@/utils/excel').then((excel) => {
+          const tHeader = ['名称', '数量']
+          const filterVal = ['title', 'num']
+          const list = this.goodsStaList
+          const data = this.formatJson(filterVal, list)
+          excel.export_json_to_excel({
+            header: tHeader,
+            data,
+            filename: this.filename,
+          })
+        })
+      },
+      formatJson(filterVal, jsonData) {
+        return jsonData.map((v) => filterVal.map((j) => v[j]))
+      },
     },
   }
 </script>

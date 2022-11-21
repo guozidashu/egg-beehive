@@ -30,14 +30,21 @@
           </el-form-item>
           <el-form-item>
             <el-form-item label="客户渠道:">
-              <el-select v-model="goodsForm.region">
-                <el-option label="渠道1" value="shanghai" />
-                <el-option label="渠道2" value="shanghai" />
+              <el-select v-model="goodsForm.source">
+                <el-option
+                  v-for="item in SelectData"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
               </el-select>
             </el-form-item>
-            <el-form-item label="时间筛选:">
+            <el-form-item
+              label="时间筛选:"
+              style="margin-right: 0; font-size: 12px"
+            >
               <el-date-picker
-                v-model="goodsForm.date"
+                v-model="goodsForm.time"
                 align="right"
                 end-placeholder="结束日期"
                 :picker-options="pickerOptions"
@@ -46,14 +53,6 @@
                 type="daterange"
                 unlink-panels
               />
-              <el-button
-                native-type="submit"
-                size="small"
-                style="margin: 0 20px"
-                type="primary"
-              >
-                查询
-              </el-button>
               <el-button
                 native-type="submit"
                 size="small"
@@ -107,120 +106,56 @@
 <script>
   import Branch from '@/subview/components/Branch'
   import TextTags from './components/TextTags'
+  import datajosn from '@/assets/assets_josn/datajosn'
   import SalesChart from './components/SalesChart'
+  import { getCommonAllList, getCountList } from '@/api/basic'
   export default {
     name: 'CustomerStatistical',
     components: { TextTags, Branch, SalesChart },
+    mixins: [datajosn],
     data() {
       return {
         goodsForm: {
-          region: '',
-          date: '',
+          source: '',
+          time: this.getPastTime(1),
         },
-        pickerOptions: {
-          cellClassName: (time) => {
-            if (
-              new Date().getDate() === time.getDate() &&
-              new Date().getMonth() === time.getMonth() &&
-              new Date().getFullYear() === time.getFullYear()
-            ) {
-              return 'dateArrClass' // 返回值设置的是我们添加的类名
-            }
-          },
-          shortcuts: [
-            {
-              text: '今天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '昨天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 1
-                end.setTime(start)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近7天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 7
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '最近30天',
-              onClick(picker) {
-                const end = new Date()
-                const start = new Date().getTime() - 3600 * 1000 * 24 * 30
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本月',
-              onClick(picker) {
-                const end = new Date()
-                const start =
-                  new Date().getTime() -
-                  3600 * 1000 * 24 * (new Date().getDate() - 1)
-                picker.$emit('pick', [start, end])
-              },
-            },
-            {
-              text: '本年',
-              onClick(picker) {
-                const start = new Date(new Date().getFullYear(), 0, 1)
-                const end = new Date()
-                picker.$emit('pick', [start, end])
-              },
-            },
-          ],
-        },
+        SelectData: [],
         textTagList: [
           {
             title: '累计客户数',
             number: 200,
-            num: 94.32,
+            num: 0,
             type: 1,
             pay: 234,
             money: 3000,
-          },
-          {
-            title: '新增余额',
-            number: 200,
-            num: 94.32,
-            type: 1,
-            pay: 234,
-            money: 1000,
+            name: 'add_customer',
           },
           {
             title: '成交客户',
-            number: 400,
-            num: 34.32,
-            type: 2,
+            number: 200,
+            num: 0,
+            type: 1,
             pay: 234,
-            money: 2000,
+            money: 1000,
+            name: 'turnover_customer',
           },
           {
             title: '客单价',
             number: 400,
-            num: 34.32,
+            num: 0,
             type: 2,
             pay: 234,
             money: 2000,
+            name: 'price_one',
           },
           {
-            title: '成交客户',
+            title: '平均客单额',
             number: 400,
-            num: 34.32,
+            num: 0,
             type: 2,
             pay: 234,
             money: 2000,
+            name: 'svg_price',
           },
         ],
         branchTitle: '会员等级比例',
@@ -231,13 +166,7 @@
           legendy: 450,
           center: ['50%', '50%'],
         },
-        branchList: [
-          { value: 1048, name: '普通会员' },
-          { value: 735, name: '黄金会员' },
-          { value: 580, name: '钻石会员' },
-          { value: 484, name: '白金会员' },
-          { value: 300, name: '黑钻svp' },
-        ],
+        branchList: [],
         branchTitle1: '客户来源渠道',
         styleObj1: {
           width: '800px',
@@ -246,27 +175,137 @@
           legendy: 450,
           center: ['60%', '50%'],
         },
-        branchList1: [
-          { value: 1048, name: '微信' },
-          { value: 735, name: '支付宝' },
-          { value: 580, name: '快手' },
-          { value: 484, name: '抖音' },
-          { value: 300, name: '浏览器' },
-        ],
+        branchList1: [],
+        dateList: [],
+        dataAllList: {
+          add_customer: [],
+          sum_final_amount: [],
+        },
         dataObj: {
           title: '新增客户趋势',
-          name: '新增客户',
-          color: '#55DF7E',
+          height: '300px',
+          legend: {
+            data: ['新增客户'],
+          },
+          color: ['#409eff'],
+          xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: [],
+          },
+          series: [
+            {
+              name: '新增客户',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
+              data: [],
+              yAxisIndex: 1,
+              itemStyle: {
+                color: '#FFC833',
+              },
+            },
+          ],
         },
         dataObj1: {
           title: '客户消费趋势',
-          name: '客户消费',
-          color: '#1890FF',
+          height: '300px',
+          legend: {
+            data: ['客户消费'],
+          },
+          color: ['#409eff'],
+          xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: [],
+          },
+          series: [
+            {
+              name: '客户消费',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
+              data: [],
+              yAxisIndex: 1,
+              itemStyle: {
+                color: '#FFC833',
+              },
+            },
+          ],
         },
       }
     },
-    created() {},
+    watch: {
+      goodsForm: {
+        handler: function () {
+          this.branchList = []
+          this.branchList1 = []
+          this.dateList = []
+          this.dataAllList = {
+            add_customer: [],
+            sum_final_amount: [],
+          }
+          this.fetchData()
+        },
+        deep: true,
+      },
+    },
+    created() {
+      this.getSelectData()
+      this.fetchData()
+    },
     methods: {
+      async getSelectData() {
+        const { data } = await getCommonAllList({ type: 'customer_source' })
+        this.SelectData = data.customer_source
+      },
+      async fetchData() {
+        const { data } = await getCountList(this.goodsForm)
+        console.log(8989898, data)
+        this.textTagList.forEach((item) => {
+          for (let i in data.list) {
+            if (item.name == i) {
+              if (data.list[i] == null) {
+                data.list[i] = 0
+                item.num = data.list[i]
+              } else {
+                item.num = data.list[i]
+              }
+            }
+          }
+        })
+        data.list.grades.forEach((item) => {
+          this.branchList.push({ value: item.customer_count, name: item.name })
+        })
+        data.list.sources.forEach((item) => {
+          this.branchList1.push({ value: item.customer_count, name: item.name })
+        })
+        let arr = []
+        data.line_date.forEach((item) => {
+          for (let i in item) {
+            this.dateList.push(i)
+            arr.push(item[i])
+          }
+        })
+        arr.forEach((item) => {
+          for (let i in item) {
+            if (i != 'time_range' && this.dataAllList[i] !== undefined) {
+              if (item[i] == null) {
+                item[i] = 0
+                this.dataAllList[i].push(item[i])
+              } else {
+                this.dataAllList[i].push(item[i])
+              }
+            }
+          }
+        })
+        this.dataObj.xAxis.data = this.dateList
+        this.dataObj.series[0].data = this.dataAllList.add_customer
+        this.dataObj1.xAxis.data = this.dateList
+        this.dataObj1.series[0].data = this.dataAllList.sum_final_amount
+        // 强制刷新
+        this.$forceUpdate()
+      },
       // 详情抽屉
       handleDetail() {},
       // 导出

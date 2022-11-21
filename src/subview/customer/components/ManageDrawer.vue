@@ -323,7 +323,7 @@
                 />
               </el-form-item>
               <el-form-item class="item" label="客户来源：">
-                <el-select v-model="form.customer_source" placeholder="请选择">
+                <el-select v-model="form.source" placeholder="请选择">
                   <el-option
                     v-for="(item, index) in selectData.customer_source"
                     :key="index"
@@ -412,6 +412,73 @@
         <el-table-column label="标题" prop="title" show-overflow-tooltip />
         <el-table-column label="金额" prop="discount" show-overflow-tooltip />
         <el-table-column label="创建时间" prop="ctime" show-overflow-tooltip />
+      </template>
+    </List>
+    <List
+      v-if="tabLabel == '持有优惠券'"
+      :list="orderList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column
+          label="优惠券名称"
+          prop="couponname"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          label="优惠券金额"
+          prop="money"
+          show-overflow-tooltip
+        />
+        <el-table-column label="到期时间" prop="endtime" show-overflow-tooltip>
+          <template #default="{ row }">
+            <span>{{ row.endtime | formatTime }}</span>
+          </template>
+        </el-table-column>
+      </template>
+    </List>
+    <List
+      v-if="tabLabel == '积分明细'"
+      :list="orderList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column label="ID" prop="mid" show-overflow-tooltip />
+        <el-table-column label="备注" prop="remark" show-overflow-tooltip />
+        <el-table-column
+          label="创建时间"
+          prop="createtime"
+          show-overflow-tooltip
+        >
+          <template #default="{ row }">
+            <span>{{ row.createtime | formatTime }}</span>
+          </template>
+        </el-table-column>
+      </template>
+    </List>
+    <List
+      v-if="tabLabel == '签到记录'"
+      :list="orderList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column label="ID" prop="mid" show-overflow-tooltip />
+        <el-table-column label="备注" prop="remark" show-overflow-tooltip />
+        <el-table-column
+          label="创建时间"
+          prop="createtime"
+          show-overflow-tooltip
+        >
+          <template #default="{ row }">
+            <span>{{ row.createtime | formatTime }}</span>
+          </template>
+        </el-table-column>
       </template>
     </List>
     <List
@@ -569,7 +636,6 @@
             this.form.city,
             this.form.district,
           ]
-          console.log(2222, newVal)
         },
         deep: true,
         immediate: true,
@@ -580,14 +646,19 @@
     },
     methods: {
       async changeTypeBtn(e) {
-        console.log(89898989, e)
         if (e != 1) {
           this.form.drawerType = e
           this.$forceUpdate()
           return
         } else {
-          console.log(1111, this.form)
           this.form.drawerType = e
+        }
+        if (this.form.tag != undefined) {
+          if (this.form.tag.length == 2) {
+            this.form.tag = this.form.tag[1]
+          } else {
+            this.form.tag = null
+          }
         }
         if (this.form.id == undefined) {
           this.form.id = 0
@@ -632,7 +703,8 @@
         }
         const { data } = await getCustomerInfoList({
           type: tab.name, //搜索条件 1订单记录 2入库信息 3退货记录 4付款记录 5对账单记录
-          id: this.drawerInof.id, //物料采购订单id
+          // id: this.drawerInof.id, //物料采购订单id
+          id: '49',
         })
         this.orderList = data.data
         this.listLoading = false

@@ -17,7 +17,7 @@
       >
         <span style="margin-top: 10px; font-size: 16px">财务分析</span>
         <el-form-item style="margin-right: 0; font-size: 12px">
-          <el-form-item label="会计科目：">
+          <!-- <el-form-item label="会计科目：">
             <el-select v-model="goodsForm.level" placeholder="请选择">
               <el-option
                 v-for="(item, index) in AccountList"
@@ -36,10 +36,10 @@
                 :value="item.id"
               />
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="时间筛选:">
             <el-date-picker
-              v-model="goodsForm.date"
+              v-model="goodsForm.time"
               align="right"
               end-placeholder="结束日期"
               :picker-options="pickerOptions"
@@ -74,16 +74,68 @@
     </div>
 
     <div style="padding: 20px; background-color: white">
-      <div
-        style="
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
-          padding: 0 200px;
-        "
-      >
-        <Branch :list="branchList" :style-chart="styleObj" />
-        <Branch :list="branchList1" :style-chart="styleObj" />
+      <div>
+        <el-form
+          ref="form"
+          :inline="true"
+          label-width="80px"
+          :model="goodsForm1"
+          style="display: flex; justify-content: space-between"
+          @submit.native.prevent
+        >
+          <span style="margin-top: 10px; font-size: 16px">财务分析</span>
+          <el-form-item style="margin-right: 0; font-size: 12px">
+            <el-form-item label="会计科目：">
+              <el-select v-model="goodsForm1.account_id" placeholder="请选择">
+                <el-option
+                  v-for="(item, index) in AccountList"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="收支类型：">
+              <el-select v-model="goodsForm1.category_id" placeholder="请选择">
+                <el-option
+                  v-for="(item, index) in CategoryList"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="时间筛选:">
+              <el-date-picker
+                v-model="goodsForm1.time"
+                align="right"
+                end-placeholder="结束日期"
+                :picker-options="pickerOptions"
+                range-separator="至"
+                start-placeholder="开始日期"
+                type="daterange"
+                unlink-panels
+              />
+              <el-button
+                native-type="submit"
+                size="small"
+                style="margin: 0 0 0 20px"
+                type="primary"
+                @click="handleDownload"
+              >
+                导出
+              </el-button>
+            </el-form-item>
+          </el-form-item>
+        </el-form>
+        <div style="display: flex; justify-content: space-between">
+          <SalesChart
+            :data="dataObj"
+            style="width: 50%; margin-right: 20px; background-color: white"
+          />
+          <Branch :list="branchList" :style-chart="styleObj" />
+          <Branch :list="branchList1" :style-chart="styleObj" />
+        </div>
       </div>
     </div>
   </div>
@@ -93,16 +145,17 @@
   import VabChart from '@/extra/VabChart'
   import Branch from '@/subview/components/Branch'
   import TextLabels from '@/subview/components/TextLabels'
+  import SalesChart from './components/SalesChart'
   import datajosn from '@/assets/assets_josn/datajosn'
   import {
-    getOrderCountList,
-    getStockCircular,
+    getFinanceListd,
     getAccountList,
     getCategoryList,
+    getFinanceCostCount,
   } from '@/api/basic'
   export default {
     name: 'GoodsStatistical',
-    components: { VabChart, TextLabels, Branch },
+    components: { VabChart, TextLabels, Branch, SalesChart },
     mixins: [datajosn],
     data() {
       return {
@@ -113,11 +166,52 @@
           legendy: 350,
           center: ['50%', '50%'],
         },
-        branchList: [],
-        branchList1: [],
         AccountList: [],
+        CategoryList: [],
         goodsForm: {
-          date: this.getPastTime(1),
+          time: this.getPastTime(1),
+        },
+        goodsForm1: {
+          account_id: '', //会计科目id
+          category_id: '', //收支类型id
+          time: this.getPastTime(1),
+        },
+        dataObj: {
+          title: '费用单统计',
+          height: '300px',
+          legend: {
+            data: ['费用单数量', '费用单金额'],
+          },
+          color: ['#409eff'],
+          xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: [],
+          },
+          series: [
+            {
+              name: '费用单数量',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
+              data: [],
+              yAxisIndex: 1,
+              itemStyle: {
+                color: '#FFC833',
+              },
+            },
+            {
+              name: '费用单金额',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
+              data: [],
+              yAxisIndex: 1,
+              itemStyle: {
+                color: '#FFC833',
+              },
+            },
+          ],
         },
         goodsWidth: '25%',
         goodsStaList: [
@@ -127,7 +221,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'order_num',
+            name: 'receipts_num',
           },
           {
             title: '客户收款金额',
@@ -135,7 +229,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_list_num',
+            name: 'receipts_total',
           },
           {
             title: '供应商付款数',
@@ -143,7 +237,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_list_total',
+            name: 'supplier_receipts_num',
           },
           {
             title: '供应商付款金额',
@@ -151,15 +245,22 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'return_list_num',
+            name: 'supplier_receipts_total',
           },
         ],
+        branchList: [],
+        branchList1: [],
         dateList: [],
+        dateList1: [],
         dataAllList: {
-          sale_list_num: [],
-          sale_list_total: [],
-          return_list_num: [],
-          return_list_total: [],
+          receipts_total: [],
+          receipts_num: [],
+          supplier_receipts_total: [],
+          supplier_receipts_num: [],
+        },
+        dataAllList1: {
+          count_num: [],
+          sum_total: [],
         },
         initOptions: {
           renderer: 'svg',
@@ -172,12 +273,27 @@
         handler: function () {
           this.dateList = []
           this.dataAllList = {
-            sale_list_num: [],
-            sale_list_total: [],
-            return_list_num: [],
-            return_list_total: [],
+            receipts_total: [],
+            receipts_num: [],
+            supplier_receipts_total: [],
+            supplier_receipts_num: [],
+            count_num: [],
+            sum_total: [],
           }
           this.fetchData()
+        },
+        deep: true,
+      },
+      goodsForm1: {
+        handler: function () {
+          this.branchList = []
+          this.branchList1 = []
+          this.dateList1 = []
+          this.dataAllList1 = {
+            count_num: [],
+            sum_total: [],
+          }
+          this.getCircular()
         },
         deep: true,
       },
@@ -186,9 +302,8 @@
       this.getTypeCategory()
       this.getTypeAccount()
       this.fetchData()
-      // this.getCircular()
+      this.getCircular()
     },
-
     methods: {
       async getTypeAccount() {
         const { data } = await getAccountList({
@@ -199,12 +314,6 @@
           name: '', // 科目名称
         })
         this.AccountList = data.data
-        data.data.forEach((item) => {
-          this.branchList.push({
-            value: item.id,
-            name: item.name,
-          })
-        })
       },
       async getTypeCategory() {
         const { data } = await getCategoryList({
@@ -215,33 +324,48 @@
           name: '', // 科目名称
         })
         this.CategoryList = data.data
-        data.data.forEach((item) => {
+      },
+      async getCircular() {
+        const { data } = await getFinanceCostCount(this.goodsForm1)
+        console.log(data)
+        let arr = []
+        data.line_date.forEach((item) => {
+          for (let i in item) {
+            this.dateList1.push(i)
+            arr.push(item[i])
+          }
+        })
+        arr.forEach((item) => {
+          for (let i in item) {
+            if (i != 'time_range' && this.dataAllList1[i] !== undefined) {
+              if (item[i] == null) {
+                item[i] = 0
+                this.dataAllList1[i].push(item[i])
+              } else {
+                this.dataAllList1[i].push(item[i])
+              }
+            }
+          }
+        })
+        this.dataObj.xAxis.data = this.dateList1
+        this.dataObj.series[0].data = this.dataAllList1.count_num
+        this.dataObj.series[1].data = this.dataAllList1.sum_total
+        console.log(787989, this.dataObj)
+        data.list.accounts.forEach((item) => {
+          this.branchList.push({
+            value: item.num,
+            name: item.name,
+          })
+        })
+        data.list.categorys.forEach((item) => {
           this.branchList1.push({
-            value: item.id,
+            value: item.num,
             name: item.name,
           })
         })
       },
-      async getCircular() {
-        const { data } = await getStockCircular()
-        console.log(data)
-        data.category_stock_data.forEach((item) => {
-          this.branchList.push({
-            value: item.category_stock_num,
-            name: item.category_name,
-          })
-        })
-        data.year_stock_data.forEach((item) => {
-          this.branchList1.push({
-            value: item.year_stock_num,
-            name: item.year_name,
-          })
-        })
-      },
       async fetchData() {
-        const { data } = await getOrderCountList({
-          time: this.goodsForm.date,
-        })
+        const { data } = await getFinanceListd(this.goodsForm)
         this.goodsStaList.forEach((item) => {
           for (let i in data.list) {
             if (item.name == i) {
@@ -255,7 +379,7 @@
           }
         })
         let arr = []
-        data.line_data.forEach((item) => {
+        data.line_date.forEach((item) => {
           for (let i in item) {
             this.dateList.push(i)
             arr.push(item[i])
@@ -326,7 +450,7 @@
               type: 'line',
               stack: 'Total',
               smooth: true,
-              data: this.dataAllList.sale_list_num,
+              data: this.dataAllList.receipts_total,
               yAxisIndex: 1,
               itemStyle: {
                 color: '#FFC833',
@@ -338,7 +462,7 @@
               type: 'line',
               stack: 'Total',
               smooth: true,
-              data: this.dataAllList.sale_list_total,
+              data: this.dataAllList.receipts_num,
               yAxisIndex: 1,
               itemStyle: {
                 color: '#FF6C87',
@@ -349,7 +473,7 @@
               type: 'line',
               stack: 'Total',
               smooth: true,
-              data: this.dataAllList.return_list_num,
+              data: this.dataAllList.supplier_receipts_total,
               itemStyle: {
                 color: '#55DF7E',
               },
@@ -359,7 +483,7 @@
               type: 'line',
               stack: 'Total',
               smooth: true,
-              data: this.dataAllList.return_list_total,
+              data: this.dataAllList.supplier_receipts_num,
               itemStyle: {
                 color: '#1890FF',
               },

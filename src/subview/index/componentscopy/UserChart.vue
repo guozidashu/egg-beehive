@@ -12,6 +12,12 @@
   import Branch from '@/subview/components/Branch'
   export default {
     components: { Branch },
+    props: {
+      data: {
+        type: Array,
+        default: () => [],
+      },
+    },
     data() {
       return {
         styleObj: {
@@ -21,12 +27,7 @@
           legendy: 200,
           center: ['50%', '40%'],
         },
-        branchList: [
-          { value: 1048, name: '未消费客户' },
-          { value: 735, name: '消费一次客户' },
-          { value: 580, name: '消费10次客户' },
-          { value: 484, name: '消费20次客户' },
-        ],
+        branchList: this.data,
       }
     },
     beforeDestroy() {},

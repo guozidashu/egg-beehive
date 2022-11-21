@@ -16,7 +16,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <div v-if="formInline.designer_id">
+    <div>
       <div style="padding: 30px 35px 25px">
         <div style="display: flex">
           <div style="display: flex; flex: 1; flex-direction: column">
@@ -163,7 +163,9 @@
         deep: true,
       },
     },
-    created() {},
+    created() {
+      this.getDetail()
+    },
     methods: {
       async getDetail() {
         const { data } = await getPlanDetails({

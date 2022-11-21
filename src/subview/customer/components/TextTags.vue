@@ -1,12 +1,12 @@
 <template>
   <div>
     <el-row :gutter="20" style="display: flex">
-      <el-col v-for="(item, index) in list" :key="index" style="width: 20%">
+      <el-col v-for="(item, index) in list" :key="index" style="width: 25%">
         <el-card class="access" shadow="hover">
           <template #header>
             <vab-icon icon="line-chart-line" />
             {{ item.title }}
-            <el-tag
+            <!-- <el-tag
               v-if="item.type === 1"
               class="card-header-tag"
               style="float: right"
@@ -21,7 +21,7 @@
               type="success"
             >
               今日
-            </el-tag>
+            </el-tag> -->
           </template>
           <div>
             <p
@@ -33,7 +33,7 @@
             >
               {{ item.num }}
             </p>
-            <p>
+            <!-- <p>
               较昨日
               <span v-if="item.type === 1" style="color: #f5222d">
                 {{ item.pay }}
@@ -49,12 +49,12 @@
                 {{ item.number }}%
                 <vab-icon icon="arrow-drop-down-fill" />
               </i>
-            </p>
+            </p> -->
           </div>
           <div class="bottom">
             <span>
-              本月销售额
-              <el-tag
+              <!-- 本月销售额 -->
+              <!-- <el-tag
                 v-if="item.type === 1"
                 class="card-footer-tag"
                 style="float: right"
@@ -69,7 +69,7 @@
                 type="success"
               >
                 {{ item.money }}
-              </el-tag>
+              </el-tag> -->
             </span>
           </div>
         </el-card>

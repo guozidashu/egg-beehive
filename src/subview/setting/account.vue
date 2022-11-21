@@ -9,89 +9,80 @@
         <div slot="header">
           <span>公司信息</span>
         </div>
-        <p style="padding-left: 20px">公司名：{{ inof.name1 }}</p>
+        <!-- <p style="padding-left: 20px">公司名：{{ inof.name1 }}</p>
         <p style="padding-left: 20px">会员类型：{{ inof.type1 }}</p>
         <p style="padding-left: 20px">绑定手机：{{ inof.phone1 }}</p>
-        <p style="padding-left: 20px">绑定邮箱：{{ inof.email }}</p>
-        <el-divider />
+        <p style="padding-left: 20px">绑定邮箱：{{ inof.email }}</p> -->
+        <!-- <el-divider /> -->
         <el-form
           ref="form"
-          label-width="80px"
+          label-width="120px"
           :model="inof"
           style="width: 100%; min-height: 500px; padding-left: 20px"
         >
           <div v-if="state">
-            <el-form-item label="开票信息：" style="height: 33px">
-              {{ inof.kaipiao }}
+            <el-form-item label="商户名称：" style="height: 33px">
+              {{ inof.name }}
               <vab-icon
                 icon="ball-pen-line"
                 style="float: right"
                 @click="editForm"
               />
             </el-form-item>
-            <el-form-item label="企业名称：" style="height: 33px">
-              {{ inof.name }}
+            <el-form-item label="商户联系方式：" style="height: 33px">
+              {{ inof.tel }}
             </el-form-item>
-            <el-form-item label="公司税号：" style="height: 33px">
-              {{ inof.shuihao }}
-            </el-form-item>
-            <el-form-item label="注册地址：" style="height: 33px">
+            <el-form-item label="商户地址：" style="height: 33px">
               {{ inof.address }}
             </el-form-item>
-            <el-form-item label="联系电话：" style="height: 33px">
-              {{ inof.phone }}
+            <el-form-item label="邮箱：" style="height: 33px">
+              {{ inof.email }}
             </el-form-item>
-            <el-form-item label="开户银行：" style="height: 33px">
-              {{ inof.yinhang }}
+            <el-form-item label="税号：" style="height: 33px">
+              {{ inof.invoice }}
+            </el-form-item>
+            <el-form-item label="开户行：" style="height: 33px">
+              {{ inof.bank }}
             </el-form-item>
             <el-form-item label="银行账户：" style="height: 33px">
-              {{ inof.zhanghu }}
+              {{ inof.bank_card }}
             </el-form-item>
-            <el-form-item label="电子邮箱：" style="height: 33px">
-              {{ inof.youxiang }}
-            </el-form-item>
-            <el-form-item label="发票类型：" style="height: 33px">
-              {{ inof.type }}
+            <el-form-item label="银行开户名：" style="height: 33px">
+              {{ inof.bank_name }}
             </el-form-item>
           </div>
           <div v-else style="width: 100%">
-            <el-form-item label="开票信息：">
-              <el-input v-model="inof.kaipiao" style="width: 70%" />
+            <el-form-item label="商户名称：">
+              <el-input v-model="inof.name" style="width: 70%" />
               <vab-icon
                 icon="ball-pen-line"
                 style="float: right"
                 @click="editForm"
               />
             </el-form-item>
-            <el-form-item label="企业名称：">
-              <el-input v-model="inof.name" style="width: 70%" />
+            <el-form-item label="商户联系方式：">
+              <el-input v-model="inof.tel" style="width: 70%" />
             </el-form-item>
-            <el-form-item label="公司税号：">
-              <el-input v-model="inof.shuihao" style="width: 70%" />
-            </el-form-item>
-            <el-form-item label="注册地址：">
+            <el-form-item label="商户地址：">
               <el-input v-model="inof.address" style="width: 70%" />
             </el-form-item>
-            <el-form-item label="联系电话：">
-              <el-input v-model="inof.phone" style="width: 70%" />
+            <el-form-item label="邮箱：">
+              <el-input v-model="inof.email" style="width: 70%" />
             </el-form-item>
-            <el-form-item label="开户银行：">
-              <el-input v-model="inof.yinhang" style="width: 70%" />
+            <el-form-item label="税号：">
+              <el-input v-model="inof.invoice" style="width: 70%" />
+            </el-form-item>
+            <el-form-item label="开户行：">
+              <el-input v-model="inof.bank" style="width: 70%" />
             </el-form-item>
             <el-form-item label="银行账户：">
-              <el-input v-model="inof.zhanghu" style="width: 70%" />
+              <el-input v-model="inof.bank_card" style="width: 70%" />
             </el-form-item>
-            <el-form-item label="电子邮箱：">
-              <el-input v-model="inof.youxiang" style="width: 70%" />
+            <el-form-item label="银行开户名：">
+              <el-input v-model="inof.bank_name" style="width: 70%" />
             </el-form-item>
-            <el-form-item label="发票类型：">
-              <el-select v-model="inof.type">
-                <el-option label="电子发票" :value="'电子发票'" />
-                <el-option label="纸质发票" :value="'纸质发票'" />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="发票类型：">
-              <el-button type="primary">保存</el-button>
+            <el-form-item>
+              <el-button type="primary" @click="subSave">保存</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -106,7 +97,7 @@
           :model="inof"
           style="width: 100%; padding-left: 20px"
         >
-          <el-form-item v-for="(item, index) in goodsList" :key="index">
+          <!-- <el-form-item v-for="(item, index) in goodsList" :key="index">
             <el-checkbox v-model="item.checked" disabled>
               <span style="color: #606266">{{ item.name }}</span>
               <span v-if="item.checked">
@@ -129,10 +120,58 @@
               </span>
               <el-button v-else type="primary">购买</el-button>
             </el-checkbox>
-          </el-form-item>
+          </el-form-item> -->
+          <div style="margin: 20px 0">
+            <el-checkbox v-model="erp_openChecked" disabled>
+              <span style="color: #606266">ERP权限</span>
+              <span>
+                <span style="margin-right: 10px; color: #606266">
+                  服务开通时间： {{ inof.erp_starttime | formatTime }}
+                </span>
+                <span style="margin-right: 10px; color: #606266">
+                  服务到期时间： {{ inof.erp_starttime | formatTime }}
+                </span>
+                <span style="color: #606266">
+                  可使用账号数量： {{ inof.erp_num }}
+                </span>
+              </span>
+            </el-checkbox>
+          </div>
+          <div style="margin: 20px 0">
+            <el-checkbox v-model="design_openChecked" disabled>
+              <span style="color: #606266">研发模块</span>
+              <span>
+                <span style="margin-right: 10px; color: #606266">
+                  服务开通时间： {{ inof.design_starttime | formatTime }}
+                </span>
+                <span style="margin-right: 10px; color: #606266">
+                  服务到期时间： {{ inof.design_endtime | formatTime }}
+                </span>
+                <span style="color: #606266">
+                  研发允许账号数量： {{ inof.design_num }}
+                </span>
+              </span>
+            </el-checkbox>
+          </div>
+          <div style="margin: 20px 0">
+            <el-checkbox v-model="platform_openChecked" disabled>
+              <span style="color: #606266">中台服务</span>
+              <span>
+                <span style="margin-right: 10px; color: #606266">
+                  服务开通时间： {{ inof.platform_starttime | formatTime }}
+                </span>
+                <span style="margin-right: 10px; color: #606266">
+                  服务到期时间： {{ inof.platform_endtime | formatTime }}
+                </span>
+                <span style="color: #606266">
+                  中台允许最大账号数量： {{ inof.platform_num }}
+                </span>
+              </span>
+            </el-checkbox>
+          </div>
         </el-form>
-        <el-divider />
-        <AccountProgress :list="progressList" />
+        <!-- <el-divider />
+        <AccountProgress :list="progressList" /> -->
       </el-card>
     </div>
 
@@ -172,8 +211,8 @@
           <span>企业VIP专属客服</span>
         </div>
         <el-card
-          v-for="o in 3"
-          :key="o"
+          v-for="(item, index) in serviceList"
+          :key="index"
           :body-style="{ padding: '10px' }"
           shadow="hover"
           style="border-radius: 6px"
@@ -181,14 +220,15 @@
           <div style="display: flex">
             <img class="customer-img" :src="avatar" />
             <div>
-              <p>楚芝馨（售后）</p>
-              <p>
+              <p>{{ item.name }}</p>
+              <p>{{ item.remark }}</p>
+              <!-- <p>
                 Tel：15236804776 微信
                 <el-tooltip placement="top">
                   <img slot="content" :src="avatar" style="margin: 10px" />
                   <span style="color: #1890ff">点击查看</span>
                 </el-tooltip>
-              </p>
+              </p> -->
             </div>
           </div>
         </el-card>
@@ -199,105 +239,95 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import AccountProgress from './components/AccountProgress'
+  // import AccountProgress from './components/AccountProgress'
+  import { getAccountDetail, editAdminAccountSave } from '@/api/basic'
   export default {
     name: 'Account',
-    components: { AccountProgress },
+    // components: { AccountProgress },
     data() {
       return {
+        erp_openChecked: true,
+        design_openChecked: true,
+        platform_openChecked: true,
         state: false,
-        goodsList: [
-          {
-            name: 'ERP开单系统：',
-            time: '2023年10月26号',
-            checked: true,
-            list: ['买一年送三个月', '买两年送一年'],
-          },
-          {
-            name: '设计师打版系统：',
-            time: '2023年10月26号',
-            checked: true,
-            list: ['买一年送三个月', '买两年送一年'],
-          },
-          {
-            name: '生产成本控制系统：',
-            time: '2023年10月26号',
-            checked: true,
-            list: ['买一年送三个月', '买两年送一年'],
-          },
-          {
-            name: '研发进度中台系统：',
-            time: '2023年10月26号',
-            checked: false,
-            list: ['买一年送三个月', '买两年送一年'],
-          },
-          {
-            name: '数据中台（标准版）：',
-            time: '2023年10月26号',
-            checked: false,
-            list: ['买一年送三个月', '买两年送一年'],
-          },
-          {
-            name: '数据中台（企业版）：',
-            time: '2023年10月26号',
-            checked: false,
-            list: ['买一年送三个月', '买两年送一年'],
-          },
-        ],
+        serviceList: [],
+        // goodsList: [
+        //   {
+        //     name: 'ERP开单系统：',
+        //     time: '2023年10月26号',
+        //     checked: true,
+        //     list: ['买一年送三个月', '买两年送一年'],
+        //   },
+        //   {
+        //     name: '设计师打版系统：',
+        //     time: '2023年10月26号',
+        //     checked: true,
+        //     list: ['买一年送三个月', '买两年送一年'],
+        //   },
+        //   {
+        //     name: '生产成本控制系统：',
+        //     time: '2023年10月26号',
+        //     checked: true,
+        //     list: ['买一年送三个月', '买两年送一年'],
+        //   },
+        //   {
+        //     name: '研发进度中台系统：',
+        //     time: '2023年10月26号',
+        //     checked: false,
+        //     list: ['买一年送三个月', '买两年送一年'],
+        //   },
+        //   {
+        //     name: '数据中台（标准版）：',
+        //     time: '2023年10月26号',
+        //     checked: false,
+        //     list: ['买一年送三个月', '买两年送一年'],
+        //   },
+        //   {
+        //     name: '数据中台（企业版）：',
+        //     time: '2023年10月26号',
+        //     checked: false,
+        //     list: ['买一年送三个月', '买两年送一年'],
+        //   },
+        // ],
         selevt: 1,
-        ceshi: '80%',
-        progressList: [
-          {
-            name: 'ERP',
-            right: '80%',
-            error: '20%',
-            Number: 20,
-            num: 10,
-          },
-          {
-            name: 'PCM',
-            right: '60%',
-            error: '40%',
-            Number: 20,
-            num: 10,
-          },
-          {
-            name: 'PDC',
-            right: '50%',
-            error: '50%',
-            Number: 20,
-            num: 10,
-          },
-          {
-            name: 'SCRM',
-            right: '30%',
-            error: '70%',
-            Number: 20,
-            num: 10,
-          },
-          {
-            name: 'SCM',
-            right: '80%',
-            error: '20%',
-            num: 10,
-            Number: 20,
-          },
-        ],
-        inof: {
-          name1: '圈域科技有限公司',
-          type1: '钻石客户',
-          phone1: '13460193682',
-          email: '2547894967qq.com',
-          kaipiao: '出差',
-          name: '圈域科技有限公司',
-          shuihao: '456613234555',
-          address: '杭州市余杭区海创大厦',
-          phone: '15236804776',
-          yinhang: '杭州滨江支行',
-          zhanghu: '64565465465666',
-          type: '电子发票',
-          youxiang: '2547894967qq.com',
-        },
+        // progressList: [
+        //   {
+        //     name: 'ERP',
+        //     right: '80%',
+        //     error: '20%',
+        //     Number: 20,
+        //     num: 10,
+        //   },
+        //   {
+        //     name: 'PCM',
+        //     right: '60%',
+        //     error: '40%',
+        //     Number: 20,
+        //     num: 10,
+        //   },
+        //   {
+        //     name: 'PDC',
+        //     right: '50%',
+        //     error: '50%',
+        //     Number: 20,
+        //     num: 10,
+        //   },
+        //   {
+        //     name: 'SCRM',
+        //     right: '30%',
+        //     error: '70%',
+        //     Number: 20,
+        //     num: 10,
+        //   },
+        //   {
+        //     name: 'SCM',
+        //     right: '80%',
+        //     error: '20%',
+        //     num: 10,
+        //     Number: 20,
+        //   },
+        // ],
+        inof: {},
         activities: [
           {
             content: '版本新增........功能',
@@ -347,8 +377,63 @@
         avatar: 'user/avatar',
       }),
     },
-    created() {},
+    created() {
+      this.fetchData()
+    },
     methods: {
+      async fetchData() {
+        const { data } = await getAccountDetail()
+        console.log(data)
+        this.inof = data.merchant
+        if (this.inof.erp_open == 1) {
+          this.erp_openChecked = true
+        } else {
+          this.erp_openChecked = false
+        }
+        if (this.inof.design_open == 1) {
+          this.design_openChecked = true
+        } else {
+          this.design_openChecked = false
+        }
+        if (this.inof.platform_open == 1) {
+          this.platform_openChecked = true
+        } else {
+          this.platform_openChecked = false
+        }
+        this.serviceList = data.service
+      },
+      // accountSave
+      subSave() {
+        this.$confirm('确认提交吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        })
+          .then(async () => {
+            const { data } = await editAdminAccountSave({
+              name: this.inof.name, //商户名称
+              tel: this.inof.tel, //商户联系方式
+              address: this.inof.address, //商户地址
+              email: this.inof.email, //邮箱
+              invoice: this.inof.invoice, //税号
+              bank: this.inof.bank, //开户行
+              bank_card: this.inof.bank_card, //银行账号
+              bank_name: this.inof.bank_name, //银行开户名
+            })
+            console.log(data)
+            this.$message({
+              type: 'success',
+              message: '提交成功!',
+            })
+            this.state = !this.state
+          })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消提交',
+            })
+          })
+      },
       editForm() {
         this.state = !this.state
       },

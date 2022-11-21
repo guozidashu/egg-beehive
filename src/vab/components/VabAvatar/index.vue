@@ -13,10 +13,10 @@
     </span>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item command="personalCenter">
+        <!-- <el-dropdown-item command="personalCenter">
           <vab-icon icon="user-line" />
           {{ translateTitle('个人中心') }}
-        </el-dropdown-item>
+        </el-dropdown-item> -->
         <el-dropdown-item command="logout">
           <vab-icon icon="logout-circle-r-line" />
           {{ translateTitle('退出登录') }}

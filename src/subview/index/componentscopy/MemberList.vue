@@ -12,12 +12,15 @@
     >
       <template #List>
         <el-table-column align="center" label="序号" type="index" width="80" />
-        <el-table-column label="用户等级" prop="store_name" />
-        <el-table-column label="销售额" prop="visit" />
-        <el-table-column label="等级用户数" prop="user" />
-        <el-table-column label="占比" prop="cart" />
-        <el-table-column label="成交用户数" prop="orders" />
-        <el-table-column label="未消费" prop="ceshi" />
+        <el-table-column label="用户等级" prop="name" />
+        <el-table-column label="成交用户数" prop="turnover_customer" />
+        <el-table-column label="销售金额" prop="sale_price" />
+        <el-table-column label="等级用户数" prop="level_num" />
+        <el-table-column label="占比" prop="all_total">
+          <template #default="{ row }">
+            {{ (row.level_num / row.turnover_customer).toFixed(2) * 100 }}%
+          </template>
+        </el-table-column>
       </template>
     </List>
   </el-card>
@@ -27,70 +30,28 @@
   import List from '@/subview/components/List'
   export default {
     components: { List },
+    props: {
+      data: {
+        type: Array,
+        default: () => [],
+      },
+    },
     data() {
       return {
         listHeight: 250,
         listLoading: false,
         listType: 5,
-        goosList: [
-          {
-            visit: '3900万',
-            user: '55个',
-            cart: '20%',
-            orders: '14个',
-            ceshi: '24个',
-            store_name: '钻石用户',
-          },
-          {
-            visit: '3900万',
-            user: '55个',
-            cart: '20%',
-            orders: '14个',
-            ceshi: '24个',
-            store_name: '钻石用户',
-          },
-          {
-            visit: '3900万',
-            user: '55个',
-            cart: '20%',
-            orders: '14个',
-            ceshi: '24个',
-            store_name: '钻石用户',
-          },
-          {
-            visit: '3900万',
-            user: '55个',
-            cart: '20%',
-            orders: '14个',
-            ceshi: '24个',
-            store_name: '钻石用户',
-          },
-          {
-            visit: '3900万',
-            user: '55个',
-            cart: '20%',
-            orders: '14个',
-            ceshi: '24个',
-            store_name: '钻石用户',
-          },
-          {
-            visit: '3900万',
-            user: '55个',
-            cart: '20%',
-            orders: '14个',
-            ceshi: '24个',
-            store_name: '钻石用户',
-          },
-          {
-            visit: '3900万',
-            user: '55个',
-            cart: '20%',
-            orders: '14个',
-            ceshi: '24个',
-            store_name: '钻石用户',
-          },
-        ],
+        goosList: this.data,
       }
+    },
+    watch: {
+      data: {
+        handler: function (newval) {
+          this.goosList = newval
+        },
+        deep: true,
+        immediate: true,
+      },
     },
     beforeDestroy() {},
     mounted() {},

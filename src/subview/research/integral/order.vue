@@ -10,7 +10,7 @@
         @resetForm="resetForm"
       >
         <template #Form>
-          <div class="ceshi">china 中国制造</div>
+          <!-- <div class="ceshi">china 中国制造</div> -->
           <el-form-item label="订单号" prop="region">
             <el-input v-model="form.name" size="small" />
           </el-form-item>
@@ -172,6 +172,6 @@
 </script>
 <style lang="scss" scoped>
   .ceshi {
-    font-family: 'my-mac' !important;
+    font-family: 'whzzlsf' !important;
   }
 </style>
