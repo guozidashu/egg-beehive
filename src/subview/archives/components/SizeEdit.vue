@@ -6,7 +6,11 @@
     @close="close"
   >
     <el-form ref="form" label-width="120px" :model="form" :rules="rules">
-      <el-form-item v-if="type === 1" label="组别分类" prop="pid">
+      <el-form-item
+        v-if="type === 1 && title == '添加尺码'"
+        label="组别分类"
+        prop="pid"
+      >
         <el-select v-model="form.pid" placeholder="请选择分类">
           <el-option
             v-for="item in selectList"
@@ -16,14 +20,22 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item v-if="type === 1" label="尺码组名" prop="name">
+      <el-form-item
+        v-if="type === 1 && title == '添加尺码'"
+        label="尺码组名"
+        prop="name"
+      >
         <el-input
           v-model="form.name"
           placeholder="请输入名称"
           style="width: 215px"
         />
       </el-form-item>
-      <el-form-item v-if="type === 1" label="尺码" prop="sn">
+      <el-form-item
+        v-if="type === 1 && title == '添加尺码'"
+        label="尺码"
+        prop="sn"
+      >
         <el-input v-model="form.sn" style="width: 215px" />
       </el-form-item>
       <el-form-item v-if="type === 1" label="状态" prop="status">
@@ -42,14 +54,18 @@
       <el-form-item v-if="type === 1" label="排序" prop="sort">
         <el-input v-model="form.sort" style="width: 215px" />
       </el-form-item>
-      <el-form-item v-if="type === 1" label="尺码类型" prop="type">
+      <el-form-item
+        v-if="type === 1 && title == '添加尺码'"
+        label="尺码类型"
+        prop="type"
+      >
         <el-radio-group v-model="form.type">
           <el-radio :label="1">整手</el-radio>
           <el-radio :label="0">散码</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item
-        v-if="type === 1 && form.type == 1"
+        v-if="type === 1 && form.type == 1 && title == '添加尺码'"
         label="整手尺码"
         prop="size"
       >

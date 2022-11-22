@@ -119,11 +119,11 @@
             width="100"
           />
 
-          <el-table-column align="center" label="操作" width="85">
+          <!-- <el-table-column align="center" label="操作" width="85">
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">查看</el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </template>
       </List>
     </div>

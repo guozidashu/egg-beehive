@@ -30,7 +30,7 @@
           style="width: 215px"
         />
       </el-form-item>
-      <el-form-item v-if="type === 2" label="排序" prop="name">
+      <el-form-item v-if="type === 2" label="排序" prop="sort">
         <el-input v-model="form.sort" style="width: 215px" />
       </el-form-item>
     </el-form>
@@ -49,13 +49,14 @@
       return {
         form: {
           name: '',
-          pid: 0,
-          sort: 0,
+          pid: null,
+          sort: null,
         },
         selectList: [],
         type: 1,
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
+          sort: [{ required: true, trigger: 'blur', message: '请输入排序' }],
         },
         title: '',
         dialogFormVisible: false,

@@ -116,10 +116,10 @@
               {{ row.lasttime.add_date }}
             </template>
           </el-table-column>
-          <el-table-column label="超期状态" prop="pay">
+          <!-- <el-table-column label="超期状态" prop="pay">
             <template #default="{ row }">暂无{{ row.id }}</template>
-          </el-table-column>
-          <el-table-column
+          </el-table-column> -->
+          <!-- <el-table-column
             align="center"
             fixed="right"
             label="操作"
@@ -130,7 +130,7 @@
                 商品详情
               </el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </template>
       </List>
     </div>

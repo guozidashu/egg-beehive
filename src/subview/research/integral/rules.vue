@@ -68,7 +68,7 @@
       return {
         form: {
           type: 'reward',
-          category_id: '22',
+          category_id: '',
           typeName: '奖励',
         },
         listLoading: false,
@@ -96,7 +96,6 @@
     },
     created() {
       this.getSelectData()
-      this.fetchData()
     },
     methods: {
       // 列表数据请求函数 公共部分

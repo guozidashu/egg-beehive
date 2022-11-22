@@ -1,25 +1,23 @@
 <template>
   <div style="background-color: #f6f8f9">
     <el-card shadow="never" style="border: 0">
+      <Form
+        :form="form"
+        :form-type="formType"
+        @changeSearch="handleQuery"
+        @resetForm="resetForm"
+      >
+        <template #Form>
+          <el-form-item label="名称" prop="region">
+            <el-input v-model="form.name" size="small" />
+          </el-form-item>
+        </template>
+      </Form>
       <el-row :gutter="20">
         <el-col v-for="(item, index) in list" :key="index" :span="6">
           <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
               <span>{{ item.name }}</span>
-              <el-button
-                style="float: right; padding: 3px"
-                type="text"
-                @click="handleDelete(item)"
-              >
-                删除
-              </el-button>
-              <el-button
-                style="float: right; padding: 3px"
-                type="text"
-                @click="handleEdit(item)"
-              >
-                编辑
-              </el-button>
             </div>
             <div style="display: flex; justify-content: space-between">
               <img
@@ -109,10 +107,11 @@
 </template>
 <script>
   // import List from '@/subview/components/List'
+  import Form from '@/subview/components/Form'
   import { getEmployeeIntegralList } from '@/api/basic'
   export default {
     name: 'ProjectBandlist',
-    // components: { List },
+    components: { Form },
     data() {
       return {
         // 表单数据/列表参数
@@ -120,6 +119,7 @@
           page: 1,
           pageSize: 10,
         },
+        formType: 4,
         // 列表数据相关
         selectRows: [],
         listType: 1,
@@ -140,6 +140,12 @@
       this.fetchData()
     },
     methods: {
+      handleQuery() {
+        this.fetchData()
+      },
+      resetForm() {
+        this.form = this.$options.data().form
+      },
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         this.form.page = data

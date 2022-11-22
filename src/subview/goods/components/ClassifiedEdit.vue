@@ -6,7 +6,7 @@
     @close="close"
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item v-if="type === 1" label="款式分类" prop="name">
+      <el-form-item v-if="type === 1" label="款式分类">
         <el-select v-model="form.pid" placeholder="请选择分类">
           <el-option
             v-for="(item, index) in selectList"
@@ -30,8 +30,8 @@
           style="width: 215px"
         />
       </el-form-item>
-      <el-form-item v-if="type === 2" label="排序" prop="name">
-        <el-input v-model="form.id" style="width: 215px" />
+      <el-form-item v-if="type === 2" label="排序" prop="sort">
+        <el-input v-model="form.sort" style="width: 215px" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -53,13 +53,14 @@
       return {
         form: {
           name: '',
-          pid: 0,
-          sort: 0,
+          pid: null,
+          sort: null,
         },
         selectList: [],
         type: 1,
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
+          sort: [{ required: true, trigger: 'blur', message: '请输入排序' }],
         },
         title: '',
         dialogFormVisible: false,
@@ -71,13 +72,13 @@
         this.type = type
         if (row === 'add') {
           if (type === 1) {
-            this.title = '添加标签'
+            this.title = '添加款式'
           } else {
             this.title = '添加分类'
           }
         } else {
           if (type === 1) {
-            this.title = '编辑标签'
+            this.title = '添加款式'
           } else {
             this.title = '编辑分类'
           }

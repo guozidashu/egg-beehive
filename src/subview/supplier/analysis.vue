@@ -167,7 +167,7 @@
             prop="total"
             show-overflow-tooltip
           />
-          <el-table-column
+          <!-- <el-table-column
             label="准时交货率"
             prop="orders"
             show-overflow-tooltip
@@ -187,7 +187,7 @@
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">查看</el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </template>
       </List>
     </div>
@@ -258,6 +258,7 @@
             cart: '20',
             orders: '14',
             store_name: '北京',
+            type: false,
           },
           {
             visit: '507',
@@ -391,12 +392,12 @@
             title: '所有供应商',
             num: 200,
             count: data.supplier_case.all_count,
-            typeSta: true,
+            typeSta: false,
           },
         ]
         data.supplier_case.type_count.forEach((item, index) => {
           if (index < 3) {
-            item.typeSta = true
+            item.typeSta = false
             item.num = item.count
             item.title = item.name
             arr.push(item)

@@ -105,9 +105,11 @@
           <el-table-column label="成交客户数" prop="customer_count" />
           <el-table-column label="利润" prop="margin" />
           <el-table-column label="毛利率(%)" prop="margin_rate">
-            <template #default="{ row }">{{ row.margin_rate * 100 }}%</template>
+            <template #default="{ row }">
+              {{ (row.margin_rate * 100).toFixed(2) }}%
+            </template>
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
             align="center"
             fixed="right"
             label="操作"
@@ -118,7 +120,7 @@
                 查看订单
               </el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </template>
       </List>
     </div>
@@ -137,6 +139,7 @@
     mixins: [datajosn],
     data() {
       return {
+        filename: '订单统计',
         listLoading: false,
         listType: 2,
         goodsForm: {

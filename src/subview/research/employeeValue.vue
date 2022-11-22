@@ -3,7 +3,12 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form :form="form" :form-type="formType">
+      <Form
+        :form="form"
+        :form-type="formType"
+        @changeSearch="handleQuery"
+        @resetForm="resetForm"
+      >
         <template #Form>
           <el-form-item label="角色:">
             <el-select v-model="form.role_id" size="small">
@@ -146,6 +151,12 @@
           type: 'role',
         })
         this.selectList = data
+      },
+      handleQuery() {
+        this.fetchData()
+      },
+      resetForm() {
+        this.form = this.$options.data().form
       },
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {

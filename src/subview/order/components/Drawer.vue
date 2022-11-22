@@ -69,22 +69,7 @@
             <div>用户UID：{{ form.uid }}</div>
             <div>客户名称： {{ form.name }}</div>
             <div>
-              <span v-if="!formShow.phonestate">
-                绑定电话： {{ form.mobile | phoneteltm }}
-              </span>
-              <span v-else>绑定电话：{{ form.mobile }}</span>
-              <i
-                v-if="!formShow.phonestate"
-                class="el-icon-view"
-                style="margin-left: 10px"
-                @click="formShow.phonestate = true"
-              ></i>
-              <i
-                v-else
-                class="el-icon-view"
-                style="margin-left: 10px; color: #1890ff"
-                @click="formShow.phonestate = false"
-              ></i>
+              <span>绑定电话： {{ form.mobile }}</span>
             </div>
           </div>
         </div>

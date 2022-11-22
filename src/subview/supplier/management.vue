@@ -3,7 +3,12 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+      <Form
+        :form="form"
+        :form-type="formType"
+        @changeSearch="handleQuery"
+        @resetForm="resetForm"
+      >
         <template #Form>
           <el-form-item label="供应商类别:">
             <!-- 1外协加工厂2成品采购商3面辅料供应商4其他5自厂 -->
@@ -135,7 +140,7 @@
         // 列表数据相关
         // 公共参数
         listType: 1,
-        formType: 3,
+        formType: 4,
         list: [],
         listLoading: false,
         total: 0,
@@ -156,7 +161,10 @@
     },
     methods: {
       handleQuery() {
-        this.form.page = 1
+        this.fetchData()
+      },
+      resetForm() {
+        this.form = this.$options.data().form
       },
       handleClick() {
         this.form.page = 1

@@ -61,6 +61,7 @@
                   <el-tag v-if="item.stock == 1">开启</el-tag>
                   <el-tag v-else type="danger">关闭</el-tag>
                 </div>
+                <div style="margin: 5px">实际价格：{{ item.actual_price }}</div>
                 <div style="margin: 5px">状态：{{ item.status }}</div>
                 <div style="margin: 5px">时间：{{ item.create_time }}</div>
               </div>
@@ -161,7 +162,7 @@
           id: 0,
           name: '',
           page: 1,
-          pageSize: 10,
+          pageSize: 100,
         },
         formType: 4,
         // 列表数据相关

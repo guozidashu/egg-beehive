@@ -3,7 +3,12 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+      <Form
+        :form="form"
+        :form-type="formType"
+        @changeSearch="handleQuery"
+        @resetForm="resetForm"
+      >
         <template #Form>
           <el-form-item label="供应商搜索">
             <el-input
@@ -102,7 +107,13 @@
         </template>
       </List>
     </el-card>
-    <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
+    <el-drawer
+      :before-close="handleClose"
+      size="50%"
+      :title="title"
+      :visible.sync="drawer"
+      :wrapper-closable="false"
+    >
       <!-- 详情抽屉组件 -->
       <Drawer :drawer-inof="drawerInof" />
     </el-drawer>
@@ -123,6 +134,7 @@
     components: { List, Form, Drawer },
     data() {
       return {
+        title: '',
         drawer: false,
         drawerInof: {},
         form: {
@@ -155,8 +167,22 @@
     methods: {
       // 详情抽屉
       async handleDetail(row, type) {
+        if (type === 1) {
+          this.title = '物料详情'
+        } else if (type === 2) {
+          this.title = '编辑物料'
+        } else {
+          this.title = '添加物料'
+        }
         if (row == 'add') {
-          this.drawerInof = {}
+          this.drawerInof = {
+            material_spec: [
+              {
+                spec_name: null, //规格名称
+                spec_price: null, //规格单价
+              },
+            ],
+          }
           this.drawerInof.drawerType = type
         } else {
           const { data } = await getMaterialInfo({
@@ -167,8 +193,14 @@
         }
         this.drawer = true
       },
+      handleClose() {
+        this.drawer = false
+      },
       handleQuery() {
-        this.form.page = 1
+        this.fetchData()
+      },
+      resetForm() {
+        this.form = this.$options.data().form
       },
       handleDelete(row) {
         if (row.material_id) {

@@ -6,7 +6,11 @@
     @close="close"
   >
     <el-form ref="form" label-width="120px" :model="form" :rules="rules">
-      <el-form-item v-if="type === 1" label="颜色组分类" prop="pid">
+      <el-form-item
+        v-if="type === 1 && title == '添加颜色'"
+        label="颜色组分类"
+        prop="pid"
+      >
         <el-select v-model="form.pid" placeholder="请选择分类">
           <el-option
             v-for="item in selectList"
@@ -16,14 +20,22 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item v-if="type === 1" label="颜色名称" prop="name">
+      <el-form-item
+        v-if="type === 1 && title == '添加颜色'"
+        label="颜色名称"
+        prop="name"
+      >
         <el-input
           v-model="form.name"
           placeholder="请输入名称"
           style="width: 215px"
         />
       </el-form-item>
-      <el-form-item v-if="type === 1" label="编号" prop="sn">
+      <el-form-item
+        v-if="type === 1 && title == '添加颜色'"
+        label="编号"
+        prop="sn"
+      >
         <el-input v-model="form.sn" style="width: 215px" />
       </el-form-item>
       <el-form-item v-if="type === 1" label="状态" prop="status">
@@ -42,7 +54,11 @@
       <el-form-item v-if="type === 1" label="排序" prop="sort">
         <el-input v-model="form.sort" style="width: 215px" />
       </el-form-item>
-      <el-form-item v-if="type === 2" label="颜色组名称" prop="name">
+      <el-form-item
+        v-if="type === 2 && title == '添加颜色组'"
+        label="颜色组名称"
+        prop="name"
+      >
         <el-input
           v-model="form.name"
           placeholder="请输入名称"

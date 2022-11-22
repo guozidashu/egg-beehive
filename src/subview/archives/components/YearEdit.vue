@@ -6,7 +6,7 @@
     @close="close"
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item label="年份名称" prop="name">
+      <el-form-item v-if="title == '添加'" label="年份名称" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
       <el-form-item label="状态" prop="status">

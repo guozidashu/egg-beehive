@@ -24,7 +24,7 @@
                 icon="align-center"
                 style="float: right; margin: 6px 0 0 0"
               />
-              <el-button
+              <!-- <el-button
                 native-type="submit"
                 size="small"
                 style="float: right; margin-right: 10px"
@@ -32,8 +32,8 @@
                 @click="upMembers(2)"
               >
                 升级会员
-              </el-button>
-              <el-button
+              </el-button> -->
+              <!-- <el-button
                 native-type="submit"
                 size="small"
                 style="float: right; margin-right: 10px"
@@ -41,7 +41,7 @@
                 @click="upMembers(1)"
               >
                 积分余额
-              </el-button>
+              </el-button> -->
               <el-button
                 v-if="form.drawerType == 1"
                 native-type="submit"

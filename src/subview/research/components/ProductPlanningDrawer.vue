@@ -25,11 +25,11 @@
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="width: 30%; margin-bottom: 12px">目标总数</span>
-            <span>{{ form.plan_name }}</span>
+            <span>{{ form.plan_total }}</span>
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="width: 30%; margin-bottom: 12px">完成总数</span>
-            <span>{{ form.plan_name }}</span>
+            <span>{{ form.completed_total }}</span>
           </div>
         </div>
       </div>

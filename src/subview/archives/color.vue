@@ -197,7 +197,7 @@
         }
       },
       handleQuery() {
-        this.form.page = 1
+        this.fetchData()
       },
       handleDelete(row, type) {
         if (row.id && type === 2) {

@@ -240,6 +240,7 @@
       form: {
         handler: function () {
           this.fetchData()
+          this.getTatolData()
         },
         deep: true,
       },
@@ -250,7 +251,9 @@
       this.getTatolData()
     },
     methods: {
-      handleQuery() {},
+      handleQuery() {
+        this.fetchData()
+      },
       // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
         this.form.list_type = tab.name
@@ -264,7 +267,15 @@
         this.listLoading = false
       },
       async getTatolData() {
-        const { data } = await getGoodTabTotal()
+        const { data } = await getGoodTabTotal({
+          category: this.form.category, //款式分类
+          brand: this.form.brand, //品牌
+          year: this.form.year, //年份
+          season: this.form.season, //季节
+          type: this.form.type, //尺码类型 0整手  1散码
+          band: this.form.band, //波段
+          name: this.form.name, //商品名称
+        })
         this.tatleData = data
       },
       async getGoodsTypeList() {

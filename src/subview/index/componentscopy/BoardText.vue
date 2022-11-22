@@ -49,13 +49,6 @@
             </el-table-column>
             <el-table-column label="销售件数" prop="sum_num" width="80" />
             <el-table-column label="销售金额" prop="sum_total" width="180" />
-            <el-table-column align="center" label="操作" width="80">
-              <template #default="{ row }">
-                <el-button type="text" @click="handleDetail(row)">
-                  详情
-                </el-button>
-              </template>
-            </el-table-column>
           </template>
         </List>
       </el-col>
@@ -83,13 +76,6 @@
             <el-table-column label="客户名称" prop="name" />
             <el-table-column label="拿货金额（占比）" prop="sum_total" />
             <el-table-column label="拿货件数" prop="sum_num" />
-            <el-table-column align="center" label="操作" width="100">
-              <template #default="{ row }">
-                <el-button type="text" @click="handleDetail(row)">
-                  详情
-                </el-button>
-              </template>
-            </el-table-column>
           </template>
         </List>
       </el-col>

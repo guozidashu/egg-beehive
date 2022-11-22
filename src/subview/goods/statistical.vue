@@ -124,9 +124,9 @@
           </el-table-column>
           <el-table-column label="下单件数" prop="order_num" width="100" />
           <el-table-column label="下单金额" prop="order_total" width="100" />
-          <el-table-column label="毛利率(%)" prop="gross_profit">
+          <!-- <el-table-column label="毛利率(%)" prop="gross_profit">
             <template #default="{ row }">{{ row.profit * 100 }}%</template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column label="库存数" prop="total_stock" />
           <el-table-column label="状态" prop="status">
             <template #default="{ row }">
@@ -134,7 +134,7 @@
               <span v-else>下架</span>
             </template>
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
             align="center"
             fixed="right"
             label="操作"
@@ -143,7 +143,7 @@
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">查看</el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </template>
       </List>
     </div>
@@ -256,17 +256,29 @@
     methods: {
       async tableData() {
         this.listLoading = true
-        this.goodsForm1.start_time = this.goodsForm1.date[0]
-        this.goodsForm1.end_time = this.goodsForm1.date[1]
+        if (this.goodsForm1.date != '' && this.goodsForm1.date != null) {
+          this.goodsForm1.start_time = this.goodsForm1.date[0]
+          this.goodsForm1.end_time = this.goodsForm1.date[1]
+        } else {
+          this.goodsForm1.start_time = ''
+          this.goodsForm1.end_time = ''
+        }
         const { data } = await getGoodRank(this.goodsForm1)
-        this.list = data.data
+        this.goosList = data.data
         this.total = data.total
         this.listLoading = false
       },
       async fetchData() {
+        if (this.goodsForm.date != '' && this.goodsForm.date != null) {
+          this.goodsForm.start_time = this.goodsForm.date[0]
+          this.goodsForm.end_time = this.goodsForm.date[1]
+        } else {
+          this.goodsForm.start_time = ''
+          this.goodsForm.end_time = ''
+        }
         const { data } = await getGoodStatistics({
-          start_time: this.goodsForm.date[0],
-          end_time: this.goodsForm.date[1],
+          start_time: this.goodsForm.start_time,
+          end_time: this.goodsForm.end_time,
         })
         this.goodsStaList.forEach((item) => {
           for (let i in data) {

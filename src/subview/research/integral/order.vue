@@ -11,8 +11,8 @@
       >
         <template #Form>
           <!-- <div class="ceshi">china 中国制造</div> -->
-          <el-form-item label="订单号" prop="region">
-            <el-input v-model="form.name" size="small" />
+          <el-form-item label="订单号">
+            <el-input v-model="form.order_sn" size="small" />
           </el-form-item>
         </template>
       </Form>

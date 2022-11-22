@@ -30,7 +30,7 @@
               icon="align-center"
               style="float: right; margin: 6px 0 0 0"
             />
-            <el-button
+            <!-- <el-button
               native-type="submit"
               size="small"
               style="float: right; margin-right: 10px"
@@ -38,7 +38,7 @@
               @click="upMembers(3)"
             >
               提醒发货
-            </el-button>
+            </el-button> -->
             <el-button
               native-type="submit"
               size="small"
@@ -48,7 +48,7 @@
             >
               打印
             </el-button>
-            <el-button
+            <!-- <el-button
               native-type="submit"
               size="small"
               style="float: right"
@@ -56,7 +56,7 @@
               @click="upMembers(1)"
             >
               作废
-            </el-button>
+            </el-button> -->
           </el-col>
         </el-row>
       </div>

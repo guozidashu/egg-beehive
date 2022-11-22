@@ -1,6 +1,6 @@
 <template>
   <div class="components-drawer">
-    <div v-if="form.drawerType != 3" style="padding: 30px 35px 25px">
+    <div v-if="form.drawerType != 3" style="padding: 0 25px">
       <div>
         <el-row :gutter="20">
           <el-col :span="12" style="display: flex">
@@ -47,7 +47,7 @@
               size="small"
               style="float: right"
               type="primary"
-              @click="form.drawerType = 2"
+              @click="changeTypeBtn(2)"
             >
               编辑
             </el-button>
@@ -57,7 +57,7 @@
               size="small"
               style="float: right; margin-right: 10px"
               type="primary"
-              @click="form.drawerType = 1"
+              @click="changeTypeBtn(1)"
             >
               完成
             </el-button>
@@ -74,6 +74,17 @@
           <span>{{ item.value }}</span>
         </div>
       </div>
+    </div>
+    <div v-if="form.drawerType == 3">
+      <el-button
+        native-type="submit"
+        size="small"
+        style="float: right; margin-right: 10px"
+        type="primary"
+        @click="changeTypeBtn(1)"
+      >
+        完成
+      </el-button>
     </div>
     <el-tabs
       v-if="form.drawerType != 3"
@@ -94,15 +105,15 @@
           <div class="conten-list-row">
             <div>物料编号：{{ form.material_code }}</div>
             <div>物料名称： {{ form.material_name }}</div>
+            <div>物料分类： {{ form.material_name }}</div>
+            <div>供应商： {{ form.material_name }}</div>
+            <div>物料单价： {{ form.material_name }}</div>
+            <div>单位： {{ form.material_name }}</div>
             <div>门幅： {{ form.width }}</div>
             <div>克重：{{ form.weight }}</div>
             <div>空差： {{ form.spatial_difference }}</div>
+            <div>成分：{{ form.component }}</div>
             <div>单耗：{{ form.loss }}</div>
-            <div>物料分类： {{ form.category_name }}</div>
-            <div>供应商名称： {{ form.supplier_name }}</div>
-            <div>供应商等级： {{ form.material_code }}</div>
-            <div>供应商类别： {{ form.material_code }}</div>
-            <div>成分： {{ form.component }}</div>
             <div>
               物料图片：
               <img :src="form.material_pic" style="width: 20px; height: 20px" />
@@ -112,18 +123,14 @@
         <div class="conten-warp">
           <div class="conten-title">规格及价格信息</div>
           <div class="conten-list-row">
-            <div>采购价：红色</div>
-          </div>
-        </div>
-        <div class="conten-warp">
-          <div class="conten-title">其它信息</div>
-          <div class="conten-list-row">
-            <div style="width: 50%">创建时间： 2020-02-02 10:10:10</div>
-            <div style="width: 50%">操作人员： 阿白</div>
-            <div style="width: 50%">更新时间： 2020-02-02 10:10:10</div>
-            <div style="width: 50%">操作人员： 阿白</div>
-            <div style="width: 50%">物料库位：库位一</div>
-            <div style="width: 50%">物料状态： 在售</div>
+            <div
+              v-for="(item, index) in form.material_spec"
+              :key="index"
+              style="display: flex; width: 100%"
+            >
+              <div style="width: 50%">规格名称：{{ item.spec_name }}</div>
+              <div style="width: 50%">规格单价：{{ item.spec_price }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -157,6 +164,14 @@
                   style="width: 215px"
                 />
               </el-form-item>
+
+              <el-form-item class="item" label="物料单价：">
+                <el-input
+                  v-model="form.material_price"
+                  placeholder="请输入门幅"
+                  style="width: 215px"
+                />
+              </el-form-item>
               <el-form-item class="item" label="门幅：">
                 <el-input
                   v-model="form.width"
@@ -178,6 +193,13 @@
                   style="width: 215px"
                 />
               </el-form-item>
+              <el-form-item class="item" label="成分：">
+                <el-input
+                  v-model="form.component"
+                  placeholder="请输入成分"
+                  style="width: 215px"
+                />
+              </el-form-item>
               <el-form-item class="item" label="单耗：">
                 <el-input
                   v-model="form.loss"
@@ -191,52 +213,35 @@
                   placeholder="请选择物料分类："
                 >
                   <el-option
-                    v-for="(item, index) in typeData.brand"
+                    v-for="(item, index) in selectList.material_category"
                     :key="index"
                     :label="item.name"
                     :value="item.id"
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item class="item" label="供应商名称：">
-                <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入供应商名称"
-                  style="width: 215px"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="供应商等级：">
+              <el-form-item class="item" label="供应商：">
                 <el-select
-                  v-model="form.brand"
-                  placeholder="请选择供应商等级："
+                  v-model="form.supplier_id"
+                  placeholder="请选择供应商："
                 >
                   <el-option
-                    v-for="(item, index) in typeData.brand"
+                    v-for="(item, index) in selectList.supplier"
                     :key="index"
                     :label="item.name"
                     :value="item.id"
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item class="item" label="供应商类别：">
-                <el-select
-                  v-model="form.brand"
-                  placeholder="请选择供应商类别："
-                >
+              <el-form-item class="item" label="单位：">
+                <el-select v-model="form.unit_id" placeholder="请选择单位：">
                   <el-option
-                    v-for="(item, index) in typeData.brand"
+                    v-for="(item, index) in selectList.unit"
                     :key="index"
                     :label="item.name"
                     :value="item.id"
                   />
                 </el-select>
-              </el-form-item>
-              <el-form-item class="item" label="成分：">
-                <el-input
-                  v-model="form.component"
-                  placeholder="请输入成分"
-                  style="width: 215px"
-                />
               </el-form-item>
               <el-form-item class="item" label="物料图片：">
                 <el-button
@@ -255,33 +260,30 @@
           <div class="conten-warp">
             <div class="conten-title">规格及价格信息</div>
             <div class="conten-list-com">
-              <el-form-item class="item" label="采购价：">
-                <el-input v-model="form.addressKeyword" style="width: 215px" />
-              </el-form-item>
-            </div>
-          </div>
-        </div>
-        <div class="drawer-tab">
-          <div class="conten-warp">
-            <div class="conten-title">其它信息</div>
-            <div class="conten-list-com">
-              <el-form-item class="item" label="物料库位：">
-                <el-select v-model="form.brand" placeholder="请选择库位：">
-                  <el-option
-                    v-for="(item, index) in typeData.brand"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-              <el-form-item class="item" label="物料状态：">
-                <el-radio-group v-model="form.name">
-                  <el-radio :label="0">在售</el-radio>
-                  <el-radio :label="1">备用</el-radio>
-                  <el-radio :label="2">禁用停售</el-radio>
-                </el-radio-group>
-              </el-form-item>
+              <div
+                v-for="(item, index) in form.material_spec"
+                :key="index"
+                style="display: flex; width: 100%; margin-top: 20px"
+              >
+                <el-form-item label="规格名称：" style="width: 50%">
+                  <el-input v-model="item.spec_name" style="width: 215px" />
+                </el-form-item>
+                <el-form-item label="规格单价：" style="width: 50%">
+                  <el-input v-model="item.spec_price" style="width: 215px" />
+                  <i
+                    v-if="index == 0"
+                    class="el-icon-plus"
+                    style="margin: 10px 0 0 30px; color: #1890ff"
+                    @click="handleAdd()"
+                  ></i>
+                  <i
+                    v-else
+                    class="el-icon-minus"
+                    style="margin: 10px 0 0 30px; color: #1890ff"
+                    @click="handleDelete(index)"
+                  ></i>
+                </el-form-item>
+              </div>
             </div>
           </div>
         </div>
@@ -315,6 +317,7 @@
   import VabPrint from '@/extra/VabPrint'
   import VabUpload from '@/extra/VabUpload'
   import List from '@/subview/components/List'
+  import { getCommonAllList, addMaterialSave } from '@/api/basic'
   import { mapGetters } from 'vuex'
   export default {
     name: 'ComponentsDrawer',
@@ -332,7 +335,7 @@
         form: Object.assign({}, this.drawerInof),
         listLoading: false,
         listType: 2,
-        typeData: [],
+        selectList: [],
         orderList: [
           {
             id: 4525,
@@ -382,7 +385,9 @@
         deep: true,
       },
     },
-    created() {},
+    created() {
+      this.getGoodsTypeList()
+    },
     methods: {
       ...mapActions({
         openSideBar: 'settings/openSideBar',
@@ -395,6 +400,43 @@
       },
       handleShow() {
         this.$refs['vabUpload'].handleShow()
+      },
+      async getGoodsTypeList() {
+        const { data } = await getCommonAllList({
+          type: 'material_category,supplier,unit',
+        })
+        console.log(787878, data)
+        this.selectList = data
+      },
+      async changeTypeBtn(e) {
+        console.log(1111, this.form)
+        if (this.form.id == undefined) {
+          this.form.id = 0
+          const { code } = await addMaterialSave(this.form)
+          if (code == 200) {
+            this.$baseMessage('新增成功', 'success', 'vab-hey-message-success')
+            this.form.drawerType = e
+            this.$forceUpdate()
+          }
+        } else {
+          const { code } = await addMaterialSave(this.form)
+          if (code == 200) {
+            this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
+            this.form.drawerType = e
+            this.$forceUpdate()
+          }
+        }
+        this.form.drawerType = e
+        this.$forceUpdate()
+      },
+      handleAdd() {
+        this.form.material_spec.push({
+          spec_name: null, //规格名称
+          spec_price: null, //规格单价
+        })
+      },
+      handleDelete(index) {
+        this.form.material_spec.splice(index, 1)
       },
       // 列表数据表头切换监听 自定义部分
       handleClick(tab) {

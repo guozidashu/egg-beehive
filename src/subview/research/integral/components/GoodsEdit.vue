@@ -15,6 +15,9 @@
       <el-form-item label="商库存品名称" prop="stock">
         <el-input v-model="form.stock" />
       </el-form-item>
+      <el-form-item label="实际价格" prop="actual_price">
+        <el-input v-model="form.actual_price" />
+      </el-form-item>
       <el-form-item label="排序" prop="sort">
         <el-input v-model="form.sort" />
       </el-form-item>
@@ -74,6 +77,9 @@
           ],
           stock: [{ required: true, trigger: 'blur', message: '请输入库存' }],
           sort: [{ required: true, trigger: 'blur', message: '请输入排序' }],
+          actual_price: [
+            { required: true, trigger: 'blur', message: '请输入实际价格' },
+          ],
         },
         title: '',
         dialogFormVisible: false,

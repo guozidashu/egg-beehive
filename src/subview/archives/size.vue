@@ -33,9 +33,9 @@
                       ></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item>
+                      <!-- <el-dropdown-item>
                         <span @click="handleEdit(item, 2)">编辑</span>
-                      </el-dropdown-item>
+                      </el-dropdown-item> -->
                       <el-dropdown-item>
                         <span @click="handleDelete(item, 2)">删除</span>
                       </el-dropdown-item>
@@ -202,7 +202,7 @@
         }
       },
       handleQuery() {
-        this.form.page = 1
+        this.fetchData()
       },
       handleDelete(row, type) {
         if (row.id && type === 2) {

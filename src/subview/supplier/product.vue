@@ -89,41 +89,29 @@
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane
-          v-if="form.order_type == 0"
-          :label="'所有订单 (' + total + ')'"
+          :label="'所有订单 (' + tatleData.all_order + ')'"
           name="0"
         />
-        <el-tab-pane v-else :label="'所有订单 ( 0)'" name="0" />
         <el-tab-pane
-          v-if="form.order_type == 1"
-          :label="'全部入库 (' + total + ')'"
+          :label="'全部入库 (' + tatleData.all_warehouse + ')'"
           name="1"
         />
-        <el-tab-pane v-else :label="'全部入库 ( 0)'" name="1" />
         <el-tab-pane
-          v-if="form.order_type == 2"
-          :label="'部分入库 (' + total + ')'"
+          :label="'部分入库 (' + tatleData.part_warehouse + ')'"
           name="2"
         />
-        <el-tab-pane v-else :label="'部分入库 ( 0)'" name="2" />
         <el-tab-pane
-          v-if="form.order_type == 3"
-          :label="'未入库 (' + total + ')'"
+          :label="'未入库 (' + tatleData.no_warehouse + ')'"
           name="3"
         />
-        <el-tab-pane v-else :label="'未入库 ( 0)'" name="3" />
         <el-tab-pane
-          v-if="form.order_type == 4"
-          :label="'预警订单 (' + total + ')'"
+          :label="'预警订单 (' + tatleData.warning_order + ')'"
           name="4"
         />
-        <el-tab-pane v-else :label="'预警订单 ( 0)'" name="4" />
         <el-tab-pane
-          v-if="form.order_type == 5"
-          :label="'延期订单 (' + total + ')'"
+          :label="'延期订单 (' + tatleData.delay_order + ')'"
           name="5"
         />
-        <el-tab-pane v-else :label="'延期订单 ( 0)'" name="5" />
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -231,12 +219,12 @@
               <el-button type="text" @click="handleDetail(row, 1)">
                 详情
               </el-button>
-              <el-button type="text" @click="handleEdit(row, 1)">
+              <!-- <el-button type="text" @click="handleEdit(row, 1)">
                 收货
               </el-button>
               <el-button type="text" @click="handleEdit(row, 2)">
                 退货
-              </el-button>
+              </el-button> -->
             </template>
           </el-table-column>
         </template>
@@ -257,7 +245,11 @@
   import Drawer from './components/OrderDrawer'
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
-  import { getFinishList, getCommonAllList } from '@/api/basic'
+  import {
+    getFinishList,
+    getCommonAllList,
+    getFinishGetCount,
+  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'SupplierProduct',
@@ -291,12 +283,21 @@
         list: [],
         listLoading: false,
         total: 0,
+        tatleData: {
+          all_order: null, // 全部
+          all_warehouse: null, // 仓库中
+          part_warehouse: null, // 已售完
+          no_warehouse: null, // 预警
+          warning_order: null, // 待确认
+          delay_order: null, // 自营
+        },
       }
     },
     watch: {
       form: {
         handler: function () {
           this.fetchData()
+          this.getTatleAll()
         },
         deep: true,
       },
@@ -304,6 +305,7 @@
     created() {
       this.getSelectData()
       this.fetchData()
+      this.getTatleAll()
       console.log(this.form.order_type == this.activeName)
     },
     methods: {
@@ -321,6 +323,10 @@
             this.$refs['edit'].showEdit(row, type)
           }
         }
+      },
+      async getTatleAll() {
+        const { data } = await getFinishGetCount(this.form)
+        this.tatleData = data
       },
       handleQuery() {
         this.form.page = 1
@@ -344,6 +350,9 @@
         this.total = data.total
         this.listLoading = false
         this.list.forEach((item) => {
+          if (item.info.name == undefined) {
+            item.info.name = ''
+          }
           item.inofText = item.info.name
         })
       },
@@ -368,7 +377,6 @@
         foldSideBar: 'settings/foldSideBar',
       }),
       async print(val) {
-        console.log(111, val)
         await this.foldSideBar()
         await VabPrint(this.$refs[val], { noPrintParent: true })
         await this.openSideBar()
@@ -379,7 +387,7 @@
       },
       handleDownload() {
         if (this.exclList.length) {
-          console.log(888, this.exclList)
+          console.log(this.exclList)
           this.downloadLoading = true
           import('@/utils/excel').then((excel) => {
             const tHeader = [
@@ -392,7 +400,7 @@
               '金额',
               '预计交货时间',
               '订单状态',
-              '完成状态',
+              '超期状态',
             ]
             const filterVal = [
               'sn',

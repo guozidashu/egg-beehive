@@ -105,7 +105,7 @@
       </Form>
     </div>
     <el-card shadow="never" style="border: 0">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
+      <!-- <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="全部" name="first" />
         <el-tab-pane label="ERP平台 (100)" name="second" />
         <el-tab-pane label=" 微信公众号 (10)" name="three" />
@@ -113,7 +113,7 @@
         <el-tab-pane label="移动App (10)" name="five" />
         <el-tab-pane label="第三方平台 (100)" name="six" />
         <el-tab-pane label="企业微信 (10)" name="seven" />
-      </el-tabs>
+      </el-tabs> -->
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
@@ -124,14 +124,14 @@
           >
             添加客户
           </el-button>
-          <el-button
+          <!-- <el-button
             native-type="submit"
             size="small"
             type="primary"
             @click="addCoupons()"
           >
             发送优惠券
-          </el-button>
+          </el-button> -->
           <el-button
             native-type="submit"
             size="small"
@@ -299,7 +299,7 @@
         this.drawer = false
       },
       handleQuery() {
-        this.form.page = 1
+        this.fetchData()
       },
       changeBtnSta(data) {
         this.form.fold = data

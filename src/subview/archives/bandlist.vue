@@ -3,7 +3,12 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+      <Form
+        :form="form"
+        :form-type="formType"
+        @changeSearch="handleQuery"
+        @resetForm="resetForm"
+      >
         <template #Form>
           <el-form-item label="波段名称" prop="region">
             <el-input v-model="form.name" size="small" />
@@ -122,7 +127,10 @@
       },
       // 查询
       handleQuery() {
-        this.form.page = 1
+        this.fetchData()
+      },
+      resetForm() {
+        this.form = this.$options.data().form
       },
       // 删除
       handleDelete(row) {

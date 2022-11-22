@@ -202,6 +202,7 @@ export function editChangeStatus(data) {
     data,
   })
 }
+
 // 商城配置
 export function editShopConfig(data) {
   return request({
@@ -802,6 +803,13 @@ export function delIntegralGoodsDel(data) {
   })
 }
 // 成品采购统计
+export function getFinishGetCount(data) {
+  return request({
+    url: '/supplier/finishGetCount',
+    method: 'post',
+    data,
+  })
+}
 export function getFinishCountList(data) {
   return request({
     url: '/supplier/finishCountList',
@@ -1028,6 +1036,13 @@ export function getFinishList(data) {
 export function getPurchaseDetail(data) {
   return request({
     url: '/supplier/purchaseDetail',
+    method: 'post',
+    data,
+  })
+}
+export function getpurchaseGetCount(data) {
+  return request({
+    url: '/supplier/purchaseGetCount',
     method: 'post',
     data,
   })

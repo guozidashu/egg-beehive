@@ -3,7 +3,12 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+      <Form
+        :form="form"
+        :form-type="formType"
+        @changeSearch="handleQuery"
+        @resetForm="resetForm"
+      >
         <template #Form>
           <el-form-item label="品牌名称" prop="region">
             <el-input
@@ -122,7 +127,10 @@
         }
       },
       handleQuery() {
-        this.form.page = 1
+        this.fetchData()
+      },
+      resetForm() {
+        this.form = this.$options.data().form
       },
       async turnOnOff(row) {
         const { code } = await addBrandSave(row)
