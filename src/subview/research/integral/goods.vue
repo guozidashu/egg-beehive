@@ -20,6 +20,7 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
+            v-has-permi="['btn:IntegralGoods:add']"
             native-type="submit"
             size="small"
             type="primary"
@@ -35,6 +36,7 @@
             <div slot="header" class="clearfix">
               <span>{{ item.name }}</span>
               <el-button
+                v-has-permi="['btn:IntegralGoods:del']"
                 style="float: right; padding: 3px"
                 type="text"
                 @click="handleDelete(item)"
@@ -42,6 +44,7 @@
                 删除
               </el-button>
               <el-button
+                v-has-permi="['btn:IntegralGoods:edit']"
                 style="float: right; padding: 3px"
                 type="text"
                 @click="handleEdit(item)"
@@ -153,7 +156,7 @@
   import Edit from './components/GoodsEdit'
   import { getIntegralGoodsList, delIntegralGoodsDel } from '@/api/basic'
   export default {
-    name: 'ProjectBandlist',
+    name: 'IntegralGoods',
     components: { Form, Edit },
     data() {
       return {
@@ -230,7 +233,6 @@
       // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
-        console.log(data)
       },
       // 列表数据请求函数 公共部分
       async fetchData() {

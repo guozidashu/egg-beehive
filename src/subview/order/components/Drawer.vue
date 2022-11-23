@@ -304,11 +304,9 @@
         this.search_type = tab.name
       },
       PrintBtn() {
-        console.log('打印')
         this.$emit('drawerPrint', 'multipleTable')
       },
       EditBtn() {
-        console.log('编辑')
         this.$emit('drawerhandleEdit', this.form)
       },
     },

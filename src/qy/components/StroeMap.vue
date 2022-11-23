@@ -78,7 +78,6 @@
           that.getAddress = new qq.maps.Geocoder({
             complete: function (result) {
               that.map.setCenter(result.detail.location)
-              console.log(result.detail.location)
               that.shopInfo.lng = result.detail.location.lng
               that.shopInfo.lat = result.detail.location.lat
               that.$emit('getPlace', that.shopInfo)
@@ -95,7 +94,6 @@
               that.addressKeyword = result.detail.address
               that.shopInfo.addr = result.detail.address
               that.$emit('getPlace', that.shopInfo)
-              console.log(that.shopInfo)
             },
           })
         })

@@ -21,7 +21,7 @@
               icon="align-center"
               style="float: right; margin: 6px 0 0 0"
             />
-            <el-button
+            <!-- <el-button
               native-type="submit"
               size="small"
               style="float: right; margin-right: 10px"
@@ -29,7 +29,7 @@
               @click="upMembers(1)"
             >
               启用
-            </el-button>
+            </el-button> -->
             <el-button
               v-if="form.drawerType == 1"
               native-type="submit"
@@ -45,7 +45,7 @@
               v-if="form.drawerType == 1"
               native-type="submit"
               size="small"
-              style="float: right"
+              style="float: right; margin-right: 10px"
               type="primary"
               @click="changeTypeBtn(2)"
             >
@@ -65,13 +65,21 @@
         </el-row>
       </div>
       <div style="display: flex">
-        <div
-          v-for="(item, index) in stalist"
-          :key="index"
-          style="display: flex; flex: 1; flex-direction: column"
-        >
-          <span style="margin-bottom: 12px">{{ item.name }}</span>
-          <span>{{ item.value }}</span>
+        <div style="display: flex; flex: 1; flex-direction: column">
+          <span style="margin-bottom: 12px">总采购数</span>
+          <span>{{ form.num }}</span>
+        </div>
+        <div style="display: flex; flex: 1; flex-direction: column">
+          <span style="margin-bottom: 12px">总采购金额</span>
+          <span>{{ form.total }}</span>
+        </div>
+        <div style="display: flex; flex: 1; flex-direction: column">
+          <span style="margin-bottom: 12px">库存数</span>
+          <span>{{ form.material_stock }}</span>
+        </div>
+        <div style="display: flex; flex: 1; flex-direction: column">
+          <span style="margin-bottom: 12px">库存价值</span>
+          <span>{{ form.stock_price }}</span>
         </div>
       </div>
     </div>
@@ -95,8 +103,8 @@
       <el-tab-pane label="物料信息" name="first" />
       <el-tab-pane label="入库信息" name="second" />
       <el-tab-pane label="出库信息" name="three" />
-      <el-tab-pane label="调整信息" name="four" />
-      <el-tab-pane label="库存明细" name="five" />
+      <el-tab-pane label="采购明细" name="four" />
+      <el-tab-pane label="退货明细" name="five" />
     </el-tabs>
     <div v-if="tabindex == '0'">
       <div v-if="form.drawerType == 1" ref="vab-print-table" class="drawer-tab">
@@ -290,16 +298,38 @@
       </el-form>
     </div>
     <List
-      v-else
+      v-if="tabindex == '1' || tabindex == '2' || tabindex == '4'"
       :list="orderList"
       :list-type="listType"
       :state="listLoading"
       style="margin: 20px"
     >
       <template #List>
-        <el-table-column label="id" prop="id" show-overflow-tooltip />
-        <el-table-column label="名称" prop="log" show-overflow-tooltip />
-        <el-table-column label="操作时间" prop="time" show-overflow-tooltip />
+        <el-table-column label="编号" prop="sn" show-overflow-tooltip />
+        <el-table-column label="仓库名称" prop="name" show-overflow-tooltip />
+        <el-table-column label="金额" prop="total" show-overflow-tooltip />
+        <el-table-column
+          label="创建时间"
+          prop="create_time"
+          show-overflow-tooltip
+        />
+      </template>
+    </List>
+    <List
+      v-if="tabindex == '3'"
+      :list="orderList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column label="编号" prop="sn" show-overflow-tooltip />
+        <el-table-column label="金额" prop="total" show-overflow-tooltip />
+        <el-table-column
+          label="创建时间"
+          prop="create_time"
+          show-overflow-tooltip
+        />
       </template>
     </List>
     <vab-upload
@@ -317,7 +347,11 @@
   import VabPrint from '@/extra/VabPrint'
   import VabUpload from '@/extra/VabUpload'
   import List from '@/subview/components/List'
-  import { getCommonAllList, addMaterialSave } from '@/api/basic'
+  import {
+    getCommonAllList,
+    addMaterialSave,
+    getMaterialInfoList,
+  } from '@/api/basic'
   import { mapGetters } from 'vuex'
   export default {
     name: 'ComponentsDrawer',
@@ -332,40 +366,11 @@
       return {
         activeName: 'first',
         tabindex: '0',
-        form: Object.assign({}, this.drawerInof),
+        form: JSON.parse(JSON.stringify(this.drawerInof)),
         listLoading: false,
         listType: 2,
         selectList: [],
-        orderList: [
-          {
-            id: 4525,
-            log: '用户付款成功',
-            time: '2022-10-10 16:33:41',
-          },
-          {
-            id: 4525,
-            log: '用户付款成功',
-            time: '2022-10-10 16:33:41',
-          },
-        ],
-        stalist: [
-          {
-            name: '总采购数',
-            value: '24750',
-          },
-          {
-            name: '总采购金额',
-            value: '￥34750',
-          },
-          {
-            name: '库存数',
-            value: '247',
-          },
-          {
-            name: '库存价值',
-            value: '800元',
-          },
-        ],
+        orderList: [],
       }
     },
     computed: {
@@ -379,8 +384,15 @@
       },
       drawerInof: {
         handler: function (newVal) {
-          this.form = Object.assign({}, newVal)
-          console.log(2222, newVal)
+          this.form = JSON.parse(JSON.stringify(newVal))
+          if (this.form.drawerType == 3) {
+            this.form.material_spec = [
+              {
+                spec_name: null, //规格名称
+                spec_price: null, //规格单价
+              },
+            ]
+          }
         },
         deep: true,
       },
@@ -405,11 +417,13 @@
         const { data } = await getCommonAllList({
           type: 'material_category,supplier,unit',
         })
-        console.log(787878, data)
         this.selectList = data
       },
       async changeTypeBtn(e) {
-        console.log(1111, this.form)
+        if (e == 2) {
+          this.form.drawerType = e
+          return
+        }
         if (this.form.id == undefined) {
           this.form.id = 0
           const { code } = await addMaterialSave(this.form)
@@ -439,9 +453,15 @@
         this.form.material_spec.splice(index, 1)
       },
       // 列表数据表头切换监听 自定义部分
-      handleClick(tab) {
-        console.log(8989, tab)
+      async handleClick(tab) {
         this.tabindex = tab.index
+        if (tab.index != 0) {
+          const { data } = await getMaterialInfoList({
+            material_id: this.form.id, //物料id
+            type: tab.index, //1入库信息 2出库信息 3调整明细 4库存明细
+          })
+          this.orderList = data.data
+        }
       },
       selectAddress(selectProvince, selectCity, selectArea) {
         console.log(selectProvince, selectCity, selectArea)

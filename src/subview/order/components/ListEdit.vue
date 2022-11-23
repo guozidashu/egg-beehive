@@ -200,9 +200,7 @@
         }
         this.dialogFormVisible = true
       },
-      handleChange(value) {
-        console.log(value)
-      },
+      handleChange() {},
       close() {
         this.$refs['form'].resetFields()
         this.form = this.$options.data().form

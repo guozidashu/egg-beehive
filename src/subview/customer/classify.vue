@@ -50,7 +50,13 @@
           <el-table-column label="分类说明（备注）" prop="remark" />
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
-              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+              <el-button
+                v-has-permi="['btn:CustomerClassify:edit']"
+                type="text"
+                @click="handleEdit(row)"
+              >
+                编辑
+              </el-button>
               <el-button
                 v-has-permi="['btn:CustomerClassify:del']"
                 type="text"
@@ -134,7 +140,6 @@
       },
       changeBtnPageSize(data) {
         this.form.pageSize = data
-        console.log(data)
       },
       async fetchData() {
         this.listLoading = true

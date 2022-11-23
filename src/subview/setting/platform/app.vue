@@ -150,7 +150,13 @@
           </span>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('form')">保存</el-button>
+          <el-button
+            v-has-permi="['btn:PlatformApp:edit']"
+            type="primary"
+            @click="submitForm('form')"
+          >
+            保存
+          </el-button>
         </el-form-item>
       </el-form>
     </el-card>

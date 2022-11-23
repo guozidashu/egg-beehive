@@ -756,6 +756,7 @@
       </div>
       <el-form-item v-if="activeName != '同步设置'">
         <el-button
+          v-has-permi="['btn:SystemStore:edit']"
           style="margin-top: 10px"
           type="primary"
           @click="submitForm('form')"

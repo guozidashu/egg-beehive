@@ -108,8 +108,8 @@ const actions = {
           'error',
           'vab-hey-message-error'
         )
-      if (list[list.length - 1].path !== '*')
-        list.push({ path: '*', redirect: '/404', meta: { hidden: true } })
+      // if (list[list.length - 1].path !== '*')
+      //   list.push({ path: '*', redirect: '/404', meta: { hidden: true } })
       routes = convertRouter(list)
     }
     // 根据权限和rolesControl过滤路由
@@ -117,6 +117,29 @@ const actions = {
     // 设置菜单所需路由
     commit('setRoutes', JSON.parse(JSON.stringify(accessRoutes)))
     // 根据可访问路由重置Vue Router
+    console.log(6666666666, accessRoutes)
+    accessRoutes.push(
+      {
+        path: '/403',
+        name: '403',
+        component: () => import('@/views/403'),
+        meta: {
+          hidden: true,
+        },
+      },
+      {
+        path: '/404',
+        name: '404',
+        component: () => import('@/views/404'),
+        meta: {
+          hidden: true,
+        },
+      },
+      {
+        path: '*', //匹配未定义的路由
+        redirect: '/404', //重定向
+      }
+    )
     await resetRouter(accessRoutes)
   },
   /**

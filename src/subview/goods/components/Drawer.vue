@@ -821,7 +821,6 @@
         }
         if (this.lockSta) {
           this.form.lock_price = 1
-          console.log(7878787, this.zhekouList)
           let arr = []
           let arr1 = []
           this.zhekouList.forEach((item) => {

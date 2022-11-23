@@ -6,9 +6,10 @@
           <vab-query-form>
             <vab-query-form-top-panel :span="12">
               <el-button
+                v-has-permi="['btn:Menu:add']"
                 icon="el-icon-plus"
                 type="primary"
-                @click="handleEdit($event)"
+                @click="handleEdit('add', 1)"
               >
                 添加
               </el-button>
@@ -35,18 +36,39 @@
                 <vab-icon v-if="row.icon" :icon="row.icon" />
               </template>
             </el-table-column>
-            <el-table-column label="是否固定" show-overflow-tooltip>
+            <el-table-column label="页面按钮" show-overflow-tooltip>
               <template #default="{ row }">
-                {{ row.meta && row.meta.noClosable ? '是' : '否' }}
+                <div v-if="row.guard.length != 0">
+                  <el-tag v-for="(item, index) in row.guard" :key="index">
+                    {{ item.title }}
+                  </el-tag>
+                </div>
               </template>
             </el-table-column>
-            <el-table-column label="操作" show-overflow-tooltip width="185">
+            <el-table-column label="操作" show-overflow-tooltip width="300">
               <template #default="{ row }">
-                <el-button type="primary" @click="handleEdit(row)">
+                <el-button
+                  v-if="row.children == undefined"
+                  v-has-permi="['btn:Menu:button']"
+                  type="primary"
+                  @click="handleEdit(row, 2)"
+                >
+                  <vab-icon icon="edit-2-line" />
+                  按钮
+                </el-button>
+                <el-button
+                  v-has-permi="['btn:Menu:edit']"
+                  type="primary"
+                  @click="handleEdit(row, 1)"
+                >
                   <vab-icon icon="edit-2-line" />
                   编辑
                 </el-button>
-                <el-button type="danger" @click="handleDelete(row)">
+                <el-button
+                  v-has-permi="['btn:Menu:del']"
+                  type="danger"
+                  @click="handleDelete(row)"
+                >
                   <vab-icon icon="delete-bin-6-line" />
                   删除
                 </el-button>
@@ -91,13 +113,23 @@
       this.fetchData()
     },
     methods: {
-      handleEdit(row) {
-        console.log(1111, row)
-        if (row.path) {
-          row.isState = 1
-          this.$refs['edit'].showEdit(row)
+      handleEdit(row, type) {
+        if (type == 1) {
+          if (row.path) {
+            row.isState = 1
+            // row.
+            this.$refs['edit'].showEdit(row, 1)
+          } else {
+            this.$refs['edit'].showEdit(null, 1)
+          }
         } else {
-          this.$refs['edit'].showEdit()
+          if (row.path) {
+            row.isState = 1
+            if (row.guard.length == 0) {
+              row.guard = []
+            }
+            this.$refs['edit'].showEdit(row, 2)
+          }
         }
       },
       handleDelete(row) {
@@ -112,7 +144,6 @@
       async fetchData(role) {
         this.listLoading = true
         const { data } = await getMenuList({ role })
-        console.log(data)
         this.list = data
         this.listLoading = false
       },

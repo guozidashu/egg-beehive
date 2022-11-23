@@ -415,12 +415,9 @@
     },
     methods: {
       handleClick(tab) {
-        // console.log(tab)
         this.name = tab.name
-        // console.log(this.name)
       },
       handleSelectionChange(index) {
-        console.log(index)
         this.disabled = index
       },
     },

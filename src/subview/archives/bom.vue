@@ -41,6 +41,7 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
+            v-has-permi="['btn:ArchivesBom:add']"
             native-type="submit"
             size="small"
             type="primary"
@@ -72,36 +73,34 @@
             </template>
           </el-table-column>
           <el-table-column label="物料名称" prop="material_name" />
-          <el-table-column label="物料分类" prop="name" width="120" />
+          <el-table-column label="物料分类" prop="category_name" width="120" />
           <el-table-column label="供应商名称" prop="supplier_name" />
-          <el-table-column label="采购价" prop="name" width="120" />
-          <el-table-column label="总采购量" prop="name" width="120" />
+          <el-table-column label="采购价" prop="material_price" width="120" />
+          <el-table-column label="总采购量" prop="num" width="120" />
           <el-table-column label="当前库存" prop="material_stock" width="120" />
-          <el-table-column label="状态" prop="name" width="120">
-            <template #default="{ row }">
-              <el-switch
-                v-model="row.status"
-                active-color="#41B584"
-                active-text="开启"
-                :active-value="1"
-                class="switch"
-                inactive-color="#D2D2D2"
-                inactive-text="关闭"
-                :inactive-value="0"
-                style="margin: 0 10px"
-                @change="turnOnOff(row)"
-              />
-            </template>
-          </el-table-column>
           <el-table-column fixed="right" label="操作" width="120">
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row, 1)">
+              <el-button
+                v-has-permi="['btn:ArchivesBom:view']"
+                type="text"
+                @click="handleDetail(row, 1)"
+              >
                 详情
               </el-button>
-              <el-button type="text" @click="handleDetail(row, 2)">
+              <el-button
+                v-has-permi="['btn:ArchivesBom:edit']"
+                type="text"
+                @click="handleDetail(row, 2)"
+              >
                 编辑
               </el-button>
-              <el-button type="text" @click="handleDelete(row)">删除</el-button>
+              <el-button
+                v-has-permi="['btn:ArchivesBom:del']"
+                type="text"
+                @click="handleDelete(row)"
+              >
+                删除
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -175,25 +174,32 @@
           this.title = '添加物料'
         }
         if (row == 'add') {
-          this.drawerInof = {
+          let arr = {
+            width: null, //规格宽度
             material_spec: [
               {
                 spec_name: null, //规格名称
                 spec_price: null, //规格单价
               },
             ],
+            drawerType: type,
           }
-          this.drawerInof.drawerType = type
+          this.drawerInof = JSON.parse(JSON.stringify(arr))
         } else {
           const { data } = await getMaterialInfo({
-            material_id: row.material_id,
+            material_id: row.id,
           })
+          data[0].material_stock = row.material_stock
+          data[0].num = row.num
+          data[0].total = row.total
+          data[0].id = row.id
           this.drawerInof = JSON.parse(JSON.stringify(data[0]))
           this.drawerInof.drawerType = type
         }
         this.drawer = true
       },
       handleClose() {
+        this.drawerInof = {}
         this.drawer = false
       },
       handleQuery() {

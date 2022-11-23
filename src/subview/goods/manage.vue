@@ -95,6 +95,7 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
+            v-has-permi="['btn:GoodsManage:add']"
             native-type="submit"
             size="small"
             type="primary"
@@ -160,10 +161,18 @@
           </el-table-column>
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row, 1)">
+              <el-button
+                v-has-permi="['btn:GoodsManage:view']"
+                type="text"
+                @click="handleDetail(row, 1)"
+              >
                 详情
               </el-button>
-              <el-button type="text" @click="handleDetail(row, 2)">
+              <el-button
+                v-has-permi="['btn:GoodsManage:edit']"
+                type="text"
+                @click="handleDetail(row, 2)"
+              >
                 编辑
               </el-button>
             </template>

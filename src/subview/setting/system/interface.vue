@@ -152,7 +152,13 @@
           </el-form-item>
         </div>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('form')">确认</el-button>
+          <el-button
+            v-has-permi="['btn:SystemInterface:edit']"
+            type="primary"
+            @click="submitForm('form')"
+          >
+            确认
+          </el-button>
         </el-form-item>
         <div style="font-weight: 600">回调配置</div>
         <el-divider style="margin-bottom: 0" />
@@ -404,12 +410,10 @@
           this.form.jst_app_key = temp.jst_app_key
           this.form.jst_app_secret = temp.jst_app_secret
         }
-        console.log(this.form)
       },
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            console.log(this.activeName)
             if (this.activeName == '聚水潭ERP') {
               const { code } = await editJuShuiTan({
                 jst_api_open: this.form.jst_api_open, //聚水潭接口是否开启

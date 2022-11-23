@@ -117,6 +117,7 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
+            v-has-permi="['btn:CustomerManage:add']"
             native-type="submit"
             size="small"
             type="primary"
@@ -179,10 +180,18 @@
             width="100"
           >
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row, 2)">
+              <el-button
+                v-has-permi="['btn:CustomerManage:edit']"
+                type="text"
+                @click="handleDetail(row, 2)"
+              >
                 编辑
               </el-button>
-              <el-button type="text" @click="handleDetail(row, 1)">
+              <el-button
+                v-has-permi="['btn:CustomerManage:view']"
+                type="text"
+                @click="handleDetail(row, 1)"
+              >
                 详情
               </el-button>
               <!-- <el-button type="text">发货</el-button> -->
@@ -304,8 +313,7 @@
       changeBtnSta(data) {
         this.form.fold = data
       },
-      handleClick(tab) {
-        console.log(1111, tab.label)
+      handleClick() {
         this.form.page = 1
       },
       changeBtnPage(data) {

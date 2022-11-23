@@ -145,7 +145,6 @@
     created() {},
     methods: {
       addDataList(index) {
-        console.log(21313, index)
         let temp = 0
         if (index === 0 || index === 1 || index === 7) {
           temp = 1

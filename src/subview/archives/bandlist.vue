@@ -20,6 +20,7 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
+            v-has-permi="['btn:ArchivesBandlist:add']"
             native-type="submit"
             size="small"
             type="primary"
@@ -65,8 +66,20 @@
             width="85"
           >
             <template #default="{ row }">
-              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <el-button type="text" @click="handleDelete(row)">删除</el-button>
+              <el-button
+                v-has-permi="['btn:ArchivesBandlist:edit']"
+                type="text"
+                @click="handleEdit(row)"
+              >
+                编辑
+              </el-button>
+              <el-button
+                v-has-permi="['btn:ArchivesBandlist:del']"
+                type="text"
+                @click="handleDelete(row)"
+              >
+                删除
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -159,13 +172,11 @@
       // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
-        console.log(data)
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
         this.listLoading = true
         const { data } = await getBandList(this.form)
-        console.log(787878, data.data)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

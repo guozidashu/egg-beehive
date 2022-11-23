@@ -29,6 +29,7 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
+            v-has-permi="['btn:FinancialBillList:add']"
             native-type="submit"
             size="small"
             type="primary"
@@ -85,8 +86,20 @@
           />
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
-              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <el-button type="text" @click="handleDelete(row)">作废</el-button>
+              <el-button
+                v-has-permi="['btn:FinancialBillList:edit']"
+                type="text"
+                @click="handleEdit(row)"
+              >
+                编辑
+              </el-button>
+              <el-button
+                v-has-permi="['btn:FinancialBillList:zuofei']"
+                type="text"
+                @click="handleDelete(row)"
+              >
+                作废
+              </el-button>
             </template>
           </el-table-column>
         </template>

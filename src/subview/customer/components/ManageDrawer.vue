@@ -46,7 +46,7 @@
                 v-if="form.drawerType == 1"
                 native-type="submit"
                 size="small"
-                style="float: right"
+                style="float: right; margin-right: 10px"
                 type="primary"
                 @click="changeTypeBtn(2)"
               >
@@ -56,7 +56,7 @@
                 v-if="form.drawerType == 2"
                 native-type="submit"
                 size="small"
-                style="float: right"
+                style="float: right; margin-right: 10px"
                 type="primary"
                 @click="changeTypeBtn(1)"
               >

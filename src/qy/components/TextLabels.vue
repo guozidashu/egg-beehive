@@ -63,8 +63,5 @@
         },
       }
     },
-    created() {
-      console.log(23222222222, this.width)
-    },
   }
 </script>

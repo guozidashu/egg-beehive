@@ -298,16 +298,12 @@
     watch: {
       form: {
         handler: function (newVal) {
-          console.log(22222, this.formDrawer)
           this.formDrawer = Object.assign({}, newVal)
-          console.log(3333, this.formDrawer)
         },
         deep: true,
       },
     },
-    created() {
-      console.log(11111, this.formDrawer)
-    },
+    created() {},
     methods: {
       selectSubit() {
         this.tableData[this.index].name = this.address

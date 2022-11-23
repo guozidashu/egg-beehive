@@ -143,7 +143,11 @@
             <span style="font-weight: 600">安全模式</span>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('form')">
+            <el-button
+              v-has-permi="['btn:PlatformWxgong:edit']"
+              type="primary"
+              @click="submitForm('form')"
+            >
               保存
             </el-button>
             <el-button>上传公众号接口校验文件</el-button>
@@ -233,7 +237,11 @@
             </el-form-item>
           </div>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('form1')">
+            <el-button
+              v-has-permi="['btn:PlatformWxgong:edit']"
+              type="primary"
+              @click="submitForm('form1')"
+            >
               保存
             </el-button>
           </el-form-item>
@@ -328,7 +336,6 @@
           this.form1.pem_sign = temp.pem_sign
           this.form1.sign_key = temp.sign_key
         }
-        console.log(this.form)
       },
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {

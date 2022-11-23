@@ -103,7 +103,13 @@
             width="85"
           >
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">详情</el-button>
+              <el-button
+                v-has-permi="['btn:ProductPlanning:view']"
+                type="text"
+                @click="handleDetail(row)"
+              >
+                详情
+              </el-button>
             </template>
           </el-table-column>
         </template>

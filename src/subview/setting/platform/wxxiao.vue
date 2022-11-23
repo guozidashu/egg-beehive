@@ -91,7 +91,11 @@
             <span style="font-weight: 600">https://new.shopvvv.cn</span>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('form')">
+            <el-button
+              v-has-permi="['btn:PlatformWxxiao:edit']"
+              type="primary"
+              @click="submitForm('form')"
+            >
               保存
             </el-button>
             <el-button>上传小程序接口校验文件</el-button>
@@ -181,7 +185,11 @@
             </el-form-item>
           </div>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('form1')">
+            <el-button
+              v-has-permi="['btn:PlatformWxxiao:edit']"
+              type="primary"
+              @click="submitForm('form1')"
+            >
               保存
             </el-button>
           </el-form-item>
@@ -316,7 +324,6 @@
           this.form1.wxpay_sub_mchid = temp.wxpay_sub_mchid
           this.form1.wxpay_mchkey = temp.wxpay_mchkey
         }
-        console.log(this.form)
       },
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {

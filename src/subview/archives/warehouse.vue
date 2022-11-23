@@ -32,6 +32,7 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
+            v-has-permi="['btn:ArchivesWarehouse:add']"
             native-type="submit"
             size="small"
             type="primary"
@@ -71,9 +72,25 @@
             width="150"
           >
             <template #default="{ row }">
-              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <el-button type="text" @click="handleDelete(row)">删除</el-button>
-              <el-button type="text" @click="handleDetail(row.id)">
+              <el-button
+                v-has-permi="['btn:ArchivesWarehouse:edit']"
+                type="text"
+                @click="handleEdit(row)"
+              >
+                编辑
+              </el-button>
+              <el-button
+                v-has-permi="['btn:ArchivesWarehouse:del']"
+                type="text"
+                @click="handleDelete(row)"
+              >
+                删除
+              </el-button>
+              <el-button
+                v-has-permi="['btn:ArchivesWarehouse:kuwei']"
+                type="text"
+                @click="handleDetail(row.id)"
+              >
                 库位
               </el-button>
             </template>

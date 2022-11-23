@@ -33,10 +33,22 @@
                     </span>
                     <el-dropdown-menu slot="dropdown">
                       <el-dropdown-item>
-                        <span @click="handleEdit(item, 2)">编辑</span>
+                        <el-button
+                          v-has-permi="['btn:ArchivesColor:edit']"
+                          type="text"
+                          @click="handleEdit(item, 2)"
+                        >
+                          编辑
+                        </el-button>
                       </el-dropdown-item>
                       <el-dropdown-item>
-                        <span @click="handleDelete(item, 2)">删除</span>
+                        <el-button
+                          v-has-permi="['btn:ArchivesColor:del']"
+                          type="text"
+                          @click="handleDelete(item, 2)"
+                        >
+                          删除
+                        </el-button>
                       </el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
@@ -51,6 +63,7 @@
           <el-form ref="form" :inline="true" @submit.native.prevent>
             <el-form-item>
               <el-button
+                v-has-permi="['btn:ArchivesColor:add']"
                 native-type="submit"
                 size="small"
                 type="primary"
@@ -59,6 +72,7 @@
                 添加颜色
               </el-button>
               <el-button
+                v-has-permi="['btn:ArchivesColor:add']"
                 native-type="submit"
                 size="small"
                 type="primary"
@@ -120,10 +134,18 @@
                 width="85"
               >
                 <template #default="{ row }">
-                  <el-button type="text" @click="handleEdit(row, 1)">
+                  <el-button
+                    v-has-permi="['btn:ArchivesColor:edit']"
+                    type="text"
+                    @click="handleEdit(row, 1)"
+                  >
                     编辑
                   </el-button>
-                  <el-button type="text" @click="handleDelete(row, 1)">
+                  <el-button
+                    v-has-permi="['btn:ArchivesColor:del']"
+                    type="text"
+                    @click="handleDelete(row, 1)"
+                  >
                     删除
                   </el-button>
                 </template>

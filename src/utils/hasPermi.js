@@ -24,7 +24,6 @@ hasPermi.install = (Vue) => {
           return permissionFlag[0] === role
         })
 
-        console.log(hasPermissions)
         // 没有权限-移除页面上的控件
         if (!hasPermissions) {
           {

@@ -109,7 +109,6 @@
             }
           })
         })
-        console.log(this.color)
         this.$forceUpdate()
       },
       ColorInit() {

@@ -275,8 +275,7 @@
         this.form.pageSize = data
       },
       // 列表数据表头切换监听 自定义部分
-      handleClick(tab) {
-        console.log(1111, tab.label)
+      handleClick() {
         this.form.page = 1
       },
       // 列表数据请求函数 公共部分

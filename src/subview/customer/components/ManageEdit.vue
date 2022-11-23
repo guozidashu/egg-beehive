@@ -125,12 +125,10 @@
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        console.log(9090909, data)
         this.form.page = data
       },
       // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {
-        console.log(8080080, data)
         this.form.pageSize = data
       },
       // 列表数据请求函数 公共部分

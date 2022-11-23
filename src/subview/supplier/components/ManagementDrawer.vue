@@ -592,7 +592,6 @@ d
             this.form.city,
             this.form.district,
           ]
-          console.log()
           if (this.form.produce_type != undefined) {
             if (this.form.produce_type.indexOf(',') != -1) {
               this.form.produce_type = this.form.produce_type.split(',')
@@ -637,13 +636,11 @@ d
         this.form.district = selectArea
       },
       async changeTypeBtn(e) {
-        console.log(89898989, e)
         if (e != 1) {
           this.form.drawerType = e
           this.$forceUpdate()
           return
         } else {
-          console.log(1111, this.form)
           this.form.drawerType = e
         }
         if (this.form.id == undefined) {

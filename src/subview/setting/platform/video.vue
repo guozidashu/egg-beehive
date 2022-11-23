@@ -38,7 +38,13 @@
           <el-input v-model="form.key" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('form')">确认</el-button>
+          <el-button
+            v-has-permi="['btn:PlatformVideo:edit']"
+            type="primary"
+            @click="submitForm('form')"
+          >
+            确认
+          </el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -79,7 +85,6 @@
     methods: {
       async fetchData() {
         const { data } = await getConfig({ key: 'wechat_video' })
-        console.log(data)
         if (data !== null) {
           this.form = JSON.parse(data)
         }

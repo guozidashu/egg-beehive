@@ -120,6 +120,7 @@
         </div>
         <el-form-item>
           <el-button
+            v-has-permi="['btn:SystemStorage:edit']"
             style="margin-top: 10px"
             type="primary"
             @click="submitForm('form')"
@@ -336,13 +337,10 @@
             this.form.photo_reduce2 = Number(temp.photo_reduce)
           }
         }
-
-        console.log(this.form)
       },
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            console.log(this.activeName)
             if (this.activeName == '本地存储') {
               const { code } = await editLocalStore({
                 state: this.form.state, //接口是否开启

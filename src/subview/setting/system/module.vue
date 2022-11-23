@@ -85,6 +85,7 @@
             </el-form-item>
             <el-form-item>
               <el-button
+                v-has-permi="['btn:SystemModule:edit']"
                 style="margin-top: 10px"
                 type="primary"
                 @click="submitForm('form1')"
@@ -138,6 +139,7 @@
             </el-form-item>
             <el-form-item>
               <el-button
+                v-has-permi="['btn:SystemModule:edit']"
                 style="margin-top: 10px"
                 type="primary"
                 @click="submitForm('form2')"
@@ -194,6 +196,7 @@
             </el-form-item>
             <el-form-item>
               <el-button
+                v-has-permi="['btn:SystemModule:edit']"
                 style="margin-top: 10px"
                 type="primary"
                 @click="submitForm('form3')"
@@ -223,6 +226,7 @@
             </el-form-item>
             <el-form-item>
               <el-button
+                v-has-permi="['btn:SystemModule:edit']"
                 style="margin-top: 10px"
                 type="primary"
                 @click="submitForm('form4')"
@@ -249,6 +253,7 @@
             </el-form-item>
             <el-form-item>
               <el-button
+                v-has-permi="['btn:SystemModule:edit']"
                 style="margin-top: 10px"
                 type="primary"
                 @click="submitForm('form5')"
@@ -290,6 +295,7 @@
             </el-form-item>
             <el-form-item>
               <el-button
+                v-has-permi="['btn:SystemModule:edit']"
                 style="margin-top: 10px"
                 type="primary"
                 @click="submitForm('form6')"

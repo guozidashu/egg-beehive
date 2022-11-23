@@ -78,7 +78,7 @@
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="form.order_source" @tab-click="handleClick">
         <el-tab-pane
-          :label="'所有订单(' + orderCountData.all_count + ')'"
+          :label="'所有订单(' + orderCountData.all_order + ')'"
           name="0"
         />
         <el-tab-pane
@@ -177,7 +177,13 @@
                 发送货
               </el-button>
               <span v-if="row.state === '待收款'">|</span> -->
-              <el-button type="text" @click="handleDetail(row)">详情</el-button>
+              <el-button
+                v-has-permi="['btn:OrderList:view']"
+                type="text"
+                @click="handleDetail(row)"
+              >
+                详情
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -218,7 +224,7 @@
         orderCountData: {
           erp_count: null,
           shop_count: null,
-          all_count: null,
+          all_order: null,
         },
         form: {
           fold: true,
@@ -243,6 +249,7 @@
       form: {
         handler: function () {
           this.fetchData()
+          this.orderCount()
         },
         deep: true,
       },
@@ -284,8 +291,7 @@
         this.listLoading = false
       },
       async orderCount() {
-        const { data } = await getOrderCount()
-        console.log(data)
+        const { data } = await getOrderCount(this.form)
         this.orderCountData = data
       },
       handleDetail(row) {
@@ -295,11 +301,9 @@
         })
         row.order_status1 = order_status1
         this.drawerInof = JSON.parse(JSON.stringify(row))
-        console.log(1111, this.drawerInof)
         this.drawer = true
       },
       async handleEdit(row) {
-        console.log(222, row)
         if (row === 'add') {
           this.$refs['edit'].showEdit()
         } else {
@@ -316,7 +320,6 @@
         foldSideBar: 'settings/foldSideBar',
       }),
       async print(val) {
-        console.log(111, val)
         await this.foldSideBar()
         await VabPrint(this.$refs[val], { noPrintParent: true })
         await this.openSideBar()
@@ -327,7 +330,6 @@
       },
       handleDownload() {
         if (this.exclList.length) {
-          console.log(888, this.exclList)
           this.downloadLoading = true
           import('@/utils/excel').then((excel) => {
             const tHeader = [

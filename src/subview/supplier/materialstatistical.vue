@@ -434,7 +434,6 @@
       async fetchList() {
         this.listLoading = true
         const { data } = await getMaterialCountRank({ time: this.form.date1 })
-        console.log(data)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

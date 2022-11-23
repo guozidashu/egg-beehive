@@ -327,7 +327,6 @@
       },
       async getCircular() {
         const { data } = await getFinanceCostCount(this.goodsForm1)
-        console.log(data)
         let arr = []
         data.line_date.forEach((item) => {
           for (let i in item) {
@@ -350,7 +349,6 @@
         this.dataObj.xAxis.data = this.dateList1
         this.dataObj.series[0].data = this.dataAllList1.count_num
         this.dataObj.series[1].data = this.dataAllList1.sum_total
-        console.log(787989, this.dataObj)
         data.list.accounts.forEach((item) => {
           this.branchList.push({
             value: item.num,
@@ -493,7 +491,6 @@
       },
       // 导出
       handleDownload() {
-        console.log(888, this.goodsStaList)
         import('@/utils/excel').then((excel) => {
           const tHeader = ['名称', '数量', '环比数量']
           const filterVal = ['title', 'num', 'number']

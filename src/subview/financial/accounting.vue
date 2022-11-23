@@ -175,18 +175,15 @@
         this.form.fold = data
       },
       // 列表表单子组件查询事件   公共部分
-      handleQuery(data) {
-        console.log(6666, data)
+      handleQuery() {
         this.form.page = 1
       },
       // 列表表单单选标签监听  自定义部分
-      changeHandler(data) {
-        console.log(888, data)
+      changeHandler() {
         this.form.page = 1
       },
       // 列表数据表头切换监听 自定义部分
-      handleClick(tab) {
-        console.log(1111, tab.label)
+      handleClick() {
         this.form.page = 1
       },
 
@@ -194,12 +191,10 @@
 
       // 列表数据改变页数   公共部分
       changeBtnPage(data) {
-        console.log(9090909, data)
         this.form.page = data
       },
       // 列表数据改变每页条数  自定义部分
       changeBtnPageSize(data) {
-        console.log(8080080, data)
         this.form.pageSize = data
       },
       // 列表数据请求函数 公共部分

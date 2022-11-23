@@ -175,7 +175,7 @@ export function getCustomerList(data) {
 // 研发进度
 export function getPlannedList(data) {
   return request({
-    url: '/research/plannedList',
+    url: '/research/researchPace',
     method: 'post',
     data,
   })
@@ -854,6 +854,13 @@ export function getMaterialMaterialDetail(data) {
   })
 }
 // 菜单管理
+export function editButtonSave(data) {
+  return request({
+    url: '/menu/buttonSave',
+    method: 'post',
+    data,
+  })
+}
 export function getMenuList(data) {
   return request({
     url: '/menu/menuList',
@@ -1113,6 +1120,13 @@ export function getAdminList(data) {
   })
 }
 // 物料管理
+export function getMaterialInfoList(data) {
+  return request({
+    url: '/archive/materialInfoList',
+    method: 'post',
+    data,
+  })
+}
 export function delMaterialDel(data) {
   return request({
     url: '/archive/materialDel',

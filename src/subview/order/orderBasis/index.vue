@@ -474,17 +474,11 @@
     },
     methods: {
       handleClick(tab) {
-        // console.log(tab)
         this.name = tab.name
-        // console.log(this.name)
       },
       handleSelectionChange(selection) {
-        console.log(selection)
         this.disabled = selection
       },
-      // select1(selection, row) {
-      //   console.log(selection, '11111111111111111', row)
-      // },
     },
   }
 </script>

@@ -81,7 +81,13 @@
           <span>https://new.shopvvv.cn</span>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('form')">保存</el-button>
+          <el-button
+            v-has-permi="['btn:PlatformTtxiao:edit']"
+            type="primary"
+            @click="submitForm('form')"
+          >
+            保存
+          </el-button>
           <el-button @click="submitForm('form')">下载代码包</el-button>
         </el-form-item>
       </el-form>
@@ -173,7 +179,6 @@
         if (data !== null) {
           this.form = JSON.parse(data)
         }
-        console.log(111111, this.form)
       },
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {

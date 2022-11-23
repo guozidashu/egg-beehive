@@ -377,7 +377,6 @@
       },
       async getCircular() {
         const { data } = await getStockCircular()
-        console.log(data)
         data.category_stock_data.forEach((item) => {
           this.branchList.push({
             value: item.category_stock_num,
@@ -399,7 +398,6 @@
       },
       // 导出
       handleDownload() {
-        console.log(888, this.goodsStaList)
         import('@/utils/excel').then((excel) => {
           const tHeader = ['名称', '数量', '环比数量']
           const filterVal = ['title', 'num', 'number']

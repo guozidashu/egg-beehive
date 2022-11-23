@@ -110,7 +110,6 @@ export default {
       const s = time.getSeconds() //获取当前秒数(0-59)
       // 获取指定的过去时间
       const past = M - month
-      console.log(78787, past)
       const pastM = past < 0 ? past + 12 : past > 9 ? past : '0' + past
       // 小于9的，在前面加0
       const MM = M > 9 ? M : '0' + M

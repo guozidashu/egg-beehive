@@ -154,12 +154,8 @@
           des: '',
         }
       },
-      handleChange(value) {
-        // console.log(value)
-      },
-      handleRemove(file, fileList) {
-        // console.log(file, fileList)
-      },
+      handleChange() {},
+      handleRemove() {},
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url
         this.dialogVisible = true

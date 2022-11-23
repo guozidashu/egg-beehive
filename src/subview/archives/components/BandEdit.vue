@@ -53,7 +53,6 @@
           this.title = '添加'
         } else {
           this.title = '编辑'
-          console.log(7878787, row)
           this.form = Object.assign({}, row)
         }
         this.dialogFormVisible = true

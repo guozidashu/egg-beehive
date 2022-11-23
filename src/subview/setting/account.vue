@@ -20,12 +20,15 @@
           :model="inof"
           style="width: 100%; min-height: 500px; padding-left: 20px"
         >
-          <div v-if="state">
+          <div v-if="!state">
             <el-form-item label="商户名称：" style="height: 33px">
               {{ inof.name }}
-              <vab-icon
-                icon="ball-pen-line"
+              <el-button
+                v-has-permi="['btn:Account:edit']"
+                circle
+                icon="el-icon-edit"
                 style="float: right"
+                type="primary"
                 @click="editForm"
               />
             </el-form-item>
@@ -54,9 +57,12 @@
           <div v-else style="width: 100%">
             <el-form-item label="商户名称：">
               <el-input v-model="inof.name" style="width: 70%" />
-              <vab-icon
-                icon="ball-pen-line"
+              <el-button
+                v-has-permi="['btn:Account:edit']"
+                circle
+                icon="el-icon-edit"
                 style="float: right"
+                type="primary"
                 @click="editForm"
               />
             </el-form-item>
@@ -383,7 +389,6 @@
     methods: {
       async fetchData() {
         const { data } = await getAccountDetail()
-        console.log(data)
         this.inof = data.merchant
         if (this.inof.erp_open == 1) {
           this.erp_openChecked = true

@@ -388,7 +388,6 @@
       drawerInof: {
         handler: function (newVal) {
           this.form = Object.assign({}, newVal)
-          console.log(2222, newVal)
         },
         deep: true,
       },
@@ -396,7 +395,6 @@
     created() {},
     methods: {
       handleClick(tab) {
-        console.log(8989, tab)
         this.tabindex = tab.index
       },
     },

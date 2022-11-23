@@ -226,7 +226,6 @@
       },
       // 详情抽屉
       handleDetail(row) {
-        console.log(row)
         if (row === 'add') {
           this.formDrawer.title = '新增配送方式'
         } else {
@@ -241,7 +240,6 @@
       //   if (row === 'add') {
       //     this.$refs['edit'].showEdit()
       //   } else {
-      //     console.log(65466546, row)
       //     this.$refs['edit'].showEdit(row)
       //   }
       // },
@@ -251,7 +249,6 @@
       },
       handleDownload() {
         if (this.exclList.length) {
-          console.log(888, this.exclList)
           this.downloadLoading = true
           import('@/utils/excel').then((excel) => {
             const tHeader = ['Id', '名称', '区域及价格', '满额包邮', '状态']

@@ -468,15 +468,12 @@
       handleShow() {
         this.$refs['vabUpload'].handleShow()
       },
-      handleChange(value) {
-        console.log(value)
-      },
+      handleChange() {},
       showEdit(row) {
         if (!row) {
           this.title = '添加会员等级'
         } else {
           this.title = '编辑'
-          console.log(78787878, row)
           this.form = Object.assign({}, row)
         }
         this.dialogFormVisible = true

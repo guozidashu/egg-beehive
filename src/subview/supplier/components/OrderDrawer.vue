@@ -303,7 +303,6 @@
       },
       drawerType: {
         handler: function (newVal) {
-          console.log(131313213, newVal)
           this.type = newVal
         },
       },

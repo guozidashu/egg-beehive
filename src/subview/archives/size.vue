@@ -37,7 +37,13 @@
                         <span @click="handleEdit(item, 2)">编辑</span>
                       </el-dropdown-item> -->
                       <el-dropdown-item>
-                        <span @click="handleDelete(item, 2)">删除</span>
+                        <el-button
+                          v-has-permi="['btn:ArchivesSize:del']"
+                          type="text"
+                          @click="handleDelete(item, 2)"
+                        >
+                          删除
+                        </el-button>
                       </el-dropdown-item>
                       <el-dropdown-item>
                         <span @click="handleDelete(item, 3)">设置默认</span>
@@ -55,6 +61,7 @@
           <el-form ref="form" :inline="true" @submit.native.prevent>
             <el-form-item>
               <el-button
+                v-has-permi="['btn:ArchivesSize:add']"
                 native-type="submit"
                 size="small"
                 type="primary"
@@ -63,6 +70,7 @@
                 添加尺码
               </el-button>
               <el-button
+                v-has-permi="['btn:ArchivesSize:add']"
                 native-type="submit"
                 size="small"
                 type="primary"
@@ -125,10 +133,18 @@
                 width="85"
               >
                 <template #default="{ row }">
-                  <el-button type="text" @click="handleEdit(row, 1)">
+                  <el-button
+                    v-has-permi="['btn:ArchivesSize:edit']"
+                    type="text"
+                    @click="handleEdit(row, 1)"
+                  >
                     编辑
                   </el-button>
-                  <el-button type="text" @click="handleDelete(row, 1)">
+                  <el-button
+                    v-has-permi="['btn:ArchivesSize:del']"
+                    type="text"
+                    @click="handleDelete(row, 1)"
+                  >
                     删除
                   </el-button>
                 </template>

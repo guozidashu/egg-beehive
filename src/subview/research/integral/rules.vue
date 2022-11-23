@@ -27,6 +27,7 @@
         </el-form-item>
         <el-form-item>
           <el-button
+            v-has-permi="['btn:IntegralRules:edit']"
             native-type="submit"
             size="small"
             type="primary"
@@ -64,6 +65,7 @@
     getCommonAllList,
   } from '@/api/basic'
   export default {
+    name: 'IntegralRules',
     data() {
       return {
         form: {

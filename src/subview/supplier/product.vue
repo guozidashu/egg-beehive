@@ -216,7 +216,11 @@
             width="150"
           >
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row, 1)">
+              <el-button
+                v-has-permi="['btn:SupplierProduct:view']"
+                type="text"
+                @click="handleDetail(row, 1)"
+              >
                 详情
               </el-button>
               <!-- <el-button type="text" @click="handleEdit(row, 1)">
@@ -306,14 +310,12 @@
       this.getSelectData()
       this.fetchData()
       this.getTatleAll()
-      console.log(this.form.order_type == this.activeName)
     },
     methods: {
       changeBtnSta(data) {
         this.form.fold = data
       },
       handleEdit(row, type) {
-        console.log(row, type)
         if (row === 'add') {
           this.$refs['edit'].showEdit(row, type)
         } else {
@@ -368,7 +370,6 @@
           this.drawerInof = JSON.parse(JSON.stringify(row))
           this.drawerInof.drawerType = type
         }
-        console.log(89898, this.drawerInof)
         this.drawer = true
       },
       // 打印
@@ -387,7 +388,6 @@
       },
       handleDownload() {
         if (this.exclList.length) {
-          console.log(this.exclList)
           this.downloadLoading = true
           import('@/utils/excel').then((excel) => {
             const tHeader = [

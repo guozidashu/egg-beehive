@@ -53,7 +53,6 @@
     watch: {
       longitude: {
         handler: function (newVal) {
-          console.log(777777, newVal)
           this.shopInfo.lng = newVal[0]
           this.shopInfo.lat = newVal[1]
         },

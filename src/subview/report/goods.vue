@@ -342,7 +342,6 @@
             arr.push(item[i])
           }
         })
-        console.log(8888888, this.dateList)
         arr.forEach((item) => {
           for (let i in item) {
             if (i != 'time_range' && this.dataAllList[i] !== undefined) {

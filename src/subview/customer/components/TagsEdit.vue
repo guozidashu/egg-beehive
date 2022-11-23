@@ -74,7 +74,6 @@
           }
         } else {
           if (type === 1) {
-            console.log(row)
             this.title = '编辑标签'
             row.pid = row.tag_pid
           } else {

@@ -206,7 +206,6 @@
           if (valid)
             try {
               this.loading = true
-              console.log(132132132)
               await this.login(this.form).catch(() => {})
               await this.$router.push(this.handleRoute())
             } finally {

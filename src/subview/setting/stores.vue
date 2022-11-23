@@ -34,6 +34,7 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
+            v-has-permi="['btn:Stores:add']"
             native-type="submit"
             size="small"
             type="primary"
@@ -107,8 +108,16 @@
             width="100"
           >
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">编辑</el-button>
-              <el-button type="text">停业</el-button>
+              <el-button
+                v-has-permi="['btn:Stores:edit']"
+                type="text"
+                @click="handleDetail(row)"
+              >
+                编辑
+              </el-button>
+              <!-- <el-button v-has-permi="['btn:Stores:dingye']" type="text">
+                停业
+              </el-button> -->
             </template>
           </el-table-column>
         </template>
@@ -183,7 +192,6 @@
         const { data } = await getStoreList(this.form)
         let list = data.data
         list.forEach((item) => {
-          console.log(item.business_hours)
           if (item.business_hours != null) {
             item.business_hours = JSON.parse(item.business_hours)
             let arr = []

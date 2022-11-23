@@ -153,7 +153,6 @@
       // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
-        console.log(data)
       },
       // 列表数据请求函数 公共部分
       async fetchData() {

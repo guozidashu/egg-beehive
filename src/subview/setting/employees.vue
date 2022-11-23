@@ -19,6 +19,7 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
+            v-has-permi="['btn:Employees:add']"
             native-type="submit"
             size="small"
             type="primary"
@@ -95,7 +96,13 @@
           </el-table-column>
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
-              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+              <el-button
+                v-has-permi="['btn:Employees:edit']"
+                type="text"
+                @click="handleEdit(row)"
+              >
+                编辑
+              </el-button>
               <!-- <el-button type="text" @click="handleDetail(row, 2)">
                 编辑
               </el-button>
@@ -168,7 +175,6 @@
         if (code != 200) {
           return
         }
-        console.log()
         this.$message({
           message: '同步成功',
           type: 'success',

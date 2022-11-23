@@ -261,7 +261,6 @@
       },
       async fetchData() {
         const { data } = await getCountList(this.goodsForm)
-        console.log(8989898, data)
         this.textTagList.forEach((item) => {
           for (let i in data.list) {
             if (item.name == i) {
@@ -310,7 +309,6 @@
       handleDetail() {},
       // 导出
       handleDownload() {
-        console.log(888, this.goodsStaList)
         import('@/utils/excel').then((excel) => {
           const tHeader = ['名称', '数量', '环比数量']
           const filterVal = ['title', 'num', 'number']

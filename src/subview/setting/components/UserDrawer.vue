@@ -342,42 +342,43 @@
             this.formData[row.Oneid] = checked
             this.formData[row.Twoid] = checked
             this.formData[row.id] = checked
-          } else {
-            let temp = false
-            row.guard.forEach((item1) => {
-              if (this.formData[item1.id]) {
-                temp = true
-                return
-              }
-            })
-            if (!temp) {
-              this.formData[row.id] = false
-            }
-            let temp2 = false
-            this.list.forEach((item) => {
-              if (row.Twoid == item.Twoid) {
-                if (this.formData[item.id]) {
-                  temp2 = true
-                  return
-                }
-              }
-            })
-            if (!temp2) {
-              this.formData[row.Twoid] = false
-            }
-            let temp1 = false
-            this.list.forEach((item) => {
-              if (row.Oneid == item.Oneid) {
-                if (this.formData[item.Twoid]) {
-                  temp1 = true
-                  return
-                }
-              }
-            })
-            if (!temp1) {
-              this.formData[row.Oneid] = false
-            }
           }
+          // else {
+          //   let temp = false
+          //   row.guard.forEach((item1) => {
+          //     if (this.formData[item1.id]) {
+          //       temp = true
+          //       return
+          //     }
+          //   })
+          //   if (!temp) {
+          //     this.formData[row.id] = false
+          //   }
+          //   let temp2 = false
+          //   this.list.forEach((item) => {
+          //     if (row.Twoid == item.Twoid) {
+          //       if (this.formData[item.id]) {
+          //         temp2 = true
+          //         return
+          //       }
+          //     }
+          //   })
+          //   if (!temp2) {
+          //     this.formData[row.Twoid] = false
+          //   }
+          //   let temp1 = false
+          //   this.list.forEach((item) => {
+          //     if (row.Oneid == item.Oneid) {
+          //       if (this.formData[item.Twoid]) {
+          //         temp1 = true
+          //         return
+          //       }
+          //     }
+          //   })
+          //   if (!temp1) {
+          //     this.formData[row.Oneid] = false
+          //   }
+          // }
         }
         this.checked = !this.checked
         this.$forceUpdate()

@@ -82,6 +82,7 @@
             <template #default="{ row }">
               <el-button
                 v-if="row.status != 1"
+                v-has-permi="['btn:IntegralOrder:hexiao']"
                 type="text"
                 @click="handleDelete(row)"
               >
@@ -103,7 +104,7 @@
     editIntegralOrderVerification,
   } from '@/api/basic'
   export default {
-    name: 'ProjectBandlist',
+    name: 'IntegralOrder',
     components: { List, Form },
     data() {
       return {
@@ -157,7 +158,6 @@
       // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
-        console.log(data)
       },
       // 列表数据请求函数 公共部分
       async fetchData() {
