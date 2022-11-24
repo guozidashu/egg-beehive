@@ -803,13 +803,7 @@ export function delIntegralGoodsDel(data) {
   })
 }
 // 成品采购统计
-export function getFinishGetCount(data) {
-  return request({
-    url: '/supplier/finishGetCount',
-    method: 'post',
-    data,
-  })
-}
+
 export function getFinishCountList(data) {
   return request({
     url: '/supplier/finishCountList',
@@ -1018,6 +1012,13 @@ export function editSupplierSave(data) {
   })
 }
 // 成品采购订单
+export function getFinishGetCount(data) {
+  return request({
+    url: '/supplier/finishGetCount',
+    method: 'post',
+    data,
+  })
+}
 export function getFinishDetail(data) {
   return request({
     url: '/supplier/finishDetail',

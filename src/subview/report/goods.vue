@@ -54,6 +54,15 @@
             >
               导出
             </el-button>
+            <el-button
+              native-type="submit"
+              size="small"
+              style="margin-left: 10px"
+              type="primary"
+              @click="resetForm()"
+            >
+              重置
+            </el-button>
           </el-form-item>
         </el-form-item>
       </el-form>
@@ -107,26 +116,45 @@
             <el-button
               native-type="submit"
               size="small"
-              style="margin: 0 20px"
+              style="margin-left: 10px"
               type="primary"
-              @click="handleDownload"
+              @click="resetForm1()"
             >
-              导出
+              重置
             </el-button>
           </el-form-item>
         </el-form-item>
       </el-form>
       <List :list="goosList" :list-type="listType" :state="listLoading">
         <template #List>
-          <el-table-column
-            align="center"
-            label="排行"
-            type="index"
-            width="50"
-          />
+          <el-table-column align="center" label="排行" type="index" width="50">
+            <template slot-scope="scope">
+              <span
+                class="index_common"
+                :class="[
+                  scope.$index + 1 == '1'
+                    ? 'index_one'
+                    : scope.$index + 1 == '2'
+                    ? 'index_two'
+                    : scope.$index + 1 == '3'
+                    ? 'index_three'
+                    : 'index_more',
+                ]"
+              >
+                {{ scope.$index + 1 }}
+              </span>
+            </template>
+          </el-table-column>
           <el-table-column label="商品图片" prop="image" width="200">
             <template #default="{ row }">
-              <el-image :src="row.img" />
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="row.img"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image :src="row.img" />
+              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column label="商品名称" prop="name" width="200" />
@@ -139,7 +167,7 @@
           </el-table-column>
           <el-table-column label="上架天数" prop="upper_day" />
           <el-table-column label="预计可售天数" prop="expect_day" />
-          <el-table-column
+          <!-- <el-table-column
             align="center"
             fixed="right"
             label="操作"
@@ -150,7 +178,7 @@
                 商品详情
               </el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </template>
       </List>
     </div>
@@ -309,6 +337,22 @@
       this.getTableList()
     },
     methods: {
+      resetForm() {
+        this.goodsForm = {
+          type: null,
+          brand: null,
+          time: this.getPastTime(1),
+        }
+      },
+      resetForm1() {
+        this.goodsForm1 = {
+          page: 1,
+          pageSize: 20,
+          type: null,
+          brand: null,
+          time: this.getPastTime(1),
+        }
+      },
       async getTypeList() {
         const { data } = await getCommonAllList({
           type: 'brand',

@@ -69,6 +69,7 @@
       // 监听选中结果直接返回给父组件
       color: {
         handler(val) {
+          console.log(123123123123, val)
           this.isedn = true
           this.$emit('input', val)
         },
@@ -115,7 +116,7 @@
         if (this.colorList.length <= 0) return
         this.colorList.forEach((item) => {
           item.children.forEach((color_item) => {
-            if (this.value.includes(color_item.id)) {
+            if (this.value.includes(String(color_item.id))) {
               color_item.select = true
               this.color.push(color_item.id)
             } else {

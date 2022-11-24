@@ -4,7 +4,8 @@ import Vue from 'vue'
 import '@/icon'
 // 加载全局样式样式
 import './styles/vab.scss'
-
+// 加载qy全局样式样式
+import './styles/qy.scss'
 // 加载VabIcon
 import VabIcon from 'vab-icons'
 import 'vab-icons/lib/vab-icons.css'

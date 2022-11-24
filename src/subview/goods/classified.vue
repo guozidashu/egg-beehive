@@ -103,11 +103,7 @@
           >
             <template #List>
               <el-table-column type="selection" />
-              <el-table-column label="ID" prop="id">
-                <template #default="{ row }">
-                  <span>{{ row.pid }}</span>
-                </template>
-              </el-table-column>
+              <el-table-column label="ID" prop="id" />
               <el-table-column label="分类名称" prop="pid_name" />
               <el-table-column label="款式名称" prop="name" />
               <el-table-column label="使用商品数量" prop="goods_num" />
@@ -197,10 +193,10 @@
       handleQuery() {
         this.form.page = 1
       },
-      handleDelete(row) {
+      handleDelete(row, type) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            if (this.type === 1) {
+            if (type == 1) {
               const { code } = await delCategorySonDel({ id: row.id })
               if (code != 200) {
                 return

@@ -78,17 +78,26 @@
     </div>
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="form.list_type" @tab-click="handleClick">
-        <el-tab-pane :label="'全部商品 (' + tatleData.total + ')'" name="0" />
         <el-tab-pane
-          :label="'仓库中 (' + tatleData.in_warehouse + ')'"
+          :label="'全部商品 (' + tatleData.all_order + ')'"
+          name="0"
+        />
+        <el-tab-pane
+          :label="'仓库中 (' + tatleData.repository + ')'"
           name="1"
         />
-        <el-tab-pane :label="'已售罄 (' + tatleData.sold_out + ')'" name="2" />
-        <el-tab-pane :label="'库存预警 (' + tatleData.warning + ')'" name="3" />
-        <el-tab-pane :label="'待确认 (' + tatleData.confirmed + ')'" name="4" />
-        <el-tab-pane :label="'自营商城 (' + tatleData.support + ')'" name="5" />
+        <el-tab-pane :label="'已售罄 (' + tatleData.sole_out + ')'" name="2" />
         <el-tab-pane
-          :label="'第三方平台 (' + tatleData.tripartite + ')'"
+          :label="'库存预警 (' + tatleData.stock_alert + ')'"
+          name="3"
+        />
+        <el-tab-pane :label="'待确认 (' + tatleData.confirmed + ')'" name="4" />
+        <el-tab-pane
+          :label="'自营商城 (' + tatleData.self_operated + ')'"
+          name="5"
+        />
+        <el-tab-pane
+          :label="'第三方平台 (' + tatleData.third_platform + ')'"
           name="6"
         />
       </el-tabs>
@@ -138,7 +147,14 @@
           <el-table-column label="款号" prop="sn" width="80" />
           <el-table-column label="商品图" prop="img" width="80">
             <template #default="{ row }">
-              <img :src="row.img" style="width: 50px; height: 50px" />
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="row.img"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image :src="row.img" style="width: 50px; height: 50px" />
+              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column label="商品名称" prop="name" width="180" />
@@ -216,13 +232,13 @@
         drawer: false,
         drawerInof: {},
         tatleData: {
-          total: null, // 全部
-          in_warehouse: null, // 仓库中
-          sold_out: null, // 已售完
-          warning: null, // 预警
+          all_order: null, // 全部
+          repository: null, // 仓库中
+          sole_out: null, // 已售完
+          stock_alert: null, // 预警
           confirmed: null, // 待确认
-          support: null, // 自营
-          tripartite: null, // 第三方
+          self_operated: null, // 自营
+          third_platform: null, // 第三方
         },
         form: {
           page: 1,

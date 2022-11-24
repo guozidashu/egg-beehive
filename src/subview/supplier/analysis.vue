@@ -29,10 +29,11 @@
           <el-button
             native-type="submit"
             size="small"
-            style="margin: 0 20px"
+            style="margin-left: 10px"
             type="primary"
+            @click="resetForm()"
           >
-            查询
+            重置
           </el-button>
           <el-button
             native-type="submit"
@@ -150,7 +151,24 @@
             label="TOP排名"
             type="index"
             width="100"
-          />
+          >
+            <template slot-scope="scope">
+              <span
+                class="index_common"
+                :class="[
+                  scope.$index + 1 == '1'
+                    ? 'index_one'
+                    : scope.$index + 1 == '2'
+                    ? 'index_two'
+                    : scope.$index + 1 == '3'
+                    ? 'index_three'
+                    : 'index_more',
+                ]"
+              >
+                {{ scope.$index + 1 }}
+              </span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="供应商名称"
             prop="name"
@@ -210,6 +228,7 @@
     mixins: [mapjson, datajosn, publicjosn],
     data() {
       return {
+        filename: '供应商分析',
         downloadLoading: false,
         listLoading: false,
         listType: 4,
@@ -230,114 +249,6 @@
           create_time: this.getPastTime(1),
           type: '',
         },
-        areaList: [
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '广东',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '苏州',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '杭州',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '北京',
-            type: false,
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '上海',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '广东',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '苏州',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '杭州',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '北京',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '上海',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '广东',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '苏州',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '杭州',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '北京',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            store_name: '上海',
-          },
-        ],
         supplier_rank: [],
         supplier_width: '25%',
         supplier_case: [],
@@ -366,14 +277,18 @@
       this.fetchData()
     },
     methods: {
+      resetForm() {
+        this.form.type = ''
+        this.form.create_time = this.getPastTime(1)
+      },
       // 详情抽屉
       handleDetail() {},
       // 导出
       handleDownload() {
         this.downloadLoading = true
         import('@/utils/excel').then((excel) => {
-          const tHeader = ['名称', '数量', '环比数量']
-          const filterVal = ['title', 'num', 'number']
+          const tHeader = ['名称', '数量']
+          const filterVal = ['title', 'num']
           const list = this.supplier_case
           const data = this.formatJson(filterVal, list)
           excel.export_json_to_excel({

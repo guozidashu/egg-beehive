@@ -32,16 +32,33 @@
               align="center"
               label="排名"
               type="index"
-              width="80"
-            />
+              width="50"
+            >
+              <template slot-scope="scope">
+                <span
+                  class="index_common"
+                  :class="[
+                    scope.$index + 1 == '1'
+                      ? 'index_one'
+                      : scope.$index + 1 == '2'
+                      ? 'index_two'
+                      : scope.$index + 1 == '3'
+                      ? 'index_three'
+                      : 'index_more',
+                  ]"
+                >
+                  {{ scope.$index + 1 }}
+                </span>
+              </template>
+            </el-table-column>
             <el-table-column label="商品名称&图片" prop="name">
               <template #default="{ row }">
                 <div style="display: flex">
-                  <img
-                    :src="row.img"
-                    style="width: 50px; height: 50px; margin: 10px 10px 0 0"
-                  />
-                  <div style="margin-top: 20px">
+                  <el-tooltip placement="top">
+                    <el-image slot="content" :src="row.img" />
+                    <el-image :src="row.img" />
+                  </el-tooltip>
+                  <div style="margin: 15px 0 0 15px">
                     {{ row.name }}
                   </div>
                 </div>
@@ -71,8 +88,25 @@
               align="center"
               label="排名"
               type="index"
-              width="80"
-            />
+              width="50"
+            >
+              <template slot-scope="scope">
+                <span
+                  class="index_common"
+                  :class="[
+                    scope.$index + 1 == '1'
+                      ? 'index_one'
+                      : scope.$index + 1 == '2'
+                      ? 'index_two'
+                      : scope.$index + 1 == '3'
+                      ? 'index_three'
+                      : 'index_more',
+                  ]"
+                >
+                  {{ scope.$index + 1 }}
+                </span>
+              </template>
+            </el-table-column>
             <el-table-column label="客户名称" prop="name" />
             <el-table-column label="拿货金额（占比）" prop="sum_total" />
             <el-table-column label="拿货件数" prop="sum_num" />

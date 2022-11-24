@@ -29,6 +29,15 @@
               :value="item.id"
             />
           </el-select>
+          <el-button
+            native-type="submit"
+            size="small"
+            style="margin-left: 10px"
+            type="primary"
+            @click="resetForm()"
+          >
+            重置
+          </el-button>
         </el-form-item>
       </el-form>
       <TextLabels ref="multipleTable" :list="goodsStaList" />
@@ -88,20 +97,48 @@
               />
             </el-select>
           </el-form-item>
+          <el-button
+            native-type="submit"
+            size="small"
+            style="margin-left: 10px"
+            type="primary"
+            @click="resetForm1()"
+          >
+            重置
+          </el-button>
         </el-form-item>
       </el-form>
       <List :list="list" :list-type="listType" :state="listLoading">
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column
-            align="center"
-            label="排行"
-            type="index"
-            width="50"
-          />
+          <el-table-column align="center" label="排行" type="index" width="50">
+            <template slot-scope="scope">
+              <span
+                class="index_common"
+                :class="[
+                  scope.$index + 1 == '1'
+                    ? 'index_one'
+                    : scope.$index + 1 == '2'
+                    ? 'index_two'
+                    : scope.$index + 1 == '3'
+                    ? 'index_three'
+                    : 'index_more',
+                ]"
+              >
+                {{ scope.$index + 1 }}
+              </span>
+            </template>
+          </el-table-column>
           <el-table-column label="商品图片" prop="img" width="200">
             <template #default="{ row }">
-              <el-image :src="row.img" />
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="row.img"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image :src="row.img" />
+              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column label="商品款号" prop="sn" />
@@ -148,83 +185,7 @@
         listLoading: false,
         listType: 2,
         selectList: [],
-        list: [
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '20-02-02 10:10:10',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '20-02-02 10:10:10',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '20-02-02 10:10:10',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '20-02-02 10:10:10',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-          {
-            visit: '507',
-            user: 215,
-            cart: '20',
-            orders: '14',
-            pay: '20-02-02 10:10:10',
-            price: '1.04',
-            cost: '2388.00',
-            profit: '-1.00',
-            collect: '4',
-            store_name:
-              '外交官（Diplomat）镜面箱子铝框拉杆箱万向轮行李箱男女旅行箱密码箱TC-9032 银色 20英寸',
-            image:
-              'https://qiniu.crmeb.net/attach/2021/12/18/c124f3e7f7ac737473e0c5c386139a56.jpg',
-          },
-        ],
+        list: [],
         goodsForm: {
           category: '',
         },
@@ -348,6 +309,19 @@
       this.tableData()
     },
     methods: {
+      resetForm() {
+        this.goodsForm = {
+          category: '',
+        }
+      },
+      resetForm1() {
+        this.goodsForm1 = {
+          page: 1,
+          pageSize: 10,
+          category: '', //款式分类
+          brand: '', //品牌
+        }
+      },
       // 详情抽屉
       handleDetail() {},
       // 列表数据请求函数 公共部分

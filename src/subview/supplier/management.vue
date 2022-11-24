@@ -56,7 +56,6 @@
       >
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column type="selection" />
           <el-table-column label="ID" prop="id" sortable width="80" />
           <el-table-column label="供应商名称" prop="name" width="150" />
           <el-table-column label="供应商类别" prop="type_name" width="150" />
@@ -76,16 +75,8 @@
           <el-table-column label="创建时间" prop="create_time" width="200" />
           <el-table-column label="状态" prop="status" width="100">
             <template #default="{ row }">
-              <el-switch
-                v-model="row.status"
-                active-color="#41B584"
-                active-text="开启"
-                :active-value="1"
-                class="switch"
-                inactive-color="#D2D2D2"
-                inactive-text="关闭"
-                :inactive-value="0"
-              />
+              <el-tag v-if="row.status == 1">开启</el-tag>
+              <el-tag v-else type="danger">关闭</el-tag>
             </template>
           </el-table-column>
           <el-table-column align="center" fixed="right" label="操作" width="85">

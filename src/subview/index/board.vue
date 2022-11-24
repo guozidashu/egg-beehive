@@ -76,6 +76,7 @@
     mixins: [datajosn],
     data() {
       return {
+        filename: '今日看板',
         listLoading: false,
         listType: 2,
         goosList: [],
@@ -303,7 +304,7 @@
               smooth: true,
               data: this.dataAllList.return_total,
               itemStyle: {
-                color: '#55DF7E',
+                color: '#527AA4',
               },
             },
             {
@@ -313,7 +314,7 @@
               smooth: true,
               data: this.dataAllList.return_num,
               itemStyle: {
-                color: '#1890FF',
+                color: '#28A933',
               },
             },
           ],

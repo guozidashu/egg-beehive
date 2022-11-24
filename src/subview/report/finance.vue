@@ -208,7 +208,7 @@
               data: [],
               yAxisIndex: 1,
               itemStyle: {
-                color: '#FFC833',
+                color: '#1A9EFF',
               },
             },
           ],

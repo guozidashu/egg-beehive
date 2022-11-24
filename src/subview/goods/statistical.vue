@@ -33,14 +33,7 @@
           <el-button
             native-type="submit"
             size="small"
-            style="margin: 0 20px"
-            type="primary"
-          >
-            查询
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
+            style="margin-left: 10px"
             type="primary"
             @click="handleDownload"
           >
@@ -78,7 +71,7 @@
           </el-form-item>
           <el-form-item
             label="时间筛选:"
-            style="float: right; margin-right: 0; font-size: 12px"
+            style="margin-right: 0; font-size: 12px"
           >
             <el-date-picker
               v-model="goodsForm1.date"
@@ -90,28 +83,48 @@
               type="daterange"
               unlink-panels
             />
-            <el-button
-              native-type="submit"
-              size="small"
-              style="margin: 0 20px"
-              type="primary"
-            >
-              查询
-            </el-button>
           </el-form-item>
+          <el-button
+            native-type="submit"
+            size="small"
+            style="margin-left: 10px"
+            type="primary"
+            @click="resetForm()"
+          >
+            重置
+          </el-button>
         </el-form-item>
       </el-form>
       <List :list="goosList" :list-type="listType" :state="listLoading">
         <template #List>
-          <el-table-column
-            align="center"
-            label="排行"
-            type="index"
-            width="50"
-          />
+          <el-table-column align="center" label="排行" type="index" width="50">
+            <template slot-scope="scope">
+              <span
+                class="index_common"
+                :class="[
+                  scope.$index + 1 == '1'
+                    ? 'index_one'
+                    : scope.$index + 1 == '2'
+                    ? 'index_two'
+                    : scope.$index + 1 == '3'
+                    ? 'index_three'
+                    : 'index_more',
+                ]"
+              >
+                {{ scope.$index + 1 }}
+              </span>
+            </template>
+          </el-table-column>
           <el-table-column label="商品图片" prop="img" width="200">
             <template #default="{ row }">
-              <el-image :src="row.img" />
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="row.img"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image :src="row.img" />
+              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column label="商品名称" prop="name" />
@@ -130,8 +143,8 @@
           <el-table-column label="库存数" prop="total_stock" />
           <el-table-column label="状态" prop="status">
             <template #default="{ row }">
-              <span v-if="row.sstatus == 1">上架</span>
-              <span v-else>下架</span>
+              <el-tag v-if="row.sstatus == 1">上架</el-tag>
+              <el-tag v-else type="danger">下架</el-tag>
             </template>
           </el-table-column>
           <!-- <el-table-column
@@ -236,6 +249,13 @@
     watch: {
       goodsForm: {
         handler: function () {
+          this.dateList = []
+          this.dataAllList = {
+            sku_total: [],
+            out_total: [],
+            warn_total: [],
+            down_total: [],
+          }
           this.fetchData()
           this.chartData()
         },
@@ -254,6 +274,16 @@
       this.tableData()
     },
     methods: {
+      resetForm() {
+        this.goodsForm1 = {
+          page: 1,
+          pageSize: 10,
+          start_time: '', // 开始时间
+          end_time: '', // 结束时间
+          type: '', // 类型 0整手  1散码
+          date: this.getPastTime(1),
+        }
+      },
       async tableData() {
         this.listLoading = true
         if (this.goodsForm1.date != '' && this.goodsForm1.date != null) {

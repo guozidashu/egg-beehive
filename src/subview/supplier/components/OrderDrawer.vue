@@ -9,7 +9,18 @@
         <el-row :gutter="20" style="margin-bottom: 10px">
           <el-col :span="12" style="display: flex">
             <img
-              :src="avatar"
+              v-if="type == 2"
+              :src="form.info.img"
+              style="
+                width: 50px;
+                height: 50px;
+                margin: 0 10px 10px 0;
+                border-radius: 50%;
+              "
+            />
+            <img
+              v-else
+              :src="form.info.material_pic"
               style="
                 width: 50px;
                 height: 50px;

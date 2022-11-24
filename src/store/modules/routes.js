@@ -117,7 +117,6 @@ const actions = {
     // 设置菜单所需路由
     commit('setRoutes', JSON.parse(JSON.stringify(accessRoutes)))
     // 根据可访问路由重置Vue Router
-    console.log(6666666666, accessRoutes)
     accessRoutes.push(
       {
         path: '/403',

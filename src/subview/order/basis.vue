@@ -33,14 +33,7 @@
           <el-button
             native-type="submit"
             size="small"
-            style="margin: 0 20px"
-            type="primary"
-          >
-            查询
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
+            style="margin-left: 10px"
             type="primary"
             @click="handleDownload"
           >
@@ -82,14 +75,6 @@
               type="daterange"
               unlink-panels
             />
-            <el-button
-              native-type="submit"
-              size="small"
-              style="margin: 0 0 0 20px"
-              type="primary"
-            >
-              查询
-            </el-button>
           </el-form-item>
         </el-form-item>
       </el-form>

@@ -22,10 +22,29 @@
         @changePageSize="changeBtnPageSize"
       >
         <template #List>
+          <el-table-column align="center" label="排行" type="index" width="50">
+            <template slot-scope="scope">
+              <span
+                class="index_common"
+                :class="[
+                  scope.$index + 1 == '1'
+                    ? 'index_one'
+                    : scope.$index + 1 == '2'
+                    ? 'index_two'
+                    : scope.$index + 1 == '3'
+                    ? 'index_three'
+                    : 'index_more',
+                ]"
+              >
+                {{ scope.$index + 1 }}
+              </span>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
+            label="积分"
+            prop="sum_integral"
             show-overflow-tooltip
-            type="selection"
           />
           <el-table-column
             align="center"
@@ -35,19 +54,20 @@
             sortable
           >
             <template #default="{ row }">
-              <el-image :src="row.avatar" />
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="row.avatar"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image :src="row.avatar" />
+              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column
             align="center"
             label="姓名"
             prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="积分"
-            prop="sum_integral"
             show-overflow-tooltip
           />
         </template>

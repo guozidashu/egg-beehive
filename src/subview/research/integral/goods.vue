@@ -53,19 +53,26 @@
               </el-button>
             </div>
             <div style="display: flex; justify-content: space-between">
-              <img
-                :src="item.pic"
-                style="width: 50px; height: 50px; margin: 20px 0 0 20px"
-              />
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="item.pic"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image
+                  :src="item.pic"
+                  style="width: 50px; height: 50px; margin: 20px 0 0 20px"
+                />
+              </el-tooltip>
               <div>
                 <div style="margin: 5px">积分：{{ item.integral }}</div>
-                <div style="margin: 5px">
-                  库存：
-                  <el-tag v-if="item.stock == 1">开启</el-tag>
-                  <el-tag v-else type="danger">关闭</el-tag>
-                </div>
+                <div style="margin: 5px">库存：{{ item.stock }}</div>
                 <div style="margin: 5px">实际价格：{{ item.actual_price }}</div>
-                <div style="margin: 5px">状态：{{ item.status }}</div>
+                <div style="margin: 5px">
+                  状态：
+                  <el-tag v-if="item.status == 1">上架</el-tag>
+                  <el-tag v-else type="danger">下架</el-tag>
+                </div>
                 <div style="margin: 5px">时间：{{ item.create_time }}</div>
               </div>
             </div>

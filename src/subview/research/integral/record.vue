@@ -20,10 +20,17 @@
               <span>{{ item.name }}</span>
             </div>
             <div style="display: flex; justify-content: space-between">
-              <img
-                :src="item.avatar"
-                style="width: 50px; height: 50px; margin: 20px 0 0 20px"
-              />
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="item.avatar"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image
+                  :src="item.avatar"
+                  style="width: 50px; height: 50px; margin: 10px 0 0 10px"
+                />
+              </el-tooltip>
               <div>
                 <div style="margin: 5px">积分：{{ item.integral }}</div>
                 <div

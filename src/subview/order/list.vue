@@ -130,15 +130,22 @@
           <el-table-column label="商品信息" prop="info">
             <template #default="{ row }">
               <div style="display: flex">
-                <img
-                  :src="row.info.img"
-                  style="
-                    width: 30px;
-                    height: 30px;
-                    margin-top: 10px;
-                    margin-right: 10px;
-                  "
-                />
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.info.img"
+                    style="width: 200px; height: 200px"
+                  />
+                  <el-image
+                    :src="row.info.img"
+                    style="
+                      width: 30px;
+                      height: 30px;
+                      margin-top: 10px;
+                      margin-right: 10px;
+                    "
+                  />
+                </el-tooltip>
                 <div style="margin-top: 15px">
                   {{ row.info.name }}
                 </div>

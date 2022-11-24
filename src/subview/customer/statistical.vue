@@ -56,10 +56,20 @@
               <el-button
                 native-type="submit"
                 size="small"
+                style="margin-left: 10px"
                 type="primary"
                 @click="handleDownload"
               >
                 导出
+              </el-button>
+              <el-button
+                native-type="submit"
+                size="small"
+                style="margin-left: 10px"
+                type="primary"
+                @click="resetForm()"
+              >
+                重置
               </el-button>
             </el-form-item>
           </el-form-item>
@@ -255,6 +265,12 @@
       this.fetchData()
     },
     methods: {
+      resetForm() {
+        this.goodsForm = {
+          source: '',
+          time: this.getPastTime(1),
+        }
+      },
       async getSelectData() {
         const { data } = await getCommonAllList({ type: 'customer_source' })
         this.SelectData = data.customer_source

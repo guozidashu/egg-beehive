@@ -27,10 +27,20 @@
           <el-button
             native-type="submit"
             size="small"
+            style="margin-left: 10px"
             type="primary"
             @click="handleDownload"
           >
             导出
+          </el-button>
+          <el-button
+            native-type="submit"
+            size="small"
+            style="margin-left: 10px"
+            type="primary"
+            @click="resetForm()"
+          >
+            重置
           </el-button>
         </el-form-item>
         <el-form-item label="客户渠道:" style="float: right">
@@ -245,6 +255,12 @@
       this.fetchData()
     },
     methods: {
+      resetForm() {
+        this.goodsForm = {
+          source: null,
+          time: this.getPastTime(1),
+        }
+      },
       async getTypeList() {
         const { data } = await getCommonAllList({
           type: 'customer_source',

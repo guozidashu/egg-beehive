@@ -550,7 +550,7 @@ d
         selectData: [],
         activeName: '0',
         search_type: '0',
-        form: Object.assign({}, this.drawerInof),
+        form: JSON.parse(JSON.stringify(this.drawerInof)),
         listLoading: false,
         listType: 2,
         typeData: [],
@@ -586,7 +586,8 @@ d
       },
       drawerInof: {
         handler: function (newVal) {
-          this.form = Object.assign({}, newVal)
+          this.form = JSON.parse(JSON.stringify(newVal))
+          this.search_type = '0'
           this.form.address1 = [
             this.form.province,
             this.form.city,
@@ -595,6 +596,9 @@ d
           if (this.form.produce_type != undefined) {
             if (this.form.produce_type.indexOf(',') != -1) {
               this.form.produce_type = this.form.produce_type.split(',')
+              this.form.produce_type = this.form.produce_type.map((item) => {
+                return Number(item)
+              })
             } else {
               this.form.produce_type = [Number(this.form.produce_type)]
             }
@@ -602,6 +606,9 @@ d
           if (this.form.produce_type != undefined) {
             if (this.form.craft_type.indexOf(',') != -1) {
               this.form.craft_type = this.form.craft_type.split(',')
+              this.form.craft_type = this.form.craft_type.map((item) => {
+                return Number(item)
+              })
             } else {
               this.form.craft_type = [Number(this.form.craft_type)]
             }
@@ -636,12 +643,10 @@ d
         this.form.district = selectArea
       },
       async changeTypeBtn(e) {
-        if (e != 1) {
+        if (e == 2) {
           this.form.drawerType = e
           this.$forceUpdate()
           return
-        } else {
-          this.form.drawerType = e
         }
         if (this.form.id == undefined) {
           this.form.id = 0

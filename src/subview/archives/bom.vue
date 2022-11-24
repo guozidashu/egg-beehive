@@ -61,7 +61,7 @@
       >
         <template #List>
           <el-table-column type="selection" width="55" />
-          <el-table-column label="ID" prop="material_id" width="80" />
+          <el-table-column label="ID" prop="id" width="80" />
           <el-table-column label="物料编号" prop="material_sn" width="120" />
           <el-table-column label="物料图片" width="120">
             <template #default="{ row }">
@@ -209,13 +209,13 @@
         this.form = this.$options.data().form
       },
       handleDelete(row) {
-        if (row.material_id) {
+        if (row.id) {
           this.$baseConfirm(
             '你确定要删除当前物料吗？</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
               const { code } = await delMaterialDel({
-                material_id: row.material_id,
+                material_id: row.id,
               })
               if (code != 200) {
                 return

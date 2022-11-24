@@ -51,11 +51,18 @@
                   show-overflow-tooltip
                 >
                   <template #default="{ row }">
-                    <el-image
-                      fit="cover"
-                      :src="row.designer_avatar"
-                      style="width: 50px; height: 50px"
-                    />
+                    <el-tooltip placement="top">
+                      <el-image
+                        slot="content"
+                        :src="row.designer_avatar"
+                        style="width: 200px; height: 200px"
+                      />
+                      <el-image
+                        fit="cover"
+                        :src="row.designer_avatar"
+                        style="width: 50px; height: 50px"
+                      />
+                    </el-tooltip>
                   </template>
                 </el-table-column>
                 <el-table-column

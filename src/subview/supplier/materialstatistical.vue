@@ -33,14 +33,7 @@
           <el-button
             native-type="submit"
             size="small"
-            style="margin: 0 20px"
-            type="primary"
-          >
-            查询
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
+            style="margin-left: 10px"
             type="primary"
             @click="handleDownload"
           >
@@ -73,7 +66,7 @@
           >
             <el-date-picker
               v-model="form.date1"
-              align="right"
+              align="left"
               end-placeholder="结束日期"
               :picker-options="pickerOptions"
               range-separator="至"
@@ -81,28 +74,39 @@
               type="daterange"
               unlink-panels
             />
-            <el-button
-              native-type="submit"
-              size="small"
-              style="margin: 0 20px"
-              type="primary"
-            >
-              查询
-            </el-button>
           </el-form-item>
         </el-form-item>
       </el-form>
       <List :list="list" :list-type="listType" :state="listLoading">
         <template #List>
-          <el-table-column
-            align="center"
-            label="排行"
-            type="index"
-            width="50"
-          />
+          <el-table-column align="center" label="排行" type="index" width="50">
+            <template slot-scope="scope">
+              <span
+                class="index_common"
+                :class="[
+                  scope.$index + 1 == '1'
+                    ? 'index_one'
+                    : scope.$index + 1 == '2'
+                    ? 'index_two'
+                    : scope.$index + 1 == '3'
+                    ? 'index_three'
+                    : 'index_more',
+                ]"
+              >
+                {{ scope.$index + 1 }}
+              </span>
+            </template>
+          </el-table-column>
           <el-table-column label="商品图片" prop="img" width="200">
             <template #default="{ row }">
-              <el-image :src="row.material_pic" />
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="row.material_pic"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image :src="row.material_pic" />
+              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column label="商品名称" prop="material_name" width="200" />
@@ -111,11 +115,7 @@
           <el-table-column label="入库时间" prop="add_date" width="120" />
           <el-table-column label="采购件数" prop="num" width="100" />
           <el-table-column label="采购金额" prop="total" width="100" />
-          <el-table-column label="最后一次入库时间">
-            <template #default="{ row }">
-              {{ row.lasttime.add_date }}
-            </template>
-          </el-table-column>
+          <el-table-column label="最后一次入库时间" prop="lasttime" />
           <!-- <el-table-column label="超期状态" prop="pay">
             <template #default="{ row }">暂无{{ row.id }}</template>
           </el-table-column> -->

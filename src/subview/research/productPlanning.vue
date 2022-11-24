@@ -68,11 +68,6 @@
         <template #List>
           <el-table-column
             align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
             label="目标ID"
             prop="plan_id"
             show-overflow-tooltip

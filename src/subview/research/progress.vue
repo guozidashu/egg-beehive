@@ -60,11 +60,6 @@
         <template #List>
           <el-table-column
             align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
             label="名称"
             prop="designer_name"
             show-overflow-tooltip

@@ -650,8 +650,6 @@
           this.form.drawerType = e
           this.$forceUpdate()
           return
-        } else {
-          this.form.drawerType = e
         }
         if (this.form.tag != undefined) {
           if (this.form.tag.length == 2) {

@@ -28,7 +28,6 @@
     <el-card shadow="never" style="border: 0">
       <List :list="list" :list-type="listType" :state="listLoading">
         <template #List>
-          <el-table-column align="center" type="selection" />
           <el-table-column
             align="center"
             label="岗位名称"

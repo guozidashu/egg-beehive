@@ -13,7 +13,7 @@
         <template #Form>
           <el-form-item v-show="form.fold" label="订单时间:">
             <el-date-picker
-              v-model="form.date"
+              v-model="form.create_time"
               align="left"
               end-placeholder="结束日期"
               :picker-options="pickerOptions"
@@ -151,15 +151,22 @@
           <el-table-column label="商品信息" prop="info" width="300">
             <template #default="{ row }">
               <div style="display: flex">
-                <img
-                  :src="row.info.img"
-                  style="
-                    width: 30px;
-                    height: 30px;
-                    margin-top: 10px;
-                    margin-right: 10px;
-                  "
-                />
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.info.img"
+                    style="width: 200px; height: 200px"
+                  />
+                  <el-image
+                    :src="row.info.img"
+                    style="
+                      width: 30px;
+                      height: 30px;
+                      margin-top: 10px;
+                      margin-right: 10px;
+                    "
+                  />
+                </el-tooltip>
                 <p
                   style="
                     overflow: hidden;
@@ -331,7 +338,7 @@
         this.tatleData = data
       },
       handleQuery() {
-        this.form.page = 1
+        this.fetchData()
       },
       changeBtnPage(data) {
         this.form.page = data

@@ -47,11 +47,6 @@
         <template #List>
           <el-table-column
             align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
             label="用户ID"
             prop="user_id"
             show-overflow-tooltip
@@ -77,14 +72,8 @@
           />
           <el-table-column
             align="center"
-            label="订单状态"
-            prop="employee_worth"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
             label="用户价值"
-            prop="name"
+            prop="employee_worth"
             show-overflow-tooltip
           />
         </template>

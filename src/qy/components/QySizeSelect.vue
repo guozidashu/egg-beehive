@@ -183,11 +183,18 @@
         this.$forceUpdate()
       },
       SizeInit() {
+        console.log(222, this.value, this.sizeList)
         if (this.sizeList.length <= 0) return
         this.sizeList.forEach((item) => {
-          item.checked = false
+          if (this.value.includes(String(item.id))) {
+            item.checked = true
+            this.size.push(item.id)
+            return
+          } else {
+            item.checked = false
+          }
           item.children.forEach((size_item) => {
-            if (this.value.includes(size_item.id)) {
+            if (this.value.includes(String(size_item.id))) {
               size_item.select = true
               this.size.push(size_item.id)
             } else {

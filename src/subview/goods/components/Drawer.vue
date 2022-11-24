@@ -363,46 +363,28 @@
             <div class="conten-title">规格及库位</div>
             <div class="conten-list-com">
               <el-form-item
-                v-if="form.drawerType == 3"
+                v-if="form.drawerType == 3 || form.drawerType == 2"
                 class="item"
                 label="颜色："
               >
-                <qy-color-select v-model="form.colorid" />
+                <qy-color-select v-model="form.color_id" />
                 <div style="width: 200px; margin: -33px 0 0 90px">
-                  <span v-for="(item, idex) in colorNameList" :key="idex">
+                  <span v-for="(item, idex) in form.color_name" :key="idex">
                     {{ item }}
                   </span>
                 </div>
               </el-form-item>
               <el-form-item
-                v-if="form.drawerType == 3"
+                v-if="form.drawerType == 3 || form.drawerType == 2"
                 class="item"
                 label="尺码："
               >
-                <qy-size-select v-model="form.sizeid" />
+                <qy-size-select v-model="form.size_id" />
                 <div style="width: 200px; margin: -33px 0 0 90px">
-                  <span v-for="(item, idex) in sizeNameList" :key="idex">
+                  <span v-for="(item, idex) in form.size_name" :key="idex">
                     {{ item }}
                   </span>
                 </div>
-              </el-form-item>
-              <el-form-item
-                v-if="form.drawerType == 2"
-                class="item"
-                label="颜色："
-              >
-                <span v-for="(item, idex) in form.color_name" :key="idex">
-                  {{ item }}
-                </span>
-              </el-form-item>
-              <el-form-item
-                v-if="form.drawerType == 2"
-                class="item"
-                label="尺码："
-              >
-                <span v-for="(item, idex) in form.size_name" :key="idex">
-                  {{ item }}
-                </span>
               </el-form-item>
               <el-form-item class="item" label="仓库">
                 <el-select
@@ -684,10 +666,8 @@
         tabindex: '0',
         goodsAllNum: {},
         goodsDetails: {},
-        colorNameList: [],
-        sizeNameList: [],
-        form: Object.assign({}, this.drawerInof),
-        selectData: Object.assign({}, this.selectList),
+        form: JSON.parse(JSON.stringify(this.drawerInof)),
+        selectData: JSON.parse(JSON.stringify(this.selectList)),
         listLoading: false,
         listType: 2,
         ids: undefined,
@@ -705,7 +685,8 @@
     watch: {
       drawerInof: {
         handler: function (newVal) {
-          this.form = Object.assign({}, newVal)
+          this.form = JSON.parse(JSON.stringify(newVal))
+          this.tabindex = '0'
           if (newVal.drawerType != 3) {
             this.getGoodsAllDetail()
             this.getGoodsDetail()
@@ -723,13 +704,13 @@
         },
         deep: true,
       },
-      'form.colorid': {
+      'form.color_id': {
         handler: function () {
-          if (!this.form.colorid) {
+          if (!this.form.color_id) {
             return
           }
           let arr = []
-          this.form.colorid.forEach((item) => {
+          this.form.color_id.forEach((item) => {
             this.selectData.color.forEach((item1) => {
               item1.children.forEach((item2) => {
                 if (item == item2.id) {
@@ -742,17 +723,18 @@
             arr = arr.slice(0, 2)
             arr.push('等颜色')
           }
-          this.colorNameList = arr
+
+          this.form.color_name = arr
         },
         deep: true,
       },
-      'form.sizeid': {
+      'form.size_id': {
         handler: function () {
-          if (!this.form.sizeid) {
+          if (!this.form.size_id) {
             return
           }
           let arr = []
-          this.form.sizeid.forEach((item) => {
+          this.form.size_id.forEach((item) => {
             this.selectData.size.forEach((item1) => {
               if (item.pid == item1.id) {
                 item1.children.forEach((item2) => {
@@ -771,7 +753,7 @@
             arr = arr.slice(0, 2)
             arr.push('等尺码')
           }
-          this.sizeNameList = arr
+          this.form.size_name = arr
         },
         deep: true,
       },

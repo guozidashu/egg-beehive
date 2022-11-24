@@ -48,6 +48,15 @@
             >
               导出
             </el-button>
+            <el-button
+              native-type="submit"
+              size="small"
+              style="margin-left: 10px"
+              type="primary"
+              @click="resetForm()"
+            >
+              重置
+            </el-button>
           </el-form-item>
         </el-form-item>
       </el-form>
@@ -249,6 +258,12 @@
       this.fetchData()
     },
     methods: {
+      resetForm() {
+        this.goodsForm = {
+          brand: 1,
+          time: this.getPastTime(1),
+        }
+      },
       async getTypeList() {
         const { data } = await getCommonAllList({
           type: 'brand',

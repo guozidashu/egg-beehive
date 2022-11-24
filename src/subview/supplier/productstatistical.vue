@@ -33,14 +33,6 @@
           <el-button
             native-type="submit"
             size="small"
-            style="margin: 0 20px"
-            type="primary"
-          >
-            查询
-          </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
             type="primary"
             @click="handleDownload"
           >
@@ -79,28 +71,39 @@
               type="daterange"
               unlink-panels
             />
-            <el-button
-              native-type="submit"
-              size="small"
-              style="margin: 0 20px"
-              type="primary"
-            >
-              查询
-            </el-button>
           </el-form-item>
         </el-form-item>
       </el-form>
       <List :list="list" :list-type="listType" :state="listLoading">
         <template #List>
-          <el-table-column
-            align="center"
-            label="排行"
-            type="index"
-            width="50"
-          />
+          <el-table-column align="center" label="排行" type="index" width="50">
+            <template slot-scope="scope">
+              <span
+                class="index_common"
+                :class="[
+                  scope.$index + 1 == '1'
+                    ? 'index_one'
+                    : scope.$index + 1 == '2'
+                    ? 'index_two'
+                    : scope.$index + 1 == '3'
+                    ? 'index_three'
+                    : 'index_more',
+                ]"
+              >
+                {{ scope.$index + 1 }}
+              </span>
+            </template>
+          </el-table-column>
           <el-table-column label="商品图片" prop="img" width="200">
             <template #default="{ row }">
-              <el-image :src="row.img" />
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="row.img"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image :src="row.img" />
+              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column label="商品名称" prop="name" width="200" />
