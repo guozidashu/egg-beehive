@@ -17,13 +17,14 @@
               v-for="(item, index) in menuList"
               :key="index"
               :index="item.id.toString()"
+              @click="handleGrouPQuery(item)"
             >
               <div
                 @mouseenter="mouseOver(index)"
                 @mouseleave="mouseLeave(index)"
               >
                 <div slot="title">
-                  <span @click="handleGrouPQuery(item)">{{ item.name }}</span>
+                  <span>{{ item.name }}</span>
                   <el-dropdown style="float: right" trigger="click">
                     <span class="el-dropdown-link">
                       <i

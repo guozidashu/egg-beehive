@@ -51,6 +51,9 @@
         <el-form-item label="类型" prop="type">
           <el-input v-model="form.type" />
         </el-form-item>
+        <el-form-item label="排序" prop="sort">
+          <el-input v-model="form.sort" />
+        </el-form-item>
       </div>
       <div v-if="type == 2">
         <el-form-item>
@@ -120,6 +123,7 @@
               message: '请输入类型,示例值menu',
             },
           ],
+          sort: [{ required: true, trigger: 'blur', message: '请输入排序' }],
         },
         title: '',
         dialogFormVisible: false,

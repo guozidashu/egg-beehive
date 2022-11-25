@@ -150,7 +150,7 @@
 
     data() {
       return {
-        formDrawer: Object.assign({}, this.form),
+        formDrawer: JSON.parse(JSON.stringify(this.form)),
         rules: {
           name: [
             { required: true, message: '请输入门店名称', trigger: 'blur' },
@@ -179,12 +179,7 @@
     watch: {
       form: {
         handler: function (newVal) {
-          this.formDrawer = Object.assign({}, newVal)
-          if (this.formDrawer.business_hours) {
-            this.formDrawer.business_hours = JSON.parse(
-              this.formDrawer.business_hours
-            )
-          }
+          this.formDrawer = JSON.parse(JSON.stringify(newVal))
           if (this.formDrawer.status) {
             this.formDrawer.status = Number(this.formDrawer.status)
           }

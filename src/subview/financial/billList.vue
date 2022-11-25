@@ -14,7 +14,9 @@
             <el-date-picker
               v-model="form.date"
               align="left"
+              :default-time="['00:00:00', '23:59:59']"
               end-placeholder="结束日期"
+              format="yyyy-MM-dd"
               :picker-options="pickerOptions"
               range-separator="至"
               start-placeholder="开始日期"
@@ -84,6 +86,17 @@
             prop="remark"
             show-overflow-tooltip
           />
+          <el-table-column
+            align="center"
+            label="状态"
+            prop="is_void"
+            show-overflow-tooltip
+          >
+            <template #default="{ row }">
+              <el-tag v-if="row.is_out == 1" type="danger">已作废</el-tag>
+              <el-tag v-else>正常</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
               <el-button
@@ -94,6 +107,7 @@
                 编辑
               </el-button>
               <el-button
+                v-if="row.is_out == 0"
                 v-has-permi="['btn:FinancialBillList:zuofei']"
                 type="text"
                 @click="handleDelete(row)"
@@ -190,8 +204,10 @@
       },
       async fetchData() {
         this.listLoading = true
-        this.form.start_time = this.form.date[0]
-        this.form.end_time = this.form.date[1]
+        if (this.form.date != null) {
+          this.form.start_time = this.form.date[0]
+          this.form.end_time = this.form.date[1]
+        }
         const { data } = await getBillList(this.form)
         this.list = data.data
         this.total = data.total

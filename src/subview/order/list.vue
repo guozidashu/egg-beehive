@@ -46,7 +46,9 @@
             <el-date-picker
               v-model="form.order_time"
               align="left"
+              :default-time="['00:00:00', '23:59:59']"
               end-placeholder="结束日期"
+              format="yyyy-MM-dd"
               :picker-options="pickerOptions"
               range-separator="至"
               start-placeholder="开始日期"

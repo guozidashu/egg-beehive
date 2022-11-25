@@ -24,6 +24,8 @@
         <el-form-item label="活动时间" prop="date">
           <el-date-picker
             v-model="form.date"
+            :default-time="['00:00:00', '23:59:59']"
+            format="yyyy-MM-dd"
             placeholder="选择日期时间"
             type="datetime"
           />

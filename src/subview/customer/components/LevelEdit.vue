@@ -363,6 +363,8 @@
             所有该等级会员从
             <el-date-picker
               v-model="form.value1"
+              :default-time="['00:00:00', '23:59:59']"
+              format="yyyy-MM-dd"
               placeholder="选择日期"
               type="date"
             />

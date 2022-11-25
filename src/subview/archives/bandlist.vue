@@ -59,6 +59,22 @@
             prop="name"
             show-overflow-tooltip
           />
+          <el-table-column label="状态" prop="status" width="150">
+            <template #default="{ row }">
+              <el-switch
+                v-model="row.status"
+                active-color="#41B584"
+                active-text="开启"
+                :active-value="1"
+                class="switch"
+                inactive-color="#D2D2D2"
+                inactive-text="关闭"
+                :inactive-value="0"
+                style="margin: 0 10px"
+                @change="turnOnOff(row)"
+              />
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="操作"
@@ -92,7 +108,7 @@
   import List from '@/subview/components/List'
   import Edit from './components/BandEdit'
   import Form from '@/subview/components/Form'
-  import { getBandList, delBandDel } from '@/api/basic'
+  import { getBandList, delBandDel, editBandSave } from '@/api/basic'
   export default {
     name: 'ProjectBandlist',
     components: { List, Edit, Form },
@@ -137,6 +153,14 @@
             this.$refs['edit'].showEdit()
           }
         }
+      },
+      async turnOnOff(row) {
+        const { code } = await editBandSave(row)
+        if (code != 200) {
+          return
+        }
+        this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
+        this.fetchData()
       },
       // 查询
       handleQuery() {

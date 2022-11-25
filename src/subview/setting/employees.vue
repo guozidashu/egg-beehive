@@ -65,7 +65,14 @@
             show-overflow-tooltip
           >
             <template #default="{ row }">
-              <img :src="row.avatar" style="width: 50px; height: 50px" />
+              <el-tooltip placement="top">
+                <el-image
+                  :src="row.avatar"
+                  slot="content"
+                  style="width: 250px; height: 250px"
+                />
+                <el-image :src="row.avatar" style="width: 50px; height: 50px" />
+              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column label="员工姓名" prop="name" show-overflow-tooltip />
@@ -81,17 +88,8 @@
           />
           <el-table-column label="状态" prop="status" show-overflow-tooltip>
             <template #default="{ row }">
-              <el-switch
-                v-model="row.status"
-                active-color="#41B584"
-                active-text="开启"
-                :active-value="1"
-                class="switch"
-                inactive-color="#D2D2D2"
-                inactive-text="关闭"
-                :inactive-value="0"
-                style="margin: 0 10px"
-              />
+              <el-tag v-if="row.status == 1">在职</el-tag>
+              <el-tag v-else type="danger">停职</el-tag>
             </template>
           </el-table-column>
           <el-table-column align="center" fixed="right" label="操作" width="85">

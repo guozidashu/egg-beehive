@@ -117,7 +117,10 @@
               <el-input v-model="form2.secret" />
             </el-form-item>
             <el-form-item label="token失效时间" prop="token_expire_time">
-              <el-input v-model="form2.token_expire_time" />
+              <el-input
+                v-model="form2.token_expire_time"
+                placeholder="请输入数字"
+              />
             </el-form-item>
             <el-form-item label="token" prop="access_token">
               <el-input v-model="form2.access_token" />
@@ -126,7 +129,10 @@
               <el-input v-model="form2.jsapi_ticket" />
             </el-form-item>
             <el-form-item label="ticket过期时间" prop="ticket_expire_time">
-              <el-input v-model="form2.ticket_expire_time" />
+              <el-input
+                v-model="form2.ticket_expire_time"
+                placeholder="请输入数字"
+              />
             </el-form-item>
             <el-form-item label="agent应用模式下" prop="agent_jsapi_ticket">
               <el-input v-model="form2.agent_jsapi_ticket" />
@@ -174,7 +180,10 @@
               <el-input v-model="form3.secret" />
             </el-form-item>
             <el-form-item label="token失效时间" prop="token_expire_time">
-              <el-input v-model="form3.token_expire_time" />
+              <el-input
+                v-model="form2.token_expire_time"
+                placeholder="请输入数字"
+              />
             </el-form-item>
             <el-form-item label="token" prop="access_token">
               <el-input v-model="form3.access_token" />
@@ -183,7 +192,10 @@
               <el-input v-model="form3.jsapi_ticket" />
             </el-form-item>
             <el-form-item label="ticket过期时间" prop="ticket_expire_time">
-              <el-input v-model="form3.ticket_expire_time" />
+              <el-input
+                v-model="form2.ticket_expire_time"
+                placeholder="请输入数字"
+              />
             </el-form-item>
             <el-form-item label="agent应用模式下" prop="agent_jsapi_ticket">
               <el-input v-model="form3.agent_jsapi_ticket" />

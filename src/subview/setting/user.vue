@@ -37,18 +37,18 @@
       @mouseleave="mouseLeave(index)"
     >
       <el-card shadow="hover" style="border: 0">
-        <div @click="handleChange(index)">
+        <div>
           <div style="display: flex; margin-top: 5px 0 0 5px">
             <div style="width: 50%">
-              <div style="margin-bottom: 20px">
+              <div style="margin-top: 10px">
                 <span style="margin-right: 20px; font-size: 16px; color: black">
                   {{ item.name }}
                 </span>
                 <span>{{ item.num }} 人</span>
               </div>
-              <div>{{ item.title }}（已设置{{ item.number }}个权限）</div>
+              <!-- <div>{{ item.title }}（已设置{{ item.number }}个权限）</div> -->
             </div>
-            <div style="width: 50%; margin-top: 10px">
+            <div style="width: 50%">
               <div v-if="item.btnIconStatus">
                 <el-button
                   v-has-permi="['btn:User:edit']"

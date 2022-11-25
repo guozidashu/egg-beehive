@@ -9,6 +9,8 @@
       <el-form-item label="年份" prop="year">
         <el-date-picker
           v-model="form.year"
+          :default-time="['00:00:00', '23:59:59']"
+          format="yyyy-MM-dd"
           placeholder="选择年份"
           type="year"
         />

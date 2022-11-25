@@ -288,7 +288,7 @@
         goodsInof: null,
         sizeNanme: '',
         colorNanme: '',
-        form1: { order_sn: 'asas111', page: 1, pageSize: 20 },
+        form1: { order_sn: '', page: 1, pageSize: 20 },
 
         CommoditySn: [],
         colorList: [],
@@ -362,6 +362,10 @@
         this.goodsInof = data
       },
       async handleStockPrint() {
+        if (this.form1.order_sn == '') {
+          this.$message.error('请输入订单号')
+          return
+        }
         this.listLoading = true
         const { data } = await getStockPrint(this.form1)
         this.list = data.data

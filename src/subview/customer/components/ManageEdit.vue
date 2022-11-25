@@ -18,9 +18,7 @@
           clearable
           placeholder="请输入优惠券名称"
           style="margin-bottom: 20px"
-        >
-          <el-button slot="append" icon="el-icon-search" />
-        </el-input>
+        />
       </el-form-item>
     </el-form>
     <List

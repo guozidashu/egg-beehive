@@ -41,7 +41,9 @@
             <el-date-picker
               v-model="goodsForm.time"
               align="right"
+              :default-time="['00:00:00', '23:59:59']"
               end-placeholder="结束日期"
+              format="yyyy-MM-dd"
               :picker-options="pickerOptions"
               range-separator="至"
               start-placeholder="开始日期"
@@ -109,7 +111,9 @@
               <el-date-picker
                 v-model="goodsForm1.time"
                 align="right"
+                :default-time="['00:00:00', '23:59:59']"
                 end-placeholder="结束日期"
+                format="yyyy-MM-dd"
                 :picker-options="pickerOptions"
                 range-separator="至"
                 start-placeholder="开始日期"
@@ -124,6 +128,15 @@
                 @click="handleDownload"
               >
                 导出
+              </el-button>
+              <el-button
+                native-type="submit"
+                size="small"
+                style="margin-left: 10px"
+                type="primary"
+                @click="resetForm()"
+              >
+                重置
               </el-button>
             </el-form-item>
           </el-form-item>
@@ -305,6 +318,13 @@
       this.getCircular()
     },
     methods: {
+      resetForm() {
+        this.goodsForm1 = {
+          account_id: '', //会计科目id
+          category_id: '', //收支类型id
+          time: this.getPastTime(1),
+        }
+      },
       async getTypeAccount() {
         const { data } = await getAccountList({
           page: 1,

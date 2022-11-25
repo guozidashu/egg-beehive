@@ -3,7 +3,12 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+      <Form
+        :form="form"
+        :form-type="formType"
+        @changeSearch="handleQuery"
+        @resetForm="resetForm"
+      >
         <template #Form>
           <el-form-item label="营业状态:">
             <el-select v-model="form.status">
@@ -59,7 +64,17 @@
           <el-table-column label="ID" prop="id" width="80" />
           <el-table-column label="门店图片" prop="pic" width="150">
             <template slot-scope="{ row }">
-              <img :src="row.pic[0]" style="width: 100px; height: 100px" />
+              <el-tooltip placement="top">
+                <el-image
+                  :src="row.pic[0]"
+                  slot="content"
+                  style="width: 250px; height: 250px"
+                />
+                <el-image
+                  :src="row.pic[0]"
+                  style="width: 100px; height: 100px"
+                />
+              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column label="门店名称" prop="name" width="120" />
@@ -72,10 +87,10 @@
           </el-table-column>
           <el-table-column label="合作模式" prop="cooperate_type" width="120">
             <template #default="{ row }">
-              <span v-if="row.status == 1">直营店</span>
-              <span v-else-if="row.status == 2">联营店</span>
-              <span v-else-if="row.status == 3">加盟店</span>
-              <span v-else-if="row.status == 4">分销店</span>
+              <span v-if="row.cooperate_type == 1">直营店</span>
+              <span v-else-if="row.cooperate_type == 2">联营店</span>
+              <span v-else-if="row.cooperate_type == 3">加盟店</span>
+              <span v-else-if="row.cooperate_type == 4">分销店</span>
             </template>
           </el-table-column>
           <el-table-column label="营业时间" prop="business_hours">
@@ -150,7 +165,7 @@
           pageSize: 10,
         },
         formDrawer: {},
-        formType: 3,
+        formType: 4,
         listType: 1,
         list: [],
         listLoading: false,
@@ -170,6 +185,9 @@
       this.fetchData()
     },
     methods: {
+      resetForm() {
+        this.form = this.$options.data().form
+      },
       handleQuery() {
         this.fetchData()
       },
@@ -192,7 +210,11 @@
         const { data } = await getStoreList(this.form)
         let list = data.data
         list.forEach((item) => {
-          if (item.business_hours != null) {
+          if (
+            item.business_hours != null &&
+            item.business_hours != '' &&
+            item.business_hours != 'null'
+          ) {
             item.business_hours = JSON.parse(item.business_hours)
             let arr = []
             item.business_hours.forEach((item) => {

@@ -100,13 +100,13 @@
       style="padding: 0 25px"
       @tab-click="handleClick"
     >
-      <el-tab-pane label="物料信息" name="first" />
-      <el-tab-pane label="入库信息" name="second" />
-      <el-tab-pane label="出库信息" name="three" />
-      <el-tab-pane label="采购明细" name="four" />
-      <el-tab-pane label="退货明细" name="five" />
+      <el-tab-pane label="物料信息" name="0" />
+      <el-tab-pane label="入库信息" name="1" />
+      <el-tab-pane label="出库信息" name="2" />
+      <el-tab-pane label="采购明细" name="3" />
+      <el-tab-pane label="退货明细" name="4" />
     </el-tabs>
-    <div v-if="tabindex == '0'">
+    <div v-if="activeName == '0'">
       <div v-if="form.drawerType == 1" ref="vab-print-table" class="drawer-tab">
         <div class="conten-warp">
           <div class="conten-title">基本信息</div>
@@ -298,7 +298,7 @@
       </el-form>
     </div>
     <List
-      v-if="tabindex == '1' || tabindex == '2' || tabindex == '4'"
+      v-if="activeName == '1' || activeName == '2' || activeName == '4'"
       :list="orderList"
       :list-type="listType"
       :state="listLoading"
@@ -316,7 +316,7 @@
       </template>
     </List>
     <List
-      v-if="tabindex == '3'"
+      v-if="activeName == '3'"
       :list="orderList"
       :list-type="listType"
       :state="listLoading"
@@ -364,8 +364,7 @@
     },
     data() {
       return {
-        activeName: 'first',
-        tabindex: '0',
+        activeName: '0',
         form: JSON.parse(JSON.stringify(this.drawerInof)),
         listLoading: false,
         listType: 2,
@@ -385,6 +384,7 @@
       drawerInof: {
         handler: function (newVal) {
           this.form = JSON.parse(JSON.stringify(newVal))
+          this.activeName = '0'
           if (this.form.drawerType == 3) {
             this.form.material_spec = [
               {
@@ -454,7 +454,6 @@
       },
       // 列表数据表头切换监听 自定义部分
       async handleClick(tab) {
-        this.tabindex = tab.index
         if (tab.index != 0) {
           const { data } = await getMaterialInfoList({
             material_id: this.form.id, //物料id

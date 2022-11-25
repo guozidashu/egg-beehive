@@ -42,6 +42,15 @@
                     :value="item.id"
                   />
                 </el-select>
+                <el-button
+                  native-type="submit"
+                  size="small"
+                  style="margin-left: 10px"
+                  type="primary"
+                  @click="resetForm()"
+                >
+                  重置
+                </el-button>
               </el-form-item>
             </el-form-item>
           </el-form>
@@ -123,7 +132,9 @@
               <el-date-picker
                 v-model="goodsForm1.time"
                 align="right"
+                :default-time="['00:00:00', '23:59:59']"
                 end-placeholder="结束日期"
+                format="yyyy-MM-dd"
                 :picker-options="pickerOptions"
                 range-separator="至"
                 start-placeholder="开始日期"
@@ -335,6 +346,13 @@
       this.getTableList()
     },
     methods: {
+      resetForm() {
+        this.goodsForm = {
+          type: 0,
+          brand: 1,
+          time: this.getWeenTime(),
+        }
+      },
       async getTypeList() {
         const { data } = await getCommonAllList({
           type: 'brand',

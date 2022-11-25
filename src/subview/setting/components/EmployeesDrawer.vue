@@ -141,6 +141,8 @@
               <el-form-item class="item" label="生日：">
                 <el-date-picker
                   v-model="form.value1"
+                  :default-time="['00:00:00', '23:59:59']"
+                  format="yyyy-MM-dd"
                   placeholder="请选择生日"
                   type="date"
                 />

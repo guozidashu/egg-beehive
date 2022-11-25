@@ -17,7 +17,9 @@
             <el-date-picker
               v-model="form.date"
               align="right"
+              :default-time="['00:00:00', '23:59:59']"
               end-placeholder="结束日期"
+              format="yyyy-MM-dd"
               :picker-options="pickerOptions"
               range-separator="至"
               start-placeholder="开始日期"
@@ -95,8 +97,8 @@
             show-overflow-tooltip
           >
             <template #default="{ row }">
-              <span v-if="row.is_void == 1">已作废</span>
-              <span v-else>正常</span>
+              <el-tag v-if="row.is_void == 1" type="danger">已作废</el-tag>
+              <el-tag v-else>正常</el-tag>
             </template>
           </el-table-column>
         </template>
@@ -161,8 +163,11 @@
       },
       async fetchData() {
         this.listLoading = true
-        this.form.start_time = this.form.date[0]
-        this.form.end_time = this.form.date[1]
+        if (this.form.date != null) {
+          this.form.start_time = this.form.date[0]
+          this.form.end_time = this.form.date[1]
+        }
+
         const { data } = await getSupplierVoucherList(this.form)
         this.list = data.data
         this.total = data.total

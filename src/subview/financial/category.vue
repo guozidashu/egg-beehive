@@ -17,13 +17,14 @@
               v-for="(item, index) in menuList"
               :key="index"
               :index="item.id.toString()"
+              @click="handleGrouPQuery(item.id)"
             >
               <div
                 @mouseenter="mouseOver(index)"
                 @mouseleave="mouseLeave(index)"
               >
                 <div slot="title">
-                  <span @click="handleGrouPQuery(item.id)">
+                  <span>
                     {{ item.name }}
                   </span>
                   <el-dropdown style="float: right" trigger="click">
@@ -88,9 +89,7 @@
                 v-model="form.name"
                 clearable
                 placeholder="请输入收支名称"
-              >
-                <el-button slot="append" icon="el-icon-search" />
-              </el-input>
+              />
             </el-form-item>
           </el-form>
           <List

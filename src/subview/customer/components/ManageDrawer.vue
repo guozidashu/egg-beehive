@@ -232,6 +232,8 @@
               <el-form-item class="item" label="生日：">
                 <el-date-picker
                   v-model="form.birthday"
+                  :default-time="['00:00:00', '23:59:59']"
+                  format="yyyy-MM-dd"
                   placeholder="请选择生日"
                   type="date"
                 />
@@ -239,6 +241,8 @@
               <el-form-item class="item" label="加入时间：">
                 <el-date-picker
                   v-model="form.create_time"
+                  :default-time="['00:00:00', '23:59:59']"
+                  format="yyyy-MM-dd"
                   placeholder="请选择加入时间"
                   type="date"
                 />

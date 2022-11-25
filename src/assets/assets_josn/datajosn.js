@@ -17,28 +17,32 @@ export default {
           {
             text: '今天',
             onClick(picker) {
-              const end = new Date()
-              const start = new Date()
+              const end = new Date(new Date().setHours(23, 59, 59, 59))
+              const start = new Date(new Date().setHours(0, 0, 0, 0))
               picker.$emit('pick', [start, end])
             },
           },
           {
             text: '昨天',
             onClick(picker) {
-              const end = new Date()
-              const start = new Date(
-                new Date().getTime() - 3600 * 1000 * 24 * 1
+              const end = new Date(
+                new Date(new Date().setHours(23, 59, 59, 59)).getTime() -
+                  3600 * 1000 * 24 * 1
               )
-              end.setTime(start)
+              const start = new Date(
+                new Date(new Date().setHours(0, 0, 0, 0)).getTime() -
+                  3600 * 1000 * 24 * 1
+              )
               picker.$emit('pick', [start, end])
             },
           },
           {
             text: '最近7天',
             onClick(picker) {
-              const end = new Date()
+              const end = new Date(new Date().setHours(23, 59, 59, 59))
               const start = new Date(
-                new Date().getTime() - 3600 * 1000 * 24 * 7
+                new Date(new Date().setHours(0, 0, 0, 0)).getTime() -
+                  3600 * 1000 * 24 * 7
               )
               picker.$emit('pick', [start, end])
             },
@@ -46,9 +50,10 @@ export default {
           {
             text: '最近30天',
             onClick(picker) {
-              const end = new Date()
+              const end = new Date(new Date().setHours(23, 59, 59, 59))
               const start = new Date(
-                new Date().getTime() - 3600 * 1000 * 24 * 30
+                new Date(new Date().setHours(0, 0, 0, 0)).getTime() -
+                  3600 * 1000 * 24 * 30
               )
               picker.$emit('pick', [start, end])
             },
@@ -56,9 +61,9 @@ export default {
           {
             text: '本月',
             onClick(picker) {
-              const end = new Date()
+              const end = new Date(new Date().setHours(23, 59, 59, 59))
               const start = new Date(
-                new Date().getTime() -
+                new Date(new Date().setHours(0, 0, 0, 0)).getTime() -
                   3600 * 1000 * 24 * (new Date().getDate() - 1)
               )
 
@@ -68,8 +73,12 @@ export default {
           {
             text: '本年',
             onClick(picker) {
-              const start = new Date(new Date().getFullYear(), 0, 1)
-              const end = new Date()
+              const start = new Date(
+                new Date(new Date().setHours(0, 0, 0, 0)).getFullYear(),
+                0,
+                1
+              )
+              const end = new Date(new Date().setHours(23, 59, 59, 59))
               picker.$emit('pick', [start, end])
             },
           },

@@ -17,13 +17,14 @@
               v-for="(item, index) in menuList"
               :key="index"
               :index="item.id.toString()"
+              @click="handleGrouPQuery(item.id)"
             >
               <div
                 @mouseenter="mouseOver(index)"
                 @mouseleave="mouseLeave(index)"
               >
                 <div slot="title">
-                  <span @click="handleGrouPQuery(item.id)">
+                  <span>
                     {{ item.name }}
                   </span>
                   <el-dropdown style="float: right" trigger="click">
@@ -83,14 +84,19 @@
                 添加分类
               </el-button>
             </el-form-item>
-            <el-form-item label="科目名称：" style="float: right">
-              <el-input
-                v-model="form.name"
-                clearable
-                placeholder="请输入科目名称"
+            <el-form-item style="float: right">
+              <el-button
+                native-type="submit"
+                size="small"
+                style="margin-left: 10px"
+                type="primary"
+                @click="resetForm()"
               >
-                <el-button slot="append" icon="el-icon-search" />
-              </el-input>
+                重置
+              </el-button>
+            </el-form-item>
+            <el-form-item label="科目名称：" style="float: right">
+              <el-input v-model="form.name" placeholder="请输入科目名称" />
             </el-form-item>
             <el-form-item label="类别：" style="float: right">
               <el-select v-model="form.type" placeholder="请选择">
@@ -189,6 +195,15 @@
       this.fetchData(1)
     },
     methods: {
+      resetForm() {
+        this.form = {
+          page: 1,
+          pageSize: 10,
+          id: 0, // 父级id （取父级时传0）
+          type: null, // 类别 1收 2支
+          name: '', // 科目名称
+        }
+      },
       async handleEdit(row, type) {
         if (row === 'add') {
           this.$refs['edit'].showEdit(row, type)

@@ -12,7 +12,9 @@
             <el-date-picker
               v-model="queryForm.create_time"
               align="left"
+              :default-time="['00:00:00', '23:59:59']"
               end-placeholder="结束日期"
+              format="yyyy-MM-dd"
               :picker-options="pickerOptions"
               range-separator="至"
               start-placeholder="开始日期"
@@ -62,14 +64,10 @@
         show-overflow-tooltip
       >
         <template #default="{ row }">
-          <span v-if="row.executeResult === '登录成功'">
-            <span class="vab-dot vab-dot-success"><span></span></span>
-            {{ row.executeResult }}
-          </span>
-          <span v-else>
-            <span class="vab-dot vab-dot-error"><span></span></span>
-            {{ row.executeResult }}
-          </span>
+          <el-tooltip placement="top">
+            <div slot="content" style="width: 500px">{{ row.data }}</div>
+            <el-tag>查看</el-tag>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column align="center" label="登录IP" prop="ip" />
@@ -140,12 +138,20 @@
         this.fetchData()
       },
       queryData() {
-        this.queryForm.pageNo = 1
-        this.fetchData()
+        this.queryForm = {
+          name: '', //操作名称
+          admin_name: '', //操作人
+          create_time: [],
+          page: 1,
+          pageSize: 10,
+        }
       },
       async fetchData() {
         this.listLoading = true
         const { data } = await getLogList(this.queryForm)
+        data.data.forEach((item) => {
+          item.data = JSON.parse(item.data)
+        })
         this.list = data.data
         this.total = data.total
         this.listLoading = false

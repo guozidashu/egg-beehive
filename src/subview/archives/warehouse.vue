@@ -124,7 +124,7 @@
           page: 1,
           pageSize: 10,
         },
-        formType: 3,
+        formType: 4,
         listType: 1,
         list: [],
         listLoading: false,
