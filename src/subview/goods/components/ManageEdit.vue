@@ -61,7 +61,6 @@
     data() {
       return {
         dialogImageUrl: '',
-        dialogVisible: false,
         fileList: [
           {
             url: '',
@@ -108,6 +107,7 @@
         this.form = this.$options.data().form
         this.dialogFormVisible = false
       },
+
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {

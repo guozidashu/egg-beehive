@@ -44,6 +44,45 @@ export function getConfig(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+// 模板组件配置
+
+export function getTemplateAssemblyInfo(data) {
+  return request({
+    url: '/admin/templateAssemblyInfo',
+    method: 'post',
+    data,
+  })
+}
+export function editTemplateAssemblyLayout(data) {
+  return request({
+    url: '/admin/templateAssemblyLayout',
+    method: 'post',
+    data,
+  })
+}
+//模板管理
+export function getTemplateList(data) {
+  return request({
+    url: '/admin/templateList',
+    method: 'post',
+    data,
+  })
+}
+export function delTemplateDel(data) {
+  return request({
+    url: '/admin/templateDel',
+    method: 'post',
+    data,
+  })
+}
+
+export function addTemplateSave(data) {
+  return request({
+    url: '/admin/templateSave',
+    method: 'post',
+    data,
+  })
+}
 // 账户信息
 
 export function getAccountDetail(data) {
@@ -929,6 +968,13 @@ export function editCategorySonStatus(data) {
   })
 }
 //商品管理
+export function editSourceMaterialSave(data) {
+  return request({
+    url: '/goods/sourceMaterialSave',
+    method: 'post',
+    data,
+  })
+}
 export function getGoodTabTotal(data) {
   return request({
     url: '/goods/goodTabTotal',

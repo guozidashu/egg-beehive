@@ -108,7 +108,7 @@
         loading: false,
         dialogVisible: false,
         dialogImageUrl: '',
-        action: 'https://vab-unicloud-3a9da9.service.tcloudbase.com/upload',
+        action: 'platform/common/uploadPic',
         headers: {},
         fileList: [],
         picture: 'picture',
@@ -119,6 +119,7 @@
         title: '上传',
         dialogFormVisible: false,
         data: {},
+        imgList: [],
       }
     },
     computed: {
@@ -130,8 +131,17 @@
         return _.round(this.imgNum / this.allImgNum, 2) * 100
       },
     },
+    watch: {
+      size: {
+        handler: function (val) {
+          console.log(val)
+        },
+        immediate: true,
+        deep: true,
+      },
+    },
     created() {
-      this.headers['Authorization'] = `Bearer ${this.token}`
+      this.headers['Authorization'] = `${this.token}`
     },
     methods: {
       submitUpload() {
@@ -142,6 +152,19 @@
         this.show = true
       },
       handleChange(file, fileList) {
+        const arr = []
+        fileList.forEach((item) => {
+          if (arr.indexOf(item.name) === -1) {
+            arr.push(item.name)
+          } else {
+            this.$baseMessage(
+              `当前选择的 ${item.name} 文件，重复上传`,
+              'error',
+              'vab-hey-message-error'
+            )
+            fileList.pop()
+          }
+        })
         if (file.size > 1048576 * this.size) {
           fileList.filter((item) => item !== file)
           this.fileList = fileList
@@ -150,6 +173,10 @@
         }
       },
       handleSuccess(response, file, fileList) {
+        if (response.code === 200) {
+          this.imgList.push(response.data.file_url)
+          this.$emit('submitUpload', this.imgList)
+        }
         this.imgNum = this.imgNum + 1
         this.imgSuccessNum = this.imgSuccessNum + 1
         if (fileList.length === this.imgNum) {
@@ -206,13 +233,14 @@
         this.dialogFormVisible = true
       },
       handleClose() {
+        this.imgList = []
         this.fileList = []
         this.picture = 'picture'
         this.allImgNum = 0
         this.imgNum = 0
         this.imgSuccessNum = 0
         this.imgErrorNum = 0
-        this.headers['Authorization'] = `Bearer ${this.token}`
+        this.headers['Authorization'] = `${this.token}`
         this.dialogFormVisible = false
       },
     },

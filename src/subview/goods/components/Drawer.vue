@@ -661,6 +661,9 @@
     },
     data() {
       return {
+        formDialog: {
+          copy: '',
+        },
         lockSta: false,
         activeName: '0',
         tabindex: '0',

@@ -175,7 +175,12 @@
               <span v-else-if="row.status == 1">上架</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" fixed="right" label="操作" width="85">
+          <el-table-column
+            align="center"
+            fixed="right"
+            label="操作"
+            width="150"
+          >
             <template #default="{ row }">
               <el-button
                 v-has-permi="['btn:GoodsManage:view']"
@@ -190,6 +195,13 @@
                 @click="handleDetail(row, 2)"
               >
                 编辑
+              </el-button>
+              <el-button
+                v-has-permi="['btn:GoodsManage:edit']"
+                type="text"
+                @click="handleMaterial(row)"
+              >
+                素材上传
               </el-button>
             </template>
           </el-table-column>
@@ -207,6 +219,70 @@
       <Drawer :drawer-inof="drawerInof" :select-list="selectList" />
     </el-drawer>
     <edit ref="edit" @fetch-data="fetchData" />
+    <el-dialog
+      :append-to-body="true"
+      :before-close="handleMaterialClose"
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="50%"
+    >
+      <el-form ref="formDialog" label-width="80px" :model="formDialog">
+        <el-form-item label="文案文本：">
+          <el-input
+            v-model="formDialog.copywriting"
+            :autosize="{ minRows: 2, maxRows: 4 }"
+            style="white-space: pre-line"
+            type="textarea"
+          />
+        </el-form-item>
+        <el-form-item class="item" label="文案图片：">
+          <div
+            v-if="formDialog.source_material.length > 0"
+            style="display: flex"
+          >
+            <div
+              v-for="(item, index) in formDialog.source_material"
+              :key="index"
+              style="display: flex; margin: 10px"
+            >
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="item"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image :src="item" style="width: 50px; height: 50px" />
+              </el-tooltip>
+              <i
+                class="el-icon-close"
+                style="position: relative; top: -12px; left: -8px"
+                @click="handleRemove(index)"
+              ></i>
+            </div>
+          </div>
+          <el-button
+            native-type="submit"
+            size="small"
+            type="primary"
+            @click="handleShow()"
+          >
+            上传
+          </el-button>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleMaterialSub">确 定</el-button>
+      </span>
+    </el-dialog>
+    <vab-upload
+      ref="vabUpload"
+      :limit="50"
+      name="file"
+      :size="2"
+      url="/upload"
+      @submitUpload="getSon"
+    />
   </div>
 </template>
 
@@ -215,22 +291,30 @@
   import Form from '@/subview/components/Form'
   import Edit from './components/ManageEdit'
   import Drawer from './components/Drawer'
+  import VabUpload from '@/extra/VabUpload'
   import {
     getGoodList,
     getCommonAllList,
     editGoodBatchLower,
     getGoodTabTotal,
+    editSourceMaterialSave,
   } from '@/api/basic'
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
     name: 'GoodsManage',
-    components: { List, Form, Drawer, Edit },
+    components: { List, Form, Drawer, Edit, VabUpload },
     mixins: [publicjosn],
     data() {
       return {
         title: '',
         drawer: false,
         drawerInof: {},
+        dialogVisible: false,
+        formDialog: {
+          goods_id: null,
+          source_material: [],
+          copywriting: '',
+        },
         tatleData: {
           all_order: null, // 全部
           repository: null, // 仓库中
@@ -276,6 +360,57 @@
       this.getTatolData()
     },
     methods: {
+      async handleMaterialSub() {
+        const { code } = await editSourceMaterialSave(this.formDialog)
+        console.log(222, code)
+        if (code == 200) {
+          this.$message.success('操作成功')
+          this.dialogVisible = false
+          this.formDialog = {
+            goods_id: null,
+            source_material: [],
+            copywriting: '',
+          }
+          this.fetchData()
+        }
+      },
+      handleRemove(index) {
+        this.formDialog.source_material.splice(index, 1)
+      },
+      getSon(data) {
+        this.formDialog.source_material = data
+      },
+      handleMaterial(row) {
+        console.log(111, row, row.source_material)
+        if (row.source_material != null) {
+          this.formDialog = row.source_material
+          this.formDialog.source_material = JSON.parse(
+            this.formDialog.source_material
+          )
+          this.formDialog.copywriting = this.formDialog.copywriting.replace(
+            /\\n/g,
+            '\n'
+          )
+        } else {
+          this.formDialog = {
+            goods_id: row.id,
+            source_material: [],
+            copywriting: '',
+          }
+        }
+        this.dialogVisible = true
+      },
+      handleMaterialClose() {
+        this.dialogVisible = false
+        this.formDialog = {
+          goods_id: null,
+          source_material: [],
+          copywriting: '',
+        }
+      },
+      handleShow() {
+        this.$refs['vabUpload'].handleShow()
+      },
       handleQuery() {
         this.fetchData()
       },

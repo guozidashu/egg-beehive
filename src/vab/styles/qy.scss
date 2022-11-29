@@ -1,0 +1,54 @@
+/* ---------------------------------- */
+/* switch按钮样式 */
+.switch .el-switch__label {
+  position: absolute;
+  display: none;
+  color: #fff !important;
+}
+/*打开时文字位置设置*/
+.switch .el-switch__label--right {
+  z-index: 1;
+}
+/* 调整打开时文字的显示位子 */
+.switch .el-switch__label--right span {
+  margin-left: 10px;
+}
+/*关闭时文字位置设置*/
+.switch .el-switch__label--left {
+  z-index: 1;
+}
+/* 调整关闭时文字的显示位子 */
+.switch .el-switch__label--left span {
+  margin-left: 20px;
+}
+/*显示文字*/
+.switch .el-switch__label.is-active {
+  display: block;
+}
+/* 调整按钮的宽度 */
+.switch.el-switch .el-switch__core,
+.el-switch .el-switch__label {
+  width: 60px !important;
+  margin: 0;
+}
+/* ---------------------------------- */
+/* 表格排行 */
+.index_common {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  color: #ffffff;
+  border-radius: 4em; //图案为圆形
+}
+.index_one {
+  background: red;
+}
+.index_two {
+  background: #e6a23c;
+}
+.index_three {
+  background: #409eff;
+}
+.index_more {
+  background: #c8c9cc;
+}

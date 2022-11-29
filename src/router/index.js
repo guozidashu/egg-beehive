@@ -1122,6 +1122,15 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'design',
+        name: 'Design',
+        component: () => import('@/subview/setting/design'),
+        meta: {
+          title: '页面设计',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {

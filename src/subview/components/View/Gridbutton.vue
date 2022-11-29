@@ -1,0 +1,82 @@
+<template>
+  <div>
+    <div
+      v-if="data.parameters.grid_items && data.parameters.grid_items.length > 0"
+      class="grid-button"
+      :style="wrapper_style"
+    >
+      <div
+        v-for="(item, index) in data.parameters.grid_items"
+        :key="index"
+        :style="item_style"
+      >
+        <img mode="aspectFill" :src="item.img" :style="img_style" />
+        <div style="text-align: center">{{ item.name }}</div>
+      </div>
+    </div>
+    <div v-else class="image-null"><span class="el-icon-picture"></span></div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'Notification',
+    props: {
+      data: {
+        type: Object,
+        default: () => {},
+      },
+    },
+    data() {
+      return {
+        wrapper_style: {},
+        item_style: {},
+        img_style: {},
+      }
+    },
+    watch: {
+      data: {
+        handler: function (val) {
+          console.log(444444444444, val)
+          if (val.parameters.bg_color) {
+            this.wrapper_style = `
+                background-color: ${val.parameters.bg_color};
+                border-radius:  ${val.parameters.radius_t}px ${val.parameters.radius_t}px ${val.parameters.radius_b}px ${val.parameters.radius_b}px;
+                padding: ${val.parameters.padding_tb}px ${val.parameters.padding_lr}px ;
+                margin: ${val.parameters.margin_tb}px ${val.parameters.margin_lr}px ;
+            `
+            this.img_style = `
+            height: 80px;
+            width: 80px;
+                border-radius:  ${val.parameters.image_radius_t}px ${val.parameters.image_radius_t}px ${val.parameters.image_radius_b}px ${val.parameters.image_radius_b}px;
+            padding: ${val.parameters.image_padding_tb}px ${val.parameters.image_padding_lr}px ;
+            `
+            this.item_style = `
+            width: ${100 / val.parameters.rows}%;
+            `
+            this.$forceUpdate()
+          }
+        },
+        deep: true,
+        immediate: true,
+      },
+    },
+  }
+</script>
+
+<style lang="scss" scoped>
+  /**/
+  .grid-button {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .image-null {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 176px;
+    font-size: 50px;
+    color: #c1c1c1;
+    background: #ffffff;
+  }
+</style>
