@@ -14,10 +14,27 @@
     >
       <li v-for="(item, dex) in list.parameters.image_items" :key="dex">
         <div class="l-info">
-          <p style="margin-top: 30px">
-            <span style="margin-top: 5px">链接：</span>
-            <el-input v-model="item.url" placeholder="请输入链接" size="mini" />
-          </p>
+          <el-form class="demo-form-inline" label-width="80px">
+            <el-form-item label="跳转类型：">
+              <el-select v-model="item.opentype" placeholder="请输入跳转类型">
+                <el-option label="保留当前页跳转" value="navigateTo" />
+                <el-option label="关闭当前页跳转" value="redirectTo" />
+                <el-option label="跳转tabber页" value="switchTab" />
+                <el-option label="关闭所有页跳转任意页" value="reLaunch" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="跳转链接：">
+              <el-input
+                v-model="item.url"
+                class="input-with-select"
+                placeholder="请输入跳转链接"
+              >
+                <el-button slot="append" @click="SelectLink(dex)">
+                  选择链接
+                </el-button>
+              </el-input>
+            </el-form-item>
+          </el-form>
         </div>
         <div class="r-image">
           <span class="el-icon-close" @click="removeImage(dex)"></span>
@@ -158,6 +175,7 @@
       url="/upload"
       @submitUpload="getSon"
     />
+    <QYSelectLink ref="edit" @SelectLink="getSelectLink" />
   </div>
 </template>
 
@@ -220,6 +238,12 @@
     },
 
     methods: {
+      SelectLink(index) {
+        this.$refs['edit'].showEdit(index)
+      },
+      getSelectLink(data) {
+        this.list.parameters.image_items[data.index].url = data.name
+      },
       getSon(data) {
         data.forEach((item) => {
           this.tempList.push({

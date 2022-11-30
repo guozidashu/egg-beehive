@@ -57,7 +57,7 @@
           </div>
         </div>
       </div>
-      <el-pagination
+      <!-- <el-pagination
         background
         :current-page="queryForm.pageNo"
         :layout="layout"
@@ -65,47 +65,77 @@
         :total="total"
         @current-change="handleCurrentChange"
         @size-change="handleSizeChange"
-      />
+      /> -->
     </el-card>
     <Decorate v-if="viewSta == 2" :item-id="itemId" @submitUpload="getSon" />
-    新增弹窗
-    <el-dialog
-      title="新增"
-      :visible.sync="dialogVisible"
-      width="30%"
-      @close="dialogClose"
-    >
-      <el-form ref="form" label-width="80px" :model="form">
+    <el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
+      <el-form ref="form" label-width="120px" :model="form">
         <el-form-item label="标题">
           <el-input v-model="form.name" />
         </el-form-item>
-        <el-form-item label="图片">
-          <el-upload
-            action=""
-            :before-upload="beforeAvatarUpload"
-            class="avatar-uploader"
-            :on-success="handleAvatarSuccess"
-            :show-file-list="false"
-          >
-            <img v-if="form.img" class="avatar" :src="form.img" />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+        <el-form-item label="是否设置默认">
+          <el-switch
+            v-model="form.is_default"
+            active-color="#41B584"
+            active-text="开启"
+            :active-value="1"
+            class="switch"
+            inactive-color="#D2D2D2"
+            inactive-text="关闭"
+            :inactive-value="0"
+            style="margin: 0 10px"
+          />
+        </el-form-item>
+        <el-form-item label="图片上传">
+          <div style="display: flex">
+            <div>
+              <el-button
+                native-type="submit"
+                size="small"
+                style="margin: 0 10px 0 0"
+                type="primary"
+                @click="handleShow()"
+              >
+                上传
+              </el-button>
+            </div>
+            <img
+              v-if="form.img"
+              :src="form.img"
+              style="width: 80px; height: 80px"
+            />
+          </div>
         </el-form-item>
       </el-form>
+
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogClose">取 消</el-button>
-        <el-button type="primary" @click="dialogSubmit">确 定</el-button>
+        <el-button @click="closeTemplate">取 消</el-button>
+        <el-button type="primary" @click="addTemplate">确 定</el-button>
       </span>
     </el-dialog>
+    <vab-upload
+      ref="vabUpload"
+      :limit="1"
+      name="file"
+      :size="2"
+      url="/upload"
+      @submitUpload="getImgList"
+    />
   </div>
 </template>
 
 <script>
   import Decorate from './decorate.vue'
-  import { getTemplateList, delTemplateDel, addTemplateSave } from '@/api/basic'
+  import {
+    getTemplateList,
+    delTemplateDel,
+    addTemplateSave,
+    getTemplateCopy,
+  } from '@/api/basic'
+  import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'Design',
-    components: { Decorate },
+    components: { Decorate, VabUpload },
     data() {
       return {
         dialogVisible: false,
@@ -113,6 +143,9 @@
         viewSta: 1,
         form: {
           name: '',
+          is_default: 0,
+          status: 1,
+          img: '',
         },
         list: [],
         listLoading: false,
@@ -145,6 +178,39 @@
       this.fetchData()
     },
     methods: {
+      getImgList(data) {
+        this.form.img = data[0]
+        console.log(data)
+      },
+      handleShow() {
+        this.$refs['vabUpload'].handleShow()
+      },
+      closeTemplate() {
+        this.dialogVisible = false
+        this.form = {
+          name: '',
+          is_default: 0,
+          status: 1,
+          img: '',
+        }
+      },
+      async addTemplate() {
+        const { code } = await addTemplateSave(this.form)
+        if (code == 200) {
+          this.$message({
+            message: '添加成功',
+            type: 'success',
+          })
+          this.dialogVisible = false
+          this.fetchData()
+          this.form = {
+            name: '',
+            is_default: 0,
+            status: 1,
+            img: '',
+          }
+        }
+      },
       getSon(data) {
         this.viewSta = data
       },
@@ -185,16 +251,15 @@
       handleQuery() {
         this.fetchData()
       },
-      addTemplateSaveBtn(item) {
-        let temp = item
-        temp.name = item.name + '副本'
-        delete temp.id
-        addTemplateSave(temp).then(() => {
+      async addTemplateSaveBtn(item) {
+        const { code } = await getTemplateCopy({ id: item.id })
+        if (code == 200) {
           this.$message({
             message: '复制成功',
             type: 'success',
           })
-        })
+          this.fetchData()
+        }
       },
       delTemplateDelBtn(item) {
         this.$confirm('此操作将永久删除该模板, 是否继续?', '提示', {
@@ -208,6 +273,7 @@
                 type: 'success',
                 message: '删除成功!',
               })
+              this.fetchData()
             })
           })
           .catch(() => {

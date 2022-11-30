@@ -3,7 +3,7 @@
     <div
       style="display: flex; justify-content: space-between; margin-bottom: 10px"
     >
-      <div>页面标题</div>
+      <div style="font-size: 18px; font-weight: 600">页面标题</div>
       <div>
         <el-button type="primary" @click="back">返回</el-button>
         <el-button type="primary" @click="submit">提交页面</el-button>
@@ -379,9 +379,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: calc(100vh - 280px);
-    padding: 10px 0;
-    background: #f7f8f9;
+    // height: calc(100vh - 280px);
+    height: 70vh;
+    // padding: 10px 0;
+    // background: #f7f8f9;
     .l,
     .r {
       width: 450px;
@@ -429,7 +430,7 @@
     .c {
       position: relative;
       width: auto;
-      max-width: 350px;
+      // max-width: 350px;
       .top-nav {
         position: absolute;
         top: 0;
@@ -463,7 +464,7 @@
       }
       .view-content {
         width: 400px;
-        height: 700px;
+        height: 70vh;
         padding-top: 72px;
         overflow-x: hidden;
         overflow-y: auto;

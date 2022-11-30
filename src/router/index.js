@@ -472,6 +472,15 @@ export const asyncRoutes = [
         },
       },
       {
+        path: 'goodsCommodityunit',
+        name: 'GoodsCommodityunit',
+        component: () => import('@/subview/goods/commodityunit'),
+        meta: {
+          title: '商品分组',
+          icon: 'archive-line',
+        },
+      },
+      {
         path: 'goodsStatistical',
         name: 'GoodsStatistical',
         component: () => import('@/subview/goods/statistical'),

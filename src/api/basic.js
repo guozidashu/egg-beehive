@@ -44,8 +44,66 @@ export function getConfig(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
-// 模板组件配置
+// 文章列表
+export function getTemplateArticleList(data) {
+  return request({
+    url: '/admin/templateArticleList',
+    method: 'post',
+    data,
+  })
+}
+// 商品分组
+export function getGoodsGroupList(data) {
+  return request({
+    url: '/goods/goodsGroupList',
+    method: 'post',
+    data,
+  })
+}
+export function editGoodsGroupSave(data) {
+  return request({
+    url: '/goods/goodsGroupSave',
+    method: 'post',
+    data,
+  })
+}
+export function addGroupGoodsAdd(data) {
+  return request({
+    url: '/goods/groupGoodsAdd',
+    method: 'post',
+    data,
+  })
+}
+export function delGoodsGroupDel(data) {
+  return request({
+    url: '/goods/goodsGroupDel',
+    method: 'post',
+    data,
+  })
+}
+export function getGoodsUnitList(data) {
+  return request({
+    url: '/goods/getGoodsList',
+    method: 'post',
+    data,
+  })
+}
+export function getGoodsGroupDetail(data) {
+  return request({
+    url: '/goods/goodsGroupDetail',
+    method: 'post',
+    data,
+  })
+}
 
+// 模板组件配置
+export function getTemplateMenuDetail(data) {
+  return request({
+    url: '/admin/templateMenuDetail',
+    method: 'post',
+    data,
+  })
+}
 export function getTemplateAssemblyInfo(data) {
   return request({
     url: '/admin/templateAssemblyInfo',
@@ -61,6 +119,13 @@ export function editTemplateAssemblyLayout(data) {
   })
 }
 //模板管理
+export function getTemplateCopy(data) {
+  return request({
+    url: '/admin/templateCopy',
+    method: 'post',
+    data,
+  })
+}
 export function getTemplateList(data) {
   return request({
     url: '/admin/templateList',

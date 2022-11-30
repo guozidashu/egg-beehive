@@ -252,14 +252,24 @@
                 </el-select>
               </el-form-item>
               <el-form-item class="item" label="物料图片：">
-                <el-button
-                  native-type="submit"
-                  size="small"
-                  type="primary"
-                  @click="handleShow()"
-                >
-                  上传
-                </el-button>
+                <div style="display: flex">
+                  <div>
+                    <el-button
+                      native-type="submit"
+                      size="small"
+                      style="margin: 0 10px 0 0"
+                      type="primary"
+                      @click="handleShow()"
+                    >
+                      上传
+                    </el-button>
+                  </div>
+                  <img
+                    v-if="form.material_pic"
+                    :src="form.material_pic"
+                    style="width: 80px; height: 80px"
+                  />
+                </div>
               </el-form-item>
             </div>
           </div>
@@ -334,10 +344,11 @@
     </List>
     <vab-upload
       ref="vabUpload"
-      :limit="50"
+      :limit="1"
       name="file"
       :size="2"
       url="/upload"
+      @submitUpload="getImgList"
     />
   </div>
 </template>
@@ -405,6 +416,9 @@
         openSideBar: 'settings/openSideBar',
         foldSideBar: 'settings/foldSideBar',
       }),
+      getImgList(data) {
+        this.form.material_pic = data[0]
+      },
       async print(val) {
         await this.foldSideBar()
         await VabPrint(this.$refs[val], { noPrintParent: true })
