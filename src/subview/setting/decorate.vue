@@ -70,7 +70,7 @@
   import {
     getCommonAllList,
     getTemplateAssemblyInfo,
-    editTemplateAssemblyLayout,
+    // editTemplateAssemblyLayout,
   } from '@/api/basic'
   import Draggable from 'vuedraggable'
   import EditForm from '@/subview/components/Edit/index'
@@ -81,6 +81,7 @@
   import ImageList from '@/subview/components/View/ImageList'
   import Title from '@/subview/components/View/Title'
   import Goodsgroup from '@/subview/components/View/Goodsgroup'
+  import Hotspots from '@/subview/components/View/Hotspots'
   export default {
     components: {
       EditForm,
@@ -92,6 +93,7 @@
       ImageList,
       Title,
       Goodsgroup,
+      Hotspots,
     },
     props: {
       itemId: {
@@ -137,6 +139,11 @@
             name: '商品组',
             icon: 'el-icon-picture',
             com: Goodsgroup,
+          },
+          Hotspots: {
+            name: '热区',
+            icon: 'el-icon-picture',
+            com: Hotspots,
           },
         },
         view: [
@@ -224,22 +231,37 @@
       async submit() {
         // JSON 转换会丢失 formData
         const form = JSON.parse(JSON.stringify(this.view))
-        // let temp1 = {
-        //   name: 'Info',
-        //   status: 1,
-        //   content: JSON.stringify({
-        //     template: '',
-        //     type: 'Info',
-        //     options: {},
-        //     parameters: {
-        //       type: 1,
-        //       title: '测试',
-        //       remarks: '备注',
-        //       bg_color: '#ffffff',
-        //     },
-        //   }),
-        // }
-        // console.log(46546465, temp1)
+
+        console.log(form)
+        let temp1 = {
+          name: 'Hotspots',
+          status: 1,
+          content: JSON.stringify({
+            template: 'qy-auxiliary-blank',
+            type: 'Hotspots',
+            options: {},
+            parameters: {
+              type: 2,
+              bg_Image: '',
+              margin_top: 10,
+              margin_lr: 20,
+              hotspots: [
+                {
+                  name: '热区',
+                  url: '',
+                  opentype: 'navigateTo',
+                  hotspots_margin_top: 0,
+                  hotspots_margin_lr: 0,
+                  width: 50,
+                  height: 50,
+                  bg_color: 'red',
+                },
+              ],
+            },
+            id: 18,
+          }),
+        }
+        console.log(46546465, temp1)
         // if (form.length == 1) {
         //   this.$message.error('请添加模块！')
         //   return
@@ -253,19 +275,19 @@
         //     i.data = i.data.map((val) => val.productId).join(',')
         //   }
         // }
-        let temp = {}
-        let arr = []
-        form.forEach((item) => {
-          arr.push({
-            assembly_id: item.id,
-            content: JSON.stringify(item),
-          })
-        })
-        temp.div_template_id = this.itemId
-        temp.content = arr
-        console.log(6666666, temp)
-        const { data } = await editTemplateAssemblyLayout(temp)
-        console.log(99999, data)
+        // let temp = {}
+        // let arr = []
+        // form.forEach((item) => {
+        //   arr.push({
+        //     assembly_id: item.id,
+        //     content: JSON.stringify(item),
+        //   })
+        // })
+        // temp.div_template_id = this.itemId
+        // temp.content = arr
+        // console.log(6666666, temp)
+        // const { data } = await editTemplateAssemblyLayout(temp)
+        // console.log(99999, data)
         this.$message.success(
           '数据提交成功，请按F12打开控制台查看待提交数据集合！'
         )
@@ -274,8 +296,8 @@
       },
       // 切换视图组件
       selectType(index) {
+        console.log(this.view[index])
         this.isRight = false
-        console.log(1321231, this.view[index])
         this.props = this.view[index]
         this.$nextTick(() => (this.isRight = true))
       },
@@ -391,6 +413,7 @@
       background: #fff;
     }
     .l {
+      border-right: #d0d2d3 1px solid;
       ul {
         padding: 0;
         margin: 0;
@@ -400,7 +423,7 @@
           align-items: center;
           justify-content: center;
           float: left;
-          width: 80px;
+          width: 20%;
           height: 80px;
           margin: 0 10px;
           font-size: 14px;
@@ -514,6 +537,10 @@
           }
         }
       }
+    }
+    .r {
+      padding-left: 20px;
+      border-left: #d0d2d3 1px solid;
     }
     .submit-btn {
       position: absolute;

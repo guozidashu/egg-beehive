@@ -244,7 +244,6 @@
           this.itemId = 0
         } else {
           this.itemId = item.id
-          console.log(item)
         }
         this.viewSta = 2
       },

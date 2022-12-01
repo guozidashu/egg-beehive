@@ -23,7 +23,7 @@
     watch: {
       data: {
         handler: function (val) {
-          console.log(val)
+          console.log('视图区域的值', val)
           if (val.parameters.bg_color) {
             this.wrapper_style = `
                 height: ${val.parameters.height}px;

@@ -27,6 +27,7 @@
   import ImageList from './ImageList'
   import Title from './Title'
   import Goodsgroup from './Goodsgroup'
+  import Hotspots from './Hotspots'
   export default {
     name: 'EditForm',
     components: {
@@ -38,6 +39,7 @@
       Title,
       Goodsgroup,
       Info,
+      Hotspots,
     },
     props: {
       data: {
@@ -80,6 +82,10 @@
           Goodsgroup: {
             title: '商品组',
             com: 'Goodsgroup',
+          },
+          Hotspots: {
+            title: '热区',
+            com: 'Hotspots',
           },
         },
         tabType: {
