@@ -35,7 +35,24 @@
         />
       </el-form-item>
       <el-form-item label="商品图片">
-        <el-button type="primary" @click="handleShow()">上传</el-button>
+        <div style="display: flex">
+          <div>
+            <el-button
+              native-type="submit"
+              size="small"
+              style="margin: 0 10px 0 0"
+              type="primary"
+              @click="handleShow()"
+            >
+              上传
+            </el-button>
+          </div>
+          <img
+            v-if="form.pic"
+            :src="form.pic"
+            style="width: 80px; height: 80px"
+          />
+        </div>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -44,10 +61,11 @@
     </template>
     <vab-upload
       ref="vabUpload"
-      :limit="50"
+      :limit="1"
       name="file"
       :size="2"
       url="/upload"
+      @submitUpload="getSon"
     />
   </el-dialog>
 </template>
@@ -87,6 +105,10 @@
     },
     created() {},
     methods: {
+      getSon(data) {
+        this.form.pic = data[0]
+        this.$forceUpdate()
+      },
       handleShow() {
         this.$refs['vabUpload'].handleShow()
       },

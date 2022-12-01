@@ -514,20 +514,12 @@ d
         <el-table-column label="pdf文件" prop="pdf" show-overflow-tooltip />
       </template>
     </List>
-    <vab-upload
-      ref="vabUpload"
-      :limit="50"
-      name="file"
-      :size="2"
-      url="/upload"
-    />
   </div>
 </template>
 
 <script>
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
-  import VabUpload from '@/extra/VabUpload'
   import List from '@/subview/components/List'
   import { mapGetters } from 'vuex'
   import {
@@ -538,7 +530,7 @@ d
   import addressCity from '@/subview/components/City.vue'
   export default {
     name: 'ComponentsDrawer',
-    components: { List, VabUpload, addressCity },
+    components: { List, addressCity },
     props: {
       drawerInof: {
         type: Object,
@@ -664,9 +656,6 @@ d
             this.$forceUpdate()
           }
         }
-      },
-      handleShow() {
-        this.$refs['vabUpload'].handleShow()
       },
       // 列表数据表头切换监听 自定义部分
       async handleClick(tab) {

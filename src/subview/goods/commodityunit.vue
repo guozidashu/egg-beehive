@@ -7,8 +7,9 @@
           style="height: 100%; min-height: calc(80vh); border: 0"
         >
           <el-menu
+            v-if="menuList.length > 0"
             class="el-menu-vertical-demo"
-            default-active="0"
+            :default-active="menuList[0].id.toString()"
             style="width: 100%; border: 0"
             @close="handleClose"
             @open="handleOpen"
@@ -91,9 +92,6 @@
             @changePageSize="changeBtnPageSize"
           >
             <template #List>
-              <!-- "id": 3, "goods_id": 1, "goods_name": "", "img": "", "sn": "",
-              "shoptitle": "", "type": "", "price": "", "sale_price": "",
-              "category_name": "", "status": "" -->
               <el-table-column type="selection" />
               <el-table-column label="ID" prop="id" />
               <el-table-column label="商品名称" prop="goods_name" />
@@ -117,31 +115,8 @@
               <el-table-column label="商品价格" prop="price" />
               <el-table-column label="状态" prop="status" width="150">
                 <template #default="{ row }">
-                  <span v-if="row.status == 0">下架</span>
-                  <span v-else-if="row.status == 1">上架</span>
-                </template>
-              </el-table-column>
-              <el-table-column
-                align="center"
-                fixed="right"
-                label="操作"
-                width="85"
-              >
-                <template #default="{ row }">
-                  <el-button
-                    v-has-permi="['btn:GoodsClassified:edit']"
-                    type="text"
-                    @click="handleEdit(row, 1)"
-                  >
-                    编辑
-                  </el-button>
-                  <el-button
-                    v-has-permi="['btn:GoodsClassified:del']"
-                    type="text"
-                    @click="handleDelete(row, 1)"
-                  >
-                    删除
-                  </el-button>
+                  <el-tag v-if="row.status == 0" type="danger">下架</el-tag>
+                  <el-tag v-else-if="row.status == 1">上架</el-tag>
                 </template>
               </el-table-column>
             </template>

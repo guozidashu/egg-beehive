@@ -86,7 +86,7 @@
     </el-table>
     <el-pagination
       background
-      :current-page="queryForm.pageNo"
+      :current-page="queryForm.page"
       :layout="layout"
       :page-size="queryForm.pageSize"
       :total="total"
@@ -134,7 +134,7 @@
         this.fetchData()
       },
       handleCurrentChange(val) {
-        this.queryForm.pageNo = val
+        this.queryForm.page = val
         this.fetchData()
       },
       queryData() {

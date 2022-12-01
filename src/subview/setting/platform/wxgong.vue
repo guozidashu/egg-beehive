@@ -56,10 +56,20 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="公众号头像：">
-            <el-button type="primary" @click="handleShow()">图片上传</el-button>
+            <el-button type="primary" @click="handleShow(1)">
+              图片上传
+            </el-button>
+          </el-form-item>
+          <el-form-item v-if="form.avatar">
+            <img :src="form.avatar" style="width: 80px; height: 80px" />
           </el-form-item>
           <el-form-item label="公众号二维码：">
-            <el-button type="primary" @click="handleShow()">图片上传</el-button>
+            <el-button type="primary" @click="handleShow(2)">
+              图片上传
+            </el-button>
+          </el-form-item>
+          <el-form-item v-if="form.code">
+            <img :src="form.code" style="width: 80px; height: 80px" />
           </el-form-item>
         </el-form>
         <div style="font-weight: 600">设置IP白名单及域名</div>
@@ -211,7 +221,7 @@
               </span>
             </el-form-item>
             <el-form-item label="PEM证书：">
-              <el-button type="primary" @click="handleShow()">上传</el-button>
+              <el-button type="primary" @click="handleShow(3)">上传</el-button>
               <span style="margin-left: 10px">
                 <span style="color: #999">apiclient_cert.pem 请在</span>
                 <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
@@ -220,8 +230,11 @@
                 </span>
               </span>
             </el-form-item>
+            <el-form-item v-if="form.pem_sign">
+              <img :src="form.pem_sign" style="width: 80px; height: 80px" />
+            </el-form-item>
             <el-form-item label="证书秘钥：">
-              <el-button type="primary" @click="handleShow()">上传</el-button>
+              <el-button type="primary" @click="handleShow(4)">上传</el-button>
               <span style="margin-left: 10px">
                 <span style="color: #999">apiclient_key.pem 请在</span>
                 <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
@@ -229,6 +242,9 @@
                   [账户中心]-[API安全]中设置[API证书]，设置完成后上传
                 </span>
               </span>
+            </el-form-item>
+            <el-form-item v-if="form.sign_key">
+              <img :src="form.sign_key" style="width: 80px; height: 80px" />
             </el-form-item>
           </div>
           <div v-else>
@@ -250,10 +266,11 @@
     </el-card>
     <vab-upload
       ref="vabUpload"
-      :limit="50"
+      :limit="1"
       name="file"
       :size="2"
       url="/upload"
+      @submitUpload="getSon"
     />
   </div>
 </template>
@@ -364,7 +381,21 @@
           }
         })
       },
-      handleShow() {
+      getSon(data) {
+        if (this.uploadType === 1) {
+          this.form.avatar = data[0]
+        } else if (this.uploadType === 2) {
+          this.form.code = data[0]
+        } else if (this.uploadType === 3) {
+          this.form.pem_sign = data[0]
+        } else if (this.uploadType === 4) {
+          this.form.sign_key = data[0]
+        }
+        console.log(data)
+        this.$forceUpdate()
+      },
+      handleShow(type) {
+        this.uploadType = type
         this.$refs['vabUpload'].handleShow()
       },
       jumpWX() {

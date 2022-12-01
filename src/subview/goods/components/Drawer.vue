@@ -346,14 +346,24 @@
                 </el-select>
               </el-form-item>
               <el-form-item class="item" label="商品图片：">
-                <el-button
-                  native-type="submit"
-                  size="small"
-                  type="primary"
-                  @click="handleShow()"
-                >
-                  上传
-                </el-button>
+                <div style="display: flex">
+                  <div>
+                    <el-button
+                      native-type="submit"
+                      size="small"
+                      style="margin: 0 10px 0 0"
+                      type="primary"
+                      @click="handleShow()"
+                    >
+                      上传
+                    </el-button>
+                  </div>
+                  <img
+                    v-if="form.img"
+                    :src="form.img"
+                    style="width: 80px; height: 80px"
+                  />
+                </div>
               </el-form-item>
             </div>
           </div>
@@ -623,10 +633,11 @@
     </List>
     <vab-upload
       ref="vabUpload"
-      :limit="50"
+      :limit="1"
       name="file"
       :size="2"
       url="/upload"
+      @submitUpload="getSon"
     />
   </div>
 </template>
@@ -838,7 +849,6 @@
             this.form.sizeid = [temp]
           }
         }
-        this.form.img = '1'
         if (this.form.id == undefined) {
           this.form.id = 0
           const { code } = await editGoodSave(this.form)
@@ -865,6 +875,10 @@
         await this.foldSideBar()
         await VabPrint(this.$refs[val], { noPrintParent: true })
         await this.openSideBar()
+      },
+      getSon(data) {
+        this.form.img = data[0]
+        this.$forceUpdate()
       },
       handleShow() {
         this.$refs['vabUpload'].handleShow()

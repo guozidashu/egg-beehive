@@ -218,7 +218,6 @@
       <!-- 详情抽屉组件 -->
       <Drawer :drawer-inof="drawerInof" :select-list="selectList" />
     </el-drawer>
-    <edit ref="edit" @fetch-data="fetchData" />
     <el-dialog
       :append-to-body="true"
       :before-close="handleMaterialClose"
@@ -277,7 +276,7 @@
     </el-dialog>
     <vab-upload
       ref="vabUpload"
-      :limit="50"
+      :limit="1"
       name="file"
       :size="2"
       url="/upload"
@@ -289,7 +288,6 @@
 <script>
   import List from '@/subview/components/List'
   import Form from '@/subview/components/Form'
-  import Edit from './components/ManageEdit'
   import Drawer from './components/Drawer'
   import VabUpload from '@/extra/VabUpload'
   import {
@@ -302,7 +300,7 @@
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
     name: 'GoodsManage',
-    components: { List, Form, Drawer, Edit, VabUpload },
+    components: { List, Form, Drawer, VabUpload },
     mixins: [publicjosn],
     data() {
       return {

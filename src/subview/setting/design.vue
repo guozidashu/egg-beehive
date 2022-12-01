@@ -71,7 +71,7 @@
     <el-dialog title="新增" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" label-width="120px" :model="form">
         <el-form-item label="标题">
-          <el-input v-model="form.name" />
+          <el-input v-model="form.name" style="width: 215px" />
         </el-form-item>
         <el-form-item label="是否设置默认">
           <el-switch

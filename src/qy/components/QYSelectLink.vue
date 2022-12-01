@@ -190,7 +190,7 @@
     getGoodsGroupList,
     getCategoryMainList,
     getCategorySonList,
-    getTemplateArticleList,
+    getArticleList,
     getGoodList,
     getTemplateList,
   } from '@/api/basic'
@@ -307,7 +307,7 @@
       async fetchData() {
         this.listLoading = true
         if (this.tabindex == 9) {
-          const { data } = await getTemplateArticleList(this.form)
+          const { data } = await getArticleList(this.form)
           this.list = data.data
           this.total = data.total
         } else if (this.tabindex == 10) {

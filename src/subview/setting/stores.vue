@@ -66,14 +66,11 @@
             <template slot-scope="{ row }">
               <el-tooltip placement="top">
                 <el-image
-                  :src="row.pic[0]"
+                  :src="row.logo"
                   slot="content"
                   style="width: 250px; height: 250px"
                 />
-                <el-image
-                  :src="row.pic[0]"
-                  style="width: 100px; height: 100px"
-                />
+                <el-image :src="row.logo" style="width: 100px; height: 100px" />
               </el-tooltip>
             </template>
           </el-table-column>
@@ -138,8 +135,14 @@
         </template>
       </List>
     </el-card>
-    <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
-      <Drawer :form="formDrawer" @shuxiandata="refresh" />
+    <el-drawer
+      :before-close="handleClose"
+      size="50%"
+      :title="title"
+      :visible.sync="drawer"
+      :wrapper-closable="false"
+    >
+      <Drawer :form="formDrawer" />
     </el-drawer>
   </div>
 </template>
@@ -155,6 +158,7 @@
     components: { List, Form, Drawer },
     data() {
       return {
+        title: '',
         drawer: false,
         typeData: {},
         form: {
@@ -197,6 +201,10 @@
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
+      handleClose() {
+        this.drawer = false
+        this.fetchData()
+      },
       async turnOnOff(row) {
         const { code } = await editChangeStatus({ id: row.id })
         if (code != 200) {
@@ -223,23 +231,20 @@
             item.business_hours = arr
           }
         })
-
         this.list = data.data
         this.total = data.total
         this.listLoading = false
-      },
-      refresh() {
-        this.fetchData()
       },
       // 详情抽屉
       handleDetail(row) {
         if (row === 'add') {
           this.formDrawer = {}
-          this.formDrawer.title = '添加门店'
+          this.title = '添加门店'
           this.drawer = true
         } else {
-          this.formDrawer = row
-          this.formDrawer.title = '编辑门店'
+          this.formDrawer = JSON.parse(JSON.stringify(row))
+          console.log(this.formDrawer)
+          this.title = '编辑门店'
           this.drawer = true
         }
       },

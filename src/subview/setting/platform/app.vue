@@ -88,7 +88,7 @@
           </span>
         </el-form-item>
         <el-form-item label="PEM证书：">
-          <el-button type="primary" @click="handleShow()">上传</el-button>
+          <el-button type="primary" @click="handleShow(1)">上传</el-button>
           <span style="margin-left: 10px">
             <span style="color: #999">apiclient_cert.pem 请在</span>
             <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
@@ -97,8 +97,14 @@
             </span>
           </span>
         </el-form-item>
+        <el-form-item v-if="form.wxpay_apiclient_cert">
+          <img
+            :src="form.wxpay_apiclient_cert"
+            style="width: 80px; height: 80px"
+          />
+        </el-form-item>
         <el-form-item label="证书秘钥：">
-          <el-button type="primary" @click="handleShow()">上传</el-button>
+          <el-button type="primary" @click="handleShow(2)">上传</el-button>
           <span style="margin-left: 10px">
             <span style="color: #999">apiclient_key.pem 请在</span>
             <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
@@ -106,6 +112,12 @@
               [账户中心]-[API安全]中设置[API证书]，设置完成后上传
             </span>
           </span>
+        </el-form-item>
+        <el-form-item v-if="form.wxpay_apiclient_key">
+          <img
+            :src="form.wxpay_apiclient_key"
+            style="width: 80px; height: 80px"
+          />
         </el-form-item>
       </el-form>
       <div style="font-weight: 600">支付宝支付设置</div>
@@ -162,10 +174,11 @@
     </el-card>
     <vab-upload
       ref="vabUpload"
-      :limit="50"
+      :limit="1"
       name="file"
       :size="2"
       url="/upload"
+      @submitUpload="getSon"
     />
   </div>
 </template>
@@ -180,6 +193,7 @@
     },
     data() {
       return {
+        uploadType: 1,
         form: {
           id: null, //应用id
           state: 2, //微支付状态 1开启 2关闭
@@ -247,7 +261,17 @@
           }
         })
       },
-      handleShow() {
+      getSon(data) {
+        if (this.uploadType === 1) {
+          this.form.wxpay_apiclient_cert = data[0]
+        } else {
+          this.form.wxpay_apiclient_key = data[0]
+        }
+        console.log(data)
+        this.$forceUpdate()
+      },
+      handleShow(type) {
+        this.uploadType == type
         this.$refs['vabUpload'].handleShow()
       },
       jumpZFB() {

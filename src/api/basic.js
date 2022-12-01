@@ -44,10 +44,46 @@ export function getConfig(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
-// 文章列表
-export function getTemplateArticleList(data) {
+// 客户等级申请
+export function getApplyList(data) {
   return request({
-    url: '/admin/templateArticleList',
+    url: '/customerLevel/applyList',
+    method: 'post',
+    data,
+  })
+}
+export function editApplyAgree(data) {
+  return request({
+    url: '/customerLevel/applyAgree',
+    method: 'post',
+    data,
+  })
+}
+export function editApplyDisagree(data) {
+  return request({
+    url: '/customerLevel/applyDisagree',
+    method: 'post',
+    data,
+  })
+}
+// 文章列表
+export function getArticleList(data) {
+  return request({
+    url: '/archive/articleList',
+    method: 'post',
+    data,
+  })
+}
+export function editArticleSave(data) {
+  return request({
+    url: '/archive/articleSave',
+    method: 'post',
+    data,
+  })
+}
+export function delArticleDel(data) {
+  return request({
+    url: '/archive/articleDel',
     method: 'post',
     data,
   })

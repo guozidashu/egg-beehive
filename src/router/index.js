@@ -596,6 +596,15 @@ export const asyncRoutes = [
         },
       },
       {
+        path: 'customerApplication',
+        name: 'CustomerApplication',
+        component: () => import('@/subview/customer/application'),
+        meta: {
+          title: '客户等级申请',
+          icon: 'archive-line',
+        },
+      },
+      {
         path: 'customerStatistical',
         name: 'CustomerStatistical',
         component: () => import('@/subview/customer/statistical'),
@@ -880,6 +889,15 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/print'),
         meta: {
           title: '吊牌打印',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'archivesArticle',
+        name: 'ArchivesArticle',
+        component: () => import('@/subview/archives/article'),
+        meta: {
+          title: '文章列表',
           icon: 'archive-line',
         },
       },

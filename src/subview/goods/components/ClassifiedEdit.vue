@@ -33,11 +33,39 @@
       <el-form-item v-if="type === 2" label="排序" prop="sort">
         <el-input v-model="form.sort" style="width: 215px" />
       </el-form-item>
+      <el-form-item label="上传">
+        <div style="display: flex">
+          <div>
+            <el-button
+              native-type="submit"
+              size="small"
+              style="margin: 0 10px 0 0"
+              type="primary"
+              @click="handleShow()"
+            >
+              上传
+            </el-button>
+          </div>
+          <img
+            v-if="form.icon"
+            :src="form.icon"
+            style="width: 80px; height: 80px"
+          />
+        </div>
+      </el-form-item>
     </el-form>
     <template #footer>
       <el-button @click="close">取 消</el-button>
       <el-button type="primary" @click="save">确 定</el-button>
     </template>
+    <vab-upload
+      ref="vabUpload"
+      :limit="1"
+      name="file"
+      :size="2"
+      url="/upload"
+      @submitUpload="getSon"
+    />
   </el-dialog>
 </template>
 
@@ -47,14 +75,17 @@
     editCategoryMainSave,
     getCategoryMainList,
   } from '@/api/basic'
+  import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'TagsEdit',
+    components: { VabUpload },
     data() {
       return {
         form: {
           name: '',
           pid: null,
           sort: null,
+          icon: '',
         },
         selectList: [],
         type: 1,
@@ -68,6 +99,13 @@
     },
     created() {},
     methods: {
+      getSon(data) {
+        this.form.icon = data[0]
+        this.$forceUpdate()
+      },
+      handleShow() {
+        this.$refs['vabUpload'].handleShow()
+      },
       showEdit(row, type) {
         this.type = type
         if (row === 'add') {

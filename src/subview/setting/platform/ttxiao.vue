@@ -40,10 +40,16 @@
           <el-input v-model="form.name" style="width: 40%" />
         </el-form-item>
         <el-form-item label="小程序头像：">
-          <el-button type="primary" @click="handleShow()">图片上传</el-button>
+          <el-button type="primary" @click="handleShow(1)">图片上传</el-button>
+        </el-form-item>
+        <el-form-item v-if="form.avatar">
+          <img :src="form.avatar" style="width: 80px; height: 80px" />
         </el-form-item>
         <el-form-item label="小程序码：">
-          <el-button type="primary" @click="handleShow()">图片上传</el-button>
+          <el-button type="primary" @click="handleShow(2)">图片上传</el-button>
+        </el-form-item>
+        <el-form-item v-if="form.code">
+          <img :src="form.code" style="width: 80px; height: 80px" />
         </el-form-item>
       </el-form>
       <div style="font-weight: 600">支付设置</div>
@@ -94,10 +100,11 @@
     </el-card>
     <vab-upload
       ref="vabUpload"
-      :limit="50"
+      :limit="1"
       name="file"
       :size="2"
       url="/upload"
+      @submitUpload="getSon"
     />
   </div>
 </template>
@@ -192,7 +199,17 @@
           }
         })
       },
-      handleShow() {
+      getSon(data) {
+        if (this.uploadType === 1) {
+          this.form.avatar = data[0]
+        } else {
+          this.form.code = data[0]
+        }
+        console.log(data)
+        this.$forceUpdate()
+      },
+      handleShow(type) {
+        this.uploadType = type
         this.$refs['vabUpload'].handleShow()
       },
     },

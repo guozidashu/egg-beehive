@@ -35,10 +35,44 @@
           />
         </el-form-item>
         <el-form-item label="等级图标">
-          <el-button type="primary" @click="handleShow()">图标上传</el-button>
+          <div style="display: flex">
+            <div>
+              <el-button
+                native-type="submit"
+                size="small"
+                style="margin: 0 10px 0 0"
+                type="primary"
+                @click="handleShow(1)"
+              >
+                图标上传
+              </el-button>
+            </div>
+            <img
+              v-if="form.icon"
+              :src="form.icon"
+              style="width: 80px; height: 80px"
+            />
+          </div>
         </el-form-item>
         <el-form-item label="会员背景">
-          <el-button type="primary" @click="handleShow()">背景上传</el-button>
+          <div style="display: flex">
+            <div>
+              <el-button
+                native-type="submit"
+                size="small"
+                style="margin: 0 10px 0 0"
+                type="primary"
+                @click="handleShow(2)"
+              >
+                背景上传
+              </el-button>
+            </div>
+            <img
+              v-if="form.banner"
+              :src="form.banner"
+              style="width: 80px; height: 80px"
+            />
+          </div>
         </el-form-item>
         <el-form-item label="整手折扣" prop="discount">
           <el-input
@@ -345,10 +379,11 @@
     </template>
     <vab-upload
       ref="vabUpload"
-      :limit="50"
+      :limit="1"
       name="file"
       :size="2"
       url="/upload"
+      @submitUpload="getSon"
     />
     <el-dialog
       :append-to-body="true"
@@ -397,6 +432,7 @@
     },
     data() {
       return {
+        uploadType: 1,
         dialogVisible1: false,
         tagsList: [
           { name: '单笔消费金额', type: 1 },
@@ -412,8 +448,8 @@
           id: '', //编辑时用
           sort: null, //排序
           name: null, //等级名称
-          icon: '1.jpg', //图片地址
-          banner: '1.jpg', //banner图
+          icon: '', //图片地址
+          banner: '', //banner图
           discount: null, //整手折扣
           discount_single: null, //散码折扣
           single_buy: 0, //是否散批 1是 0否
@@ -467,7 +503,18 @@
       handleClick(tab) {
         this.tabLabel = tab.label
       },
-      handleShow() {
+      getSon(data) {
+        console.log(96969, data)
+        if (this.uploadType == 1) {
+          this.form.icon = data[0]
+        }
+        if (this.uploadType == 2) {
+          this.form.banner = data[0]
+        }
+        this.$forceUpdate()
+      },
+      handleShow(type) {
+        this.uploadType = type
         this.$refs['vabUpload'].handleShow()
       },
       handleChange() {},

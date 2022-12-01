@@ -33,7 +33,7 @@
           <el-input v-model="form.domain" style="width: 215px" />
         </el-form-item>
         <el-form-item label="商家LOGO：">
-          <el-button type="primary" @click="handleShow()">图片上传</el-button>
+          <el-button type="primary" @click="handleShow(1)">图片上传</el-button>
           <span style="margin-left: 20px; color: #999999">
             建议尺寸：200×200像素
           </span>
@@ -722,10 +722,6 @@
         </el-form-item>
       </div>
       <div v-if="activeName == '注册协议'">
-        <!-- /** 注册协议 **/
-          register_status: null, //0不开启 1开启
-          register_name: '测试', //注册协议名称
-          register_content: '1212', //注册协议内容 -->
         <el-form-item label="用户注册协议">
           <el-radio-group v-model="form.register_status">
             <el-radio :label="0">不开启</el-radio>
@@ -766,11 +762,22 @@
       </el-form-item>
     </el-form>
     <vab-upload
+      v-if="uploadType == 1"
+      ref="vabUpload"
+      :limit="1"
+      name="file"
+      :size="2"
+      url="/upload"
+      @submitUpload="getSon"
+    />
+    <vab-upload
+      v-if="uploadType == 2"
       ref="vabUpload"
       :limit="50"
       name="file"
       :size="2"
       url="/upload"
+      @submitUpload="getSon"
     />
   </div>
 </template>
@@ -786,6 +793,7 @@
     },
     data() {
       return {
+        uploadType: 1,
         activeName: '基础配置',
         options: {
           theme: 'snow',
@@ -806,21 +814,20 @@
                 [{ direction: 'rtl' }],
                 [{ font: [] }],
                 ['clean'],
-                ['link', 'image', 'vab-upload-image'],
+                ['link', 'image'],
               ],
               handlers: {
-                'vab-upload-image': () => {
+                image: () => {
                   this.$baseConfirm(
-                    '演示环境未使用真实文件服务器，故图片上传回显不会生效，开发时请修改为正式文件服务器地址',
-                    '开发注意事项！！！',
+                    '点击上传图片',
+                    '上传图片',
                     () => {
-                      this.$refs['vabUpload'].handleShow()
+                      console.log('上传图片')
+                      this.handleShow(2)
                     },
-                    () => {
-                      this.handleAddImg()
-                    },
-                    '模拟打开文件上传',
-                    '模拟添加一张文件服务器图片'
+                    () => {},
+                    '上传',
+                    '取消'
                   )
                 },
               },
@@ -1030,7 +1037,22 @@
       this.fetchData()
     },
     methods: {
-      handleShow() {
+      getSon(data) {
+        if (this.uploadType == 1) {
+          this.form.logo = data[0]
+        } else if (this.uploadType == 2) {
+          if (data.length > 0) {
+            data.forEach((item) => {
+              if (this.form.register_content.indexOf(item) == -1) {
+                this.form.register_content += `<img src="${item}" />`
+              }
+            })
+          }
+        }
+        this.$forceUpdate()
+      },
+      handleShow(type) {
+        this.uploadType = type
         this.$refs['vabUpload'].handleShow()
       },
       async fetchData() {
