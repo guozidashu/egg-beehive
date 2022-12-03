@@ -373,7 +373,7 @@
             <div class="conten-title">规格及库位</div>
             <div class="conten-list-com">
               <el-form-item
-                v-if="form.drawerType == 3 || form.drawerType == 2"
+                v-if="form.drawerType == 3"
                 class="item"
                 label="颜色："
               >
@@ -385,7 +385,7 @@
                 </div>
               </el-form-item>
               <el-form-item
-                v-if="form.drawerType == 3 || form.drawerType == 2"
+                v-if="form.drawerType == 3"
                 class="item"
                 label="尺码："
               >

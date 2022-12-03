@@ -17,13 +17,13 @@
             <el-form-item label="关联商城标识符" prop="shopid">
               <el-input v-model="form1.shopid" />
             </el-form-item>
-            <el-form-item label="扣库存类型">
+            <el-form-item label="库存计算方式">
               <el-radio-group v-model="form1.inventory_type">
                 <el-radio :label="0">开单扣库存</el-radio>
-                <el-radio :label="1">开单扣库存</el-radio>
+                <el-radio :label="1">发货扣库存</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="扣款类型">
+            <el-form-item label="扣款计算方式">
               <el-radio-group v-model="form1.arrears_type">
                 <el-radio :label="0">开单扣款</el-radio>
                 <el-radio :label="1">发货扣款</el-radio>

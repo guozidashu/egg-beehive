@@ -124,7 +124,7 @@
       return {
         filename: '订单数据分析',
         goodsForm: {
-          brand: 1,
+          brand: null,
           time: this.getPastTime(1),
         },
         selectList: [],
@@ -187,7 +187,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_num',
+            name: 'sale_amount',
           },
           {
             title: '待发货数量',
@@ -195,7 +195,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_amount',
+            name: 'sale_num',
           },
           {
             title: '退货数量',
@@ -263,7 +263,7 @@
     methods: {
       resetForm() {
         this.goodsForm = {
-          brand: 1,
+          brand: null,
           time: this.getPastTime(1),
         }
       },

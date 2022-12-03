@@ -19,8 +19,8 @@
       </el-form-item>
       <el-form-item label="是否默认" prop="isdefault">
         <el-radio-group v-model="form.isdefault">
-          <el-radio :label="1">关闭</el-radio>
-          <el-radio :label="0">开启</el-radio>
+          <el-radio :label="1">开启</el-radio>
+          <el-radio :label="0">关闭</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="排序" prop="sort">

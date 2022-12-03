@@ -2,7 +2,27 @@ import Vue from 'vue'
 
 // 人民币过滤器
 Vue.filter('moneyFormat', (value) => {
-  return '¥' + Number(value).toFixed(2)
+  // 金额分割符
+  const separator = ','
+  // 金额小数点
+  const decimal = '.'
+  // 金额小数点位数
+  const decimalDigits = 2
+  // 金额正则
+  const moneyReg = new RegExp(
+    `\\d(?=(\\d{3})+${decimalDigits > 0 ? '\\D' : '$'})`,
+    'g'
+  )
+  // 金额格式化
+  const moneyFormat = (value) => {
+    value = Math.abs(value)
+    value = value.toFixed(decimalDigits)
+    value = value.replace(moneyReg, `$&${separator}`)
+    value = value.replace('.', decimal)
+    return value
+  }
+  // 金额格式化
+  return moneyFormat(value)
 })
 // 三位数姓名脱敏，中间一位隐藏
 Vue.filter('threeName', (value) => {

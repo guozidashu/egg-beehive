@@ -232,20 +232,7 @@
               <el-form-item class="item" label="生日：">
                 <el-date-picker
                   v-model="form.birthday"
-                  :clearable="false"
-                  :default-time="['00:00:00', '23:59:59']"
-                  format="yyyy-MM-dd"
                   placeholder="请选择生日"
-                  type="date"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="加入时间：">
-                <el-date-picker
-                  v-model="form.create_time"
-                  :clearable="false"
-                  :default-time="['00:00:00', '23:59:59']"
-                  format="yyyy-MM-dd"
-                  placeholder="请选择加入时间"
                   type="date"
                 />
               </el-form-item>
@@ -557,6 +544,7 @@
 <script>
   import addressCity from '@/subview/components/City'
   import List from '@/subview/components/List'
+  import datajosn from '@/assets/assets_josn/datajosn'
   import { mapGetters } from 'vuex'
   import {
     getCommonAllList,
@@ -566,6 +554,7 @@
   export default {
     name: 'ComponentsDrawer',
     components: { addressCity, List },
+    mixins: [datajosn],
     props: {
       drawerInof: {
         type: Object,
@@ -708,7 +697,7 @@
         const { data } = await getCustomerInfoList({
           type: tab.name, //搜索条件 1订单记录 2入库信息 3退货记录 4付款记录 5对账单记录
           // id: this.drawerInof.id, //物料采购订单id
-          id: '49',
+          id: this.form.id,
         })
         this.orderList = data.data
         this.listLoading = false

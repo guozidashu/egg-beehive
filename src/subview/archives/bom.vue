@@ -65,11 +65,19 @@
           <el-table-column label="物料编号" prop="material_sn" width="120" />
           <el-table-column label="物料图片" width="120">
             <template #default="{ row }">
-              <el-image
-                :preview-src-list="[row.material_pic]"
-                :src="row.material_pic"
-                style="width: 100px; height: 100px"
-              />
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :preview-src-list="[row.material_pic]"
+                  :src="row.material_pic"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image
+                  :preview-src-list="[row.material_pic]"
+                  :src="row.material_pic"
+                  style="width: 100px; height: 100px"
+                />
+              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column label="物料名称" prop="material_name" />

@@ -69,7 +69,7 @@
           <el-form-item label="商品搜索:">
             <el-input
               v-model="form.name"
-              placeholder="请输入商品名称/关键字/ID"
+              placeholder="请输入商品名称"
               style="width: 215px"
             />
           </el-form-item>

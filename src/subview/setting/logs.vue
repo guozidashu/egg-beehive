@@ -150,9 +150,6 @@
       async fetchData() {
         this.listLoading = true
         const { data } = await getLogList(this.queryForm)
-        data.data.forEach((item) => {
-          item.data = JSON.parse(item.data)
-        })
         this.list = data.data
         this.total = data.total
         this.listLoading = false

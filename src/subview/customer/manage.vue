@@ -158,23 +158,56 @@
       >
         <template #List>
           <el-table-column type="selection" />
-          <el-table-column label="ID" prop="id" width="80" />
-          <el-table-column label="头像/昵称" width="120">
+          <el-table-column label="ID" prop="id" width="70" />
+          <el-table-column label="头像" width="120">
             <template #default="{ row }">
-              <div style="display: flex">
-                <img :src="row.avatar" style="width: 50px; height: 50px" />
-                <div style="margin: 15px 0 0 10px">
-                  {{ row.nick_name }}
-                </div>
-              </div>
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="row.avatar"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image :src="row.avatar" style="width: 50px; height: 50px" />
+              </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column label="客户名称" prop="name" width="120" />
-          <el-table-column label="客户等级" prop="grade_name" width="120" />
-          <el-table-column label="客户分类" prop="type_name" width="120" />
-          <el-table-column label="客户来源" prop="source_name" />
-          <el-table-column label="成交额" prop="money" width="120" />
-          <el-table-column label="余额/欠款" prop="final_count" width="200" />
+          <el-table-column label="客户名称" prop="name" width="150" />
+          <el-table-column label="客户等级" prop="grade_name" width="150" />
+          <el-table-column label="客户分类" prop="type_name" width="150" />
+          <el-table-column label="客户来源" prop="source_name" width="120" />
+          <el-table-column
+            align="right"
+            label="成交额"
+            prop="money"
+            width="150"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.money | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
+            align="right"
+            label="累计收银"
+            prop="sum_voucher_money"
+            width="150"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.sum_voucher_money | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
+            align="right"
+            label="余额/欠款"
+            prop="delivery_arrears"
+            width="150"
+          >
+            <template #default="{ row }">
+              <el-tag v-if="row.delivery_arrears < 0" type="danger">
+                -￥{{ row.delivery_arrears | moneyFormat }}
+              </el-tag>
+              <el-tag v-else>￥{{ row.delivery_arrears | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column label="加入时间" prop="create_time" />
           <el-table-column
             align="center"
