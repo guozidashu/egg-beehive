@@ -1,46 +1,56 @@
 <template>
-  <!-- Banner & Image 通用组件 -->
   <div class="image-content">
-    <p class="desc">添加图片 (最多{{ len }}张，可拖动排序）</p>
-    <!-- <vuedraggable
-      v-if="image_items && image_items.length > 0"
-      v-model="image_items"
+    <vuedraggable
+      v-if="list.parameters.goods_item && list.parameters.goods_item.length > 0"
+      v-model="list.parameters.goods_item"
       class="image-list"
       :class="{ disable: data.tabType == 2 }"
       draggable="li"
+      style="margin: 20px 0 0 0"
       tag="ul"
     >
-      <li v-for="(item, dex) in image_items" :key="dex">
+      <li v-for="(item, dex) in list.parameters.goods_item" :key="dex">
         <div class="l-info">
-          <p style="margin-top: 40px">
-            <span>是否热卖：</span>
-            <el-radio-group v-model="item.sta">
-              <el-radio :label="0">否</el-radio>
-              <el-radio :label="1">是</el-radio>
-            </el-radio-group>
-          </p>
+          <el-form class="demo-form-inline" label-width="80px">
+            <el-form-item label="商品名称：">
+              <el-input
+                v-model="item.goods_name"
+                placeholder="请输入商品名称"
+                style="width: 82%"
+              />
+            </el-form-item>
+            <el-form-item label="跳转类型：">
+              <el-input
+                v-model="item.link_type"
+                class="input-with-select"
+                placeholder="请输入跳转链接"
+                style="width: 82%"
+              />
+            </el-form-item>
+            <el-form-item label="跳转链接：">
+              <el-input
+                v-model="item.goods_url"
+                class="input-with-select"
+                placeholder="请输入跳转链接"
+                style="width: 82%"
+              />
+            </el-form-item>
+          </el-form>
         </div>
         <div class="r-image">
           <span class="el-icon-close" @click="removeImage(dex)"></span>
           <div class="image-box">
-            <img :src="item.img" />
+            <img :src="item.goods_img" />
           </div>
         </div>
       </li>
-    </vuedraggable> -->
-    <!-- <template v-if="image_items && image_items.length < len">
-      <el-button
-        class="add-image"
-        icon="el-icon-plus"
-        type="primary"
-        @click="addImage(null)"
-      >
-        添加图片
-      </el-button>
-      <p class="size">（建议尺寸：{{ size }}</p>
-    </template> -->
-
+    </vuedraggable>
     <el-form ref="form" label-width="100px" :model="list.parameters">
+      <el-form-item>
+        <el-button icon="el-icon-plus" type="primary" @click="SelectLink()">
+          选择商品
+        </el-button>
+      </el-form-item>
       <el-form-item label="背景色">
         <div style="display: flex">
           <span style="margin-right: 20px">{{ list.parameters.bg_color }}</span>
@@ -54,6 +64,99 @@
           </span>
           <el-color-picker v-model="list.parameters.color_goods_bg" />
         </div>
+      </el-form-item>
+      <el-form-item class="item" label="商品分组：">
+        <el-select
+          v-model="list.parameters.goods_grouping"
+          placeholder="请选择商品分组"
+        >
+          <el-option
+            v-for="(item, dex) in goodsGroupList"
+            :key="dex"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item class="item" label="商品分类：">
+        <el-cascader
+          v-model="list.parameters.goods_classify"
+          filterable
+          :options="goodsCategoryList"
+          placeholder="请选择商品分组"
+        />
+      </el-form-item>
+      <el-form-item label="尺码类型">
+        <el-radio-group v-model="list.parameters.goods_type">
+          <el-radio :label="0">全部</el-radio>
+          <el-radio :label="1">整手</el-radio>
+          <el-radio :label="2">散码</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="是否热卖">
+        <el-switch
+          v-model="list.parameters.goods_tag"
+          active-color="#41B584"
+          active-text="开启"
+          :active-value="1"
+          class="switch"
+          inactive-color="#D2D2D2"
+          inactive-text="关闭"
+          :inactive-value="0"
+          style="margin: 0 10px"
+        />
+      </el-form-item>
+      <el-form-item label="显示原价">
+        <el-switch
+          v-model="list.parameters.goods_original_price"
+          active-color="#41B584"
+          active-text="开启"
+          :active-value="1"
+          class="switch"
+          inactive-color="#D2D2D2"
+          inactive-text="关闭"
+          :inactive-value="0"
+          style="margin: 0 10px"
+        />
+      </el-form-item>
+      <el-form-item label="显示角标">
+        <el-switch
+          v-model="list.parameters.goods_corner_mark"
+          active-color="#41B584"
+          active-text="开启"
+          :active-value="1"
+          class="switch"
+          inactive-color="#D2D2D2"
+          inactive-text="关闭"
+          :inactive-value="0"
+          style="margin: 0 10px"
+        />
+      </el-form-item>
+      <el-form-item label="显示一首数量">
+        <el-switch
+          v-model="list.parameters.goods_num"
+          active-color="#41B584"
+          active-text="开启"
+          :active-value="1"
+          class="switch"
+          inactive-color="#D2D2D2"
+          inactive-text="关闭"
+          :inactive-value="0"
+          style="margin: 0 10px"
+        />
+      </el-form-item>
+      <el-form-item label="购买按钮显示文字">
+        <el-switch
+          v-model="list.parameters.goods_text_state"
+          active-color="#41B584"
+          active-text="开启"
+          :active-value="1"
+          class="switch"
+          inactive-color="#D2D2D2"
+          inactive-text="关闭"
+          :inactive-value="0"
+          style="margin: 0 10px"
+        />
       </el-form-item>
       <el-form-item label="左右内边距">
         <div class="block">
@@ -104,45 +207,15 @@
         </div>
       </el-form-item>
     </el-form>
-    <!-- <el-upload
-      ref="upload"
-      action
-      :http-request="upload"
-      multiple
-      :show-file-list="false"
-      style="display: none"
-    /> -->
-    <el-dialog title="请填写图片跳转链接" :visible.sync="show" @close="close">
-      <el-form label-width="100px">
-        <el-form-item label="跳转链接">
-          <el-input v-model="url" />
-        </el-form-item>
-        <el-form-item label="">
-          <el-button type="primary" @click="confirm">确定</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
-    <vab-upload
-      v-if="imgNum > 0"
-      ref="vabUpload"
-      :limit="imgNum"
-      name="file"
-      :size="2"
-      url="/upload"
-      @submitUpload="getSon"
-    />
+    <QYSelectLink ref="edit" @SelectLink="getSelectLink" />
   </div>
 </template>
 
 <script>
-  import VabUpload from '@/extra/VabUpload'
-  // import vuedraggable from 'vuedraggable'
+  import { getGoodsGroupList, getGoodsCategoryTree } from '@/api/basic'
   export default {
     name: 'Images',
-    components: {
-      // vuedraggable,
-      VabUpload,
-    },
+    components: {},
     props: {
       data: {
         type: Object,
@@ -151,53 +224,13 @@
     },
     data() {
       return {
-        imgNum: 10,
         tempList: [],
-        imgList: [],
         list: {},
-        url: '',
-        index: null,
-        show: false,
-        imageIndex: null,
-        image_items: [
-          {
-            img: 'https://wx.qlogo.cn/mmhead/LHdtlaBo22eh6FW1wN32cWKv7pbw5o7gtIIq8vbSVFcjQqF6q9ewDA/0',
-            url: '',
-          },
-          {
-            img: 'https://wx.qlogo.cn/mmhead/LHdtlaBo22eh6FW1wN32cWKv7pbw5o7gtIIq8vbSVFcjQqF6q9ewDA/0',
-            url: '',
-          },
-          {
-            img: 'https://wx.qlogo.cn/mmhead/LHdtlaBo22eh6FW1wN32cWKv7pbw5o7gtIIq8vbSVFcjQqF6q9ewDA/0',
-            url: '',
-          },
-          {
-            img: 'https://wx.qlogo.cn/mmhead/LHdtlaBo22eh6FW1wN32cWKv7pbw5o7gtIIq8vbSVFcjQqF6q9ewDA/0',
-            url: '',
-          },
-        ],
+        goodsGroupList: [],
+        goodsCategoryList: [],
       }
     },
-    computed: {
-      size() {
-        return this.list.type == 'images' ? '750*750' : '750*400'
-      },
-      len() {
-        return this.list.type == 'images' ? 8 : 10
-      },
-    },
     watch: {
-      imgList: {
-        handler(val) {
-          this.tempList = []
-          this.list.data = val
-          this.imgNum = 10 - val.length
-          this.$forceUpdate()
-        },
-        deep: true,
-        immediate: true,
-      },
       data: {
         handler(val) {
           this.list = val
@@ -208,47 +241,57 @@
     },
     created() {
       this.list = this.data
+      this.getGoodsGroup()
+      this.getGoodsCategory()
     },
 
     methods: {
-      getSon(data) {
-        data.forEach((item) => {
-          this.tempList.push({
-            url: item,
-            title: '',
-            name: '',
-            link: '',
-          })
-        })
-        if (this.imgList.length > 0) {
-          this.imgList = this.imgList.concat(this.tempList)
-          this.imgList = this.imgList.filter(
-            (item, index, self) =>
-              index === self.findIndex((t) => t.url === item.url)
-          )
-        } else {
-          this.imgList = this.tempList
-        }
-      },
-      close() {
-        this.show = false
-        this.url = ''
-      },
-      confirm() {
-        this.list['data'][this.index]['link'] = this.url
-        this.close()
-      },
-      urlPopup(index) {
-        this.show = true
-        this.index = index
-        // this.url = link
+      SelectLink() {
+        this.$refs['edit'].showEdit(null, '10', 2)
+        // '1,7,8,9,10,11,12'
       },
       removeImage(index) {
-        this.list.data.splice(index, 1)
+        this.list.parameters.goods_item.splice(index, 1)
       },
-      addImage(index) {
-        this.imageIndex = index
-        this.$refs['vabUpload'].handleShow()
+      getSelectLink(data, data1) {
+        let arr = []
+        data.forEach((item) => {
+          arr.push({
+            goods_id: item.id,
+            goods_name: item.name,
+            goods_img: item.img,
+            goods_url: data1.url + item.id,
+            link_type: data1.link_type,
+          })
+        })
+        this.list.parameters.goods_item =
+          this.list.parameters.goods_item.concat(arr)
+        this.list.parameters.goods_item =
+          this.list.parameters.goods_item.filter((item, index, self) => {
+            return (
+              self.findIndex((t) => {
+                return t.goods_id === item.goods_id
+              }) === index
+            )
+          })
+      },
+      async getGoodsGroup() {
+        const { data } = await getGoodsGroupList()
+        this.goodsGroupList = data
+      },
+      async getGoodsCategory() {
+        const { data } = await getGoodsCategoryTree()
+        data.forEach((item) => {
+          item.label = item.name
+          item.value = item.id
+          if (item.children) {
+            item.children.forEach((item2) => {
+              item2.label = item2.name
+              item2.value = item2.id
+            })
+          }
+        })
+        this.goodsCategoryList = data
       },
     },
   }

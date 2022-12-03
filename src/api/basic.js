@@ -1018,6 +1018,13 @@ export function delMenuDel(data) {
 }
 
 //商品父分类
+export function getGoodsCategoryTree(data) {
+  return request({
+    url: '/goods/goodsCategoryTree',
+    method: 'post',
+    data,
+  })
+}
 export function getCategoryMainList(data) {
   return request({
     url: '/goods/categoryMainList',

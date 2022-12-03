@@ -69,7 +69,6 @@
       // 监听选中结果直接返回给父组件
       color: {
         handler(val) {
-          console.log(123123123123, val)
           this.isedn = true
           this.$emit('input', val)
         },

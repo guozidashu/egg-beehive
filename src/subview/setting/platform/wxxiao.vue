@@ -383,7 +383,6 @@
         } else if (this.uploadType === 4) {
           this.form.wxpay_apiclient_key = data[0]
         }
-        console.log(data)
         this.$forceUpdate()
       },
       handleShow(type) {

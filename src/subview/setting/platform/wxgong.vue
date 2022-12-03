@@ -391,7 +391,6 @@
         } else if (this.uploadType === 4) {
           this.form.sign_key = data[0]
         }
-        console.log(data)
         this.$forceUpdate()
       },
       handleShow(type) {

@@ -50,8 +50,6 @@
           this.title = '编辑'
           this.form = Object.assign({}, row)
         }
-        console.log(666, row)
-        console.log(555, this.form)
         this.dialogFormVisible = true
       },
       close() {

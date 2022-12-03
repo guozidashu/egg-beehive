@@ -39,7 +39,6 @@
     watch: {
       data: {
         handler(val) {
-          console.log('编辑区域的值', val)
           this.list = val
         },
         deep: true,

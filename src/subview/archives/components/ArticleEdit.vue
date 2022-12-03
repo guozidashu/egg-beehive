@@ -72,7 +72,6 @@
                     '点击上传图片',
                     '上传图片',
                     () => {
-                      console.log('上传图片')
                       this.$refs['vabUpload'].handleShow()
                     },
                     () => {},

@@ -415,7 +415,7 @@
           type: 'warning',
         })
           .then(async () => {
-            const { data } = await editAdminAccountSave({
+            const { code } = await editAdminAccountSave({
               name: this.inof.name, //商户名称
               tel: this.inof.tel, //商户联系方式
               address: this.inof.address, //商户地址
@@ -425,7 +425,7 @@
               bank_card: this.inof.bank_card, //银行账号
               bank_name: this.inof.bank_name, //银行开户名
             })
-            console.log(data)
+            if (code !== 200) return
             this.$message({
               type: 'success',
               message: '提交成功!',

@@ -4,7 +4,6 @@
     <router-view />
   </div>
 </template>
-
 <script>
   import KeFu from './subview/components/KeFu'
   export default {

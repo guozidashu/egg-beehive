@@ -1,8 +1,11 @@
 <template>
   <div>
-    <div v-if="data.parameters.bg_color" style="display: flex; flex-wrap: wrap">
+    <div
+      v-if="data.parameters.goods_item && data.parameters.goods_item.length > 0"
+      style="display: flex; flex-wrap: wrap"
+    >
       <div
-        v-for="(item, index) in image_items"
+        v-for="(item, index) in data.parameters.goods_item"
         :key="index"
         class="item"
         :style="wrapper_style"
@@ -20,7 +23,7 @@
         >
           热卖
         </div>
-        <img :src="item.img" :style="img_style" />
+        <img :src="item.goods_img" :style="img_style" />
         <div class="line__2">
           坚实的快乐大萨达进口量撒娇打卡时间第六届奥斯卡来得及雷克萨就打开链接开了多久萨拉科技
         </div>
@@ -62,31 +65,11 @@
       return {
         wrapper_style: {},
         img_style: {},
-        interval: 1000,
-        image_items: [
-          {
-            img: 'https://wx.qlogo.cn/mmhead/LHdtlaBo22eh6FW1wN32cWKv7pbw5o7gtIIq8vbSVFcjQqF6q9ewDA/0',
-            url: '',
-          },
-          {
-            img: 'https://wx.qlogo.cn/mmhead/LHdtlaBo22eh6FW1wN32cWKv7pbw5o7gtIIq8vbSVFcjQqF6q9ewDA/0',
-            url: '',
-          },
-          {
-            img: 'https://wx.qlogo.cn/mmhead/LHdtlaBo22eh6FW1wN32cWKv7pbw5o7gtIIq8vbSVFcjQqF6q9ewDA/0',
-            url: '',
-          },
-          {
-            img: 'https://wx.qlogo.cn/mmhead/LHdtlaBo22eh6FW1wN32cWKv7pbw5o7gtIIq8vbSVFcjQqF6q9ewDA/0',
-            url: '',
-          },
-        ],
       }
     },
     watch: {
       data: {
         handler: function (val) {
-          console.log(val)
           if (val.parameters.bg_color) {
             this.wrapper_style = `
                 background-color: ${val.parameters.bg_color};
@@ -95,6 +78,7 @@
             `
             this.img_style = `
             width: 100%;
+            height: 150px;
             background-color: ${val.parameters.color_goods_bg};
                 margin: ${val.parameters.magin_goods_tb}px ${val.parameters.magin_goods_lr}px;
                 border-radius: ${val.parameters.radius_t}px ${val.parameters.radius_t}px ${val.parameters.radius_b}px ${val.parameters.radius_b}px;

@@ -23,7 +23,7 @@
           </li>
         </ul>
       </section>
-      <section class="c">
+      <section id="view-content" class="c">
         <div class="top-nav" @click="selectType(0)">
           <img src="@/assets/decorate_images/topNavBlack.png" />
           <span class="title">{{ info.title }}</span>
@@ -65,12 +65,12 @@
     </section>
   </div>
 </template>
-
+<script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script>
   import {
     getCommonAllList,
     getTemplateAssemblyInfo,
-    // editTemplateAssemblyLayout,
+    editTemplateAssemblyLayout,
   } from '@/api/basic'
   import Draggable from 'vuedraggable'
   import EditForm from '@/subview/components/Edit/index'
@@ -103,6 +103,8 @@
     },
     data() {
       return {
+        testsrn: '',
+        centerDialogVisible: false,
         selectList: [],
         typeList: {
           Banner: {
@@ -206,7 +208,6 @@
           temp.id = item.assembly_id
           arr.push(temp)
         })
-        console.log(1211321, arr)
         this.view = arr
       },
       async getTypeList() {
@@ -232,36 +233,57 @@
         // JSON 转换会丢失 formData
         const form = JSON.parse(JSON.stringify(this.view))
 
-        console.log(form)
-        let temp1 = {
-          name: 'Hotspots',
-          status: 1,
-          content: JSON.stringify({
-            template: 'qy-auxiliary-blank',
-            type: 'Hotspots',
-            options: {},
-            parameters: {
-              type: 2,
-              bg_Image: '',
-              margin_top: 10,
-              margin_lr: 20,
-              hotspots: [
-                {
-                  name: '热区',
-                  url: '',
-                  opentype: 'navigateTo',
-                  hotspots_margin_top: 0,
-                  hotspots_margin_lr: 0,
-                  width: 50,
-                  height: 50,
-                  bg_color: 'red',
-                },
-              ],
-            },
-            id: 18,
-          }),
-        }
-        console.log(46546465, temp1)
+        // let temp1 = {
+        //   name: 'Goodsgroup',
+        //   status: 1,
+        //   content: JSON.stringify({
+        //     template: 'qy-goods-group',
+        //     type: 'Goodsgroup',
+        //     options: {},
+        //     parameters: {
+        //       type: 1,
+        //       bg_color: '#00000000',
+        //       color_goods_bg: '#00000000',
+        //       margin_lr: 7,
+        //       margin_tb: 9,
+        //       padding_lr: 0,
+        //       padding_tb: 10,
+        //       magin_goods_lr: 10,
+        //       magin_goods_tb: 10,
+        //       radius_t: 0,
+        //       radius_b: 0,
+        //       goods_tag: 1,
+        //       goods_grouping: 1,
+        //       goods_classify: [55, 57],
+        //       goods_type: 1,
+        //       goods_corner_mark: 1,
+        //       goods_original_price: 1,
+        //       goods_num: 1,
+        //       goods_text_state: 1,
+        //       goods_item: [
+        //         {
+        //           goods_id: 772,
+        //           goods_name: '999888',
+        //           goods_img:
+        //             'https://img.quanyu.link/FkpDvX6OeEcKJjlT1_7oEaR6Qk2Q',
+        //           goods_url: 'goods772',
+        //           link_type: null,
+        //         },
+        //         {
+        //           goods_id: 773,
+        //           goods_name: '999888(散批)',
+        //           goods_img:
+        //             'https://img.wechatboss.com/FvXc5ZSE-0sIW8arI3m0Wq0hIYBQ',
+        //           goods_url: 'goods773',
+        //           link_type: null,
+        //         },
+        //       ],
+        //     },
+        //     id: 33,
+        //     tabType: '1',
+        //   }),
+        // }
+        // console.log(46546465, temp1)
         // if (form.length == 1) {
         //   this.$message.error('请添加模块！')
         //   return
@@ -275,28 +297,40 @@
         //     i.data = i.data.map((val) => val.productId).join(',')
         //   }
         // }
-        // let temp = {}
-        // let arr = []
-        // form.forEach((item) => {
-        //   arr.push({
-        //     assembly_id: item.id,
-        //     content: JSON.stringify(item),
-        //   })
-        // })
-        // temp.div_template_id = this.itemId
-        // temp.content = arr
-        // console.log(6666666, temp)
-        // const { data } = await editTemplateAssemblyLayout(temp)
-        // console.log(99999, data)
+        let temp = {}
+        let arr = []
+        form.forEach((item) => {
+          arr.push({
+            assembly_id: item.id,
+            content: JSON.stringify(item),
+          })
+        })
+        temp.div_template_id = this.itemId
+        temp.content = arr
+        console.log(6666666, temp)
+        const { data } = await editTemplateAssemblyLayout(temp)
+        console.log(99999, data)
+
         this.$message.success(
           '数据提交成功，请按F12打开控制台查看待提交数据集合！'
         )
-
+        // this.setImage()
         return
+      },
+      // div截图
+      setImage() {
+        let opts = { useCORS: true }
+        console.log(8885588, html2canvas)
+        html2canvas(document.getElementById('view-content'), opts).then(
+          function (canvas) {
+            var imgUri = canvas.toDataURL('image/jpeg', 2) // 获取生成的图片的ur
+            this.testsrn = imgUri
+            this.centerDialogVisible = true
+          }
+        )
       },
       // 切换视图组件
       selectType(index) {
-        console.log(this.view[index])
         this.isRight = false
         this.props = this.view[index]
         this.$nextTick(() => (this.isRight = true))

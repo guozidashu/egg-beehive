@@ -360,7 +360,6 @@
     methods: {
       async handleMaterialSub() {
         const { code } = await editSourceMaterialSave(this.formDialog)
-        console.log(222, code)
         if (code == 200) {
           this.$message.success('操作成功')
           this.dialogVisible = false
@@ -379,7 +378,6 @@
         this.formDialog.source_material = data
       },
       handleMaterial(row) {
-        console.log(111, row, row.source_material)
         if (row.source_material != null) {
           this.formDialog = row.source_material
           this.formDialog.source_material = JSON.parse(

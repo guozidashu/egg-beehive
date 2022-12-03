@@ -47,7 +47,6 @@
     watch: {
       data: {
         handler: function (val) {
-          console.log(val)
           if (val.parameters.bg_color) {
             this.wrapper_style = `
                 height: 30px;

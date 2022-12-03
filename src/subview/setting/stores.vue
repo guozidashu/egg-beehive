@@ -243,7 +243,6 @@
           this.drawer = true
         } else {
           this.formDrawer = JSON.parse(JSON.stringify(row))
-          console.log(this.formDrawer)
           this.title = '编辑门店'
           this.drawer = true
         }

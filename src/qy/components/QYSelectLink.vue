@@ -5,15 +5,188 @@
     width="70%"
     @close="close"
   >
-    <div style="height: 60vh; overflow: auto">
-      <el-tabs v-model="tabindex" @tab-click="handleClick">
-        <el-tab-pane
-          v-for="(item, dex) in tabsList"
-          :key="dex"
-          :label="item.name"
-          :name="item.id"
-        />
-      </el-tabs>
+    <el-tabs v-model="tabindex" @tab-click="handleClick">
+      <el-tab-pane
+        v-for="(item, dex) in tabsList"
+        :key="dex"
+        :label="item.name"
+        :name="item.id"
+      />
+    </el-tabs>
+    <div
+      v-if="tabindex == 9 || tabindex == 10 || tabindex == 11"
+      style="height: 60vh"
+    >
+      <div>
+        <el-form class="demo-form-inline" :inline="true" :model="form">
+          <el-form-item v-if="tabindex == 9">
+            <el-input v-model="form.name" placeholder="请输入文章搜索" />
+          </el-form-item>
+          <el-form-item v-if="tabindex == 10">
+            <el-input v-model="form.name" placeholder="请输入商品搜索" />
+          </el-form-item>
+          <el-form-item v-if="tabindex == 11">
+            <el-input v-model="form.name" placeholder="请输入设计页面搜索" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleQuery">搜索</el-button>
+          </el-form-item>
+          <el-form-item v-if="type == 2">
+            <el-button type="primary" @click="Select(1)">确定</el-button>
+          </el-form-item>
+        </el-form>
+        <div v-if="tabindex == 9">
+          <el-table
+            v-loading="listLoading"
+            border
+            :data="list"
+            style="width: 100%; height: 50vh; overflow: auto"
+          >
+            <el-table-column label="文章信息" prop="title" />
+            <el-table-column label="ID" prop="id" width="80" />
+            <el-table-column label="创建时间" width="150" />
+            <el-table-column fixed="right" label="操作" width="80">
+              <template #default="{ row }">
+                <el-button type="text" @click="Select(row)">选择</el-button>
+              </template>
+            </el-table-column>
+            <template #empty>
+              <el-image
+                class="vab-data-empty"
+                :src="require('@/assets/empty_images/data_empty.png')"
+              />
+            </template>
+          </el-table>
+          <el-pagination
+            background
+            :current-page="list.pageNo"
+            :layout="layout"
+            :page-size="list.pageSize"
+            :total="total"
+            @current-change="changeBtnPage"
+            @size-change="changeBtnPageSize"
+          />
+        </div>
+        <div v-if="tabindex == 10">
+          <el-table
+            v-if="type == 1"
+            v-loading="listLoading"
+            border
+            :data="list"
+            style="width: 100%; height: 50vh; overflow: auto"
+          >
+            <el-table-column label="商品名称" prop="name" />
+            <el-table-column label="ID" prop="id" width="80" />
+            <el-table-column label="商品图" prop="img" width="80">
+              <template #default="{ row }">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.img"
+                    style="width: 200px; height: 200px"
+                  />
+                  <el-image :src="row.img" style="width: 50px; height: 50px" />
+                </el-tooltip>
+              </template>
+            </el-table-column>
+            <el-table-column label="状态" prop="status" width="150">
+              <template #default="{ row }">
+                <span v-if="row.status == 0">下架</span>
+                <span v-else-if="row.status == 1">上架</span>
+              </template>
+            </el-table-column>
+            <el-table-column fixed="right" label="操作" width="80">
+              <template #default="{ row }">
+                <el-button type="text" @click="Select(row)">选择</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-table
+            v-if="type == 2"
+            v-loading="listLoading"
+            border
+            :data="list"
+            style="width: 100%; height: 50vh; overflow: auto"
+            @selection-change="handleSelectionChange"
+          >
+            <el-table-column type="selection" width="55" />
+            <el-table-column label="商品名称" prop="name" />
+            <el-table-column label="ID" prop="id" width="80" />
+            <el-table-column label="商品图" prop="img" width="80">
+              <template #default="{ row }">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.img"
+                    style="width: 200px; height: 200px"
+                  />
+                  <el-image :src="row.img" style="width: 50px; height: 50px" />
+                </el-tooltip>
+              </template>
+            </el-table-column>
+            <el-table-column label="状态" prop="status" width="150">
+              <template #default="{ row }">
+                <span v-if="row.status == 0">下架</span>
+                <span v-else-if="row.status == 1">上架</span>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            background
+            :current-page="list.pageNo"
+            :layout="layout"
+            :page-size="list.pageSize"
+            :total="total"
+            @current-change="changeBtnPage"
+            @size-change="changeBtnPageSize"
+          />
+        </div>
+        <div v-if="tabindex == 11">
+          <el-table
+            v-loading="listLoading"
+            border
+            :data="list"
+            style="width: 100%; height: 50vh; overflow: auto"
+          >
+            <el-table-column label="模板名称" prop="name" />
+            <el-table-column label="ID" prop="id" width="80" />
+            <el-table-column label="模板图片" prop="img" width="80">
+              <template #default="{ row }">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.img"
+                    style="width: 200px; height: 200px"
+                  />
+                  <el-image :src="row.img" style="width: 50px; height: 50px" />
+                </el-tooltip>
+              </template>
+            </el-table-column>
+            <el-table-column label="状态" prop="is_default" width="150">
+              <template #default="{ row }">
+                <span v-if="row.is_default == 0">不默认</span>
+                <span v-else-if="row.is_default == 1">默认</span>
+              </template>
+            </el-table-column>
+            <el-table-column fixed="right" label="操作" width="80">
+              <template #default="{ row }">
+                <el-button type="text" @click="Select(row)">选择</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            background
+            :current-page="list.pageNo"
+            :layout="layout"
+            :page-size="list.pageSize"
+            :total="total"
+            @current-change="changeBtnPage"
+            @size-change="changeBtnPageSize"
+          />
+        </div>
+      </div>
+    </div>
+    <div v-else style="height: 60vh; overflow: auto">
       <div v-if="tabindex == 1 || tabindex == 12">
         <div style="display: flex; flex-wrap: wrap">
           <el-button
@@ -26,7 +199,7 @@
           </el-button>
         </div>
       </div>
-      <div v-if="tabindex == 7">
+      <div v-if="tabindex == 7 && tabsItem != null">
         <div style="display: flex; flex-wrap: wrap">
           <el-button
             v-for="(item, dex) in tabsItem"
@@ -38,7 +211,7 @@
           </el-button>
         </div>
       </div>
-      <div v-if="tabindex == 8">
+      <div v-if="tabindex == 8 && tabsItem != null">
         <div>
           <div v-for="(item, dex) in tabsItem" :key="dex" style="clear: both">
             <div style="float: left; margin: 10px 0">
@@ -79,105 +252,8 @@
           </div>
         </div>
       </div>
-      <div v-if="tabindex == 9 || tabindex == 10 || tabindex == 11">
-        <el-form class="demo-form-inline" :inline="true" :model="form">
-          <el-form-item v-if="tabindex == 9">
-            <el-input v-model="form.name" placeholder="请输入文章搜索" />
-          </el-form-item>
-          <el-form-item v-if="tabindex == 10">
-            <el-input v-model="form.name" placeholder="请输入商品搜索" />
-          </el-form-item>
-          <el-form-item v-if="tabindex == 11">
-            <el-input v-model="form.name" placeholder="请输入设计页面搜索" />
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="handleQuery">搜索</el-button>
-          </el-form-item>
-        </el-form>
-        <List
-          :list="list"
-          :list-type="listType"
-          :state="listLoading"
-          :total="total"
-          @changePage="changeBtnPage"
-          @changePageSize="changeBtnPageSize"
-        >
-          <template #List>
-            <div v-if="tabindex == 9">
-              <el-table-column label="文章信息" prop="title" />
-              <el-table-column label="ID" prop="id" width="80" />
-              <el-table-column label="创建时间" width="150" />
-              <el-table-column fixed="right" label="操作" width="80">
-                <template #default="{ row }">
-                  <el-button type="text" @click="Select(row)">选择</el-button>
-                </template>
-              </el-table-column>
-            </div>
-            <div v-if="tabindex == 10">
-              <el-table-column label="商品名称" prop="name" />
-              <el-table-column label="ID" prop="id" width="80" />
-              <el-table-column label="商品图" prop="img" width="80">
-                <template #default="{ row }">
-                  <el-tooltip placement="top">
-                    <el-image
-                      slot="content"
-                      :src="row.img"
-                      style="width: 200px; height: 200px"
-                    />
-                    <el-image
-                      :src="row.img"
-                      style="width: 50px; height: 50px"
-                    />
-                  </el-tooltip>
-                </template>
-              </el-table-column>
-              <el-table-column label="状态" prop="status" width="150">
-                <template #default="{ row }">
-                  <span v-if="row.status == 0">下架</span>
-                  <span v-else-if="row.status == 1">上架</span>
-                </template>
-              </el-table-column>
-              <el-table-column fixed="right" label="操作" width="80">
-                <template #default="{ row }">
-                  <el-button type="text" @click="Select(row)">选择</el-button>
-                </template>
-              </el-table-column>
-            </div>
-            <div v-if="tabindex == 11">
-              <el-table-column label="模板名称" prop="name" />
-              <el-table-column label="ID" prop="id" width="80" />
-              <el-table-column label="模板图片" prop="img" width="80">
-                <template #default="{ row }">
-                  <el-tooltip placement="top">
-                    <el-image
-                      slot="content"
-                      :src="row.img"
-                      style="width: 200px; height: 200px"
-                    />
-                    <el-image
-                      :src="row.img"
-                      style="width: 50px; height: 50px"
-                    />
-                  </el-tooltip>
-                </template>
-              </el-table-column>
-              <el-table-column label="状态" prop="is_default" width="150">
-                <template #default="{ row }">
-                  <span v-if="row.is_default == 0">不默认</span>
-                  <span v-else-if="row.is_default == 1">默认</span>
-                </template>
-              </el-table-column>
-              <el-table-column fixed="right" label="操作" width="80">
-                <template #default="{ row }">
-                  <el-button type="text" @click="Select(row)">选择</el-button>
-                </template>
-              </el-table-column>
-            </div>
-          </template>
-        </List>
-      </div>
     </div>
-    <template #footer>
+    <template #footer v-if="type == 1">
       <el-button @click="close">取 消</el-button>
       <el-button type="primary" @click="save">确 定</el-button>
     </template>
@@ -194,20 +270,21 @@
     getGoodList,
     getTemplateList,
   } from '@/api/basic'
-  import List from '@/subview/components/List'
   export default {
     name: 'QYSelectLink',
-    components: { List },
     data() {
       return {
+        classifyInof: '',
+        selectList: [],
+        type: 1, //页面展示区分
         index: 0,
         tabindex: '0',
         tabsItem: null,
         tabsList: [],
         title: '选择链接',
         dialogFormVisible: false,
-        listType: 1,
         list: [],
+        layout: 'total, sizes, prev, pager, next, jumper',
         listLoading: false,
         total: 0,
         form: {
@@ -217,10 +294,43 @@
         },
       }
     },
+
+    watch: {
+      tabindex: {
+        async handler(val) {
+          if (val == 1 || val == 12) {
+            this.tabsItem = this.tabsList.filter((item) => item.id == val)[0]
+          } else if (val == 7) {
+            const { data } = await getGoodsGroupList()
+            this.tabsItem = data
+          } else if (val == 8) {
+            const { data } = await getCategoryMainList()
+            data.forEach((item) => {
+              item.checked = false
+            })
+            this.tabsItem = data
+          } else {
+            this.fetchData()
+          }
+        },
+        deep: true,
+        immediate: true,
+      },
+      type: {
+        handler(val) {
+          if (val == 1) {
+            this.title = '选择链接'
+          } else if (val == 2) {
+            this.title = '选择商品'
+          }
+        },
+        deep: true,
+        immediate: true,
+      },
+    },
     created() {},
     methods: {
       delGoodsClassifyItem(item1) {
-        console.log(this.tabsItem, item1)
         this.tabsItem.forEach((item) => {
           if (item.id == item1.id) {
             item.checked = false
@@ -241,50 +351,49 @@
         }
       },
       Select(item) {
-        let inof = {}
-        if (this.tabindex == 1 || this.tabindex == 12) {
-          inof = {
-            name: item.url,
-            index: this.index,
-          }
+        if (item == 1) {
+          this.close()
+          this.$emit('SelectLink', this.selectList, this.classifyInof)
         } else {
-          inof = {
-            name:
-              this.tabsList.filter((item) => item.id == this.tabindex)[0].url +
-              item.id,
-            index: this.index,
+          let inof = {}
+          if (this.tabindex == 1 || this.tabindex == 12) {
+            inof = {
+              name: item.url,
+              index: this.index,
+            }
+          } else {
+            inof = {
+              name:
+                this.tabsList.filter((item) => item.id == this.tabindex)[0]
+                  .url + item.id,
+              index: this.index,
+            }
           }
+          this.close()
+          this.$emit('SelectLink', inof)
         }
-        this.$emit('SelectLink', inof)
-        this.close()
       },
       async handleClick(tab) {
         this.tabsItem = null
         this.tabindex = tab.name
-        if (this.tabindex == 1 || this.tabindex == 12) {
-          this.tabsItem = this.tabsList.filter((item) => item.id == tab.name)[0]
-        } else if (this.tabindex == 7) {
-          const { data } = await getGoodsGroupList()
-          this.tabsItem = data
-        } else if (this.tabindex == 8) {
-          const { data } = await getCategoryMainList()
-          data.forEach((item) => {
-            item.checked = false
-          })
-          this.tabsItem = data
-        } else {
-          this.fetchData()
-        }
       },
-      async showEdit(index) {
-        this.index = index
-        const { data } = await getTemplateMenuDetail(this.formDialog)
+      async showEdit(index, ids, type) {
+        this.classifyInof = null
+        this.type = null
+        this.index = null
+        this.tabsList = null
+        this.tabsItem = null
+        this.tabindex = null
+        const { data } = await getTemplateMenuDetail({ pid: ids })
         data.forEach((item) => {
           item.id = item.id.toString()
         })
         this.tabsList = data
         this.tabsItem = data[0]
         this.tabindex = data[0].id
+        this.classifyInof = data[0]
+        this.type = type
+        this.index = index
         this.dialogFormVisible = true
       },
       close() {
@@ -292,17 +401,21 @@
       },
       save() {
         this.dialogFormVisible = false
-        console.log(3213213213)
       },
       handleQuery() {
         this.fetchData()
       },
       changeBtnPage(data) {
         this.form.page = data
+        this.fetchData()
       },
 
       changeBtnPageSize(data) {
         this.form.page_size = data
+        this.fetchData()
+      },
+      handleSelectionChange(val) {
+        this.selectList = val
       },
       async fetchData() {
         this.listLoading = true

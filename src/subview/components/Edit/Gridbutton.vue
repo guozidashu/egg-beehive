@@ -235,7 +235,7 @@
 
     methods: {
       SelectLink(index) {
-        this.$refs['edit'].showEdit(index)
+        this.$refs['edit'].showEdit(index, '1,7,8,9,10,11,12', 1)
       },
       getSelectLink(data) {
         this.list.parameters.grid_items[data.index].url = data.name
@@ -272,7 +272,6 @@
         // this.url = link
       },
       removeImage(index) {
-        console.log(63363, this.list.parameters)
         this.list.parameters.grid_items.splice(index, 1)
       },
       addImage(index) {

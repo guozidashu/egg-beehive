@@ -182,7 +182,6 @@
         } else if (this.uploadType === 2) {
           this.form.code = data[0]
         }
-        console.log(data)
         this.$forceUpdate()
       },
       handleShow(type) {

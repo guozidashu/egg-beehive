@@ -36,6 +36,7 @@
           <el-date-picker
             v-model="date1"
             align="right"
+            :clearable="false"
             :default-time="['00:00:00', '23:59:59']"
             end-placeholder="结束日期"
             format="yyyy-MM-dd"

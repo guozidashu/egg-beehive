@@ -205,7 +205,6 @@
         } else {
           this.form.code = data[0]
         }
-        console.log(data)
         this.$forceUpdate()
       },
       handleShow(type) {

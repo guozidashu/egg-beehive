@@ -37,7 +37,6 @@
     watch: {
       data: {
         handler: function (val) {
-          console.log(444444444444, val)
           if (val.parameters.bg_color) {
             this.wrapper_style = `
                 background-color: ${val.parameters.bg_color};

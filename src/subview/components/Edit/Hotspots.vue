@@ -104,6 +104,9 @@
               </el-form-item>
             </el-form>
           </div>
+          <div class="r-image">
+            <span class="el-icon-close" @click="removeImage(dex)"></span>
+          </div>
         </li>
       </vuedraggable>
     </el-form>
@@ -143,7 +146,6 @@
     watch: {
       data: {
         handler(val) {
-          console.log('编辑区域的值', val)
           this.list = val
         },
         deep: true,
@@ -155,14 +157,16 @@
     },
 
     methods: {
+      removeImage(index) {
+        this.list.parameters.hotspots.splice(index, 1)
+      },
       SelectLink(index) {
-        this.$refs['edit'].showEdit(index)
+        this.$refs['edit'].showEdit(index, '1,7,8,9,10,11,12', 1)
       },
       getSelectLink(data) {
         this.list.parameters.hotspots[data.index].url = data.name
       },
       getSon(data) {
-        console.log('背景图片', data)
         this.list.parameters.bg_Image = data[0]
       },
       addImage() {

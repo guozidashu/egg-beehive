@@ -187,7 +187,8 @@
 
     methods: {
       SelectLink(index) {
-        this.$refs['edit'].showEdit(index)
+        this.$refs['edit'].showEdit(index, '1', 1)
+        // '1,7,8,9,10,11,12'
       },
       getSelectLink(data) {
         this.list.parameters.swiper_items[data.index].url = data.name

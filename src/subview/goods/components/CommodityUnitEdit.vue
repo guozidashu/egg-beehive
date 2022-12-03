@@ -191,10 +191,8 @@
       showEdit(row, type) {
         this.type = type
         if (row === 'add') {
-          console.log(row, type)
           this.title = '添加分组'
           if (type == 1) {
-            console.log(21464546)
             this.fetchData()
           }
         } else {

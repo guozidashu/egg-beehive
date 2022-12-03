@@ -87,6 +87,7 @@
       :current-page="list.pageNo"
       :layout="layout"
       :page-size="list.pageSize"
+      :page-sizes="[10, 20, 30, 40]"
       :total="total"
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"

@@ -183,7 +183,6 @@
         this.$forceUpdate()
       },
       SizeInit() {
-        console.log(222, this.value, this.sizeList)
         if (this.sizeList.length <= 0) return
         this.sizeList.forEach((item) => {
           if (this.value.includes(String(item.id))) {

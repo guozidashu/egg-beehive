@@ -86,7 +86,7 @@
             style="margin: 0 10px"
           />
         </el-form-item>
-        <el-form-item label="图片上传">
+        <!-- <el-form-item label="图片上传">
           <div style="display: flex">
             <div>
               <el-button
@@ -105,7 +105,7 @@
               style="width: 80px; height: 80px"
             />
           </div>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
 
       <span slot="footer" class="dialog-footer">
@@ -113,14 +113,14 @@
         <el-button type="primary" @click="addTemplate">确 定</el-button>
       </span>
     </el-dialog>
-    <vab-upload
+    <!-- <vab-upload
       ref="vabUpload"
       :limit="1"
       name="file"
       :size="2"
       url="/upload"
       @submitUpload="getImgList"
-    />
+    /> -->
   </div>
 </template>
 
@@ -132,10 +132,10 @@
     addTemplateSave,
     getTemplateCopy,
   } from '@/api/basic'
-  import VabUpload from '@/extra/VabUpload'
+  // import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'Design',
-    components: { Decorate, VabUpload },
+    components: { Decorate },
     data() {
       return {
         dialogVisible: false,
@@ -145,7 +145,6 @@
           name: '',
           is_default: 0,
           status: 1,
-          img: '',
         },
         list: [],
         listLoading: false,
@@ -178,13 +177,12 @@
       this.fetchData()
     },
     methods: {
-      getImgList(data) {
-        this.form.img = data[0]
-        console.log(data)
-      },
-      handleShow() {
-        this.$refs['vabUpload'].handleShow()
-      },
+      // getImgList(data) {
+      //   this.form.img = data[0]
+      // },
+      // handleShow() {
+      //   this.$refs['vabUpload'].handleShow()
+      // },
       closeTemplate() {
         this.dialogVisible = false
         this.form = {
@@ -240,7 +238,6 @@
       },
       editBtn(item) {
         if (item == 'add') {
-          console.log('add')
           this.itemId = 0
         } else {
           this.itemId = item.id

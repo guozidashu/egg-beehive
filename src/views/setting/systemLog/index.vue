@@ -18,6 +18,7 @@
           <el-form-item label="周期">
             <el-date-picker
               v-model="queryForm.searchDate"
+              :clearable="false"
               :default-time="['00:00:00', '23:59:59']"
               end-placeholder="结束日期"
               format="yyyy-MM-dd"
