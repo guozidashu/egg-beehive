@@ -26,7 +26,8 @@
               color: rgba(0, 0, 0, 0.85);
             "
           >
-            {{ item.num }}
+            <span v-if="item.numType == 1">￥{{ item.num | moneyFormat }}</span>
+            <span v-else>{{ item.num }}</span>
           </p>
           <p>
             昨日

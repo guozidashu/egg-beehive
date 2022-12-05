@@ -2,7 +2,7 @@
   <section>
     <div class="tab-content">
       <h2>{{ type && list[type]['title'] }}</h2>
-      <div v-if="type != 'info'" class="tab">
+      <div v-if="type != 'info' && type != 'ImageList'" class="tab">
         <span
           v-for="(val, key, index) in tabType"
           :key="index"

@@ -62,7 +62,7 @@
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">总销售额</span>
-            <span>￥{{ goodsAllNum.volume_total }}</span>
+            <span>￥{{ goodsAllNum.volume_total | moneyFormat }}</span>
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">库存数</span>
@@ -70,7 +70,7 @@
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">库存价值</span>
-            <span>￥{{ goodsAllNum.inventory_value }}</span>
+            <span>￥{{ goodsAllNum.inventory_value | moneyFormat }}</span>
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">总发货</span>

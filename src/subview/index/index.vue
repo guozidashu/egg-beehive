@@ -77,6 +77,7 @@
             type: 1,
             pay: 0,
             money: 3000,
+            numType: 2,
           },
           {
             title: '销售额度',
@@ -85,6 +86,7 @@
             type: 1,
             pay: 0,
             money: 1000,
+            numType: 1,
           },
           {
             title: '退货数量',
@@ -93,6 +95,7 @@
             type: 2,
             pay: 0,
             money: 2000,
+            numType: 2,
           },
           {
             title: '退货额度',
@@ -101,6 +104,7 @@
             type: 2,
             pay: 0,
             money: 2000,
+            numType: 1,
           },
         ],
         branchList: [

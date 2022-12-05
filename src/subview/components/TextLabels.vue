@@ -22,7 +22,8 @@
               color: rgba(0, 0, 0, 0.85);
             "
           >
-            {{ item.num }}
+            <span v-if="item.numType == 1">￥{{ item.num | moneyFormat }}</span>
+            <span v-else>{{ item.num }}</span>
           </div>
           <div v-if="item.typeSta">
             <span v-if="item.type === 1">环比增长：</span>

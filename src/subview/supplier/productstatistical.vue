@@ -117,7 +117,11 @@
           <el-table-column label="采购价" prop="purchase_price" width="100" />
           <el-table-column label="入库时间" prop="add_date" width="120" />
           <el-table-column label="采购件数" prop="num" width="100" />
-          <el-table-column label="采购金额" prop="total" width="100" />
+          <el-table-column label="采购金额" prop="total" width="150">
+            <template #default="{ row }">
+              ￥{{ row.total | moneyFormat }}
+            </template>
+          </el-table-column>
           <el-table-column label="最后一次入库时间" prop="lasttime" />
           <!-- <el-table-column label="超期状态" prop="pay">
             <template #default="{ row }">暂无{{ row.id }}</template>
@@ -173,6 +177,7 @@
             type: 1,
             typeSta: false,
             name: 'product_num',
+            numType: 2,
           },
           {
             title: '成品采购金额',
@@ -181,6 +186,7 @@
             type: 1,
             typeSta: false,
             name: 'product_total',
+            numType: 1,
           },
           {
             title: '总退货数量',
@@ -189,6 +195,7 @@
             type: 2,
             typeSta: false,
             name: 'return_num',
+            numType: 2,
           },
           {
             title: '总退货金额',
@@ -197,6 +204,7 @@
             type: 2,
             typeSta: false,
             name: 'return_total',
+            numType: 1,
           },
         ],
         dateList: [],

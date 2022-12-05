@@ -50,7 +50,7 @@ d
         <div style="display: flex">
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">应付款</span>
-            <span>￥{{ form.arrears }}</span>
+            <span>￥{{ form.arrears | moneyFormat }}</span>
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">总采购数量</span>
@@ -58,7 +58,7 @@ d
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">总采购金额</span>
-            <span>￥{{ form.material_total }}</span>
+            <span>￥{{ form.material_total | moneyFormat }}</span>
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">总退货数量</span>
@@ -66,7 +66,7 @@ d
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">总退货金额</span>
-            <span>￥{{ form.material_return_total }}</span>
+            <span>￥{{ form.material_return_total | moneyFormat }}</span>
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">累计付款</span>

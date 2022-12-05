@@ -92,6 +92,8 @@
           :label="'私有商城 (' + orderCountData.shop_count + ')'"
           name="2"
         />
+        <!-- <el-tab-pane :label="'快团团独立对接 (0)'" name="3" />
+        <el-tab-pane :label="'第三方聚水潭 (0)'" name="4" /> -->
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -156,7 +158,11 @@
             </template>
           </el-table-column>
           <el-table-column label="总数量" prop="sum_num" width="80" />
-          <el-table-column label="总金额" prop="sum_price" width="80" />
+          <el-table-column label="总金额" prop="sum_price" width="150">
+            <template #default="{ row }">
+              ￥{{ row.sum_price | moneyFormat }}
+            </template>
+          </el-table-column>
           <!-- <el-table-column label="配送方式" prop="pay" width="120" /> -->
           <el-table-column label="订单状态" prop="order_status" width="120">
             <template #default="{ row }">

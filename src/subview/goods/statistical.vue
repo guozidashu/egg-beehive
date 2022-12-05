@@ -142,7 +142,11 @@
             </template>
           </el-table-column>
           <el-table-column label="下单件数" prop="order_num" width="100" />
-          <el-table-column label="下单金额" prop="order_total" width="100" />
+          <el-table-column label="下单金额" prop="order_total" width="150">
+            <template #default="{ row }">
+              ￥{{ row.order_total | moneyFormat }}
+            </template>
+          </el-table-column>
           <!-- <el-table-column label="毛利率(%)" prop="gross_profit">
             <template #default="{ row }">{{ row.profit * 100 }}%</template>
           </el-table-column> -->

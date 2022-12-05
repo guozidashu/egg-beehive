@@ -188,7 +188,11 @@
           </el-table-column>
           <el-table-column label="采购数量" prop="num" width="80" />
           <el-table-column label="入库数量" prop="receipt_num" width="80" />
-          <el-table-column label="金额" prop="total" width="80" />
+          <el-table-column label="金额" prop="total" width="150">
+            <template #default="{ row }">
+              ￥{{ row.total | moneyFormat }}
+            </template>
+          </el-table-column>
           <el-table-column label="预计交货时间" prop="expected_date" />
           <el-table-column label="订单状态" prop="order_status" width="120">
             <template #default="{ row }">

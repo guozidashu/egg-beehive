@@ -112,7 +112,11 @@
               </el-table-column>
               <el-table-column label="商品标题" prop="shoptitle" />
               <el-table-column label="商品编号" prop="sn" />
-              <el-table-column label="商品价格" prop="price" />
+              <el-table-column label="商品价格" prop="price">
+                <template #default="{ row }">
+                  ￥{{ row.price | moneyFormat }}
+                </template>
+              </el-table-column>
               <el-table-column label="状态" prop="status" width="150">
                 <template #default="{ row }">
                   <el-tag v-if="row.status == 0" type="danger">下架</el-tag>

@@ -24,16 +24,23 @@
         </ul>
       </section>
       <section id="view-content" class="c">
-        <div class="top-nav" @click="selectType(0)">
-          <img src="@/assets/decorate_images/topNavBlack.png" />
-          <span class="title">{{ info.title }}</span>
-        </div>
         <div
-          class="view-content"
-          :style="{ backgroundColor: info.backgroundColor }"
-          @dragover="dragOver"
-          @drop="drog"
+          class="top-nav"
+          :style="{ backgroundColor: info.header_bg_color }"
+          @click="selectType(0)"
         >
+          <div :style="{ color: info.header_font_color }">
+            {{ info.title }}
+          </div>
+          <el-input
+            v-model="input2"
+            clearable
+            placeholder="请输入内容"
+            prefix-icon="el-icon-search"
+            style="border-radius: 50px"
+          />
+        </div>
+        <div class="view-content" @dragover="dragOver" @drop="drog">
           <Draggable v-model="view" draggable=".item">
             <template v-for="(item, dex) in view">
               <div
@@ -106,6 +113,7 @@
         testsrn: '',
         centerDialogVisible: false,
         selectList: [],
+        input2: '',
         typeList: {
           Banner: {
             name: '轮播图',
@@ -232,7 +240,7 @@
       async submit() {
         // JSON 转换会丢失 formData
         const form = JSON.parse(JSON.stringify(this.view))
-
+        console.log(797987, form)
         // let temp1 = {
         //   name: 'Goodsgroup',
         //   status: 1,
@@ -242,44 +250,46 @@
         //     options: {},
         //     parameters: {
         //       type: 1,
-        //       bg_color: '#00000000',
-        //       color_goods_bg: '#00000000',
-        //       margin_lr: 7,
-        //       margin_tb: 9,
-        //       padding_lr: 0,
-        //       padding_tb: 10,
-        //       magin_goods_lr: 10,
+        //       bg_color: '#F8F7F7',
+        //       color_goods_bg: '#FFFFFF',
+        //       margin_lr: 5,
+        //       margin_tb: 7,
+        //       padding_lr: 4,
+        //       padding_tb: 9,
+        //       magin_goods_lr: 9,
         //       magin_goods_tb: 10,
-        //       radius_t: 0,
-        //       radius_b: 0,
+        //       radius_t: 7,
+        //       radius_b: 13,
         //       goods_tag: 1,
         //       goods_grouping: 1,
         //       goods_classify: [55, 57],
-        //       goods_type: 1,
+        //       goods_type: 2,
         //       goods_corner_mark: 1,
         //       goods_original_price: 1,
         //       goods_num: 1,
         //       goods_text_state: 1,
         //       goods_item: [
         //         {
-        //           goods_id: 772,
-        //           goods_name: '999888',
-        //           goods_img:
-        //             'https://img.quanyu.link/FkpDvX6OeEcKJjlT1_7oEaR6Qk2Q',
-        //           goods_url: 'goods772',
-        //           link_type: null,
+        //           url: '/main_pages/goods/goods_details?id=772',
+        //           title: '商品详情>772',
+        //           selectTitle: '999888',
+        //           img: 'https://img.quanyu.link/FkpDvX6OeEcKJjlT1_7oEaR6Qk2Q',
+        //           type: 0,
+        //           opentype: null,
         //         },
         //         {
-        //           goods_id: 773,
-        //           goods_name: '999888(散批)',
-        //           goods_img:
-        //             'https://img.wechatboss.com/FvXc5ZSE-0sIW8arI3m0Wq0hIYBQ',
-        //           goods_url: 'goods773',
-        //           link_type: null,
+        //           url: '/main_pages/goods/goods_details?id=773',
+        //           title: '商品详情>773',
+        //           selectTitle: '999888',
+        //           img: 'https://img.wechatboss.com/FvXc5ZSE-0sIW8arI3m0Wq0hIYBQ',
+        //           type: 1,
+        //           opentype: null,
         //         },
         //       ],
+        //       goodsGroupNum: 1,
+        //       goods_tag_text: '热卖',
         //     },
-        //     id: 33,
+        //     id: 37,
         //     tabType: '1',
         //   }),
         // }
@@ -333,6 +343,7 @@
       selectType(index) {
         this.isRight = false
         this.props = this.view[index]
+        console.log(888888, this.props)
         this.$nextTick(() => (this.isRight = true))
       },
       deleteItem(e, index) {
@@ -439,9 +450,14 @@
     height: 70vh;
     // padding: 10px 0;
     // background: #f7f8f9;
-    .l,
+    .l {
+      width: 20%;
+      height: 100%;
+      padding: 15px 0;
+      background: #fff;
+    }
     .r {
-      width: 450px;
+      width: 30%;
       height: 100%;
       padding: 15px 0;
       background: #fff;
@@ -457,9 +473,8 @@
           align-items: center;
           justify-content: center;
           float: left;
-          width: 20%;
+          width: 25%;
           height: 80px;
-          margin: 0 10px;
           font-size: 14px;
           color: #666;
           list-style: none;
@@ -510,14 +525,14 @@
           left: 50%;
           transform: translateX(-50%);
         }
-        img {
-          width: 100%;
-          image-rendering: -moz-crisp-edges;
-          image-rendering: -o-crisp-edges;
-          image-rendering: -webkit-optimize-contrast;
-          image-rendering: crisp-edges;
-          -ms-interpolation-mode: nearest-neighbor;
-        }
+        // img {
+        //   width: 100%;
+        //   image-rendering: -moz-crisp-edges;
+        //   image-rendering: -o-crisp-edges;
+        //   image-rendering: -webkit-optimize-contrast;
+        //   image-rendering: crisp-edges;
+        //   -ms-interpolation-mode: nearest-neighbor;
+        // }
       }
       .view-content {
         width: 400px;
@@ -581,6 +596,15 @@
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
+    }
+  }
+  ::v-deep {
+    .el-input {
+      box-sizing: border-box;
+      input {
+        height: 55px;
+        line-height: 55px;
+      }
     }
   }
 </style>

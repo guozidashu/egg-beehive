@@ -31,7 +31,11 @@
         </el-table-column>
         <el-table-column label="用户等级" prop="name" />
         <el-table-column label="成交用户数" prop="turnover_customer" />
-        <el-table-column label="销售金额" prop="sale_price" />
+        <el-table-column label="销售金额" prop="sale_price">
+          <template #default="{ row }">
+            <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="等级用户数" prop="level_num" />
         <el-table-column label="占比" prop="all_total">
           <template #default="{ row }">

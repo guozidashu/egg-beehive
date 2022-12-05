@@ -82,7 +82,7 @@
         </div>
         <div style="display: flex; flex: 1; flex-direction: column">
           <span style="margin-bottom: 12px">订单金额</span>
-          <span>{{ form.total }}</span>
+          <span>￥{{ form.total | moneyFormat }}</span>
         </div>
         <div style="display: flex; flex: 1; flex-direction: column">
           <span style="margin-bottom: 12px">预计交货时间</span>

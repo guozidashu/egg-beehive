@@ -187,7 +187,7 @@
       </div>
     </div>
     <div v-else style="height: 60vh; overflow: auto">
-      <div v-if="tabindex == 1 || tabindex == 12">
+      <div v-if="tabindex == 1">
         <div style="display: flex; flex-wrap: wrap">
           <el-button
             v-for="(item, dex) in tabsItem.children"
@@ -198,6 +198,52 @@
             {{ item.name }}
           </el-button>
         </div>
+      </div>
+      <div v-if="tabindex == 12">
+        <div style="display: flex; flex-wrap: wrap">
+          <div
+            v-for="(item, dex) in tabsItem.children"
+            :key="dex"
+            style="display: inline-block; margin: 10px"
+          >
+            <el-button
+              v-if="item.link_type == 'tel'"
+              plain
+              @click="changetype(1)"
+            >
+              {{ item.name }}
+            </el-button>
+            <el-button
+              v-else-if="item.link_type == 'curl'"
+              plain
+              @click="changetype(2)"
+            >
+              {{ item.name }}
+            </el-button>
+            <el-button v-else plain @click="Select(item)">
+              {{ item.name }}
+            </el-button>
+          </div>
+        </div>
+        <el-form
+          v-if="link_tel || link_curl"
+          class="demo-form-inline"
+          :inline="true"
+          :model="formInline"
+        >
+          <el-form-item v-if="link_tel" label="电话">
+            <el-input v-model="formInline.tel" placeholder="请输入电话" />
+          </el-form-item>
+          <el-form-item v-if="link_curl" label="自定义链接">
+            <el-input
+              v-model="formInline.curl"
+              placeholder="请输入自定义链接"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="Select(2)">确认</el-button>
+          </el-form-item>
+        </el-form>
       </div>
       <div v-if="tabindex == 7 && tabsItem != null">
         <div style="display: flex; flex-wrap: wrap">
@@ -274,6 +320,12 @@
     name: 'QYSelectLink',
     data() {
       return {
+        link_curl: false,
+        link_tel: false,
+        formInline: {
+          tel: '',
+          curl: '',
+        },
         classifyInof: '',
         selectList: [],
         type: 1, //页面展示区分
@@ -330,6 +382,17 @@
     },
     created() {},
     methods: {
+      changetype(type) {
+        if (type == 1) {
+          this.link_tel = !this.link_tel
+          this.link_curl = false
+          this.formInline.curl = ''
+        } else {
+          this.link_curl = !this.link_curl
+          this.formInline.tel = ''
+          this.link_tel = false
+        }
+      },
       delGoodsClassifyItem(item1) {
         this.tabsItem.forEach((item) => {
           if (item.id == item1.id) {
@@ -353,24 +416,62 @@
       Select(item) {
         if (item == 1) {
           this.close()
+          let arr = []
+          this.selectList.forEach((item) => {
+            let obj = item
+            obj.selectName = item.pname + '>' + item.id
+            obj.selectTitle = item.shoptitle
+            obj.selectUrl = item.url + item.id
+            obj.id = item.id
+            obj.img = item.img
+            obj.type = item.type
+            arr.push(obj)
+            obj = null
+          })
           this.$emit('SelectLink', this.selectList, this.classifyInof)
-        } else {
-          let inof = {}
-          if (this.tabindex == 1 || this.tabindex == 12) {
-            inof = {
-              name: item.url,
-              index: this.index,
-            }
-          } else {
-            inof = {
-              name:
-                this.tabsList.filter((item) => item.id == this.tabindex)[0]
-                  .url + item.id,
-              index: this.index,
-            }
+          // this.$emit('SelectLink', item)
+        } else if (item == 2) {
+          let temp = {}
+          if (this.formInline.tel != '') {
+            temp.index = this.index
+            temp.selectUrl = this.formInline.tel
+            temp.selectName = '打电话'
+            temp.link_type = 'tel'
+            temp.selectTitle = this.formInline.tel
+            this.close()
+            this.$emit('SelectLink', temp)
+          } else if (this.formInline.curl != '') {
+            temp.index = this.index
+            temp.selectUrl = this.formInline.curl
+            temp.selectName = '自定义'
+            temp.link_type = 'curl'
+            temp.selectTitle = this.formInline.curl
+            this.close()
+            this.$emit('SelectLink', temp)
           }
+        } else {
+          console.log(5555555, item)
+          if (this.tabindex == 9) {
+            item.selectName = item.pname + '>' + item.id
+            item.selectTitle = item.title
+            item.selectUrl = item.url + item.id
+          } else if (this.tabindex == 10) {
+            item.selectName = item.pname + '>' + item.id
+            item.selectTitle = item.shoptitle
+            item.selectUrl = item.url + item.id
+          } else if (this.tabindex == 11) {
+            item.selectName = item.pname + '>' + item.id
+            item.selectTitle = item.name
+            item.selectUrl = item.url + item.id
+          } else {
+            item.selectName = item.name
+            item.selectUrl = item.url
+            item.selectTitle = null
+          }
+          item.index = this.index
           this.close()
-          this.$emit('SelectLink', inof)
+          // this.$emit('SelectLink', inof)
+          this.$emit('SelectLink', item)
         }
       },
       async handleClick(tab) {
@@ -419,16 +520,33 @@
       },
       async fetchData() {
         this.listLoading = true
+        let temp = {}
+        if (this.tabsList != null) {
+          temp = this.tabsList.filter((item) => item.id == this.tabindex)[0]
+        }
         if (this.tabindex == 9) {
+          console.log(787878787, temp)
           const { data } = await getArticleList(this.form)
+          data.data.forEach((item) => {
+            item.url = temp.url
+            item.pname = temp.name
+          })
           this.list = data.data
           this.total = data.total
         } else if (this.tabindex == 10) {
           const { data } = await getGoodList(this.form)
+          data.data.forEach((item) => {
+            item.url = temp.url
+            item.pname = temp.name
+          })
           this.list = data.data
           this.total = data.total
         } else if (this.tabindex == 11) {
           const { data } = await getTemplateList(this.form)
+          data.data.forEach((item) => {
+            item.url = temp.url
+            item.pname = temp.name
+          })
           this.list = data.data
           this.total = data.total
         }

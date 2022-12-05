@@ -143,11 +143,27 @@
           </el-table-column>
           <el-table-column label="商品款号" prop="sn" />
           <el-table-column label="商品名称" prop="name" />
-          <el-table-column label="吊牌价" prop="sale_price" width="100" />
+          <el-table-column label="吊牌价" prop="sale_price" width="150">
+            <template #default="{ row }">
+              ￥{{ row.sale_price | moneyFormat }}
+            </template>
+          </el-table-column>
           <el-table-column label="库存数" prop="total_stock" width="100" />
-          <el-table-column label="库存金额" prop="stock_amount" width="100" />
-          <el-table-column label="成本价" prop="cost_price" width="100" />
-          <el-table-column label="库存成本金额" prop="stock_cost" width="120" />
+          <el-table-column label="库存金额" prop="stock_amount" width="150">
+            <template #default="{ row }">
+              ￥{{ row.stock_amount | moneyFormat }}
+            </template>
+          </el-table-column>
+          <el-table-column label="成本价" prop="cost_price" width="150">
+            <template #default="{ row }">
+              ￥{{ row.cost_price | moneyFormat }}
+            </template>
+          </el-table-column>
+          <el-table-column label="库存成本金额" prop="stock_cost" width="150">
+            <template #default="{ row }">
+              ￥{{ row.stock_cost | moneyFormat }}
+            </template>
+          </el-table-column>
           <el-table-column label="上架日期" prop="created" />
           <el-table-column label="周转天数" prop="cycle_days" width="100" />
           <el-table-column
@@ -203,6 +219,7 @@
             type: 1,
             typeSta: false,
             name: 'consignment_stock',
+            numType: 2,
           },
           {
             title: '现存库存',
@@ -211,6 +228,7 @@
             type: 1,
             typeSta: false,
             name: 'spot_stock',
+            numType: 2,
           },
           {
             title: '生产中库存',
@@ -219,6 +237,7 @@
             type: 1,
             typeSta: false,
             name: 'production_stock',
+            numType: 2,
           },
           {
             title: '可售库存',
@@ -227,6 +246,7 @@
             type: 1,
             typeSta: false,
             name: 'available_stock',
+            numType: 2,
           },
           {
             title: '总库存',
@@ -235,6 +255,7 @@
             type: 1,
             typeSta: false,
             name: 'total_stock',
+            numType: 2,
           },
           {
             title: '库存预警',
@@ -243,6 +264,7 @@
             type: 2,
             typeSta: false,
             name: 'warning_stock',
+            numType: 2,
           },
           {
             title: '现货库存成本',
@@ -251,6 +273,7 @@
             type: 2,
             typeSta: false,
             name: 'present_price',
+            numType: 1,
           },
           {
             title: '生产中库存成本',
@@ -259,6 +282,7 @@
             type: 2,
             typeSta: false,
             name: 'reproduction_price',
+            numType: 1,
           },
           {
             title: '可售库存成本',
@@ -267,6 +291,7 @@
             type: 2,
             typeSta: false,
             name: 'available_price',
+            numType: 1,
           },
           {
             title: '总库存成本',
@@ -275,6 +300,7 @@
             type: 2,
             typeSta: false,
             name: 'total_price',
+            numType: 1,
           },
         ],
         styleObj: {

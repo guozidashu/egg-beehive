@@ -57,7 +57,10 @@
         </div>
         <div style="display: flex; flex: 1; flex-direction: column">
           <span style="margin-bottom: 12px">累计欠款</span>
-          <span>{{ form.sale_arrears }}</span>
+          <span v-if="form.sale_arrears < 0">
+            -￥{{ form.sale_arrears | moneyFormat }}
+          </span>
+          <span v-else>{{ form.sale_arrears | moneyFormat }}</span>
         </div>
       </div>
     </div>

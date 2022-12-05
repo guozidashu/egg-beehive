@@ -67,7 +67,9 @@
               <div>
                 <div style="margin: 5px">积分：{{ item.integral }}</div>
                 <div style="margin: 5px">库存：{{ item.stock }}</div>
-                <div style="margin: 5px">实际价格：{{ item.actual_price }}</div>
+                <div style="margin: 5px">
+                  实际价格：￥{{ item.actual_price | moneyFormat }}
+                </div>
                 <div style="margin: 5px">
                   状态：
                   <el-tag v-if="item.status == 1">上架</el-tag>

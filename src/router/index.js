@@ -980,7 +980,7 @@ export const asyncRoutes = [
             name: 'SystemStore',
             component: () => import('@/subview/setting/system/store'),
             meta: {
-              title: '商城配置',
+              title: '旧商城配置',
               // icon: 'home-2-line',
             },
           },
@@ -1149,14 +1149,40 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      // {
+      //   path: 'design',
+      //   name: 'Design',
+      //   component: () => import('@/subview/setting/design'),
+      //   meta: {
+      //     title: '页面设计',
+      //     icon: 'archive-line',
+      //   },
+      // },
       {
-        path: 'design',
-        name: 'Design',
-        component: () => import('@/subview/setting/design'),
+        path: 'mall',
+        name: 'Mall',
         meta: {
-          title: '页面设计',
+          title: '商城配置',
           icon: 'archive-line',
         },
+        children: [
+          {
+            path: 'mallConfiguration',
+            name: 'MallConfiguration',
+            component: () => import('@/subview/setting/mall/configuration'),
+            meta: {
+              title: '基础配置',
+            },
+          },
+          {
+            path: 'mallDesign',
+            name: 'MallDesign',
+            component: () => import('@/subview/setting/mall/design'),
+            meta: {
+              title: '页面装修',
+            },
+          },
+        ],
       },
     ],
   },

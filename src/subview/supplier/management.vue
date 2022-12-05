@@ -71,7 +71,11 @@
           </el-table-column>
           <el-table-column label="联系人" prop="contact_name" width="100" />
           <el-table-column label="手机号码" prop="tel" width="200" />
-          <el-table-column label="应付款" prop="arrears" width="100" />
+          <el-table-column label="应付款" prop="arrears" width="150">
+            <template #default="{ row }">
+              ￥{{ row.arrears | moneyFormat }}
+            </template>
+          </el-table-column>
           <el-table-column label="创建时间" prop="create_time" width="200" />
           <el-table-column label="状态" prop="status" width="100">
             <template #default="{ row }">

@@ -44,6 +44,35 @@ export function getConfig(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+// 新商城配置
+export function getBaseConfigDetail(data) {
+  return request({
+    url: '/admin/baseConfigDetail',
+    method: 'post',
+    data,
+  })
+}
+export function getRegisterDealDetail(data) {
+  return request({
+    url: '/admin/registerDealDetail',
+    method: 'post',
+    data,
+  })
+}
+export function editBaseConfigSave(data) {
+  return request({
+    url: '/admin/baseConfigSave',
+    method: 'post',
+    data,
+  })
+}
+export function editRegisterDealSave(data) {
+  return request({
+    url: '/admin/registerDealSave',
+    method: 'post',
+    data,
+  })
+}
 // 客户等级申请
 export function getApplyList(data) {
   return request({

@@ -88,13 +88,21 @@
         <!-- 显示20条 -->
         <template #List>
           <el-table-column label="日期" prop="add_date" />
-          <el-table-column label="销售金额" prop="total" width="200" />
+          <el-table-column label="销售金额" prop="total" width="150">
+            <template #default="{ row }">
+              ￥{{ row.total | moneyFormat }}
+            </template>
+          </el-table-column>
           <el-table-column label="订单数" prop="count" width="100" />
           <el-table-column label="销售件数" prop="num" width="100" />
           <el-table-column label="发货件数" prop="delivery_num" width="120" />
           <el-table-column label="日单价" prop="day_price" width="100" />
           <el-table-column label="成交客户数" prop="customer_count" />
-          <el-table-column label="利润" prop="margin" />
+          <el-table-column label="利润" prop="margin" width="150">
+            <template #default="{ row }">
+              ￥{{ row.margin | moneyFormat }}
+            </template>
+          </el-table-column>
           <el-table-column label="毛利率(%)" prop="margin_rate">
             <template #default="{ row }">
               {{ (row.margin_rate * 100).toFixed(2) }}%
@@ -147,6 +155,7 @@
             type: 1,
             typeSta: false,
             name: 'order_num',
+            numType: 2,
           },
           {
             title: '销售件数',
@@ -155,6 +164,7 @@
             type: 1,
             typeSta: false,
             name: 'sale_list_num',
+            numType: 2,
           },
           {
             title: '销售金额',
@@ -163,6 +173,7 @@
             type: 1,
             typeSta: false,
             name: 'sale_list_total',
+            numType: 1,
           },
           {
             title: '退货数量',
@@ -171,6 +182,7 @@
             type: 1,
             typeSta: false,
             name: 'return_list_num',
+            numType: 2,
           },
           {
             title: '退货金额',
@@ -179,6 +191,7 @@
             type: 1,
             typeSta: false,
             name: 'return_list_total',
+            numType: 1,
           },
         ],
         dateList: [],

@@ -165,8 +165,16 @@
               <span v-else-if="row.type == 1">散码</span>
             </template>
           </el-table-column>
-          <el-table-column label="销售价" prop="price" width="120" />
-          <el-table-column label="吊牌价" prop="sale_price" width="120" />
+          <el-table-column label="销售价" prop="price" width="150">
+            <template #default="{ row }">
+              ￥{{ row.price | moneyFormat }}
+            </template>
+          </el-table-column>
+          <el-table-column label="吊牌价" prop="sale_price" width="150">
+            <template #default="{ row }">
+              ￥{{ row.sale_price | moneyFormat }}
+            </template>
+          </el-table-column>
           <el-table-column label="销量" prop="xl_num" width="120" />
           <el-table-column label="库存" prop="xh_num" width="100" />
           <el-table-column label="状态" prop="status" width="150">

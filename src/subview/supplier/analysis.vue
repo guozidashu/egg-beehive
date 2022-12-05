@@ -187,11 +187,11 @@
             show-overflow-tooltip
           />
           <el-table-column label="入库数量" prop="num" show-overflow-tooltip />
-          <el-table-column
-            label="入库金额"
-            prop="total"
-            show-overflow-tooltip
-          />
+          <el-table-column label="入库金额" prop="total" show-overflow-tooltip>
+            <template #default="{ row }">
+              ￥{{ row.total | moneyFormat }}
+            </template>
+          </el-table-column>
           <!-- <el-table-column
             label="准时交货率"
             prop="orders"

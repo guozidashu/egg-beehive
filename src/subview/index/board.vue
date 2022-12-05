@@ -111,6 +111,7 @@
             type: 1,
             typeSta: false,
             name: 'sale_total',
+            numType: 1,
           },
           {
             title: '销售件数',
@@ -119,6 +120,7 @@
             type: 1,
             typeSta: false,
             name: 'sale_num',
+            numType: 2,
           },
           {
             title: '发货金额',
@@ -127,6 +129,7 @@
             type: 1,
             typeSta: false,
             name: 'delivery_total',
+            numType: 1,
           },
           {
             title: '发货件数',
@@ -135,6 +138,7 @@
             type: 1,
             typeSta: false,
             name: 'delivery_num',
+            numType: 2,
           },
           {
             title: '退货金额',
@@ -143,6 +147,7 @@
             type: 1,
             typeSta: false,
             name: 'return_total',
+            numType: 1,
           },
           {
             title: '退货件数',
@@ -151,6 +156,7 @@
             type: 1,
             typeSta: false,
             name: 'return_num',
+            numType: 2,
           },
         ],
         initOptions: {
