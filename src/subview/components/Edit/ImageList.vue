@@ -54,7 +54,6 @@
           </div>
         </el-card>
       </template>
-
       <el-card
         class="box-card"
         shadow="hover"
@@ -266,7 +265,6 @@
           this.$forceUpdate()
         },
         deep: true,
-        immediate: true,
       },
       data: {
         handler(val) {

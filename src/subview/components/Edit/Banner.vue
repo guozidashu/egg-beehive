@@ -38,6 +38,9 @@
             ></i>
             <img :src="item.img" @click="addImage(dex)" />
           </div>
+          <div style="margin-top: 5px">
+            <el-input v-model="item.title" placeholder="请输入标题" />
+          </div>
           <el-button
             v-if="item.title == ''"
             style="margin-top: 10px"
@@ -47,7 +50,7 @@
           </el-button>
           <div v-else style="margin-top: 20px" @click="SelectLink(dex)">
             <div>
-              {{ item.title }}
+              {{ item.inputTitle }}
             </div>
             <div>
               {{ item.selectTitle }}
@@ -95,7 +98,7 @@
           <el-color-picker v-model="list.parameters.bg_color" />
         </div>
       </el-form-item>
-      <div style="margin: 10px">左右内边距</div>
+      <div style="margin: 10px">左右外边距</div>
       <el-form-item>
         <div style="padding: 0 10px">
           <el-slider
@@ -106,7 +109,7 @@
           />
         </div>
       </el-form-item>
-      <div style="margin: 10px">上下内边距</div>
+      <div style="margin: 10px">上下外边距</div>
       <el-form-item>
         <div style="padding: 0 10px">
           <el-slider
@@ -117,7 +120,7 @@
           />
         </div>
       </el-form-item>
-      <div style="margin: 10px">左右外边距</div>
+      <div style="margin: 10px">左右内边距</div>
       <el-form-item>
         <div style="padding: 0 10px">
           <el-slider
@@ -128,7 +131,7 @@
           />
         </div>
       </el-form-item>
-      <div style="margin: 10px">上下外边距</div>
+      <div style="margin: 10px">上下内边距</div>
       <el-form-item>
         <div style="padding: 0 10px">
           <el-slider
@@ -236,7 +239,7 @@
           this.$forceUpdate()
         },
         deep: true,
-        immediate: true,
+        // immediate: true,
       },
       data: {
         handler(val) {
@@ -258,7 +261,8 @@
       getSelectLink(data) {
         this.list.parameters.swiper_items[data.index].url = data.name
         this.list.parameters.swiper_items[data.index].url = data.selectUrl
-        this.list.parameters.swiper_items[data.index].title = data.selectName
+        this.list.parameters.swiper_items[data.index].inputTitle =
+          data.selectName
         this.list.parameters.swiper_items[data.index].selectTitle =
           data.selectTitle
         if (data.link_type == undefined) {
@@ -279,6 +283,7 @@
               url: '',
               title: '',
               opentype: '',
+              inputTitle: '',
             })
           })
           if (this.imgList.length > 0) {
@@ -306,7 +311,6 @@
         // this.url = link
       },
       removeImage(index) {
-        console.log(33333, this.list.parameters)
         this.list.parameters.swiper_items.splice(index, 1)
       },
       addImage(index) {

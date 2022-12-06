@@ -10,8 +10,18 @@
         :key="index"
         :style="item_style"
       >
-        <img mode="aspectFill" :src="item.img" :style="img_style" />
-        <div style="text-align: center">{{ item.name }}</div>
+        <div
+          :style="{
+            padding:
+              data.parameters.image_padding_tb +
+              'px ' +
+              data.parameters.image_padding_lr +
+              'px',
+          }"
+        >
+          <img mode="aspectFill" :src="item.img" :style="img_style" />
+          <div>{{ item.inputTitle }}</div>
+        </div>
       </div>
     </div>
     <div v-else class="image-null"><span class="el-icon-picture"></span></div>
@@ -44,14 +54,14 @@
                 padding: ${val.parameters.padding_tb}px ${val.parameters.padding_lr}px ;
                 margin: ${val.parameters.margin_tb}px ${val.parameters.margin_lr}px ;
             `
-            this.img_style = `
-            height: 80px;
-            width: 80px;
-                border-radius:  ${val.parameters.image_radius_t}px ${val.parameters.image_radius_t}px ${val.parameters.image_radius_b}px ${val.parameters.image_radius_b}px;
-            padding: ${val.parameters.image_padding_tb}px ${val.parameters.image_padding_lr}px ;
-            `
             this.item_style = `
+            text-align: center;
             width: ${100 / val.parameters.rows}%;
+            `
+            this.img_style = `
+            height: 40px;
+            width: 40px;
+           border-radius:  ${val.parameters.image_radius_t}px ${val.parameters.image_radius_t}px ${val.parameters.image_radius_b}px ${val.parameters.image_radius_b}px;
             `
             this.$forceUpdate()
           }

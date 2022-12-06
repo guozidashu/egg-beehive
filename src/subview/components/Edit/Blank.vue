@@ -1,20 +1,18 @@
 <template>
   <!-- Banner & Image 通用组件 -->
   <div class="image-content">
-    <el-form
-      ref="form"
-      label-width="100px"
-      :model="list.parameters"
-      style="margin-top: 20px"
-    >
-      <el-form-item label="背景色">
+    <el-form ref="form" :model="list.parameters" style="margin-top: 20px">
+      <h3>组件样式</h3>
+      <div style="margin: 10px">背景色</div>
+      <el-form-item>
         <div style="display: flex">
           <span style="margin-right: 20px">{{ list.parameters.bg_color }}</span>
           <el-color-picker v-model="list.parameters.bg_color" />
         </div>
       </el-form-item>
-      <el-form-item label="高度">
-        <div class="block">
+      <div style="margin: 10px">高度</div>
+      <el-form-item>
+        <div style="padding: 0 10px">
           <el-slider v-model="list.parameters.height" :max="100" :min="0" />
         </div>
       </el-form-item>

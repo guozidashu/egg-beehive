@@ -8,12 +8,12 @@
       "
       v-model="list.parameters.speaker_items"
       class="image-list"
-      :class="{ disable: data.tabType == 2 }"
+      :class="{ disable: data.tab_type == 2 }"
       draggable="li"
       style="margin-top: 20px"
       tag="ul"
     >
-      <li v-for="(item, dex) in list.parameters.speaker_items" :key="dex">
+      <!-- <li v-for="(item, dex) in list.parameters.speaker_items" :key="dex">
         <div class="l-info">
           <p>
             <span style="margin-top: 5px">标题：</span>
@@ -27,9 +27,35 @@
         <div class="r-image">
           <span class="el-icon-close" @click="removeImage(dex)"></span>
         </div>
+      </li> -->
+      <li v-for="(item, dex) in list.parameters.speaker_items" :key="dex">
+        <div class="l-info">
+          <el-form class="demo-form-inline">
+            <div style="margin: 10px">跳转链接</div>
+            <el-form-item>
+              <el-input
+                v-model="item.url"
+                class="input-with-select"
+                placeholder="请输入跳转链接"
+              >
+                <el-button slot="append" @click="SelectLink(dex)">
+                  选择链接
+                </el-button>
+              </el-input>
+            </el-form-item>
+            <div style="margin: 10px">{{ item.title }}</div>
+            <div style="margin: 10px">请输入标题</div>
+            <el-form-item>
+              <el-input v-model="item.notification_title" />
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="r-image">
+          <span class="el-icon-close" @click="removeImage(dex)"></span>
+        </div>
       </li>
     </vuedraggable>
-    <el-form ref="form" label-width="100px" :model="list.parameters">
+    <el-form ref="form" :model="list.parameters">
       <el-button
         class="add-image"
         icon="el-icon-plus"
@@ -39,38 +65,70 @@
       >
         添加标题
       </el-button>
-      <el-form-item label="背景色">
+      <div style="margin: 10px">背景色</div>
+      <el-form-item>
         <div style="display: flex">
           <span style="margin-right: 20px">{{ list.parameters.bg_color }}</span>
           <el-color-picker v-model="list.parameters.bg_color" />
         </div>
       </el-form-item>
-      <el-form-item label="左右内边距">
-        <div class="block">
-          <el-slider v-model="list.parameters.margin_lr" :max="50" :min="0" />
+      <div style="margin: 10px">左右内边距</div>
+      <el-form-item>
+        <div style="padding: 0 10px">
+          <el-slider
+            v-model="list.parameters.margin_lr"
+            :max="50"
+            :min="0"
+            show-input
+          />
         </div>
       </el-form-item>
-      <el-form-item label="上下内边距">
-        <div class="block">
-          <el-slider v-model="list.parameters.margin_tb" :max="50" :min="0" />
+      <div style="margin: 10px">上下内边距</div>
+      <el-form-item>
+        <div style="padding: 0 10px">
+          <el-slider
+            v-model="list.parameters.margin_tb"
+            :max="50"
+            :min="0"
+            show-input
+          />
         </div>
       </el-form-item>
-      <el-form-item label="左右外边距">
-        <div class="block">
-          <el-slider v-model="list.parameters.padding_lr" :max="50" :min="0" />
+      <div style="margin: 10px">左右外边距</div>
+      <el-form-item>
+        <div style="padding: 0 10px">
+          <el-slider
+            v-model="list.parameters.padding_lr"
+            :max="50"
+            :min="0"
+            show-input
+          />
         </div>
       </el-form-item>
-      <el-form-item label="上下外边距">
-        <div class="block">
-          <el-slider v-model="list.parameters.padding_tb" :max="50" :min="0" />
+      <div style="margin: 10px">上下外边距</div>
+      <el-form-item>
+        <div style="padding: 0 10px">
+          <el-slider
+            v-model="list.parameters.padding_tb"
+            :max="50"
+            :min="0"
+            show-input
+          />
         </div>
       </el-form-item>
-      <el-form-item label="轮播时间">
-        <div class="block">
-          <el-slider v-model="list.parameters.interval" :max="10" :min="1" />
+      <div style="margin: 10px">轮播时间</div>
+      <el-form-item>
+        <div style="padding: 0 10px">
+          <el-slider
+            v-model="list.parameters.interval"
+            :max="10"
+            :min="1"
+            show-input
+          />
         </div>
       </el-form-item>
     </el-form>
+    <QYSelectLink ref="edit" @SelectLink="getSelectLink" />
   </div>
 </template>
 
@@ -106,6 +164,22 @@
     },
 
     methods: {
+      SelectLink(index) {
+        this.$refs['edit'].showEdit(index, '1,7,8,9,10,11,12', 1)
+      },
+      getSelectLink(data) {
+        this.list.parameters.speaker_items[data.index].url = data.selectUrl
+        this.list.parameters.speaker_items[data.index].title = data.selectName
+        this.list.parameters.speaker_items[data.index].selectTitle =
+          data.selectTitle
+        if (data.link_type == undefined) {
+          this.list.parameters.speaker_items[data.index].opentype = null
+        } else {
+          this.list.parameters.speaker_items[data.index].opentype =
+            data.link_type
+        }
+        console.log(222222, this.list.parameters.speaker_items)
+      },
       removeImage(index) {
         this.list.parameters.speaker_items.splice(index, 1)
       },

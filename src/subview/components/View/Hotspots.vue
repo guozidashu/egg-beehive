@@ -1,41 +1,32 @@
 <template>
-  <div>
-    <div
-      v-if="data.parameters.hotspots && data.parameters.hotspots.length > 0"
-      :style="{
-        width: '100%',
-        height: '300px',
-        backgroundSize: '100% 100%',
-        backgroundRepeat: 'no-repeat',
-        backgroundImage: 'url(' + data.parameters.bg_Image + ') ',
-        marginTop: data.parameters.margin_top + 'px',
-        marginLeft: data.parameters.margin_lr + 'px',
-        marginRight: data.parameters.margin_lr + 'px',
-        position: 'relative',
-      }"
-    >
-      <!-- name: '',
-          url: '',
-          opentype: '',
-          hotspots_margin_top: 0,
-          hotspots_margin_lr: 0,
-          width: 50,
-          height: 50, -->
+  <div
+    :style="{
+      padding:
+        data.parameters.margin_top + 'px ' + data.parameters.margin_lr + 'px',
+      backgroundColor: data.parameters.bg_color,
+    }"
+  >
+    <div style="position: relative">
+      <el-image
+        mode="aspectFit"
+        :src="data.parameters.bg_Image"
+        style="width: 100%; height: 100%"
+      />
       <div
         v-for="(item, index) in data.parameters.hotspots"
         :key="index"
         :style="{
-          width: item.width + 'px',
-          height: item.height + 'px',
           background: item.bg_color,
-          position: 'absolute',
+          width: item.width + '%',
+          height: item.height + '%',
           opacity: 0.5,
-          top: item.hotspots_margin_top + 'px',
-          left: item.hotspots_margin_lr + 'px',
+          position: 'absolute',
+          top: item.hotspots_margin_top + '%',
+          left: item.hotspots_margin_lr + '%',
         }"
+        @tap="$tools.customEvent(item)"
       ></div>
     </div>
-    <div v-else class="image-null"><span class="el-icon-picture"></span></div>
   </div>
 </template>
 

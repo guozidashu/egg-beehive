@@ -11,18 +11,19 @@
       :interval="interval"
       :style="wrapper_style"
     >
-      <i class="el-icon-loading"></i>
+      <i class="el-icon-loading" style="margin-top: 8px"></i>
       <el-carousel-item
         v-for="(item, index) in data.parameters.speaker_items"
         :key="index"
         style="
+          margin-top: 8px;
           margin-left: 20px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
         "
       >
-        {{ item.title }}
+        {{ item.notification_title }}
       </el-carousel-item>
     </el-carousel>
     <div v-else class="image-null"><span class="el-icon-picture"></span></div>

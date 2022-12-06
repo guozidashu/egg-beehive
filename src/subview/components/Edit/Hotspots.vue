@@ -1,13 +1,15 @@
 <template>
   <!-- Banner & Image 通用组件 -->
   <div class="image-content">
-    <el-form
-      ref="form"
-      label-width="100px"
-      :model="list.parameters"
-      style="margin-top: 20px"
-    >
-      <el-form-item>
+    <el-form ref="form" :model="list.parameters" style="margin-top: 20px">
+      <h3>组件样式</h3>
+      <img
+        v-if="list.parameters.bg_Image"
+        :src="list.parameters.bg_Image"
+        style="width: 150px; height: 150px"
+        @click="addImage()"
+      />
+      <el-form-item v-else>
         <el-button
           class="add-image"
           icon="el-icon-plus"
@@ -17,14 +19,33 @@
           添加背景图片
         </el-button>
       </el-form-item>
-      <el-form-item label="与上方距离">
-        <div class="block">
-          <el-slider v-model="list.parameters.margin_top" :max="100" :min="0" />
+      <div style="margin: 10px">背景色</div>
+      <el-form-item>
+        <div style="display: flex">
+          <span style="margin-right: 20px">{{ list.parameters.bg_color }}</span>
+          <el-color-picker v-model="list.parameters.bg_color" />
         </div>
       </el-form-item>
-      <el-form-item label="左右边距">
-        <div class="block">
-          <el-slider v-model="list.parameters.margin_lr" :max="100" :min="0" />
+      <div style="margin: 10px">与上方距离</div>
+      <el-form-item>
+        <div style="padding: 0 10px">
+          <el-slider
+            v-model="list.parameters.margin_top"
+            :max="100"
+            :min="0"
+            show-input
+          />
+        </div>
+      </el-form-item>
+      <div style="margin: 10px">左右边距</div>
+      <el-form-item>
+        <div style="padding: 0 10px">
+          <el-slider
+            v-model="list.parameters.margin_lr"
+            :max="100"
+            :min="0"
+            show-input
+          />
         </div>
       </el-form-item>
       <el-form-item>
@@ -37,35 +58,22 @@
           添加热区
         </el-button>
       </el-form-item>
+      <h3>热区样式</h3>
       <vuedraggable
         v-if="list.parameters.hotspots && list.parameters.hotspots.length > 0"
         v-model="list.parameters.hotspots"
         class="image-list"
-        :class="{ disable: data.tabType == 2 }"
+        :class="{ disable: data.tab_type == 2 }"
         draggable="li"
         tag="ul"
       >
         <li v-for="(item, dex) in list.parameters.hotspots" :key="dex">
           <div class="l-info">
-            <el-form class="demo-form-inline" label-width="80px">
-              <el-form-item label="标题：">
+            <el-form class="demo-form-inline">
+              <div style="margin: 10px">跳转链接</div>
+              <el-form-item>
                 <el-input
-                  v-model="item.name"
-                  placeholder="请输入标题"
-                  style="width: 82%"
-                />
-              </el-form-item>
-              <el-form-item label="跳转类型：">
-                <el-select v-model="item.opentype" placeholder="请输入跳转类型">
-                  <el-option label="保留当前页跳转" value="navigateTo" />
-                  <el-option label="关闭当前页跳转" value="redirectTo" />
-                  <el-option label="跳转tabber页" value="switchTab" />
-                  <el-option label="关闭所有页跳转任意页" value="reLaunch" />
-                </el-select>
-              </el-form-item>
-              <el-form-item label="跳转链接：">
-                <el-input
-                  v-model="item.url"
+                  v-model="item.title"
                   class="input-with-select"
                   placeholder="请输入跳转链接"
                 >
@@ -74,32 +82,61 @@
                   </el-button>
                 </el-input>
               </el-form-item>
-              <el-form-item label="与上方距离">
-                <div class="block">
+              <div style="margin: 10px">背景色</div>
+              <el-form-item>
+                <div style="display: flex">
+                  <span style="margin-right: 20px">
+                    {{ item.bg_color }}
+                  </span>
+                  <el-color-picker v-model="item.bg_color" />
+                </div>
+              </el-form-item>
+              <div style="margin: 10px">与上方距离</div>
+              <el-form-item>
+                <div style="padding: 0 10px">
                   <el-slider
                     v-model="item.hotspots_margin_top"
+                    :format-tooltip="handlDelta"
                     :max="100"
                     :min="0"
+                    show-input
                   />
                 </div>
               </el-form-item>
-              <el-form-item label="左右边距">
-                <div class="block">
+              <div style="margin: 10px">左右边距</div>
+              <el-form-item>
+                <div style="padding: 0 10px">
                   <el-slider
                     v-model="item.hotspots_margin_lr"
+                    :format-tooltip="handlDelta"
                     :max="100"
                     :min="0"
+                    show-input
                   />
                 </div>
               </el-form-item>
-              <el-form-item label="宽度">
-                <div class="block">
-                  <el-slider v-model="item.width" :max="100" :min="0" />
+              <div style="margin: 10px">宽度</div>
+              <el-form-item>
+                <div style="padding: 0 10px">
+                  <el-slider
+                    v-model="item.width"
+                    :format-tooltip="handlDelta"
+                    :max="100"
+                    :min="0"
+                    show-input
+                  />
                 </div>
               </el-form-item>
-              <el-form-item label="高度">
-                <div class="block">
-                  <el-slider v-model="item.height" :max="100" :min="0" />
+              <div style="margin: 10px">高度</div>
+              <el-form-item>
+                <div style="padding: 0 10px">
+                  <el-slider
+                    v-model="item.height"
+                    :format-tooltip="handlDelta"
+                    :max="100"
+                    :min="0"
+                    show-input
+                  />
                 </div>
               </el-form-item>
             </el-form>
@@ -157,6 +194,9 @@
     },
 
     methods: {
+      handlDelta(e) {
+        return e + '%'
+      },
       removeImage(index) {
         this.list.parameters.hotspots.splice(index, 1)
       },
@@ -164,7 +204,16 @@
         this.$refs['edit'].showEdit(index, '1,7,8,9,10,11,12', 1)
       },
       getSelectLink(data) {
-        this.list.parameters.hotspots[data.index].url = data.name
+        // this.list.parameters.hotspots[data.index].url = data.name
+        this.list.parameters.hotspots[data.index].url = data.selectUrl
+        this.list.parameters.hotspots[data.index].title = data.selectName
+        this.list.parameters.hotspots[data.index].selectTitle = data.selectTitle
+        if (data.link_type == undefined) {
+          this.list.parameters.hotspots[data.index].opentype = null
+        } else {
+          this.list.parameters.hotspots[data.index].opentype = data.link_type
+        }
+        this.$forceUpdate()
       },
       getSon(data) {
         this.list.parameters.bg_Image = data[0]

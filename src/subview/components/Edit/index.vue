@@ -4,7 +4,7 @@
       <h2>{{ type && list[type]['title'] }}</h2>
       <div v-if="type != 'info' && type != 'ImageList'" class="tab">
         <span
-          v-for="(val, key, index) in tabType"
+          v-for="(val, key, index) in tab_type"
           :key="index"
           :class="{ active: val }"
           @click="tab(key)"
@@ -88,7 +88,7 @@
             com: 'Hotspots',
           },
         },
-        tabType: {
+        tab_type: {
           1: true,
           2: false,
           3: false,
@@ -99,6 +99,7 @@
       data: {
         handler(val) {
           this.type = val.type
+          console.log(99999, this.type, val, this.tab_type)
         },
         immediate: true,
         deep: true,
@@ -106,18 +107,18 @@
     },
     mounted() {
       this.type = this.data.type
-      if (this.data.tabType) {
-        this.tab(this.data.tabType)
+      if (this.data.tab_type) {
+        this.tab(this.data.tab_type)
       }
     },
     methods: {
       tab(key) {
-        for (let i in this.tabType) {
+        for (let i in this.tab_type) {
           if (key == i) {
-            this.tabType[key] = true
-            this.$set(this.data, 'tabType', key)
+            this.tab_type[key] = true
+            this.$set(this.data, 'tab_type', key)
           } else {
-            this.tabType[i] = false
+            this.tab_type[i] = false
           }
         }
       },

@@ -1,5 +1,50 @@
 <template>
-  <div class="banner">
+  <div
+    :class="data.tab_type == 1 || data.tab_type == 2 ? 'banner2' : 'banner3'"
+  >
+    <!-- v-if="list.tab_type == 1 || list.tab_type == 3" -->
+    <!-- 3 -->
+    <!-- <el-carousel
+      v-if="
+        data.parameters.swiper_items && data.parameters.swiper_items.length > 0
+      "
+      indicator-position="none"
+      :interval="interval"
+      :style="wrapper_style"
+    >
+      <el-carousel-item
+        v-for="(item, index) in data.parameters.swiper_items"
+        :key="index"
+        :style="{
+          height: data.parameters.height + 'px',
+          borderRadius: '24px',
+        }"
+      >
+        <el-image
+          :src="item.img"
+          :style="{ width: '100%', height: data.parameters.height + 'px' }"
+        />
+        <div
+          :style="{
+            backgroundColor: 'black',
+            width: '100%',
+            height: '20px',
+            position: 'absolute',
+            top: data.parameters.height - 20 + 'px',
+            fontSize: '14px',
+            padding: '2px 0 0 2px',
+            color: 'white',
+            opacity: 0.5,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }"
+        >
+          <span style="margin-left: 15px">{{ item.title }}</span>
+        </div>
+      </el-carousel-item>
+    </el-carousel> -->
+    <!-- 1 -->
     <el-carousel
       v-if="
         data.parameters.swiper_items && data.parameters.swiper_items.length > 0
@@ -10,27 +55,14 @@
       <el-carousel-item
         v-for="(item, index) in data.parameters.swiper_items"
         :key="index"
+        :style="{
+          height: data.parameters.height + 'px',
+        }"
       >
-        <img mode="aspectFill" :src="item.img" />
-        <div
-          class="sssdaa"
-          :style="{
-            backgroundColor: 'black',
-            width: '100%',
-            height: '20px',
-            position: 'absolute',
-            top: data.parameters.height - 50 + 'px',
-            fontSize: '14px',
-            padding: '2px 0 0 2px',
-            color: 'white',
-            opacity: 0.5,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }"
-        >
-          {{ item.title }}
-        </div>
+        <el-image
+          :src="item.img"
+          :style="{ width: '100%', height: data.parameters.height + 'px' }"
+        />
       </el-carousel-item>
     </el-carousel>
     <div v-else class="image-null"><span class="el-icon-picture"></span></div>
@@ -73,8 +105,10 @@
   }
 </script>
 
-<style lang="scss" scoped>
-  .banner {
+<style lang="scss">
+  .banner3,
+  .banner2,
+  .banner4 {
     font-size: 0;
     img {
       width: 100%;
@@ -86,9 +120,6 @@
       overflow-x: hidden;
       overflow-y: hidden;
     }
-    .el-carousel__button {
-      width: 12px;
-    }
     .image-null {
       display: flex;
       align-items: center;
@@ -97,6 +128,25 @@
       font-size: 50px;
       color: #c1c1c1;
       background: #ffffff;
+    }
+  }
+  .banner3 {
+    .el-carousel__button {
+      width: 12px;
+    }
+  }
+  .banner2 {
+    .el-carousel__button {
+      // 指示器按钮
+      width: 10px;
+      height: 10px;
+      background-color: rgba(0, 0, 0, 0.2);
+      border: none;
+      border-radius: 50%;
+    }
+    .is-active .el-carousel__button {
+      // 指示器激活按钮
+      background: #3f8ec8;
     }
   }
 </style>

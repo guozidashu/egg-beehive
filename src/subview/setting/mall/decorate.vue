@@ -24,22 +24,39 @@
         </ul>
       </section>
       <section id="view-content" class="c">
-        <div
+        <!-- <div
           class="top-nav"
-          :style="{ backgroundColor: info.header_bg_color }"
+          :style="{
+            backgroundColor: info.header_bg_color,
+            padding: '10px 20px',
+          }"
           @click="selectType(0)"
         >
-          <div :style="{ color: info.header_font_color }">
+          <div
+            v-if="info.tabType == 1 || info.tabType == 3"
+            :style="{
+              color: info.header_font_color,
+              marginBottom: info.tabType == 1 ? '20px' : '0',
+              fontSize: '18px',
+              textAlign: info.tabType == 3 ? 'center' : '0',
+            }"
+          >
             {{ info.title }}
           </div>
-          <el-input
-            v-model="input2"
-            clearable
-            placeholder="请输入内容"
-            prefix-icon="el-icon-search"
-            style="border-radius: 50px"
-          />
-        </div>
+
+          <div v-if="info.tabType != 3" class="search">
+            <el-input
+              v-model="input2"
+              clearable
+              :placeholder="info.search_placeholder"
+              prefix-icon="el-icon-search"
+            />
+          </div>
+        </div> -->
+        <!-- :style="{
+            paddingTop:
+              info.tabType == 1 ? '100px' : info.tabType == 2 ? '60px' : '40px',
+          }" -->
         <div class="view-content" @dragover="dragOver" @drop="drog">
           <Draggable v-model="view" draggable=".item">
             <template v-for="(item, dex) in view">
@@ -89,6 +106,7 @@
   import Title from '@/subview/components/View/Title'
   import Goodsgroup from '@/subview/components/View/Goodsgroup'
   import Hotspots from '@/subview/components/View/Hotspots'
+  import Info from '@/subview/components/View/Info'
   export default {
     components: {
       EditForm,
@@ -101,6 +119,7 @@
       Title,
       Goodsgroup,
       Hotspots,
+      Info,
     },
     props: {
       itemId: {
@@ -154,6 +173,11 @@
             name: '热区',
             icon: 'el-icon-picture',
             com: Hotspots,
+          },
+          Info: {
+            name: '头部',
+            icon: 'el-icon-picture',
+            com: Info,
           },
         },
         view: [
@@ -240,60 +264,56 @@
       async submit() {
         // JSON 转换会丢失 formData
         const form = JSON.parse(JSON.stringify(this.view))
+        form.forEach((item) => {
+          if (item.type == 'Info') {
+            item.title = this.title
+          } else {
+            // 字符转换数字
+            if (item.tabType != null) {
+              item.tabType = Number(item.tabType)
+            }
+          }
+        })
         console.log(797987, form)
-        // let temp1 = {
-        //   name: 'Goodsgroup',
-        //   status: 1,
-        //   content: JSON.stringify({
-        //     template: 'qy-goods-group',
-        //     type: 'Goodsgroup',
-        //     options: {},
-        //     parameters: {
-        //       type: 1,
-        //       bg_color: '#F8F7F7',
-        //       color_goods_bg: '#FFFFFF',
-        //       margin_lr: 5,
-        //       margin_tb: 7,
-        //       padding_lr: 4,
-        //       padding_tb: 9,
-        //       magin_goods_lr: 9,
-        //       magin_goods_tb: 10,
-        //       radius_t: 7,
-        //       radius_b: 13,
-        //       goods_tag: 1,
-        //       goods_grouping: 1,
-        //       goods_classify: [55, 57],
-        //       goods_type: 2,
-        //       goods_corner_mark: 1,
-        //       goods_original_price: 1,
-        //       goods_num: 1,
-        //       goods_text_state: 1,
-        //       goods_item: [
-        //         {
-        //           url: '/main_pages/goods/goods_details?id=772',
-        //           title: '商品详情>772',
-        //           selectTitle: '999888',
-        //           img: 'https://img.quanyu.link/FkpDvX6OeEcKJjlT1_7oEaR6Qk2Q',
-        //           type: 0,
-        //           opentype: null,
-        //         },
-        //         {
-        //           url: '/main_pages/goods/goods_details?id=773',
-        //           title: '商品详情>773',
-        //           selectTitle: '999888',
-        //           img: 'https://img.wechatboss.com/FvXc5ZSE-0sIW8arI3m0Wq0hIYBQ',
-        //           type: 1,
-        //           opentype: null,
-        //         },
-        //       ],
-        //       goodsGroupNum: 1,
-        //       goods_tag_text: '热卖',
-        //     },
-        //     id: 37,
-        //     tabType: '1',
-        //   }),
-        // }
-        // console.log(46546465, temp1)
+        let temp1 = {
+          name: 'Hotspots',
+          status: 1,
+          content: JSON.stringify({
+            template: 'qy-image-hotspot',
+            type: 'Hotspots',
+            options: {},
+            parameters: {
+              type: 2,
+              bg_Image: 'https://img.quanyu.link/FkpDvX6OeEcKJjlT1_7oEaR6Qk2Q',
+              margin_top: 28,
+              margin_lr: 34,
+              hotspots: [
+                {
+                  name: '',
+                  url: '',
+                  opentype: '',
+                  hotspots_margin_top: 0,
+                  hotspots_margin_lr: 0,
+                  width: 50,
+                  height: 50,
+                  bg_color: '#c135fb',
+                },
+                {
+                  name: '',
+                  url: '',
+                  opentype: '',
+                  hotspots_margin_top: 32,
+                  hotspots_margin_lr: 52,
+                  width: 50,
+                  height: 50,
+                  bg_color: '#8fd3ca',
+                },
+              ],
+            },
+            id: 35,
+          }),
+        }
+        console.log(46546465, temp1)
         // if (form.length == 1) {
         //   this.$message.error('请添加模块！')
         //   return
@@ -317,9 +337,7 @@
         })
         temp.div_template_id = this.itemId
         temp.content = arr
-        console.log(6666666, temp)
         const { data } = await editTemplateAssemblyLayout(temp)
-        console.log(99999, data)
 
         this.$message.success(
           '数据提交成功，请按F12打开控制台查看待提交数据集合！'
@@ -330,7 +348,6 @@
       // div截图
       setImage() {
         let opts = { useCORS: true }
-        console.log(8885588, html2canvas)
         html2canvas(document.getElementById('view-content'), opts).then(
           function (canvas) {
             var imgUri = canvas.toDataURL('image/jpeg', 2) // 获取生成的图片的ur
@@ -343,7 +360,6 @@
       selectType(index) {
         this.isRight = false
         this.props = this.view[index]
-        console.log(888888, this.props)
         this.$nextTick(() => (this.isRight = true))
       },
       deleteItem(e, index) {
@@ -537,7 +553,7 @@
       .view-content {
         width: 400px;
         height: 70vh;
-        padding-top: 72px;
+        // padding-top: 72px;
         overflow-x: hidden;
         overflow-y: auto;
         background: #f5f5f5;
@@ -598,12 +614,11 @@
       transform: translateX(-50%);
     }
   }
-  ::v-deep {
+  .search {
     .el-input {
-      box-sizing: border-box;
-      input {
-        height: 55px;
-        line-height: 55px;
+      .el-input__inner {
+        height: 40px;
+        border-radius: 25px;
       }
     }
   }

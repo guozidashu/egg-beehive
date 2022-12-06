@@ -131,7 +131,7 @@
           <el-color-picker v-model="list.parameters.bg_color" />
         </div>
       </el-form-item>
-      <div style="margin: 10px">左右内边距</div>
+      <div style="margin: 10px">左右外边距</div>
       <el-form-item>
         <div style="padding: 0 10px">
           <el-slider
@@ -142,11 +142,33 @@
           />
         </div>
       </el-form-item>
-      <div style="margin: 10px">上下内边距</div>
+      <div style="margin: 10px">上下外边距</div>
       <el-form-item>
         <div style="padding: 0 10px">
           <el-slider
             v-model="list.parameters.margin_tb"
+            :max="50"
+            :min="0"
+            show-input
+          />
+        </div>
+      </el-form-item>
+      <div style="margin: 10px">左右内边距</div>
+      <el-form-item>
+        <div style="padding: 0 10px">
+          <el-slider
+            v-model="list.parameters.padding_lr"
+            :max="50"
+            :min="0"
+            show-input
+          />
+        </div>
+      </el-form-item>
+      <div style="margin: 10px">上下内边距</div>
+      <el-form-item>
+        <div style="padding: 0 10px">
+          <el-slider
+            v-model="list.parameters.padding_tb"
             :max="50"
             :min="0"
             show-input
@@ -171,6 +193,20 @@
       <el-form-item>
         <el-switch
           v-model="list.parameters.goods_original_price"
+          active-color="#41B584"
+          active-text="开启"
+          :active-value="1"
+          class="switch"
+          inactive-color="#D2D2D2"
+          inactive-text="关闭"
+          :inactive-value="0"
+          style="margin: 0 10px"
+        />
+      </el-form-item>
+      <div style="margin: 10px">显示销售价</div>
+      <el-form-item>
+        <el-switch
+          v-model="list.parameters.show_sales"
           active-color="#41B584"
           active-text="开启"
           :active-value="1"
@@ -213,29 +249,7 @@
           <el-color-picker v-model="list.parameters.color_goods_bg" />
         </div>
       </el-form-item>
-      <div style="margin: 10px">左右内边距</div>
-      <el-form-item>
-        <div style="padding: 0 10px">
-          <el-slider
-            v-model="list.parameters.padding_lr"
-            :max="50"
-            :min="0"
-            show-input
-          />
-        </div>
-      </el-form-item>
-      <div style="margin: 10px">上下内边距</div>
-      <el-form-item>
-        <div style="padding: 0 10px">
-          <el-slider
-            v-model="list.parameters.padding_tb"
-            :max="50"
-            :min="0"
-            show-input
-          />
-        </div>
-      </el-form-item>
-      <div style="margin: 10px">商品左右内边距</div>
+      <div style="margin: 10px">商品左右外边距</div>
       <el-form-item>
         <div style="padding: 0 10px">
           <el-slider
@@ -246,7 +260,7 @@
           />
         </div>
       </el-form-item>
-      <div style="margin: 10px">商品上下内边距</div>
+      <div style="margin: 10px">商品上下外边距</div>
       <el-form-item>
         <div style="padding: 0 10px">
           <el-slider
@@ -286,9 +300,10 @@
 
 <script>
   import { getGoodsGroupList, getGoodsCategoryTree } from '@/api/basic'
+  import vuedraggable from 'vuedraggable'
   export default {
-    name: 'Images',
-    components: {},
+    name: 'Goodsgroup',
+    components: { vuedraggable },
     props: {
       data: {
         type: Object,
@@ -326,8 +341,7 @@
       removeImage(index) {
         this.list.parameters.goods_item.splice(index, 1)
       },
-      getSelectLink(data, data1) {
-        console.log(66666, data, data1)
+      getSelectLink(data) {
         let arr = []
         data.forEach((item) => {
           let obj = {}
@@ -350,7 +364,6 @@
           this.list.parameters.goods_item.filter((item, index, self) => {
             return self.findIndex((t) => t.url === item.url) === index
           })
-        console.log(78787, this.list.parameters.goods_item)
       },
       async getGoodsGroup() {
         const { data } = await getGoodsGroupList()
