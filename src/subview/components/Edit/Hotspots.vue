@@ -48,16 +48,6 @@
           />
         </div>
       </el-form-item>
-      <el-form-item>
-        <el-button
-          class="add-image"
-          icon="el-icon-plus"
-          type="primary"
-          @click="addHotspots()"
-        >
-          添加热区
-        </el-button>
-      </el-form-item>
       <h3>热区样式</h3>
       <vuedraggable
         v-if="list.parameters.hotspots && list.parameters.hotspots.length > 0"
@@ -146,6 +136,16 @@
           </div>
         </li>
       </vuedraggable>
+      <el-form-item>
+        <el-button
+          class="add-image"
+          icon="el-icon-plus"
+          type="primary"
+          @click="addHotspots()"
+        >
+          添加热区
+        </el-button>
+      </el-form-item>
     </el-form>
     <vab-upload
       ref="vabUpload"

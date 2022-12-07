@@ -24,46 +24,13 @@
         </ul>
       </section>
       <section id="view-content" class="c">
-        <!-- <div
-          class="top-nav"
-          :style="{
-            backgroundColor: info.header_bg_color,
-            padding: '10px 20px',
-          }"
-          @click="selectType(0)"
-        >
-          <div
-            v-if="info.tabType == 1 || info.tabType == 3"
-            :style="{
-              color: info.header_font_color,
-              marginBottom: info.tabType == 1 ? '20px' : '0',
-              fontSize: '18px',
-              textAlign: info.tabType == 3 ? 'center' : '0',
-            }"
-          >
-            {{ info.title }}
-          </div>
-
-          <div v-if="info.tabType != 3" class="search">
-            <el-input
-              v-model="input2"
-              clearable
-              :placeholder="info.search_placeholder"
-              prefix-icon="el-icon-search"
-            />
-          </div>
-        </div> -->
-        <!-- :style="{
-            paddingTop:
-              info.tabType == 1 ? '100px' : info.tabType == 2 ? '60px' : '40px',
-          }" -->
         <div class="view-content" @dragover="dragOver" @drop="drog">
-          <Draggable v-model="view" draggable=".item">
+          <Draggable v-model="view" filter=".forbid" :move="onMove">
             <template v-for="(item, dex) in view">
               <div
                 v-if="dex > 0"
                 :key="dex"
-                class="item"
+                :class="item.type == 'Info' ? 'item forbid' : 'item'"
                 :data-index="dex"
                 @click="selectType(dex)"
               >
@@ -73,7 +40,7 @@
                 <template v-else>
                   <component
                     :is="typeList[item.type]['com']"
-                    :class-name="className[item.tabType]"
+                    :class-name="className[item.tab_type]"
                     :data="item"
                   />
                 </template>
@@ -107,6 +74,7 @@
   import Goodsgroup from '@/subview/components/View/Goodsgroup'
   import Hotspots from '@/subview/components/View/Hotspots'
   import Info from '@/subview/components/View/Info'
+  import TemplateExample from '@/subview/components/View/TemplateExample'
   export default {
     components: {
       EditForm,
@@ -120,6 +88,7 @@
       Goodsgroup,
       Hotspots,
       Info,
+      TemplateExample,
     },
     props: {
       itemId: {
@@ -179,6 +148,11 @@
             icon: 'el-icon-picture',
             com: Info,
           },
+          TemplateExample: {
+            name: '模板示例',
+            icon: 'el-icon-picture',
+            com: TemplateExample,
+          },
         },
         view: [
           {
@@ -187,7 +161,7 @@
           },
         ],
         title: '页面标题',
-        type: 'type',
+        type: null,
         index: null, // 当前组件的索引
         isPush: false, // 是否已添加组件
 
@@ -210,6 +184,7 @@
     watch: {
       itemId: {
         handler: function (val) {
+          console.log(777777, val)
           if (val != 0) {
             this.getTypeList()
             this.init(val)
@@ -257,6 +232,8 @@
           arr.push(temp)
         })
         this.propsList = arr
+        console.log(1111, this.propsList)
+        console.log(2222, this.view)
       },
       back() {
         this.$emit('submitUpload', 1)
@@ -265,52 +242,67 @@
         // JSON 转换会丢失 formData
         const form = JSON.parse(JSON.stringify(this.view))
         form.forEach((item) => {
-          if (item.type == 'Info') {
-            item.title = this.title
-          } else {
-            // 字符转换数字
-            if (item.tabType != null) {
-              item.tabType = Number(item.tabType)
-            }
+          // 字符转换数字
+          if (item.tab_type != null) {
+            item.tab_type = Number(item.tab_type)
+            item.parameters.type = Number(item.tab_type)
           }
         })
         console.log(797987, form)
         let temp1 = {
-          name: 'Hotspots',
+          name: 'TemplateExample',
           status: 1,
           content: JSON.stringify({
-            template: 'qy-image-hotspot',
-            type: 'Hotspots',
+            template: 'qy-template-example',
+            type: 'TemplateExample',
             options: {},
             parameters: {
-              type: 2,
-              bg_Image: 'https://img.quanyu.link/FkpDvX6OeEcKJjlT1_7oEaR6Qk2Q',
-              margin_top: 28,
-              margin_lr: 34,
-              hotspots: [
+              type: 1,
+              bg_color: '#F8F7F7',
+              color_goods_bg: '#FFFFFF',
+              margin_lr: 5,
+              margin_tb: 7,
+              padding_lr: 4,
+              padding_tb: 9,
+              magin_goods_lr: 9,
+              magin_goods_tb: 10,
+              radius_t: 7,
+              radius_b: 13,
+              goods_tag: 1,
+              goods_grouping: 1,
+              goods_classify: [55, 57],
+              goods_type: 2,
+              goods_corner_mark: 1,
+              goods_original_price: 1,
+              goods_num: 1,
+              goods_text_state: 1,
+              goods_item: [
                 {
-                  name: '',
-                  url: '',
-                  opentype: '',
-                  hotspots_margin_top: 0,
-                  hotspots_margin_lr: 0,
-                  width: 50,
-                  height: 50,
-                  bg_color: '#c135fb',
+                  url: '/main_pages/goods/goods_details?id=772',
+                  title: '商品详情>772',
+                  selectTitle: '999888',
+                  img: 'https://img.quanyu.link/FkpDvX6OeEcKJjlT1_7oEaR6Qk2Q',
+                  type: 0,
+                  goods_id: 772,
+                  opentype: null,
                 },
                 {
-                  name: '',
-                  url: '',
-                  opentype: '',
-                  hotspots_margin_top: 32,
-                  hotspots_margin_lr: 52,
-                  width: 50,
-                  height: 50,
-                  bg_color: '#8fd3ca',
+                  url: '/main_pages/goods/goods_details?id=773',
+                  title: '商品详情>773',
+                  selectTitle: '999888',
+                  img: 'https://img.wechatboss.com/FvXc5ZSE-0sIW8arI3m0Wq0hIYBQ',
+                  type: 1,
+                  goods_id: 773,
+                  opentype: null,
                 },
               ],
+              goodsGroupNum: 1,
+              goods_tag_text: '热卖1',
+              show_sales: 1,
             },
-            id: 35,
+            id: 38,
+            tabType: 1,
+            tab_type: 1,
           }),
         }
         console.log(46546465, temp1)
@@ -369,18 +361,27 @@
         this.isRight = false
         this.props = {}
       },
-      //
+      //禁止拖拽到第一项
+      onMove(e) {
+        console.log('禁止拖拽到第一项', e)
+        if (e.relatedContext.element.type == 'Info') return false
+        return true
+      },
+      //开始拖拽
       dragStart(e) {
         this.type = e.target.dataset.type
+        console.log('开始拖拽', this.type)
       },
       // 结束拖拽
       dragEnd() {
+        console.log('结束拖拽')
         this.$delete(this.view[this.index], 'status')
         this.isPush = false
         this.type = null
       },
       // 已放置到指定位置
       drog(e) {
+        console.log('已放置到指定位置', this.type)
         if (!this.type) {
           // 内容拖拽
           return
@@ -391,6 +392,7 @@
       },
       // 移动中
       dragOver(e) {
+        console.log('移动中', this.type)
         if (!this.type) {
           // 内容拖拽
           return

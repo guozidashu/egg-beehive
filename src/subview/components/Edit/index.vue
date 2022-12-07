@@ -2,19 +2,53 @@
   <section>
     <div class="tab-content">
       <h2>{{ type && list[type]['title'] }}</h2>
-      <div v-if="type != 'info' && type != 'ImageList'" class="tab">
-        <span
-          v-for="(val, key, index) in tab_type"
-          :key="index"
-          :class="{ active: val }"
-          @click="tab(key)"
-        >
+      <el-radio-group
+        v-if="
+          type != 'info' &&
+          type != 'ImageList' &&
+          type != 'Banner' &&
+          type != 'TemplateExample'
+        "
+        v-model="list1.tab_type"
+        size="medium"
+      >
+        <el-radio-button label="1">
           <i class="el-icon-s-data"></i>
-          {{ key }}
-        </span>
-      </div>
+          1
+        </el-radio-button>
+        <el-radio-button label="2">
+          <i class="el-icon-s-data"></i>
+          2
+        </el-radio-button>
+        <el-radio-button label="3">
+          <i class="el-icon-s-data"></i>
+          3
+        </el-radio-button>
+      </el-radio-group>
+      <el-radio-group
+        v-if="type == 'Banner'"
+        v-model="list1.tab_type"
+        size="medium"
+      >
+        <el-radio-button label="1">
+          <i class="el-icon-s-data"></i>
+          1
+        </el-radio-button>
+        <el-radio-button label="2">
+          <i class="el-icon-s-data"></i>
+          2
+        </el-radio-button>
+        <el-radio-button label="3">
+          <i class="el-icon-s-data"></i>
+          3
+        </el-radio-button>
+        <el-radio-button label="4">
+          <i class="el-icon-s-data"></i>
+          4
+        </el-radio-button>
+      </el-radio-group>
     </div>
-    <component :is="type && list[type]['com']" :data="data" @changeTab="tab" />
+    <component :is="type && list[type]['com']" :data="data" />
   </section>
 </template>
 
@@ -28,6 +62,7 @@
   import Title from './Title'
   import Goodsgroup from './Goodsgroup'
   import Hotspots from './Hotspots'
+  import TemplateExample from './TemplateExample'
   export default {
     name: 'EditForm',
     components: {
@@ -40,6 +75,7 @@
       Goodsgroup,
       Info,
       Hotspots,
+      TemplateExample,
     },
     props: {
       data: {
@@ -50,6 +86,7 @@
     data() {
       return {
         type: '',
+        list1: null,
         list: {
           Info: {
             title: '页面信息',
@@ -87,11 +124,10 @@
             title: '热区',
             com: 'Hotspots',
           },
-        },
-        tab_type: {
-          1: true,
-          2: false,
-          3: false,
+          TemplateExample: {
+            title: '模板示例',
+            com: 'TemplateExample',
+          },
         },
       }
     },
@@ -105,24 +141,13 @@
         deep: true,
       },
     },
+    created() {
+      this.list1 = this.data
+    },
     mounted() {
       this.type = this.data.type
-      if (this.data.tab_type) {
-        this.tab(this.data.tab_type)
-      }
     },
-    methods: {
-      tab(key) {
-        for (let i in this.tab_type) {
-          if (key == i) {
-            this.tab_type[key] = true
-            this.$set(this.data, 'tab_type', key)
-          } else {
-            this.tab_type[i] = false
-          }
-        }
-      },
-    },
+    methods: {},
   }
 </script>
 
@@ -152,6 +177,34 @@
       span {
         display: block;
         width: 33.33%;
+        height: 36px;
+        font-size: 14px;
+        line-height: 36px;
+        color: #666;
+        text-align: center;
+        cursor: pointer;
+
+        &.active {
+          color: #fff;
+          background: #409eff;
+          border-radius: 2px;
+        }
+
+        &:nth-of-type(2) {
+          border-right: 1px solid #ddd;
+          border-left: 1px solid #ddd;
+        }
+      }
+    }
+    .tab1 {
+      display: flex;
+      justify-content: space-around;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+
+      span {
+        display: block;
+        width: 25%;
         height: 36px;
         font-size: 14px;
         line-height: 36px;

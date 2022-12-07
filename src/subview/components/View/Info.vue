@@ -2,26 +2,26 @@
   <div>
     <div
       :style="{
-        backgroundColor: data.header_bg_color,
+        backgroundColor: data.parameters.header_bg_color,
         padding: '10px 20px',
       }"
     >
       <div
         v-if="data.tab_type == 1 || data.tab_type == 3"
         :style="{
-          color: data.header_font_color,
+          color: data.parameters.header_font_color,
           marginBottom: data.tab_type == 1 ? '20px' : '0',
           fontSize: '18px',
           textAlign: data.tab_type == 3 ? 'center' : '0',
         }"
       >
-        {{ data.title }}
+        {{ data.parameters.title }}
       </div>
 
       <div v-if="data.tab_type != 3" class="search">
         <el-input
           clearable
-          :placeholder="data.search_placeholder"
+          :placeholder="data.parameters.search_placeholder"
           prefix-icon="el-icon-search"
         />
       </div>

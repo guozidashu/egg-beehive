@@ -34,7 +34,7 @@
             建议尺寸：200×200像素
           </span>
           <div v-if="form.logo" style="margin-top: 20px">
-            <img :src="form.logo" />
+            <img :src="form.logo" style="width: 100px; height: 100px" />
           </div>
         </el-form-item>
         <el-form-item label="商家简介" prop="desc">

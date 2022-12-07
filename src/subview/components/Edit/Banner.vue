@@ -42,7 +42,7 @@
             <el-input v-model="item.title" placeholder="请输入标题" />
           </div>
           <el-button
-            v-if="item.title == ''"
+            v-if="item.url == ''"
             style="margin-top: 10px"
             @click="SelectLink(dex)"
           >
@@ -147,7 +147,7 @@
         <div style="padding: 0 10px">
           <el-slider
             v-model="list.parameters.height"
-            :max="300"
+            :max="400"
             :min="100"
             show-input
           />
