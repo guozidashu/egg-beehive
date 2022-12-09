@@ -115,7 +115,7 @@
           可选择表格中的商品单独发货，发货后会形成新的订单且不能撤回，请谨慎操作！
         </el-form-item>
         <el-form-item>
-          <List
+          <QYList
             v-if="form.isdefault == 1"
             :list="orderList"
             :list-type="listType"
@@ -145,7 +145,7 @@
                 </template>
               </el-table-column>
             </template>
-          </List>
+          </QYList>
         </el-form-item>
       </div>
     </el-form>
@@ -157,11 +157,9 @@
 </template>
 
 <script>
-  import List from '@/subview/components/List'
   // import { updateWave, addWave } from '@/api/basic'
   export default {
     name: 'BandEdit',
-    components: { List },
     data() {
       return {
         listType: 2,

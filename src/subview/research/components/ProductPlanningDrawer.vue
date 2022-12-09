@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-      <List :list="tabList" :list-type="listType" :state="listLoading">
+      <QYList :list="tabList" :list-type="listType" :state="listLoading">
         <template #List>
           <el-table-column type="expand">
             <template slot-scope="props">
@@ -111,17 +111,15 @@
             show-overflow-tooltip
           />
         </template>
-      </List>
+      </QYList>
     </div>
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
   import { getPlanDetails } from '@/api/basic'
   export default {
     name: 'ComponentsDrawer',
-    components: { List },
     props: {
       drawerInof: {
         type: Array,

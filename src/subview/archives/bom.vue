@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -35,7 +35,7 @@
             </el-select>
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
@@ -51,7 +51,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <List
+      <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -83,7 +83,16 @@
           <el-table-column label="物料名称" prop="material_name" />
           <el-table-column label="物料分类" prop="category_name" width="120" />
           <el-table-column label="供应商名称" prop="supplier_name" />
-          <el-table-column label="采购价" prop="material_price" width="120" />
+          <el-table-column
+            align="right"
+            label="采购价"
+            prop="material_price"
+            width="150"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.material_price | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column label="总采购量" prop="num" width="120" />
           <el-table-column label="当前库存" prop="material_stock" width="120" />
           <el-table-column fixed="right" label="操作" width="120">
@@ -112,7 +121,7 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
     <el-drawer
       :before-close="handleClose"
@@ -127,9 +136,7 @@
   </div>
 </template>
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
-  import Drawer from './components/BomDrawer'
+  import Drawer from '@/subview/components/Drawer/BomDrawer'
   import {
     getCommonAllList,
     getMaterialList,
@@ -138,7 +145,7 @@
   } from '@/api/basic'
   export default {
     name: 'ArchivesBom',
-    components: { List, Form, Drawer },
+    components: { Drawer },
     data() {
       return {
         title: '',

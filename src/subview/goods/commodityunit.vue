@@ -83,7 +83,7 @@
               />
             </el-form-item> -->
           </el-form>
-          <List
+          <QYList
             :list="list"
             :list-type="listType"
             :state="listLoading"
@@ -112,9 +112,14 @@
               </el-table-column>
               <el-table-column label="商品标题" prop="shoptitle" />
               <el-table-column label="商品编号" prop="sn" />
-              <el-table-column label="商品价格" prop="price">
+              <el-table-column
+                align="right"
+                label="商品价格"
+                prop="price"
+                width="150"
+              >
                 <template #default="{ row }">
-                  ￥{{ row.price | moneyFormat }}
+                  <el-tag>￥{{ row.price | moneyFormat }}</el-tag>
                 </template>
               </el-table-column>
               <el-table-column label="状态" prop="status" width="150">
@@ -124,7 +129,7 @@
                 </template>
               </el-table-column>
             </template>
-          </List>
+          </QYList>
         </el-card>
       </el-col>
     </el-row>
@@ -132,7 +137,6 @@
   </div>
 </template>
 <script>
-  import List from '@/subview/components/List'
   import Edit from './components/CommodityUnitEdit'
   import {
     getGoodsGroupList,
@@ -142,7 +146,7 @@
   } from '@/api/basic'
   export default {
     name: 'CustomerTags',
-    components: { List, Edit },
+    components: { Edit },
     data() {
       return {
         form: {

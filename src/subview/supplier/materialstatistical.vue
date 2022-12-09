@@ -45,7 +45,7 @@
         </el-form-item>
       </el-form>
       <div style="display: flex; flex-wrap: wrap">
-        <TextLabels ref="multipleTable" :list="goodsStaList" />
+        <QYTextLabels ref="multipleTable" :list="goodsStaList" />
       </div>
       <vab-chart
         :init-options="initOptions"
@@ -83,7 +83,7 @@
           </el-form-item>
         </el-form-item>
       </el-form>
-      <List :list="list" :list-type="listType" :state="listLoading">
+      <QYList :list="list" :list-type="listType" :state="listLoading">
         <template #List>
           <el-table-column align="center" label="排行" type="index" width="50">
             <template slot-scope="scope">
@@ -120,9 +120,14 @@
           <el-table-column label="采购价" prop="material_price" width="100" />
           <el-table-column label="入库时间" prop="add_date" width="120" />
           <el-table-column label="采购件数" prop="num" width="100" />
-          <el-table-column label="采购金额" prop="total" width="150">
+          <el-table-column
+            align="right"
+            label="采购金额"
+            prop="total"
+            width="150"
+          >
             <template #default="{ row }">
-              ￥{{ row.total | moneyFormat }}
+              <el-tag>￥{{ row.total | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="最后一次入库时间" prop="lasttime" />
@@ -142,15 +147,14 @@
             </template>
           </el-table-column> -->
         </template>
-      </List>
+      </QYList>
     </div>
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
-  import TextLabels from '@/subview/components/TextLabels'
+
   import {
     getMaterialCountListt,
     getMaterialCountRank,
@@ -159,7 +163,7 @@
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'SupplierMaterialStatistical',
-    components: { List, VabChart, TextLabels },
+    components: { VabChart },
     mixins: [datajosn],
     data() {
       return {

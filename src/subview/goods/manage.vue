@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -74,7 +74,7 @@
             />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="form.list_type" @tab-click="handleClick">
@@ -131,7 +131,7 @@
         </el-form-item>
       </el-form>
       <!-- 表格组件使用 -->
-      <List
+      <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -165,14 +165,24 @@
               <span v-else-if="row.type == 1">散码</span>
             </template>
           </el-table-column>
-          <el-table-column label="销售价" prop="price" width="150">
+          <el-table-column
+            align="right"
+            label="销售价"
+            prop="price"
+            width="150"
+          >
             <template #default="{ row }">
-              ￥{{ row.price | moneyFormat }}
+              <el-tag>￥{{ row.price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="吊牌价" prop="sale_price" width="150">
+          <el-table-column
+            align="right"
+            label="吊牌价"
+            prop="sale_price"
+            width="150"
+          >
             <template #default="{ row }">
-              ￥{{ row.sale_price | moneyFormat }}
+              <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="销量" prop="xl_num" width="120" />
@@ -214,7 +224,7 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
     <el-drawer
       :before-close="handleClose"
@@ -294,8 +304,6 @@
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
   import Drawer from './components/Drawer'
   import VabUpload from '@/extra/VabUpload'
   import {
@@ -308,7 +316,7 @@
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
     name: 'GoodsManage',
-    components: { List, Form, Drawer, VabUpload },
+    components: { Drawer, VabUpload },
     mixins: [publicjosn],
     data() {
       return {

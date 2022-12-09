@@ -15,7 +15,7 @@
         <trend />
       </el-col>
       <el-col :lg="6" :md="12" :sm="24" :xl="6" :xs="24">
-        <branch />
+        <QYBranch />
       </el-col>
       <el-col :lg="6" :md="12" :sm="24" :xl="6" :xs="24">
         <rank />
@@ -24,7 +24,7 @@
         <tabs />
       </el-col>
       <el-col :lg="12" :md="12" :sm="24" :xl="12" :xs="24">
-        <china-map />
+        <QYChinaMap />
         <my-project />
       </el-col>
       <el-col :lg="12" :md="12" :sm="24" :xl="12" :xs="24">
@@ -38,12 +38,10 @@
   import PageHeader from './components/PageHeader'
   import Access from './components/Access'
   import Authorization from './components/Authorization'
-  import ChinaMap from './components/ChinaMap'
   import MyProject from './components/MyProject'
   import Plan from './components/Plan'
   import VersionInformation from './components/VersionInformation'
   import Trend from './components/Trend'
-  import Branch from './components/Branch'
   import Rank from './components/Rank'
   import Tabs from './components/Tabs'
 
@@ -53,12 +51,10 @@
       PageHeader,
       Access,
       Authorization,
-      ChinaMap,
       VersionInformation,
       MyProject,
       Plan,
       Trend,
-      Branch,
       Rank,
       Tabs,
     },

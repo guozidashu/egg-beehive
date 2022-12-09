@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -28,7 +28,7 @@
             <el-input v-model="form.account" size="small" />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
@@ -44,7 +44,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <List
+      <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -109,21 +109,19 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
       <edit ref="edit" @fetch-data="fetchData" />
     </el-card>
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
   import Edit from './components/CorporateAccountEdit'
   import { getCorporateAccountList, delCorporateAccountDel } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'FinancialBillList',
-    components: { List, Edit, Form },
+    components: { Edit },
     mixins: [datajosn],
     data() {
       return {

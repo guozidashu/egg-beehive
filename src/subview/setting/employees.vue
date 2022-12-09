@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+      <QYForm :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
           <el-form-item label="搜索:">
             <el-input
@@ -13,7 +13,7 @@
             />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
@@ -48,7 +48,7 @@
         </el-form-item>
       </el-form>
       <!-- 表格组件使用 -->
-      <List
+      <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -110,7 +110,7 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
     <!-- <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
       <Drawer :drawer-inof="drawerInof" />
@@ -120,14 +120,12 @@
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
   import Edit from './components/EmployeesEdit'
   // import Drawer from './components/EmployeesDrawer'
   import { getEmployeeList, delEmployeeSync } from '@/api/basic'
   export default {
     name: 'Employees',
-    components: { List, Form, Edit },
+    components: { Edit },
     data() {
       return {
         drawerInof: {},

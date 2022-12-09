@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -28,7 +28,7 @@
             />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <div
       v-for="(item, index) in cartList"
@@ -138,12 +138,11 @@
 </template>
 
 <script>
-  import Form from '@/subview/components/Form'
   import Drawer from './components/UserDrawer'
   import { getRoleList } from '@/api/basic'
   export default {
     name: 'User',
-    components: { Form, Drawer },
+    components: { Drawer },
     data() {
       return {
         drawerId: 0,

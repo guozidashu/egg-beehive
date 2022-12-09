@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -18,7 +18,7 @@
             />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
@@ -34,7 +34,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <List
+      <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -84,19 +84,18 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 <script>
-  import List from '@/subview/components/List'
-  import Edit from './components/SeasonalEdit'
-  import Form from '@/subview/components/Form'
+  import Edit from '@/subview/components/Edit/SeasonalEdit'
+
   import { getSeasonList, delSeasonDel, addSeasonSave } from '@/api/basic'
   export default {
     name: 'ArchivesSeasonal',
-    components: { List, Edit, Form },
+    components: { Edit },
     data() {
       return {
         form: {

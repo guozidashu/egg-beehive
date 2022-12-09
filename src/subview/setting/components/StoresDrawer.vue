@@ -61,7 +61,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="门店地址：">
-        <addressCity
+        <QYAddress
           :adrress="formDrawer.address1"
           @getLawyerListInfo="selectAddress"
         />
@@ -69,7 +69,10 @@
       <el-form-item label="详细地址：" prop="address">
         <el-input v-model="formDrawer.address" />
       </el-form-item>
-      <StroeMap :longitude="formDrawer.longitude1" @getshopInfo="getStroeMap" />
+      <QYStroeMap
+        :longitude="formDrawer.longitude1"
+        @getshopInfo="getStroeMap"
+      />
       <el-form-item label="联系人：" prop="person">
         <el-input v-model="formDrawer.person" style="width: 215px" />
       </el-form-item>
@@ -168,13 +171,12 @@
 </template>
 
 <script>
-  import StroeMap from '@/subview/components/StroeMap'
   import VabUpload from '@/extra/VabUpload'
-  import addressCity from '@/subview/components/City.vue'
+
   import { editStoreSave } from '@/api/basic'
   export default {
     name: 'EmployeesDrawer',
-    components: { addressCity, VabUpload, StroeMap },
+    components: { VabUpload },
     props: {
       form: {
         type: Object,

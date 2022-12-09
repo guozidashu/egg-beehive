@@ -57,7 +57,7 @@
           </el-select>
         </el-form-item>
       </el-form>
-      <TextLabels
+      <QYTextLabels
         ref="multipleTable"
         :list="goodsStaList"
         :width="goodsStaWidth"
@@ -78,13 +78,13 @@
           background-color: white;
         "
       >
-        <china-map
+        <QYChinaMap
           :list="chainList"
           :map-type="mapType"
           style="width: 30%"
           :title="mapTitle"
         />
-        <List
+        <QYList
           :list="goosList"
           :list-type="listType"
           :state="listLoading"
@@ -94,13 +94,17 @@
             <el-table-column label="EPR城市" prop="province" />
             <el-table-column label="累计用户数" prop="count" />
             <el-table-column label="新增用户数" prop="add_count" />
-            <el-table-column label="贡献销售额" prop="sale" />
+            <el-table-column align="right" label="贡献销售额" prop="sale">
+              <template #default="{ row }">
+                <el-tag>￥{{ row.sale | moneyFormat }}</el-tag>
+              </template>
+            </el-table-column>
             <el-table-column label="贡献值" prop="all_sale" />
           </template>
-        </List>
+        </QYList>
       </div>
       <div style="flex: 3; padding: 20px; background-color: white">
-        <branch
+        <QYBranch
           :list="branchList"
           :style-chart="styleObj"
           :title="branchTitle"
@@ -111,17 +115,20 @@
 </template>
 
 <script>
-  import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
-  import ChinaMap from '@/subview/components/ChinaMap'
-  import Branch from '@/subview/components/Branch'
-  import TextLabels from '@/subview/components/TextLabels'
-  import { getCommonAllList, getInformationCustomerList } from '@/api/basic'
+
+  import {
+    getCommonAllList,
+    getInformationCustomerList,
+    getCustomerReportForms,
+    getCustomerArea,
+    getCustomerLevel,
+  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   import mapjson from '@/assets/assets_josn/mapjson'
   export default {
     name: 'CustomerStatistical',
-    components: { ChinaMap, List, VabChart, Branch, TextLabels },
+    components: { VabChart },
     mixins: [datajosn, mapjson],
     data() {
       return {
@@ -172,6 +179,7 @@
             type: 1,
             typeSta: false,
             name: 'add_customer',
+            numType: 2,
           },
           {
             title: '下单用户数',
@@ -180,6 +188,7 @@
             type: 1,
             typeSta: false,
             name: 'sale_customer',
+            numType: 2,
           },
           {
             title: '成交销售额',
@@ -188,6 +197,7 @@
             type: 1,
             typeSta: false,
             name: 'sum_final_amount',
+            numType: 1,
           },
           {
             title: '全部客户',
@@ -196,6 +206,7 @@
             type: 1,
             typeSta: false,
             name: 'all_customer',
+            numType: 2,
           },
           {
             title: '欠款客户',
@@ -204,6 +215,7 @@
             type: 1,
             typeSta: false,
             name: 'sale_arrears',
+            numType: 2,
           },
           {
             title: '沉睡客户',
@@ -212,6 +224,7 @@
             type: 2,
             typeSta: false,
             name: 'sleep_customer',
+            numType: 2,
           },
           {
             title: '活跃客户',
@@ -220,6 +233,7 @@
             type: 2,
             typeSta: false,
             name: 'active_customer',
+            numType: 2,
           },
           {
             title: '即将流失客户',
@@ -228,6 +242,7 @@
             type: 2,
             typeSta: false,
             name: 'off_customer',
+            numType: 2,
           },
         ],
         initOptions: {
@@ -271,155 +286,161 @@
         this.selectList = data
       },
       async fetchData() {
-        this.listLoading = true
         const { data } = await getInformationCustomerList(this.goodsForm)
         this.goodsStaList.forEach((item) => {
-          for (let i in data.list) {
+          for (let i in data) {
             if (item.name == i) {
-              if (data.list[i] == null) {
-                data.list[i] = 0
-                item.num = data.list[i]
+              if (data[i] == null) {
+                data[i] = 0
+                item.num = data[i]
               } else {
-                item.num = data.list[i]
+                item.num = data[i]
               }
             }
           }
         })
-        let arr = []
-        data.line_date.forEach((item) => {
-          for (let i in item) {
-            this.dateList.push(i)
-            arr.push(item[i])
-          }
-        })
-        arr.forEach((item) => {
-          for (let i in item) {
-            if (i != 'time_range' && this.dataAllList[i] !== undefined) {
-              if (item[i] == null) {
-                item[i] = 0
-                this.dataAllList[i].push(item[i])
-              } else {
-                this.dataAllList[i].push(item[i])
-              }
-            }
-          }
-        })
-        this.option = {
-          tooltip: {
-            trigger: 'axis', //触发类型；轴触发，axis则鼠标hover到一条柱状图显示全部数据，item则鼠标hover到折线点显示相应数据，
-            axisPointer: {
-              type: 'cross', // 十字准星指示器
-            },
-          },
-          legend: {
-            data: ['新增用户数', '下单用户数', '欠款客户', '销售额'],
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true,
-          },
-          toolbox: {
-            feature: {
-              saveAsImage: {},
-            },
-          },
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: this.dateList,
-          },
-          yAxis: [
-            {
-              type: 'value',
-              name: '金额',
-              min: `0`,
-              max: `120000`,
-
-              // ...
-            },
-            {
-              type: 'value',
-              name: '数量',
-              min: `0`,
-              max: `2500`,
-            },
-          ],
-          series: [
-            {
-              name: '新增用户数',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
-              data: this.dataAllList.add_customer,
-              yAxisIndex: 1,
-              itemStyle: {
-                color: '#FFC833',
-              },
-            },
-            {
-              name: '下单用户数',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
-              data: this.dataAllList.sale_customer,
-              yAxisIndex: 1,
-              itemStyle: {
-                color: '#FF6C87',
-              },
-            },
-            {
-              name: '欠款客户',
-              type: 'bar',
-              data: this.dataAllList.sale_arrears,
-              itemStyle: {
-                color: '#55DF7E',
-              },
-            },
-            {
-              name: '销售额',
-              type: 'bar',
-              data: this.dataAllList.sum_final_amount,
-              itemStyle: {
-                color: '#1890FF',
-              },
-            },
-          ],
-        }
-        let temp1 = {}
-        data.levels.forEach((item) => {
-          temp1.name = item.name
-          temp1.value = item.count
-          this.branchList.push(temp1)
-          temp1 = {}
-        })
-        this.goosList = data.customer_area
-        this.listLoading = false
-        let chainList = JSON.parse(JSON.stringify(this.chainList))
-        chainList.forEach((item, index) => {
-          data.customer_area.forEach((item1) => {
-            if (item.name == item1.province) {
-              let obj = {}
-              obj.value = item1.count
-              obj.add_count = item1.add_count
-              obj.sale = item1.sale
-              obj.all_sale = item1.all_sale
-              chainList[index] = Object.assign({}, item, obj)
-            } else {
-              let obj = {}
-              obj.value = 0
-              obj.add_count = 0
-              obj.sale = 0
-              obj.all_sale = 0
-              chainList[index] = Object.assign({}, item, obj)
+        getCustomerReportForms(this.goodsForm).then((res) => {
+          let arr = []
+          res.data.forEach((item) => {
+            for (let i in item) {
+              this.dateList.push(i)
+              arr.push(item[i])
             }
           })
+          arr.forEach((item) => {
+            for (let i in item) {
+              if (i != 'time_range' && this.dataAllList[i] !== undefined) {
+                if (item[i] == null) {
+                  item[i] = 0
+                  this.dataAllList[i].push(item[i])
+                } else {
+                  this.dataAllList[i].push(item[i])
+                }
+              }
+            }
+          })
+          this.option = {
+            tooltip: {
+              trigger: 'axis', //触发类型；轴触发，axis则鼠标hover到一条柱状图显示全部数据，item则鼠标hover到折线点显示相应数据，
+              axisPointer: {
+                type: 'cross', // 十字准星指示器
+              },
+            },
+            legend: {
+              data: ['新增用户数', '下单用户数', '欠款客户', '销售额'],
+            },
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true,
+            },
+            toolbox: {
+              feature: {
+                saveAsImage: {},
+              },
+            },
+            xAxis: {
+              type: 'category',
+              boundaryGap: false,
+              data: this.dateList,
+            },
+            yAxis: [
+              {
+                type: 'value',
+                name: '金额',
+                min: `0`,
+                max: `120000`,
+
+                // ...
+              },
+              {
+                type: 'value',
+                name: '数量',
+                min: `0`,
+                max: `2500`,
+              },
+            ],
+            series: [
+              {
+                name: '新增用户数',
+                type: 'line',
+                stack: 'Total',
+                smooth: true,
+                data: this.dataAllList.add_customer,
+                yAxisIndex: 1,
+                itemStyle: {
+                  color: '#FFC833',
+                },
+              },
+              {
+                name: '下单用户数',
+                type: 'line',
+                stack: 'Total',
+                smooth: true,
+                data: this.dataAllList.sale_customer,
+                yAxisIndex: 1,
+                itemStyle: {
+                  color: '#FF6C87',
+                },
+              },
+              {
+                name: '欠款客户',
+                type: 'bar',
+                data: this.dataAllList.sale_arrears,
+                itemStyle: {
+                  color: '#55DF7E',
+                },
+              },
+              {
+                name: '销售额',
+                type: 'bar',
+                data: this.dataAllList.sum_final_amount,
+                itemStyle: {
+                  color: '#1890FF',
+                },
+              },
+            ],
+          }
         })
-        chainList.sort((a, b) => {
-          return b.value - a.value
+        this.listLoading = true
+        getCustomerArea(this.goodsForm).then((res) => {
+          let chainList = JSON.parse(JSON.stringify(this.chainList))
+          chainList.forEach((item, index) => {
+            res.data.forEach((item1) => {
+              if (item.name == item1.province) {
+                let obj = {}
+                obj.value = item1.count
+                obj.add_count = item1.add_count
+                obj.sale = item1.sale
+                obj.all_sale = item1.all_sale
+                chainList[index] = Object.assign({}, item, obj)
+              } else {
+                let obj = {}
+                obj.value = 0
+                obj.add_count = 0
+                obj.sale = 0
+                obj.all_sale = 0
+                chainList[index] = Object.assign({}, item, obj)
+              }
+            })
+          })
+          chainList.sort((a, b) => {
+            return b.value - a.value
+          })
+          this.goosList = res.data
+          this.chainList = chainList
+          this.listLoading = false
         })
-        this.chainList = chainList
+        getCustomerLevel().then((res) => {
+          let temp1 = {}
+          res.data.forEach((item) => {
+            temp1.name = item.name
+            temp1.value = item.count
+            this.branchList.push(temp1)
+            temp1 = {}
+          })
+        })
       },
       // 导出
       handleDownload() {

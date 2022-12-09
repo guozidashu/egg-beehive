@@ -92,7 +92,7 @@
               />
             </el-form-item>
           </el-form>
-          <List
+          <QYList
             :list="list"
             :list-type="listType"
             :state="listLoading"
@@ -131,7 +131,7 @@
                 </template>
               </el-table-column>
             </template>
-          </List>
+          </QYList>
         </el-card>
       </el-col>
     </el-row>
@@ -139,7 +139,6 @@
   </div>
 </template>
 <script>
-  import List from '@/subview/components/List'
   import Edit from './components/ClassifiedEdit'
   import {
     getCategoryMainList,
@@ -149,7 +148,7 @@
   } from '@/api/basic'
   export default {
     name: 'CustomerTags',
-    components: { List, Edit },
+    components: { Edit },
     data() {
       return {
         form: {

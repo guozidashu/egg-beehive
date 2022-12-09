@@ -44,7 +44,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <TextLabels ref="multipleTable" :list="goodsStaList" />
+      <QYTextLabels ref="multipleTable" :list="goodsStaList" />
       <vab-chart
         :init-options="initOptions"
         :option="option"
@@ -101,7 +101,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <List :list="goosList" :list-type="listType" :state="listLoading">
+      <QYList :list="goosList" :list-type="listType" :state="listLoading">
         <template #List>
           <el-table-column align="center" label="排行" type="index" width="50">
             <template slot-scope="scope">
@@ -135,16 +135,30 @@
           </el-table-column>
           <el-table-column label="商品名称" prop="name" />
           <el-table-column label="商品款号" prop="sn" width="100" />
-          <el-table-column label="吊牌价" prop="sale_price" width="100" />
+          <el-table-column
+            align="right"
+            label="吊牌价"
+            prop="sale_price"
+            width="150"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column label="上架时间" prop="created" width="120">
             <template #default="{ row }">
               {{ row.created | formatTime }}
             </template>
           </el-table-column>
           <el-table-column label="下单件数" prop="order_num" width="100" />
-          <el-table-column label="下单金额" prop="order_total" width="150">
+          <el-table-column
+            align="right"
+            label="下单金额"
+            prop="order_total"
+            width="150"
+          >
             <template #default="{ row }">
-              ￥{{ row.order_total | moneyFormat }}
+              <el-tag>￥{{ row.order_total | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
           <!-- <el-table-column label="毛利率(%)" prop="gross_profit">
@@ -168,20 +182,18 @@
             </template>
           </el-table-column> -->
         </template>
-      </List>
+      </QYList>
     </div>
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
-  import TextLabels from '@/subview/components/TextLabels'
   import datajosn from '@/assets/assets_josn/datajosn'
   import { getGoodStatistics, getGoodLineChart, getGoodRank } from '@/api/basic'
   export default {
     name: 'GoodsStatistical',
-    components: { List, VabChart, TextLabels },
+    components: { VabChart },
     mixins: [datajosn],
     data() {
       return {

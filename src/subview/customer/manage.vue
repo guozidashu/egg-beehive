@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -105,7 +105,7 @@
             />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
       <!-- <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -146,7 +146,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <List
+      <QYList
         ref="multipleTable"
         :list="list"
         :list-type="listType"
@@ -234,7 +234,7 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
     <edit ref="edit" @fetch-data="fetchData" />
     <el-drawer
@@ -251,15 +251,13 @@
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
-  import Edit from './components/ManageEdit'
-  import Drawer from './components/ManageDrawer'
+  import Edit from '@/subview/components/Edit/ManageEdit'
+  import Drawer from '@/subview/components/Drawer/ManageDrawer'
   import { getCommonAllList, getCustomerList } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'CustomerManage',
-    components: { Form, List, Edit, Drawer },
+    components: { Edit, Drawer },
     mixins: [datajosn],
     data() {
       return {

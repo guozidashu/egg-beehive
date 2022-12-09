@@ -4,14 +4,12 @@
       <vab-icon icon="bar-chart-2-line" />
       渠道分析
     </template>
-    <Branch :list="branchList" :style-chart="styleObj" />
+    <QYBranch :list="branchList" :style-chart="styleObj" />
   </el-card>
 </template>
 
 <script>
-  import Branch from '@/subview/components/Branch'
   export default {
-    components: { Branch },
     props: {
       list: {
         type: Array,

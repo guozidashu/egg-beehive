@@ -63,7 +63,7 @@
           </el-form-item>
         </el-form-item>
       </el-form>
-      <TextLabels
+      <QYTextLabels
         ref="multipleTable"
         :list="goodsStaList"
         :width="goodsWidth"
@@ -148,8 +148,8 @@
             :data="dataObj"
             style="width: 50%; margin-right: 20px; background-color: white"
           />
-          <Branch :list="branchList" :style-chart="styleObj" />
-          <Branch :list="branchList1" :style-chart="styleObj" />
+          <QYBranch :list="branchList" :style-chart="styleObj" />
+          <QYBranch :list="branchList1" :style-chart="styleObj" />
         </div>
       </div>
     </div>
@@ -158,8 +158,7 @@
 
 <script>
   import VabChart from '@/extra/VabChart'
-  import Branch from '@/subview/components/Branch'
-  import TextLabels from '@/subview/components/TextLabels'
+
   import SalesChart from './components/SalesChart'
   import datajosn from '@/assets/assets_josn/datajosn'
   import {
@@ -167,10 +166,11 @@
     getAccountList,
     getCategoryList,
     getFinanceCostCount,
+    getFinanceReportForms,
   } from '@/api/basic'
   export default {
     name: 'GoodsStatistical',
-    components: { VabChart, TextLabels, Branch, SalesChart },
+    components: { VabChart, SalesChart },
     mixins: [datajosn],
     data() {
       return {
@@ -237,6 +237,7 @@
             type: 1,
             typeSta: false,
             name: 'receipts_num',
+            numType: 2,
           },
           {
             title: '客户收款金额',
@@ -245,6 +246,7 @@
             type: 1,
             typeSta: false,
             name: 'receipts_total',
+            numType: 1,
           },
           {
             title: '供应商付款数',
@@ -253,6 +255,7 @@
             type: 1,
             typeSta: false,
             name: 'supplier_receipts_num',
+            numType: 2,
           },
           {
             title: '供应商付款金额',
@@ -261,6 +264,7 @@
             type: 1,
             typeSta: false,
             name: 'supplier_receipts_total',
+            numType: 1,
           },
         ],
         branchList: [],
@@ -387,129 +391,131 @@
       async fetchData() {
         const { data } = await getFinanceListd(this.goodsForm)
         this.goodsStaList.forEach((item) => {
-          for (let i in data.list) {
+          for (let i in data) {
             if (item.name == i) {
-              if (data.list[i] == null) {
-                data.list[i] = 0
-                item.num = data.list[i]
+              if (data[i] == null) {
+                data[i] = 0
+                item.num = data[i]
               } else {
-                item.num = data.list[i]
+                item.num = data[i]
               }
             }
           }
         })
-        let arr = []
-        data.line_date.forEach((item) => {
-          for (let i in item) {
-            this.dateList.push(i)
-            arr.push(item[i])
-          }
-        })
-        arr.forEach((item) => {
-          for (let i in item) {
-            if (i != 'time_range' && this.dataAllList[i] !== undefined) {
-              if (item[i] == null) {
-                item[i] = 0
-                this.dataAllList[i].push(item[i])
-              } else {
-                this.dataAllList[i].push(item[i])
+        getFinanceReportForms(this.goodsForm).then((res) => {
+          let arr = []
+          res.data.forEach((item) => {
+            for (let i in item) {
+              this.dateList.push(i)
+              arr.push(item[i])
+            }
+          })
+          arr.forEach((item) => {
+            for (let i in item) {
+              if (i != 'time_range' && this.dataAllList[i] !== undefined) {
+                if (item[i] == null) {
+                  item[i] = 0
+                  this.dataAllList[i].push(item[i])
+                } else {
+                  this.dataAllList[i].push(item[i])
+                }
               }
             }
-          }
-        })
-        this.option = {
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'cross',
+          })
+          this.option = {
+            tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                type: 'cross',
+              },
             },
-          },
-          legend: {
-            data: [
-              '客户收款数',
-              '客户收款金额',
-              '供应商付款数',
-              '供应商付款金额',
+            legend: {
+              data: [
+                '客户收款数',
+                '客户收款金额',
+                '供应商付款数',
+                '供应商付款金额',
+              ],
+            },
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true,
+            },
+            toolbox: {
+              feature: {
+                saveAsImage: {},
+              },
+            },
+            xAxis: {
+              type: 'category',
+              boundaryGap: false,
+              data: this.dateList,
+            },
+            yAxis: [
+              {
+                type: 'value',
+                name: '金额',
+                min: `0`,
+                max: `120000`,
+
+                // ...
+              },
+              {
+                type: 'value',
+                name: '数量',
+                min: `0`,
+                max: `2500`,
+              },
             ],
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true,
-          },
-          toolbox: {
-            feature: {
-              saveAsImage: {},
-            },
-          },
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: this.dateList,
-          },
-          yAxis: [
-            {
-              type: 'value',
-              name: '金额',
-              min: `0`,
-              max: `120000`,
+            series: [
+              {
+                name: '客户收款数',
+                type: 'line',
+                stack: 'Total',
+                smooth: true,
+                data: this.dataAllList.receipts_total,
+                yAxisIndex: 1,
+                itemStyle: {
+                  color: '#FFC833',
+                },
+              },
 
-              // ...
-            },
-            {
-              type: 'value',
-              name: '数量',
-              min: `0`,
-              max: `2500`,
-            },
-          ],
-          series: [
-            {
-              name: '客户收款数',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
-              data: this.dataAllList.receipts_total,
-              yAxisIndex: 1,
-              itemStyle: {
-                color: '#FFC833',
+              {
+                name: '客户收款金额',
+                type: 'line',
+                stack: 'Total',
+                smooth: true,
+                data: this.dataAllList.receipts_num,
+                yAxisIndex: 1,
+                itemStyle: {
+                  color: '#FF6C87',
+                },
               },
-            },
-
-            {
-              name: '客户收款金额',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
-              data: this.dataAllList.receipts_num,
-              yAxisIndex: 1,
-              itemStyle: {
-                color: '#FF6C87',
+              {
+                name: '供应商付款数',
+                type: 'line',
+                stack: 'Total',
+                smooth: true,
+                data: this.dataAllList.supplier_receipts_total,
+                itemStyle: {
+                  color: '#55DF7E',
+                },
               },
-            },
-            {
-              name: '供应商付款数',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
-              data: this.dataAllList.supplier_receipts_total,
-              itemStyle: {
-                color: '#55DF7E',
+              {
+                name: '供应商付款金额',
+                type: 'line',
+                stack: 'Total',
+                smooth: true,
+                data: this.dataAllList.supplier_receipts_num,
+                itemStyle: {
+                  color: '#1890FF',
+                },
               },
-            },
-            {
-              name: '供应商付款金额',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
-              data: this.dataAllList.supplier_receipts_num,
-              itemStyle: {
-                color: '#1890FF',
-              },
-            },
-          ],
-        }
+            ],
+          }
+        })
       },
       // 导出
       handleDownload() {

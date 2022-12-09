@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+      <QYForm :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
           <el-form-item label="单据日期:">
             <el-date-picker
@@ -28,7 +28,7 @@
             />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -37,7 +37,7 @@
         <el-tab-pane label=" 未收 (18)" name="three" />
       </el-tabs>
       <!-- 表格组件使用 -->
-      <List
+      <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -109,18 +109,15 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
   // import Drawer from './components/Drawer'
   export default {
     name: 'FinancialCustomer',
-    components: { List, Form },
     data() {
       return {
         pickerOptions: {

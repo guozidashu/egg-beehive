@@ -68,7 +68,10 @@
         <div style="display: flex">
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">余额/欠款</span>
-            <span>￥{{ form.delivery_arrears }}</span>
+            <span v-if="form.delivery_arrears < 0">
+              -￥{{ form.delivery_arrears | moneyFormat }}
+            </span>
+            <span v-else>￥{{ form.delivery_arrears | moneyFormat }}</span>
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">总消费次数</span>
@@ -76,19 +79,19 @@
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">总消费金额</span>
-            <span>￥{{ form.final_count }}</span>
+            <span>￥{{ form.final_count | moneyFormat }}</span>
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">总发货金额</span>
-            <span>{{ form.sum_delivery_money }}</span>
+            <span>￥{{ form.sum_delivery_money | moneyFormat }}</span>
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">总退货金额</span>
-            <span>￥{{ form.sum_return_money }}</span>
+            <span>￥{{ form.sum_return_money | moneyFormat }}</span>
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">累计收银</span>
-            <span>{{ form.sum_voucher_money }}</span>
+            <span>￥{{ form.sum_voucher_money | moneyFormat }}</span>
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">最后一次消费时间</span>
@@ -237,7 +240,7 @@
                 />
               </el-form-item>
               <el-form-item label="客户地址：">
-                <addressCity
+                <QYAddress
                   :adrress="form.address1"
                   @getLawyerListInfo="selectAddress"
                 />
@@ -355,7 +358,7 @@
         </div>
       </el-form>
     </div>
-    <List
+    <QYList
       v-if="tabLabel == '订单记录'"
       :list="orderList"
       :list-type="listType"
@@ -367,8 +370,8 @@
         <el-table-column label="编号" prop="sn" show-overflow-tooltip />
         <el-table-column label="创建时间" prop="ctime" show-overflow-tooltip />
       </template>
-    </List>
-    <List
+    </QYList>
+    <QYList
       v-if="tabLabel == '发货记录'"
       :list="orderList"
       :list-type="listType"
@@ -380,8 +383,8 @@
         <el-table-column label="编号" prop="sn" show-overflow-tooltip />
         <el-table-column label="发货时间" prop="ctime" show-overflow-tooltip />
       </template>
-    </List>
-    <List
+    </QYList>
+    <QYList
       v-if="tabLabel == '退货记录'"
       :list="orderList"
       :list-type="listType"
@@ -393,8 +396,8 @@
         <el-table-column label="编号" prop="sn" show-overflow-tooltip />
         <el-table-column label="退货时间" prop="ctime" show-overflow-tooltip />
       </template>
-    </List>
-    <List
+    </QYList>
+    <QYList
       v-if="tabLabel == '收银记录'"
       :list="orderList"
       :list-type="listType"
@@ -406,8 +409,8 @@
         <el-table-column label="金额" prop="discount" show-overflow-tooltip />
         <el-table-column label="创建时间" prop="ctime" show-overflow-tooltip />
       </template>
-    </List>
-    <List
+    </QYList>
+    <QYList
       v-if="tabLabel == '持有优惠券'"
       :list="orderList"
       :list-type="listType"
@@ -431,8 +434,8 @@
           </template>
         </el-table-column>
       </template>
-    </List>
-    <List
+    </QYList>
+    <QYList
       v-if="tabLabel == '积分明细'"
       :list="orderList"
       :list-type="listType"
@@ -452,8 +455,8 @@
           </template>
         </el-table-column>
       </template>
-    </List>
-    <List
+    </QYList>
+    <QYList
       v-if="tabLabel == '签到记录'"
       :list="orderList"
       :list-type="listType"
@@ -473,8 +476,8 @@
           </template>
         </el-table-column>
       </template>
-    </List>
-    <List
+    </QYList>
+    <QYList
       v-if="tabLabel == '欠货统计'"
       :list="orderList"
       :list-type="listType"
@@ -490,7 +493,7 @@
         <el-table-column label="欠货数量" prop="num" show-overflow-tooltip />
         <el-table-column label="创建时间" prop="ctime" show-overflow-tooltip />
       </template>
-    </List>
+    </QYList>
     <el-dialog
       :append-to-body="true"
       :before-close="handleClose1"
@@ -542,8 +545,6 @@
 </template>
 
 <script>
-  import addressCity from '@/subview/components/City'
-  import List from '@/subview/components/List'
   import datajosn from '@/assets/assets_josn/datajosn'
   import { mapGetters } from 'vuex'
   import {
@@ -553,7 +554,6 @@
   } from '@/api/basic'
   export default {
     name: 'ComponentsDrawer',
-    components: { addressCity, List },
     mixins: [datajosn],
     props: {
       drawerInof: {

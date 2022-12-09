@@ -130,7 +130,7 @@
 
 <script>
   export default {
-    name: 'ComponentsForm',
+    name: 'QYForm',
     props: {
       form: {
         type: Object,

@@ -1,16 +1,12 @@
 <template>
   <div id="app">
-    <KeFu />
+    <QYKeFu />
     <router-view />
   </div>
 </template>
 <script>
-  import KeFu from './subview/components/KeFu'
   export default {
     name: 'App',
-    components: {
-      KeFu,
-    },
   }
 </script>
 <style lang="scss">

@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -29,7 +29,7 @@
             />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
@@ -46,7 +46,7 @@
         </el-form-item>
       </el-form>
       <!-- 表格组件使用 -->
-      <List
+      <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -71,9 +71,14 @@
           </el-table-column>
           <el-table-column label="联系人" prop="contact_name" width="100" />
           <el-table-column label="手机号码" prop="tel" width="200" />
-          <el-table-column label="应付款" prop="arrears" width="150">
+          <el-table-column
+            align="right"
+            label="应付款"
+            prop="arrears"
+            width="150"
+          >
             <template #default="{ row }">
-              ￥{{ row.arrears | moneyFormat }}
+              <el-tag>￥{{ row.arrears | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="创建时间" prop="create_time" width="200" />
@@ -102,7 +107,7 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
     <el-drawer
       :before-close="handleClose"
@@ -117,14 +122,12 @@
   </div>
 </template>
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
   import Drawer from './components/ManagementDrawer'
   import { getSupplierList, getCommonAllList } from '@/api/basic'
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
     name: 'SupplierOrder',
-    components: { List, Form, Drawer },
+    components: { Drawer },
     mixins: [publicjosn],
     data() {
       return {

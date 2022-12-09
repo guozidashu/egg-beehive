@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+      <QYForm :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
           <el-form-item label="状态:">
             <el-select v-model="form.status">
@@ -20,7 +20,7 @@
             />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
@@ -44,7 +44,7 @@
         </el-form-item>
       </el-form>
       <!-- 表格组件使用 -->
-      <List
+      <QYList
         ref="multipleTable"
         :list="list"
         :list-type="listType"
@@ -101,7 +101,7 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
       <Drawer :form="formDrawer" />
@@ -110,13 +110,11 @@
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
   import Drawer from './components/DistributionDrawer'
   // import { getStaffList } from '@/api/basic'
   export default {
     name: 'Distribution',
-    components: { List, Form, Drawer },
+    components: { Drawer },
     data() {
       return {
         drawer: false,

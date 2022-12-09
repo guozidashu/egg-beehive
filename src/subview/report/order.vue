@@ -63,7 +63,11 @@
           </el-form-item>
         </el-form-item>
       </el-form>
-      <TextLabels ref="multipleTable" :list="goodsStaList" :width="textwidth" />
+      <QYTextLabels
+        ref="multipleTable"
+        :list="goodsStaList"
+        :width="textwidth"
+      />
       <p>销售趋势</p>
       <vab-chart
         :init-options="initOptions"
@@ -92,7 +96,16 @@
             width="80"
           />
           <el-table-column label="来源" prop="name" width="150px" />
-          <el-table-column label="金额" prop="count" width="150px" />
+          <el-table-column
+            align="right"
+            label="金额"
+            prop="count"
+            width="150px"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.count | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column label="占比率">
             <template #default="{ row }">
               <el-progress color="#95de64" :percentage="row.percentage" />
@@ -104,7 +117,7 @@
         <div style="margin-bottom: 20px">
           <span style="font-size: 24px">订单来源分析图表</span>
         </div>
-        <Branch :list="branchList" :style-chart="styleObj" />
+        <QYBranch :list="branchList" :style-chart="styleObj" />
       </div>
     </div>
   </div>
@@ -112,13 +125,17 @@
 
 <script>
   import VabChart from '@/extra/VabChart'
-  import Branch from '@/subview/components/Branch'
-  import TextLabels from '@/subview/components/TextLabels'
-  import { getCommonAllList, getInformationOrderList } from '@/api/basic'
+
+  import {
+    getCommonAllList,
+    getInformationOrderList,
+    getOrderReportForms,
+    getOrderSourceAssay,
+  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'GoodsStatistical',
-    components: { VabChart, Branch, TextLabels },
+    components: { VabChart },
     mixins: [datajosn],
     data() {
       return {
@@ -156,6 +173,7 @@
             type: 1,
             typeSta: false,
             name: 'sale_list_num',
+            numType: 2,
           },
           {
             title: '销售金额',
@@ -164,6 +182,7 @@
             type: 1,
             typeSta: false,
             name: 'sale_list_amount',
+            numType: 1,
           },
           {
             title: '发货数量',
@@ -172,6 +191,7 @@
             type: 1,
             typeSta: false,
             name: 'deliver_list_num',
+            numType: 2,
           },
           {
             title: '发货金额',
@@ -180,6 +200,7 @@
             type: 1,
             typeSta: false,
             name: 'deliver_list_amount',
+            numType: 1,
           },
           {
             title: '待发货金额',
@@ -188,6 +209,7 @@
             type: 1,
             typeSta: false,
             name: 'sale_amount',
+            numType: 1,
           },
           {
             title: '待发货数量',
@@ -196,6 +218,7 @@
             type: 1,
             typeSta: false,
             name: 'sale_num',
+            numType: 2,
           },
           {
             title: '退货数量',
@@ -204,6 +227,7 @@
             type: 1,
             typeSta: false,
             name: 'return_list_num',
+            numType: 2,
           },
           {
             title: '退货金额',
@@ -212,6 +236,7 @@
             type: 1,
             typeSta: false,
             name: 'return_list_amount',
+            numType: 1,
           },
           {
             title: '待确认数量',
@@ -220,6 +245,7 @@
             type: 1,
             typeSta: false,
             name: 'confirm_num',
+            numType: 2,
           },
           {
             title: '待确认金额',
@@ -228,6 +254,7 @@
             type: 1,
             typeSta: false,
             name: 'confirm_amount',
+            numType: 1,
           },
         ],
         tableData: [],
@@ -276,166 +303,170 @@
       async fetchData() {
         const { data } = await getInformationOrderList(this.goodsForm)
         this.goodsStaList.forEach((item) => {
-          for (let i in data.list) {
+          for (let i in data) {
             if (item.name == i) {
-              if (data.list[i] == null) {
-                data.list[i] = 0
-                item.num = data.list[i]
+              if (data[i] == null) {
+                data[i] = 0
+                item.num = data[i]
               } else {
-                item.num = data.list[i]
+                item.num = data[i]
               }
             }
           }
         })
-        let arr = []
-        data.line_date.forEach((item) => {
-          for (let i in item) {
-            this.dateList.push(i)
-            arr.push(item[i])
-          }
-        })
-        arr.forEach((item) => {
-          for (let i in item) {
-            if (i != 'time_range' && this.dataAllList[i] !== undefined) {
-              if (item[i] == null) {
-                item[i] = 0
-                this.dataAllList[i].push(item[i])
-              } else {
-                this.dataAllList[i].push(item[i])
+        getOrderReportForms(this.goodsForm).then((res) => {
+          let arr = []
+          res.data.forEach((item) => {
+            for (let i in item) {
+              this.dateList.push(i)
+              arr.push(item[i])
+            }
+          })
+          arr.forEach((item) => {
+            for (let i in item) {
+              if (i != 'time_range' && this.dataAllList[i] !== undefined) {
+                if (item[i] == null) {
+                  item[i] = 0
+                  this.dataAllList[i].push(item[i])
+                } else {
+                  this.dataAllList[i].push(item[i])
+                }
               }
             }
-          }
-        })
-        this.option = {
-          tooltip: {
-            trigger: 'axis', //触发类型；轴触发，axis则鼠标hover到一条柱状图显示全部数据，item则鼠标hover到折线点显示相应数据，
-            axisPointer: {
-              type: 'cross', // 十字准星指示器
+          })
+          this.option = {
+            tooltip: {
+              trigger: 'axis', //触发类型；轴触发，axis则鼠标hover到一条柱状图显示全部数据，item则鼠标hover到折线点显示相应数据，
+              axisPointer: {
+                type: 'cross', // 十字准星指示器
+              },
             },
-          },
-          legend: {
-            data: [
-              '销售件数',
-              '退货件数',
-              '销售金额',
-              '退货金额',
-              '发货数量',
-              '待转入数量',
-            ],
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true,
-          },
-          toolbox: {
-            feature: {
-              saveAsImage: {},
+            legend: {
+              data: [
+                '销售件数',
+                '退货件数',
+                '销售金额',
+                '退货金额',
+                '发货数量',
+                '待转入数量',
+              ],
             },
-          },
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: this.dateList,
-          },
-          yAxis: [
-            {
-              type: 'value',
-              name: '金额',
-              min: `0`,
-              max: `120000`,
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true,
+            },
+            toolbox: {
+              feature: {
+                saveAsImage: {},
+              },
+            },
+            xAxis: {
+              type: 'category',
+              boundaryGap: false,
+              data: this.dateList,
+            },
+            yAxis: [
+              {
+                type: 'value',
+                name: '金额',
+                min: `0`,
+                max: `120000`,
 
-              // ...
-            },
-            {
-              type: 'value',
-              name: '数量',
-              min: `0`,
-              max: `2500`,
-            },
-          ],
-          series: [
-            {
-              name: '发货数量',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
-              data: this.dataAllList.deliver_list_num,
-              yAxisIndex: 1,
-              itemStyle: {
-                color: '#FFC833',
+                // ...
               },
-            },
-            {
-              name: '待转入数量',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
-              data: this.dataAllList.confirm,
-              yAxisIndex: 1,
-              itemStyle: {
-                color: '#FF6C87',
+              {
+                type: 'value',
+                name: '数量',
+                min: `0`,
+                max: `2500`,
               },
-            },
-            {
-              name: '销售件数',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
-              data: this.dataAllList.sale_list_num,
-              yAxisIndex: 1,
-              itemStyle: {
-                color: '#55DF7E',
+            ],
+            series: [
+              {
+                name: '发货数量',
+                type: 'line',
+                stack: 'Total',
+                smooth: true,
+                data: this.dataAllList.deliver_list_num,
+                yAxisIndex: 1,
+                itemStyle: {
+                  color: '#FFC833',
+                },
               },
-            },
-            {
-              name: '退货件数',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
-              data: this.dataAllList.return_list_num,
-              yAxisIndex: 1,
-              itemStyle: {
-                color: '#1890FF',
+              {
+                name: '待转入数量',
+                type: 'line',
+                stack: 'Total',
+                smooth: true,
+                data: this.dataAllList.confirm,
+                yAxisIndex: 1,
+                itemStyle: {
+                  color: '#FF6C87',
+                },
               },
-            },
-            {
-              name: '销售金额',
-              type: 'bar',
-              data: this.dataAllList.sale_list_amount,
-              itemStyle: {
-                color: '#55DF7E',
+              {
+                name: '销售件数',
+                type: 'line',
+                stack: 'Total',
+                smooth: true,
+                data: this.dataAllList.sale_list_num,
+                yAxisIndex: 1,
+                itemStyle: {
+                  color: '#55DF7E',
+                },
               },
-            },
-            {
-              name: '退货金额',
-              type: 'bar',
-              data: this.dataAllList.return_list_amount,
-              itemStyle: {
-                color: '#1890FF',
+              {
+                name: '退货件数',
+                type: 'line',
+                stack: 'Total',
+                smooth: true,
+                data: this.dataAllList.return_list_num,
+                yAxisIndex: 1,
+                itemStyle: {
+                  color: '#1890FF',
+                },
               },
-            },
-          ],
-        }
-        let temp1 = {}
-        let tempAll = 0
-        data.order_source.forEach((item) => {
-          tempAll = tempAll + item.count
-          temp1.name = item.name
-          temp1.value = item.count
-          this.branchList.push(temp1)
-          temp1 = {}
+              {
+                name: '销售金额',
+                type: 'bar',
+                data: this.dataAllList.sale_list_amount,
+                itemStyle: {
+                  color: '#55DF7E',
+                },
+              },
+              {
+                name: '退货金额',
+                type: 'bar',
+                data: this.dataAllList.return_list_amount,
+                itemStyle: {
+                  color: '#1890FF',
+                },
+              },
+            ],
+          }
         })
-        let temp = {}
-        data.order_source.forEach((item) => {
-          temp.name = item.name
-          temp.count = item.count
-          temp.percentage = parseFloat(
-            ((item.count / tempAll) * 100).toFixed(2)
-          )
-          this.tableData.push(temp)
-          temp = {}
+        getOrderSourceAssay().then((res) => {
+          let temp1 = {}
+          let tempAll = 0
+          res.data.forEach((item) => {
+            tempAll = tempAll + item.count
+            temp1.name = item.name
+            temp1.value = item.count
+            this.branchList.push(temp1)
+            temp1 = {}
+          })
+          let temp = {}
+          res.data.forEach((item) => {
+            temp.name = item.name
+            temp.count = item.count
+            temp.percentage = parseFloat(
+              ((item.count / tempAll) * 100).toFixed(2)
+            )
+            this.tableData.push(temp)
+            temp = {}
+          })
         })
       },
       // 导出

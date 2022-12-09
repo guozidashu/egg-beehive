@@ -60,7 +60,7 @@
           <span v-if="form.sale_arrears < 0">
             -￥{{ form.sale_arrears | moneyFormat }}
           </span>
-          <span v-else>{{ form.sale_arrears | moneyFormat }}</span>
+          <span v-else>￥{{ form.sale_arrears | moneyFormat }}</span>
         </div>
       </div>
     </div>
@@ -117,7 +117,7 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="商品信息" name="1">
-        <List :list="orderList" :list-type="listType" :state="listLoading">
+        <QYList :list="orderList" :list-type="listType" :state="listLoading">
           <!-- 表格组件具名插槽 自定义表头 -->
           <template #List>
             <el-table-column
@@ -145,10 +145,10 @@
               show-overflow-tooltip
             />
           </template>
-        </List>
+        </QYList>
       </el-tab-pane>
       <el-tab-pane label=" 操作记录" name="2">
-        <List :list="orderList" :list-type="listType" :state="listLoading">
+        <QYList :list="orderList" :list-type="listType" :state="listLoading">
           <!-- 表格组件具名插槽 自定义表头 -->
           <template #List>
             <el-table-column
@@ -182,10 +182,10 @@
               show-overflow-tooltip
             />
           </template>
-        </List>
+        </QYList>
       </el-tab-pane>
       <el-tab-pane label="发货记录" name="3">
-        <List :list="orderList" :list-type="listType" :state="listLoading">
+        <QYList :list="orderList" :list-type="listType" :state="listLoading">
           <!-- 表格组件具名插槽 自定义表头 -->
           <template #List>
             <el-table-column
@@ -237,19 +237,17 @@
               show-overflow-tooltip
             />
           </template>
-        </List>
+        </QYList>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
   import { mapGetters } from 'vuex'
   import { getOrderDetail } from '@/api/basic'
   export default {
     name: 'ComponentsDrawer',
-    components: { List },
     props: {
       drawerInof: {
         type: Object,

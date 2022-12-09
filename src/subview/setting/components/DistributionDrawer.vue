@@ -146,8 +146,8 @@
               <el-radio :label="1">多变形范围</el-radio>
             </el-radio-group>
           </el-form-item>
-          <YuanMap v-if="formDrawer.state9 == 0" />
-          <FangMap v-else />
+          <QYYuanMap v-if="formDrawer.state9 == 0" />
+          <QYFangMap v-else />
           <el-form-item label="配送点：">
             <el-input v-model="formDrawer.name4" style="width: 80px" />
             -
@@ -239,7 +239,7 @@
       :visible.sync="dialogVisible"
       width="30%"
     >
-      <addressCity @getLawyerListInfo="selectAddress" />
+      <QYAddress @getLawyerListInfo="selectAddress" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="selectSubit">确 定</el-button>
@@ -249,19 +249,13 @@
 </template>
 
 <script>
-  import addressCity from '@/subview/components/City'
-  import YuanMap from '@/subview/components/YuanMap'
-  import FangMap from '@/subview/components/FangMap'
   import DistributionTime from './DistributionTime'
   import DistributionTable from './DistributionTable'
   export default {
     name: 'EmployeesDrawer',
     components: {
-      addressCity,
       DistributionTime,
       DistributionTable,
-      YuanMap,
-      FangMap,
     },
     props: {
       form: {

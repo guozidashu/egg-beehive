@@ -4,7 +4,7 @@
       <vab-icon icon="bar-chart-2-line" />
       会员贡献榜
     </template>
-    <List
+    <QYList
       :list="goosList"
       :list-height="listHeight"
       :list-type="listType"
@@ -31,7 +31,12 @@
         </el-table-column>
         <el-table-column label="用户等级" prop="name" />
         <el-table-column label="成交用户数" prop="turnover_customer" />
-        <el-table-column label="销售金额" prop="sale_price">
+        <el-table-column
+          align="right"
+          label="销售金额"
+          prop="sale_price"
+          width="150"
+        >
           <template #default="{ row }">
             <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
           </template>
@@ -43,14 +48,12 @@
           </template>
         </el-table-column>
       </template>
-    </List>
+    </QYList>
   </el-card>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
   export default {
-    components: { List },
     props: {
       data: {
         type: Array,

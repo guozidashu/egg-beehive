@@ -1,7 +1,7 @@
 <template>
   <div style="background-color: #f6f8f9">
     <el-card shadow="never" style="border: 0">
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -12,7 +12,7 @@
             <el-input v-model="form.name" size="small" />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
       <el-row :gutter="20">
         <el-col v-for="(item, index) in list" :key="index" :span="6">
           <el-card class="box-card" shadow="hover">
@@ -58,7 +58,7 @@
           </el-card>
         </el-col>
       </el-row>
-      <!-- <List
+      <!-- <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -108,17 +108,16 @@
             show-overflow-tooltip
           />
         </template>
-      </List> -->
+      </QYList> -->
     </el-card>
   </div>
 </template>
 <script>
-  // import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
+  //
+
   import { getEmployeeIntegralList } from '@/api/basic'
   export default {
     name: 'ProjectBandlist',
-    components: { Form },
     data() {
       return {
         // 表单数据/列表参数

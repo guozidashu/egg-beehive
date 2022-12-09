@@ -54,7 +54,7 @@
   import MembersChart from './componentscopy/MembersChart'
   import MemberList from './componentscopy/MemberList'
   import UserChart from './componentscopy/UserChart'
-  import { getHomePageList } from '@/api/basic'
+  import { getHomePageList, getHomeReportForms } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'Index',
@@ -236,7 +236,7 @@
     },
     methods: {
       async fetchData() {
-        const { data } = await getHomePageList(this.goodsForm)
+        const { data } = await getHomePageList()
         this.textTagList[0].num = data.list.today_sale_num
         this.textTagList[0].pay = data.list.yesterday_sale_num
         this.textTagList[0].number = data.list.today_sale_num
@@ -268,8 +268,12 @@
         this.branchList[2].value = data.list.buy_customer.buy_ten_customer
         this.branchList[3].value = data.list.buy_customer.buy_max_customer
         this.goodsList = data.list.grades
+        this.getHomeReport()
+      },
+      async getHomeReport() {
+        const { data } = await getHomeReportForms(this.goodsForm)
         let arr = []
-        data.line_date.forEach((item) => {
+        data.forEach((item) => {
           for (let i in item) {
             this.dateList.push(i)
             arr.push(item[i])
@@ -293,6 +297,8 @@
         this.dataObj1.xAxis.data = this.dateList
         this.dataObj1.series[0].data = this.dataAllList.sale_num
         this.dataObj1.series[1].data = this.dataAllList.sale_total
+        console.log(1111, this.dataObj)
+        console.log(2222, this.dataObj1)
         this.$forceUpdate()
       },
     },

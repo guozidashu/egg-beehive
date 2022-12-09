@@ -40,7 +40,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <TextLabels ref="multipleTable" :list="goodsStaList" />
+      <QYTextLabels ref="multipleTable" :list="goodsStaList" />
       <div
         style="
           display: flex;
@@ -49,8 +49,8 @@
           padding: 0 200px;
         "
       >
-        <Branch :list="branchList" :style-chart="styleObj" />
-        <Branch :list="branchList1" :style-chart="styleObj" />
+        <QYBranch :list="branchList" :style-chart="styleObj" />
+        <QYBranch :list="branchList1" :style-chart="styleObj" />
       </div>
       <!-- <vab-chart
         :init-options="initOptions"
@@ -108,7 +108,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <List :list="list" :list-type="listType" :state="listLoading">
+      <QYList :list="list" :list-type="listType" :state="listLoading">
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column align="center" label="排行" type="index" width="50">
@@ -143,25 +143,45 @@
           </el-table-column>
           <el-table-column label="商品款号" prop="sn" />
           <el-table-column label="商品名称" prop="name" />
-          <el-table-column label="吊牌价" prop="sale_price" width="150">
+          <el-table-column
+            align="right"
+            label="吊牌价"
+            prop="sale_price"
+            width="150"
+          >
             <template #default="{ row }">
-              ￥{{ row.sale_price | moneyFormat }}
+              <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="库存数" prop="total_stock" width="100" />
-          <el-table-column label="库存金额" prop="stock_amount" width="150">
+          <el-table-column
+            align="right"
+            label="库存金额"
+            prop="stock_amount"
+            width="150"
+          >
             <template #default="{ row }">
-              ￥{{ row.stock_amount | moneyFormat }}
+              <el-tag>￥{{ row.stock_amount | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="成本价" prop="cost_price" width="150">
+          <el-table-column
+            align="right"
+            label="成本价"
+            prop="cost_price"
+            width="150"
+          >
             <template #default="{ row }">
-              ￥{{ row.cost_price | moneyFormat }}
+              <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="库存成本金额" prop="stock_cost" width="150">
+          <el-table-column
+            align="right"
+            label="库存成本金额"
+            prop="stock_cost"
+            width="150"
+          >
             <template #default="{ row }">
-              ￥{{ row.stock_cost | moneyFormat }}
+              <el-tag>￥{{ row.stock_cost | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="上架日期" prop="created" />
@@ -178,15 +198,12 @@
             </template>
           </el-table-column> -->
         </template>
-      </List>
+      </QYList>
     </div>
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import Branch from '@/subview/components/Branch'
-  import TextLabels from '@/subview/components/TextLabels'
   import {
     getCommonAllList,
     getStockStatistics,
@@ -195,7 +212,6 @@
   } from '@/api/basic'
   export default {
     name: 'GoodsStatistical',
-    components: { List, Branch, TextLabels },
     data() {
       return {
         listLoading: false,

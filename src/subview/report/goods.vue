@@ -70,7 +70,7 @@
         </el-form-item>
       </el-form>
       <div style="display: flex; flex-wrap: wrap">
-        <TextLabels ref="multipleTable" :list="goodsStaList" />
+        <QYTextLabels ref="multipleTable" :list="goodsStaList" />
       </div>
       <vab-chart
         :init-options="initOptions"
@@ -131,7 +131,7 @@
           </el-form-item>
         </el-form-item>
       </el-form>
-      <List :list="goosList" :list-type="listType" :state="listLoading">
+      <QYList :list="goosList" :list-type="listType" :state="listLoading">
         <template #List>
           <el-table-column align="center" label="排行" type="index" width="50">
             <template slot-scope="scope">
@@ -165,9 +165,22 @@
           </el-table-column>
           <el-table-column label="商品名称" prop="name" width="200" />
           <el-table-column label="商品款号" prop="sn" width="100" />
-          <el-table-column label="上架时间" prop="upper_time" width="100" />
+          <el-table-column label="上架时间" prop="upper_time" width="150">
+            <template #default="{ row }">
+              {{ row.upper_time | formatTime }}
+            </template>
+          </el-table-column>
           <el-table-column label="本期销量" prop="sum_num" width="120" />
-          <el-table-column label="本期销售额" prop="sum_total" width="100" />
+          <el-table-column
+            align="right"
+            label="本期销售额"
+            prop="sum_total"
+            width="150"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.sum_total | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column label="毛利率(%)" prop="profit">
             <template #default="{ row }">{{ row.profit * 100 }}%</template>
           </el-table-column>
@@ -186,20 +199,23 @@
             </template>
           </el-table-column> -->
         </template>
-      </List>
+      </QYList>
     </div>
   </div>
 </template>
 
 <script>
-  import TextLabels from '@/subview/components/TextLabels'
-  import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
-  import { getCommonAllList, getGoodsList, getGoodsRank } from '@/api/basic'
+  import {
+    getCommonAllList,
+    getGoodsList,
+    getGoodsRank,
+    getGoodsReportForms,
+  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'GoodsStatistical',
-    components: { List, VabChart, TextLabels },
+    components: { VabChart },
     mixins: [datajosn],
     data() {
       return {
@@ -235,6 +251,7 @@
             type: 1,
             typeSta: false,
             name: 'today_new',
+            numType: 2,
           },
           {
             title: '商品销售数',
@@ -243,6 +260,7 @@
             type: 1,
             typeSta: false,
             name: 'goods_num',
+            numType: 2,
           },
           {
             title: '商品sku数',
@@ -251,6 +269,7 @@
             type: 1,
             typeSta: false,
             name: 'goods_sku',
+            numType: 2,
           },
           {
             title: '商品款数',
@@ -259,6 +278,7 @@
             type: 1,
             typeSta: false,
             name: 'goods_style_num',
+            numType: 2,
           },
           {
             title: '客单价',
@@ -267,6 +287,7 @@
             type: 1,
             typeSta: false,
             name: 'price_one',
+            numType: 1,
           },
           {
             title: '销售数量',
@@ -275,6 +296,7 @@
             type: 2,
             typeSta: false,
             name: 'sale_num',
+            numType: 2,
           },
           {
             title: '销售金额',
@@ -283,6 +305,7 @@
             type: 2,
             typeSta: false,
             name: 'sale_total',
+            numType: 1,
           },
           {
             title: '退货数量',
@@ -290,6 +313,7 @@
             num: 0,
             type: 2,
             typeSta: false,
+            numType: 2,
           },
           {
             title: '退货金额',
@@ -298,6 +322,7 @@
             type: 2,
             typeSta: false,
             name: 'return_total',
+            numType: 1,
           },
           {
             title: '实际交易金额',
@@ -306,6 +331,7 @@
             type: 2,
             typeSta: false,
             name: 'real_total',
+            numType: 1,
           },
         ],
         initOptions: {
@@ -374,119 +400,121 @@
       async fetchData() {
         const { data } = await getGoodsList(this.goodsForm)
         this.goodsStaList.forEach((item) => {
-          for (let i in data.list) {
+          for (let i in data) {
             if (item.name == i) {
-              if (data.list[i] == null) {
-                data.list[i] = 0
-                item.num = data.list[i]
+              if (data[i] == null) {
+                data[i] = 0
+                item.num = data[i]
               } else {
-                item.num = data.list[i]
+                item.num = data[i]
               }
             }
           }
         })
-        let arr = []
-        data.line_date.forEach((item) => {
-          for (let i in item) {
-            this.dateList.push(i)
-            arr.push(item[i])
-          }
-        })
-        arr.forEach((item) => {
-          for (let i in item) {
-            if (i != 'time_range' && this.dataAllList[i] !== undefined) {
-              if (item[i] == null) {
-                item[i] = 0
-                this.dataAllList[i].push(item[i])
-              } else {
-                this.dataAllList[i].push(item[i])
+        getGoodsReportForms(this.goodsForm).then((res) => {
+          let arr = []
+          res.data.forEach((item) => {
+            for (let i in item) {
+              this.dateList.push(i)
+              arr.push(item[i])
+            }
+          })
+          arr.forEach((item) => {
+            for (let i in item) {
+              if (i != 'time_range' && this.dataAllList[i] !== undefined) {
+                if (item[i] == null) {
+                  item[i] = 0
+                  this.dataAllList[i].push(item[i])
+                } else {
+                  this.dataAllList[i].push(item[i])
+                }
               }
             }
-          }
-        })
-        this.option = {
-          tooltip: {
-            trigger: 'axis', //触发类型；轴触发，axis则鼠标hover到一条柱状图显示全部数据，item则鼠标hover到折线点显示相应数据，
-            axisPointer: {
-              type: 'cross', // 十字准星指示器
+          })
+          this.option = {
+            tooltip: {
+              trigger: 'axis', //触发类型；轴触发，axis则鼠标hover到一条柱状图显示全部数据，item则鼠标hover到折线点显示相应数据，
+              axisPointer: {
+                type: 'cross', // 十字准星指示器
+              },
             },
-          },
-          legend: {
-            data: ['销售数量', '销售金额', '退货数量', '退货金额'],
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true,
-          },
-          toolbox: {
-            feature: {
-              saveAsImage: {},
+            legend: {
+              data: ['销售数量', '销售金额', '退货数量', '退货金额'],
             },
-          },
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: this.dateList,
-          },
-          yAxis: [
-            {
-              type: 'value',
-              name: '金额',
-              min: `0`,
-              max: `120000`,
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true,
+            },
+            toolbox: {
+              feature: {
+                saveAsImage: {},
+              },
+            },
+            xAxis: {
+              type: 'category',
+              boundaryGap: false,
+              data: this.dateList,
+            },
+            yAxis: [
+              {
+                type: 'value',
+                name: '金额',
+                min: `0`,
+                max: `120000`,
 
-              // ...
-            },
-            {
-              type: 'value',
-              name: '数量',
-              min: `0`,
-              max: `2500`,
-            },
-          ],
-          series: [
-            {
-              name: '销售数量',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
-              data: this.dataAllList.sale_num,
-              yAxisIndex: 1,
-              itemStyle: {
-                color: '#FFC833',
+                // ...
               },
-            },
-            {
-              name: '销售金额',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
-              data: this.dataAllList.sale_total,
-              yAxisIndex: 1,
-              itemStyle: {
-                color: '#FF6C87',
+              {
+                type: 'value',
+                name: '数量',
+                min: `0`,
+                max: `2500`,
               },
-            },
-            {
-              name: '退货数量',
-              type: 'bar',
-              data: this.dataAllList.return_num,
-              itemStyle: {
-                color: '#55DF7E',
+            ],
+            series: [
+              {
+                name: '销售数量',
+                type: 'line',
+                stack: 'Total',
+                smooth: true,
+                data: this.dataAllList.sale_num,
+                yAxisIndex: 1,
+                itemStyle: {
+                  color: '#FFC833',
+                },
               },
-            },
-            {
-              name: '退货金额',
-              type: 'bar',
-              data: this.dataAllList.return_total,
-              itemStyle: {
-                color: '#1890FF',
+              {
+                name: '销售金额',
+                type: 'line',
+                stack: 'Total',
+                smooth: true,
+                data: this.dataAllList.sale_total,
+                yAxisIndex: 1,
+                itemStyle: {
+                  color: '#FF6C87',
+                },
               },
-            },
-          ],
-        }
+              {
+                name: '退货数量',
+                type: 'bar',
+                data: this.dataAllList.return_num,
+                itemStyle: {
+                  color: '#55DF7E',
+                },
+              },
+              {
+                name: '退货金额',
+                type: 'bar',
+                data: this.dataAllList.return_total,
+                itemStyle: {
+                  color: '#1890FF',
+                },
+              },
+            ],
+          }
+        })
       },
       // 导出
       handleDownload() {

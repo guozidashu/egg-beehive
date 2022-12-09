@@ -229,7 +229,7 @@ d
                 />
               </el-form-item>
               <el-form-item label="供应商地址：">
-                <addressCity
+                <QYAddress
                   :adrress="form.address1"
                   @getLawyerListInfo="selectAddress"
                 />
@@ -434,7 +434,7 @@ d
         </div>
       </el-form>
     </div>
-    <List
+    <QYList
       v-if="search_type == '1'"
       :list="orderList"
       :list-type="listType"
@@ -455,8 +455,8 @@ d
           show-overflow-tooltip
         />
       </template>
-    </List>
-    <List
+    </QYList>
+    <QYList
       v-if="search_type == '2' || search_type == '3'"
       :list="orderList"
       :list-type="listType"
@@ -473,8 +473,8 @@ d
         />
         <el-table-column label="价格" prop="total" show-overflow-tooltip />
       </template>
-    </List>
-    <List
+    </QYList>
+    <QYList
       v-if="search_type == '4'"
       :list="orderList"
       :list-type="listType"
@@ -486,8 +486,8 @@ d
         <el-table-column label="价格" prop="total" show-overflow-tooltip />
         <el-table-column label="标题" prop="title" show-overflow-tooltip />
       </template>
-    </List>
-    <List
+    </QYList>
+    <QYList
       v-if="search_type == '5'"
       :list="orderList"
       :list-type="listType"
@@ -513,24 +513,23 @@ d
         <el-table-column label="价格" prop="price" show-overflow-tooltip />
         <el-table-column label="pdf文件" prop="pdf" show-overflow-tooltip />
       </template>
-    </List>
+    </QYList>
   </div>
 </template>
 
 <script>
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
-  import List from '@/subview/components/List'
+
   import { mapGetters } from 'vuex'
   import {
     editSupplierDetail,
     getCommonAllList,
     editSupplierSave,
   } from '@/api/basic'
-  import addressCity from '@/subview/components/City.vue'
+
   export default {
     name: 'ComponentsDrawer',
-    components: { List, addressCity },
     props: {
       drawerInof: {
         type: Object,

@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -26,7 +26,7 @@
             />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
@@ -42,7 +42,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <List
+      <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -80,7 +80,11 @@
             label="金额"
             prop="amount"
             show-overflow-tooltip
-          />
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.amount | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="备注"
@@ -118,21 +122,19 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
       <edit ref="edit" @fetch-data="fetchData" />
     </el-card>
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
   import Edit from './components/BillListEdit'
   import { getBillList, delBillOut } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'FinancialBillList',
-    components: { List, Edit, Form },
+    components: { Edit },
     mixins: [datajosn],
     data() {
       return {

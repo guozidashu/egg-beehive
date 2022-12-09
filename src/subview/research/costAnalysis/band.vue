@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -71,10 +71,10 @@
             />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
-      <List :list="list" :list-type="listType" :state="listLoading">
+      <QYList :list="list" :list-type="listType" :state="listLoading">
         <template #List>
           <el-table-column
             align="center"
@@ -95,18 +95,15 @@
             show-overflow-tooltip
           />
         </template>
-      </List>
+      </QYList>
     </el-card>
   </div>
 </template>
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
   import { getBandCostAnalysis, getCommonAllList } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'CostAnalysisBand',
-    components: { List, Form },
     mixins: [datajosn],
     data() {
       return {

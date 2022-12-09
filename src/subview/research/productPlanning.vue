@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -54,10 +54,10 @@
             <el-input v-model="form.name" size="small" />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
-      <List
+      <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -108,7 +108,7 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
       <!-- 详情抽屉组件 -->
@@ -117,8 +117,6 @@
   </div>
 </template>
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
   import Drawer from './components/ProductPlanningDrawer'
   import {
     getPlanList,
@@ -128,7 +126,7 @@
   } from '@/api/basic'
   export default {
     name: 'ProductPlanning',
-    components: { List, Form, Drawer },
+    components: { Drawer },
     data() {
       return {
         drawer: false,

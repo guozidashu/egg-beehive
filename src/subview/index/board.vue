@@ -38,7 +38,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <TextLabels :list="goodsStaList" :width="goodsWidth" />
+      <QYTextLabels :list="goodsStaList" :width="goodsWidth" />
       <vab-chart
         :init-options="initOptions"
         :option="option"
@@ -62,16 +62,22 @@
 <script>
   import datajosn from '@/assets/assets_josn/datajosn'
   import VabChart from '@/extra/VabChart'
-  import TextLabels from '@/subview/components/TextLabels'
+
   import BoardText from './componentscopy/BoardText'
   import ProductAnalysis from './componentscopy/ProductAnalysis'
   import DeliveryWarning from './componentscopy/DeliveryWarning'
-  import { getHomePageBoard } from '@/api/basic'
+  import {
+    getHomePageBoard,
+    getBoardReportForms,
+    getCustomerRanch,
+    getGoodsRanch,
+    getShipmentWarning,
+    getCustomerSource,
+  } from '@/api/basic'
   export default {
     name: 'Board',
     components: {
       VabChart,
-      TextLabels,
       BoardText,
       ProductAnalysis,
       DeliveryWarning,
@@ -187,16 +193,10 @@
       this.fetchData()
     },
     methods: {
-      async fetchData() {
-        const { data } = await getHomePageBoard(this.goodsForm)
-        this.goodsStaList[0].num = data.list.sale_total
-        this.goodsStaList[1].num = data.list.sale_num
-        this.goodsStaList[2].num = data.list.delivery_total
-        this.goodsStaList[3].num = data.list.delivery_num
-        this.goodsStaList[4].num = data.list.return_total
-        this.goodsStaList[5].num = data.list.return_num
+      async getBoardReport() {
+        const { data } = await getBoardReportForms(this.goodsForm)
         let arr = []
-        data.line_date.forEach((item) => {
+        data.forEach((item) => {
           for (let i in item) {
             this.dateList.push(i)
             arr.push(item[i])
@@ -328,20 +328,38 @@
             },
           ],
         }
-        this.goosList = data.list.goods_ranch.data
-        this.goosList1 = data.list.customer_ranch.data
-        data.list.source.forEach((item) => {
-          this.branchList.push({
-            value: item.sale_num,
-            name: item.name,
-            sale_price: item.sale_price,
-            all_total: item.all_total,
-            all_sum: item.all_sum,
+        getGoodsRanch().then((res) => {
+          this.goosList = res.data.data
+        })
+        getCustomerRanch().then((res) => {
+          this.goosList1 = res.data.data
+        })
+        getCustomerSource().then((res) => {
+          res.data.forEach((item) => {
+            this.branchList.push({
+              value: item.sale_num,
+              name: item.name,
+              sale_price: item.sale_price,
+              all_total: item.all_total,
+              all_sum: item.all_sum,
+            })
           })
         })
-        this.branchList1[0].value = data.list.today_shipped_num
-        this.branchList1[1].value = data.list.yesterday_shipped_num
-        this.branchList1[2].value = data.list.unshipped_num.sum
+        getShipmentWarning().then((res) => {
+          this.branchList1[0].value = res.data.today_shipped_num
+          this.branchList1[1].value = res.data.yesterday_shipped_num
+          this.branchList1[2].value = res.data.unshipped_num.sum
+        })
+      },
+      async fetchData() {
+        const { data } = await getHomePageBoard(this.goodsForm)
+        this.goodsStaList[0].num = data.sale_total
+        this.goodsStaList[1].num = data.sale_num
+        this.goodsStaList[2].num = data.delivery_total
+        this.goodsStaList[3].num = data.delivery_num
+        this.goodsStaList[4].num = data.return_total
+        this.goodsStaList[5].num = data.return_num
+        this.getBoardReport()
       },
       handleDownload() {
         this.downloadLoading = true

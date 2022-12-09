@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -26,7 +26,7 @@
             />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
@@ -42,7 +42,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <List
+      <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -96,7 +96,7 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
     <edit ref="edit" @fetch-data="fetchData" />
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
@@ -106,14 +106,13 @@
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import Edit from './components/WareHouseEdit'
-  import Form from '@/subview/components/Form'
-  import Drawer from './components/WareHouseDrawer'
+  import Edit from '@/subview/components/Edit/WareHouseEdit'
+
+  import Drawer from '@/subview/components/Drawer/WareHouseDrawer'
   import { getArchive, delArchive } from '@/api/basic'
   export default {
     name: 'ArchivesWarehouse',
-    components: { List, Edit, Form, Drawer },
+    components: { Edit, Drawer },
     data() {
       return {
         drawer: false,

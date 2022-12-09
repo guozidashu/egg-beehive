@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -35,10 +35,10 @@
             </el-select>
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
-      <List
+      <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -66,23 +66,42 @@
             show-overflow-tooltip
           />
           <el-table-column
-            align="center"
+            align="right"
             label="金额"
             prop="total"
             show-overflow-tooltip
-          />
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.total | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
-            align="center"
+            align="right"
             label="收款方式"
             prop="alipay_amount"
             show-overflow-tooltip
           >
             <template #default="{ row }">
-              <div>支付宝:{{ row.alipay_amount }}</div>
-              <div>微信:{{ row.wechat_amount }}</div>
-              <div>现金:{{ row.cash_amount }}</div>
-              <div>银行卡:{{ row.bank_amount }}</div>
-              <div>信用卡:{{ row.credit_amount }}</div>
+              <div style="margin: 10px">
+                支付宝:
+                <el-tag>￥{{ row.alipay_amount | moneyFormat }}</el-tag>
+              </div>
+              <div style="margin: 10px">
+                微信:
+                <el-tag>￥{{ row.wechat_amount | moneyFormat }}</el-tag>
+              </div>
+              <div style="margin: 10px">
+                现金:
+                <el-tag>￥{{ row.cash_amount | moneyFormat }}</el-tag>
+              </div>
+              <div style="margin: 10px">
+                银行卡:
+                <el-tag>￥{{ row.bank_amount | moneyFormat }}</el-tag>
+              </div>
+              <div style="margin: 10px">
+                信用卡:
+                <el-tag>￥{{ row.credit_amount | moneyFormat }}</el-tag>
+              </div>
             </template>
           </el-table-column>
           <el-table-column
@@ -103,19 +122,16 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
   import { getSupplierVoucherList } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'FinancialSupplierReceipt',
-    components: { List, Form },
     mixins: [datajosn],
     data() {
       return {

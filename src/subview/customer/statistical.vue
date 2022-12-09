@@ -88,14 +88,14 @@
             background-color: white;
           "
         >
-          <branch
+          <QYBranch
             :list="branchList"
             :style-chart="styleObj"
             :title="branchTitle"
           />
         </div>
         <div style="width: 60%; padding: 20px; background-color: white">
-          <branch
+          <QYBranch
             :list="branchList1"
             :style-chart="styleObj1"
             :title="branchTitle1"
@@ -117,14 +117,13 @@
 </template>
 
 <script>
-  import Branch from '@/subview/components/Branch'
-  import TextTags from './components/TextTags'
+  import TextTags from '@/subview/components/Text/TextTags'
   import datajosn from '@/assets/assets_josn/datajosn'
-  import SalesChart from './components/SalesChart'
+  import SalesChart from '@/subview/components/Chart/SalesChart'
   import { getCommonAllList, getCountList } from '@/api/basic'
   export default {
     name: 'CustomerStatistical',
-    components: { TextTags, Branch, SalesChart },
+    components: { TextTags, SalesChart },
     mixins: [datajosn],
     data() {
       return {

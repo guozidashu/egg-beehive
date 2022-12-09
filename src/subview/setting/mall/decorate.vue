@@ -64,17 +64,16 @@
     editTemplateAssemblyLayout,
   } from '@/api/basic'
   import Draggable from 'vuedraggable'
-  import EditForm from '@/subview/components/Edit/index'
-  import Banner from '@/subview/components/View/Banner'
-  import Notification from '@/subview/components/View/Notification'
-  import Blank from '@/subview/components/View/Blank'
-  import Gridbutton from '@/subview/components/View/Gridbutton'
-  import ImageList from '@/subview/components/View/ImageList'
-  import Title from '@/subview/components/View/Title'
-  import Goodsgroup from '@/subview/components/View/Goodsgroup'
-  import Hotspots from '@/subview/components/View/Hotspots'
-  import Info from '@/subview/components/View/Info'
-  import TemplateExample from '@/subview/components/View/TemplateExample'
+  import EditForm from '@/subview/components/TtemplateEdit/index'
+  import Banner from '@/subview/components/TtemplateView/Banner'
+  import Notification from '@/subview/components/TtemplateView/Notification'
+  import Blank from '@/subview/components/TtemplateView/Blank'
+  import Gridbutton from '@/subview/components/TtemplateView/Gridbutton'
+  import ImageList from '@/subview/components/TtemplateView/ImageList'
+  import Title from '@/subview/components/TtemplateView/Title'
+  import Goodsgroup from '@/subview/components/TtemplateView/Goodsgroup'
+  import Hotspots from '@/subview/components/TtemplateView/Hotspots'
+  import Info from '@/subview/components/TtemplateView/Info'
   export default {
     components: {
       EditForm,
@@ -88,7 +87,7 @@
       Goodsgroup,
       Hotspots,
       Info,
-      TemplateExample,
+      // TemplateExample,
     },
     props: {
       itemId: {
@@ -147,11 +146,6 @@
             name: '头部',
             icon: 'el-icon-picture',
             com: Info,
-          },
-          TemplateExample: {
-            name: '模板示例',
-            icon: 'el-icon-picture',
-            com: TemplateExample,
           },
         },
         view: [

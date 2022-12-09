@@ -44,7 +44,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <TextLabels ref="multipleTable" :list="goodsStaList" />
+      <QYTextLabels ref="multipleTable" :list="goodsStaList" />
       <p>营业趋势</p>
       <vab-chart
         :init-options="initOptions"
@@ -84,13 +84,18 @@
           </el-form-item>
         </el-form-item>
       </el-form>
-      <List :list="goosList" :list-type="listType" :state="listLoading">
+      <QYList :list="goosList" :list-type="listType" :state="listLoading">
         <!-- 显示20条 -->
         <template #List>
           <el-table-column label="日期" prop="add_date" />
-          <el-table-column label="销售金额" prop="total" width="150">
+          <el-table-column
+            align="right"
+            label="销售金额"
+            prop="total"
+            width="150"
+          >
             <template #default="{ row }">
-              ￥{{ row.total | moneyFormat }}
+              <el-tag>￥{{ row.total | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="订单数" prop="count" width="100" />
@@ -98,9 +103,9 @@
           <el-table-column label="发货件数" prop="delivery_num" width="120" />
           <el-table-column label="日单价" prop="day_price" width="100" />
           <el-table-column label="成交客户数" prop="customer_count" />
-          <el-table-column label="利润" prop="margin" width="150">
+          <el-table-column align="right" label="利润" prop="margin" width="150">
             <template #default="{ row }">
-              ￥{{ row.margin | moneyFormat }}
+              <el-tag>￥{{ row.margin | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="毛利率(%)" prop="margin_rate">
@@ -121,20 +126,19 @@
             </template>
           </el-table-column> -->
         </template>
-      </List>
+      </QYList>
     </div>
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
   import VabChart from '@/extra/VabChart'
-  import TextLabels from '@/subview/components/TextLabels'
+
   import datajosn from '@/assets/assets_josn/datajosn'
   import { getOrderCountList, getOrderCountDetail } from '@/api/basic'
   export default {
     name: 'GoodsStatistical',
-    components: { VabChart, TextLabels, List },
+    components: { VabChart },
     mixins: [datajosn],
     data() {
       return {

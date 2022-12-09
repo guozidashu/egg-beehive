@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -90,7 +90,7 @@
             </el-input>
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -139,7 +139,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <List
+      <QYList
         ref="multipleTable"
         :list="list"
         :list-type="listType"
@@ -188,9 +188,9 @@
           </el-table-column>
           <el-table-column label="采购数量" prop="num" width="80" />
           <el-table-column label="入库数量" prop="receipt_num" width="80" />
-          <el-table-column label="金额" prop="total" width="150">
+          <el-table-column align="right" label="金额" prop="total" width="150">
             <template #default="{ row }">
-              ￥{{ row.total | moneyFormat }}
+              <el-tag>￥{{ row.total | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="预计交货时间" prop="expected_date" />
@@ -250,7 +250,7 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
       <!-- 详情抽屉组件 -->
@@ -261,8 +261,6 @@
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
   import Drawer from './components/OrderDrawer'
   import edit from './components/MaterialEdit'
   import { mapActions } from 'vuex'
@@ -276,7 +274,7 @@
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
     name: 'SupplierMaterial',
-    components: { List, Form, Drawer, edit },
+    components: { Drawer, edit },
     mixins: [datajosn, publicjosn],
     data() {
       return {

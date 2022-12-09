@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -75,7 +75,7 @@
             </el-input>
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
 
     <el-card shadow="never" style="border: 0">
@@ -116,7 +116,7 @@
         </el-form-item>
       </el-form>
       <!-- 表格组件使用 -->
-      <List
+      <QYList
         ref="multipleTable"
         :list="list"
         :list-type="listType"
@@ -158,9 +158,14 @@
             </template>
           </el-table-column>
           <el-table-column label="总数量" prop="sum_num" width="80" />
-          <el-table-column label="总金额" prop="sum_price" width="150">
+          <el-table-column
+            align="right"
+            label="总金额"
+            prop="sum_price"
+            width="150"
+          >
             <template #default="{ row }">
-              ￥{{ row.sum_price | moneyFormat }}
+              <el-tag>￥{{ row.sum_price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
           <!-- <el-table-column label="配送方式" prop="pay" width="120" /> -->
@@ -203,7 +208,7 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
       <!-- 详情抽屉组件 -->
@@ -218,8 +223,6 @@
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
   import Drawer from './components/Drawer'
   import Edit from './components/ListEdit'
   import { getOrderList, getOrderCount } from '@/api/basic'
@@ -228,7 +231,7 @@
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'OrderList',
-    components: { Form, List, Drawer, Edit },
+    components: { Drawer, Edit },
     mixins: [datajosn],
     data() {
       return {

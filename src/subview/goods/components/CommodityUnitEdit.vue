@@ -45,7 +45,7 @@
       @close="close"
     >
       <div style="display: flex; justify-content: space-between">
-        <Form
+        <QYForm
           :form="formEdit"
           :form-type="formType"
           @changeSearch="handleQuery"
@@ -60,7 +60,7 @@
               />
             </el-form-item>
           </template>
-        </Form>
+        </QYForm>
         <el-form
           class="demo-form-inline"
           :inline="true"
@@ -86,7 +86,7 @@
       </div>
 
       <div style="height: 500px; overflow: auto">
-        <List
+        <QYList
           :list="list"
           :list-type="listType"
           :state="listLoading"
@@ -121,7 +121,7 @@
               </template>
             </el-table-column>
           </template>
-        </List>
+        </QYList>
       </div>
 
       <template #footer>
@@ -139,11 +139,9 @@
     addGroupGoodsAdd,
     getGoodsGroupList,
   } from '@/api/basic'
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
+
   export default {
     name: 'TagsEdit',
-    components: { List, Form },
     data() {
       return {
         selectList: [],

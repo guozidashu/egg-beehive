@@ -259,6 +259,14 @@ export function getStockPrint(data) {
   })
 }
 // 财务分析
+
+export function getFinanceReportForms(data) {
+  return request({
+    url: '/information/financeReportForms',
+    method: 'post',
+    data,
+  })
+}
 export function getFinanceCostCount(data) {
   return request({
     url: '/information/financeCostCount',
@@ -277,6 +285,50 @@ export function getFinanceListd(data) {
 export function getHomePageList(data) {
   return request({
     url: '/homePage/list',
+    method: 'post',
+    data,
+  })
+}
+export function getHomeReportForms(data) {
+  return request({
+    url: '/homePage/homeReportForms',
+    method: 'post',
+    data,
+  })
+}
+// 看板
+
+export function getBoardReportForms(data) {
+  return request({
+    url: '/homePage/boardReportForms',
+    method: 'post',
+    data,
+  })
+}
+export function getCustomerRanch(data) {
+  return request({
+    url: '/homePage/customerRanch',
+    method: 'post',
+    data,
+  })
+}
+export function getGoodsRanch(data) {
+  return request({
+    url: '/homePage/goodsRanch',
+    method: 'post',
+    data,
+  })
+}
+export function getShipmentWarning(data) {
+  return request({
+    url: '/homePage/shipmentWarning',
+    method: 'post',
+    data,
+  })
+}
+export function getCustomerSource(data) {
+  return request({
+    url: '/homePage/customerSource',
     method: 'post',
     data,
   })
@@ -694,7 +746,14 @@ export function getGoodsList(data) {
     data,
   })
 }
-// 商品排行
+export function getGoodsReportForms(data) {
+  return request({
+    url: '/information/goodsReportForms',
+    method: 'post',
+    data,
+  })
+}
+
 export function getGoodsRank(data) {
   return request({
     url: '/information/goodsRank',
@@ -807,6 +866,28 @@ export function getCustomerVoucherList(data) {
   })
 }
 //客户分析
+
+export function getCustomerReportForms(data) {
+  return request({
+    url: '/information/customerReportForms',
+    method: 'post',
+    data,
+  })
+}
+export function getCustomerArea(data) {
+  return request({
+    url: '/information/getCustomerArea',
+    method: 'post',
+    data,
+  })
+}
+export function getCustomerLevel(data) {
+  return request({
+    url: '/information/getCustomerLevel',
+    method: 'post',
+    data,
+  })
+}
 export function getInformationCustomerList(data) {
   return request({
     url: '/information/customerList',
@@ -815,6 +896,21 @@ export function getInformationCustomerList(data) {
   })
 }
 //订单分析
+
+export function getOrderSourceAssay(data) {
+  return request({
+    url: '/information/orderSourceAssay',
+    method: 'post',
+    data,
+  })
+}
+export function getOrderReportForms(data) {
+  return request({
+    url: '/information/orderReportForms',
+    method: 'post',
+    data,
+  })
+}
 export function getInformationOrderList(data) {
   return request({
     url: '/information/orderList',

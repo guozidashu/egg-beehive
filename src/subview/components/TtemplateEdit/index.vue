@@ -62,7 +62,6 @@
   import Title from './Title'
   import Goodsgroup from './Goodsgroup'
   import Hotspots from './Hotspots'
-  import TemplateExample from './TemplateExample'
   export default {
     name: 'EditForm',
     components: {
@@ -75,7 +74,6 @@
       Goodsgroup,
       Info,
       Hotspots,
-      TemplateExample,
     },
     props: {
       data: {
@@ -123,10 +121,6 @@
           Hotspots: {
             title: '热区',
             com: 'Hotspots',
-          },
-          TemplateExample: {
-            title: '模板示例',
-            com: 'TemplateExample',
           },
         },
       }

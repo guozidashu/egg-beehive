@@ -330,54 +330,6 @@ export const asyncRoutes = [
     ],
   },
   {
-    path: '/documentary',
-    name: 'Documentary',
-    component: Layout,
-    meta: {
-      title: '跟单',
-      icon: 'archive-line',
-      breadcrumbHidden: true,
-    },
-    children: [
-      {
-        path: 'documentaryProduction',
-        name: 'DocumentaryProduction',
-        component: () => import('@/subview/documentary/production'),
-        meta: {
-          title: '生产计划单',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'documentaryOutgoing',
-        name: 'DocumentaryOutgoing',
-        component: () => import('@/subview/documentary/outgoing'),
-        meta: {
-          title: '外发加工单',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'documentaryProgress',
-        name: 'DocumentaryProgress',
-        component: () => import('@/subview/documentary/progress'),
-        meta: {
-          title: '生产进度分析',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'documentaryReport',
-        name: 'DocumentaryReport',
-        component: () => import('@/subview/documentary/report'),
-        meta: {
-          title: '跟单报表',
-          icon: 'archive-line',
-        },
-      },
-    ],
-  },
-  {
     path: '/supplier',
     name: 'Supplier',
     component: Layout,

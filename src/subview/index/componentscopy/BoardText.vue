@@ -21,7 +21,7 @@
         :xl="12"
         :xs="24"
       >
-        <List
+        <QYList
           :list="goosList"
           :list-height="listHeightkh"
           :list-type="listType"
@@ -65,13 +65,18 @@
               </template>
             </el-table-column>
             <el-table-column label="销售件数" prop="sum_num" width="80" />
-            <el-table-column label="销售金额" prop="sum_total" width="180">
+            <el-table-column
+              align="right"
+              label="销售金额"
+              prop="sum_total"
+              width="150"
+            >
               <template #default="{ row }">
                 <el-tag>￥{{ row.sum_total | moneyFormat }}</el-tag>
               </template>
             </el-table-column>
           </template>
-        </List>
+        </QYList>
       </el-col>
       <el-col
         :lg="12"
@@ -81,7 +86,7 @@
         :xl="12"
         :xs="24"
       >
-        <List
+        <QYList
           :list="goosList1"
           :list-height="listHeightkh"
           :list-type="listType"
@@ -112,23 +117,26 @@
               </template>
             </el-table-column>
             <el-table-column label="客户名称" prop="name" />
-            <el-table-column label="拿货金额" prop="sum_total">
+            <el-table-column
+              align="right"
+              label="拿货金额"
+              prop="sum_total"
+              width="150"
+            >
               <template #default="{ row }">
                 <el-tag>￥{{ row.sum_total | moneyFormat }}</el-tag>
               </template>
             </el-table-column>
             <el-table-column label="拿货件数" prop="sum_num" />
           </template>
-        </List>
+        </QYList>
       </el-col>
     </el-row>
   </el-card>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
   export default {
-    components: { List },
     props: {
       list: {
         type: Array,

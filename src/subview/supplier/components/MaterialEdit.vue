@@ -76,7 +76,7 @@
         </div>
       </el-form-item>
       <el-form-item>
-        <List
+        <QYList
           v-if="type == 1"
           :list="orderList"
           :list-type="listType"
@@ -101,8 +101,8 @@
               </template>
             </el-table-column>
           </template>
-        </List>
-        <List
+        </QYList>
+        <QYList
           v-else
           :list="orderList"
           :list-type="listType"
@@ -127,7 +127,7 @@
               </template>
             </el-table-column>
           </template>
-        </List>
+        </QYList>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -138,11 +138,9 @@
 </template>
 
 <script>
-  import List from '@/subview/components/List'
   import { addYearSave } from '@/api/basic'
   export default {
     name: 'BrandEdit',
-    components: { List },
     data() {
       return {
         listLoading: false,

@@ -25,7 +25,7 @@
     >
       小票打印机用于用户下单成功后自动打印小票+语音播报，目前支持易联云和飞鹅的小票打印机，请先购买小票打印机后进行配置，点击进入易联云购买地址，点击进入飞鹅购买地址
     </div>
-    <Form :form="form" :form-type="formType" @changeSearch="handleQuery">
+    <QYForm :form="form" :form-type="formType" @changeSearch="handleQuery">
       <template #Form>
         <el-form-item>
           <el-button type="primary" @click="add('易联云', 1)">
@@ -50,8 +50,8 @@
           </el-select>
         </el-form-item>
       </template>
-    </Form>
-    <List
+    </QYForm>
+    <QYList
       :list="list"
       :list-type="listType"
       :state="listLoading"
@@ -94,7 +94,7 @@
           </template>
         </el-table-column>
       </template>
-    </List>
+    </QYList>
     <!-- 弹框1 -->
     <el-dialog
       :before-close="handleClose"
@@ -271,10 +271,7 @@
 </template>
 
 <script>
-  import Form from '@/subview/components/Form'
-  import List from '@/subview/components/List'
   export default {
-    components: { Form, List },
     data() {
       return {
         formType: 3,

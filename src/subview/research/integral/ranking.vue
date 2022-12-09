@@ -1,7 +1,7 @@
 <template>
   <div style="background-color: #f6f8f9">
     <el-card shadow="never" style="border: 0">
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -12,8 +12,8 @@
             <el-input v-model="form.name" size="small" />
           </el-form-item>
         </template>
-      </Form>
-      <List
+      </QYForm>
+      <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -71,17 +71,14 @@
             show-overflow-tooltip
           />
         </template>
-      </List>
+      </QYList>
     </el-card>
   </div>
 </template>
 <script>
-  import Form from '@/subview/components/Form'
-  import List from '@/subview/components/List'
   import { getEmployeeIntegralRank } from '@/api/basic'
   export default {
     name: 'ProjectBandlist',
-    components: { List, Form },
     data() {
       return {
         // 表单数据/列表参数

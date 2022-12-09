@@ -94,7 +94,7 @@
               </el-input>
             </el-form-item>
           </el-form>
-          <List
+          <QYList
             :list="list"
             :list-type="listType"
             :state="listLoading"
@@ -151,7 +151,7 @@
                 </template>
               </el-table-column>
             </template>
-          </List>
+          </QYList>
         </el-card>
       </el-col>
     </el-row>
@@ -159,8 +159,7 @@
   </div>
 </template>
 <script>
-  import List from '@/subview/components/List'
-  import Edit from './components/SizeEdit'
+  import Edit from '@/subview/components/Edit/SizeEdit'
   import {
     getSizeGroupList,
     getSizeList,
@@ -169,8 +168,8 @@
     addSizeSave,
   } from '@/api/basic'
   export default {
-    name: 'GoodsClassified',
-    components: { List, Edit },
+    name: 'ArchivesSize',
+    components: { Edit },
     data() {
       return {
         form: {

@@ -5,7 +5,7 @@
         <trend />
       </el-col>
       <el-col :lg="6" :md="12" :sm="24" :xl="6" :xs="24">
-        <branch />
+        <Branch />
       </el-col>
       <el-col :lg="6" :md="12" :sm="24" :xl="6" :xs="24">
         <rank />

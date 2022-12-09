@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -33,7 +33,7 @@
             />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
@@ -50,7 +50,7 @@
         </el-form-item>
       </el-form>
       <!-- 表格组件使用 -->
-      <List
+      <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -133,7 +133,7 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
     <el-drawer
       :before-close="handleClose"
@@ -148,14 +148,12 @@
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
   import Drawer from './components/StoresDrawer'
   import { parseTime } from '@/utils'
   import { getStoreList, editChangeStatus } from '@/api/basic'
   export default {
     name: 'Employees',
-    components: { List, Form, Drawer },
+    components: { Drawer },
     data() {
       return {
         title: '',

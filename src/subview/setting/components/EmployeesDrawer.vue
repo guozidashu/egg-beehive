@@ -212,7 +212,7 @@
     <!-- <el-tabs v-model="activeName">
       <el-tab-pane label="员工信息" name="first" />
       <el-tab-pane label="积分明细" name="second">
-        <List :list="goosList" :list-type="listType" :state="listLoading">
+        <QYList :list="goosList" :list-type="listType" :state="listLoading">
           <template #List>
             <el-table-column label="来源/用途" prop="inof">
               <template #default="{ row }">
@@ -232,10 +232,10 @@
             <el-table-column label="日期" prop="num" show-overflow-tooltip />
             <el-table-column label="备注" prop="comutp" show-overflow-tooltip />
           </template>
-        </List>
+        </QYList>
       </el-tab-pane>
       <el-tab-pane label=" 订单明细" name="three">
-        <List :list="orderList" :list-type="listType" :state="listLoading">
+        <QYList :list="orderList" :list-type="listType" :state="listLoading">
           <template #List>
             <el-table-column label="订单ID" prop="id" show-overflow-tooltip />
             <el-table-column
@@ -249,19 +249,19 @@
               show-overflow-tooltip
             />
           </template>
-        </List>
+        </QYList>
       </el-tab-pane>
       <el-tab-pane label="签到记录" name="four">
-        <List :list="stareList" :list-type="listType" :state="listLoading">
+        <QYList :list="stareList" :list-type="listType" :state="listLoading">
           <template #List>
             <el-table-column label="获得积分" prop="id" show-overflow-tooltip />
             <el-table-column label="签到时间" prop="inof" width="330" />
             <el-table-column label="备注" prop="time" show-overflow-tooltip />
           </template>
-        </List>
+        </QYList>
       </el-tab-pane>
       <el-tab-pane label=" 持有优惠券" name="five">
-        <List :list="orderList" :list-type="listType" :state="listLoading">
+        <QYList :list="orderList" :list-type="listType" :state="listLoading">
           <template #List>
             <el-table-column
               label="优惠券名称"
@@ -280,10 +280,10 @@
               show-overflow-tooltip
             />
           </template>
-        </List>
+        </QYList>
       </el-tab-pane>
       <el-tab-pane label="排行榜" name="six">
-        <List :list="orderList" :list-type="listType" :state="listLoading">
+        <QYList :list="orderList" :list-type="listType" :state="listLoading">
           <template #List>
             <el-table-column label="名次" type="index" width="50" />
             <el-table-column
@@ -292,10 +292,10 @@
               show-overflow-tooltip
             />
           </template>
-        </List>
+        </QYList>
       </el-tab-pane>
     </el-tabs> -->
-    <List
+    <QYList
       v-else
       :list="goosList"
       :list-type="listType"
@@ -313,15 +313,13 @@
         <el-table-column label="日期" prop="num" show-overflow-tooltip />
         <el-table-column label="备注" prop="comutp" show-overflow-tooltip />
       </template>
-    </List>
+    </QYList>
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
   export default {
     name: 'EmployeesDrawer',
-    components: { List },
     props: {
       drawerInof: {
         type: Object,

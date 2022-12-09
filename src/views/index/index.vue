@@ -13,7 +13,7 @@
       </el-col>
       <icon-list />
       <el-col :lg="12" :md="12" :sm="24" :xl="12" :xs="24">
-        <china-map />
+        <ChinaMap />
         <my-project />
       </el-col>
       <el-col :lg="12" :md="12" :sm="24" :xl="12" :xs="24">

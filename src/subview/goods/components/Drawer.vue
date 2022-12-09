@@ -467,7 +467,7 @@
                 <el-input v-model="form.price" clearable style="width: 215px" />
               </el-form-item>
               <el-form-item v-if="lockSta" class="item" style="width: 100%">
-                <List
+                <QYList
                   :list="zhekouList"
                   :list-type="listType"
                   :state="listLoading"
@@ -507,7 +507,7 @@
                       </template>
                     </el-table-column>
                   </template>
-                </List>
+                </QYList>
               </el-form-item>
             </div>
           </div>
@@ -554,7 +554,7 @@
         </div>
       </el-form>
     </div>
-    <List
+    <QYList
       v-if="
         tabindex == '1' || tabindex == '3' || tabindex == '4' || tabindex == '5'
       "
@@ -573,8 +573,8 @@
           show-overflow-tooltip
         />
       </template>
-    </List>
-    <List
+    </QYList>
+    <QYList
       v-if="tabindex == '2'"
       :list="orderList"
       :list-type="listType"
@@ -591,8 +591,8 @@
           show-overflow-tooltip
         />
       </template>
-    </List>
-    <List
+    </QYList>
+    <QYList
       v-if="tabindex == '6'"
       :list="orderList"
       :list-type="listType"
@@ -610,8 +610,8 @@
           show-overflow-tooltip
         />
       </template>
-    </List>
-    <List
+    </QYList>
+    <QYList
       v-if="tabindex == '7'"
       :list="orderList"
       :list-type="listType"
@@ -630,7 +630,7 @@
         <el-table-column label="现货数量" prop="xh_num" show-overflow-tooltip />
         <el-table-column label="销量数量" prop="xl_num" show-overflow-tooltip />
       </template>
-    </List>
+    </QYList>
     <vab-upload
       ref="vabUpload"
       :limit="1"
@@ -646,7 +646,7 @@
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
   import VabUpload from '@/extra/VabUpload'
-  import List from '@/subview/components/List'
+
   import {
     getWarehouseList,
     getGradeList,
@@ -659,7 +659,7 @@
   import { mapGetters } from 'vuex'
   export default {
     name: 'ComponentsDrawer',
-    components: { List, VabUpload },
+    components: { VabUpload },
     props: {
       drawerInof: {
         type: Object,

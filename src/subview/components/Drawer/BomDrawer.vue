@@ -71,7 +71,7 @@
         </div>
         <div style="display: flex; flex: 1; flex-direction: column">
           <span style="margin-bottom: 12px">总采购金额</span>
-          <span>{{ form.total }}</span>
+          <span>￥{{ form.total | moneyFormat }}</span>
         </div>
         <div style="display: flex; flex: 1; flex-direction: column">
           <span style="margin-bottom: 12px">库存数</span>
@@ -79,7 +79,7 @@
         </div>
         <div style="display: flex; flex: 1; flex-direction: column">
           <span style="margin-bottom: 12px">库存价值</span>
-          <span>{{ form.stock_price }}</span>
+          <span>￥{{ form.stock_price | moneyFormat }}</span>
         </div>
       </div>
     </div>
@@ -307,7 +307,7 @@
         </div>
       </el-form>
     </div>
-    <List
+    <QYList
       v-if="activeName == '1' || activeName == '2' || activeName == '4'"
       :list="orderList"
       :list-type="listType"
@@ -324,8 +324,8 @@
           show-overflow-tooltip
         />
       </template>
-    </List>
-    <List
+    </QYList>
+    <QYList
       v-if="activeName == '3'"
       :list="orderList"
       :list-type="listType"
@@ -341,7 +341,7 @@
           show-overflow-tooltip
         />
       </template>
-    </List>
+    </QYList>
     <vab-upload
       ref="vabUpload"
       :limit="1"
@@ -357,7 +357,7 @@
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
   import VabUpload from '@/extra/VabUpload'
-  import List from '@/subview/components/List'
+
   import {
     getCommonAllList,
     addMaterialSave,
@@ -366,7 +366,7 @@
   import { mapGetters } from 'vuex'
   export default {
     name: 'ComponentsDrawer',
-    components: { List, VabUpload },
+    components: { VabUpload },
     props: {
       drawerInof: {
         type: Object,

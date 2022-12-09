@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -14,7 +14,7 @@
             <el-input v-model="form.name" size="small" />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
@@ -30,7 +30,7 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <List
+      <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -99,19 +99,18 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 <script>
-  import List from '@/subview/components/List'
-  import Edit from './components/BandEdit'
-  import Form from '@/subview/components/Form'
+  import Edit from '@/subview/components/Edit/BandEdit'
+
   import { getBandList, delBandDel, editBandSave } from '@/api/basic'
   export default {
-    name: 'ProjectBandlist',
-    components: { List, Edit, Form },
+    name: 'ArchivesBandlist',
+    components: { Edit },
     data() {
       return {
         // 表单数据/列表参数

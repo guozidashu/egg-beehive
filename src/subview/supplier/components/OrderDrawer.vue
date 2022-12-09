@@ -166,7 +166,7 @@
         </div>
       </div>
     </div>
-    <List
+    <QYList
       v-if="search_type == '1'"
       :list="orderList"
       :list-type="listType"
@@ -190,9 +190,9 @@
         <el-table-column label="单价" prop="price" show-overflow-tooltip />
         <el-table-column label="总价格" prop="total" show-overflow-tooltip />
       </template>
-    </List>
+    </QYList>
     <div v-if="search_type == '2'" style="margin-left: 20px">暂无</div>
-    <List
+    <QYList
       v-if="search_type == '3'"
       :list="orderList"
       :list-type="listType"
@@ -218,8 +218,8 @@
           show-overflow-tooltip
         />
       </template>
-    </List>
-    <List
+    </QYList>
+    <QYList
       v-if="search_type == '4'"
       :list="orderList"
       :list-type="listType"
@@ -241,7 +241,7 @@
           show-overflow-tooltip
         />
       </template>
-    </List>
+    </QYList>
     <div v-if="search_type == '5'" style="margin-left: 20px">暂无</div>
   </div>
 </template>
@@ -249,7 +249,7 @@
 <script>
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
-  import List from '@/subview/components/List'
+
   import { mapGetters } from 'vuex'
   import {
     editFinishCancellation,
@@ -259,7 +259,6 @@
   } from '@/api/basic'
   export default {
     name: 'ComponentsDrawer',
-    components: { List },
     props: {
       drawerInof: {
         type: Object,

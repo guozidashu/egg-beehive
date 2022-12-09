@@ -3,7 +3,7 @@
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
-      <Form
+      <QYForm
         :form="form"
         :form-type="formType"
         @changeSearch="handleQuery"
@@ -43,10 +43,10 @@
             />
           </el-form-item>
         </template>
-      </Form>
+      </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
-      <List
+      <QYList
         :list="list"
         :list-type="listType"
         :state="listLoading"
@@ -144,13 +144,11 @@
             </template>
           </el-table-column>
         </template>
-      </List>
+      </QYList>
     </el-card>
   </div>
 </template>
 <script>
-  import List from '@/subview/components/List'
-  import Form from '@/subview/components/Form'
   import datajosn from '@/assets/assets_josn/datajosn'
   import {
     getApplyList,
@@ -159,8 +157,7 @@
     editApplyAgree,
   } from '@/api/basic'
   export default {
-    name: 'EmployeeValue',
-    components: { List, Form },
+    name: 'CustomerApplication',
     mixins: [datajosn],
     data() {
       return {

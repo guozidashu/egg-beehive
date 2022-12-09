@@ -21,7 +21,7 @@
         />
       </el-form-item>
     </el-form>
-    <List
+    <QYList
       :list="list"
       :list-type="listType"
       :state="listLoading"
@@ -40,15 +40,13 @@
           </template>
         </el-table-column>
       </template>
-    </List>
+    </QYList>
   </el-dialog>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
   export default {
     name: 'LevelDeit',
-    components: { List },
     data() {
       return {
         form: {

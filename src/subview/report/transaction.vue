@@ -153,7 +153,7 @@
               </el-button>
             </el-form-item>
           </el-form>
-          <TextLabels
+          <QYTextLabels
             ref="multipleTable"
             :list="goodsStaList"
             :width="textwidth"
@@ -170,7 +170,6 @@
 </template>
 
 <script>
-  import TextLabels from '@/subview/components/TextLabels'
   import VabChart from '@/extra/VabChart'
   import Charts from './components/Charts'
   import datajosn from '@/assets/assets_josn/datajosn'
@@ -179,7 +178,6 @@
     name: 'FinancialOverview',
     components: {
       Charts,
-      TextLabels,
       VabChart,
     },
     mixins: [datajosn],
@@ -212,6 +210,7 @@
             type: 1,
             typeSta: false,
             name: 'real_price',
+            numType: 1,
           },
           {
             title: '交易毛利额',
@@ -220,6 +219,7 @@
             type: 1,
             typeSta: false,
             name: 'sale_total',
+            numType: 1,
           },
           {
             title: '销售额',
@@ -228,6 +228,7 @@
             type: 1,
             typeSta: false,
             name: 'sale_price',
+            numType: 1,
           },
           {
             title: '线下收银金额',
@@ -236,6 +237,7 @@
             type: 2,
             typeSta: false,
             name: 'offline_total',
+            numType: 1,
           },
         ],
         dataObj: {

@@ -58,7 +58,7 @@
           </el-select>
         </el-form-item>
       </el-form>
-      <TextLabels
+      <QYTextLabels
         ref="multipleTable"
         :list="supplier_case"
         :width="supplier_width"
@@ -74,13 +74,13 @@
           background-color: white;
         "
       >
-        <china-map
+        <QYChinaMap
           :list="chainList"
           :map-type="mapType"
           style="width: 30%"
           :title="mapTitle"
         />
-        <List
+        <QYList
           :list="chainList"
           :list-type="listType"
           :state="listLoading"
@@ -94,10 +94,10 @@
               <template #default="{ row }">{{ row.add_count * 100 }}%</template>
             </el-table-column>
           </template>
-        </List>
+        </QYList>
       </div>
       <div style="flex: 3; padding: 20px; background-color: white">
-        <branch
+        <QYBranch
           :list="branchList"
           :style-chart="styleObj"
           :title="branchTitle"
@@ -150,7 +150,7 @@
           </el-form-item>
         </el-form-item> -->
       </el-form>
-      <List :list="supplier_rank" :list-type="listType" :state="listLoading">
+      <QYList :list="supplier_rank" :list-type="listType" :state="listLoading">
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column
@@ -187,9 +187,14 @@
             show-overflow-tooltip
           />
           <el-table-column label="入库数量" prop="num" show-overflow-tooltip />
-          <el-table-column label="入库金额" prop="total" show-overflow-tooltip>
+          <el-table-column
+            align="right"
+            label="入库金额"
+            prop="total"
+            show-overflow-tooltip
+          >
             <template #default="{ row }">
-              ￥{{ row.total | moneyFormat }}
+              <el-tag>￥{{ row.total | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
           <!-- <el-table-column
@@ -214,16 +219,12 @@
             </template>
           </el-table-column> -->
         </template>
-      </List>
+      </QYList>
     </div>
   </div>
 </template>
 
 <script>
-  import List from '@/subview/components/List'
-  import TextLabels from '@/subview/components/TextLabels'
-  import ChinaMap from '@/subview/components/ChinaMap'
-  import Branch from '@/subview/components/Branch'
   import { getDissectList, getCommonAllList } from '@/api/basic'
   import mapjson from '@/assets/assets_josn/mapjson'
   import datajosn from '@/assets/assets_josn/datajosn'
@@ -231,7 +232,6 @@
 
   export default {
     name: 'GoodsStatistical',
-    components: { ChinaMap, List, Branch, TextLabels },
     mixins: [mapjson, datajosn, publicjosn],
     data() {
       return {

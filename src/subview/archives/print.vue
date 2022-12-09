@@ -218,7 +218,7 @@
           </el-form-item>
         </el-form>
         <div v-if="list.length > 0" ref="vab-print-table1">
-          <List
+          <QYList
             :list="list"
             :list-type="listType"
             :state="listLoading"
@@ -262,7 +262,7 @@
                 width="220"
               />
             </template>
-          </List>
+          </QYList>
         </div>
       </div>
     </div>
@@ -270,7 +270,6 @@
 </template>
 
 <script>
-  import List from '@/subview/components/List'
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
   import {
@@ -280,7 +279,7 @@
     getStockPrint,
   } from '@/api/basic'
   export default {
-    components: { List },
+    name: 'ArchivesPrint',
     data() {
       return {
         activeName: '打印吊牌条码',
