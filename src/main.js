@@ -7,6 +7,7 @@ import '@/vab'
 import '@/utils/filter'
 import hasPermi from '@/utils/hasPermi'
 import QyComponent from '@/qy/qy.js'
+
 Vue.use(QyComponent)
 Vue.use(hasPermi)
 import './assets/font/index.scss'

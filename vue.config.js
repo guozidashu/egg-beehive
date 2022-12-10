@@ -54,16 +54,19 @@ module.exports = {
       warnings: true,
       errors: true,
     },
-    proxy: {
-      [baseURL]: {
-        target: `https://demo.quanyu123.com/QYAPI/index.php`, //所有配置不要动，只改这一个地方，改完重启项目
-        ws: true,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^/' + baseURL]: '',
-        },
-      },
-    },
+    proxy:
+      process.env.NODE_ENV === 'development'
+        ? {
+            [baseURL]: {
+              target: `https://demo.quanyu123.com/QYAPI/index.php`, //所有配置不要动，只改这一个地方，改完重启项目
+              ws: true,
+              changeOrigin: true,
+              pathRewrite: {
+                ['^/' + baseURL]: '',
+              },
+            },
+          }
+        : {},
     after: require('./mock'),
   },
   pwa: {
