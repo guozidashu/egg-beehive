@@ -121,7 +121,7 @@ const actions = {
       {
         path: '/403',
         name: '403',
-        component: () => import('@/views/403'),
+        component: () => import('@/subview/403'),
         meta: {
           hidden: true,
         },
@@ -129,7 +129,7 @@ const actions = {
       {
         path: '/404',
         name: '404',
-        component: () => import('@/views/404'),
+        component: () => import('@/subview/404'),
         meta: {
           hidden: true,
         },

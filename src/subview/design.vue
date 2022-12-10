@@ -32,8 +32,8 @@
         </span>
       </div>
       <div>
-        <el-button type="primary" @click="submit">保存默认</el-button>
-        <el-button type="primary" @click="submit">保存</el-button>
+        <el-button type="primary" @click="submit(1)">保存默认</el-button>
+        <el-button type="primary" @click="submit(0)">保存</el-button>
         <el-button type="primary" @click="reset">重置</el-button>
       </div>
     </div>
@@ -275,7 +275,7 @@
           type: 'warning',
         })
           .then(() => {
-            this.submit()
+            this.submit(0)
             this.$router.push({
               path: '/decorate/decorateDesign',
             })
@@ -286,7 +286,7 @@
             })
           })
       },
-      async submit() {
+      async submit(subType) {
         // JSON 转换会丢失 formData
         const form = JSON.parse(JSON.stringify(this.view))
         form.forEach((item) => {
@@ -377,11 +377,19 @@
         })
         temp.div_template_id = this.itemId
         temp.content = arr
+        temp.name = '模板名称'
+        if (subType == 0) {
+          temp.is_default = 0
+        } else {
+          temp.is_default = 1
+        }
+        temp.status = 1
+        temp.img = ''
         const { data } = await editTemplateAssemblyLayout(temp)
-
         this.$message.success(
           '数据提交成功，请按F12打开控制台查看待提交数据集合！'
         )
+        this.itemId = data.id
         // this.setImage()
         return
       },

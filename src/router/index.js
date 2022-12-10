@@ -16,36 +16,6 @@ export const constantRoutes = [
     },
   },
   {
-    path: '/register',
-    component: () => import('@/views/register'),
-    meta: {
-      hidden: true,
-    },
-  },
-  {
-    path: '/callback',
-    component: () => import('@/views/callback'),
-    meta: {
-      hidden: true,
-    },
-  },
-  {
-    path: '/403',
-    name: '403',
-    component: () => import('@/views/403'),
-    meta: {
-      hidden: true,
-    },
-  },
-  {
-    path: '/404',
-    name: '404',
-    component: () => import('@/views/404'),
-    meta: {
-      hidden: true,
-    },
-  },
-  {
     path: '/design',
     component: () => import('@/subview/design'),
     meta: {
@@ -1142,7 +1112,7 @@ export const asyncRoutes = [
   {
     path: '/403',
     name: '403',
-    component: () => import('@/views/403'),
+    component: () => import('@/subview/403'),
     meta: {
       hidden: true,
     },
@@ -1150,7 +1120,7 @@ export const asyncRoutes = [
   {
     path: '/404',
     name: '404',
-    component: () => import('@/views/404'),
+    component: () => import('@/subview/404'),
     meta: {
       hidden: true,
     },
