@@ -135,6 +135,14 @@ const actions = {
         },
       },
       {
+        path: '/design',
+        name: 'design',
+        component: () => import('@/subview/design'),
+        meta: {
+          hidden: true,
+        },
+      },
+      {
         path: '*', //匹配未定义的路由
         redirect: '/404', //重定向
       }

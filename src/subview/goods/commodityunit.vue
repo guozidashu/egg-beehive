@@ -137,7 +137,7 @@
   </div>
 </template>
 <script>
-  import Edit from './components/CommodityUnitEdit'
+  import Edit from '@/subview/components/Edit/CommodityUnitEdit'
   import {
     getGoodsGroupList,
     getGoodsGroupDetail,
@@ -145,7 +145,7 @@
     delGoodsGroupDel,
   } from '@/api/basic'
   export default {
-    name: 'CustomerTags',
+    name: 'GoodsCommodityunit',
     components: { Edit },
     data() {
       return {

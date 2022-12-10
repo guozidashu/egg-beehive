@@ -45,6 +45,13 @@ export const constantRoutes = [
       hidden: true,
     },
   },
+  {
+    path: '/design',
+    component: () => import('@/subview/design'),
+    meta: {
+      hidden: true,
+    },
+  },
 ]
 export const asyncRoutes = [
   {
@@ -644,60 +651,6 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'financialOverview',
-        name: 'FinancialOverview',
-        component: () => import('@/subview/financial/overview'),
-        meta: {
-          title: '财务总览',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'financialSupplier',
-        name: 'FinancialSupplier',
-        component: () => import('@/subview/financial/supplier'),
-        meta: {
-          title: '供应商付款',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'financialCustomer',
-        name: 'FinancialCustomer',
-        component: () => import('@/subview/financial/customer'),
-        meta: {
-          title: '客户应收款',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'financialAccounting',
-        name: 'FinancialAccounting',
-        component: () => import('@/subview/financial/accounting'),
-        meta: {
-          title: '成品核算单',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'financialCost',
-        name: 'FinancialCost',
-        component: () => import('@/subview/financial/cost'),
-        meta: {
-          title: '成本分析',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'financialProfit',
-        name: 'FinancialProfit',
-        component: () => import('@/subview/financial/profit'),
-        meta: {
-          title: '利润分析',
-          icon: 'archive-line',
-        },
-      },
-      {
         path: 'financialSubject',
         name: 'FinancialSubject',
         component: () => import('@/subview/financial/subject'),
@@ -1135,6 +1088,54 @@ export const asyncRoutes = [
             },
           },
         ],
+      },
+    ],
+  },
+  {
+    path: '/decorate',
+    name: 'Decorate',
+    component: Layout,
+    meta: {
+      title: '装修',
+      icon: 'archive-line',
+      breadcrumbHidden: true,
+    },
+    children: [
+      {
+        path: 'decorateShopping',
+        name: 'DecorateShopping',
+        component: () => import('@/subview/decorate/shopping'),
+        meta: {
+          title: '商城配置',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'decorateDesign',
+        name: 'DecorateDesign',
+        component: () => import('@/subview/decorate/design'),
+        meta: {
+          title: '设计页面',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'decorateConfiguration',
+        name: 'DecorateConfiguration',
+        component: () => import('@/subview/decorate/configuration'),
+        meta: {
+          title: '数据配置',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'decorateTheme',
+        name: 'DecorateTheme',
+        component: () => import('@/subview/decorate/theme'),
+        meta: {
+          title: '主题风格',
+          icon: 'archive-line',
+        },
       },
     ],
   },

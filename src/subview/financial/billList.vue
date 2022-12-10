@@ -129,7 +129,7 @@
 </template>
 
 <script>
-  import Edit from './components/BillListEdit'
+  import Edit from '@/subview/components/Edit/BillListEdit'
   import { getBillList, delBillOut } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {

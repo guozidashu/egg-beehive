@@ -116,11 +116,11 @@
 </template>
 
 <script>
-  import Edit from './components/CorporateAccountEdit'
+  import Edit from '@/subview/components/Edit/CorporateAccountEdit'
   import { getCorporateAccountList, delCorporateAccountDel } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    name: 'FinancialBillList',
+    name: 'FinancialCorporateAccount',
     components: { Edit },
     mixins: [datajosn],
     data() {

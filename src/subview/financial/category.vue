@@ -147,10 +147,10 @@
   </div>
 </template>
 <script>
-  import Edit from './components/categoryEdit'
+  import Edit from '@/subview/components/Edit/categoryEdit'
   import { getCategoryList, delCategoryDel } from '@/api/basic'
   export default {
-    name: 'CustomerTags',
+    name: 'FinancialCategory',
     components: { Edit },
     data() {
       return {

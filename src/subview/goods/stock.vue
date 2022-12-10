@@ -211,7 +211,7 @@
     getStockRank,
   } from '@/api/basic'
   export default {
-    name: 'GoodsStatistical',
+    name: 'GoodsStock',
     data() {
       return {
         listLoading: false,

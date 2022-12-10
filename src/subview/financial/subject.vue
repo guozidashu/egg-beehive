@@ -160,10 +160,10 @@
   </div>
 </template>
 <script>
-  import Edit from './components/SubjectEdit'
+  import Edit from '@/subview/components/Edit/SubjectEdit'
   import { getAccountList, delAccountDel } from '@/api/basic'
   export default {
-    name: 'CustomerTags',
+    name: 'FinancialSubject',
     components: { Edit },
     data() {
       return {

@@ -304,7 +304,7 @@
 </template>
 
 <script>
-  import Drawer from './components/Drawer'
+  import Drawer from '@/subview/components/Drawer/GoodsDrawer'
   import VabUpload from '@/extra/VabUpload'
   import {
     getGoodList,

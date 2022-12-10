@@ -139,7 +139,7 @@
   </div>
 </template>
 <script>
-  import Edit from './components/ClassifiedEdit'
+  import Edit from '@/subview/components/Edit/ClassifiedEdit'
   import {
     getCategoryMainList,
     getCategorySonList,
@@ -147,7 +147,7 @@
     delCategoryMainDel,
   } from '@/api/basic'
   export default {
-    name: 'CustomerTags',
+    name: 'GoodsClassified',
     components: { Edit },
     data() {
       return {
