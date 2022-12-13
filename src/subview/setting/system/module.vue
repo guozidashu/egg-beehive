@@ -95,6 +95,36 @@
             </el-form-item>
           </el-form>
         </el-tab-pane>
+        <el-tab-pane label="企业微信配置" name="企业微信配置">
+          <div class="textCss">
+            <p style="font-weight: 600">使用说明</p>
+          </div>
+          <el-form
+            ref="form4"
+            class="demo-form"
+            label-position="right"
+            label-width="150px"
+            :model="form4"
+            :rules="rules4"
+          >
+            <el-form-item label="客户企业微信id" prop="corpid">
+              <el-input v-model="form4.corpid" />
+            </el-form-item>
+            <el-form-item label="通讯录密钥" prop="txl_secret">
+              <el-input v-model="form4.txl_secret" />
+            </el-form-item>
+            <el-form-item>
+              <el-button
+                v-has-permi="['btn:SystemModule:edit']"
+                style="margin-top: 10px"
+                type="primary"
+                @click="submitForm('form4')"
+              >
+                保存
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
         <el-tab-pane label="代开发应用配置" name="代开发应用配置">
           <div class="textCss">
             <p style="font-weight: 600">使用说明</p>
@@ -107,16 +137,16 @@
             :model="form2"
             :rules="rules2"
           >
-            <el-form-item label="应用名" prop="name">
+            <!-- <el-form-item label="应用名" prop="name">
               <el-input v-model="form2.name" />
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="代开发应用id" prop="agent_id">
               <el-input v-model="form2.agent_id" />
             </el-form-item>
             <el-form-item label="永久密钥" prop="secret">
               <el-input v-model="form2.secret" />
             </el-form-item>
-            <el-form-item label="token失效时间" prop="token_expire_time">
+            <!-- <el-form-item label="token失效时间" prop="token_expire_time">
               <el-input
                 v-model="form2.token_expire_time"
                 placeholder="请输入数字"
@@ -142,7 +172,7 @@
               prop="agent_ticket_expire_time"
             >
               <el-input v-model="form2.agent_ticket_expire_time" />
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
               <el-button
                 v-has-permi="['btn:SystemModule:edit']"
@@ -167,19 +197,19 @@
             :model="form3"
             :rules="rules3"
           >
-            <el-form-item label="应用标识符" prop="identifier">
+            <!-- <el-form-item label="应用标识符" prop="identifier">
               <el-input v-model="form3.identifier" />
             </el-form-item>
             <el-form-item label="应用名" prop="name">
               <el-input v-model="form3.name" />
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="代开发应用id" prop="agent_id">
               <el-input v-model="form3.agent_id" />
             </el-form-item>
             <el-form-item label="永久密钥" prop="secret">
               <el-input v-model="form3.secret" />
             </el-form-item>
-            <el-form-item label="token失效时间" prop="token_expire_time">
+            <!-- <el-form-item label="token失效时间" prop="token_expire_time">
               <el-input
                 v-model="form2.token_expire_time"
                 placeholder="请输入数字"
@@ -205,43 +235,13 @@
               prop="agent_ticket_expire_time"
             >
               <el-input v-model="form3.agent_ticket_expire_time" />
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
               <el-button
                 v-has-permi="['btn:SystemModule:edit']"
                 style="margin-top: 10px"
                 type="primary"
                 @click="submitForm('form3')"
-              >
-                保存
-              </el-button>
-            </el-form-item>
-          </el-form>
-        </el-tab-pane>
-        <el-tab-pane label="企业微信配置" name="企业微信配置">
-          <div class="textCss">
-            <p style="font-weight: 600">使用说明</p>
-          </div>
-          <el-form
-            ref="form4"
-            class="demo-form"
-            label-position="right"
-            label-width="150px"
-            :model="form4"
-            :rules="rules4"
-          >
-            <el-form-item label="客户企业微信id" prop="corpid">
-              <el-input v-model="form4.corpid" />
-            </el-form-item>
-            <el-form-item label="通讯录密钥" prop="txl_secret">
-              <el-input v-model="form4.txl_secret" />
-            </el-form-item>
-            <el-form-item>
-              <el-button
-                v-has-permi="['btn:SystemModule:edit']"
-                style="margin-top: 10px"
-                type="primary"
-                @click="submitForm('form4')"
               >
                 保存
               </el-button>

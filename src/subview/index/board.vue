@@ -251,26 +251,18 @@
             {
               type: 'value',
               name: '金额',
-              min: `0`,
-              max: `120000`,
-
-              // ...
             },
             {
               type: 'value',
               name: '数量',
-              min: `0`,
-              max: `2500`,
             },
           ],
           series: [
             {
               name: '销售金额',
-              type: 'line',
-              stack: 'Total',
+              type: 'bar',
               smooth: true,
               data: this.dataAllList.sale_total,
-              yAxisIndex: 1,
               itemStyle: {
                 color: '#FFC833',
               },
@@ -278,7 +270,7 @@
             {
               name: '销售件数',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: this.dataAllList.sale_num,
               yAxisIndex: 1,
@@ -288,9 +280,7 @@
             },
             {
               name: '发货金额',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
+              type: 'bar',
               data: this.dataAllList.delivery_total,
               itemStyle: {
                 color: '#55DF7E',
@@ -299,18 +289,17 @@
             {
               name: '发货件数',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: this.dataAllList.delivery_num,
+              yAxisIndex: 1,
               itemStyle: {
                 color: '#1890FF',
               },
             },
             {
               name: '退货金额',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
+              type: 'bar',
               data: this.dataAllList.return_total,
               itemStyle: {
                 color: '#527AA4',
@@ -319,15 +308,18 @@
             {
               name: '退货件数',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: this.dataAllList.return_num,
+              yAxisIndex: 1,
               itemStyle: {
                 color: '#28A933',
               },
             },
           ],
         }
+        console.log(88888, this.option)
+
         getGoodsRanch().then((res) => {
           this.goosList = res.data.data
         })

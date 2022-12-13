@@ -133,14 +133,19 @@
             boundaryGap: false,
             data: [],
           },
+          yAxis: [
+            {
+              type: 'value',
+              name: '数量',
+            },
+          ],
           series: [
             {
               name: '新增量',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: [],
-              yAxisIndex: 1,
               itemStyle: {
                 color: '#FFC833',
               },
@@ -148,10 +153,9 @@
             {
               name: '成交量',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: [],
-              yAxisIndex: 1,
               itemStyle: {
                 color: '#FF6C87',
               },
@@ -169,22 +173,32 @@
             boundaryGap: false,
             data: [],
           },
+          yAxis: [
+            {
+              type: 'value',
+              name: '数量',
+            },
+            {
+              type: 'value',
+              name: '金额',
+            },
+          ],
           series: [
             {
               name: '销售数量',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: [],
-              yAxisIndex: 1,
+              yAxisIndex: 0,
               itemStyle: {
                 color: '#1890FF',
               },
             },
             {
               name: '销售额',
-              type: 'line',
-              stack: 'Total',
+              type: 'bar',
+
               smooth: true,
               data: [],
               yAxisIndex: 1,
@@ -297,6 +311,8 @@
         this.dataObj1.xAxis.data = this.dateList
         this.dataObj1.series[0].data = this.dataAllList.sale_num
         this.dataObj1.series[1].data = this.dataAllList.sale_total
+        console.log(11, this.dataObj.series)
+        console.log(22, this.dataObj1.series)
         this.$forceUpdate()
       },
     },

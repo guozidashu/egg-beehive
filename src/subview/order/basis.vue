@@ -313,23 +313,17 @@
             {
               type: 'value',
               name: '金额',
-              min: `0`,
-              max: `120000`,
-
-              // ...
             },
             {
               type: 'value',
               name: '数量',
-              min: `0`,
-              max: `2500`,
             },
           ],
           series: [
             {
               name: '销售件数',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: this.dataAllList.sale_list_num,
               yAxisIndex: 1,
@@ -340,11 +334,8 @@
 
             {
               name: '销售金额',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
+              type: 'bar',
               data: this.dataAllList.sale_list_total,
-              yAxisIndex: 1,
               itemStyle: {
                 color: '#FF6C87',
               },
@@ -352,8 +343,9 @@
             {
               name: '退货数量',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
+              yAxisIndex: 1,
               data: this.dataAllList.return_list_num,
               itemStyle: {
                 color: '#55DF7E',
@@ -361,9 +353,7 @@
             },
             {
               name: '退货金额',
-              type: 'line',
-              stack: 'Total',
-              smooth: true,
+              type: 'bar',
               data: this.dataAllList.return_list_total,
               itemStyle: {
                 color: '#1890FF',

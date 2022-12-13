@@ -397,27 +397,16 @@
           yAxis: [
             {
               type: 'value',
-              name: '金额',
-              min: `0`,
-              max: `120000`,
-
-              // ...
-            },
-            {
-              type: 'value',
               name: '数量',
-              min: `0`,
-              max: `2500`,
             },
           ],
           series: [
             {
               name: '在售商品数',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: this.dataAllList.sku_total,
-              yAxisIndex: 1,
               itemStyle: {
                 color: '#FFC833',
               },
@@ -425,10 +414,9 @@
             {
               name: '已售罄商品数',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: this.dataAllList.out_total,
-              yAxisIndex: 1,
               itemStyle: {
                 color: '#FF6C87',
               },

@@ -51,22 +51,7 @@
             },
           },
           xAxis: this.data.xAxis,
-          yAxis: [
-            {
-              type: 'value',
-              name: '金额',
-              min: `0`,
-              max: `120000`,
-
-              // ...
-            },
-            {
-              type: 'value',
-              name: '数量',
-              min: `0`,
-              max: `2500`,
-            },
-          ],
+          yAxis: this.data.yAxis,
           series: this.data.series,
         },
       }

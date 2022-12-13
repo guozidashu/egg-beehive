@@ -371,23 +371,17 @@
               {
                 type: 'value',
                 name: '金额',
-                min: `0`,
-                max: `120000`,
-
-                // ...
               },
               {
                 type: 'value',
                 name: '数量',
-                min: `0`,
-                max: `2500`,
               },
             ],
             series: [
               {
                 name: '发货数量',
                 type: 'line',
-                stack: 'Total',
+
                 smooth: true,
                 data: this.dataAllList.deliver_list_num,
                 yAxisIndex: 1,
@@ -398,7 +392,7 @@
               {
                 name: '待转入数量',
                 type: 'line',
-                stack: 'Total',
+
                 smooth: true,
                 data: this.dataAllList.confirm,
                 yAxisIndex: 1,
@@ -409,7 +403,7 @@
               {
                 name: '销售件数',
                 type: 'line',
-                stack: 'Total',
+
                 smooth: true,
                 data: this.dataAllList.sale_list_num,
                 yAxisIndex: 1,
@@ -420,7 +414,7 @@
               {
                 name: '退货件数',
                 type: 'line',
-                stack: 'Total',
+
                 smooth: true,
                 data: this.dataAllList.return_list_num,
                 yAxisIndex: 1,

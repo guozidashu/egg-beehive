@@ -203,11 +203,20 @@
             boundaryGap: false,
             data: [],
           },
+          yAxis: [
+            {
+              type: 'value',
+              name: '金额',
+            },
+            {
+              type: 'value',
+              name: '数量',
+            },
+          ],
           series: [
             {
               name: '费用单数量',
               type: 'line',
-              stack: 'Total',
               smooth: true,
               data: [],
               yAxisIndex: 1,
@@ -217,11 +226,9 @@
             },
             {
               name: '费用单金额',
-              type: 'line',
-              stack: 'Total',
+              type: 'bar',
               smooth: true,
               data: [],
-              yAxisIndex: 1,
               itemStyle: {
                 color: '#1A9EFF',
               },
@@ -457,25 +464,17 @@
               {
                 type: 'value',
                 name: '金额',
-                min: `0`,
-                max: `120000`,
-
-                // ...
               },
               {
                 type: 'value',
                 name: '数量',
-                min: `0`,
-                max: `2500`,
               },
             ],
             series: [
               {
                 name: '客户收款数',
-                type: 'line',
-                stack: 'Total',
-                smooth: true,
-                data: this.dataAllList.receipts_total,
+                type: 'bar',
+                data: this.dataAllList.receipts_num,
                 yAxisIndex: 1,
                 itemStyle: {
                   color: '#FFC833',
@@ -484,31 +483,25 @@
 
               {
                 name: '客户收款金额',
-                type: 'line',
-                stack: 'Total',
-                smooth: true,
-                data: this.dataAllList.receipts_num,
-                yAxisIndex: 1,
+                type: 'bar',
+                data: this.dataAllList.receipts_total,
                 itemStyle: {
                   color: '#FF6C87',
                 },
               },
               {
                 name: '供应商付款数',
-                type: 'line',
-                stack: 'Total',
-                smooth: true,
-                data: this.dataAllList.supplier_receipts_total,
+                type: 'bar',
+                yAxisIndex: 1,
+                data: this.dataAllList.supplier_receipts_num,
                 itemStyle: {
                   color: '#55DF7E',
                 },
               },
               {
                 name: '供应商付款金额',
-                type: 'line',
-                stack: 'Total',
-                smooth: true,
-                data: this.dataAllList.supplier_receipts_num,
+                type: 'bar',
+                data: this.dataAllList.supplier_receipts_total,
                 itemStyle: {
                   color: '#1890FF',
                 },

@@ -320,23 +320,17 @@
             {
               type: 'value',
               name: '金额',
-              min: `0`,
-              max: `120000`,
-
-              // ...
             },
             {
               type: 'value',
               name: '数量',
-              min: `0`,
-              max: `2500`,
             },
           ],
           series: [
             {
               name: '成品采购数量',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: this.dataAllList.product_num,
               yAxisIndex: 1,
@@ -347,7 +341,7 @@
             {
               name: '总退货数量',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: this.dataAllList.return_num,
               yAxisIndex: 1,

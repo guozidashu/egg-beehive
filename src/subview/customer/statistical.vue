@@ -200,6 +200,12 @@
             data: ['新增客户'],
           },
           color: ['#409eff'],
+          yAxis: [
+            {
+              type: 'value',
+              name: '数量',
+            },
+          ],
           xAxis: {
             type: 'category',
             boundaryGap: false,
@@ -209,10 +215,9 @@
             {
               name: '新增客户',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: [],
-              yAxisIndex: 1,
               itemStyle: {
                 color: '#FFC833',
               },
@@ -231,14 +236,19 @@
             boundaryGap: false,
             data: [],
           },
+          yAxis: [
+            {
+              type: 'value',
+              name: '金额',
+            },
+          ],
           series: [
             {
               name: '客户消费',
-              type: 'line',
-              stack: 'Total',
+              type: 'bar',
+
               smooth: true,
               data: [],
-              yAxisIndex: 1,
               itemStyle: {
                 color: '#FFC833',
               },

@@ -383,23 +383,17 @@
             {
               type: 'value',
               name: '金额',
-              min: `0`,
-              max: `120000`,
-
-              // ...
             },
             {
               type: 'value',
               name: '数量',
-              min: `0`,
-              max: `2500`,
             },
           ],
           series: [
             {
               name: '包装辅料采购数',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: this.dataAllList.tare_adjuvant_num,
               yAxisIndex: 1,
@@ -410,7 +404,7 @@
             {
               name: '面料采购数',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: this.dataAllList.material_num,
               yAxisIndex: 1,
@@ -421,8 +415,9 @@
             {
               name: '辅料采购数',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
+              yAxisIndex: 1,
               data: this.dataAllList.adjuvant_num,
               itemStyle: {
                 color: '#55DF7E',

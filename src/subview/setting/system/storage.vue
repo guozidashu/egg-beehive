@@ -2,9 +2,9 @@
   <div class="comprehensive-form-container">
     <el-card class="tabs-card" shadow="hover">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="本地存储" name="本地存储" />
+        <!-- <el-tab-pane label="本地存储" name="本地存储" />
         <el-tab-pane label="阿里云存储" name="阿里云存储" />
-        <el-tab-pane label="腾讯云存储" name="腾讯云存储" />
+        <el-tab-pane label="腾讯云存储" name="腾讯云存储" /> -->
         <el-tab-pane label="七牛云存储" name="七牛云存储" />
       </el-tabs>
       <div
@@ -105,7 +105,7 @@
           <el-form-item label="存储桶" prop="bucket2">
             <el-input v-model="form.bucket2" />
           </el-form-item>
-          <el-form-item label="是否启用图片压缩">
+          <!-- <el-form-item label="是否启用图片压缩">
             <el-switch
               v-model="form.photo_reduce2"
               active-color="#41B584"
@@ -116,7 +116,7 @@
               inactive-text="关闭"
               :inactive-value="0"
             />
-          </el-form-item>
+          </el-form-item> -->
         </div>
         <el-form-item>
           <el-button
@@ -145,7 +145,7 @@
     name: 'SystemStorage',
     data() {
       return {
-        activeName: '本地存储',
+        activeName: '七牛云存储',
         form: {
           state: 0, //接口是否开启
 

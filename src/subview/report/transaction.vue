@@ -251,14 +251,19 @@
             boundaryGap: false,
             data: [],
           },
+          yAxis: [
+            {
+              type: 'value',
+              name: '金额',
+            },
+          ],
           series: [
             {
               name: '订单金额',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: [],
-              yAxisIndex: 1,
               itemStyle: {
                 color: '#FFC833',
               },
@@ -276,14 +281,19 @@
             boundaryGap: false,
             data: [],
           },
+          yAxis: [
+            {
+              type: 'value',
+              name: '数量',
+            },
+          ],
           series: [
             {
               name: '销售件数',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: [],
-              yAxisIndex: 1,
               itemStyle: {
                 color: '#FFC833',
               },
@@ -301,14 +311,19 @@
             boundaryGap: false,
             data: [],
           },
+          yAxis: [
+            {
+              type: 'value',
+              name: '数量',
+            },
+          ],
           series: [
             {
               name: '付款人数',
               type: 'line',
-              stack: 'Total',
+
               smooth: true,
               data: [],
-              yAxisIndex: 1,
               itemStyle: {
                 color: '#FFC833',
               },
@@ -459,45 +474,30 @@
             {
               type: 'value',
               name: '金额',
-              min: `0`,
-              max: `120000`,
-
-              // ...
-            },
-            {
-              type: 'value',
-              name: '数量',
-              min: `0`,
-              max: `2500`,
             },
           ],
           series: [
             {
               name: '营业额',
-              type: 'line',
-              stack: 'Total',
+              type: 'bar',
               smooth: true,
               data: this.dataAllList.real_price,
-              yAxisIndex: 1,
               itemStyle: {
                 color: '#FFC833',
               },
             },
             {
               name: '交易毛利金额',
-              type: 'line',
-              stack: 'Total',
+              type: 'bar',
               smooth: true,
               data: this.dataAllList.sale_total,
-              yAxisIndex: 1,
               itemStyle: {
                 color: '#FF6C87',
               },
             },
             {
               name: '销售额',
-              type: 'line',
-              stack: 'Total',
+              type: 'bar',
               smooth: true,
               data: this.dataAllList.sale_price,
               itemStyle: {
@@ -506,8 +506,7 @@
             },
             {
               name: '线下收银金额',
-              type: 'line',
-              stack: 'Total',
+              type: 'bar',
               smooth: true,
               data: this.dataAllList.offline_total,
               itemStyle: {

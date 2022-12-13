@@ -349,23 +349,16 @@
               {
                 type: 'value',
                 name: '金额',
-                min: `0`,
-                max: `120000`,
-
-                // ...
               },
               {
                 type: 'value',
                 name: '数量',
-                min: `0`,
-                max: `2500`,
               },
             ],
             series: [
               {
                 name: '新增用户数',
                 type: 'line',
-                stack: 'Total',
                 smooth: true,
                 data: this.dataAllList.add_customer,
                 yAxisIndex: 1,
@@ -376,7 +369,7 @@
               {
                 name: '下单用户数',
                 type: 'line',
-                stack: 'Total',
+
                 smooth: true,
                 data: this.dataAllList.sale_customer,
                 yAxisIndex: 1,
