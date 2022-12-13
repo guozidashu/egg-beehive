@@ -297,8 +297,6 @@
         this.dataObj1.xAxis.data = this.dateList
         this.dataObj1.series[0].data = this.dataAllList.sale_num
         this.dataObj1.series[1].data = this.dataAllList.sale_total
-        console.log(1111, this.dataObj)
-        console.log(2222, this.dataObj1)
         this.$forceUpdate()
       },
     },

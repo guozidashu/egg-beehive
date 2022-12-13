@@ -76,7 +76,7 @@
             class="login-btn"
             :loading="loading"
             type="primary"
-            @click="handleLogin"
+            @click="handleLogin()"
           >
             {{ translateTitle('登录') }}
           </el-button>
@@ -173,6 +173,7 @@
     },
     created() {
       this.getVerifyImg()
+      window.addEventListener('keyup', this.enterSearch)
     },
     mounted() {
       this.form.username = 'admin'
@@ -200,6 +201,12 @@
         return this.redirect === '/404' || this.redirect === '/403'
           ? '/'
           : this.redirect
+      },
+
+      enterSearch: function (e) {
+        if (e.keyCode === 13) {
+          this.handleLogin()
+        }
       },
       handleLogin() {
         this.$refs.form.validate(async (valid) => {

@@ -354,9 +354,6 @@
         }
         this.listLoading = false
       },
-      selectAddress(selectProvince, selectCity, selectArea) {
-        console.log(selectProvince, selectCity, selectArea)
-      },
       upMembers(type) {
         if (type == 1) {
           this.$baseConfirm('你确定要作废吗？', null, async () => {

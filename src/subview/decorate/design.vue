@@ -124,7 +124,6 @@
     },
     methods: {
       handleEdit(item) {
-        console.log(1111, item)
         window.open(`#/design?id=${item}`, '_blank')
       },
       setDefault(item) {
@@ -173,12 +172,8 @@
             })
           })
       },
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath)
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath)
-      },
+      handleOpen() {},
+      handleClose() {},
       changeBtnPage(data) {
         this.form.page = data
       },

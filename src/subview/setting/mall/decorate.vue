@@ -178,7 +178,6 @@
     watch: {
       itemId: {
         handler: function (val) {
-          console.log(777777, val)
           if (val != 0) {
             this.getTypeList()
             this.init(val)
@@ -226,8 +225,6 @@
           arr.push(temp)
         })
         this.propsList = arr
-        console.log(1111, this.propsList)
-        console.log(2222, this.view)
       },
       back() {
         this.$emit('submitUpload', 1)
@@ -242,7 +239,6 @@
             item.parameters.type = Number(item.tab_type)
           }
         })
-        console.log(797987, form)
         let temp1 = {
           name: 'TemplateExample',
           status: 1,
@@ -299,7 +295,6 @@
             tab_type: 1,
           }),
         }
-        console.log(46546465, temp1)
         // if (form.length == 1) {
         //   this.$message.error('请添加模块！')
         //   return
@@ -357,25 +352,21 @@
       },
       //禁止拖拽到第一项
       onMove(e) {
-        console.log('禁止拖拽到第一项', e)
         if (e.relatedContext.element.type == 'Info') return false
         return true
       },
       //开始拖拽
       dragStart(e) {
         this.type = e.target.dataset.type
-        console.log('开始拖拽', this.type)
       },
       // 结束拖拽
       dragEnd() {
-        console.log('结束拖拽')
         this.$delete(this.view[this.index], 'status')
         this.isPush = false
         this.type = null
       },
       // 已放置到指定位置
       drog(e) {
-        console.log('已放置到指定位置', this.type)
         if (!this.type) {
           // 内容拖拽
           return
@@ -386,7 +377,6 @@
       },
       // 移动中
       dragOver(e) {
-        console.log('移动中', this.type)
         if (!this.type) {
           // 内容拖拽
           return

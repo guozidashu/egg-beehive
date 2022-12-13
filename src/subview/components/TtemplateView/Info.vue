@@ -43,9 +43,7 @@
     },
     watch: {
       data: {
-        handler: function (val) {
-          console.log(6666666, val)
-        },
+        handler: function () {},
         deep: true,
         immediate: true,
       },

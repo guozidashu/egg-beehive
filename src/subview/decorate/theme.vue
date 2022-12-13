@@ -85,7 +85,6 @@
         this.form.customer_service_type = Number(
           this.form.customer_service_type
         )
-        console.log(2222, this.form)
       },
       async submitForm() {
         const { code } = await editBaseConfigSave(this.form)

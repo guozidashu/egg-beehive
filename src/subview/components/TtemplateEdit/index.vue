@@ -129,7 +129,6 @@
       data: {
         handler(val) {
           this.type = val.type
-          console.log(99999, this.type, val, this.tab_type)
         },
         immediate: true,
         deep: true,

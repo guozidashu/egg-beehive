@@ -51,9 +51,7 @@
     },
     watch: {
       data: {
-        handler: function (val) {
-          console.log(8888888888, val)
-        },
+        handler: function () {},
         deep: true,
         immediate: true,
       },

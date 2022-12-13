@@ -241,12 +241,8 @@
         this.form.id = id
         this.fetchData(2)
       },
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath)
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath)
-      },
+      handleOpen() {},
+      handleClose() {},
       mouseOver(index) {
         if (this.menuList[index].btnIconStatus == false) {
           this.menuList[index].btnIconStatus = true

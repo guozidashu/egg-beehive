@@ -47,7 +47,6 @@
     watch: {
       data: {
         handler: function (val) {
-          console.log('视图区域的值', val)
           if (val.parameters.bg_Image) {
             this.$forceUpdate()
           }

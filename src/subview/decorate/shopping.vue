@@ -467,7 +467,6 @@
         this.form.customer_service_type = Number(
           this.form.customer_service_type
         )
-        console.log(9999, this.form)
       },
       async fetchData1() {
         const { data } = await getRegisterDealDetail()

@@ -178,7 +178,6 @@
           this.list.parameters.speaker_items[data.index].opentype =
             data.link_type
         }
-        console.log(222222, this.list.parameters.speaker_items)
       },
       removeImage(index) {
         this.list.parameters.speaker_items.splice(index, 1)

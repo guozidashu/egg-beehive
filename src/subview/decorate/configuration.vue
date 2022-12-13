@@ -289,7 +289,6 @@
       getSon(data) {
         // this.inof_list[this.imageIndex].img = data[0]
         this.inof.img = data[0]
-        console.log(9999, this.inof_list)
       },
       addImg() {
         this.inof_list.push({
@@ -310,12 +309,8 @@
         this.total = data.total
         this.listLoading = false
       },
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath)
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath)
-      },
+      handleOpen() {},
+      handleClose() {},
     },
   }
 </script>

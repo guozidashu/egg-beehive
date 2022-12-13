@@ -476,9 +476,6 @@
           this.orderList = data.data
         }
       },
-      selectAddress(selectProvince, selectCity, selectArea) {
-        console.log(selectProvince, selectCity, selectArea)
-      },
       handleClose1() {
         this.dialogVisible1 = false
       },

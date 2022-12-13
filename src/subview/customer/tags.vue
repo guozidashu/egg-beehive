@@ -232,12 +232,8 @@
       handleGrouPQuery(id) {
         this.form.pid = id
       },
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath)
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath)
-      },
+      handleOpen() {},
+      handleClose() {},
       mouseOver(index) {
         if (this.menuList[index].btnIconStatus == false) {
           this.menuList[index].btnIconStatus = true

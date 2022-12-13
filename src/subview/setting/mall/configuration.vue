@@ -444,7 +444,6 @@
         const { data } = await getRegisterDealDetail()
         this.form1 = JSON.parse(data)
         this.form1.register_status = Number(this.form1.register_status)
-        console.log(9999, this.form1)
       },
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {

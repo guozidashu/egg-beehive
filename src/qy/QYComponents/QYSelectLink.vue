@@ -450,7 +450,6 @@
             this.$emit('SelectLink', temp)
           }
         } else {
-          console.log(5555555, item)
           if (this.tabindex == 9) {
             item.selectName = item.pname + '>' + item.id
             item.selectTitle = item.title
@@ -525,7 +524,6 @@
           temp = this.tabsList.filter((item) => item.id == this.tabindex)[0]
         }
         if (this.tabindex == 9) {
-          console.log(787878787, temp)
           const { data } = await getArticleList(this.form)
           data.data.forEach((item) => {
             item.url = temp.url
