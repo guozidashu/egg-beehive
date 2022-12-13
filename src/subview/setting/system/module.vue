@@ -110,9 +110,6 @@
             <el-form-item label="客户企业微信id" prop="corpid">
               <el-input v-model="form4.corpid" />
             </el-form-item>
-            <el-form-item label="通讯录密钥" prop="txl_secret">
-              <el-input v-model="form4.txl_secret" />
-            </el-form-item>
             <el-form-item>
               <el-button
                 v-has-permi="['btn:SystemModule:edit']"

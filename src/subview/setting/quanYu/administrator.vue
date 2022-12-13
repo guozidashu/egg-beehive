@@ -24,7 +24,6 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
-            v-has-permi="['btn:Administrator:add']"
             native-type="submit"
             size="small"
             type="primary"
@@ -63,13 +62,7 @@
             width="100"
           >
             <template #default="{ row }">
-              <el-button
-                v-has-permi="['btn:Administrator:edit']"
-                type="text"
-                @click="handleEdit(row)"
-              >
-                编辑
-              </el-button>
+              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
             </template>
           </el-table-column>
         </template>
@@ -80,7 +73,7 @@
 </template>
 
 <script>
-  import Edit from './components/AdministratorEdit'
+  import Edit from '../components/AdministratorEdit.vue'
   import { getAdminList, addAdminSave } from '@/api/basic'
   export default {
     name: 'Administrator',

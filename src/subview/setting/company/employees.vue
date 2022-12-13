@@ -19,7 +19,6 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
-            v-has-permi="['btn:Employees:add']"
             native-type="submit"
             size="small"
             type="primary"
@@ -94,13 +93,7 @@
           </el-table-column>
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
-              <el-button
-                v-has-permi="['btn:Employees:edit']"
-                type="text"
-                @click="handleEdit(row)"
-              >
-                编辑
-              </el-button>
+              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
               <!-- <el-button type="text" @click="handleDetail(row, 2)">
                 编辑
               </el-button>
@@ -120,7 +113,7 @@
 </template>
 
 <script>
-  import Edit from './components/EmployeesEdit'
+  import Edit from '../components/EmployeesEdit'
   // import Drawer from './components/EmployeesDrawer'
   import { getEmployeeList, delEmployeeSync } from '@/api/basic'
   export default {

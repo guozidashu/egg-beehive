@@ -44,6 +44,29 @@ export function getConfig(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+// 部门管理
+
+export function editEmployeeRoleSave(data) {
+  return request({
+    url: '/employeePosition/employeeRoleSave',
+    method: 'post',
+    data,
+  })
+}
+export function getEmployeePosition(data) {
+  return request({
+    url: '/employeePosition/List',
+    method: 'post',
+    data,
+  })
+}
+export function getEmployeeRoleList(data) {
+  return request({
+    url: '/employeePosition/employeeRoleList',
+    method: 'post',
+    data,
+  })
+}
 // 新商城配置
 export function getBaseConfigDetail(data) {
   return request({

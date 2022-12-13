@@ -12,7 +12,6 @@
         <template #Form>
           <el-form-item>
             <el-button
-              v-has-permi="['btn:User:add']"
               style="margin-left: 20px"
               type="primary"
               @click="handleEdit('add')"
@@ -51,7 +50,6 @@
             <div style="width: 50%">
               <div v-if="item.btnIconStatus">
                 <el-button
-                  v-has-permi="['btn:User:edit']"
                   icon="el-icon-edit"
                   size="small"
                   style="margin-left: 125px; color: #999"
@@ -61,7 +59,6 @@
                   编辑
                 </el-button>
                 <el-button
-                  v-has-permi="['btn:User:del']"
                   icon="el-icon-delete"
                   size="small"
                   style="margin-left: 125px; color: #999"
@@ -71,7 +68,6 @@
                   删除
                 </el-button>
                 <el-button
-                  v-has-permi="['btn:User:role']"
                   icon="el-icon-share"
                   size="small"
                   style="margin-left: 125px; color: #999"
@@ -138,7 +134,7 @@
 </template>
 
 <script>
-  import Drawer from './components/UserDrawer'
+  import Drawer from '../components/UserDrawer'
   import { getRoleList } from '@/api/basic'
   export default {
     name: 'User',

@@ -944,15 +944,6 @@ export const asyncRoutes = [
         ],
       },
       {
-        path: 'employees',
-        name: 'Employees',
-        component: () => import('@/subview/setting/employees'),
-        meta: {
-          title: '员工管理',
-          icon: 'archive-line',
-        },
-      },
-      {
         path: 'personal',
         name: 'Personal',
         component: () => import('@/subview/setting/personal'),
@@ -962,29 +953,11 @@ export const asyncRoutes = [
         },
       },
       {
-        path: 'user',
-        name: 'User',
-        component: () => import('@/subview/setting/user'),
-        meta: {
-          title: '角色管理',
-          icon: 'archive-line',
-        },
-      },
-      {
         path: 'stores',
         name: 'Stores',
         component: () => import('@/subview/setting/stores'),
         meta: {
           title: '门店管理',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'administrator',
-        name: 'Administrator',
-        component: () => import('@/subview/setting/administrator'),
-        meta: {
-          title: '用户管理',
           icon: 'archive-line',
         },
       },
@@ -1055,6 +1028,66 @@ export const asyncRoutes = [
             component: () => import('@/subview/setting/mall/design'),
             meta: {
               title: '页面装修',
+            },
+          },
+        ],
+      },
+      {
+        path: 'quanYu',
+        name: 'QuanYu',
+        meta: {
+          title: '中台管理',
+          icon: 'archive-line',
+        },
+        children: [
+          {
+            path: 'quanYuUser',
+            name: 'QuanYuUser',
+            component: () => import('@/subview/setting/quanYu/user'),
+            meta: {
+              title: '角色管理',
+            },
+          },
+          {
+            path: 'quanYuAdministrator',
+            name: 'QuanYuAdministrator',
+            component: () => import('@/subview/setting/quanYu/administrator'),
+            meta: {
+              title: '用户管理',
+            },
+          },
+          {
+            path: 'quanYuMenu',
+            name: 'QuanYuMenu',
+            component: () => import('@/subview/setting/quanYu/menu'),
+            meta: {
+              title: '菜单管理',
+            },
+          },
+        ],
+      },
+      {
+        path: 'company',
+        name: 'Company',
+        meta: {
+          title: '员工管理',
+          icon: 'archive-line',
+        },
+        children: [
+          {
+            path: 'companyEmployees',
+            name: 'CompanyEmployees',
+            component: () => import('@/subview/setting/company/employees'),
+            meta: {
+              title: '员工管理',
+            },
+          },
+          {
+            path: 'companyDepartment',
+            name: 'CompanyDepartment',
+            component: () => import('@/subview/setting/company/department'),
+            meta: {
+              title: '部门管理',
             },
           },
         ],

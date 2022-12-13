@@ -3,7 +3,12 @@
     <el-card shadow="never" style="border: 0">
       <el-form ref="form">
         <el-form-item>
-          <el-button size="small" type="primary" @click="handleEdit(0)">
+          <el-button
+            v-has-permi="['btn:DecorateDesign:add']"
+            size="small"
+            type="primary"
+            @click="handleEdit(0)"
+          >
             新增模板
           </el-button>
         </el-form-item>
@@ -26,17 +31,32 @@
               </div>
             </el-menu-item>
           </el-menu>
-          <div style="width: 20%; margin: 0 10px">
+          <!-- <div style="width: 20%; margin: 0 10px">
             <el-image
               src="https://img.quanyu.link/FkL2qE-LQsk722tfQeTsA-Px-zec"
               style="height: 100%"
             />
-          </div>
-          <div style="width: 65%; padding: 20px">
+          </div> -->
+          <div style="width: 85%; padding: 20px">
             <div style="margin-bottom: 20px">
-              <el-button size="small" type="primary" @click="handleEdit(0)">
-                添加模板
-              </el-button>
+              <el-form class="demo-form-inline" :inline="true" :model="form">
+                <el-form-item label="模板名称">
+                  <el-input v-model="form.name" placeholder="请输入模板名称" />
+                </el-form-item>
+                <el-form-item label="模板类型">
+                  <el-select
+                    v-model="form.class_id"
+                    placeholder="请选择模板类型"
+                    style="width: 215px"
+                  >
+                    <el-option label="首页" :value="1" />
+                    <el-option label="个人中心" :value="2" />
+                  </el-select>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="rest">重置</el-button>
+                </el-form-item>
+              </el-form>
             </div>
 
             <QYList
@@ -51,30 +71,55 @@
                 <el-table-column type="selection" width="50" />
                 <el-table-column label="ID" prop="id" width="80" />
                 <el-table-column label="模板名称" prop="name" width="120" />
+                <el-table-column
+                  label="模板分类"
+                  prop="class_name"
+                  width="120"
+                />
                 <el-table-column label="创建时间" prop="create_time" />
                 <el-table-column label="更新时间" prop="update_time" />
                 <el-table-column
                   align="center"
                   label="操作"
                   show-overflow-tooltip
-                  width="200"
+                  width="250"
                 >
                   <template #default="{ row }">
-                    <el-button type="text" @click="handleEdit(row.id)">
+                    <el-button
+                      v-has-permi="['btn:DecorateDesign:edit']"
+                      type="text"
+                      @click="handleEdit(row, 1)"
+                    >
                       编辑
                     </el-button>
-                    <el-button type="text" @click="delTemplateDelBtn(row)">
+                    <el-button
+                      v-has-permi="['btn:DecorateDesign:design']"
+                      type="text"
+                      @click="handleEdit(row, 0)"
+                    >
+                      设计页面
+                    </el-button>
+                    <el-button
+                      v-has-permi="['btn:DecorateDesign:del']"
+                      type="text"
+                      @click="delTemplateDelBtn(row)"
+                    >
                       删除
                     </el-button>
-                    <!-- <el-button type="text" @click="handleEdit(row)">
+                    <el-button
+                      v-has-permi="['btn:DecorateDesign:view']"
+                      type="text"
+                      @click="handleEdit(row, 3)"
+                    >
                       预览
-                    </el-button> -->
+                    </el-button>
                     <el-button
                       v-if="row.is_default != 1"
+                      v-has-permi="['btn:DecorateDesign:default']"
                       type="text"
                       @click="setDefault(row)"
                     >
-                      设为首页
+                      设为默认
                     </el-button>
                   </template>
                 </el-table-column>
@@ -84,15 +129,59 @@
         </div>
       </el-form>
     </el-card>
+    <el-dialog :title="title" :visible.sync="dialogFormVisible" width="500px">
+      <el-form :model="form1">
+        <el-form-item v-if="title == '选择模板类型'" label="模板类型">
+          <el-select
+            v-model="form1.lx"
+            placeholder="请选择模板类型"
+            style="width: 215px"
+          >
+            <el-option
+              v-for="item in template_class"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="title == '编辑模板'" label="模板名称">
+          <el-input v-model="form1.name" style="width: 215px" />
+        </el-form-item>
+        <el-form-item v-if="title == '预览'">
+          <el-image :src="imgInof" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dia_close">取 消</el-button>
+        <el-button
+          v-if="title == '选择模板类型'"
+          type="primary"
+          @click="dia_subit"
+        >
+          确 定
+        </el-button>
+        <el-button v-else type="primary" @click="subit">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import { getTemplateList, delTemplateDel, addTemplateSave } from '@/api/basic'
+  import {
+    getTemplateList,
+    delTemplateDel,
+    addTemplateSave,
+    getCommonAllList,
+  } from '@/api/basic'
   export default {
     name: 'DecorateTheme',
     data() {
       return {
+        imgInof: 'https://img.quanyu.link/FmXf_fKJAUIXbIj7UHf8adcXMNZu',
+        title: '',
+        template_class: [],
+        dialogFormVisible: false,
         menuList: [
           {
             id: '0',
@@ -104,11 +193,16 @@
         form: {
           page: 1,
           pageSize: 10,
+          name: '',
+          class_id: null,
         },
         listType: 1,
         list: [],
         listLoading: false,
         total: 0,
+        form1: {
+          lx: '',
+        },
       }
     },
     watch: {
@@ -123,8 +217,69 @@
       this.fetchData()
     },
     methods: {
-      handleEdit(item) {
-        window.open(`#/design?id=${item}`, '_blank')
+      async subit() {
+        if (this.form1.name == '') {
+          this.$message({
+            type: 'error',
+            message: '请输入模板名称',
+          })
+          return
+        } else {
+          const { code } = await addTemplateSave(this.form1)
+          if (code == 200) {
+            this.$message({
+              type: 'success',
+              message: '添加成功',
+            })
+            this.dialogFormVisible = false
+            this.fetchData()
+          }
+        }
+      },
+      rest() {
+        this.form.name = ''
+        this.form.class_id = null
+      },
+      async getTypeList() {
+        const { data } = await getCommonAllList({
+          type: 'template_class',
+        })
+        this.template_class = data.template_class
+      },
+      dia_close() {
+        this.dialogFormVisible = false
+      },
+      dia_subit() {
+        if (this.form1.lx == '') {
+          this.$message({
+            type: 'error',
+            message: '请选择模板类型',
+          })
+          return
+        }
+        this.dialogFormVisible = false
+        window.open(`#/design?id=0&lx=${this.form1.lx}`, '_blank')
+      },
+      handleEdit(item, type) {
+        if (item == 0) {
+          this.title = '选择模板类型'
+          this.dialogFormVisible = true
+          this.form1 = {
+            lx: '',
+          }
+          this.getTypeList()
+        } else {
+          if (type == 0) {
+            window.open(`#/design?id=${item.id}&lx=${item.class_id}`, '_blank')
+          } else if (type == 1) {
+            this.title = '编辑模板'
+            this.dialogFormVisible = true
+            this.form1 = item
+          } else if (type == 3) {
+            this.title = '预览'
+            this.dialogFormVisible = true
+          }
+        }
       },
       setDefault(item) {
         this.$confirm('确定设置为默认模板吗?', '提示', {

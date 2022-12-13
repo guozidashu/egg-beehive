@@ -139,6 +139,7 @@
         </div> -->
         <el-form-item>
           <el-button
+            v-has-permi="['btn:DecorateShopping:save']"
             style="margin-top: 10px"
             type="primary"
             @click="submitForm('form')"
@@ -180,6 +181,7 @@
         </el-form-item> -->
         <el-form-item>
           <el-button
+            v-has-permi="['btn:DecorateShopping:save']"
             style="margin-top: 10px"
             type="primary"
             @click="submitForm1('form1')"

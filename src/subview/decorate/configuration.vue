@@ -3,7 +3,12 @@
     <el-card shadow="never" style="border: 0">
       <el-form ref="form">
         <el-form-item>
-          <el-button size="small" type="primary" @click="handleEdit()">
+          <el-button
+            v-has-permi="['btn:DecorateConfiguration:save']"
+            size="small"
+            type="primary"
+            @click="handleEdit()"
+          >
             保存
           </el-button>
         </el-form-item>
@@ -27,22 +32,32 @@
             </el-menu-item>
           </el-menu>
           <div style="width: 20%; margin: 0 10px">
-            <!-- <el-carousel v-if="img_list.length > 0" :interval="interval">
+            <div v-if="showId == 0">
+              <!-- <el-carousel v-if="img_list.length > 0" :interval="interval">
               <el-carousel-item v-for="(item, index) in img_list" :key="index">
                 <el-image :src="item" style="height: 100%" />
               </el-carousel-item>
             </el-carousel> -->
-            <el-image
-              v-if="inof.img != null"
-              :src="inof.img"
-              style="height: 100%"
-            />
-            <div v-else style="padding: 40px; text-align: center">
-              暂无照片，请添加~
+              <el-image
+                v-if="inof.img != null"
+                :src="inof.img"
+                style="height: 100%"
+              />
+              <div v-else style="padding: 40px; text-align: center">
+                暂无照片，请添加~
+              </div>
+            </div>
+            <div v-if="showId == 1">
+              <div>111111</div>
             </div>
           </div>
           <div style="width: 65%">
-            <el-form ref="form" label-width="80px" :model="form">
+            <el-form
+              v-if="showId == 0"
+              ref="form"
+              label-width="80px"
+              :model="form"
+            >
               <div
                 style="
                   height: 23px;
@@ -194,6 +209,46 @@
                 </el-button>
               </el-form-item> -->
             </el-form>
+            <el-form
+              v-if="showId == 1"
+              ref="form"
+              label-width="80px"
+              :model="form"
+            >
+              <div
+                style="
+                  height: 23px;
+                  padding: 3px 0 13px 3px;
+                  padding-left: 10px;
+                  font-size: 15px;
+                  font-weight: 700;
+                  border-left: 2px solid #1890ff;
+                "
+              >
+                引导页设置11111
+              </div>
+              <div style="margin: 10px; font-size: 12px; color: #999">
+                建议尺寸：750 * 1334px，拖拽图片可调整图片顺序哦，最多添加五张
+              </div>
+              <el-form-item label="开屏广告">
+                <el-switch
+                  v-model="form.advertising"
+                  active-color="#41B584"
+                  active-text="开启"
+                  :active-value="1"
+                  class="switch"
+                  inactive-color="#D2D2D2"
+                  inactive-text="关闭"
+                  :inactive-value="0"
+                />
+              </el-form-item>
+              <el-form-item label="广告时间">
+                <el-input
+                  v-model="form.advertising_time"
+                  style="width: 215px"
+                />
+              </el-form-item>
+            </el-form>
           </div>
         </div>
       </el-form>
@@ -220,11 +275,18 @@
     },
     data() {
       return {
+        showId: '0',
         inof: { name: '', url: '', img: null, selectName: null },
         menuList: [
           {
             id: '0',
             name: '开屏页设置',
+            default: true,
+            btnIconStatus: false,
+          },
+          {
+            id: '1',
+            name: '个人中心设置',
             default: true,
             btnIconStatus: false,
           },
@@ -311,6 +373,9 @@
       },
       handleOpen() {},
       handleClose() {},
+      handleGrouPQuery(item) {
+        this.showId = item.id
+      },
     },
   }
 </script>

@@ -130,7 +130,8 @@
         centerDialogVisible: false,
         selectList: [],
         input2: '',
-        typeList: {
+        typeList: {},
+        typeList1: {
           Banner: {
             name: '轮播图',
             icon: 'el-icon-picture',
@@ -181,6 +182,7 @@
           {
             type: 'Info',
             title: '页面标题',
+            id: 0,
           },
         ],
         title: '页面标题',
@@ -239,10 +241,13 @@
           arr.push(temp)
         })
         this.view = arr
+        console.log(6666, this.view)
+        this.$forceUpdate()
       },
       async getTypeList() {
         const { data } = await getCommonAllList({
           type: 'div_assembly',
+          template_class_id: this.$route.query.lx,
         })
         let arr = []
         data.div_assembly.forEach((item) => {
@@ -252,9 +257,18 @@
             this.view[0].id = item.id
           }
           temp.id = item.id
+          for (let i in this.typeList1) {
+            if (i == temp.type) {
+              this.typeList[i] = this.typeList1[i]
+            }
+          }
           arr.push(temp)
         })
+        console.log(111111, arr)
+        console.log(22222, this.typeList)
         this.propsList = arr
+        // 强制刷新视图
+        this.$forceUpdate()
       },
 
       reset() {
@@ -380,6 +394,7 @@
         }
         temp.status = 1
         temp.img = ''
+        temp.class_id = this.$route.query.lx
         const { data } = await editTemplateAssemblyLayout(temp)
         this.$message.success(
           '数据提交成功，请按F12打开控制台查看待提交数据集合！'

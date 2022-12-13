@@ -21,7 +21,12 @@
           <img :src="img" style="width: 800px; height: 454px" />
         </el-form-item>
         <el-form-item>
-          <el-button size="small" type="primary" @click="submitForm('form')">
+          <el-button
+            v-has-permi="['btn:DecorateTheme:save']"
+            size="small"
+            type="primary"
+            @click="submitForm('form')"
+          >
             保存
           </el-button>
         </el-form-item>

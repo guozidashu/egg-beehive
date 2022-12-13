@@ -58,7 +58,8 @@ module.exports = {
       process.env.NODE_ENV === 'development'
         ? {
             [baseURL]: {
-              target: `https://demo.quanyu123.com/QYAPI/index.php`, //所有配置不要动，只改这一个地方，改完重启项目
+              target: `https://luoyi.business.quanyu123.com/QYAPI/index.php`, //所有配置不要动，只改这一个地方，改完重启项目
+              // target: `https://demo.quanyu123.com/QYAPI/index.php`, //所有配置不要动，只改这一个地方，改完重启项目
               ws: true,
               changeOrigin: true,
               pathRewrite: {
