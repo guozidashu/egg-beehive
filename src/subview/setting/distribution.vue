@@ -25,20 +25,10 @@
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleDetail('add')"
-          >
+          <el-button size="small" type="primary" @click="handleDetail('add')">
             添加
           </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleDownload"
-          >
+          <el-button size="small" type="primary" @click="handleDownload">
             导出
           </el-button>
         </el-form-item>

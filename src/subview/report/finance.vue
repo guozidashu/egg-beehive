@@ -52,7 +52,6 @@
               unlink-panels
             />
             <el-button
-              native-type="submit"
               size="small"
               style="margin: 0 0 0 20px"
               type="primary"
@@ -123,7 +122,6 @@
                 unlink-panels
               />
               <el-button
-                native-type="submit"
                 size="small"
                 style="margin: 0 0 0 20px"
                 type="primary"
@@ -132,7 +130,6 @@
                 导出
               </el-button>
               <el-button
-                native-type="submit"
                 size="small"
                 style="margin-left: 10px"
                 type="primary"

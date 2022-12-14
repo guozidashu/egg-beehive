@@ -59,7 +59,6 @@
           <el-form ref="form" :inline="true" @submit.native.prevent>
             <el-form-item>
               <el-button
-                native-type="submit"
                 size="small"
                 type="primary"
                 @click="handleEdit('add', 2)"
@@ -67,7 +66,6 @@
                 添加分组
               </el-button>
               <el-button
-                native-type="submit"
                 size="small"
                 type="primary"
                 @click="handleEdit('add', 1)"

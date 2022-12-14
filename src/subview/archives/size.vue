@@ -63,7 +63,6 @@
             <el-form-item>
               <el-button
                 v-has-permi="['btn:ArchivesSize:add']"
-                native-type="submit"
                 size="small"
                 type="primary"
                 @click="handleEdit('add', 1)"
@@ -72,7 +71,6 @@
               </el-button>
               <el-button
                 v-has-permi="['btn:ArchivesSize:add']"
-                native-type="submit"
                 size="small"
                 type="primary"
                 @click="handleEdit('add', 2)"

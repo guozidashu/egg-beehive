@@ -776,6 +776,24 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'archivesProcess',
+        name: 'ArchivesProcess',
+        component: () => import('@/subview/archives/process'),
+        meta: {
+          title: '工艺管理',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'archivesProcedure',
+        name: 'ArchivesProcedure',
+        component: () => import('@/subview/archives/procedure'),
+        meta: {
+          title: '工序管理',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {
@@ -1094,51 +1112,84 @@ export const asyncRoutes = [
       },
     ],
   },
+  // 1级 商城
+  //     2级 商品管理
+  //     2级 商品分组
+  //     2级 商城设置
+  //     2级 装修
+  //           3级 页面设计
+  //           3级 主题风格
+  //           3级 数据配置
   {
-    path: '/decorate',
-    name: 'Decorate',
+    path: '/mall',
+    name: 'Mall',
     component: Layout,
     meta: {
-      title: '装修',
+      title: '商城',
       icon: 'archive-line',
       breadcrumbHidden: true,
     },
     children: [
       {
-        path: 'decorateShopping',
-        name: 'DecorateShopping',
-        component: () => import('@/subview/decorate/shopping'),
+        path: 'mallManage',
+        name: 'MallManage',
+        component: () => import('@/subview/mall/manage'),
         meta: {
-          title: '商城配置',
+          title: '商品管理',
           icon: 'archive-line',
         },
       },
       {
-        path: 'decorateDesign',
-        name: 'DecorateDesign',
-        component: () => import('@/subview/decorate/design'),
+        path: 'mallCommodityunit',
+        name: 'MallCommodityunit',
+        component: () => import('@/subview/mall/commodityunit'),
         meta: {
-          title: '设计页面',
+          title: '商品分组',
           icon: 'archive-line',
         },
       },
       {
-        path: 'decorateConfiguration',
-        name: 'DecorateConfiguration',
-        component: () => import('@/subview/decorate/configuration'),
+        path: 'mallShopping',
+        name: 'Mallhopping',
+        component: () => import('@/subview/mall/shopping'),
         meta: {
-          title: '数据配置',
+          title: '商城设置',
           icon: 'archive-line',
         },
       },
       {
-        path: 'decorateTheme',
-        name: 'DecorateTheme',
-        component: () => import('@/subview/decorate/theme'),
+        path: 'decorate',
+        name: 'decorate',
         meta: {
-          title: '主题风格',
+          title: '商城装修',
           icon: 'archive-line',
         },
+        children: [
+          {
+            path: 'decorateDesign',
+            name: 'DecorateDesign',
+            component: () => import('@/subview/mall/decorate/design'),
+            meta: {
+              title: '页面设计',
+            },
+          },
+          {
+            path: 'decorateTheme',
+            name: 'DecorateTheme',
+            component: () => import('@/subview/mall/decorate/theme'),
+            meta: {
+              title: '主题风格',
+            },
+          },
+          {
+            path: 'decorateDepartment',
+            name: 'DecorateDepartment',
+            component: () => import('@/subview/mall/decorate/configuration'),
+            meta: {
+              title: '数据配置',
+            },
+          },
+        ],
       },
     ],
   },

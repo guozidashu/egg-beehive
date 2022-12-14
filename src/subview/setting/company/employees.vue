@@ -18,16 +18,11 @@
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleEdit('add')"
-          >
+          <!-- <el-button size="small" type="primary" @click="handleEdit('add')">
             添加员工
-          </el-button>
+          </el-button> -->
           <!-- <el-button
-            native-type="submit"
+            
             size="small"
             type="primary"
             @click="handleDetail('add', 2)"
@@ -36,12 +31,7 @@
           </el-button> -->
         </el-form-item>
         <el-form-item>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleTb"
-          >
+          <el-button size="small" type="primary" @click="handleTb">
             同步数据
           </el-button>
         </el-form-item>

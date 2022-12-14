@@ -6,6 +6,7 @@
         filterable
         placeholder="请选择省份"
         size="small"
+        style="width: 110px"
         @change="selectProvinceFun($event)"
       >
         <el-option
@@ -22,6 +23,7 @@
         filterable
         placeholder="请选择城市"
         size="small"
+        style="width: 110px"
         @change="selectCityFun($event)"
       >
         <el-option
@@ -38,6 +40,7 @@
         filterable
         placeholder="请选择区县"
         size="small"
+        style="width: 110px"
         @change="selectAreaFun($event)"
       >
         <el-option

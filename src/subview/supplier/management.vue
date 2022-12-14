@@ -36,7 +36,6 @@
         <el-form-item>
           <el-button
             v-has-permi="['btn:SupplierManagement:add']"
-            native-type="submit"
             size="small"
             type="primary"
             @click="handleDetail('add', 3)"
@@ -70,7 +69,7 @@
             </template>
           </el-table-column>
           <el-table-column label="联系人" prop="contact_name" width="100" />
-          <el-table-column label="手机号码" prop="tel" width="200" />
+          <el-table-column label="手机号码" prop="tel" width="150" />
           <el-table-column
             align="right"
             label="应付款"
@@ -117,13 +116,17 @@
       :wrapper-closable="false"
     >
       <!-- 详情抽屉组件 -->
-      <Drawer :drawer-inof="drawerInof" />
+      <Drawer :drawer-inof="drawerInof" @fetch-data="fetchData" />
     </el-drawer>
   </div>
 </template>
 <script>
   import Drawer from './components/ManagementDrawer'
-  import { getSupplierList, getCommonAllList } from '@/api/basic'
+  import {
+    getSupplierList,
+    getCommonAllList,
+    getSupplierEditDetail,
+  } from '@/api/basic'
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
     name: 'SupplierOrder',
@@ -176,7 +179,10 @@
       handleClick() {
         this.form.page = 1
       },
-      async fetchData() {
+      async fetchData(type) {
+        if (type == 1) {
+          this.drawer = false
+        }
         this.listLoading = true
         const { data } = await getSupplierList(this.form)
         this.list = data.data
@@ -188,7 +194,7 @@
         this.supplier_type = data.supplier_type
       },
       // 详情抽屉
-      handleDetail(row, type) {
+      async handleDetail(row, type) {
         if (type === 1) {
           this.title = '供应商详情'
         } else if (type === 2) {
@@ -199,8 +205,11 @@
         if (row == 'add') {
           this.drawerInof = {}
           this.drawerInof.drawerType = type
+          this.drawerInof.status = 1
+          this.drawerInof.initial_amount = 0
         } else {
-          this.drawerInof = JSON.parse(JSON.stringify(row))
+          const { data } = await getSupplierEditDetail({ id: row.id })
+          this.drawerInof = JSON.parse(JSON.stringify(data[0]))
           this.drawerInof.drawerType = type
         }
         this.drawer = true

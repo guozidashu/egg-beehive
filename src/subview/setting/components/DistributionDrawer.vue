@@ -152,11 +152,7 @@
             <el-input v-model="formDrawer.name4" style="width: 80px" />
             -
             <el-input v-model="formDrawer.name4" style="width: 80px" />
-            <el-button
-              native-type="submit"
-              size="small"
-              style="margin-left: 10px"
-            >
+            <el-button size="small" style="margin-left: 10px">
               选择坐标
             </el-button>
           </el-form-item>
@@ -227,9 +223,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-button native-type="submit" size="small" type="primary">
-            确认
-          </el-button>
+          <el-button size="small" type="primary">确认</el-button>
         </el-form-item>
       </el-form>
     </el-card>

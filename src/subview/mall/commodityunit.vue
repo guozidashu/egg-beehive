@@ -7,8 +7,9 @@
           style="height: 100%; min-height: calc(80vh); border: 0"
         >
           <el-menu
+            v-if="menuList.length > 0"
             class="el-menu-vertical-demo"
-            default-active="0"
+            :default-active="menuList[0].id.toString()"
             style="width: 100%; border: 0"
             @close="handleClose"
             @open="handleOpen"
@@ -37,7 +38,7 @@
                     <el-dropdown-menu slot="dropdown">
                       <el-dropdown-item>
                         <el-button
-                          v-has-permi="['btn:CustomerTags:edit']"
+                          v-has-permi="['btn:MallCommodityunit:edit']"
                           type="text"
                           @click="handleEdit(item, 2)"
                         >
@@ -46,7 +47,7 @@
                       </el-dropdown-item>
                       <el-dropdown-item>
                         <el-button
-                          v-has-permi="['btn:CustomerTags:del']"
+                          v-has-permi="['btn:MallCommodityunit:del']"
                           type="text"
                           @click="handleDelete(item, 2)"
                         >
@@ -66,32 +67,29 @@
           <el-form ref="form" :inline="true" @submit.native.prevent>
             <el-form-item>
               <el-button
-                v-has-permi="['btn:CustomerTags:add']"
-                size="small"
-                type="primary"
-                @click="handleEdit('add', 1)"
-              >
-                添加标签
-              </el-button>
-              <el-button
-                v-has-permi="['btn:CustomerTags:add']"
+                v-has-permi="['btn:MallCommodityunit:add']"
                 size="small"
                 type="primary"
                 @click="handleEdit('add', 2)"
               >
-                添加分类
+                添加分组
               </el-button>
-              <el-button size="small" type="primary">
-                同步企业微信标签
+              <el-button
+                v-has-permi="['btn:MallCommodityunit:add']"
+                size="small"
+                type="primary"
+                @click="handleEdit('add', 1)"
+              >
+                新增商品到分组
               </el-button>
             </el-form-item>
-            <el-form-item label="标签名称：" style="float: right">
+            <!-- <el-form-item label="款式名称：" style="float: right">
               <el-input
                 v-model="form.name"
                 clearable
-                placeholder="请输入标签名称"
+                placeholder="请输入款式名称"
               />
-            </el-form-item>
+            </el-form-item> -->
           </el-form>
           <QYList
             :list="list"
@@ -103,30 +101,39 @@
           >
             <template #List>
               <el-table-column type="selection" />
-              <el-table-column label="ID" prop="id" sortable />
-              <el-table-column label="标签名称" prop="name" />
-              <el-table-column label="标签分类" prop="p_name" />
+              <el-table-column label="ID" prop="id" />
+              <el-table-column label="商品名称" prop="goods_name" />
+              <el-table-column label="商品图" prop="img" width="80">
+                <template #default="{ row }">
+                  <el-tooltip placement="top">
+                    <el-image
+                      slot="content"
+                      :src="row.img"
+                      style="width: 200px; height: 200px"
+                    />
+                    <el-image
+                      :src="row.img"
+                      style="width: 50px; height: 50px"
+                    />
+                  </el-tooltip>
+                </template>
+              </el-table-column>
+              <el-table-column label="商品标题" prop="shoptitle" />
+              <el-table-column label="商品编号" prop="sn" />
               <el-table-column
-                align="center"
-                fixed="right"
-                label="操作"
-                width="85"
+                align="right"
+                label="商品价格"
+                prop="price"
+                width="150"
               >
                 <template #default="{ row }">
-                  <el-button
-                    v-has-permi="['btn:CustomerTags:edit']"
-                    type="text"
-                    @click="handleEdit(row, 1)"
-                  >
-                    编辑
-                  </el-button>
-                  <el-button
-                    v-has-permi="['btn:CustomerTags:del']"
-                    type="text"
-                    @click="handleDelete(row, 1)"
-                  >
-                    删除
-                  </el-button>
+                  <el-tag>￥{{ row.price | moneyFormat }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column label="状态" prop="status" width="150">
+                <template #default="{ row }">
+                  <el-tag v-if="row.status == 0" type="danger">下架</el-tag>
+                  <el-tag v-else-if="row.status == 1">上架</el-tag>
                 </template>
               </el-table-column>
             </template>
@@ -138,15 +145,20 @@
   </div>
 </template>
 <script>
-  import Edit from '@/subview/components/Edit/TagsEdit'
-  import { getParentTag, getTagList, delTagDel } from '@/api/basic'
+  import Edit from '@/subview/components/Edit/CommodityUnitEdit'
+  import {
+    getGoodsGroupList,
+    getGoodsGroupDetail,
+    // delCategorySonDel,
+    delGoodsGroupDel,
+  } from '@/api/basic'
   export default {
-    name: 'CustomerTags',
+    name: 'GoodsCommodityunit',
     components: { Edit },
     data() {
       return {
         form: {
-          pid: 0,
+          id: 0,
           page: 1,
           pageSize: 10,
           name: '',
@@ -161,8 +173,8 @@
     },
     watch: {
       form: {
-        handler: function () {
-          this.fetchList()
+        handler: function (val) {
+          this.fetchList(val.id)
         },
         deep: true,
       },
@@ -185,13 +197,21 @@
       handleQuery() {
         this.form.page = 1
       },
-      handleDelete(row) {
+      handleDelete(row, type) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delTagDel({ id: row.id })
-            if (code != 200) {
-              return
+            if (type == 1) {
+              // const { code } = await delCategorySonDel({ id: row.id })
+              // if (code != 200) {
+              //   return
+              // }
+            } else {
+              const { code } = await delGoodsGroupDel({ id: row.id })
+              if (code != 200) {
+                return
+              }
             }
+
             this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
             this.fetchData()
           })
@@ -204,31 +224,24 @@
         this.form.pageSize = data
       },
       async fetchData() {
-        const { data } = await getParentTag(this.form)
-        let list = [
-          {
-            id: 0,
-            name: '全部',
-          },
-          ...data,
-        ]
+        const { data } = await getGoodsGroupList(this.form)
+        let list = data
         list.forEach((item) => {
           item.btnIconStatus = false
         })
         this.menuList = list
-        this.fetchList()
+        this.fetchList(data[0].id)
       },
-      async fetchList() {
-        this.listLoading = true
+      async fetchList(temp) {
         const {
           data: { data, total },
-        } = await getTagList(this.form)
+        } = await getGoodsGroupDetail({ id: temp })
         this.list = data
         this.total = total
-        this.listLoading = false
+        // this.listLoading = false
       },
       handleGrouPQuery(id) {
-        this.form.pid = id
+        this.form.id = id
       },
       handleOpen() {},
       handleClose() {},

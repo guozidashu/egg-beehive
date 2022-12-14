@@ -90,7 +90,7 @@
           <div style="display: flex">
             <div>
               <el-button
-                native-type="submit"
+                
                 size="small"
                 style="margin: 0 10px 0 0"
                 type="primary"

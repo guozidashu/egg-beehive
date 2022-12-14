@@ -5,7 +5,6 @@
         <el-button
           v-for="(item, index) in btnList"
           :key="index"
-          native-type="submit"
           size="small"
           @click="addDataList(index)"
         >

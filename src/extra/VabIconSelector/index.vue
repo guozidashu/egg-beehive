@@ -8,9 +8,7 @@
               <el-input v-model="queryForm.title" />
             </el-form-item>
             <el-form-item label-width="0">
-              <el-button native-type="submit" type="primary" @click="queryData">
-                查询
-              </el-button>
+              <el-button type="primary" @click="queryData">查询</el-button>
             </el-form-item>
           </el-form>
         </vab-query-form-top-panel>

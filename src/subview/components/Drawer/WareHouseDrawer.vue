@@ -2,12 +2,7 @@
   <div style="padding: 20px">
     <el-form ref="form" :inline="true" @submit.native.prevent>
       <el-form-item>
-        <el-button
-          native-type="submit"
-          size="small"
-          type="primary"
-          @click="handleEdit('add')"
-        >
+        <el-button size="small" type="primary" @click="handleEdit('add')">
           添加库位
         </el-button>
       </el-form-item>
@@ -21,7 +16,6 @@
       <el-form-item>
         <el-button
           icon="el-icon-search"
-          native-type="submit"
           size="small"
           type="primary"
           @click="handleQuery"

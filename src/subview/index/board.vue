@@ -28,7 +28,6 @@
             unlink-panels
           />
           <el-button
-            native-type="submit"
             size="small"
             style="margin-left: 10px"
             type="primary"

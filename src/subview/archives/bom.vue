@@ -42,7 +42,6 @@
         <el-form-item>
           <el-button
             v-has-permi="['btn:ArchivesBom:add']"
-            native-type="submit"
             size="small"
             type="primary"
             @click="handleDetail('add', 3)"

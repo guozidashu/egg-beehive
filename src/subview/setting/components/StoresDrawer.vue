@@ -6,7 +6,6 @@
         <div style="display: flex">
           <div>
             <el-button
-              native-type="submit"
               size="small"
               style="margin: 0 10px 0 0"
               type="primary"
@@ -106,7 +105,6 @@
         <div style="display: flex">
           <div>
             <el-button
-              native-type="submit"
               size="small"
               style="margin: 0 10px 0 0"
               type="primary"
@@ -139,12 +137,7 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-button
-          native-type="submit"
-          size="small"
-          type="primary"
-          @click="submitForm('form')"
-        >
+        <el-button size="small" type="primary" @click="submitForm('form')">
           确认
         </el-button>
       </el-form-item>

@@ -25,7 +25,6 @@
         <el-form-item>
           <el-button
             v-has-permi="['btn:ArchivesYear:add']"
-            native-type="submit"
             size="small"
             type="primary"
             @click="handleEdit('add')"

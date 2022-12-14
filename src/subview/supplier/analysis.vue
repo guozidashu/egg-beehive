@@ -30,7 +30,6 @@
             unlink-panels
           />
           <el-button
-            native-type="submit"
             size="small"
             style="margin-left: 10px"
             type="primary"
@@ -38,12 +37,7 @@
           >
             重置
           </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleDownload"
-          >
+          <el-button size="small" type="primary" @click="handleDownload">
             导出
           </el-button>
         </el-form-item>
@@ -140,7 +134,7 @@
               
             />
             <el-button
-              native-type="submit"
+              
               size="small"
               style="margin: 0 20px"
               type="primary"

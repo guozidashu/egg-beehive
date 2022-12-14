@@ -13,7 +13,6 @@
           <el-form-item label-width="0px" style="padding-top: 10px">
             <el-button
               icon="el-icon-search"
-              native-type="submit"
               size="small"
               type="primary"
               @click="handleQuery"
@@ -34,20 +33,10 @@
             label-width="0px"
             style="flex-basis: 100%; padding-top: 10px"
           >
-            <el-button
-              native-type="submit"
-              size="small"
-              type="primary"
-              @click="handleQuery"
-            >
+            <el-button size="small" type="primary" @click="handleQuery">
               导出
             </el-button>
-            <el-button
-              native-type="submit"
-              size="small"
-              type="primary"
-              @click="handleQuery"
-            >
+            <el-button size="small" type="primary" @click="handleQuery">
               批量发货
             </el-button>
           </el-form-item>

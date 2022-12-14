@@ -10,10 +10,10 @@
         @resetForm="resetForm"
       >
         <template #Form>
-          <el-form-item label="等级名称" prop="region">
+          <el-form-item label="工序名称" prop="region">
             <el-input
               v-model="form.name"
-              placeholder="请输入等级名称"
+              placeholder="请输入工序名称"
               size="small"
             />
           </el-form-item>
@@ -24,12 +24,12 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
-            v-has-permi="['btn:CustomerLevel:add']"
+            v-has-permi="['btn:ArchivesBrand:add']"
             size="small"
             type="primary"
             @click="handleEdit('add')"
           >
-            添加会员等级
+            添加工序
           </el-button>
         </el-form-item>
       </el-form>
@@ -41,26 +41,14 @@
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
-          <el-table-column type="selection" width="50px" />
-          <el-table-column label="等级图标" prop="banner" width="150px">
-            <template #default="{ row }">
-              <img :src="row.icon" style="width: 100px; height: 100px" />
-            </template>
-          </el-table-column>
-          <el-table-column label="等级名称" prop="name" width="150px" />
-          <el-table-column label="客户数" prop="count" width="80px" />
-          <el-table-column label="整手折扣" prop="discount" width="100px" />
-          <el-table-column
-            label="散码折扣"
-            prop="discount_single"
-            width="100px"
-          />
-          <el-table-column label="是否允许散批" prop="single_buy" width="150px">
+          <el-table-column type="selection" width="50" />
+          <el-table-column label="ID" prop="id" width="80" />
+          <el-table-column label="工序名称" prop="name" width="120" />
+          <el-table-column label="状态" prop="status" width="150">
             <template #default="{ row }">
               <el-switch
-                v-model="row.single_buy"
+                v-model="row.status"
                 active-color="#41B584"
                 active-text="开启"
                 :active-value="1"
@@ -68,22 +56,29 @@
                 inactive-color="#D2D2D2"
                 inactive-text="关闭"
                 :inactive-value="0"
+                style="margin: 0 10px"
                 @change="turnOnOff(row)"
               />
             </template>
           </el-table-column>
-          <el-table-column label="备注" prop="remark" />
-          <el-table-column align="center" fixed="right" label="操作" width="85">
+          <el-table-column label="排序" prop="sort" width="80" />
+          <el-table-column label="创建时间" prop="create_time" />
+          <el-table-column
+            align="center"
+            label="操作"
+            show-overflow-tooltip
+            width="85"
+          >
             <template #default="{ row }">
               <el-button
-                v-has-permi="['btn:CustomerLevel:edit']"
+                v-has-permi="['btn:ArchivesBrand:edit']"
                 type="text"
                 @click="handleEdit(row)"
               >
                 编辑
               </el-button>
               <el-button
-                v-has-permi="['btn:CustomerLevel:del']"
+                v-has-permi="['btn:ArchivesBrand:del']"
                 type="text"
                 @click="handleDelete(row)"
               >
@@ -98,29 +93,21 @@
   </div>
 </template>
 <script>
-  import Edit from '@/subview/components/Edit/LevelEdit'
+  import Edit from '@/subview/components/Edit/ProcedureEdit'
 
-  import {
-    getGradeList,
-    getInfoGradeList,
-    delGradeList,
-    editGradeList,
-  } from '@/api/basic'
+  import { getBrandList, delBrandDel, addBrandSave } from '@/api/basic'
   export default {
-    name: 'CustomerLevel',
+    name: 'ArchivesBrand',
     components: { Edit },
     data() {
       return {
-        // 表单数据/列表参数
         form: {
           name: '',
           page: 1,
           pageSize: 10,
         },
-        formType: 4,
-        // 列表数据相关
-        selectRows: [],
-        listType: 1,
+        formType: 3,
+        listType: 2,
         list: [],
         listLoading: false,
         total: 0,
@@ -138,14 +125,12 @@
       this.fetchData()
     },
     methods: {
-      // 新增修改
       async handleEdit(row) {
         if (row === 'add') {
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {
-            const { data } = await getInfoGradeList({ id: row.id })
-            this.$refs['edit'].showEdit(data)
+            this.$refs['edit'].showEdit(row)
           } else {
             this.$refs['edit'].showEdit()
           }
@@ -157,41 +142,43 @@
       resetForm() {
         this.form = this.$options.data().form
       },
-      // 删除
-      handleDelete(row) {
-        if (row.id) {
-          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delGradeList({ id: row.id })
-            if (code != 200) {
-              return
-            }
-            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
-            this.fetchData()
-          })
-        }
-      },
       async turnOnOff(row) {
-        const { code } = await editGradeList(row)
+        const { code } = await addBrandSave(row)
         if (code != 200) {
           return
         }
         this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
         this.fetchData()
       },
-      // 列表数据封装函数
-
-      // 列表数据改变页数   公共部分
+      handleDelete(row) {
+        if (row.id) {
+          this.$baseConfirm(
+            '你确定要删除当前工序吗?</br>删除后将无法恢复，请谨慎操作！',
+            null,
+            async () => {
+              const { code } = await delBrandDel({ id: row.id })
+              if (code != 200) {
+                return
+              }
+              this.$baseMessage(
+                '删除成功',
+                'success',
+                'vab-hey-message-success'
+              )
+              this.fetchData()
+            }
+          )
+        }
+      },
       changeBtnPage(data) {
         this.form.page = data
       },
-      // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
-      // 列表数据请求函数 公共部分
       async fetchData() {
         this.listLoading = true
-        const { data } = await getGradeList(this.form)
+        const { data } = await getBrandList(this.form)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

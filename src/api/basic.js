@@ -68,6 +68,35 @@ export function getEmployeeRoleList(data) {
   })
 }
 // 新商城配置
+
+export function getShopConfigWeChatAppletDetail(data) {
+  return request({
+    url: '/admin/shopConfig/WeChatAppletDetail',
+    method: 'post',
+    data,
+  })
+}
+export function getShopConfigWeChatPayDetail(data) {
+  return request({
+    url: '/admin/shopConfig/WeChatPayDetail',
+    method: 'post',
+    data,
+  })
+}
+export function editShopConfigWeChatApplet(data) {
+  return request({
+    url: '/admin/shopConfig/WeChatApplet',
+    method: 'post',
+    data,
+  })
+}
+export function editShopConfigWeChatPay(data) {
+  return request({
+    url: '/admin/shopConfig/WeChatPay',
+    method: 'post',
+    data,
+  })
+}
 export function getBaseConfigDetail(data) {
   return request({
     url: '/admin/baseConfigDetail',
@@ -395,6 +424,14 @@ export function delBandDel(data) {
   })
 }
 // 客户管理
+
+export function giteCustomerDetail(data) {
+  return request({
+    url: '/customer/customerDetail',
+    method: 'post',
+    data,
+  })
+}
 export function editCustomerSave(data) {
   return request({
     url: '/customer/Save',
@@ -1224,6 +1261,21 @@ export function editCategorySonStatus(data) {
   })
 }
 //商品管理
+
+export function editChangeRecommend(data) {
+  return request({
+    url: '/goods/changeRecommend',
+    method: 'post',
+    data,
+  })
+}
+export function editChangeIsShop(data) {
+  return request({
+    url: '/goods/changeIsShop',
+    method: 'post',
+    data,
+  })
+}
 export function editSourceMaterialSave(data) {
   return request({
     url: '/goods/sourceMaterialSave',
@@ -1292,6 +1344,14 @@ export function getDissectList(data) {
   })
 }
 // 供应商管理
+
+export function getSupplierEditDetail(data) {
+  return request({
+    url: '/supplier/supplierEditDetail',
+    method: 'post',
+    data,
+  })
+}
 export function getSupplierList(data) {
   return request({
     url: '/supplier/supplierList',

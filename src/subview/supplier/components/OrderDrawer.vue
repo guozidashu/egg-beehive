@@ -42,7 +42,7 @@
               style="float: right; margin: 6px 0 0 0"
             />
             <!-- <el-button
-              native-type="submit"
+              
               size="small"
               style="float: right; margin-right: 10px"
               type="primary"
@@ -51,7 +51,6 @@
               提醒发货
             </el-button> -->
             <el-button
-              native-type="submit"
               size="small"
               style="float: right; margin-right: 10px"
               type="primary"
@@ -60,7 +59,7 @@
               打印
             </el-button>
             <!-- <el-button
-              native-type="submit"
+              
               size="small"
               style="float: right"
               type="primary"

@@ -33,12 +33,7 @@
             type="daterange"
             unlink-panels
           />
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleDownload"
-          >
+          <el-button size="small" type="primary" @click="handleDownload">
             导出
           </el-button>
         </el-form-item>

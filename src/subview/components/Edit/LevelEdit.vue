@@ -38,7 +38,6 @@
           <div style="display: flex">
             <div>
               <el-button
-                native-type="submit"
                 size="small"
                 style="margin: 0 10px 0 0"
                 type="primary"
@@ -58,7 +57,6 @@
           <div style="display: flex">
             <div>
               <el-button
-                native-type="submit"
                 size="small"
                 style="margin: 0 10px 0 0"
                 type="primary"
@@ -341,9 +339,7 @@
             </el-checkbox>
             <div>
               指定商品：
-              <el-button native-type="submit" size="small" type="primary">
-                添加商品
-              </el-button>
+              <el-button size="small" type="primary">添加商品</el-button>
             </div>
             <el-checkbox
               v-model="form.checked5"
@@ -353,9 +349,7 @@
             </el-checkbox>
             <div>
               指定会员卡：
-              <el-button native-type="submit" size="small" type="primary">
-                添加会员卡
-              </el-button>
+              <el-button size="small" type="primary">添加会员卡</el-button>
             </div>
           </el-form-item>
           <el-form-item label="会员降级为">

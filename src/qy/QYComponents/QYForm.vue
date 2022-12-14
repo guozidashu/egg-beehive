@@ -14,19 +14,13 @@
       <el-form-item style="float: right; clear: both">
         <el-button
           icon="el-icon-search"
-          native-type="submit"
           size="small"
           type="primary"
           @click="handleQuery"
         >
           搜索
         </el-button>
-        <el-button
-          native-type="submit"
-          size="small"
-          type="primary"
-          @click="resetForm('form')"
-        >
+        <el-button size="small" type="primary" @click="resetForm('form')">
           重置
         </el-button>
         <el-button type="text" @click="handleFold">
@@ -49,19 +43,13 @@
       @submit.native.prevent
     >
       <el-form-item>
-        <el-button
-          native-type="submit"
-          size="small"
-          type="primary"
-          @click="handleEdit"
-        >
+        <el-button size="small" type="primary" @click="handleEdit">
           添加
         </el-button>
       </el-form-item>
       <el-form-item style="float: right">
         <el-button
           icon="el-icon-search"
-          native-type="submit"
           size="small"
           type="primary"
           @click="handleQuery"
@@ -85,7 +73,6 @@
       <el-form-item label-width=" ">
         <el-button
           icon="el-icon-search"
-          native-type="submit"
           size="small"
           type="primary"
           @click="handleQuery"
@@ -106,17 +93,11 @@
     >
       <slot name="Form"></slot>
       <el-form-item style="margin-left: 20px">
-        <el-button
-          native-type="submit"
-          size="small"
-          type="primary"
-          @click="resetForm('form')"
-        >
+        <el-button size="small" type="primary" @click="resetForm('form')">
           重置
         </el-button>
         <el-button
           icon="el-icon-search"
-          native-type="submit"
           size="small"
           type="primary"
           @click="handleQuery"

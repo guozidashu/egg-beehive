@@ -121,7 +121,6 @@
         <el-form-item>
           <el-button
             v-has-permi="['btn:CustomerManage:add']"
-            native-type="submit"
             size="small"
             type="primary"
             @click="handleDetail('add', 3)"
@@ -129,19 +128,14 @@
             添加客户
           </el-button>
           <!-- <el-button
-            native-type="submit"
+            
             size="small"
             type="primary"
             @click="addCoupons()"
           >
             发送优惠券
           </el-button> -->
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleDownload"
-          >
+          <el-button size="small" type="primary" @click="handleDownload">
             批量导出
           </el-button>
         </el-form-item>
@@ -245,7 +239,7 @@
       :wrapper-closable="false"
     >
       <!-- 详情抽屉组件 -->
-      <Drawer :drawer-inof="drawerInof" />
+      <Drawer :drawer-inof="drawerInof" @fetch-data="fetchData" />
     </el-drawer>
   </div>
 </template>
@@ -356,7 +350,10 @@
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
-      async fetchData() {
+      async fetchData(type) {
+        if (type == 1) {
+          this.drawer = false
+        }
         this.listLoading = true
         const { data } = await getCustomerList(this.form1)
         this.list = data.data
@@ -386,13 +383,14 @@
         if (type === 1) {
           this.title = '客户详情'
         } else if (type === 2) {
-          this.title = '客户供应商'
+          this.title = '编辑客户'
         } else {
-          this.title = '客户供应商'
+          this.title = '新增客户'
         }
         if (row == 'add') {
           this.drawerInof = {}
           this.drawerInof.drawerType = type
+          this.drawerInof.status = 1
         } else {
           this.drawerInof = JSON.parse(JSON.stringify(row))
           this.drawerInof.drawerType = type

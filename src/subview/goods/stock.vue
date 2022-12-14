@@ -30,7 +30,6 @@
             />
           </el-select>
           <el-button
-            native-type="submit"
             size="small"
             style="margin-left: 10px"
             type="primary"
@@ -98,7 +97,6 @@
             </el-select>
           </el-form-item>
           <el-button
-            native-type="submit"
             size="small"
             style="margin-left: 10px"
             type="primary"

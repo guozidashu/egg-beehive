@@ -4,7 +4,7 @@
       <el-form ref="form">
         <el-form-item>
           <el-button
-            v-has-permi="['btn:DecorateConfiguration:save']"
+            v-has-permi="['btn:DecorateDepartment:save']"
             size="small"
             type="primary"
             @click="handleEdit()"
@@ -48,7 +48,7 @@
               </div>
             </div>
             <div v-if="showId == 1">
-              <div>111111</div>
+              <div>{{ activeName }}</div>
             </div>
           </div>
           <div style="width: 65%">
@@ -225,29 +225,16 @@
                   border-left: 2px solid #1890ff;
                 "
               >
-                引导页设置11111
+                个人中心设置
               </div>
-              <div style="margin: 10px; font-size: 12px; color: #999">
+              <!-- <div style="margin: 10px; font-size: 12px; color: #999">
                 建议尺寸：750 * 1334px，拖拽图片可调整图片顺序哦，最多添加五张
-              </div>
-              <el-form-item label="开屏广告">
-                <el-switch
-                  v-model="form.advertising"
-                  active-color="#41B584"
-                  active-text="开启"
-                  :active-value="1"
-                  class="switch"
-                  inactive-color="#D2D2D2"
-                  inactive-text="关闭"
-                  :inactive-value="0"
-                />
-              </el-form-item>
-              <el-form-item label="广告时间">
-                <el-input
-                  v-model="form.advertising_time"
-                  style="width: 215px"
-                />
-              </el-form-item>
+              </div> -->
+              <el-radio-group v-model="activeName" style="margin: 20px 0">
+                <el-radio-button label="默认模板1" />
+                <el-radio-button label="自定义模板2" />
+                <el-radio-button label="定制模板3" />
+              </el-radio-group>
             </el-form>
           </div>
         </div>
@@ -275,6 +262,7 @@
     },
     data() {
       return {
+        activeName: '默认模板1',
         showId: '0',
         inof: { name: '', url: '', img: null, selectName: null },
         menuList: [

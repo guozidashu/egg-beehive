@@ -25,7 +25,7 @@
                 style="float: right; margin: 6px 0 0 0"
               />
               <!-- <el-button
-                native-type="submit"
+                
                 size="small"
                 style="float: right; margin-right: 10px"
                 type="primary"
@@ -34,7 +34,7 @@
                 升级会员
               </el-button> -->
               <!-- <el-button
-                native-type="submit"
+                
                 size="small"
                 style="float: right; margin-right: 10px"
                 type="primary"
@@ -44,7 +44,6 @@
               </el-button> -->
               <el-button
                 v-if="form.drawerType == 1"
-                native-type="submit"
                 size="small"
                 style="float: right; margin-right: 10px"
                 type="primary"
@@ -54,7 +53,6 @@
               </el-button>
               <el-button
                 v-if="form.drawerType == 2"
-                native-type="submit"
                 size="small"
                 style="float: right; margin-right: 10px"
                 type="primary"
@@ -109,17 +107,16 @@
         <el-tab-pane label="发货记录" name="2" />
         <el-tab-pane label="退货记录" name="3" />
         <el-tab-pane label="收银记录" name="4" />
-        <el-tab-pane label="持有优惠券" name="5" />
-        <el-tab-pane label="积分明细" name="6" />
-        <el-tab-pane label="签到记录" name="7" />
+        <!-- <el-tab-pane label="持有优惠券" name="5" /> -->
+        <!-- <el-tab-pane label="积分明细" name="6" /> -->
+        <!-- <el-tab-pane label="签到记录" name="7" /> -->
         <el-tab-pane label="欠货统计" name="8" />
-        <el-tab-pane label="电子合同" name="9" />
+        <!-- <el-tab-pane label="电子合同" name="9" /> -->
       </el-tabs>
     </div>
     <div v-if="form.drawerType == 3" style="margin-bottom: 20px">
       <el-button
         v-if="form.drawerType == 1"
-        native-type="submit"
         size="small"
         style="float: right; margin-right: 10px"
         type="primary"
@@ -129,7 +126,6 @@
       </el-button>
       <el-button
         v-if="form.drawerType == 2 || form.drawerType == 3"
-        native-type="submit"
         size="small"
         style="float: right; margin-right: 10px"
         type="primary"
@@ -143,8 +139,8 @@
         <div class="conten-warp">
           <div class="conten-title">基本信息</div>
           <div class="conten-list-row">
-            <div>用户编号：{{ form.sn }}</div>
-            <div>真实姓名： {{ form.name }}</div>
+            <!-- <div>用户编号：{{ form.sn }}</div> -->
+            <div>客户名称： {{ form.name }}</div>
             <div>
               <span v-if="!formShow.phonestate">
                 手机号码： {{ form.mobile | phoneteltm }}
@@ -164,28 +160,22 @@
               ></i>
             </div>
             <div>生日：{{ form.birthday }}</div>
-            <div>加入时间： {{ form.create_time }}</div>
             <div>
-              客户地址： {{ form.province }}{{ form.city }}{{ form.district }}
+              所在城市： {{ form.province }}{{ form.city }}{{ form.district }}
             </div>
-            <div>客户详情地址： {{ form.addr }}</div>
+            <div>详细地址： {{ form.addr }}</div>
           </div>
         </div>
-        <div class="conten-warp">
+        <!-- <div class="conten-warp">
           <div class="conten-title">登录账户</div>
           <div class="conten-list-row">
             <div>登录账户：{{ form.account }}</div>
             <div>登录密码：{{ form.password }}</div>
           </div>
-        </div>
+        </div> -->
         <div class="conten-warp">
           <div class="conten-title">客户概况</div>
           <div class="conten-list-row">
-            <div>
-              用户状态：
-              <span v-if="form.status == 1">开启</span>
-              <span>关闭</span>
-            </div>
             <div>客户等级： {{ form.grade_name }}</div>
             <div>客户分类： {{ form.type_name }}</div>
             <div style="width: 100%">客户标签： {{ form.tag_name }}</div>
@@ -195,7 +185,17 @@
         <div class="conten-warp">
           <div class="conten-title">其它信息</div>
           <div class="conten-list-row">
-            <div style="width: 100%">专属客服： {{ form.service }}</div>
+            <div>
+              用户状态：
+              <span v-if="form.status == 1">开启</span>
+              <span>关闭</span>
+            </div>
+            <div>
+              期初金额：
+              <span>{{ form.initial_amount }}</span>
+            </div>
+            <div>加入时间： {{ form.create_time }}</div>
+            <!-- <div style="width: 100%">专属客服： {{ form.service }}</div> -->
             <div style="width: 100%">备注信息： {{ form.remark }}</div>
           </div>
         </div>
@@ -205,27 +205,33 @@
         ref="form"
         label-width="120px"
         :model="form"
+        :rules="rules"
         style="width: 100%"
       >
         <div class="drawer-tab">
           <div class="conten-warp">
             <div class="conten-title">基本信息</div>
             <div class="conten-list-com">
-              <el-form-item class="item" label="用户编号：">
+              <!-- <el-form-item class="item" label="用户编号：">
                 <el-input
                   v-model="form.sn"
                   placeholder="请输入用户编号"
                   style="width: 215px"
                 />
-              </el-form-item>
-              <el-form-item class="item" label="真实姓名：">
+              </el-form-item> -->
+              <el-form-item
+                v-if="form.drawerType == 3"
+                class="item"
+                label="客户名称："
+                prop="name"
+              >
                 <el-input
                   v-model="form.name"
-                  placeholder="请输入真实姓名"
+                  placeholder="例：杭州 | 张三"
                   style="width: 215px"
                 />
               </el-form-item>
-              <el-form-item class="item" label="手机号码：">
+              <el-form-item class="item" label="手机号码：" prop="mobile">
                 <el-input
                   v-model="form.mobile"
                   placeholder="请输入手机号码"
@@ -239,23 +245,23 @@
                   type="date"
                 />
               </el-form-item>
-              <el-form-item label="客户地址：">
+              <el-form-item class="item" label="所在城市：">
                 <QYAddress
                   :adrress="form.address1"
                   @getLawyerListInfo="selectAddress"
                 />
               </el-form-item>
-              <el-form-item class="item" label="客户详情地址：">
+              <el-form-item class="item" label="详细地址：" style="width: 100%">
                 <el-input
                   v-model="form.addr"
                   placeholder="请输入客户详情地址"
-                  style="width: 215px"
+                  type="textarea"
                 />
               </el-form-item>
             </div>
           </div>
         </div>
-        <div class="drawer-tab">
+        <!-- <div class="drawer-tab">
           <div class="conten-warp">
             <div class="conten-title">登录账户</div>
             <div class="conten-list-com">
@@ -275,24 +281,12 @@
               </el-form-item>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="drawer-tab">
           <div class="conten-warp">
             <div class="conten-title">客户概况</div>
             <div class="conten-list-com">
-              <el-form-item class="item" label="用户状态：">
-                <el-switch
-                  v-model="form.status"
-                  active-color="#41B584"
-                  active-text="开启"
-                  :active-value="1"
-                  class="switch"
-                  inactive-color="#D2D2D2"
-                  inactive-text="关闭"
-                  :inactive-value="0"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="客户等级：">
+              <el-form-item class="item" label="客户等级：" prop="level">
                 <el-select v-model="form.level" placeholder="请选择">
                   <el-option
                     v-for="(item, index) in selectData.customer_grade"
@@ -302,7 +296,7 @@
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item class="item" label="客户分类：">
+              <el-form-item class="item" label="客户分类：" prop="type">
                 <el-select v-model="form.type" placeholder="请选择">
                   <el-option
                     v-for="(item, index) in selectData.customer_type"
@@ -335,7 +329,7 @@
           <div class="conten-warp">
             <div class="conten-title">其它信息</div>
             <div class="conten-list-com">
-              <el-form-item class="item" label="专属客服：">
+              <!-- <el-form-item class="item" label="专属客服：">
                 <el-select v-model="form.service" placeholder="请选择">
                   <el-option
                     v-for="(item, index) in selectData.customer_service"
@@ -344,8 +338,37 @@
                     :value="item.id"
                   />
                 </el-select>
+              </el-form-item> -->
+              <el-form-item class="item" label="汇款方式：" style="width: 100%">
+                <el-radio-group v-model="form.remit_role">
+                  <el-radio :label="0">仅上线付款</el-radio>
+                  <el-radio :label="1">运行线下付款</el-radio>
+                </el-radio-group>
               </el-form-item>
-              <el-form-item class="item" label="备注信息：">
+              <el-form-item class="item" label="客户状态：">
+                <el-switch
+                  v-model="form.status"
+                  active-color="#41B584"
+                  active-text="开启"
+                  :active-value="1"
+                  class="switch"
+                  inactive-color="#D2D2D2"
+                  inactive-text="关闭"
+                  :inactive-value="0"
+                />
+              </el-form-item>
+              <el-form-item
+                v-if="form.drawerType == 3"
+                class="item"
+                label="期初金额："
+              >
+                <el-input
+                  v-model="form.initial_amount"
+                  placeholder="欠款请填负数"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="备注信息：" style="width: 100%">
                 <el-input
                   v-model="form.remark"
                   :autosize="{ minRows: 2, maxRows: 4 }"
@@ -366,9 +389,19 @@
       style="margin: 20px"
     >
       <template #List>
-        <el-table-column label="订单ID" prop="id" show-overflow-tooltip />
-        <el-table-column label="编号" prop="sn" show-overflow-tooltip />
-        <el-table-column label="创建时间" prop="ctime" show-overflow-tooltip />
+        <el-table-column label="订单编号" prop="sn" show-overflow-tooltip />
+        <el-table-column
+          label="订单日期"
+          prop="create_time"
+          show-overflow-tooltip
+        />
+        <el-table-column label="数量" prop="num" width="80" />
+        <el-table-column label="金额" prop="total" width="100" />
+        <el-table-column
+          label="订单状态"
+          prop="order_status"
+          show-overflow-tooltip
+        />
       </template>
     </QYList>
     <QYList
@@ -379,9 +412,14 @@
       style="margin: 20px"
     >
       <template #List>
-        <el-table-column label="订单ID" prop="id" show-overflow-tooltip />
-        <el-table-column label="编号" prop="sn" show-overflow-tooltip />
-        <el-table-column label="发货时间" prop="ctime" show-overflow-tooltip />
+        <el-table-column label="订单编号" prop="sn" show-overflow-tooltip />
+        <el-table-column
+          label="订单日期"
+          prop="add_date"
+          show-overflow-tooltip
+        />
+        <el-table-column label="发货数量" prop="num" width="80" />
+        <el-table-column label="发货金额" prop="total" width="100" />
       </template>
     </QYList>
     <QYList
@@ -392,9 +430,14 @@
       style="margin: 20px"
     >
       <template #List>
-        <el-table-column label="订单ID" prop="id" show-overflow-tooltip />
-        <el-table-column label="编号" prop="sn" show-overflow-tooltip />
-        <el-table-column label="退货时间" prop="ctime" show-overflow-tooltip />
+        <el-table-column label="订单编号" prop="sn" show-overflow-tooltip />
+        <el-table-column
+          label="订单日期"
+          prop="add_date"
+          show-overflow-tooltip
+        />
+        <el-table-column label="退货数量" prop="num" width="80" />
+        <el-table-column label="退货金额" prop="total" width="100" />
       </template>
     </QYList>
     <QYList
@@ -405,12 +448,18 @@
       style="margin: 20px"
     >
       <template #List>
-        <el-table-column label="标题" prop="title" show-overflow-tooltip />
-        <el-table-column label="金额" prop="discount" show-overflow-tooltip />
-        <el-table-column label="创建时间" prop="ctime" show-overflow-tooltip />
+        <el-table-column label="类型" prop="type" width="100" />
+        <!-- <el-table-column label="支付类型" prop="title" width="100" /> -->
+        <el-table-column label="收款金额" prop="total" width="120" />
+        <el-table-column label="优惠金额" prop="discount" width="80" />
+        <el-table-column
+          label="创建时间"
+          prop="create_time"
+          show-overflow-tooltip
+        />
       </template>
     </QYList>
-    <QYList
+    <!-- <QYList
       v-if="tabLabel == '持有优惠券'"
       :list="orderList"
       :list-type="listType"
@@ -434,8 +483,8 @@
           </template>
         </el-table-column>
       </template>
-    </QYList>
-    <QYList
+    </QYList> -->
+    <!-- <QYList
       v-if="tabLabel == '积分明细'"
       :list="orderList"
       :list-type="listType"
@@ -476,7 +525,7 @@
           </template>
         </el-table-column>
       </template>
-    </QYList>
+    </QYList> -->
     <QYList
       v-if="tabLabel == '欠货统计'"
       :list="orderList"
@@ -485,13 +534,11 @@
       style="margin: 20px"
     >
       <template #List>
-        <el-table-column
-          label="商品名称"
-          prop="good_name"
-          show-overflow-tooltip
-        />
-        <el-table-column label="欠货数量" prop="num" show-overflow-tooltip />
-        <el-table-column label="创建时间" prop="ctime" show-overflow-tooltip />
+        <el-table-column label="商品名称" prop="name" show-overflow-tooltip />
+        <el-table-column label="订货数量" prop="num" width="80" />
+        <el-table-column label="欠货数量" prop="delivery_num" width="80" />
+        <el-table-column label="订单时间" prop="ctime" show-overflow-tooltip />
+        <el-table-column label="欠货天数" prop="owe_day" width="80" />
       </template>
     </QYList>
     <el-dialog
@@ -551,6 +598,7 @@
     getCommonAllList,
     editCustomerSave,
     getCustomerInfoList,
+    giteCustomerDetail,
   } from '@/api/basic'
   export default {
     name: 'ComponentsDrawer',
@@ -573,6 +621,20 @@
         activeName: '0',
         tabLabel: '客户信息',
         form: Object.assign({}, this.drawerInof),
+        rules: {
+          name: [
+            { required: true, message: '请输入客户名称', trigger: 'blur' },
+          ],
+          mobile: [
+            { required: true, message: '请输入手机号', trigger: 'blur' },
+          ],
+          level: [
+            { required: true, message: '请选择客户等级', trigger: 'blur' },
+          ],
+          type: [
+            { required: true, message: '请选择客户类型', trigger: 'blur' },
+          ],
+        },
         listLoading: false,
         listType: 2,
         formDrawer: {
@@ -625,12 +687,17 @@
       },
       drawerInof: {
         handler: function (newVal) {
+          this.activeName = '0'
+          this.tabLabel = '客户信息'
           this.form = Object.assign({}, newVal)
           this.form.address1 = [
             this.form.province,
             this.form.city,
             this.form.district,
           ]
+          if (newVal.drawerType != 3) {
+            this.getDetail()
+          }
         },
         deep: true,
         immediate: true,
@@ -640,6 +707,18 @@
       this.getSelectData()
     },
     methods: {
+      async getDetail() {
+        const { data } = await giteCustomerDetail({ id: this.form.id })
+        // 深拷贝
+        let type = this.form.drawerType
+        this.form = JSON.parse(JSON.stringify(data[0]))
+        this.form.drawerType = type
+        this.form.address1 = [
+          this.form.province,
+          this.form.city,
+          this.form.district,
+        ]
+      },
       async changeTypeBtn(e) {
         if (e != 1) {
           this.form.drawerType = e
@@ -658,15 +737,14 @@
           const { code } = await editCustomerSave(this.form)
           if (code == 200) {
             this.$baseMessage('新增成功', 'success', 'vab-hey-message-success')
-            this.form.drawerType = e
-            this.$forceUpdate()
+            this.$emit('fetch-data', 1)
           }
         } else {
           const { code } = await editCustomerSave(this.form)
           if (code == 200) {
             this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
             this.form.drawerType = e
-            this.$forceUpdate()
+            this.$emit('fetch-data')
           }
         }
       },

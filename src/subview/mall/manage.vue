@@ -79,43 +79,39 @@
     <el-card shadow="never" style="border: 0">
       <el-tabs v-model="form.list_type" @tab-click="handleClick">
         <el-tab-pane
-          :label="'全部商品 (' + tatleData.all_order + ')'"
+          :label="'全部商品 (' + tatleData.all_order + '款)'"
           name="0"
         />
         <el-tab-pane
-          :label="'仓库中 (' + tatleData.repository + ')'"
+          :label="'上架中 (' + tatleData.repository + '款)'"
           name="1"
         />
-        <el-tab-pane :label="'已售罄 (' + tatleData.sole_out + ')'" name="2" />
         <el-tab-pane
-          :label="'库存预警 (' + tatleData.stock_alert + ')'"
+          :label="'已下架 (' + tatleData.sole_out + '款)'"
+          name="2"
+        />
+        <el-tab-pane
+          :label="'售空 (' + tatleData.stock_alert + '款)'"
           name="3"
-        />
-        <el-tab-pane :label="'待确认 (' + tatleData.confirmed + ')'" name="4" />
-        <el-tab-pane
-          :label="'自营商城 (' + tatleData.self_operated + ')'"
-          name="5"
-        />
-        <el-tab-pane
-          :label="'第三方平台 (' + tatleData.third_platform + ')'"
-          name="6"
         />
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
-            v-has-permi="['btn:GoodsManage:add']"
+            v-has-permi="['btn:MallManage:shelves']"
             size="small"
             type="primary"
-            @click="handleDetail('add', 3)"
+            @click="handleEdit(0)"
           >
-            添加商品
+            批量下架
           </el-button>
-          <el-button size="small" type="primary" @click="handleEdit(0)">
-            批量停售
-          </el-button>
-          <el-button size="small" type="primary" @click="handleEdit(1)">
-            批量在售
+          <el-button
+            v-has-permi="['btn:MallManage:upshelves']"
+            size="small"
+            type="primary"
+            @click="handleEdit(1)"
+          >
+            批量上架
           </el-button>
         </el-form-item>
       </el-form>
@@ -176,19 +172,13 @@
           </el-table-column>
           <el-table-column label="销量" prop="xl_num" width="120" />
           <el-table-column label="库存" prop="xh_num" width="100" />
-          <el-table-column label="状态" prop="status" width="120">
+          <el-table-column label="状态" prop="status" width="80">
             <template #default="{ row }">
-              <div v-if="row.status == 0" style="margin-bottom: 10px">
-                <el-tag type="danger">停售</el-tag>
+              <div v-if="row.is_shop == 0" style="margin-bottom: 10px">
+                <el-tag type="danger">下架</el-tag>
               </div>
-              <div v-else-if="row.status == 1" style="margin-bottom: 10px">
-                <el-tag>在售</el-tag>
-              </div>
-              <div v-if="row.recommend == 0">
-                <el-tag type="danger">已取消推荐</el-tag>
-              </div>
-              <div v-else-if="row.recommend == 1">
-                <el-tag>推荐中</el-tag>
+              <div v-else-if="row.is_shop == 1" style="margin-bottom: 10px">
+                <el-tag>上架</el-tag>
               </div>
             </template>
           </el-table-column>
@@ -200,54 +190,36 @@
           >
             <template #default="{ row }">
               <el-button
-                v-has-permi="['btn:GoodsManage:view']"
+                v-has-permi="['btn:MallManage:view']"
                 type="text"
                 @click="handleDetail(row, 1)"
               >
                 详情
               </el-button>
               <el-button
-                v-has-permi="['btn:GoodsManage:edit']"
-                type="text"
-                @click="handleDetail(row, 2)"
-              >
-                编辑
-              </el-button>
-              <el-button
-                v-if="row.status == 0"
+                v-if="row.is_shop == 0"
+                v-has-permi="['btn:MallManage:upshelves']"
                 type="text"
                 @click="handleEdit(4, row)"
               >
-                在售
+                上架商品
               </el-button>
               <el-button
-                v-if="row.status == 1"
+                v-if="row.is_shop == 1"
+                v-has-permi="['btn:MallManage:shelves']"
                 type="text"
                 @click="handleEdit(3, row)"
               >
-                停售
+                下架商品
               </el-button>
+
               <el-button
-                v-if="row.recommend == 1"
-                type="text"
-                @click="handleEdit(5, row)"
-              >
-                取消推荐
-              </el-button>
-              <el-button
-                v-if="row.recommend == 0"
-                type="text"
-                @click="handleEdit(6, row)"
-              >
-                设置推荐
-              </el-button>
-              <!-- <el-button
-                v-has-permi="['btn:GoodsManage:edit']"
+                v-has-permi="['btn:MallManage:upload']"
                 type="text"
                 @click="handleMaterial(row)"
               >
                 素材上传
-              </el-button> -->
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -335,10 +307,9 @@
   import {
     getGoodList,
     getCommonAllList,
-    editGoodBatchLower,
+    editChangeIsShop,
     getGoodTabTotal,
     editSourceMaterialSave,
-    editChangeRecommend,
   } from '@/api/basic'
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
@@ -376,6 +347,7 @@
           type: '', //尺码类型 0整手  1散码
           band: '', //波段
           name: '', //商品名称
+          status: 1, //0停售 1在售
         },
         listType: 1,
         formType: 4,
@@ -532,8 +504,8 @@
           if (type == 1) {
             let temp = false
             this.selectRowsId.forEach((item) => {
-              if (item.status == 1) {
-                this.$message.error('所选数据中有已在售的商品')
+              if (item.is_shop == 1) {
+                this.$message.error('所选数据中有已上架的商品')
                 temp = true
                 return
               }
@@ -541,11 +513,10 @@
             if (temp) {
               return
             }
-            let ids = this.selectRowsId.map((item) => item.id)
-            this.$baseConfirm('你确定要在售选中项吗', null, async () => {
-              const { msg } = await editGoodBatchLower({
-                good_ids: ids,
-                status: type,
+            let ids = this.selectRowsId.map((item) => item.id).join(',')
+            this.$baseConfirm('你确定要上架选中项吗', null, async () => {
+              const { msg } = await editChangeIsShop({
+                ids: ids,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
               await this.fetchData()
@@ -553,8 +524,8 @@
           } else if (type == 0) {
             let temp = false
             this.selectRowsId.forEach((item) => {
-              if (item.status == 0) {
-                this.$message.error('所选数据中有已停售的商品')
+              if (item.is_shop == 0) {
+                this.$message.error('所选数据中有已下架的商品')
                 temp = true
                 return
               }
@@ -562,11 +533,10 @@
             if (temp) {
               return
             }
-            let ids = this.selectRowsId.map((item) => item.id)
-            this.$baseConfirm('你确定要停售选中项吗', null, async () => {
-              const { msg } = await editGoodBatchLower({
-                good_ids: ids,
-                status: type,
+            let ids = this.selectRowsId.map((item) => item.id).join(',')
+            this.$baseConfirm('你确定要下架选中项吗', null, async () => {
+              const { msg } = await editChangeIsShop({
+                ids: ids,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
               await this.fetchData()
@@ -574,35 +544,17 @@
           }
         } else {
           if (type == 3) {
-            this.$baseConfirm('你确定要停售改项吗', null, async () => {
-              const { msg } = await editGoodBatchLower({
-                good_ids: row.id,
-                status: 0,
+            this.$baseConfirm('你确定要下架改项吗', null, async () => {
+              const { msg } = await editChangeIsShop({
+                ids: row.id,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
               await this.fetchData()
             })
           } else if (type == 4) {
-            this.$baseConfirm('你确定要在售改项吗', null, async () => {
-              const { msg } = await editGoodBatchLower({
-                good_ids: row.id,
-                status: 1,
-              })
-              this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.fetchData()
-            })
-          } else if (type == 5) {
-            this.$baseConfirm('你确定要设置该项为推荐吗？', null, async () => {
-              const { msg } = await editChangeRecommend({
-                id: row.id,
-              })
-              this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.fetchData()
-            })
-          } else if (type == 6) {
-            this.$baseConfirm('你确定要取消该项为推荐吗', null, async () => {
-              const { msg } = await editChangeRecommend({
-                id: row.id,
+            this.$baseConfirm('你确定要上架改项吗', null, async () => {
+              const { msg } = await editChangeIsShop({
+                ids: row.id,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
               await this.fetchData()

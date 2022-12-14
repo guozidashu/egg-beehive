@@ -23,12 +23,7 @@
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleEdit('add')"
-          >
+          <el-button size="small" type="primary" @click="handleEdit('add')">
             添加用户
           </el-button>
         </el-form-item>

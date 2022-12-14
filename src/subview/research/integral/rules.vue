@@ -28,7 +28,6 @@
         <el-form-item>
           <el-button
             v-has-permi="['btn:IntegralRules:edit']"
-            native-type="submit"
             size="small"
             type="primary"
             @click="handleSub"

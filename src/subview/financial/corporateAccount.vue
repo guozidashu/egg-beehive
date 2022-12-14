@@ -35,7 +35,6 @@
         <el-form-item>
           <el-button
             v-has-permi="['btn:FinancialCorporateAccount:add']"
-            native-type="submit"
             size="small"
             type="primary"
             @click="handleEdit('add')"

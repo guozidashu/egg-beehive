@@ -72,13 +72,13 @@
                   </el-button>
                 </el-input>
               </el-form-item>
-              <div style="margin: 10px">背景色</div>
+              <div style="margin: 10px">热区色块</div>
               <el-form-item>
                 <div style="display: flex">
                   <span style="margin-right: 20px">
                     {{ item.bg_color }}
                   </span>
-                  <el-color-picker v-model="item.bg_color" />
+                  <!-- <el-color-picker v-model="item.bg_color" /> -->
                 </div>
               </el-form-item>
               <div style="margin: 10px">与上方距离</div>

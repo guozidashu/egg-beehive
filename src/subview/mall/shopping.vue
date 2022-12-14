@@ -8,6 +8,8 @@
     <el-radio-group v-model="activeName" style="margin-bottom: 20px">
       <el-radio-button label="基础配置" />
       <el-radio-button label="注册协议" />
+      <el-radio-button label="小程序绑定" />
+      <el-radio-button label="支付设置" />
     </el-radio-group>
     <el-form
       v-if="activeName == '基础配置'"
@@ -139,7 +141,7 @@
         </div> -->
         <el-form-item>
           <el-button
-            v-has-permi="['btn:DecorateShopping:save']"
+            v-has-permi="['btn:Mallhopping:save']"
             style="margin-top: 10px"
             type="primary"
             @click="submitForm('form')"
@@ -181,7 +183,7 @@
         </el-form-item> -->
         <el-form-item>
           <el-button
-            v-has-permi="['btn:DecorateShopping:save']"
+            v-has-permi="['btn:Mallhopping:save']"
             style="margin-top: 10px"
             type="primary"
             @click="submitForm1('form1')"
@@ -191,6 +193,8 @@
         </el-form-item>
       </div>
     </el-form>
+    <SmallProgram v-if="activeName == '小程序绑定'" />
+    <PayProgram v-if="activeName == '支付设置'" />
     <vab-upload
       v-if="uploadType == 1"
       ref="vabUpload"
@@ -219,11 +223,15 @@
     editRegisterDealSave,
   } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
+  import SmallProgram from '@/subview/components/Form/SmallProgram.vue'
+  import PayProgram from '@/subview/components/Form/PayProgram.vue'
   // import VabQuill from '@/extra/VabQuill'
   export default {
     name: 'SystemStore',
     components: {
       VabUpload,
+      SmallProgram,
+      PayProgram,
       // VabQuill,
     },
     data() {

@@ -24,7 +24,6 @@
               />
               <el-button
                 v-if="form.drawerType == 1"
-                native-type="submit"
                 size="small"
                 style="float: right; margin-right: 10px"
                 type="primary"
@@ -34,7 +33,6 @@
               </el-button>
               <el-button
                 v-if="form.drawerType == 1"
-                native-type="submit"
                 size="small"
                 style="float: right; margin-right: 10px"
                 type="primary"
@@ -44,7 +42,6 @@
               </el-button>
               <el-button
                 v-if="form.drawerType == 2"
-                native-type="submit"
                 size="small"
                 style="float: right; margin-right: 10px"
                 type="primary"
@@ -100,7 +97,6 @@
     <div v-if="form.drawerType == 3">
       <el-button
         v-if="form.drawerType == 1"
-        native-type="submit"
         size="small"
         style="float: right; margin-right: 10px"
         type="primary"
@@ -110,7 +106,6 @@
       </el-button>
       <el-button
         v-if="form.drawerType == 2 || form.drawerType == 3"
-        native-type="submit"
         size="small"
         style="float: right; margin-right: 10px"
         type="primary"
@@ -139,7 +134,7 @@
               <span v-if="goodsDetails.gender == 2">女</span>
               <span v-if="goodsDetails.gender == 3">中</span>
             </div>
-            <div>供应商： 暂无</div>
+            <!-- <div>供应商： 暂无</div> -->
             <div>
               商品图片：
               <img :src="goodsDetails.img" style="width: 20px; height: 20px" />
@@ -167,7 +162,7 @@
                 {{ item }}
               </span>
             </div>
-            <div>商品条码： 暂无</div>
+            <!-- <div>商品条码： 暂无</div> -->
             <div>库位名称：{{ goodsDetails.position_name }}</div>
           </div>
         </div>
@@ -184,27 +179,27 @@
           <div class="conten-title">其它信息</div>
           <div class="conten-list-row">
             <div style="width: 50%">
-              创建时间： {{ goodsDetails.created | formatTime }}
+              创建时间： {{ goodsDetails.create_time }}
             </div>
-            <div style="width: 50%">操作人员： 暂无</div>
+            <!-- <div style="width: 50%">操作人员： 暂无</div> -->
             <div style="width: 50%">
               更新时间：
               {{ goodsDetails.updated_time | formatTime }}
             </div>
-            <div style="width: 50%">操作人员： 暂无</div>
+            <!-- <div style="width: 50%">操作人员： 暂无</div> -->
             <div>
               上架商城：
               <span v-if="goodsDetails.online_id == 0">待确认</span>
               <span v-else>已确定</span>
             </div>
-            <div>是否同步到聚水潭： 暂无</div>
-            <div>库存预警： 暂无</div>
+            <!-- <div>是否同步到聚水潭： 暂无</div>
+            <div>库存预警： 暂无</div> -->
             <div>设计师： {{ goodsDetails.designer_name }}</div>
             <div>设计师编号： {{ goodsDetails.order_sn }}</div>
             <div>
               商品状态：
-              <span v-if="goodsDetails.status == 1">上架</span>
-              <span v-if="goodsDetails.status == 0">下架</span>
+              <span v-if="goodsDetails.status == 1">在售</span>
+              <span v-if="goodsDetails.status == 0">停售</span>
             </div>
           </div>
         </div>
@@ -214,6 +209,7 @@
         ref="form"
         label-width="120px"
         :model="form"
+        :rules="rules"
         style="width: 100%"
       >
         <div class="drawer-tab">
@@ -221,8 +217,24 @@
             <div class="conten-title">基本信息</div>
             <div class="conten-list-com">
               <el-form-item
+                v-if="form.is_quote == 1"
                 class="item"
                 label="商品款号："
+                prop="sn"
+                style="font-size: 12px"
+              >
+                <el-input
+                  v-model="form.sn"
+                  :disabled="true"
+                  placeholder="请输入款号"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item
+                v-else
+                class="item"
+                label="商品款号："
+                prop="sn"
                 style="font-size: 12px"
               >
                 <el-input
@@ -231,29 +243,33 @@
                   style="width: 215px"
                 />
               </el-form-item>
-              <el-form-item class="item" label="商品名称：">
+              <el-form-item class="item" label="商品名称：" prop="name">
                 <el-input
                   v-model="form.name"
                   placeholder="请输入商品名称"
                   style="width: 215px"
                 />
               </el-form-item>
-              <el-form-item class="item" label="商品描述：">
+              <el-form-item class="item" label="商品描述：" prop="content">
                 <el-input
                   v-model="form.content"
                   placeholder="请输入商品名称"
                   style="width: 215px"
                 />
               </el-form-item>
-              <el-form-item class="item" label="商品标题：">
+              <el-form-item class="item" label="商品标题：" prop="shoptitle">
                 <el-input
                   v-model="form.shoptitle"
                   placeholder="请输入商品标题"
                   style="width: 215px"
                 />
               </el-form-item>
-              <el-form-item class="item" label="商品款式：">
-                <el-select v-model="form.category" placeholder="请选择商品款式">
+              <el-form-item class="item" label="商品款式：" prop="category">
+                <el-select
+                  v-model="form.category"
+                  placeholder="请选择商品款式"
+                  style="width: 130px"
+                >
                   <el-option
                     v-for="(item, index) in selectData.category"
                     :key="index"
@@ -261,13 +277,13 @@
                     :value="item.id"
                   />
                 </el-select>
-                <i
-                  class="el-icon-plus"
-                  style="margin-left: 10px; color: #1890ff"
-                ></i>
               </el-form-item>
-              <el-form-item class="item" label="商品品牌：">
-                <el-select v-model="form.brand" placeholder="请选择商品品牌：">
+              <el-form-item class="item" label="商品品牌：" prop="brand">
+                <el-select
+                  v-model="form.brand"
+                  placeholder="请选择商品品牌："
+                  style="width: 130px"
+                >
                   <el-option
                     v-for="(item, index) in selectData.brand"
                     :key="index"
@@ -275,13 +291,13 @@
                     :value="item.id"
                   />
                 </el-select>
-                <i
-                  class="el-icon-plus"
-                  style="margin-left: 10px; color: #1890ff"
-                ></i>
               </el-form-item>
-              <el-form-item class="item" label="年份：">
-                <el-select v-model="form.year" placeholder="请选择年份：">
+              <el-form-item class="item" label="年份：" prop="year">
+                <el-select
+                  v-model="form.year"
+                  placeholder="请选择年份："
+                  style="width: 130px"
+                >
                   <el-option
                     v-for="(item, index) in selectData.year"
                     :key="index"
@@ -289,14 +305,14 @@
                     :value="item.id"
                   />
                 </el-select>
-                <i
-                  class="el-icon-plus"
-                  style="margin-left: 10px; color: #1890ff"
-                ></i>
               </el-form-item>
 
-              <el-form-item class="item" label="季节：">
-                <el-select v-model="form.season" placeholder="请选择季节：">
+              <el-form-item class="item" label="季节：" prop="season">
+                <el-select
+                  v-model="form.season"
+                  placeholder="请选择季节："
+                  style="width: 130px"
+                >
                   <el-option
                     v-for="(item, index) in selectData.season"
                     :key="index"
@@ -304,14 +320,14 @@
                     :value="item.id"
                   />
                 </el-select>
-                <i
-                  class="el-icon-plus"
-                  style="margin-left: 10px; color: #1890ff"
-                ></i>
               </el-form-item>
 
               <el-form-item class="item" label="上市波段：">
-                <el-select v-model="form.band" placeholder="请选择上市波段：">
+                <el-select
+                  v-model="form.band"
+                  placeholder="请选择上市波段："
+                  style="width: 130px"
+                >
                   <el-option
                     v-for="(item, index) in selectData.band"
                     :key="index"
@@ -319,13 +335,13 @@
                     :value="item.id"
                   />
                 </el-select>
-                <i
-                  class="el-icon-plus"
-                  style="margin-left: 10px; color: #1890ff"
-                ></i>
               </el-form-item>
               <el-form-item class="item" label="年龄段：">
-                <el-select v-model="form.agegroup" placeholder="请选择年龄段：">
+                <el-select
+                  v-model="form.agegroup"
+                  placeholder="请选择年龄段："
+                  style="width: 130px"
+                >
                   <el-option
                     v-for="(item, index) in selectData.agegroup"
                     :key="index"
@@ -333,13 +349,13 @@
                     :value="item.id"
                   />
                 </el-select>
-                <i
-                  class="el-icon-plus"
-                  style="margin-left: 10px; color: #1890ff"
-                ></i>
               </el-form-item>
               <el-form-item class="item" label="性别：">
-                <el-select v-model="form.gender" placeholder="请选择性别：">
+                <el-select
+                  v-model="form.gender"
+                  placeholder="请选择性别："
+                  style="width: 130px"
+                >
                   <el-option label="女" :value="1" />
                   <el-option label="男" :value="2" />
                   <el-option label="中" :value="3" />
@@ -349,7 +365,6 @@
                 <div style="display: flex">
                   <div>
                     <el-button
-                      native-type="submit"
                       size="small"
                       style="margin: 0 10px 0 0"
                       type="primary"
@@ -376,8 +391,9 @@
                 v-if="form.drawerType == 3"
                 class="item"
                 label="颜色："
+                prop="colorid"
               >
-                <qy-color-select v-model="form.color_id" />
+                <qy-color-select v-model="form.colorid" />
                 <div style="width: 200px; margin: -33px 0 0 90px">
                   <span v-for="(item, idex) in form.color_name" :key="idex">
                     {{ item }}
@@ -388,8 +404,9 @@
                 v-if="form.drawerType == 3"
                 class="item"
                 label="尺码："
+                prop="sizeid"
               >
-                <qy-size-select v-model="form.size_id" />
+                <qy-size-select v-model="form.sizeid" />
                 <div style="width: 200px; margin: -33px 0 0 90px">
                   <span v-for="(item, idex) in form.size_name" :key="idex">
                     {{ item }}
@@ -400,6 +417,7 @@
                 <el-select
                   v-model="form.warehouse"
                   placeholder="请选择仓库："
+                  style="width: 130px"
                   @change="selectProvinceFun($event)"
                 >
                   <el-option
@@ -409,16 +427,13 @@
                     :value="item.id"
                   />
                 </el-select>
-                <i
-                  class="el-icon-plus"
-                  style="margin-left: 10px; color: #1890ff"
-                ></i>
               </el-form-item>
               <el-form-item v-show="form.warehouse" class="item" label="库位：">
                 <el-select
                   v-model="form.position"
                   filterable
                   placeholder="请选择/搜索库位："
+                  style="width: 130px"
                 >
                   <el-option
                     v-for="(item, index) in WarehousePositionList"
@@ -427,10 +442,6 @@
                     :value="item.id"
                   />
                 </el-select>
-                <i
-                  class="el-icon-plus"
-                  style="margin-left: 10px; color: #1890ff"
-                ></i>
               </el-form-item>
             </div>
           </div>
@@ -439,33 +450,30 @@
           <div class="conten-warp">
             <div class="conten-title">价格信息</div>
             <div class="conten-list-com">
-              <el-form-item class="item" label="采购价：">
+              <el-form-item class="item" label="采购价：" prop="purchase_price">
                 <el-input v-model="form.purchase_price" style="width: 215px" />
               </el-form-item>
-              <el-form-item class="item" label="成本价：">
+              <el-form-item class="item" label="成本价：" prop="cost_price">
                 <el-input v-model="form.cost_price" style="width: 215px" />
               </el-form-item>
-              <el-form-item class="item" label="吊牌价：">
+              <el-form-item class="item" label="吊牌价：" prop="sale_price">
                 <el-input v-model="form.sale_price" style="width: 215px" />
               </el-form-item>
-              <el-form-item
-                v-if="form.drawerType == 3"
-                class="item"
-                label="销售价："
-              >
+              <el-form-item class="item" label="销售价：" prop="price">
                 <el-input v-model="form.price" clearable style="width: 215px">
                   <el-button slot="append" @click="changeType()">
                     固定价
                   </el-button>
                 </el-input>
               </el-form-item>
-              <el-form-item
+              <!-- <el-form-item
                 v-if="form.drawerType == 2"
                 class="item"
                 label="销售价："
+                prop="price"
               >
                 <el-input v-model="form.price" clearable style="width: 215px" />
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item v-if="lockSta" class="item" style="width: 100%">
                 <QYList
                   :list="zhekouList"
@@ -516,17 +524,23 @@
           <div class="conten-warp">
             <div class="conten-title">其它信息</div>
             <div class="conten-list-com">
-              <el-form-item class="item" label="商品状态：">
+              <el-form-item
+                v-if="form.drawerType == 3"
+                class="item"
+                label="商品状态："
+              >
                 <el-radio-group v-model="form.status">
-                  <el-radio :label="1">上架</el-radio>
-                  <el-radio :label="0">下架</el-radio>
+                  <el-radio :label="1">在售</el-radio>
+                  <el-radio :label="0">停售</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item class="item" label="库存预警：">
                 <el-input
                   v-model="form.goods_stock_warning"
-                  placeholder="请输入预警信息"
+                  min="0"
+                  placeholder="商品现货库存小于多少时预警"
                   style="width: 215px"
+                  type="number"
                 />
               </el-form-item>
               <!-- <el-form-item class="item" label="是否同步到聚水潭：">
@@ -555,21 +569,23 @@
       </el-form>
     </div>
     <QYList
-      v-if="
-        tabindex == '1' || tabindex == '3' || tabindex == '4' || tabindex == '5'
-      "
+      v-if="tabindex == '1'"
       :list="orderList"
       :list-type="listType"
       :state="listLoading"
       style="margin: 20px"
     >
       <template #List>
-        <el-table-column label="姓名" prop="name" show-overflow-tooltip />
-        <el-table-column label="金额" prop="total" show-overflow-tooltip />
-        <el-table-column label="数量" prop="num" show-overflow-tooltip />
+        <el-table-column label="客户名称" prop="name" show-overflow-tooltip />
         <el-table-column
           label="创建时间"
           prop="create_time"
+          show-overflow-tooltip
+        />
+        <el-table-column label="已发货数量" prop="num" show-overflow-tooltip />
+        <el-table-column
+          label="未发货数量"
+          prop="delivery_num"
           show-overflow-tooltip
         />
       </template>
@@ -582,14 +598,60 @@
       style="margin: 20px"
     >
       <template #List>
-        <el-table-column label="姓名" prop="name" show-overflow-tooltip />
-        <el-table-column label="金额" prop="total" show-overflow-tooltip />
-        <el-table-column label="数量" prop="num" show-overflow-tooltip />
+        <el-table-column label="订单号" prop="sn" show-overflow-tooltip />
+        <el-table-column label="客户名称" prop="name" show-overflow-tooltip />
+        <el-table-column label="发货时间" prop="ctime" show-overflow-tooltip />
+        <el-table-column label="发货数量" prop="num" show-overflow-tooltip />
+      </template>
+    </QYList>
+    <QYList
+      v-if="tabindex == '3'"
+      :list="orderList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column label="订单号" prop="sn" show-overflow-tooltip />
+        <el-table-column label="客户名称" prop="name" show-overflow-tooltip />
+        <el-table-column label="退货时间" prop="ctime" show-overflow-tooltip />
+        <el-table-column label="退货数量" prop="num" show-overflow-tooltip />
+      </template>
+    </QYList>
+    <QYList
+      v-if="tabindex == '4'"
+      :list="orderList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column label="订单号" prop="sn" show-overflow-tooltip />
+        <el-table-column label="供应商" prop="name" show-overflow-tooltip />
         <el-table-column
-          label="创建时间"
+          label="入库时间"
           prop="add_date"
           show-overflow-tooltip
         />
+        <el-table-column label="入库数量" prop="num" show-overflow-tooltip />
+      </template>
+    </QYList>
+    <QYList
+      v-if="tabindex == '5'"
+      :list="orderList"
+      :list-type="listType"
+      :state="listLoading"
+      style="margin: 20px"
+    >
+      <template #List>
+        <el-table-column label="订单号" prop="sn" show-overflow-tooltip />
+        <el-table-column label="客户" prop="name" show-overflow-tooltip />
+        <el-table-column
+          label="出库时间"
+          prop="add_date"
+          show-overflow-tooltip
+        />
+        <el-table-column label="出库数量" prop="num" show-overflow-tooltip />
       </template>
     </QYList>
     <QYList
@@ -600,15 +662,9 @@
       style="margin: 20px"
     >
       <template #List>
-        <el-table-column label="姓名" prop="name" show-overflow-tooltip />
+        <el-table-column label="商品款号" prop="sn" show-overflow-tooltip />
         <el-table-column label="调整前" prop="fnum" show-overflow-tooltip />
         <el-table-column label="调整后" prop="tnum" show-overflow-tooltip />
-        <el-table-column label="备注" prop="remark" show-overflow-tooltip />
-        <el-table-column
-          label="创建时间"
-          prop="add_date"
-          show-overflow-tooltip
-        />
       </template>
     </QYList>
     <QYList
@@ -621,7 +677,11 @@
       <template #List>
         <el-table-column label="尺码" prop="size_name" show-overflow-tooltip />
         <el-table-column label="颜色" prop="color_name" show-overflow-tooltip />
-        <el-table-column label="条形码" prop="barcode" show-overflow-tooltip />
+        <el-table-column
+          label="待发货数量"
+          prop="df_num"
+          show-overflow-tooltip
+        />
         <el-table-column
           label="再生产数量"
           prop="zsc_num"
@@ -681,6 +741,72 @@
         goodsAllNum: {},
         goodsDetails: {},
         form: JSON.parse(JSON.stringify(this.drawerInof)),
+        rules: {
+          sn: [
+            { required: true, message: '请输入商品编号', trigger: 'blur' },
+            {
+              min: 1,
+              max: 20,
+              message: '长度在 1 到 20 个字符',
+              trigger: 'blur',
+            },
+          ],
+          name: [
+            { required: true, message: '请输入商品名称', trigger: 'blur' },
+            {
+              min: 1,
+              max: 20,
+              message: '长度在 1 到 20 个字符',
+              trigger: 'blur',
+            },
+          ],
+          content: [
+            { required: true, message: '请输入商品描述', trigger: 'blur' },
+            {
+              min: 1,
+              max: 20,
+              message: '长度在 1 到 20 个字符',
+              trigger: 'blur',
+            },
+          ],
+          shoptitle: [
+            { required: true, message: '请输入商品标题', trigger: 'blur' },
+            {
+              min: 1,
+              max: 20,
+              message: '长度在 1 到 20 个字符',
+              trigger: 'blur',
+            },
+          ],
+          category: [
+            { required: true, message: '请选择商品分类', trigger: 'blur' },
+          ],
+          brand: [
+            { required: true, message: '请选择商品品牌', trigger: 'blur' },
+          ],
+          year: [
+            { required: true, message: '请选择商品年份', trigger: 'blur' },
+          ],
+          season: [
+            { required: true, message: '请选择商品季节', trigger: 'blur' },
+          ],
+          colorid: [
+            { required: true, message: '请选择商品颜色', trigger: 'blur' },
+          ],
+          sizeid: [
+            { required: true, message: '请选择商品尺码', trigger: 'blur' },
+          ],
+          purchase_price: [
+            { required: true, message: '请输入采购价', trigger: 'blur' },
+          ],
+          cost_price: [
+            { required: true, message: '请输入成本价', trigger: 'blur' },
+          ],
+          sale_price: [
+            { required: true, message: '请输入吊牌价', trigger: 'blur' },
+          ],
+          price: [{ required: true, message: '请输入销售价', trigger: 'blur' }],
+        },
         selectData: JSON.parse(JSON.stringify(this.selectList)),
         listLoading: false,
         listType: 2,
@@ -700,7 +826,9 @@
       drawerInof: {
         handler: function (newVal) {
           this.form = JSON.parse(JSON.stringify(newVal))
+          this.lockSta = false
           this.tabindex = '0'
+          this.activeName = '0'
           if (newVal.drawerType != 3) {
             this.getGoodsAllDetail()
             this.getGoodsDetail()
@@ -718,13 +846,13 @@
         },
         deep: true,
       },
-      'form.color_id': {
+      'form.colorid': {
         handler: function () {
-          if (!this.form.color_id) {
+          if (!this.form.colorid) {
             return
           }
           let arr = []
-          this.form.color_id.forEach((item) => {
+          this.form.colorid.forEach((item) => {
             this.selectData.color.forEach((item1) => {
               item1.children.forEach((item2) => {
                 if (item == item2.id) {
@@ -742,13 +870,13 @@
         },
         deep: true,
       },
-      'form.size_id': {
+      'form.sizeid': {
         handler: function () {
-          if (!this.form.size_id) {
+          if (!this.form.sizeid) {
             return
           }
           let arr = []
-          this.form.size_id.forEach((item) => {
+          this.form.sizeid.forEach((item) => {
             this.selectData.size.forEach((item1) => {
               if (item.pid == item1.id) {
                 item1.children.forEach((item2) => {
@@ -789,8 +917,8 @@
       async getGoodsDetail() {
         let temp = this.form.drawerType
         const { data } = await getGoodBasicsDetails({ good_id: this.form.id })
-        this.goodsDetails = data
-        this.form = data
+        this.goodsDetails = JSON.parse(JSON.stringify(data))
+        this.form = JSON.parse(JSON.stringify(data))
         this.form.category = data.category_id
         this.form.brand = data.brand_id
         this.form.year = data.year_id
@@ -853,16 +981,17 @@
           this.form.id = 0
           const { code } = await editGoodSave(this.form)
           if (code == 200) {
-            this.$baseMessage('新增成功', 'success', 'vab-hey-message-success')
             this.form.drawerType = e
-            this.$forceUpdate()
+            this.$baseMessage('新增成功', 'success', 'vab-hey-message-success')
+            this.$emit('fetch-data', 1)
           }
         } else {
           const { code } = await editGoodSave(this.form)
           if (code == 200) {
-            this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
             this.form.drawerType = e
-            this.$forceUpdate()
+            this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
+            this.getGoodsDetail()
+            this.$emit('fetch-data')
           }
         }
       },
@@ -896,7 +1025,7 @@
           page: 1,
           pageSize: 5,
         })
-        this.orderList = data.list.data
+        this.orderList = data.list
         this.listLoading = false
       },
       async changeType() {
@@ -916,8 +1045,11 @@
         }
         const { data } = await getGradeList()
         data.data.forEach((item) => {
-          item.price = this.form.price * item.discount
-          item.price1 = this.form.price * item.discount_single
+          // 保留小数点后两位
+          let temp = this.form.price * item.discount
+          let temp1 = this.form.price * item.discount_single
+          item.price = temp.toFixed(2)
+          item.price1 = temp1.toFixed(2)
         })
         this.zhekouList = data.data
       },

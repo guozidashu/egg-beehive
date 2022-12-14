@@ -98,19 +98,13 @@
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
-            native-type="submit"
             size="small"
             type="primary"
             @click="print('multipleTable')"
           >
             打印配发单
           </el-button>
-          <el-button
-            native-type="submit"
-            size="small"
-            type="primary"
-            @click="handleDownload"
-          >
+          <el-button size="small" type="primary" @click="handleDownload">
             导出订单
           </el-button>
         </el-form-item>
