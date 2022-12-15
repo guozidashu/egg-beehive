@@ -15,7 +15,7 @@
         <div style="display: flex">
           <el-menu
             class="el-menu-vertical-demo"
-            default-active="0"
+            default-active="1"
             style="width: 15%"
             @close="handleClose"
             @open="handleOpen"
@@ -49,8 +49,12 @@
                     placeholder="请选择模板类型"
                     style="width: 215px"
                   >
-                    <el-option label="首页" :value="1" />
-                    <el-option label="个人中心" :value="2" />
+                    <el-option
+                      v-for="item in template_class"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id"
+                    />
                   </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -182,14 +186,7 @@
         title: '',
         template_class: [],
         dialogFormVisible: false,
-        menuList: [
-          {
-            id: '0',
-            name: '商城首页',
-            default: true,
-            btnIconStatus: false,
-          },
-        ],
+        menuList: [],
         form: {
           page: 1,
           pageSize: 10,
@@ -214,9 +211,15 @@
       },
     },
     created() {
+      this.getTypeList()
       this.fetchData()
     },
     methods: {
+      handleGrouPQuery(item) {
+        this.form.page = 1
+        this.form.class_id = item.id
+        this.fetchData()
+      },
       async subit() {
         if (this.form1.name == '') {
           this.$message({
@@ -244,6 +247,8 @@
         const { data } = await getCommonAllList({
           type: 'template_class',
         })
+        this.menuList = data.template_class
+        this.form.class_id = data.template_class[0].id
         this.template_class = data.template_class
       },
       dia_close() {

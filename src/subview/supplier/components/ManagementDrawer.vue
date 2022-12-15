@@ -14,7 +14,7 @@ d
                 icon="align-center"
                 style="float: right; margin: 6px 0 0 0"
               />
-              <el-button
+              <!-- <el-button
                 v-if="form.drawerType == 1"
                 size="small"
                 style="float: right; margin-right: 10px"
@@ -22,7 +22,7 @@ d
                 @click="print('vab-print-table')"
               >
                 打印
-              </el-button>
+              </el-button> -->
               <el-button
                 v-if="form.drawerType == 1"
                 size="small"

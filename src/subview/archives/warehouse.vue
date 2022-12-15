@@ -52,6 +52,7 @@
         <template #List>
           <el-table-column type="selection" width="55" />
           <el-table-column label="ID" prop="id" width="80" />
+          <el-table-column label="排序" prop="sort" width="80" />
           <el-table-column label="仓库名称" prop="name" width="150" />
 
           <el-table-column label="库位数量" prop="count" width="150" />

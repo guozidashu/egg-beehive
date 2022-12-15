@@ -1,6 +1,6 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <div
+    <!-- <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
       <QYForm
@@ -19,7 +19,7 @@
           </el-form-item>
         </template>
       </QYForm>
-    </div>
+    </div> -->
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -82,13 +82,13 @@
               >
                 编辑
               </el-button>
-              <el-button
+              <!-- <el-button
                 v-has-permi="['btn:CustomerLevel:del']"
                 type="text"
                 @click="handleDelete(row)"
               >
                 删除
-              </el-button>
+              </el-button> -->
             </template>
           </el-table-column>
         </template>

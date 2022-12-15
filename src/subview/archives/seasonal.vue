@@ -48,7 +48,9 @@
           <el-table-column label="使用商品" prop="count" />
           <el-table-column label="状态" prop="status" width="150">
             <template #default="{ row }">
-              <el-switch
+              <el-tag v-if="row.status == 1">开启</el-tag>
+              <el-tag v-else type="danger">关闭</el-tag>
+              <!-- <el-switch
                 v-model="row.status"
                 active-color="#41B584"
                 active-text="开启"
@@ -59,7 +61,7 @@
                 :inactive-value="0"
                 style="margin: 0 10px"
                 @change="turnOnOff(row)"
-              />
+              /> -->
             </template>
           </el-table-column>
           <el-table-column label="排序" prop="sort" width="80" />

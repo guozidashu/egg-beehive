@@ -89,7 +89,7 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item v-show="!form.fold" label="加入时间:">
+          <el-form-item v-show="!form.fold" label="注册时间:">
             <el-date-picker
               v-model="form.create_time"
               align="left"
@@ -153,7 +153,8 @@
         <template #List>
           <el-table-column type="selection" />
           <el-table-column label="ID" prop="id" width="70" />
-          <el-table-column label="头像" width="120">
+          <el-table-column label="客户编码" prop="sn" width="120" />
+          <!-- <el-table-column label="头像" width="120">
             <template #default="{ row }">
               <el-tooltip placement="top">
                 <el-image
@@ -164,10 +165,11 @@
                 <el-image :src="row.avatar" style="width: 50px; height: 50px" />
               </el-tooltip>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column label="客户名称" prop="name" width="150" />
-          <el-table-column label="客户等级" prop="grade_name" width="150" />
-          <el-table-column label="客户分类" prop="type_name" width="150" />
+          <el-table-column label="手机号" prop="mobile" width="150" />
+          <el-table-column label="客户等级" prop="grade_name" width="120" />
+          <el-table-column label="客户分类" prop="type_name" width="120" />
           <el-table-column label="客户来源" prop="source_name" width="120" />
           <el-table-column
             align="right"
@@ -196,13 +198,13 @@
             width="150"
           >
             <template #default="{ row }">
-              <el-tag v-if="row.delivery_arrears < 0" type="danger">
-                -￥{{ row.delivery_arrears | moneyFormat }}
+              <el-tag v-if="row.balance < 0" type="danger">
+                -￥{{ row.balance | moneyFormat }}
               </el-tag>
-              <el-tag v-else>￥{{ row.delivery_arrears | moneyFormat }}</el-tag>
+              <el-tag v-else>￥{{ row.balance | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="加入时间" prop="create_time" />
+          <el-table-column label="注册时间" prop="create_time" />
           <el-table-column
             align="center"
             fixed="right"
@@ -270,7 +272,7 @@
           type: null, //客户分类
           source: null, //客户来源
           tag: null, //标签id
-          create_time: [], //加入时间区间搜索
+          create_time: [], //注册时间区间搜索
           page: 1,
           page_size: 10,
         },
@@ -281,7 +283,7 @@
           type: null, //客户分类
           source: null, //客户来源
           tag: null, //标签id
-          create_time: [], //加入时间区间搜索
+          create_time: [], //注册时间区间搜索
           page: 1,
           page_size: 10,
         },
@@ -407,18 +409,18 @@
           import('@/utils/excel').then((excel) => {
             const tHeader = [
               'ID',
-              '昵称',
+              '客户编码',
               '客户名称',
               '客户等级',
               '客户分类',
               '客户来源',
               '成交额',
               '余额/欠款',
-              '加入时间',
+              '注册时间',
             ]
             const filterVal = [
               'id',
-              'nick_name',
+              'sn',
               'name',
               'grade_name',
               'type_name',

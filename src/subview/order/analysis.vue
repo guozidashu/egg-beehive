@@ -38,7 +38,7 @@
             >
               昨日：11
               <span>
-                日环比:
+                日较昨日:
                 <span style="color: #39c15b">-%91</span>
                 <span
                   class="el-icon-caret-bottom"
@@ -70,7 +70,7 @@
             >
               上月：11
               <span>
-                月环比:
+                月较昨日:
                 <span style="color: #39c15b">-%91</span>
                 <span
                   class="el-icon-caret-bottom"
@@ -94,7 +94,7 @@
             >
               昨日：3
               <span>
-                日环比:
+                日较昨日:
                 <span style="color: #39c15b">-%67</span>
                 <span
                   class="el-icon-caret-bottom"
@@ -126,7 +126,7 @@
             >
               上月：62
               <span>
-                月环比:
+                月较昨日:
                 <span style="color: #39c15b">-%63</span>
                 <span
                   class="el-icon-caret-bottom"
@@ -205,7 +205,7 @@
               <div>营业额</div>
               <div style="font-size: 30px; color: #000">151,9827.41</div>
               <div>
-                环比增长：
+                较昨日增长：
                 <span style="color: red">
                   151982741%
                   <i class="el-icon-caret-top"></i>
@@ -235,7 +235,7 @@
               <div>营业额</div>
               <div style="font-size: 30px; color: #000">151,9827.41</div>
               <div>
-                环比增长：
+                较昨日增长：
                 <span style="color: red">
                   151982741%
                   <i class="el-icon-caret-top"></i>
@@ -265,7 +265,7 @@
               <div>营业额</div>
               <div style="font-size: 30px; color: #000">151,9827.41</div>
               <div>
-                环比增长：
+                较昨日增长：
                 <span style="color: red">
                   151982741%
                   <i class="el-icon-caret-top"></i>
@@ -295,7 +295,7 @@
               <div>营业额</div>
               <div style="font-size: 30px; color: #000">151,9827.41</div>
               <div>
-                环比增长：
+                较昨日增长：
                 <span style="color: red">
                   151982741%
                   <i class="el-icon-caret-top"></i>
@@ -325,7 +325,7 @@
               <div>营业额</div>
               <div style="font-size: 30px; color: #000">121,1173.41</div>
               <div>
-                环比增长：
+                较昨日增长：
                 <span style="color: red">
                   151982741%
                   <i class="el-icon-caret-top"></i>
@@ -355,7 +355,7 @@
               <div>营业额</div>
               <div style="font-size: 30px; color: #000">101,3827.41</div>
               <div>
-                环比增长：
+                较昨日增长：
                 <span style="color: red">
                   151982741%
                   <i class="el-icon-caret-top"></i>
@@ -385,7 +385,7 @@
               <div>营业额</div>
               <div style="font-size: 30px; color: #000">11,9213.31</div>
               <div>
-                环比增长：
+                较昨日增长：
                 <span style="color: red">
                   151982741%
                   <i class="el-icon-caret-top"></i>
@@ -415,7 +415,7 @@
               <div>营业额</div>
               <div style="font-size: 30px; color: #000">121,2337.40</div>
               <div>
-                环比增长：
+                较昨日增长：
                 <span style="color: red">
                   151982741%
                   <i class="el-icon-caret-top"></i>
@@ -445,7 +445,7 @@
               <div>营业额</div>
               <div style="font-size: 30px; color: #000">0</div>
               <div>
-                环比增长：
+                较昨日增长：
                 <span style="color: red">
                   0
                   <i class="el-icon-caret-top"></i>
@@ -475,7 +475,7 @@
               <div>营业额</div>
               <div style="font-size: 30px; color: #000">151,9827.41</div>
               <div>
-                环比增长：
+                较昨日增长：
                 <span style="color: red">
                   0%
                   <i class="el-icon-caret-top"></i>

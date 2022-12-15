@@ -4,7 +4,7 @@
       <el-col :lg="6" :md="8" :sm="24" :xl="4" :xs="24">
         <el-card
           shadow="never"
-          style="height: 100%; min-height: calc(80vh); border: 0"
+          style="height: 100%; min-height: calc(70vh); border: 0"
         >
           <el-menu
             class="el-menu-vertical-demo"
@@ -33,10 +33,10 @@
                         class="el-icon-menu"
                       ></i>
                     </span>
-                    <el-dropdown-menu slot="dropdown">
-                      <!-- <el-dropdown-item>
+                    <!-- <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item>
                         <span @click="handleEdit(item, 2)">编辑</span>
-                      </el-dropdown-item> -->
+                      </el-dropdown-item> 
                       <el-dropdown-item>
                         <el-button
                           v-has-permi="['btn:ArchivesSize:del']"
@@ -49,7 +49,7 @@
                       <el-dropdown-item>
                         <span @click="handleDelete(item, 3)">设置默认</span>
                       </el-dropdown-item>
-                    </el-dropdown-menu>
+                    </el-dropdown-menu> -->
                   </el-dropdown>
                 </div>
               </div>
@@ -106,11 +106,18 @@
               <el-table-column label="ID" prop="id" />
               <el-table-column label="尺码组名" prop="name" />
               <el-table-column label="尺码" prop="size" />
-              <el-table-column label="类型" prop="type" />
+              <el-table-column label="类型" prop="type">
+                <template #default="{ row }">
+                  <el-tag v-if="row.type == 0">散码</el-tag>
+                  <el-tag v-else row.type="danger">整手</el-tag>
+                </template>
+              </el-table-column>
               <el-table-column label="组别分类" prop="group_name" />
               <el-table-column label="状态" prop="status" width="150">
                 <template #default="{ row }">
-                  <el-switch
+                  <el-tag v-if="row.status == 1">开启</el-tag>
+                  <el-tag v-else type="danger">关闭</el-tag>
+                  <!-- <el-switch
                     v-model="row.status"
                     active-color="#41B584"
                     active-text="开启"
@@ -121,7 +128,7 @@
                     :inactive-value="0"
                     style="margin: 0 10px"
                     @change="turnOnOff(row)"
-                  />
+                  /> -->
                 </template>
               </el-table-column>
               <el-table-column label="创建时间" prop="create_time" />
@@ -174,7 +181,7 @@
           pid: 0,
           name: '',
           page: 1,
-          pageSize: 20,
+          pageSize: 10,
         },
         menuList: [],
         formType: 4,

@@ -7,9 +7,9 @@
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
       <el-form-item v-if="title == '添加'" label="工序名称" prop="name">
-        <el-input v-model="form.name" />
+        <el-input v-model="form.name" style="width: 215px" />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <!-- <el-form-item label="状态" prop="status">
         <el-switch
           v-model="form.status"
           active-color="#41B584"
@@ -21,7 +21,7 @@
           :inactive-value="0"
           style="margin: 0 10px"
         />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="排序" prop="sort">
         <el-input v-model="form.sort" style="width: 215px" />
       </el-form-item>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-  import { addBrandSave } from '@/api/basic'
+  import { editProduceTypeSave } from '@/api/basic'
   export default {
     name: 'BrandEdit',
     data() {
@@ -71,7 +71,7 @@
           if (valid) {
             if (this.title === '添加') {
               this.form.sort = parseInt(this.form.sort)
-              const { code } = await addBrandSave(this.form)
+              const { code } = await editProduceTypeSave(this.form)
               if (code != 200) {
                 return
               }
@@ -84,7 +84,7 @@
               this.close()
             } else {
               this.form.sort = parseInt(this.form.sort)
-              const { code } = await addBrandSave(this.form)
+              const { code } = await editProduceTypeSave(this.form)
               if (code != 200) {
                 return
               }

@@ -124,10 +124,10 @@
         </QYList>
       </div>
 
-      <template #footer>
+      <!-- <template #footer>
         <el-button @click="close">取 消</el-button>
         <el-button type="primary" @click="save">确 定</el-button>
-      </template>
+      </template> -->
     </el-dialog>
   </div>
 </template>

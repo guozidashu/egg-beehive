@@ -11,7 +11,7 @@
     >
       <el-card class="access" shadow="hover">
         <template #header>
-          <vab-icon icon="line-chart-line" />
+          <vab-icon icon="line-chart-line" style="color: red" />
           {{ item.title }}
           <!-- <el-tag v-if="item.type === 1" class="card-header-tag" type="danger">
             今日
@@ -35,8 +35,8 @@
               {{ item.pay }}
             </span>
             <span v-else style="color: #39c15b">{{ item.pay }}</span>
-            <span v-if="item.type === 1">环比增长：</span>
-            <span v-else>环比减少：</span>
+            <span v-if="item.type === 1">较昨日增长：</span>
+            <span v-else>较昨日减少：</span>
             <i v-if="item.type === 1" style="font-size: 12px; color: #f5222d">
               {{ item.number }}%
               <vab-icon icon="arrow-drop-up-fill" />

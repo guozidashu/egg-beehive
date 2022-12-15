@@ -4,7 +4,7 @@
       <el-col :lg="6" :md="8" :sm="24" :xl="4" :xs="24">
         <el-card
           shadow="never"
-          style="height: 100%; min-height: calc(80vh); border: 0"
+          style="height: 100%; min-height: calc(70vh); border: 0"
         >
           <el-menu
             class="el-menu-vertical-demo"
@@ -107,10 +107,12 @@
               <el-table-column label="ID" prop="id" />
               <el-table-column label="颜色名称" prop="name" />
               <el-table-column label="颜色组" prop="group_name" />
-              <el-table-column label="使用商品" prop="zhekou" />
+              <!-- <el-table-column label="使用商品" prop="zhekou" /> -->
               <el-table-column label="状态" prop="status" width="150">
                 <template #default="{ row }">
-                  <el-switch
+                  <el-tag v-if="row.status == 1">开启</el-tag>
+                  <el-tag v-else type="danger">关闭</el-tag>
+                  <!-- <el-switch
                     v-model="row.status"
                     active-color="#41B584"
                     active-text="开启"
@@ -121,7 +123,7 @@
                     :inactive-value="0"
                     style="margin: 0 10px"
                     @change="turnOnOff(row)"
-                  />
+                  /> -->
                 </template>
               </el-table-column>
               <el-table-column label="排序" prop="sort" width="80" />
@@ -175,7 +177,7 @@
           name: '',
           pid: 0,
           page: 1,
-          pageSize: 20,
+          pageSize: 10,
         },
         menuList: [],
         formType: 4,

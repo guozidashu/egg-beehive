@@ -35,7 +35,11 @@
       @mouseenter="mouseOver(index)"
       @mouseleave="mouseLeave(index)"
     >
-      <el-card shadow="hover" style="border: 0">
+      <el-card
+        v-if="item.id == 1 ? (rolename == '超级管理员' ? true : false) : true"
+        shadow="hover"
+        style="border: 0"
+      >
         <div>
           <div style="display: flex; margin-top: 5px 0 0 5px">
             <div style="width: 50%">
@@ -54,11 +58,11 @@
                   size="small"
                   style="margin-left: 125px; color: #999"
                   type="text"
-                  @click="handleEdit(index)"
+                  @click="handleEdit(item)"
                 >
                   编辑
                 </el-button>
-                <el-button
+                <!-- <el-button
                   icon="el-icon-delete"
                   size="small"
                   style="margin-left: 125px; color: #999"
@@ -66,7 +70,7 @@
                   @click="handleDelete(index)"
                 >
                   删除
-                </el-button>
+                </el-button> -->
                 <el-button
                   icon="el-icon-share"
                   size="small"
@@ -127,20 +131,22 @@
       </el-form>
       <template #footer>
         <el-button @click="close">取 消</el-button>
-        <el-button type="primary" @click="close">确 定</el-button>
+        <el-button type="primary" @click="save">确 定</el-button>
       </template>
     </el-dialog>
   </div>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   import Drawer from '../components/UserDrawer'
-  import { getRoleList } from '@/api/basic'
+  import { getRoleList, addRoleGroupSave } from '@/api/basic'
   export default {
     name: 'User',
     components: { Drawer },
     data() {
       return {
+        roleType: 1,
         drawerId: 0,
         drawer: false,
         // 表单数据/列表参数
@@ -159,6 +165,11 @@
         cartList: [],
         activeName: 'first',
       }
+    },
+    computed: {
+      ...mapGetters({
+        rolename: 'user/rolename',
+      }),
     },
     watch: {
       form: {
@@ -192,6 +203,38 @@
         data.map((v) => callback(v))
         return newData
       },
+      save() {
+        this.$refs['editform'].validate((valid) => {
+          if (valid) {
+            if (this.roleType == 1) {
+              this.editform.id = 0
+              addRoleGroupSave(this.editform).then((res) => {
+                if (res.code == 200) {
+                  this.$baseMessage(
+                    '保存成功',
+                    'success',
+                    'vab-hey-message-success'
+                  )
+                  this.close()
+                  this.fetchData()
+                }
+              })
+            } else {
+              addRoleGroupSave(this.editform).then((res) => {
+                if (res.code == 200) {
+                  this.$baseMessage(
+                    '保存成功',
+                    'success',
+                    'vab-hey-message-success'
+                  )
+                  this.close()
+                  this.fetchData()
+                }
+              })
+            }
+          }
+        })
+      },
       handleDelete() {
         this.$baseConfirm('确认是否删除系统管理员?', null, () => {
           this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
@@ -201,11 +244,13 @@
         this.$refs['editform'].resetFields()
         this.dialogFormVisible = false
       },
-      handleEdit(index) {
-        if (index !== 'add') {
+      handleEdit(item) {
+        if (item !== 'add') {
           this.title = '编辑角色'
-          this.editform = this.cartList[index]
+          this.roleType = 2
+          this.editform = JSON.parse(JSON.stringify(item))
         } else {
+          this.roleType = 1
           this.title = '新增角色'
         }
         this.dialogFormVisible = true

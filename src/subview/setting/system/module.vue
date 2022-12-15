@@ -14,19 +14,36 @@
             :model="form1"
             :rules="rules1"
           >
-            <el-form-item label="关联商城标识符" prop="shopid">
+            <!-- <el-form-item label="关联商城标识符" prop="shopid">
               <el-input v-model="form1.shopid" />
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="库存计算方式">
-              <el-radio-group v-model="form1.inventory_type">
+              <el-radio-group v-if="showIf != 2" v-model="form1.inventory_type">
+                <el-radio disabled :label="0">开单扣库存</el-radio>
+                <el-radio disabled :label="1">发货扣库存</el-radio>
+              </el-radio-group>
+              <el-radio-group v-else v-model="form1.inventory_type">
                 <el-radio :label="0">开单扣库存</el-radio>
                 <el-radio :label="1">发货扣库存</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="扣款计算方式">
+            <div
+              v-if="showIf == 2"
+              style="
+                width: 370px;
+                padding: 10px 20px;
+                margin-left: 40px;
+                color: red;
+                background-color: rgba(235, 59, 42, 0.2);
+                border-radius: 4px;
+              "
+            >
+              库存计算方式一旦选定无法更改，请按实际情况选择
+            </div>
+            <el-form-item label="余额展示方式">
               <el-radio-group v-model="form1.arrears_type">
-                <el-radio :label="0">开单扣款</el-radio>
-                <el-radio :label="1">发货扣款</el-radio>
+                <el-radio :label="0">销售累计欠款</el-radio>
+                <el-radio :label="1">发货累计欠款</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="是否允许负库存">
@@ -65,12 +82,12 @@
                 <el-radio :label="2">散码</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="单据显示">
+            <!-- <el-form-item label="单据显示">
               <el-radio-group v-model="form1.show_type">
                 <el-radio :label="1">自己</el-radio>
                 <el-radio :label="2">全部</el-radio>
               </el-radio-group>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item
               label="采购延期预警天数"
               prop="purchase_delay_warning"
@@ -245,7 +262,7 @@
             </el-form-item>
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="生产配置" name="生产配置">
+        <!-- <el-tab-pane label="生产配置" name="生产配置">
           <div class="textCss">
             <p style="font-weight: 600">使用说明</p>
           </div>
@@ -313,7 +330,7 @@
               </el-button>
             </el-form-item>
           </el-form>
-        </el-tab-pane>
+        </el-tab-pane> -->
       </el-tabs>
     </el-card>
   </div>
@@ -338,6 +355,7 @@
     data() {
       return {
         activeName: 'ERP配置',
+        showIf: false,
         form1: {
           shopid: null, //关联商城标识符
           inventory_type: 1, //0开单扣库存1发货扣库存
@@ -664,6 +682,7 @@
           const { data } = await getErpInfo()
           if (data !== null) {
             this.form1 = data
+            this.showIf = this.form1.inventory_type
           }
         } else if (this.activeName == '代开发应用配置') {
           const { data } = await getAgentErpInfo()

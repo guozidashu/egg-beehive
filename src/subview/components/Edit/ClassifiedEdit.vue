@@ -155,8 +155,8 @@
                 'success',
                 'vab-hey-message-success'
               )
-              this.$emit('fetch-data')
               this.close()
+              this.$emit('fetch-data')
             } else {
               if (this.type === 1) {
                 const { code } = await editCategorySonSave(this.form)
@@ -175,8 +175,8 @@
                 'success',
                 'vab-hey-message-success'
               )
-              this.$emit('fetch-data')
               this.close()
+              this.$emit('fetch-data')
             }
           }
         })

@@ -767,15 +767,15 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
-      {
-        path: 'archivesArticle',
-        name: 'ArchivesArticle',
-        component: () => import('@/subview/archives/article'),
-        meta: {
-          title: '文章列表',
-          icon: 'archive-line',
-        },
-      },
+      // {
+      //   path: 'archivesArticle',
+      //   name: 'ArchivesArticle',
+      //   component: () => import('@/subview/archives/article'),
+      //   meta: {
+      //     title: '文章列表',
+      //     icon: 'archive-line',
+      //   },
+      // },
       {
         path: 'archivesProcess',
         name: 'ArchivesProcess',
@@ -1145,6 +1145,15 @@ export const asyncRoutes = [
         component: () => import('@/subview/mall/commodityunit'),
         meta: {
           title: '商品分组',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'mallArticle',
+        name: 'MallArticle',
+        component: () => import('@/subview/mall/article'),
+        meta: {
+          title: '文章列表',
           icon: 'archive-line',
         },
       },

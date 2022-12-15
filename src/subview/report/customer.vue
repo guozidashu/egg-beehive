@@ -436,7 +436,7 @@
       // 导出
       handleDownload() {
         import('@/utils/excel').then((excel) => {
-          const tHeader = ['名称', '数量', '环比数量']
+          const tHeader = ['名称', '数量', '较昨日数量']
           const filterVal = ['title', 'num', 'number']
           const list = this.goodsStaList
           const data = this.formatJson(filterVal, list)

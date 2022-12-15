@@ -1,7 +1,7 @@
 <template>
   <div class="index-container">
     <el-row :gutter="20">
-      <page-header />
+      <!-- <page-header /> -->
       <TextTags :list="textTagList" />
       <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24">
         <el-card class="authorization" shadow="hover">
@@ -38,10 +38,10 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :lg="18" :md="24" :sm="24" :xl="18" :xs="24">
+      <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="12">
         <MemberList :data="goodsList" />
       </el-col>
-      <el-col :lg="6" :md="12" :sm="24" :xl="6" :xs="24">
+      <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="12">
         <UserChart :data="branchList" />
       </el-col>
     </el-row>
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-  import PageHeader from './components/PageHeader'
+  // import PageHeader from './components/PageHeader'
   import TextTags from './componentscopy/TextTags'
   import MembersChart from './componentscopy/MembersChart'
   import MemberList from './componentscopy/MemberList'
@@ -59,7 +59,7 @@
   export default {
     name: 'Index',
     components: {
-      PageHeader,
+      // PageHeader,
       TextTags,
       MembersChart,
       MemberList,
@@ -110,8 +110,8 @@
         branchList: [
           { value: 0, name: '未消费客户' },
           { value: 0, name: '消费一次客户' },
-          { value: 0, name: '消费10次客户' },
-          { value: 0, name: '消费20次客户' },
+          { value: 0, name: '消费1-10次客户' },
+          { value: 0, name: '消费10-20次客户' },
           { value: 0, name: '消费20次以上' },
         ],
         goodsList: [],
@@ -125,7 +125,7 @@
         dataObj: {
           height: '300px',
           legend: {
-            data: ['新增量', '成交量'],
+            data: ['新增客户', '成交客户'],
           },
           color: ['#409eff'],
           xAxis: {
@@ -141,7 +141,7 @@
           ],
           series: [
             {
-              name: '新增量',
+              name: '新增客户',
               type: 'line',
 
               smooth: true,
@@ -151,7 +151,7 @@
               },
             },
             {
-              name: '成交量',
+              name: '成交客户',
               type: 'line',
 
               smooth: true,
@@ -253,30 +253,86 @@
         const { data } = await getHomePageList()
         this.textTagList[0].num = data.list.today_sale_num
         this.textTagList[0].pay = data.list.yesterday_sale_num
-        this.textTagList[0].number = data.list.today_sale_num
-          ? (data.list.today_sale_num / data.list.yesterday_sale_num).toFixed(2)
-          : 0
+        // 如果昨天销量为0，今天销量不为0，那么较昨日为100%
+        if (
+          data.list.yesterday_sale_num == 0 &&
+          data.list.today_sale_num != 0
+        ) {
+          this.textTagList[0].number = 100
+        } else {
+          this.textTagList[0].number = data.list.today_sale_num
+            ? (
+                (data.list.today_sale_num - data.list.yesterday_sale_num) /
+                data.list.yesterday_sale_num
+              ).toFixed(2)
+            : 0
+        }
+        if (this.textTagList[0].number < 0) {
+          this.textTagList[0].type = 2
+        } else {
+          this.textTagList[0].type = 1
+        }
         this.textTagList[1].num = data.list.today_sale_total
         this.textTagList[1].pay = data.list.yesterday_sale_total
-        this.textTagList[1].number = data.list.today_sale_total
-          ? (
-              data.list.today_sale_total / data.list.yesterday_sale_total
-            ).toFixed(2)
-          : 0
+        if (
+          data.list.yesterday_sale_total == 0 &&
+          data.list.today_sale_total != 0
+        ) {
+          this.textTagList[1].number = 100
+        } else {
+          this.textTagList[1].number = data.list.today_sale_total
+            ? (
+                (data.list.today_sale_total - data.list.yesterday_sale_total) /
+                data.list.yesterday_sale_total
+              ).toFixed(2)
+            : 0
+        }
+        if (this.textTagList[1].number < 0) {
+          this.textTagList[1].type = 2
+        } else {
+          this.textTagList[1].type = 1
+        }
         this.textTagList[2].num = data.list.today_return_num
         this.textTagList[2].pay = data.list.yesterday_return_num
-        this.textTagList[2].number = data.list.today_return_num
-          ? (
-              data.list.today_return_num / data.list.yesterday_return_num
-            ).toFixed(2)
-          : 0
+        if (
+          data.list.yesterday_return_num == 0 &&
+          data.list.today_return_num != 0
+        ) {
+          this.textTagList[2].number = 100
+        } else {
+          this.textTagList[2].number = data.list.today_return_num
+            ? (
+                (data.list.today_return_num - data.list.yesterday_return_num) /
+                data.list.yesterday_return_num
+              ).toFixed(2)
+            : 0
+        }
+        if (this.textTagList[2].number < 0) {
+          this.textTagList[2].type = 2
+        } else {
+          this.textTagList[2].type = 1
+        }
         this.textTagList[3].num = data.list.today_return_total
         this.textTagList[3].pay = data.list.yesterday_return_total
-        this.textTagList[3].number = data.list.today_return_total
-          ? (
-              data.list.today_return_total / data.list.yesterday_return_total
-            ).toFixed(2)
-          : 0
+        if (
+          data.list.yesterday_return_total == 0 &&
+          data.list.today_return_total != 0
+        ) {
+          this.textTagList[3].number = 100
+        } else {
+          this.textTagList[3].number = data.list.today_return_total
+            ? (
+                (data.list.today_return_total -
+                  data.list.yesterday_return_total) /
+                data.list.yesterday_return_total
+              ).toFixed(2)
+            : 0
+        }
+        if (this.textTagList[3].number < 0) {
+          this.textTagList[3].type = 2
+        } else {
+          this.textTagList[3].type = 1
+        }
         this.branchList[0].value = data.list.buy_customer.buy_one_customer
         this.branchList[1].value = data.list.buy_customer.buy_zero_customer
         this.branchList[2].value = data.list.buy_customer.buy_ten_customer

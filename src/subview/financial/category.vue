@@ -4,7 +4,7 @@
       <el-col :lg="6" :md="8" :sm="24" :xl="4" :xs="24">
         <el-card
           shadow="never"
-          style="height: 100%; min-height: calc(80vh); border: 0"
+          style="height: 100%; min-height: calc(70vh); border: 0"
         >
           <el-menu
             class="el-menu-vertical-demo"

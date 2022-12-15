@@ -10,7 +10,7 @@
         @resetForm="resetForm"
       >
         <template #Form>
-          <el-form-item label="波段名称" prop="region">
+          <el-form-item label="文章名称" prop="region">
             <el-input v-model="form.name" size="small" />
           </el-form-item>
         </template>
@@ -19,12 +19,7 @@
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
-          <el-button
-            v-has-permi="['btn:ArchivesBandlist:add']"
-            size="small"
-            type="primary"
-            @click="handleEdit('add')"
-          >
+          <el-button size="small" type="primary" @click="handleEdit('add')">
             添加
           </el-button>
         </el-form-item>
@@ -47,35 +42,23 @@
           />
           <el-table-column
             align="center"
-            label="波段ID"
+            label="文章ID"
             prop="id"
             show-overflow-tooltip
             sortable
           />
           <el-table-column
             align="center"
-            label="波段名称"
-            prop="name"
+            label="文章标题"
+            prop="title"
             show-overflow-tooltip
           />
-          <el-table-column label="状态" prop="status" width="150">
-            <el-tag v-if="row.status == 1">开启</el-tag>
-            <el-tag v-else type="danger">关闭</el-tag>
-            <!-- <template #default="{ row }">
-              <el-switch
-                v-model="row.status"
-                active-color="#41B584"
-                active-text="开启"
-                :active-value="1"
-                class="switch"
-                inactive-color="#D2D2D2"
-                inactive-text="关闭"
-                :inactive-value="0"
-                style="margin: 0 10px"
-                @change="turnOnOff(row)"
-              /> 
-            </template> -->
-          </el-table-column>
+          <el-table-column
+            align="center"
+            label="创建时间"
+            prop="create_time"
+            show-overflow-tooltip
+          />
           <el-table-column
             align="center"
             label="操作"
@@ -83,20 +66,8 @@
             width="85"
           >
             <template #default="{ row }">
-              <el-button
-                v-has-permi="['btn:ArchivesBandlist:edit']"
-                type="text"
-                @click="handleEdit(row)"
-              >
-                编辑
-              </el-button>
-              <el-button
-                v-has-permi="['btn:ArchivesBandlist:del']"
-                type="text"
-                @click="handleDelete(row)"
-              >
-                删除
-              </el-button>
+              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+              <el-button type="text" @click="handleDelete(row)">删除</el-button>
             </template>
           </el-table-column>
         </template>
@@ -106,11 +77,10 @@
   </div>
 </template>
 <script>
-  import Edit from '@/subview/components/Edit/BandEdit'
-
-  import { getBandList, delBandDel, editBandSave } from '@/api/basic'
+  import Edit from '@/subview/components/Edit/ArticleEdit'
+  import { getArticleList, delArticleDel } from '@/api/basic'
   export default {
-    name: 'ArchivesBandlist',
+    name: 'ArchivesArticle',
     components: { Edit },
     data() {
       return {
@@ -154,14 +124,6 @@
           }
         }
       },
-      async turnOnOff(row) {
-        const { code } = await editBandSave(row)
-        if (code != 200) {
-          return
-        }
-        this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
-        this.fetchData()
-      },
       // 查询
       handleQuery() {
         this.fetchData()
@@ -173,7 +135,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delBandDel({ id: row.id })
+            const { code } = await delArticleDel({ id: row.id })
             if (code != 200) {
               return
             }
@@ -200,7 +162,7 @@
       // 列表数据请求函数 公共部分
       async fetchData() {
         this.listLoading = true
-        const { data } = await getBandList(this.form)
+        const { data } = await getArticleList(this.form)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

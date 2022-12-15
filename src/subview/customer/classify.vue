@@ -1,6 +1,6 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <div
+    <!-- <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
     >
       <QYForm
@@ -19,7 +19,7 @@
           </el-form-item>
         </template>
       </QYForm>
-    </div>
+    </div> -->
     <el-card shadow="never" style="border: 0">
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -43,7 +43,7 @@
       >
         <template #List>
           <el-table-column align="center" type="selection" />
-          <el-table-column label="id" prop="id" width="80px" />
+          <el-table-column label="分类Id" prop="id" width="80px" />
           <el-table-column label="分类名称" prop="name" width="150px" />
           <el-table-column label="客户数" prop="count" width="100px" />
           <el-table-column label="分类说明（备注）" prop="remark" />

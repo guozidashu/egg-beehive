@@ -124,13 +124,13 @@
           <el-button size="small" type="primary" @click="handleDownload">
             导出订单
           </el-button>
-          <el-button
+          <!-- <el-button
             size="small"
             type="primary"
             @click="print('multipleTable')"
           >
             打印入库单
-          </el-button>
+          </el-button> -->
         </el-form-item>
       </el-form>
       <QYList

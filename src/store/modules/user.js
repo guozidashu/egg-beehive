@@ -12,12 +12,14 @@ import { title, tokenName } from '@/config'
 const state = () => ({
   token: getToken(),
   username: '游客',
+  rolename: '游客',
   avatar: 'https://i.gtimg.cn/club/item/face/img/2/15922_100.gif',
   userRouteList: [],
 })
 const getters = {
   token: (state) => state.token,
   username: (state) => state.username,
+  rolename: (state) => state.rolename,
   avatar: (state) => state.avatar,
   userRouteList: (state) => state.userRouteList,
 }
@@ -38,6 +40,14 @@ const mutations = {
    */
   setUsername(state, username) {
     state.username = username
+  },
+  /**
+   * @description 设置权限名
+   * @param {*} state
+   * @param {*} rolename
+   */
+  setRolename(state, rolename) {
+    state.rolename = rolename
   },
   /**
    * @description 设置头像
@@ -179,6 +189,7 @@ const actions = {
     } else {
       // 如不使用username用户名,可删除以下代码
       if (data.list.username) commit('setUsername', data.list.username)
+      if (data.list.group_name) commit('setRolename', data.list.group_name)
       // 如不使用avatar头像,可删除以下代码
       if (data.list.image) commit('setAvatar', data.list.image)
 
@@ -203,6 +214,7 @@ const actions = {
    */
   async resetAll({ commit, dispatch }) {
     commit('setUsername', '游客')
+    commit('setRolename', '游客')
     commit('setAvatar', 'https://i.gtimg.cn/club/item/face/img/2/15922_100.gif')
     commit('routes/setRoutes', [], { root: true })
     await dispatch('setToken', '')

@@ -61,7 +61,7 @@
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">订单数据明细</span>
+        <span style="margin-top: 10px; font-size: 16px">订单数据概括</span>
         <el-form-item style="margin-right: 0">
           <el-form-item
             label="时间筛选:"
@@ -101,17 +101,21 @@
           <el-table-column label="销售件数" prop="num" width="100" />
           <el-table-column label="发货件数" prop="delivery_num" width="120" />
           <el-table-column label="日单价" prop="day_price" width="100" />
-          <el-table-column label="成交客户数" prop="customer_count" />
-          <el-table-column align="right" label="利润" prop="margin" width="150">
+          <el-table-column
+            label="成交客户数"
+            prop="customer_count"
+            width="100"
+          />
+          <!-- <el-table-column align="right" label="利润" prop="margin" width="150">
             <template #default="{ row }">
               <el-tag>￥{{ row.margin | moneyFormat }}</el-tag>
             </template>
-          </el-table-column>
-          <el-table-column label="毛利率(%)" prop="margin_rate">
+          </el-table-column> -->
+          <!-- <el-table-column label="毛利率(%)" prop="margin_rate">
             <template #default="{ row }">
               {{ (row.margin_rate * 100).toFixed(2) }}%
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <!-- <el-table-column
             align="center"
             fixed="right"
@@ -364,7 +368,7 @@
       // 导出
       handleDownload() {
         import('@/utils/excel').then((excel) => {
-          const tHeader = ['名称', '数量', '环比数量']
+          const tHeader = ['名称', '数量', '较昨日数量']
           const filterVal = ['title', 'num', 'number']
           const list = this.goodsStaList
           const data = this.formatJson(filterVal, list)

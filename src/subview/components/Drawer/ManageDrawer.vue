@@ -66,10 +66,10 @@
         <div style="display: flex">
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">余额/欠款</span>
-            <span v-if="form.delivery_arrears < 0">
-              -￥{{ form.delivery_arrears | moneyFormat }}
+            <span v-if="form.balance < 0">
+              -￥{{ form.balance | moneyFormat }}
             </span>
-            <span v-else>￥{{ form.delivery_arrears | moneyFormat }}</span>
+            <span v-else>￥{{ form.balance | moneyFormat }}</span>
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">总消费次数</span>
@@ -178,7 +178,7 @@
           <div class="conten-list-row">
             <div>客户等级： {{ form.grade_name }}</div>
             <div>客户分类： {{ form.type_name }}</div>
-            <div style="width: 100%">客户标签： {{ form.tag_name }}</div>
+            <!-- <div style="width: 100%">客户标签： {{ form.tag_name }}</div> -->
             <div>客户来源： {{ form.source_name }}</div>
           </div>
         </div>
@@ -306,12 +306,12 @@
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item class="item" label="客户标签：">
+              <!-- <el-form-item class="item" label="客户标签：">
                 <el-cascader
                   v-model="form.tag"
                   :options="selectData.customer_tag"
                 />
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item class="item" label="客户来源：">
                 <el-select v-model="form.source" placeholder="请选择">
                   <el-option

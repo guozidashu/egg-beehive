@@ -68,6 +68,7 @@
                 slot="prepend"
                 style="width: 100px"
               >
+                <el-option label="批次号" value="id" />
                 <el-option label="订单号" value="sn" />
                 <el-option label="商品名称" value="name" />
                 <el-option label="手机号" value="mobile" />
@@ -85,11 +86,11 @@
           name="0"
         />
         <el-tab-pane
-          :label="'ERP平台 (' + orderCountData.erp_count + ')'"
+          :label="'线下开单 (' + orderCountData.erp_count + ')'"
           name="1"
         />
         <el-tab-pane
-          :label="'私有商城 (' + orderCountData.shop_count + ')'"
+          :label="'线上订单 (' + orderCountData.shop_count + ')'"
           name="2"
         />
         <!-- <el-tab-pane :label="'快团团独立对接 (0)'" name="3" />
@@ -97,13 +98,13 @@
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
-          <el-button
+          <!-- <el-button
             size="small"
             type="primary"
             @click="print('multipleTable')"
           >
             打印配发单
-          </el-button>
+          </el-button> -->
           <el-button size="small" type="primary" @click="handleDownload">
             导出订单
           </el-button>
@@ -122,9 +123,45 @@
       >
         <template #List>
           <el-table-column type="selection" />
+          <el-table-column label="批次号" prop="id" width="80" />
           <el-table-column label="订单号" prop="sn" width="180" />
-          <el-table-column label="订单日期" prop="ctime" sortable width="200" />
-          <el-table-column label="订单类型" prop="order_type" width="120" />
+          <el-table-column
+            align="right"
+            label="总金额"
+            prop="final_amount"
+            width="150"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.final_amount | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column label="配送方式" prop="pay" width="120" /> -->
+          <el-table-column label="订单状态" prop="order_status" width="120">
+            <template #default="{ row }">
+              <div v-for="(item, index) in row.order_status" :key="index">
+                <el-tag
+                  v-if="item == '已付款' || item == '发货完成'"
+                  style="margin-bottom: 10px"
+                >
+                  {{ item }}
+                </el-tag>
+                <el-tag
+                  v-if="item == '部分付款' || item == '部分发货'"
+                  style="margin-bottom: 10px"
+                  type="warning"
+                >
+                  {{ item }}
+                </el-tag>
+                <el-tag
+                  v-if="item == '未付款' || item == '未发货'"
+                  style="margin-bottom: 10px"
+                  type="danger"
+                >
+                  {{ item }}
+                </el-tag>
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column label="客户名称" prop="name" width="120" />
           <el-table-column label="商品信息" prop="info">
             <template #default="{ row }">
@@ -146,42 +183,22 @@
                   />
                 </el-tooltip>
                 <div style="margin-top: 15px">
-                  {{ row.info.name }}
+                  {{ row.info.name }}...等{{ row.sum_num }}件
                 </div>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="总数量" prop="sum_num" width="80" />
-          <el-table-column
-            align="right"
-            label="总金额"
-            prop="sum_price"
-            width="150"
-          >
+          <el-table-column label="已发数量" prop="delivery_num" width="80" />
+          <el-table-column label="订单来源" prop="order_type" width="120">
             <template #default="{ row }">
-              <el-tag>￥{{ row.sum_price | moneyFormat }}</el-tag>
+              <el-tag v-if="row.order_type == 0">线下开单</el-tag>
+              <el-tag v-if="row.order_type == 1" type="warning">
+                线上订单
+              </el-tag>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="配送方式" prop="pay" width="120" /> -->
-          <el-table-column label="订单状态" prop="order_status" width="120">
-            <template #default="{ row }">
-              <div
-                v-for="(item, index) in row.order_status"
-                :key="index"
-                style="
-                  width: 80px;
-                  margin-bottom: 5px;
-                  line-height: 22px;
-                  color: #ffa39e;
-                  text-align: center;
-                  background: #fff1f0;
-                  border-color: #ffa39e;
-                "
-              >
-                {{ item }}
-              </div>
-            </template>
-          </el-table-column>
+          <el-table-column label="订单日期" prop="ctime" sortable width="200" />
           <el-table-column fixed="right" label="操作" width="100">
             <template #default="{ row }">
               <!-- <el-button
@@ -346,9 +363,9 @@
           this.downloadLoading = true
           import('@/utils/excel').then((excel) => {
             const tHeader = [
+              '批次号',
               '订单号',
               '订单日期',
-              '订单类型',
               '客户名称',
               '商品信息',
               '总数量',
@@ -356,9 +373,9 @@
               '订单状态',
             ]
             const filterVal = [
+              'id',
               'sn',
               'ctime',
-              'order_type',
               'name',
               'inofText',
               'sum_num',

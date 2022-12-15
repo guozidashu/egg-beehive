@@ -3,10 +3,12 @@
     <div class="vab-footer" style="margin: 30px 0 10px 0">
       Copyright
       <vab-icon icon="copyright-line" />
-      {{ fullYear }} {{ title }}
+      <!-- {{ fullYear }} {{ title }} -->
+      QuanYU. All Right Reserved.
     </div>
     <div class="vab-footer">
-      本网站由阿里云提供云计算及安全服务 | 本网站支持
+      <a href="http://www.quanyubao.com.cn/" target="_blank">圈域SCM</a>
+      | 最值得信赖的服装行业供应链智能数字化助手
     </div>
   </footer>
 </template>

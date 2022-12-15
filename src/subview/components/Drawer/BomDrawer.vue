@@ -30,7 +30,7 @@
             >
               启用
             </el-button> -->
-            <el-button
+            <!-- <el-button
               v-if="form.drawerType == 1"
               size="small"
               style="float: right; margin-right: 10px"
@@ -38,7 +38,7 @@
               @click="print('vab-print-table')"
             >
               打印
-            </el-button>
+            </el-button> -->
 
             <el-button
               v-if="form.drawerType == 1"

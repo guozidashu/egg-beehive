@@ -31,6 +31,7 @@
     watch: {
       list: {
         handler: function (newval) {
+          console.log('66666666', newval)
           this.branchList = newval
         },
         deep: true,

@@ -21,15 +21,15 @@ module.exports = {
   // 是否标签页图标
   showTabsIcon: true,
   // 是否开启语言选择组件
-  showLanguage: true,
+  showLanguage: false,
   // 是否开启刷新组件
   showRefresh: true,
   // 是否开启搜索组件
-  showSearch: true,
+  showSearch: false,
   // 是否开启主题组件
-  showTheme: true,
+  showTheme: false,
   // 是否开启通知组件
-  showNotice: true,
+  showNotice: false,
   // 是否开启全屏组件
   showFullScreen: true,
   // 是否开启右侧悬浮窗

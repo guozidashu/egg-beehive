@@ -77,22 +77,22 @@
       </QYForm>
     </div>
     <el-card shadow="never" style="border: 0">
-      <el-tabs v-model="form.list_type" @tab-click="handleClick">
+      <el-tabs v-model="form.shop_type" @tab-click="handleClick">
         <el-tab-pane
           :label="'全部商品 (' + tatleData.all_order + '款)'"
+          name="3"
+        />
+        <el-tab-pane
+          :label="'上架中 (' + tatleData.on_the_shelf + '款)'"
           name="0"
         />
         <el-tab-pane
-          :label="'上架中 (' + tatleData.repository + '款)'"
+          :label="'已下架 (' + tatleData.down_the_shelf + '款)'"
           name="1"
         />
         <el-tab-pane
-          :label="'已下架 (' + tatleData.sole_out + '款)'"
+          :label="'售空 (' + tatleData.stock_zero + '款)'"
           name="2"
-        />
-        <el-tab-pane
-          :label="'售空 (' + tatleData.stock_alert + '款)'"
-          name="3"
         />
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
@@ -308,7 +308,7 @@
     getGoodList,
     getCommonAllList,
     editChangeIsShop,
-    getGoodTabTotal,
+    getShopGoodTabTotal,
     editSourceMaterialSave,
   } from '@/api/basic'
   import publicjosn from '@/assets/assets_josn/publicjosn'
@@ -328,18 +328,15 @@
           copywriting: '',
         },
         tatleData: {
-          all_order: null, // 全部
-          repository: null, // 仓库中
-          sole_out: null, // 已售完
-          stock_alert: null, // 预警
-          confirmed: null, // 待确认
-          self_operated: null, // 自营
-          third_platform: null, // 第三方
+          all_order: null,
+          on_the_shelf: null,
+          down_the_shelf: null,
+          stock_zero: null,
         },
         form: {
           page: 1,
           pageSize: 10,
-          list_type: 0, // 列表类型 0=全部 1=仓库中 2=已售完 3=库存预警 4=待确认 5=自营商城 6=第三方平台
+          shop_type: '3', // 列表类型 0下架 1上架 2售空 全部
           category: '', //款式分类
           brand: '', //品牌
           year: '', //年份
@@ -434,7 +431,7 @@
       },
       // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
-        this.form.list_type = tab.name
+        this.form.shop_type = tab.name
       },
       // 列表数据请求函数 公共部分
       async fetchData(type) {
@@ -448,7 +445,7 @@
         this.listLoading = false
       },
       async getTatolData() {
-        const { data } = await getGoodTabTotal({
+        const { data } = await getShopGoodTabTotal({
           category: this.form.category, //款式分类
           brand: this.form.brand, //品牌
           year: this.form.year, //年份
@@ -456,6 +453,8 @@
           type: this.form.type, //尺码类型 0整手  1散码
           band: this.form.band, //波段
           name: this.form.name, //商品名称
+          shop_type: this.form.shop_type, // 列表类型 0下架 1上架 2售空 全部
+          status: this.form.status, //0停售 1在售
         })
         this.tatleData = data
       },

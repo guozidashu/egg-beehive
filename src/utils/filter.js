@@ -47,6 +47,7 @@ Vue.filter('threeName', (value) => {
 })
 Vue.filter('formatTime', (value) => {
   if (value) {
+    console.log(66666, value)
     let date = new Date(value * 1000) // 时间戳为秒：10位数
     //let date = new Date(value)    // 时间戳为毫秒：13位数
     let year = date.getFullYear()

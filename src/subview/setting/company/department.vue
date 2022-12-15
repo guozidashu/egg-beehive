@@ -43,7 +43,7 @@
                 <span style="margin-right: 20px; font-size: 16px; color: black">
                   {{ item.name }}
                 </span>
-                <span>{{ item.count }} 人</span>
+                <span>{{ item.count }}</span>
               </div>
               <!-- <div>{{ item.title }}（已设置{{ item.number }}个权限）</div> -->
             </div>

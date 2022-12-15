@@ -125,10 +125,15 @@
     },
 
     watch: {
-      drawerId: function (n) {
-        this.form.id = n
-        this.formEdit.warehouse_id = n
-        this.fetchData()
+      drawerId: {
+        handler: function (n) {
+          console.log(66666, n)
+          this.form.id = n
+          this.formEdit.warehouse_id = n
+          this.fetchData()
+        },
+        deep: true,
+        immediate: true,
       },
       form: {
         handler: function () {

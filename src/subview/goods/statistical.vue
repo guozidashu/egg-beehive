@@ -59,7 +59,7 @@
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">商品排行</span>
+        <span style="margin-top: 10px; font-size: 16px">商品销售排行</span>
         <el-form-item style="margin-right: 0">
           <el-form-item label="类型:" prop="region">
             <el-select
@@ -119,7 +119,7 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column label="商品图片" prop="img" width="200">
+          <el-table-column label="商品图片" prop="img" width="150">
             <template #default="{ row }">
               <el-tooltip placement="top">
                 <el-image
@@ -127,12 +127,12 @@
                   :src="row.img"
                   style="width: 200px; height: 200px"
                 />
-                <el-image :src="row.img" />
+                <el-image :src="row.img" style="margin-left: 40px" />
               </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column label="商品名称" prop="name" />
-          <el-table-column label="商品款号" prop="sn" width="100" />
+          <el-table-column label="商品款号" prop="sn" width="150" />
           <el-table-column
             align="right"
             label="吊牌价"
@@ -143,12 +143,6 @@
               <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="上架时间" prop="created" width="120">
-            <template #default="{ row }">
-              {{ row.created | formatTime }}
-            </template>
-          </el-table-column>
-          <el-table-column label="下单件数" prop="order_num" width="100" />
           <el-table-column
             align="right"
             label="下单金额"
@@ -159,14 +153,17 @@
               <el-tag>￥{{ row.order_total | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="毛利率(%)" prop="gross_profit">
-            <template #default="{ row }">{{ row.profit * 100 }}%</template>
-          </el-table-column> -->
-          <el-table-column label="库存数" prop="total_stock" />
-          <el-table-column label="状态" prop="status">
+          <el-table-column label="下单件数" prop="order_num" width="80" />
+          <el-table-column label="库存数" prop="total_stock" width="80" />
+          <!-- <el-table-column label="状态" prop="status" width="80">
             <template #default="{ row }">
               <el-tag v-if="row.sstatus == 1">上架</el-tag>
               <el-tag v-else type="danger">下架</el-tag>
+            </template>
+          </el-table-column> -->
+          <el-table-column label="上架时间" prop="created" width="200">
+            <template #default="{ row }">
+              {{ row.create_time }}
             </template>
           </el-table-column>
           <!-- <el-table-column

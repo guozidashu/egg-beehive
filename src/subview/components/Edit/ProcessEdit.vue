@@ -9,7 +9,7 @@
       <el-form-item v-if="title == '添加'" label="工艺名称" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <!-- <el-form-item label="状态" prop="status">
         <el-switch
           v-model="form.status"
           active-color="#41B584"
@@ -24,7 +24,7 @@
       </el-form-item>
       <el-form-item label="排序" prop="sort">
         <el-input v-model="form.sort" style="width: 215px" />
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <template #footer>
       <el-button @click="close">取 消</el-button>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-  import { addBrandSave } from '@/api/basic'
+  import { editCraftTypeSave } from '@/api/basic'
   export default {
     name: 'BrandEdit',
     data() {
@@ -71,7 +71,7 @@
           if (valid) {
             if (this.title === '添加') {
               this.form.sort = parseInt(this.form.sort)
-              const { code } = await addBrandSave(this.form)
+              const { code } = await editCraftTypeSave(this.form)
               if (code != 200) {
                 return
               }
@@ -84,7 +84,7 @@
               this.close()
             } else {
               this.form.sort = parseInt(this.form.sort)
-              const { code } = await addBrandSave(this.form)
+              const { code } = await editCraftTypeSave(this.form)
               if (code != 200) {
                 return
               }

@@ -22,7 +22,7 @@
                 icon="align-center"
                 style="float: right; margin: 6px 0 0 0"
               />
-              <el-button
+              <!-- <el-button
                 v-if="form.drawerType == 1"
                 size="small"
                 style="float: right; margin-right: 10px"
@@ -30,7 +30,7 @@
                 @click="print('vab-print-table')"
               >
                 打印
-              </el-button>
+              </el-button> -->
               <el-button
                 v-if="form.drawerType == 1"
                 size="small"
@@ -184,7 +184,7 @@
             <!-- <div style="width: 50%">操作人员： 暂无</div> -->
             <div style="width: 50%">
               更新时间：
-              {{ goodsDetails.updated_time | formatTime }}
+              {{ goodsDetails.update_time }}
             </div>
             <!-- <div style="width: 50%">操作人员： 暂无</div> -->
             <div>
@@ -840,8 +840,8 @@
       'form.price': {
         handler: function () {
           this.zhekouList.forEach((item) => {
-            item.price = this.form.price * item.discount
-            item.price1 = this.form.price * item.discount_single
+            item.price = this.form.price * (item.discount / 10)
+            item.price1 = this.form.price * (item.discount_single / 10)
           })
         },
         deep: true,
@@ -1046,8 +1046,8 @@
         const { data } = await getGradeList()
         data.data.forEach((item) => {
           // 保留小数点后两位
-          let temp = this.form.price * item.discount
-          let temp1 = this.form.price * item.discount_single
+          let temp = this.form.price * (item.discount / 10)
+          let temp1 = this.form.price * (item.discount_single / 10)
           item.price = temp.toFixed(2)
           item.price1 = temp1.toFixed(2)
         })

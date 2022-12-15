@@ -26,7 +26,7 @@
           @submit.native.prevent
         >
           <el-form-item>
-            <div style="font-size: 16px">实时概况</div>
+            <div style="font-size: 16px">客户统计</div>
           </el-form-item>
           <el-form-item>
             <el-form-item label="客户渠道:">
@@ -77,29 +77,26 @@
         </el-form>
       </el-col>
       <TextTags :list="textTagList" />
-      <div style="display: flex">
-        <div
-          style="
-            width: 40%;
-            padding: 20px;
-            margin-right: 20px;
-            background-color: white;
-          "
-        >
-          <QYBranch
-            :list="branchList"
-            :style-chart="styleObj"
-            :title="branchTitle"
-          />
-        </div>
-        <div style="width: 60%; padding: 20px; background-color: white">
-          <QYBranch
-            :list="branchList1"
-            :style-chart="styleObj1"
-            :title="branchTitle1"
-          />
-        </div>
-      </div>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <div style="padding: 20px; background-color: white">
+            <QYBranch
+              :list="branchList"
+              :style-chart="styleObj"
+              :title="branchTitle"
+            />
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div style="padding: 20px; background-color: white">
+            <QYBranch
+              :list="branchList1"
+              :style-chart="styleObj1"
+              :title="branchTitle1"
+            />
+          </div>
+        </el-col>
+      </el-row>
       <div style="display: flex; margin-top: 20px">
         <SalesChart
           :data="dataObj"
@@ -170,9 +167,9 @@
         ],
         branchTitle: '会员等级比例',
         styleObj: {
-          width: '400px',
+          width: '800px',
           height: '500px',
-          legendx: 0,
+          legendx: 180,
           legendy: 450,
           center: ['50%', '50%'],
         },
@@ -181,7 +178,7 @@
         styleObj1: {
           width: '800px',
           height: '500px',
-          legendx: 10,
+          legendx: 400,
           legendy: 450,
           center: ['60%', '50%'],
         },
@@ -336,7 +333,7 @@
       // 导出
       handleDownload() {
         import('@/utils/excel').then((excel) => {
-          const tHeader = ['名称', '数量', '环比数量']
+          const tHeader = ['名称', '数量', '较昨日数量']
           const filterVal = ['title', 'num', 'number']
           const list = this.goodsStaList
           const data = this.formatJson(filterVal, list)

@@ -151,7 +151,6 @@
               <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="库存数" prop="total_stock" width="100" />
           <el-table-column
             align="right"
             label="库存金额"
@@ -182,14 +181,18 @@
               <el-tag>￥{{ row.stock_cost | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="上架日期" prop="created" />
           <el-table-column label="周转天数" prop="cycle_days" width="100" />
+          <el-table-column label="库存数" prop="total_stock" width="100" />
           <el-table-column
             label=" 库存占比"
             prop="stock_proportion"
             width="100"
           />
-
+          <el-table-column label="上架日期" prop="created">
+            <template #default="{ row }">
+              {{ row.created | formatTime }}
+            </template>
+          </el-table-column>
           <!-- <el-table-column align="center" label="操作" width="85">
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">查看</el-button>
@@ -413,7 +416,7 @@
       // 导出
       handleDownload() {
         import('@/utils/excel').then((excel) => {
-          const tHeader = ['名称', '数量', '环比数量']
+          const tHeader = ['名称', '数量', '较昨日数量']
           const filterVal = ['title', 'num', 'number']
           const list = this.goodsStaList
           const data = this.formatJson(filterVal, list)

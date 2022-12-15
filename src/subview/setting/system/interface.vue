@@ -229,7 +229,8 @@
     name: 'SystemStorage',
     data() {
       return {
-        wangzhi: 'https://v.99xcx.cn/shop/apps/erp321/client/api2/q36dye440r01',
+        wangzhi:
+          'https://luoyi.business.quanyu123.com/shop/apps/erp321/client/api2/q36dye440r01',
         activeName: '聚水潭ERP',
         form: {
           jst_api_open: 1, //聚水潭接口是否开启

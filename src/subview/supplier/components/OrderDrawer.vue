@@ -50,14 +50,14 @@
             >
               提醒发货
             </el-button> -->
-            <el-button
+            <!-- <el-button
               size="small"
               style="float: right; margin-right: 10px"
               type="primary"
               @click="print('vab-print-table')"
             >
               打印
-            </el-button>
+            </el-button> -->
             <!-- <el-button
               
               size="small"

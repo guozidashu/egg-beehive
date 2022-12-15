@@ -50,6 +50,18 @@
               />
             </el-select>
           </el-form-item>
+          <el-form-item label="状态:">
+            <el-select v-model="form.status">
+              <el-option label="停售" value="0" />
+              <el-option label="在售" value="1" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="推荐:">
+            <el-select v-model="form.recommend">
+              <el-option label="取消推荐" value="0" />
+              <el-option label="推荐中" value="1" />
+            </el-select>
+          </el-form-item>
           <el-form-item label="尺码类型:">
             <el-select v-model="form.type">
               <el-option label="整手" value="0" />
@@ -82,24 +94,24 @@
           :label="'全部商品 (' + tatleData.all_order + ')'"
           name="0"
         />
-        <el-tab-pane
+        <!-- <el-tab-pane
           :label="'仓库中 (' + tatleData.repository + ')'"
           name="1"
-        />
+        /> -->
         <el-tab-pane :label="'已售罄 (' + tatleData.sole_out + ')'" name="2" />
         <el-tab-pane
           :label="'库存预警 (' + tatleData.stock_alert + ')'"
           name="3"
         />
-        <el-tab-pane :label="'待确认 (' + tatleData.confirmed + ')'" name="4" />
-        <el-tab-pane
+        <!-- <el-tab-pane :label="'待确认 (' + tatleData.confirmed + ')'" name="4" /> -->
+        <!-- <el-tab-pane
           :label="'自营商城 (' + tatleData.self_operated + ')'"
           name="5"
         />
         <el-tab-pane
           :label="'第三方平台 (' + tatleData.third_platform + ')'"
           name="6"
-        />
+        /> -->
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -376,6 +388,8 @@
           type: '', //尺码类型 0整手  1散码
           band: '', //波段
           name: '', //商品名称
+          recommend: '', //推荐
+          status: '', //状态
         },
         listType: 1,
         formType: 4,

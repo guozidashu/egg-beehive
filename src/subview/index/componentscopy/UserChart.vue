@@ -2,7 +2,7 @@
   <el-card class="authorization" shadow="hover">
     <template #header>
       <vab-icon icon="bar-chart-2-line" />
-      购买用户统计
+      用户回购概括
     </template>
     <QYBranch :list="branchList" :style-chart="styleObj" />
   </el-card>
@@ -19,9 +19,9 @@
     data() {
       return {
         styleObj: {
-          width: '400px',
+          width: '100%',
           height: '250px',
-          legendx: 0,
+          legendx: 100,
           legendy: 200,
           center: ['50%', '40%'],
         },

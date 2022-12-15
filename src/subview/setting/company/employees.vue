@@ -75,6 +75,26 @@
             prop="role_name"
             show-overflow-tooltip
           />
+          <el-table-column
+            label="erp可见权限"
+            prop="role_name"
+            show-overflow-tooltip
+          >
+            <template #default="{ row }">
+              <el-tag v-if="row.erp_available == 1">可见</el-tag>
+              <el-tag v-else type="danger">不可见</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="研发可见编辑"
+            prop="role_name"
+            show-overflow-tooltip
+          >
+            <template #default="{ row }">
+              <el-tag v-if="row.design_available == 1">可见</el-tag>
+              <el-tag v-else type="danger">不可见</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column label="状态" prop="status" show-overflow-tooltip>
             <template #default="{ row }">
               <el-tag v-if="row.status == 1">在职</el-tag>

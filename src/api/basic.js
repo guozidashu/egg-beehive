@@ -44,6 +44,51 @@ export function getConfig(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+
+// 工艺管理
+export function getCraftTypeList(data) {
+  return request({
+    url: '/archive/craftTypeList',
+    method: 'post',
+    data,
+  })
+}
+export function editCraftTypeSave(data) {
+  return request({
+    url: '/archive/craftTypeSave',
+    method: 'post',
+    data,
+  })
+}
+export function delCraftTypeDel(data) {
+  return request({
+    url: '/archive/craftTypeDel',
+    method: 'post',
+    data,
+  })
+}
+// 工序管理
+export function getProduceTypeList(data) {
+  return request({
+    url: '/archive/produceTypeList',
+    method: 'post',
+    data,
+  })
+}
+export function editProduceTypeSave(data) {
+  return request({
+    url: '/archive/produceTypeSave',
+    method: 'post',
+    data,
+  })
+}
+export function delProduceTypeDel(data) {
+  return request({
+    url: '/archive/produceTypeDel',
+    method: 'post',
+    data,
+  })
+}
 // 部门管理
 
 export function editEmployeeRoleSave(data) {
@@ -1000,6 +1045,21 @@ export function getOrderDetail(data) {
     data,
   })
 }
+
+export function getDeliveryOrderSpec(data) {
+  return request({
+    url: '/order/getDeliveryOrderSpec',
+    method: 'post',
+    data,
+  })
+}
+export function getModifySpec(data) {
+  return request({
+    url: '/order/getModifySpec',
+    method: 'post',
+    data,
+  })
+}
 // 订单统计
 export function getOrderCountList(data) {
   return request({
@@ -1262,6 +1322,13 @@ export function editCategorySonStatus(data) {
 }
 //商品管理
 
+export function getShopGoodTabTotal(data) {
+  return request({
+    url: '/goods/shopGoodTabTotal',
+    method: 'post',
+    data,
+  })
+}
 export function editChangeRecommend(data) {
   return request({
     url: '/goods/changeRecommend',
@@ -1439,6 +1506,14 @@ export function getPurchaseList(data) {
   })
 }
 // 权限管理
+
+export function addRoleGroupSave(data) {
+  return request({
+    url: '/admin/roleGroupSave',
+    method: 'post',
+    data,
+  })
+}
 export function getRoleInfo(data) {
   return request({
     url: '/admin/roleInfo',

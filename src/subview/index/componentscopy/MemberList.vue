@@ -2,7 +2,7 @@
   <el-card class="authorization" shadow="hover">
     <template #header>
       <vab-icon icon="bar-chart-2-line" />
-      会员贡献榜
+      客户等级分布概括
     </template>
     <QYList
       :list="goosList"
@@ -30,7 +30,16 @@
           </template>
         </el-table-column>
         <el-table-column label="用户等级" prop="name" />
+        <el-table-column label="等级用户数" prop="level_num" />
         <el-table-column label="成交用户数" prop="turnover_customer" />
+        <el-table-column label="当前等级占比" prop="all_total">
+          <template #default="{ row }">
+            <span v-if="row.turnover_customer == 0">0%</span>
+            <span v-else>
+              {{ (row.level_num / row.turnover_customer).toFixed(2) * 100 }}%
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column
           align="right"
           label="销售金额"
@@ -39,12 +48,6 @@
         >
           <template #default="{ row }">
             <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="等级用户数" prop="level_num" />
-        <el-table-column label="占比" prop="all_total">
-          <template #default="{ row }">
-            {{ (row.level_num / row.turnover_customer).toFixed(2) * 100 }}%
           </template>
         </el-table-column>
       </template>

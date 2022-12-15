@@ -155,7 +155,18 @@
                 item.OneName = item.pname
                 item.TwoName = item.title
               }
+              if (item.checked == true) {
+                this.formData[item.id] = true
+              } else {
+                this.formData[item.id] = false
+              }
               arr.push(item)
+            } else {
+              if (item.checked == true) {
+                this.formData[item.id] = true
+              } else {
+                this.formData[item.id] = false
+              }
             }
             if (item.children) {
               fn(item.children)
@@ -164,25 +175,25 @@
         }
         fn(data.list)
         arr.forEach((item) => {
-          if (item.ppid) {
-            if (item.checked) {
-              this.formData[item.pid] = item.checked
-              this.formData[item.ppid] = item.checked
-              this.formData[item.id] = item.checked
-            } else {
-              this.formData[item.pid] = item.checked
-              this.formData[item.ppid] = item.checked
-              this.formData[item.id] = item.checked
-            }
-          } else {
-            if (item.checked) {
-              this.formData[item.pid] = item.checked
-              this.formData[item.id] = item.checked
-            } else {
-              this.formData[item.pid] = item.checked
-              this.formData[item.id] = item.checked
-            }
-          }
+          // if (item.ppid) {
+          //   if (item.checked) {
+          //     this.formData[item.pid] = item.checked
+          //     this.formData[item.ppid] = item.checked
+          //     this.formData[item.id] = item.checked
+          //   } else {
+          //     this.formData[item.pid] = item.checked
+          //     this.formData[item.ppid] = item.checked
+          //     this.formData[item.id] = item.checked
+          //   }
+          // } else {
+          //   if (item.checked) {
+          //     this.formData[item.pid] = item.checked
+          //     this.formData[item.id] = item.checked
+          //   } else {
+          //     this.formData[item.pid] = item.checked
+          //     this.formData[item.id] = item.checked
+          //   }
+          // }
           if (!item.children) {
             item.guard.forEach((item2) => {
               this.formData[item2.id] = item2.checked
@@ -195,6 +206,7 @@
             })
           }
         })
+
         this.list = arr
         this.listLoading = false
         this.getSpanArr(this.list)

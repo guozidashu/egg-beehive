@@ -117,6 +117,7 @@
             typeSta: false,
             name: 'sale_total',
             numType: 1,
+            color: '#FFC833',
           },
           {
             title: '销售件数',
@@ -126,6 +127,7 @@
             typeSta: false,
             name: 'sale_num',
             numType: 2,
+            color: '#FFC833',
           },
           {
             title: '发货金额',
@@ -135,6 +137,7 @@
             typeSta: false,
             name: 'delivery_total',
             numType: 1,
+            color: '#55DF7E',
           },
           {
             title: '发货件数',
@@ -144,6 +147,7 @@
             typeSta: false,
             name: 'delivery_num',
             numType: 2,
+            color: '#55DF7E',
           },
           {
             title: '退货金额',
@@ -153,6 +157,7 @@
             typeSta: false,
             name: 'return_total',
             numType: 1,
+            color: '#527AA4',
           },
           {
             title: '退货件数',
@@ -162,6 +167,7 @@
             typeSta: false,
             name: 'return_num',
             numType: 2,
+            color: '#527AA4',
           },
         ],
         initOptions: {
@@ -274,7 +280,7 @@
               data: this.dataAllList.sale_num,
               yAxisIndex: 1,
               itemStyle: {
-                color: '#FF6C87',
+                color: '#FFC833',
               },
             },
             {
@@ -293,7 +299,7 @@
               data: this.dataAllList.delivery_num,
               yAxisIndex: 1,
               itemStyle: {
-                color: '#1890FF',
+                color: '#55DF7E',
               },
             },
             {
@@ -312,7 +318,7 @@
               data: this.dataAllList.return_num,
               yAxisIndex: 1,
               itemStyle: {
-                color: '#28A933',
+                color: '#527AA4',
               },
             },
           ],
@@ -337,9 +343,11 @@
           })
         })
         getShipmentWarning().then((res) => {
+          console.log(5555555, res.data)
           this.branchList1[0].value = res.data.today_shipped_num
           this.branchList1[1].value = res.data.yesterday_shipped_num
-          this.branchList1[2].value = res.data.unshipped_num.sum
+          this.branchList1[2].value = res.data.unshipped_num
+          console.log(999999, this.branchList1)
         })
       },
       async fetchData() {

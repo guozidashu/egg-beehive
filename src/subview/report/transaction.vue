@@ -17,7 +17,7 @@
             style="display: flex; justify-content: space-between"
             @submit.native.prevent
           >
-            <span style="margin-top: 10px; font-size: 16px">交易七日分析</span>
+            <span style="margin-top: 10px; font-size: 16px">交易分析</span>
 
             <el-form-item
               style="
@@ -59,7 +59,7 @@
       <el-col :lg="12" :md="24" :sm="24" :xl="12" :xs="24">
         <el-card class="box-card" shadow="hover">
           <div slot="header" class="clearfix">
-            <span>今日订单金额</span>
+            <span>七日订单金额</span>
           </div>
           <Charts :data="dataObj" />
         </el-card>
