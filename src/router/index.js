@@ -534,6 +534,15 @@ export const asyncRoutes = [
         },
       },
       {
+        path: 'customerReplenishment',
+        name: 'CustomerReplenishment',
+        component: () => import('@/subview/customer/replenishment'),
+        meta: {
+          title: '客户补货申请',
+          icon: 'archive-line',
+        },
+      },
+      {
         path: 'customerStatistical',
         name: 'CustomerStatistical',
         component: () => import('@/subview/customer/statistical'),

@@ -73,13 +73,7 @@
         <span style="font-weight: 600">https://new.shopvvv.cn</span>
       </el-form-item>
       <el-form-item>
-        <el-button
-          v-has-permi="['btn:PlatformWxxiao:edit']"
-          type="primary"
-          @click="submitForm('form')"
-        >
-          保存
-        </el-button>
+        <el-button type="primary" @click="submitForm('form')">保存</el-button>
         <el-button>上传小程序接口校验文件</el-button>
       </el-form-item>
     </el-form>

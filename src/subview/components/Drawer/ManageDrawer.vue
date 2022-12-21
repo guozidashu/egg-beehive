@@ -188,7 +188,7 @@
             <div>
               用户状态：
               <span v-if="form.status == 1">开启</span>
-              <span>关闭</span>
+              <span v-else>关闭</span>
             </div>
             <div>
               期初金额：

@@ -182,7 +182,7 @@
             <template #default="{ row }">{{ row.profit * 100 }}%</template>
           </el-table-column> -->
           <el-table-column label="上架天数" prop="upper_day" />
-          <el-table-column label="预计可售天数" prop="expect_day" />
+          <el-table-column label="预计售完天数" prop="expect_day" />
           <!-- <el-table-column
             align="center"
             fixed="right"

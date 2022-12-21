@@ -33,6 +33,7 @@
               </el-button> -->
               <el-button
                 v-if="form.drawerType == 1"
+                v-has-permi="['btn:GoodsManage:edit']"
                 size="small"
                 style="float: right; margin-right: 10px"
                 type="primary"
@@ -42,6 +43,7 @@
               </el-button>
               <el-button
                 v-if="form.drawerType == 2"
+                v-has-permi="['btn:GoodsManage:edit']"
                 size="small"
                 style="float: right; margin-right: 10px"
                 type="primary"
@@ -97,6 +99,7 @@
     <div v-if="form.drawerType == 3">
       <el-button
         v-if="form.drawerType == 1"
+        v-has-permi="['btn:GoodsManage:edit']"
         size="small"
         style="float: right; margin-right: 10px"
         type="primary"
@@ -106,6 +109,7 @@
       </el-button>
       <el-button
         v-if="form.drawerType == 2 || form.drawerType == 3"
+        v-has-permi="['btn:GoodsManage:edit']"
         size="small"
         style="float: right; margin-right: 10px"
         type="primary"

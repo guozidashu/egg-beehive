@@ -53,7 +53,6 @@
           },
           series: [
             {
-              name: '访问来源',
               type: 'pie',
               radius: '50%',
               center: this.styleChart.center,

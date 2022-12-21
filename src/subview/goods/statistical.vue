@@ -161,6 +161,7 @@
               <el-tag v-else type="danger">下架</el-tag>
             </template>
           </el-table-column> -->
+          <el-table-column label="上架天数" prop="shop_day" width="80" />
           <el-table-column label="上架时间" prop="created" width="200">
             <template #default="{ row }">
               {{ row.create_time }}

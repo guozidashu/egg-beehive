@@ -77,13 +77,7 @@
         </el-form-item>
       </div>
       <el-form-item>
-        <el-button
-          v-has-permi="['btn:PlatformWxxiao:edit']"
-          type="primary"
-          @click="submitForm('form1')"
-        >
-          保存
-        </el-button>
+        <el-button type="primary" @click="submitForm('form1')">保存</el-button>
       </el-form-item>
     </el-form>
     <vab-upload

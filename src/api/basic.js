@@ -1844,32 +1844,92 @@ export function delCustomer(data) {
     data,
   })
 }
-// 客户标签
-export function getParentTag(data) {
+// 客户补货申请
+
+export function getCustomerApplyAgree(data) {
   return request({
-    url: '/customer/getParentTag',
+    url: '/customerReplenishment/applyAgree',
+    method: 'post',
+    data,
+  })
+}
+export function getCustomerApplyList(data) {
+  return request({
+    url: '/customerReplenishment/applyList',
+    method: 'post',
+    data,
+  })
+}
+// 客户标签
+
+export function delCorpTag(data) {
+  return request({
+    url: '/customer/delCorpTag',
+    method: 'post',
+    data,
+  })
+}
+export function editCorpTag(data) {
+  return request({
+    url: '/customer/editCorpTag',
+    method: 'post',
+    data,
+  })
+}
+export function getTagGroupList(data) {
+  return request({
+    url: '/customer/getTagGroupList',
     method: 'post',
     data,
   })
 }
 export function getTagList(data) {
   return request({
-    url: '/customer/tagList',
+    url: '/customer/getTagList',
     method: 'post',
     data,
   })
 }
-export function editTagSave(data) {
+
+export function addCorpTagSync(data) {
   return request({
-    url: '/customer/tagSave',
+    url: '/customer/corpTagSync',
     method: 'post',
     data,
   })
 }
-export function delTagDel(data) {
+export function addCorpTag(data) {
   return request({
-    url: '/customer/tagDel',
+    url: '/customer/addCorpTag',
     method: 'post',
     data,
   })
 }
+// export function getParentTag(data) {
+//   return request({
+//     url: '/customer/getParentTag',
+//     method: 'post',
+//     data,
+//   })
+// }
+// export function getTagList(data) {
+//   return request({
+//     url: '/customer/tagList',
+//     method: 'post',
+//     data,
+//   })
+// }
+// export function editTagSave(data) {
+//   return request({
+//     url: '/customer/tagSave',
+//     method: 'post',
+//     data,
+//   })
+// }
+// export function delTagDel(data) {
+//   return request({
+//     url: '/customer/tagDel',
+//     method: 'post',
+//     data,
+//   })
+// }

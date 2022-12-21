@@ -17,7 +17,7 @@
               v-for="(item, index) in menuList"
               :key="index"
               :index="item.id.toString()"
-              @click="handleGrouPQuery(item.id)"
+              @click="handleGrouPQuery(item.group_id)"
             >
               <div
                 @mouseenter="mouseOver(index)"
@@ -36,20 +36,12 @@
                     </span>
                     <el-dropdown-menu slot="dropdown">
                       <el-dropdown-item>
-                        <el-button
-                          v-has-permi="['btn:CustomerTags:edit']"
-                          type="text"
-                          @click="handleEdit(item, 2)"
-                        >
+                        <el-button type="text" @click="handleEdit(item, 2)">
                           编辑
                         </el-button>
                       </el-dropdown-item>
                       <el-dropdown-item>
-                        <el-button
-                          v-has-permi="['btn:CustomerTags:del']"
-                          type="text"
-                          @click="handleDelete(item, 2)"
-                        >
+                        <el-button type="text" @click="handleDelete(item, 2)">
                           删除
                         </el-button>
                       </el-dropdown-item>
@@ -65,23 +57,13 @@
         <el-card shadow="never" style="border: 0">
           <el-form ref="form" :inline="true" @submit.native.prevent>
             <el-form-item>
-              <el-button
-                v-has-permi="['btn:CustomerTags:add']"
-                size="small"
-                type="primary"
-                @click="handleEdit('add', 1)"
-              >
+              <el-button type="primary" @click="handleEdit('add', 1)">
                 添加标签
               </el-button>
-              <el-button
-                v-has-permi="['btn:CustomerTags:add']"
-                size="small"
-                type="primary"
-                @click="handleEdit('add', 2)"
-              >
+              <el-button type="primary" @click="handleEdit('add', 2)">
                 添加分类
               </el-button>
-              <el-button size="small" type="primary">
+              <el-button type="primary" @click="addCopy()">
                 同步企业微信标签
               </el-button>
             </el-form-item>
@@ -103,9 +85,9 @@
           >
             <template #List>
               <el-table-column type="selection" />
-              <el-table-column label="ID" prop="id" sortable />
-              <el-table-column label="标签名称" prop="name" />
-              <el-table-column label="标签分类" prop="p_name" />
+              <el-table-column label="标签名称" prop="tag_name" />
+              <el-table-column label="创建时间" prop="create_time" />
+              <el-table-column label="更新时间" prop="update_time" />
               <el-table-column
                 align="center"
                 fixed="right"
@@ -113,18 +95,10 @@
                 width="85"
               >
                 <template #default="{ row }">
-                  <el-button
-                    v-has-permi="['btn:CustomerTags:edit']"
-                    type="text"
-                    @click="handleEdit(row, 1)"
-                  >
+                  <el-button type="text" @click="handleEdit(row, 1)">
                     编辑
                   </el-button>
-                  <el-button
-                    v-has-permi="['btn:CustomerTags:del']"
-                    type="text"
-                    @click="handleDelete(row, 1)"
-                  >
+                  <el-button type="text" @click="handleDelete(row, 1)">
                     删除
                   </el-button>
                 </template>
@@ -139,14 +113,19 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/TagsEdit'
-  import { getParentTag, getTagList, delTagDel } from '@/api/basic'
+  import {
+    getTagGroupList,
+    getTagList,
+    delCorpTag,
+    addCorpTagSync,
+  } from '@/api/basic'
   export default {
     name: 'CustomerTags',
     components: { Edit },
     data() {
       return {
         form: {
-          pid: 0,
+          group_id: 0,
           page: 1,
           pageSize: 10,
           name: '',
@@ -185,10 +164,30 @@
       handleQuery() {
         this.form.page = 1
       },
-      handleDelete(row) {
-        if (row.id) {
+      addCopy() {
+        this.$baseConfirm('你确定要同步吗？', null, async () => {
+          const { code } = await addCorpTagSync()
+          if (code != 200) {
+            return
+          }
+          this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
+          this.fetchData()
+        })
+      },
+      handleDelete(row, type) {
+        if (type === 1) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delTagDel({ id: row.id })
+            const { code } = await delCorpTag({ tag_id: [row.tag_id] })
+            if (code != 200) {
+              return
+            }
+            this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
+          })
+        } else {
+          console.log(666, row)
+          this.$baseConfirm('你确定要删除当前项吗', null, async () => {
+            const { code } = await delCorpTag({ group_id: [row.group_id] })
             if (code != 200) {
               return
             }
@@ -204,18 +203,13 @@
         this.form.pageSize = data
       },
       async fetchData() {
-        const { data } = await getParentTag(this.form)
-        let list = [
-          {
-            id: 0,
-            name: '全部',
-          },
-          ...data,
-        ]
-        list.forEach((item) => {
+        const { data } = await getTagGroupList()
+        data.forEach((item, index) => {
           item.btnIconStatus = false
+          item.id = index + 1
+          item.name = item.group_name
         })
-        this.menuList = list
+        this.menuList = data
         this.fetchList()
       },
       async fetchList() {
@@ -228,7 +222,7 @@
         this.listLoading = false
       },
       handleGrouPQuery(id) {
-        this.form.pid = id
+        this.form.group_id = id
       },
       handleOpen() {},
       handleClose() {},

@@ -125,7 +125,7 @@
         dataObj: {
           height: '300px',
           legend: {
-            data: ['新增客户', '成交客户'],
+            data: ['新增客户', '新增客户销售额'],
           },
           color: ['#409eff'],
           xAxis: {
@@ -138,12 +138,16 @@
               type: 'value',
               name: '数量',
             },
+            {
+              type: 'value',
+              name: '金额',
+            },
           ],
           series: [
             {
               name: '新增客户',
               type: 'line',
-
+              yAxisIndex: 0,
               smooth: true,
               data: [],
               itemStyle: {
@@ -151,9 +155,9 @@
               },
             },
             {
-              name: '成交客户',
-              type: 'line',
-
+              name: '新增客户销售额',
+              type: 'bar',
+              yAxisIndex: 1,
               smooth: true,
               data: [],
               itemStyle: {
@@ -333,10 +337,11 @@
         } else {
           this.textTagList[3].type = 1
         }
-        this.branchList[0].value = data.list.buy_customer.buy_one_customer
-        this.branchList[1].value = data.list.buy_customer.buy_zero_customer
+        this.branchList[0].value = data.list.buy_customer.buy_zero_customer
+        this.branchList[1].value = data.list.buy_customer.buy_one_customer
         this.branchList[2].value = data.list.buy_customer.buy_ten_customer
-        this.branchList[3].value = data.list.buy_customer.buy_max_customer
+        this.branchList[3].value = data.list.buy_customer.buy_twenty_customer
+        this.branchList[4].value = data.list.buy_customer.buy_max_customer
         this.goodsList = data.list.grades
         this.getHomeReport()
       },

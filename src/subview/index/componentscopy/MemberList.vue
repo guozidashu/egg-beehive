@@ -32,11 +32,11 @@
         <el-table-column label="用户等级" prop="name" />
         <el-table-column label="等级用户数" prop="level_num" />
         <el-table-column label="成交用户数" prop="turnover_customer" />
-        <el-table-column label="当前等级占比" prop="all_total">
+        <el-table-column label="销售金额占销售总金额占比" prop="all_total">
           <template #default="{ row }">
-            <span v-if="row.turnover_customer == 0">0%</span>
+            <span v-if="row.all_total == 0">0%</span>
             <span v-else>
-              {{ (row.level_num / row.turnover_customer).toFixed(2) * 100 }}%
+              {{ (row.sale_price / row.all_total).toFixed(2) * 100 }}%
             </span>
           </template>
         </el-table-column>
