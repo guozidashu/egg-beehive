@@ -44,6 +44,22 @@ export function getConfig(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+// 客户跟进
+export function getFollowList(data) {
+  return request({
+    url: '/externalFollow/getList',
+    method: 'post',
+    data,
+  })
+}
+// 企微客户
+export function getExternalList(data) {
+  return request({
+    url: '/external/getList',
+    method: 'post',
+    data,
+  })
+}
 
 // 工艺管理
 export function getCraftTypeList(data) {

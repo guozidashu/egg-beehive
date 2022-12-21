@@ -543,6 +543,25 @@ export const asyncRoutes = [
         },
       },
       {
+        path: 'customerEnterprise',
+        name: 'CustomerEnterprise',
+        component: () => import('@/subview/customer/enterprise'),
+        meta: {
+          title: '企微客户列表',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'customerFollow',
+        name: 'CustomerFollow',
+        component: () => import('@/subview/customer/follow'),
+        meta: {
+          title: '客户跟进列表',
+          icon: 'archive-line',
+        },
+      },
+
+      {
         path: 'customerStatistical',
         name: 'CustomerStatistical',
         component: () => import('@/subview/customer/statistical'),
