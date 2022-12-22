@@ -13,7 +13,7 @@
       style="
         display: flex;
         justify-content: space-between;
-        height: 5vh;
+        height: 7vh;
         padding: 10px;
         margin-bottom: 10px;
         text-align: center;
@@ -21,12 +21,12 @@
       "
     >
       <div>
-        <el-button type="text" @click="back">
+        <!-- <el-button type="text" @click="back">
           <span style="font-size: 12px">
             <i class="el-icon-back"></i>
             返回
           </span>
-        </el-button>
+        </el-button> -->
         <span style="margin-left: 10px; font-size: 18px; font-weight: 600">
           页面标题
         </span>
@@ -396,9 +396,9 @@
         temp.img = ''
         temp.class_id = this.$route.query.lx
         const { data } = await editTemplateAssemblyLayout(temp)
-        this.$message.success(
-          '数据提交成功，请按F12打开控制台查看待提交数据集合！'
-        )
+        // this.$message.success(
+        //   '数据提交成功，请按F12打开控制台查看待提交数据集合！'
+        // )
         this.itemId = data.id
         // this.setImage()
         return

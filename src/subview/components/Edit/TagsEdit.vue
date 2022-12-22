@@ -18,10 +18,10 @@
           <el-input v-model="form.order" style="width: 215px" />
         </el-form-item>
         <div v-for="(item, index) in form.tag" :key="index">
-          <el-form-item label="标签名称">
+          <el-form-item label="标签名称" prop="group_name">
             <el-input v-model="item.name" style="width: 215px" />
           </el-form-item>
-          <el-form-item label="标签排序">
+          <el-form-item label="标签排序" prop="order">
             <el-input v-model="item.order" style="width: 215px" />
             <i
               v-if="index == 0"
@@ -43,6 +43,7 @@
           <el-select
             v-model="form.group_id"
             placeholder="请选择分类"
+            prop="group_name"
             style="width: 215px"
           >
             <el-option
@@ -53,14 +54,28 @@
             />
           </el-select>
         </el-form-item>
-        <div v-for="(item, index) in form.tag" :key="index">
-          <el-form-item label="标签名称">
-            <el-input v-model="item.name" style="width: 215px" />
-          </el-form-item>
-          <el-form-item label="标签排序">
-            <el-input v-model="item.order" style="width: 215px" />
-          </el-form-item>
-        </div>
+        <el-form-item
+          label="标签名称"
+          :prop="form.tag[0].name"
+          :rules="{
+            required: true,
+            message: '域名不能为空',
+            trigger: 'blur',
+          }"
+        >
+          <el-input v-model="form.tag[0].name" style="width: 215px" />
+        </el-form-item>
+        <el-form-item
+          label="标签排序"
+          :prop="form.tag[0].order"
+          :rules="{
+            required: true,
+            message: '域名不能为空',
+            trigger: 'blur',
+          }"
+        >
+          <el-input v-model="form.tag[0].order" style="width: 215px" />
+        </el-form-item>
       </div>
       <div v-if="title == '编辑标签' || title == '编辑分类'">
         <el-form-item label="名称">
@@ -183,6 +198,22 @@
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
+            if (this.form.tag[0].name == '') {
+              this.$baseMessage(
+                '请输入标签名称',
+                'success',
+                'vab-hey-message-success'
+              )
+              return
+            }
+            if (this.form.tag[0].order == '') {
+              this.$baseMessage(
+                '请输入标签排序',
+                'success',
+                'vab-hey-message-success'
+              )
+              return
+            }
             if (this.title === '添加分类' || this.title === '添加标签') {
               const { code } = await addCorpTag(this.form)
               if (code != 200) {

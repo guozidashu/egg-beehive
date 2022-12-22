@@ -42,19 +42,26 @@
         <template #List>
           <el-table-column
             align="center"
+            label="ID"
+            prop="id"
+            show-overflow-tooltip
+          />
+
+          <el-table-column
+            align="center"
+            label="申请时间"
+            prop="create_time"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
             label="客户名称"
             prop="customer_name"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="商品名称"
-            prop="goods_name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="商品图片"
+            label="申请商品"
             prop="goods_img"
             show-overflow-tooltip
           >
@@ -70,17 +77,17 @@
                   style="width: 50px; height: 50px"
                 />
               </el-tooltip>
+              <div>{{ row.goods_name }}</div>
             </template>
           </el-table-column>
           <el-table-column
             align="center"
-            label="申请时间"
-            prop="create_time"
+            label="申请数量"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="拒绝原因"
+            label="申请备注"
             prop="reason"
             show-overflow-tooltip
           />
@@ -121,8 +128,9 @@
                 type="text"
                 @click="handleEdit(row, 1)"
               >
-                知晓
+                处理
               </el-button>
+              <el-button v-else disabled type="text">已处理</el-button>
             </template>
           </el-table-column>
         </template>

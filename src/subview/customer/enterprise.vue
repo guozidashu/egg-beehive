@@ -22,39 +22,16 @@
         @changePageSize="changeBtnPageSize"
       >
         <template #List>
-          <!-- <el-table-column align="center" label="排行" type="index" width="50">
-            <template slot-scope="scope">
-              <span
-                class="index_common"
-                :class="[
-                  scope.$index + 1 == '1'
-                    ? 'index_one'
-                    : scope.$index + 1 == '2'
-                    ? 'index_two'
-                    : scope.$index + 1 == '3'
-                    ? 'index_three'
-                    : 'index_more',
-                ]"
-              >
-                {{ scope.$index + 1 }}
-              </span>
-            </template>
-          </el-table-column>
           <el-table-column
             align="center"
-            label="积分"
-            prop="sum_integral"
-            show-overflow-tooltip
-          /> -->
-          <el-table-column
-            align="center"
-            label="客户名称"
-            prop="customer_name"
+            label="ID"
+            prop="id"
             show-overflow-tooltip
           />
+
           <el-table-column
             align="center"
-            label="姓名"
+            label="昵称"
             prop="external_name"
             show-overflow-tooltip
           />
@@ -76,15 +53,54 @@
               </el-tooltip>
             </template>
           </el-table-column>
+          <el-table-column
+            align="center"
+            label="客户名称"
+            prop="customer_name"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="客户标签"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="客户添加时间"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="跟进状态"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            fixed="right"
+            label="操作"
+            width="200"
+          >
+            <template #default="{ row }">
+              <el-button type="text" @click="handleEdit(row, 1)">
+                客户跟进记录
+              </el-button>
+              <el-button type="text" @click="handleEdit(row, 2)">
+                修改客户标签
+              </el-button>
+            </template>
+          </el-table-column>
         </template>
       </QYList>
     </el-card>
+    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 <script>
+  import Edit from '@/subview/components/Edit/EnterpriseEdit'
   import { getExternalList } from '@/api/basic'
   export default {
     name: 'ProjectBandlist',
+    components: { Edit },
     data() {
       return {
         // 表单数据/列表参数
@@ -112,6 +128,9 @@
       this.fetchData()
     },
     methods: {
+      async handleEdit(row, type) {
+        this.$refs['edit'].showEdit(row, type)
+      },
       handleQuery() {
         this.fetchData()
       },

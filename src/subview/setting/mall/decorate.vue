@@ -320,9 +320,9 @@
         temp.content = arr
         const { data } = await editTemplateAssemblyLayout(temp)
 
-        this.$message.success(
-          '数据提交成功，请按F12打开控制台查看待提交数据集合！'
-        )
+        // this.$message.success(
+        //   '数据提交成功，请按F12打开控制台查看待提交数据集合！'
+        // )
         // this.setImage()
         return
       },
