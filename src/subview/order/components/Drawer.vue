@@ -540,14 +540,12 @@
             id: row.id,
           })
           this.DetailList = data
-          console.log(data)
         } else {
           this.title = '发货记录'
           const { data } = await getDeliveryOrderSpec({
             id: row.id,
           })
           this.DetailList = data
-          console.log(data)
         }
         this.dialogVisible = true
       },

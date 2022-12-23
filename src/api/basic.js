@@ -1878,6 +1878,20 @@ export function getCustomerApplyList(data) {
 }
 // 客户标签
 
+export function addTagToExternal(data) {
+  return request({
+    url: '/customer/addTagToExternal',
+    method: 'post',
+    data,
+  })
+}
+export function getAllTag(data) {
+  return request({
+    url: '/customer/getAllTag',
+    method: 'post',
+    data,
+  })
+}
 export function delCorpTag(data) {
   return request({
     url: '/customer/delCorpTag',

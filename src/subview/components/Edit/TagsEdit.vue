@@ -162,10 +162,11 @@
       handleDelete(index) {
         this.form.tag.splice(index, 1)
       },
-      showEdit(row, type) {
+      showEdit(row, type, groupId) {
         this.type = type
         if (row === 'add') {
           if (type === 1) {
+            this.form.group_id = groupId
             this.title = '添加标签'
           } else {
             this.title = '添加分类'
@@ -180,7 +181,6 @@
             this.form.id = row.group_id
             this.form.name = row.group_name
           }
-          console.log(6666, row)
           // this.form = Object.assign({}, row)
         }
         this.dialogFormVisible = true

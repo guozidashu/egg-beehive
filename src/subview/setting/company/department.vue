@@ -189,8 +189,6 @@
     methods: {
       async subit() {
         let temp = this.$refs.tree.getCheckedKeys()
-        console.log(11111, temp)
-
         let str = temp.join(',')
         const { code } = await editEmployeeRoleSave({
           role: str,
@@ -234,11 +232,9 @@
           this.title = '新增角色'
         } else if (type == '3') {
           this.title = '分配ERP权限'
-          console.log(7777, index.role)
           let temp = index.role.split(',').map((item) => {
             return item
           })
-          console.log(666666666, temp)
           this.defaultList = temp
           this.roleId = index.id
           this.getRoleList()
@@ -275,8 +271,6 @@
       },
       async fetchData() {
         const { data } = await getEmployeePosition(this.form)
-        console.log(888, data)
-
         data.data.forEach((item) => {
           item.cartSta = false
           item.btnIconStatus = false
@@ -285,7 +279,6 @@
       },
       async getRoleList() {
         const { data } = await getEmployeeRoleList(this.form)
-        console.log(9999, data)
         data.forEach((item) => {
           item.label = item.name
           item.children.forEach((item) => {

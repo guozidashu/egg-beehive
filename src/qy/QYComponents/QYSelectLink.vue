@@ -95,7 +95,7 @@
                 <span v-else-if="row.status == 1">上架</span>
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="80">
+            <el-table-column label="操作" width="80">
               <template #default="{ row }">
                 <el-button type="text" @click="Select(row)">选择</el-button>
               </template>
@@ -343,6 +343,7 @@
           name: '',
           page: 1,
           pageSize: 10,
+          status: 1,
         },
       }
     },
@@ -532,6 +533,7 @@
           this.list = data.data
           this.total = data.total
         } else if (this.tabindex == 10) {
+          this.form.status == 1
           const { data } = await getGoodList(this.form)
           data.data.forEach((item) => {
             item.url = temp.url

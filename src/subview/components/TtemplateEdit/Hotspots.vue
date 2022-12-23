@@ -78,7 +78,7 @@
                   <span style="margin-right: 20px">
                     {{ item.bg_color }}
                   </span>
-                  <!-- <el-color-picker v-model="item.bg_color" /> -->
+                  <el-color-picker v-model="item.bg_color" disabled />
                 </div>
               </el-form-item>
               <div style="margin: 10px">与上方距离</div>

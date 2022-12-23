@@ -323,8 +323,6 @@
             },
           ],
         }
-        console.log(88888, this.option)
-
         getGoodsRanch().then((res) => {
           this.goosList = res.data.data
         })
@@ -343,11 +341,9 @@
           })
         })
         getShipmentWarning().then((res) => {
-          console.log(5555555, res.data)
           this.branchList1[0].value = res.data.today_shipped_num
           this.branchList1[1].value = res.data.yesterday_shipped_num
           this.branchList1[2].value = res.data.unshipped_num
-          console.log(999999, this.branchList1)
         })
       },
       async fetchData() {

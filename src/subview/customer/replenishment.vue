@@ -40,31 +40,9 @@
         @changePageSize="changeBtnPageSize"
       >
         <template #List>
-          <el-table-column
-            align="center"
-            label="ID"
-            prop="id"
-            show-overflow-tooltip
-          />
-
-          <el-table-column
-            align="center"
-            label="申请时间"
-            prop="create_time"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="客户名称"
-            prop="customer_name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="申请商品"
-            prop="goods_img"
-            show-overflow-tooltip
-          >
+          <el-table-column label="ID" prop="id" width="50" />
+          <el-table-column label="客户名称" prop="customer_name" width="120" />
+          <el-table-column label="申请商品" prop="goods_img">
             <template #default="{ row }">
               <el-tooltip placement="top">
                 <el-image
@@ -72,31 +50,22 @@
                   :src="row.goods_img"
                   style="width: 200px; height: 200px"
                 />
-                <el-image
-                  :src="row.goods_img"
-                  style="width: 50px; height: 50px"
-                />
+                <div style="display: flex">
+                  <el-image
+                    :src="row.goods_img"
+                    style="width: 50px; height: 50px"
+                  />
+                  <div style="margin: 2px 0 0 10px">
+                    <div>{{ row.sn }}</div>
+                    <div>{{ row.goods_name }}</div>
+                  </div>
+                </div>
               </el-tooltip>
-              <div>{{ row.goods_name }}</div>
             </template>
           </el-table-column>
-          <el-table-column
-            align="center"
-            label="申请数量"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="申请备注"
-            prop="reason"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="状态"
-            prop="status"
-            show-overflow-tooltip
-          >
+          <el-table-column label="申请数量" prop="num" width="80" />
+          <el-table-column align="center" label="申请备注" prop="reason" />
+          <el-table-column label="状态" prop="status" width="120">
             <template #default="{ row }">
               <el-tag
                 v-if="row.status === 1"
@@ -116,12 +85,8 @@
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column
-            align="center"
-            fixed="right"
-            label="操作"
-            width="100"
-          >
+          <el-table-column label="申请时间" prop="create_time" width="200" />
+          <el-table-column fixed="right" label="操作" width="100">
             <template #default="{ row }">
               <el-button
                 v-if="row.status === 1"

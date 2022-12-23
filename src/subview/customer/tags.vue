@@ -6,9 +6,16 @@
           shadow="never"
           style="height: 100%; min-height: calc(70vh); border: 0"
         >
+          <el-button
+            style="margin-bottom: 10px"
+            type="primary"
+            @click="handleEdit('add', 2)"
+          >
+            添加分类
+          </el-button>
           <el-menu
             class="el-menu-vertical-demo"
-            default-active="0"
+            default-active="1"
             style="width: 100%; border: 0"
             @close="handleClose"
             @open="handleOpen"
@@ -60,9 +67,7 @@
               <el-button type="primary" @click="handleEdit('add', 1)">
                 添加标签
               </el-button>
-              <el-button type="primary" @click="handleEdit('add', 2)">
-                添加分类
-              </el-button>
+
               <el-button type="primary" @click="addCopy()">
                 同步企业微信标签
               </el-button>
@@ -152,7 +157,7 @@
     methods: {
       async handleEdit(row, type) {
         if (row === 'add') {
-          this.$refs['edit'].showEdit(row, type)
+          this.$refs['edit'].showEdit(row, type, this.form.group_id)
         } else {
           if (row.id) {
             this.$refs['edit'].showEdit(row, type)
@@ -185,7 +190,6 @@
             this.fetchData()
           })
         } else {
-          console.log(666, row)
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
             const { code } = await delCorpTag({ group_id: [row.group_id] })
             if (code != 200) {
@@ -210,6 +214,7 @@
           item.name = item.group_name
         })
         this.menuList = data
+        this.form.group_id = this.menuList[0].group_id
         this.fetchList()
       },
       async fetchList() {
