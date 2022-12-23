@@ -132,8 +132,8 @@
               </el-table-column>
               <el-table-column label="状态" prop="status" width="150">
                 <template #default="{ row }">
-                  <el-tag v-if="row.status == 0" type="danger">下架</el-tag>
-                  <el-tag v-else-if="row.status == 1">上架</el-tag>
+                  <el-tag v-if="row.is_shop == 1">上架</el-tag>
+                  <el-tag v-else type="danger">下架</el-tag>
                 </template>
               </el-table-column>
             </template>

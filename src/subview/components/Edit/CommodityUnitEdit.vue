@@ -98,7 +98,7 @@
           <template #List>
             <el-table-column type="selection" />
             <el-table-column label="ID" prop="id" />
-            <el-table-column label="商品名称" prop="goods_name" />
+            <el-table-column label="商品名称" prop="name" />
             <el-table-column label="商品图" prop="img" width="80">
               <template #default="{ row }">
                 <el-tooltip placement="top">
@@ -116,8 +116,8 @@
             <el-table-column label="商品价格" prop="price" />
             <el-table-column label="状态" prop="status" width="150">
               <template #default="{ row }">
-                <el-tag v-if="row.status == 0" type="danger">下架</el-tag>
-                <el-tag v-else-if="row.status == 1">上架</el-tag>
+                <el-tag v-if="row.is_shop == 1">上架</el-tag>
+                <el-tag v-else type="danger">下架</el-tag>
               </template>
             </el-table-column>
           </template>
@@ -181,6 +181,12 @@
         },
         deep: true,
       },
+      formInline: {
+        handler: function () {
+          this.fetchData()
+        },
+        deep: true,
+      },
     },
     created() {
       this.getSelectType()
@@ -189,7 +195,7 @@
       showEdit(row, type) {
         this.type = type
         if (row === 'add') {
-          this.title = '添加分组'
+          this.title = '新增商品到分组'
           if (type == 1) {
             this.fetchData()
           }
@@ -280,6 +286,7 @@
       // 列表数据请求函数 公共部分
       async fetchData() {
         this.listLoading = true
+        this.formEdit.group_id = this.formInline.group_id
         const { data } = await getGoodsUnitList(this.formEdit)
         this.list = data.data
         this.total = data.total

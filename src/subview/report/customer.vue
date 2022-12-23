@@ -89,7 +89,7 @@
           style="width: 70%; padding-right: 0 20px"
         >
           <template #List>
-            <el-table-column label="EPR城市" prop="province" />
+            <el-table-column label="城市分布" prop="province" />
             <el-table-column label="累计用户数" prop="count" />
             <el-table-column label="新增用户数" prop="add_count" />
             <el-table-column align="right" label="贡献销售额" prop="sale">
@@ -97,7 +97,12 @@
                 <el-tag>￥{{ row.sale | moneyFormat }}</el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="贡献值" prop="all_sale" />
+            <el-table-column label="贡献值" prop="all_sale">
+              <template #default="{ row }">
+                <span v-if="row.all_sale != 0">{{ row.all_sale }}</span>
+                <span v-else>0</span>
+              </template>
+            </el-table-column>
           </template>
         </QYList>
       </div>
@@ -152,7 +157,7 @@
           trigger: 'item',
           formatter(params) {
             let res = ` <ul>
-    <li><span>EPR城市:</span> <span> ${params.data.name}</span></li>
+    <li><span>城市分布:</span> <span> ${params.data.name}</span></li>
     <li><span>累计用户数:</span> <span> ${params.data.value}</span></li>
     <li><span>新增用户数:</span> <span> ${params.data.add_count}</span></li>
     <li><span>贡献销售额:</span> <span> ${params.data.sale}</span></li>

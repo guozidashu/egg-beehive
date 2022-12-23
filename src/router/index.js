@@ -53,15 +53,6 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
-      {
-        path: 'visualization',
-        name: 'Visualization',
-        component: () => import('@/subview/index/visualization'),
-        meta: {
-          title: '可视化',
-          icon: 'archive-line',
-        },
-      },
     ],
   },
   {
