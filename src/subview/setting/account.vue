@@ -389,7 +389,9 @@
     methods: {
       async fetchData() {
         const { data } = await getAccountDetail()
-        this.inof = data.merchant
+        if (data.merchant != null) {
+          this.inof = data.merchant
+        }
         if (this.inof.erp_open == 1) {
           this.erp_openChecked = true
         } else {

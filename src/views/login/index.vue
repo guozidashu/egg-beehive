@@ -1,8 +1,8 @@
 <template>
-  <div class="login-container">
+  <div class="login-container" style="position: relative">
     <el-row>
       <el-col :lg="14" :md="11" :sm="24" :xl="14" :xs="24">
-        <div style="color: transparent">占位符</div>
+        <div style="color: transparent; opacity: 0">占位符</div>
       </el-col>
       <el-col :lg="9" :md="12" :sm="24" :xl="9" :xs="24">
         <el-form
@@ -14,7 +14,7 @@
         >
           <div class="title">hello !</div>
           <div class="title-tips">
-            {{ translateTitle('欢迎来到') }}{{ title }}！
+            圈域数字中台 · 好生意随时掌握 · Manage Account
           </div>
           <el-form-item prop="username" style="margin-top: 40px">
             <el-input
@@ -84,9 +84,27 @@
             <div style="margin-top: 20px">{{ translateTitle('注册') }}</div>
           </router-link> -->
         </el-form>
+        <div style="font-size: 12px; color: whitesmoke">
+          <div style="margin-bottom: 10px; text-align: center">
+            版权所有 © 杭州圈域数字科技有限公司
+          </div>
+          <div style="text-align: center">
+            <img
+              src="https://oss.business.quanyu123.com//dc1c5a2ba92a8c083360199ed4159439.png"
+              style="position: relative; top: 4px"
+            />
+            <a
+              href="https://beian.miit.gov.cn/"
+              style="color: whitesmoke"
+              target="_blank"
+            >
+              浙ICP备2022029386号-1
+            </a>
+          </div>
+        </div>
       </el-col>
       <el-col :lg="1" :md="1" :sm="24" :xl="1" :xs="24">
-        <div style="color: transparent">占位符</div>
+        <div style="color: transparent; opacity: 0">占位符</div>
       </el-col>
     </el-row>
   </div>

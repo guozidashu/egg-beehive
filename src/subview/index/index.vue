@@ -50,10 +50,10 @@
 
 <script>
   // import PageHeader from './components/PageHeader'
-  import TextTags from './componentscopy/TextTags'
-  import MembersChart from './componentscopy/MembersChart'
-  import MemberList from './componentscopy/MemberList'
-  import UserChart from './componentscopy/UserChart'
+  import TextTags from '@/subview/components/Text/IndexTextTags'
+  import MembersChart from '@/subview/components/Chart/MembersChart'
+  import MemberList from '@/subview/components/List/MemberList'
+  import UserChart from '@/subview/components/Chart/UserChart'
   import { getHomePageList, getHomeReportForms } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {

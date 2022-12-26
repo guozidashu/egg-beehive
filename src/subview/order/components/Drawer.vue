@@ -9,9 +9,9 @@
           <el-col :span="12" style="display: flex">
             <span style="margin: 10px 0 0 0">
               订单合计
-              <span style="color: red">{{ form.num }}</span>
+              <span style="color: red">{{ form.style_num }}</span>
               款 共计
-              <span style="color: red">*{{ form.style_num }}</span>
+              <span style="color: red">*{{ form.num }}</span>
               已发货
               <span style="color: red">*{{ form.delivery_num }}</span>
               件
@@ -148,7 +148,7 @@
               <div style="display: flex; margin-bottom: 20px">
                 <div style="margin: 10px 15px; text-align: center">
                   <div style="font-size: 18px; font-weight: 600; color: black">
-                    {{ item.price | moneyFormat }}
+                    {{ item.num }}
                   </div>
                   <div style="font-size: 14px; color: gray">吊牌价</div>
                   <div
@@ -405,68 +405,70 @@
                 <div style="margin: 20px 0 0 0">款号：{{ item.goods_sn }}</div>
               </div>
             </div>
-            <QYList
-              v-if="dialogType == 1"
-              :list="item.goods_spec"
-              :list-type="listType"
-              :state="listLoading"
-            >
-              <!-- 表格组件具名插槽 自定义表头 -->
-              <template #List>
-                <el-table-column
-                  align="center"
-                  label="颜色"
-                  prop="colorname"
-                  show-overflow-tooltip
-                />
-                <el-table-column
-                  align="center"
-                  label="尺码"
-                  prop="sizename"
-                  show-overflow-tooltip
-                />
-                <el-table-column
-                  align="center"
-                  label="改前"
-                  prop="fnum"
-                  show-overflow-tooltip
-                />
-                <el-table-column
-                  align="center"
-                  label="改后"
-                  prop="tnum"
-                  show-overflow-tooltip
-                />
-              </template>
-            </QYList>
-            <QYList
-              v-if="dialogType == 2"
-              :list="item.goods_spec"
-              :list-type="listType"
-              :state="listLoading"
-            >
-              <!-- 表格组件具名插槽 自定义表头 -->
-              <template #List>
-                <el-table-column
-                  align="center"
-                  label="颜色"
-                  prop="colorname"
-                  show-overflow-tooltip
-                />
-                <el-table-column
-                  align="center"
-                  label="尺码"
-                  prop="sizename"
-                  show-overflow-tooltip
-                />
-                <el-table-column
-                  align="center"
-                  label="发货数量"
-                  prop="num"
-                  show-overflow-tooltip
-                />
-              </template>
-            </QYList>
+            <div style="height: 200px; overflow: hidden">
+              <QYList
+                v-if="dialogType == 1"
+                :list="item.goods_spec"
+                :list-type="listType"
+                :state="listLoading"
+              >
+                <!-- 表格组件具名插槽 自定义表头 -->
+                <template #List>
+                  <el-table-column
+                    align="center"
+                    label="颜色"
+                    prop="colorname"
+                    show-overflow-tooltip
+                  />
+                  <el-table-column
+                    align="center"
+                    label="尺码"
+                    prop="sizename"
+                    show-overflow-tooltip
+                  />
+                  <el-table-column
+                    align="center"
+                    label="改前"
+                    prop="fnum"
+                    show-overflow-tooltip
+                  />
+                  <el-table-column
+                    align="center"
+                    label="改后"
+                    prop="tnum"
+                    show-overflow-tooltip
+                  />
+                </template>
+              </QYList>
+              <QYList
+                v-if="dialogType == 2"
+                :list="item.goods_spec"
+                :list-type="listType"
+                :state="listLoading"
+              >
+                <!-- 表格组件具名插槽 自定义表头 -->
+                <template #List>
+                  <el-table-column
+                    align="center"
+                    label="颜色"
+                    prop="colorname"
+                    show-overflow-tooltip
+                  />
+                  <el-table-column
+                    align="center"
+                    label="尺码"
+                    prop="sizename"
+                    show-overflow-tooltip
+                  />
+                  <el-table-column
+                    align="center"
+                    label="发货数量"
+                    prop="num"
+                    show-overflow-tooltip
+                  />
+                </template>
+              </QYList>
+            </div>
           </el-card>
         </el-col>
       </el-row>

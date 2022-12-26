@@ -168,7 +168,7 @@
   }
 </script>
 <style lang="scss" scoped>
-  .ceshi {
-    font-family: 'whzzlsf' !important;
-  }
+  // .ceshi {
+  //   font-family: 'whzzlsf' !important;
+  // }
 </style>

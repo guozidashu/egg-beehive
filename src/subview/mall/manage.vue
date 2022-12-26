@@ -84,11 +84,11 @@
         />
         <el-tab-pane
           :label="'上架中 (' + tatleData.on_the_shelf + '款)'"
-          name="0"
+          name="1"
         />
         <el-tab-pane
-          :label="'已下架 (' + tatleData.down_the_shelf + '款)'"
-          name="1"
+          :label="'已下架(' + tatleData.down_the_shelf + '款)'"
+          name="0"
         />
         <el-tab-pane
           :label="'售空 (' + tatleData.stock_zero + '款)'"
@@ -194,7 +194,7 @@
                 type="text"
                 @click="handleDetail(row, 1)"
               >
-                详情
+                查看
               </el-button>
               <el-button
                 v-if="row.is_shop == 0"
@@ -219,6 +219,9 @@
                 @click="handleMaterial(row)"
               >
                 素材上传
+              </el-button>
+              <el-button type="text" @click="handleCommodityDetails(row)">
+                商品详情
               </el-button>
             </template>
           </el-table-column>
@@ -280,7 +283,7 @@
               ></i>
             </div>
           </div>
-          <el-button size="small" type="primary" @click="handleShow()">
+          <el-button size="small" type="primary" @click="handleShow(0)">
             上传
           </el-button>
         </el-form-item>
@@ -288,6 +291,58 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleMaterialSub">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      :append-to-body="true"
+      :before-close="handleMaterialClose1"
+      title="提示"
+      :visible.sync="dialogVisible1"
+      width="50%"
+    >
+      <el-form
+        ref="formDialog"
+        label-width="120px"
+        :model="formCommodityDetails"
+      >
+        <el-form-item label="轮播图：" prop="logo">
+          <el-button type="primary" @click="handleShow(1)">多图上传</el-button>
+          <div
+            v-if="formCommodityDetails.shop_multiplot.length > 0"
+            style="display: flex; flex-wrap: wrap; margin-top: 20px"
+          >
+            <div
+              v-for="(item, index) in formCommodityDetails.shop_multiplot"
+              :key="index"
+              style="position: relative; padding: 10px"
+            >
+              <span
+                style="position: absolute; top: 0; right: 0"
+                @click="delImg(index)"
+              >
+                x
+              </span>
+              <img :src="item" style="width: 100px; height: 100px" />
+            </div>
+          </div>
+        </el-form-item>
+        <el-form-item>
+          <div style="font-size: 12px; color: gray">推荐图片宽度750px</div>
+        </el-form-item>
+        <el-form-item class="vab-quill-content" label="商品详情：">
+          <vab-quill
+            ref="vab-quill"
+            v-model="formCommodityDetails.detail"
+            :min-height="400"
+            :options="options"
+          />
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible1 = false">取 消</el-button>
+        <el-button type="primary" @click="handleCommodityDetailsSub">
+          确 定
+        </el-button>
       </span>
     </el-dialog>
     <vab-upload
@@ -298,30 +353,96 @@
       url="/upload"
       @submitUpload="getSon"
     />
+    <vab-upload
+      ref="vabUpload1"
+      :limit="imgNum"
+      name="file"
+      :size="2"
+      url="/upload"
+      @submitUpload="getSon1"
+    />
+    <vab-upload
+      ref="vabUpload2"
+      :limit="50"
+      name="file"
+      :size="2"
+      url="/upload"
+      @submitUpload="getSon2"
+    />
   </div>
 </template>
 
 <script>
   import Drawer from '@/subview/components/Drawer/GoodsDrawer'
   import VabUpload from '@/extra/VabUpload'
+  import VabQuill from '@/extra/VabQuill'
   import {
     getGoodList,
     getCommonAllList,
     editChangeIsShop,
     getShopGoodTabTotal,
     editSourceMaterialSave,
+    getGoodBasicsDetails,
+    editGoodsDetailEdit,
   } from '@/api/basic'
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
     name: 'GoodsManage',
-    components: { Drawer, VabUpload },
+    components: { Drawer, VabUpload, VabQuill },
     mixins: [publicjosn],
     data() {
       return {
+        imgNum: 5,
+        options: {
+          theme: 'snow',
+          bounds: document.body,
+          debug: 'warn',
+          modules: {
+            toolbar: {
+              container: [
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                [{ size: ['small', false, 'large', 'huge'] }],
+                [{ color: [] }, { background: [] }],
+                ['blockquote', 'code-block'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ script: 'sub' }, { script: 'super' }],
+                [{ indent: '-1' }, { indent: '+1' }],
+                [{ align: [] }],
+                [{ direction: 'rtl' }],
+                [{ font: [] }],
+                ['clean'],
+                ['link', 'image'],
+              ],
+              handlers: {
+                image: () => {
+                  this.$baseConfirm(
+                    '点击上传图片',
+                    '上传图片',
+                    () => {
+                      this.handleShow(2)
+                    },
+                    () => {},
+                    '上传',
+                    '取消'
+                  )
+                },
+              },
+            },
+          },
+          placeholder: '内容...',
+          readOnly: false,
+        },
+        formCommodityDetails: {
+          detail: '',
+          id: null,
+          shop_multiplot: [],
+        },
         title: '',
         drawer: false,
         drawerInof: {},
         dialogVisible: false,
+        dialogVisible1: false,
         formDialog: {
           goods_id: null,
           source_material: [],
@@ -363,6 +484,13 @@
         },
         deep: true,
       },
+      formCommodityDetails: {
+        handler: function (n) {
+          this.imgNum = 10 - n.shop_multiplot.length
+        },
+        deep: true,
+        immediate: true,
+      },
     },
     created() {
       this.getGoodsTypeList()
@@ -383,6 +511,20 @@
           this.fetchData()
         }
       },
+      async handleCommodityDetailsSub() {
+        const { code } = await editGoodsDetailEdit(this.formCommodityDetails)
+        if (code == 200) {
+          this.$message.success('操作成功')
+          this.dialogVisible = false
+          this.formDialog = {
+            goods_id: null,
+            source_material: [],
+            copywriting: '',
+          }
+          // this.fetchData()
+        }
+        this.dialogVisible1 = false
+      },
       changeBtnPage(data) {
         this.form.page = data
       },
@@ -393,8 +535,32 @@
       handleRemove(index) {
         this.formDialog.source_material.splice(index, 1)
       },
+      delImg(index) {
+        this.formCommodityDetails.shop_multiplot.splice(index, 1)
+      },
       getSon(data) {
         this.formDialog.source_material = data
+      },
+      getSon1(data) {
+        data.forEach((item) => {
+          if (this.formCommodityDetails.shop_multiplot.indexOf(item) == -1) {
+            this.formCommodityDetails.shop_multiplot.push(item)
+          }
+        })
+      },
+      getSon2(data) {
+        data.forEach((item) => {
+          if (this.formCommodityDetails.detail.indexOf(item) == -1) {
+            this.formCommodityDetails.detail += `<img src="${item}" />`
+          }
+        })
+      },
+      async handleCommodityDetails(row) {
+        const { data } = await getGoodBasicsDetails({ good_id: row.id })
+        this.formCommodityDetails.detail = data.detail
+        this.formCommodityDetails.shop_multiplot = data.shop_multiplot
+        this.formCommodityDetails.id = data.id
+        this.dialogVisible1 = true
       },
       handleMaterial(row) {
         if (row.source_material != null) {
@@ -415,6 +581,9 @@
         }
         this.dialogVisible = true
       },
+      handleMaterialClose1() {
+        this.dialogVisible1 = false
+      },
       handleMaterialClose() {
         this.dialogVisible = false
         this.formDialog = {
@@ -423,8 +592,14 @@
           copywriting: '',
         }
       },
-      handleShow() {
-        this.$refs['vabUpload'].handleShow()
+      handleShow(type) {
+        if (type == 0) {
+          this.$refs['vabUpload'].handleShow()
+        } else if (type == 1) {
+          this.$refs['vabUpload1'].handleShow()
+        } else if (type == 2) {
+          this.$refs['vabUpload2'].handleShow()
+        }
       },
       handleQuery() {
         this.fetchData()

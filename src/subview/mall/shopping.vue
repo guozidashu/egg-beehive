@@ -1,10 +1,10 @@
 <template>
   <div style="padding: 20px">
-    <div class="textCss">
-      <p style="font-weight: 600">使用说明</p>
-    </div>
     <div style="font-weight: 600">商城配置</div>
-    <el-divider />
+    <el-divider style="margin-bottom: 0" />
+    <!-- <div class="textCss" style="margin-bottom: 25px">
+      <p style="font-weight: 600">使用说明</p>
+    </div> -->
     <el-radio-group v-model="activeName" style="margin-bottom: 20px">
       <el-radio-button label="基础配置" />
       <el-radio-button label="注册协议" />

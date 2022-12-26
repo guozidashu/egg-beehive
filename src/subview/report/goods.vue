@@ -251,7 +251,7 @@
             numType: 2,
           },
           {
-            title: '商品销售数',
+            title: '商品数',
             number: 200,
             num: 0,
             type: 1,
@@ -269,7 +269,7 @@
             numType: 2,
           },
           {
-            title: '商品款数',
+            title: '销售参与款数',
             number: 200,
             num: 0,
             type: 1,

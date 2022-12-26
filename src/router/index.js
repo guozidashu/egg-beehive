@@ -1168,6 +1168,15 @@ export const asyncRoutes = [
         },
       },
       {
+        path: 'mallClassification',
+        name: 'MallClassification',
+        component: () => import('@/subview/mall/classification'),
+        meta: {
+          title: '商品分类',
+          icon: 'archive-line',
+        },
+      },
+      {
         path: 'mallArticle',
         name: 'MallArticle',
         component: () => import('@/subview/mall/article'),

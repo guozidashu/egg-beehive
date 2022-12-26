@@ -44,6 +44,37 @@ export function getConfig(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+
+// 商城商品详情编辑
+export function editGoodsDetailEdit(data) {
+  return request({
+    url: '/goods/goodsDetailEdit',
+    method: 'post',
+    data,
+  })
+}
+// 商城商品分类
+export function editShopCateGoryEdit(data) {
+  return request({
+    url: '/goods/shopCateGoryEdit',
+    method: 'post',
+    data,
+  })
+}
+export function editBatchDisplayCateGory(data) {
+  return request({
+    url: '/goods/batchDisplayCateGory',
+    method: 'post',
+    data,
+  })
+}
+export function getShopGoodsCategoryTree(data) {
+  return request({
+    url: '/goods/shopGoodsCategoryTree',
+    method: 'post',
+    data,
+  })
+}
 // 客户跟进
 export function getFollowList(data) {
   return request({

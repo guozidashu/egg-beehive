@@ -7,8 +7,8 @@
       QuanYU. All Right Reserved.
     </div>
     <div class="vab-footer">
-      <a href="http://www.quanyubao.com.cn/" target="_blank">圈域SCM</a>
-      | 最值得信赖的服装行业供应链智能数字化助手
+      <!-- <a href="http://www.quanyubao.com.cn/" target="_blank">圈域SCM &nbsp;</a> -->
+      圈域SCM &nbsp;|&nbsp;最值得信赖的新一代供应链经营赋能平台系统
     </div>
   </footer>
 </template>

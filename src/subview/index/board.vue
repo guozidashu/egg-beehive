@@ -61,10 +61,12 @@
 <script>
   import datajosn from '@/assets/assets_josn/datajosn'
   import VabChart from '@/extra/VabChart'
-
-  import BoardText from './componentscopy/BoardText'
-  import ProductAnalysis from './componentscopy/ProductAnalysis'
-  import DeliveryWarning from './componentscopy/DeliveryWarning'
+  import BoardText from '@/subview/components/Text/BoardText'
+  import ProductAnalysis from '@/subview/components/Text/ProductAnalysis'
+  import DeliveryWarning from '@/subview/components/Text/DeliveryWarning'
+  // import BoardText from './componentscopy/BoardText'
+  // import ProductAnalysis from './componentscopy/ProductAnalysis'
+  // import DeliveryWarning from './componentscopy/DeliveryWarning'
   import {
     getHomePageBoard,
     getBoardReportForms,

@@ -31,7 +31,7 @@
               >
                 打印
               </el-button> -->
-              <el-button
+              <!-- <el-button
                 v-if="form.drawerType == 1"
                 v-has-permi="['btn:GoodsManage:edit']"
                 size="small"
@@ -50,7 +50,7 @@
                 @click="changeTypeBtn(1)"
               >
                 完成
-              </el-button>
+              </el-button> -->
             </el-col>
           </el-row>
         </div>
@@ -97,7 +97,7 @@
       </el-tabs>
     </div>
     <div v-if="form.drawerType == 3">
-      <el-button
+      <!-- <el-button
         v-if="form.drawerType == 1"
         v-has-permi="['btn:GoodsManage:edit']"
         size="small"
@@ -116,7 +116,7 @@
         @click="changeTypeBtn(1)"
       >
         完成
-      </el-button>
+      </el-button> -->
     </div>
     <div v-if="tabindex == '0'">
       <div v-if="form.drawerType == 1" ref="vab-print-table" class="drawer-tab">
