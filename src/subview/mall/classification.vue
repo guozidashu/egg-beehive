@@ -2,10 +2,10 @@
   <div style="background-color: #f6f8f9">
     <div style="padding: 20px; margin-bottom: 20px; background-color: #ffffff">
       <el-button size="small" type="primary" @click="handleBatch(1)">
-        批量商城显示
+        批量显示
       </el-button>
       <el-button size="small" type="primary" @click="handleBatch(2)">
-        批量商城隐藏
+        批量隐藏
       </el-button>
     </div>
     <el-card shadow="never" style="border: 0">
