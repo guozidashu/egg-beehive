@@ -148,7 +148,7 @@
         if (process.env.NODE_ENV === 'development') {
           return '/platform/common/uploadPic'
         } else {
-          return baseURL + '/common/uploadPic'
+          return baseURL + 'common/uploadPic'
         }
       },
       submitUpload() {
