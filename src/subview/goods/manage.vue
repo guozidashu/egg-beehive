@@ -490,15 +490,7 @@
         this.listLoading = false
       },
       async getTatolData() {
-        const { data } = await getGoodTabTotal({
-          category: this.form.category, //款式分类
-          brand: this.form.brand, //品牌
-          year: this.form.year, //年份
-          season: this.form.season, //季节
-          type: this.form.type, //尺码类型 0整手  1散码
-          band: this.form.band, //波段
-          name: this.form.name, //商品名称
-        })
+        const { data } = await getGoodTabTotal(this.form)
         this.tatleData = data
       },
       async getGoodsTypeList() {

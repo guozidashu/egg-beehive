@@ -70,7 +70,8 @@
               >
                 <el-option label="批次号" value="id" />
                 <el-option label="订单号" value="sn" />
-                <el-option label="商品名称" value="name" />
+                <el-option label="商品款号" value="goods_sn" />
+                <el-option label="客户名称" value="name" />
                 <el-option label="手机号" value="mobile" />
               </el-select>
             </el-input>
