@@ -4,7 +4,7 @@
       <el-col :lg="8" :md="12" :sm="24" :xl="8" :xs="24">
         <el-card shadow="hover">
           <div class="personal-center-user-info">
-            <el-avatar :size="100" :src="avatar" @click.native="openDialog" />
+            <!-- <el-avatar :size="100" :src="avatar" @click.native="openDialog" /> -->
             <div class="personal-center-user-info-full-name">
               {{ form.fullName }}
             </div>
@@ -94,7 +94,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapState } from 'vuex'
   import VabCropper from '@/extra/VabCropper'
 
   export default {
@@ -113,10 +113,18 @@
         },
       }
     },
-    computed: {
-      ...mapGetters({
-        avatar: 'user/avatar',
-      }),
+    computed: mapState({
+      userInof: (state) => state.user,
+    }),
+    watch: {
+      userInof: {
+        handler: function (res) {
+          console.log(666, res)
+          // this.form = res
+        },
+        deep: true,
+        immediate: true,
+      },
     },
     methods: {
       onSubmit() {

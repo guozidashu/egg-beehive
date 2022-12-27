@@ -233,6 +233,7 @@
               this.loading = true
               await this.login(this.form).catch(() => {})
               await this.$router.push(this.handleRoute())
+              this.$event.$emit('watermark', true)
             } finally {
               this.loading = false
             }

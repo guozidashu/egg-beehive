@@ -1,27 +1,25 @@
-'use strict'
+const watermark = {}
 
-let watermark = {}
-
-let setWatermark = (str) => {
-  let id = '1.23452384164.123412415'
+const setWatermark = (str) => {
+  const id = '1.23452384164.123412415'
 
   if (document.getElementById(id) !== null) {
     document.body.removeChild(document.getElementById(id))
   }
 
-  let can = document.createElement('canvas')
+  const can = document.createElement('canvas')
   can.width = 250
   can.height = 120
 
-  let cans = can.getContext('2d')
+  const cans = can.getContext('2d')
   cans.rotate((-15 * Math.PI) / 150)
-  cans.font = '20px Vedana'
+  cans.font = '14px Vedana'
   cans.fillStyle = 'rgba(200, 200, 200, 0.20)'
   cans.textAlign = 'left'
   cans.textBaseline = 'Middle'
   cans.fillText(str, can.width / 8, can.height / 2)
 
-  let div = document.createElement('div')
+  const div = document.createElement('div')
   div.id = id
   div.style.pointerEvents = 'none'
   div.style.top = '35px'

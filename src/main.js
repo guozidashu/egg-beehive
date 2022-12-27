@@ -7,7 +7,6 @@ import '@/vab'
 import '@/utils/filter'
 import hasPermi from '@/utils/hasPermi'
 import QyComponent from '@/qy/qy.js'
-
 Vue.use(QyComponent)
 Vue.use(hasPermi)
 import './assets/font/index.scss'
@@ -26,6 +25,8 @@ if (process.env.NODE_ENV === 'production' && !isExternal(baseURL)) {
 if (pwa) require('./registerServiceWorker')
 
 Vue.config.productionTip = false
+const Event = new Vue()
+Vue.prototype.$event = Event
 new Vue({
   el: '#app',
   i18n,

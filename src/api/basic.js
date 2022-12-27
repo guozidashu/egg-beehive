@@ -41,6 +41,14 @@ export function getConfig(data) {
     data,
   })
 }
+// 修改密码
+export function editChangePassword(data) {
+  return request({
+    url: '/common/changePassword',
+    method: 'post',
+    data,
+  })
+}
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
