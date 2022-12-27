@@ -111,7 +111,7 @@
     </div>
 
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
-      <Drawer :drawer-id="drawerId" />
+      <Drawer :drawer-id="drawerId" @handle-close="handleClose" />
     </el-drawer>
     <el-dialog
       :title="title"
@@ -188,6 +188,9 @@
       handleDetail(index) {
         this.drawerId = index
         this.drawer = true
+      },
+      handleClose() {
+        this.drawer = false
       },
       // 树形数据转为一维数组
       getOneArr(arr) {
