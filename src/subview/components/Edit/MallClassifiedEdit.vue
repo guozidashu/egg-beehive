@@ -6,7 +6,7 @@
     @close="close"
   >
     <el-form ref="form" label-width="120px" :model="form" :rules="rules">
-      <el-form-item label="商品别名" prop="another_name">
+      <el-form-item label="商品别名">
         <el-input v-model="form.another_name" />
       </el-form-item>
       <!-- shop_is_display: 1, //1启用 0 禁用 -->
@@ -35,14 +35,7 @@
           shop_is_display: null,
           another_name: '',
         },
-        rules: {
-          another_name: [
-            { required: true, trigger: 'blur', message: '请输入名称' },
-          ],
-          shop_is_display: [
-            { required: true, trigger: 'blur', message: '请选择状态' },
-          ],
-        },
+        rules: {},
         title: '',
         dialogFormVisible: false,
       }

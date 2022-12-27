@@ -77,7 +77,7 @@
 <script>
   import _ from 'lodash'
   import { mapGetters } from 'vuex'
-
+  import { baseURL } from '@/config'
   export default {
     name: 'VabUpload',
     props: {
@@ -108,7 +108,7 @@
         loading: false,
         dialogVisible: false,
         dialogImageUrl: '',
-        action: 'platform/common/uploadPic',
+        action: this.getAction(),
         headers: {},
         fileList: [],
         picture: 'picture',
@@ -144,6 +144,13 @@
       this.headers['Authorization'] = `${this.token}`
     },
     methods: {
+      getAction() {
+        if (process.env.NODE_ENV === 'development') {
+          return '/platform/common/uploadPic'
+        } else {
+          return baseURL + '/common/uploadPic'
+        }
+      },
       submitUpload() {
         this.$refs.upload.submit()
       },

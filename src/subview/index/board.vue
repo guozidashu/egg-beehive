@@ -9,7 +9,7 @@
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">今日概况</span>
+        <span style="margin-top: 10px; font-size: 16px">看板</span>
         <el-form-item
           label="时间筛选:"
           style="margin-right: 0; font-size: 12px"
