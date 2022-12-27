@@ -36,7 +36,7 @@
     >
       <el-form ref="form" label-width="80px" :model="form" :rules="rules">
         <el-form-item label="账户" prop="account">
-          <el-input v-model="form.account" />
+          <el-input v-model="form.account" disabled />
         </el-form-item>
         <!-- <el-form-item label="密码" prop="password">
           <el-input v-model="form.password" />
