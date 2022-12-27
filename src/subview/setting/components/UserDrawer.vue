@@ -84,7 +84,7 @@
         background-color: white;
       "
     >
-      <el-button @click="colse">取消</el-button>
+      <el-button @click="colse">退出</el-button>
       <el-button type="primary" @click="submitRole">确定</el-button>
     </div>
   </div>
