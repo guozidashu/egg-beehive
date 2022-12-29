@@ -19,13 +19,21 @@
 
         <el-form-item style="float: right; margin-right: 0; font-size: 12px">
           <el-form-item label="类型:" prop="type">
-            <el-select v-model="goodsForm.type" size="small">
+            <el-select
+              v-model="goodsForm.type"
+              size="small"
+              style="width: 120px"
+            >
               <el-option label="整手" :value="0" />
               <el-option label="散码" :value="1" />
             </el-select>
           </el-form-item>
           <el-form-item label="品牌:" prop="brand">
-            <el-select v-model="goodsForm.brand" placeholder="请选择品牌">
+            <el-select
+              v-model="goodsForm.brand"
+              placeholder="请选择品牌"
+              style="width: 120px"
+            >
               <el-option
                 v-for="(item, index) in selectList.brand"
                 :key="index"
@@ -45,23 +53,19 @@
               :picker-options="pickerOptions"
               range-separator="至"
               start-placeholder="开始日期"
+              style="width: 330px"
               type="daterange"
               unlink-panels
             />
             <el-button
               size="small"
-              style="margin: 0 20px"
+              style="margin: 0 0 0 10px"
               type="primary"
               @click="handleDownload"
             >
               导出
             </el-button>
-            <el-button
-              size="small"
-              style="margin-left: 10px"
-              type="primary"
-              @click="resetForm()"
-            >
+            <el-button size="small" type="primary" @click="resetForm()">
               重置
             </el-button>
           </el-form-item>
@@ -87,10 +91,13 @@
       >
         <span style="margin-top: 10px; font-size: 16px">商品排行</span>
         <el-form-item style="margin-right: 0">
-          <el-form-item label="类型:" prop="type">
+          <el-form-item label="统计类型:" prop="type">
             <el-select v-model="goodsForm1.type" size="small">
               <el-option label="整手" :value="0" />
               <el-option label="散码" :value="1" />
+              <el-option label="本期销售额" :value="1" />
+              <el-option label="上架时间" :value="1" />
+              <el-option label="预计售完天数" :value="1" />
             </el-select>
           </el-form-item>
           <el-form-item label="品牌:" prop="brand">
@@ -162,12 +169,26 @@
           </el-table-column>
           <el-table-column label="商品名称" prop="name" width="200" />
           <el-table-column label="商品款号" prop="sn" width="100" />
-          <el-table-column label="上架时间" prop="upper_time" width="150">
+          <el-table-column
+            align="right"
+            label="吊牌价"
+            prop="sum_total"
+            width="150"
+          >
             <template #default="{ row }">
-              {{ row.upper_time | formatTime }}
+              <el-tag>￥{{ row.sum_total | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="本期销量" prop="sum_num" width="120" />
+          <el-table-column
+            align="right"
+            label="销售价"
+            prop="sum_total"
+            width="150"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.sum_total | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="right"
             label="本期销售额"
@@ -178,11 +199,18 @@
               <el-tag>￥{{ row.sum_total | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
+          <el-table-column label="本期销量" prop="sum_num" width="120" />
+          <el-table-column label="预计售完天数" prop="expect_day" />
+          <el-table-column label="上架天数" prop="upper_day" />
+          <el-table-column label="上架时间" prop="upper_time" width="150">
+            <template #default="{ row }">
+              {{ row.upper_time | formatTime }}
+            </template>
+          </el-table-column>
+          <!-- v-if="$permissionFiltering('ReportGoods', 'sales')" -->
           <!-- <el-table-column label="毛利率(%)" prop="profit">
             <template #default="{ row }">{{ row.profit * 100 }}%</template>
           </el-table-column> -->
-          <el-table-column label="上架天数" prop="upper_day" />
-          <el-table-column label="预计售完天数" prop="expect_day" />
           <!-- <el-table-column
             align="center"
             fixed="right"
@@ -249,6 +277,7 @@
             typeSta: false,
             name: 'today_new',
             numType: 2,
+            content: '今日上新商品数',
           },
           {
             title: '商品数',
@@ -258,6 +287,7 @@
             typeSta: false,
             name: 'goods_num',
             numType: 2,
+            content: '商品总数',
           },
           {
             title: '商品sku数',
@@ -267,6 +297,7 @@
             typeSta: false,
             name: 'goods_sku',
             numType: 2,
+            content: '商品sku总数',
           },
           {
             title: '销售参与款数',
@@ -276,6 +307,7 @@
             typeSta: false,
             name: 'goods_style_num',
             numType: 2,
+            content: '销售参与款数',
           },
           {
             title: '客单价',
@@ -285,6 +317,7 @@
             typeSta: false,
             name: 'price_one',
             numType: 1,
+            content: '客单价',
           },
           {
             title: '销售数量',
@@ -294,6 +327,7 @@
             typeSta: false,
             name: 'sale_num',
             numType: 2,
+            content: '客单价',
           },
           {
             title: '销售金额',
@@ -303,6 +337,7 @@
             typeSta: false,
             name: 'sale_total',
             numType: 1,
+            content: '客单价',
           },
           {
             title: '退货数量',
@@ -311,6 +346,7 @@
             type: 2,
             typeSta: false,
             numType: 2,
+            content: '客单价',
           },
           {
             title: '退货金额',
@@ -320,6 +356,7 @@
             typeSta: false,
             name: 'return_total',
             numType: 1,
+            content: '客单价',
           },
           {
             title: '实际交易金额',
@@ -329,6 +366,7 @@
             typeSta: false,
             name: 'real_total',
             numType: 1,
+            content: '客单价',
           },
         ],
         initOptions: {

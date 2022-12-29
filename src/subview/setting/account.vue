@@ -1,7 +1,208 @@
 <template>
   <div style="background-color: #f6f8f9">
+    <el-card
+      shadow="never"
+      style="width: 100%; background-color: #fbfcff; border-radius: 5px"
+    >
+      <div style="display: flex; justify-content: space-between">
+        <div>
+          <el-avatar :src="avatar" />
+          <span style="position: relative; top: -5px; left: 10px">
+            您好， {{ username }} &nbsp;&nbsp;授权编码：UID54646852111WX
+          </span>
+        </div>
+        <div style="padding-top: 10px; margin-right: 40px">
+          <span style="position: relative; top: -5px; right: 10px">
+            关联业务
+          </span>
+          <img
+            src="../../assets/quanyu.png"
+            style="
+              width: 20px;
+              height: 20px;
+              margin-right: 5px;
+              border-radius: 50%;
+            "
+          />
+          <img
+            src="../../assets/quanyubao.png"
+            style="
+              width: 20px;
+              height: 20px;
+              margin-right: 5px;
+              border-radius: 50%;
+            "
+          />
+          <img
+            src="../../assets/shangcheng.png"
+            style="width: 20px; height: 20px; border-radius: 50%"
+          />
+        </div>
+      </div>
+    </el-card>
     <div style="display: flex; justify-content: space-between">
       <el-card
+        shadow="never"
+        style="width: 20%; margin-right: 20px; border-radius: 5px"
+      >
+        <div style="padding: 10px; font-size: 16px; font-weight: 600">
+          授权信息
+        </div>
+        <div style="padding: 0 10px; margin-top: 10px; font-size: 14px">
+          <div style="padding: 10px 0">授权主体：杭州洛一服饰有限公司</div>
+          <div style="padding: 10px 0">注册时间：2022年12月31日 16:53:21</div>
+          <div style="padding: 10px 0">到期时间：2023年12月31日 16:53:21</div>
+        </div>
+      </el-card>
+      <el-card shadow="never" style="width: 80%; border-radius: 5px">
+        <div style="padding: 10px; font-size: 16px; font-weight: 600">
+          授权应用
+        </div>
+        <div style="display: flex; flex-wrap: nowrap">
+          <div
+            style="
+              padding: 10px;
+              margin: 10px;
+              background: -webkit-linear-gradient(top, #fff5d1, #fff);
+              border-radius: 5px;
+            "
+          >
+            <div style="padding: 10px 0; font-size: 14px; font-weight: 600">
+              <img
+                src="../../assets/quanyu.png"
+                style="width: 20px; height: 20px"
+              />
+              <span style="position: relative; top: -5px; left: 5px">
+                ERP开单
+              </span>
+            </div>
+            <div style="padding: 5px 0; font-size: 12px; color: #fbc049">
+              到期时间：2023年12月31日 16:53:21
+            </div>
+            <div
+              style="padding: 5px 0; font-size: 12px; color: #46a6ff"
+              @click="centerDialogVisible = true"
+            >
+              去咨询
+              <i class="el-icon-arrow-right"></i>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 10px;
+              margin: 10px;
+              background: -webkit-linear-gradient(top, #fff5d1, #fff);
+              border-radius: 5px;
+            "
+          >
+            <div style="padding: 10px 0; font-size: 14px; font-weight: 600">
+              <img
+                src="../../assets/shangcheng.png"
+                style="width: 20px; height: 20px"
+              />
+              <span style="position: relative; top: -5px; left: 5px">
+                私域订货商城
+              </span>
+            </div>
+            <div style="padding: 5px 0; font-size: 12px; color: #fbc049">
+              到期时间：2023年12月31日 16:53:21
+            </div>
+            <div
+              style="padding: 5px 0; font-size: 12px; color: #46a6ff"
+              @click="centerDialogVisible = true"
+            >
+              去咨询
+              <i class="el-icon-arrow-right"></i>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 10px;
+              margin: 10px;
+              background: -webkit-linear-gradient(top, #fff5d1, #fff);
+              border-radius: 5px;
+            "
+          >
+            <div style="padding: 10px 0; font-size: 14px; font-weight: 600">
+              <img
+                src="../../assets/yanfa.png"
+                style="width: 20px; height: 20px"
+              />
+              <span style="position: relative; top: -5px; left: 5px">
+                研发协同
+              </span>
+            </div>
+            <div style="padding: 5px 0; font-size: 12px; color: #fbc049">
+              到期时间：2023年12月31日 16:53:21
+            </div>
+            <div
+              style="padding: 5px 0; font-size: 12px; color: #46a6ff"
+              @click="centerDialogVisible = true"
+            >
+              去咨询
+              <i class="el-icon-arrow-right"></i>
+            </div>
+          </div>
+          <div
+            style="
+              padding: 10px;
+              margin: 10px;
+              background: -webkit-linear-gradient(top, #fff5d1, #fff);
+              border-radius: 5px;
+            "
+          >
+            <div style="padding: 10px 0; font-size: 14px; font-weight: 600">
+              <img
+                src="../../assets/quanyubao.png"
+                style="width: 20px; height: 20px"
+              />
+              <span style="position: relative; top: -5px; left: 5px">
+                圈域宝SCRM
+              </span>
+            </div>
+            <div style="padding: 5px 0; font-size: 12px; color: #fbc049">
+              到期时间：2023年12月31日 16:53:21
+            </div>
+            <div
+              style="padding: 5px 0; font-size: 12px; color: #46a6ff"
+              @click="centerDialogVisible = true"
+            >
+              去咨询
+              <i class="el-icon-arrow-right"></i>
+            </div>
+          </div>
+          <div
+            style="
+              width: 220px;
+              padding: 10px;
+              margin: 10px;
+              background-color: #f8f8f9;
+              border-radius: 5px;
+            "
+          >
+            <div style="padding: 10px 0; font-size: 14px; font-weight: 600">
+              <img
+                src="../../assets/gendan.png"
+                style="width: 20px; height: 20px"
+              />
+              <span style="position: relative; top: -5px; left: 5px">
+                生产跟单
+              </span>
+            </div>
+            <div style="padding: 5px 0; font-size: 12px; color: #969aa0">
+              未开通
+            </div>
+            <div
+              style="padding: 5px 0; font-size: 12px; color: #46a6ff"
+              @click="centerDialogVisible = true"
+            >
+              去咨询
+              <i class="el-icon-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+      </el-card>
+      <!-- <el-card
         class="card-ra"
         shadow="never"
         style="width: 50%; margin-right: 20px"
@@ -9,11 +210,13 @@
         <div slot="header">
           <span>公司信息</span>
         </div>
-        <!-- <p style="padding-left: 20px">公司名：{{ inof.name1 }}</p>
+        <div>111</div>
+        <p style="padding-left: 20px">公司名：{{ inof.name1 }}</p>
         <p style="padding-left: 20px">会员类型：{{ inof.type1 }}</p>
         <p style="padding-left: 20px">绑定手机：{{ inof.phone1 }}</p>
-        <p style="padding-left: 20px">绑定邮箱：{{ inof.email }}</p> -->
-        <!-- <el-divider /> -->
+        <p style="padding-left: 20px">绑定邮箱：{{ inof.email }}</p>
+        <el-divider />
+        <div>111</div>
         <el-form
           ref="form"
           label-width="120px"
@@ -103,7 +306,8 @@
           :model="inof"
           style="width: 100%; padding-left: 20px"
         >
-          <!-- <el-form-item v-for="(item, index) in goodsList" :key="index">
+        <div>111</div>
+          <el-form-item v-for="(item, index) in goodsList" :key="index">
             <el-checkbox v-model="item.checked" disabled>
               <span style="color: #606266">{{ item.name }}</span>
               <span v-if="item.checked">
@@ -126,7 +330,8 @@
               </span>
               <el-button v-else type="primary">购买</el-button>
             </el-checkbox>
-          </el-form-item> -->
+          </el-form-item>
+          <div>111</div>
           <div style="margin: 20px 0">
             <el-checkbox v-model="erp_openChecked" disabled>
               <span style="color: #606266">ERP权限</span>
@@ -176,45 +381,69 @@
             </el-checkbox>
           </div>
         </el-form>
-        <!-- <el-divider />
-        <AccountProgress :list="progressList" /> -->
-      </el-card>
+        <div>111</div>
+        <el-divider />
+        <AccountProgress :list="progressList" />
+        <div>111</div>
+      </el-card> -->
     </div>
 
     <div style="display: flex; justify-content: space-between">
       <el-card
-        class="card-ra"
         shadow="never"
-        style="width: 74%; margin-right: 20px"
+        style="width: 74%; margin-right: 20px; border-radius: 5px"
       >
         <div slot="header">
-          <span>版本更新记录</span>
-          <el-select v-model="selevt" style="float: right; margin-top: -5px">
+          <span style="font-size: 16px; font-weight: 600">版本更新记录</span>
+          <!-- <el-select v-model="selevt" style="float: right; margin-top: -5px">
             <el-option label="ERP" :value="1" />
             <el-option label="商城" :value="2" />
             <el-option label="中台" :value="3" />
             <el-option label="生产" :value="4" />
-          </el-select>
+          </el-select> -->
         </div>
-        <div style="width: 100%; max-height: calc(56vh); overflow: scroll">
+        <div style="width: 100%; max-height: calc(35vh); overflow: scroll">
           <el-timeline>
             <el-timeline-item
               v-for="(activity, index) in activities"
               :key="index"
               placement="top"
-              :timestamp="activity.timestamp"
             >
-              <el-card shadow="hover">
-                <p>{{ activity.content }}</p>
-                <p>{{ activity.content1 }}</p>
+              <div style="margin-bottom: 10px">
+                {{ activity.timestamp }}&nbsp;&nbsp; {{ activity.timestamp1 }}
+                <el-tag
+                  v-if="index == 0"
+                  effect="dark"
+                  size="mini"
+                  style="margin-left: 5px"
+                  type="danger"
+                >
+                  最新版本
+                </el-tag>
+              </div>
+              <el-card shadow="hover" style="background-color: #f6f8f9">
+                <el-collapse
+                  class="fold-warp"
+                  style="font-size: 12px"
+                  @change="handleChange"
+                >
+                  <el-collapse-item name="1" :title="activity.content">
+                    <div
+                      v-for="(item, index1) in activity.contentList"
+                      :key="index1"
+                    >
+                      <span>{{ item }}</span>
+                    </div>
+                  </el-collapse-item>
+                </el-collapse>
               </el-card>
             </el-timeline-item>
           </el-timeline>
         </div>
       </el-card>
-      <el-card class="card-ra" shadow="never" style="width: 26%">
+      <el-card shadow="never" style="width: 26%; border-radius: 5px">
         <div slot="header">
-          <span>企业VIP专属客服</span>
+          <span style="font-size: 16px; font-weight: 600">企业VIP专属客服</span>
         </div>
         <el-card
           v-for="(item, index) in serviceList"
@@ -228,18 +457,80 @@
             <div>
               <p>{{ item.name }}</p>
               <p>{{ item.remark }}</p>
-              <!-- <p>
+              <p>
                 Tel：15236804776 微信
                 <el-tooltip placement="top">
                   <img slot="content" :src="avatar" style="margin: 10px" />
-                  <span style="color: #1890ff">点击查看</span>
+                  <span style="color: #1890ff">扫码</span>
                 </el-tooltip>
-              </p> -->
+              </p>
             </div>
           </div>
         </el-card>
       </el-card>
     </div>
+    <el-dialog
+      center
+      class="Customerservice"
+      style="border-radius: 25px"
+      :visible.sync="centerDialogVisible"
+      width="450px"
+    >
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 0 20px 20px 20px;
+        "
+      >
+        <div
+          style="padding: 20px 0; font-size: 20px; font-weight: 600; color: red"
+        >
+          在线客服
+        </div>
+        <div
+          style="
+            width: 100%;
+            padding: 20px 0;
+            font-size: 16px;
+            text-align: center;
+            border-top: 1px solid #efefef;
+            border-bottom: 1px solid #efefef;
+          "
+        >
+          你的私人顾问：老何
+        </div>
+        <div style="padding: 10px 0 0 0">
+          <div style="padding: 10px 0 0 0; font-size: 16px; text-align: center">
+            <vab-icon
+              icon="wechat-line"
+              style="font-size: 20px; color: #4daf29"
+            />
+            微信咨询
+          </div>
+          <img
+            src="https://oss.business.quanyu123.com//dee133c54041034454ca94d27b301a2f.png"
+            style="width: 200px; height: 200px"
+          />
+        </div>
+        <div
+          style="
+            width: 100%;
+            padding: 20px 0;
+            font-size: 14px;
+            text-align: center;
+            border-top: 1px solid #efefef;
+            border-bottom: 1px solid #efefef;
+          "
+        >
+          服务热线 &nbsp;&nbsp;
+          <span style="font-size: 20px; font-weight: 600; color: red">
+            191-0655-9871
+          </span>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -252,6 +543,7 @@
     // components: { AccountProgress },
     data() {
       return {
+        centerDialogVisible: false,
         erp_openChecked: true,
         design_openChecked: true,
         platform_openChecked: true,
@@ -336,44 +628,41 @@
         inof: {},
         activities: [
           {
-            content: '版本新增........功能',
-            content1: '版本修复........功能',
-            timestamp: '2018-04-12 20:46 ERP系统版本：V2.0.5',
+            timestamp: '2022-12-31 03:49',
+            timestamp1: '版本：V2.0.5',
+            content: '【新增】[数据中台] 增加账户信息功能',
+            contentList: [
+              '【新增】[数据中台] 总后台系统设置增加检测和修改密码功能',
+              '【新增】[SCRM] 企微客户画像增加添加手机号与打电话',
+              '【优化】[SCRM] 企微客户同步逻辑',
+              '【新增】[SCRM] 砍价模块上线',
+              '【新增】[数据中台] 增加客户保证金功能',
+              '【新增】[订货商城] 增加客户在线保证金、查阅功能',
+              '【修复】[ERP开单] 发货报表统计导出包不包含退货问题',
+              '【修复】[订货商城] 优化会员中心全局界面等',
+            ],
           },
           {
-            content: '版本新增........功能',
-            content1: '版本修复........功能',
-            timestamp: '2018-04-12 20:46 ERP系统版本：V2.0.4',
+            timestamp: '2022-09-19 00:46',
+            timestamp1: '版本：V2.0.4',
+            content: '【新增】[SCRM] 分销活动链接加密',
+            contentList: [
+              '【新增】[SCRM] 集字裂变增加虚拟参与数据',
+              '【优化】[SCRM] 集字移动端页面优化',
+              '【优化】[SCRM] 企微大转盘、公众号大转盘抽奖机制优化',
+              '【优化】[SCRM] 企微群红包支持在一个群内发放多次',
+              '【优化】[SCRM] 企微红包商付零的发送',
+              '【修复】[SCRM] 群发宝客服消息发送小程序异常',
+            ],
           },
           {
-            content: '版本新增........功能',
-            content1: '版本修复........功能',
-            timestamp: '2018-04-12 20:46 ERP系统版本：V2.0.3',
-          },
-          {
-            content: '版本新增........功能',
-            content1: '版本修复........功能',
-            timestamp: '2018-04-12 20:46 ERP系统版本：V2.0.2',
-          },
-          {
-            content: '版本新增........功能',
-            content1: '版本修复........功能',
-            timestamp: '2018-04-12 20:46 ERP系统版本：V2.0.5',
-          },
-          {
-            content: '版本新增........功能',
-            content1: '版本修复........功能',
-            timestamp: '2018-04-12 20:46 ERP系统版本：V2.0.4',
-          },
-          {
-            content: '版本新增........功能',
-            content1: '版本修复........功能',
-            timestamp: '2018-04-12 20:46 ERP系统版本：V2.0.3',
-          },
-          {
-            content: '版本新增........功能',
-            content1: '版本修复........功能',
-            timestamp: '2018-04-12 20:46 ERP系统版本：V2.0.2',
+            timestamp: '2022-07-12 02:35',
+            timestamp1: '版本：V2.0.3',
+            content: '【安全性更新】修复分销漏洞',
+            contentList: [
+              '【安全性更新】新增上下架和改价需要管理员密码',
+              '【安全性更新】暂时关闭分销回调',
+            ],
           },
         ],
       }
@@ -381,12 +670,17 @@
     computed: {
       ...mapGetters({
         avatar: 'user/avatar',
+        username: 'user/username',
       }),
     },
     created() {
       this.fetchData()
+      // console.log(666, this.activities[0].contentList[0])
     },
     methods: {
+      handleChange(val) {
+        console.log(val)
+      },
       async fetchData() {
         const { data } = await getAccountDetail()
         if (data.merchant != null) {
@@ -449,6 +743,23 @@
 </script>
 
 <style lang="scss" scoped>
+  .fold-warp ::v-deep .el-collapse-item__content {
+    background-color: #f6f8f9;
+  }
+  ::v-deep .el-collapse {
+    border: 0;
+  }
+
+  .fold-warp ::v-deep .el-collapse-item__header {
+    background-color: #f6f8f9;
+    border: 0;
+  }
+  ::v-deep .el-collapse-item__warp {
+    border: 0;
+  }
+  .Customerservice ::v-deep .el-dialog {
+    border-radius: 5px;
+  }
   ::-webkit-scrollbar {
     /*隐藏滚轮*/
     display: none;

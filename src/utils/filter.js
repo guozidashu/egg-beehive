@@ -1,5 +1,28 @@
 import Vue from 'vue'
-
+import store from '@/store'
+/**
+ * @description 非按钮权限过滤器
+ * @param path {string} 路径名称}
+ * @param role {string} 权限名称}
+ * @returns {boolean}
+ */
+export function permissionFiltering(path, role) {
+  let arr = store.getters['routes/roleBtnList']
+  let temp = false
+  arr.forEach((item) => {
+    if (item.name == path) {
+      if (item.guard) {
+        item.guard.forEach((item1) => {
+          if (item1 == role) {
+            temp = true
+          }
+        })
+      }
+    }
+  })
+  console.log('权限状态', temp)
+  return temp
+}
 // 人民币过滤器
 Vue.filter('moneyFormat', (value) => {
   // 金额分割符
@@ -47,7 +70,6 @@ Vue.filter('threeName', (value) => {
 })
 Vue.filter('formatTime', (value) => {
   if (value) {
-    console.log(66666, value)
     let date = new Date(value * 1000) // 时间戳为秒：10位数
     //let date = new Date(value)    // 时间戳为毫秒：13位数
     let year = date.getFullYear()

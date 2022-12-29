@@ -52,7 +52,29 @@ export function editChangePassword(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+// 客户保证金
 
+export function editChangeCustomerSync(data) {
+  return request({
+    url: '/customer/changeCustomerSync',
+    method: 'post',
+    data,
+  })
+}
+export function getMarginList(data) {
+  return request({
+    url: '/customer/marginList',
+    method: 'post',
+    data,
+  })
+}
+export function editMarginAdd(data) {
+  return request({
+    url: '/customer/marginAdd',
+    method: 'post',
+    data,
+  })
+}
 // 商城商品详情编辑
 export function editGoodsDetailEdit(data) {
   return request({

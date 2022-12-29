@@ -9,7 +9,16 @@
         <div style="display: flex; flex-direction: column; margin-top: 5px">
           <div>
             {{ item.title }}
+            <el-popover v-if="item.content" placement="right" trigger="hover">
+              <div>{{ item.content }}</div>
+              <vab-icon
+                slot="reference"
+                icon="album-line"
+                style="position: relative; top: -2px; font-size: 14px"
+              />
+            </el-popover>
             <vab-icon
+              v-else
               icon="album-line"
               style="position: relative; top: -2px; font-size: 14px"
             />

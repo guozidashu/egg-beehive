@@ -92,6 +92,13 @@
             <el-radio :label="0">开启</el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item label="保证金额">
+          <el-input
+            v-model="form.margin_money"
+            placeholder="请输入保证金额"
+            style="width: 415px"
+          />
+        </el-form-item>
         <el-form-item label="等级说明" prop="remark">
           <el-input
             v-model="form.remark"
@@ -449,6 +456,7 @@
           discount_single: null, //散码折扣
           single_buy: 0, //是否散批 1是 0否
           remark: null, //等级说明
+          margin_money: 0, //保证金
         },
         rules: {
           sort: [

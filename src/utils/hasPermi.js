@@ -27,11 +27,13 @@ hasPermi.install = (Vue) => {
         // 没有权限-移除页面上的控件
         if (!hasPermissions) {
           {
-            //  清除点击事件
-            el.onclick = null
-            //  按钮样式禁用
-            el.className += ' is-disabled'
-            el.disabled = true
+            if (el.className.indexOf('el-button') > -1) {
+              //  清除点击事件
+              el.onclick = null
+              //  按钮样式禁用
+              el.className += ' is-disabled'
+              el.disabled = true
+            }
           }
         }
       }

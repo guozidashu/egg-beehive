@@ -550,6 +550,9 @@
       },
       getSon2(data) {
         data.forEach((item) => {
+          if (this.formCommodityDetails.detail == null) {
+            this.formCommodityDetails.detail = ''
+          }
           if (this.formCommodityDetails.detail.indexOf(item) == -1) {
             this.formCommodityDetails.detail += `<img src="${item}" />`
           }

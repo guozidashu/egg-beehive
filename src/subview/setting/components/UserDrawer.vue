@@ -174,6 +174,11 @@
           })
         }
         fn(data.list)
+        // data.inof[0].auth 值是‘1，2,4’的字符串 用逗号分割成数组
+        // const temp1 = data.inof[0].auth.split(',')
+        // temp1.forEach((item) => {
+        //   this.formData[item] = true
+        // })
         arr.forEach((item) => {
           // if (item.ppid) {
           //   if (item.checked) {

@@ -7,9 +7,18 @@ import '@/vab'
 import '@/utils/filter'
 import hasPermi from '@/utils/hasPermi'
 import QyComponent from '@/qy/qy.js'
+import { permissionFiltering } from '@/utils/filter'
+// 非按钮权限过滤
+Vue.prototype.$permissionFiltering = permissionFiltering
+// 圈域全局组件
 Vue.use(QyComponent)
+// 权限自定义指令
 Vue.use(hasPermi)
-import './assets/font/index.scss'
+// 全局事件总线
+const Event = new Vue()
+Vue.prototype.$event = Event
+// 字体引入
+// import './assets/font/index.scss'
 
 /**
  * @description 正式环境默认使用mock，正式项目记得注释后再打包
@@ -25,8 +34,6 @@ if (process.env.NODE_ENV === 'production' && !isExternal(baseURL)) {
 if (pwa) require('./registerServiceWorker')
 
 Vue.config.productionTip = false
-const Event = new Vue()
-Vue.prototype.$event = Event
 new Vue({
   el: '#app',
   i18n,

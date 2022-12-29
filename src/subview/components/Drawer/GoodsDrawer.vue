@@ -31,7 +31,7 @@
               >
                 打印
               </el-button> -->
-              <!-- <el-button
+              <el-button
                 v-if="form.drawerType == 1"
                 v-has-permi="['btn:GoodsManage:edit']"
                 size="small"
@@ -50,7 +50,7 @@
                 @click="changeTypeBtn(1)"
               >
                 完成
-              </el-button> -->
+              </el-button>
             </el-col>
           </el-row>
         </div>
@@ -97,7 +97,7 @@
       </el-tabs>
     </div>
     <div v-if="form.drawerType == 3">
-      <!-- <el-button
+      <el-button
         v-if="form.drawerType == 1"
         v-has-permi="['btn:GoodsManage:edit']"
         size="small"
@@ -116,7 +116,7 @@
         @click="changeTypeBtn(1)"
       >
         完成
-      </el-button> -->
+      </el-button>
     </div>
     <div v-if="tabindex == '0'">
       <div v-if="form.drawerType == 1" ref="vab-print-table" class="drawer-tab">
@@ -586,12 +586,16 @@
           prop="create_time"
           show-overflow-tooltip
         />
-        <el-table-column label="已发货数量" prop="num" show-overflow-tooltip />
         <el-table-column
-          label="未发货数量"
+          label="已发货数量"
           prop="delivery_num"
           show-overflow-tooltip
         />
+        <el-table-column label="未发货数量" show-overflow-tooltip>
+          <template #default="{ row }">
+            <span>{{ row.num - row.delivery_num }}</span>
+          </template>
+        </el-table-column>
       </template>
     </QYList>
     <QYList
@@ -602,6 +606,7 @@
       style="margin: 20px"
     >
       <template #List>
+        <el-table-column label="批次号" prop="id" width="50" />
         <el-table-column label="订单号" prop="sn" show-overflow-tooltip />
         <el-table-column label="客户名称" prop="name" show-overflow-tooltip />
         <el-table-column label="发货时间" prop="ctime" show-overflow-tooltip />

@@ -551,6 +551,15 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'customerDeposit',
+        name: 'CustomerDeposit',
+        component: () => import('@/subview/customer/deposit'),
+        meta: {
+          title: '客户保证金',
+          icon: 'archive-line',
+        },
+      },
 
       {
         path: 'customerStatistical',
