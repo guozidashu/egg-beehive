@@ -28,6 +28,7 @@
             start-placeholder="开始日期"
             type="daterange"
             unlink-panels
+            value-format="yyyy-MM-dd HH:mm:ss"
           />
           <el-button
             size="small"
@@ -130,7 +131,7 @@
               unlink-panels
                 format="yyyy-MM-dd"
              :clearable="false"
-            :default-time="['00:00:00', '23:59:59']"
+            value-format="yyyy-MM-dd HH:mm:ss"  :default-time="['00:00:00', '23:59:59']"
               
             />
             <el-button

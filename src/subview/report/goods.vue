@@ -15,7 +15,7 @@
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">商品概况</span>
+        <span style="margin-top: 10px; font-size: 16px">整体分析</span>
 
         <el-form-item style="float: right; margin-right: 0; font-size: 12px">
           <el-form-item label="类型:" prop="type">
@@ -56,6 +56,7 @@
               style="width: 330px"
               type="daterange"
               unlink-panels
+              value-format="yyyy-MM-dd HH:mm:ss"
             />
             <el-button
               size="small"
@@ -71,7 +72,7 @@
           </el-form-item>
         </el-form-item>
       </el-form>
-      <div style="display: flex; flex-wrap: wrap">
+      <div style="display: flex; flex-wrap: wrap; margin: 0 0 10px 0">
         <QYTextLabels ref="multipleTable" :list="goodsStaList" />
       </div>
       <vab-chart
@@ -89,19 +90,27 @@
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">商品排行</span>
+        <span style="margin-top: 10px; font-size: 16px">爆款分析</span>
         <el-form-item style="margin-right: 0">
           <el-form-item label="统计类型:" prop="type">
-            <el-select v-model="goodsForm1.type" size="small">
+            <el-select
+              v-model="goodsForm1.type"
+              size="small"
+              style="width: 150px"
+            >
+              <el-option label="本期销量" :value="-1" />
+              <el-option label="本期销售额" value="sum_total" />
+              <el-option label="上架时间" value="g.upper_time" />
               <el-option label="整手" :value="0" />
               <el-option label="散码" :value="1" />
-              <el-option label="本期销售额" :value="1" />
-              <el-option label="上架时间" :value="1" />
-              <el-option label="预计售完天数" :value="1" />
             </el-select>
           </el-form-item>
           <el-form-item label="品牌:" prop="brand">
-            <el-select v-model="goodsForm1.brand" placeholder="请选择品牌">
+            <el-select
+              v-model="goodsForm1.brand"
+              placeholder="请选择品牌"
+              style="width: 150px"
+            >
               <el-option
                 v-for="(item, index) in selectList.brand"
                 :key="index"
@@ -123,6 +132,7 @@
               start-placeholder="开始日期"
               type="daterange"
               unlink-panels
+              value-format="yyyy-MM-dd HH:mm:ss"
             />
             <el-button
               size="small"
@@ -155,7 +165,7 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column label="商品图片" prop="image" width="200">
+          <el-table-column label="商品图片" prop="image" width="75">
             <template #default="{ row }">
               <el-tooltip placement="top">
                 <el-image
@@ -167,26 +177,26 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column label="商品名称" prop="name" width="200" />
+          <el-table-column label="商品名称" prop="name" />
           <el-table-column label="商品款号" prop="sn" width="100" />
           <el-table-column
             align="right"
             label="吊牌价"
-            prop="sum_total"
+            prop="sale_price"
             width="150"
           >
             <template #default="{ row }">
-              <el-tag>￥{{ row.sum_total | moneyFormat }}</el-tag>
+              <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column
             align="right"
             label="销售价"
-            prop="sum_total"
+            prop="price"
             width="150"
           >
             <template #default="{ row }">
-              <el-tag>￥{{ row.sum_total | moneyFormat }}</el-tag>
+              <el-tag>￥{{ row.price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column
@@ -199,9 +209,14 @@
               <el-tag>￥{{ row.sum_total | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="本期销量" prop="sum_num" width="120" />
-          <el-table-column label="预计售完天数" prop="expect_day" />
-          <el-table-column label="上架天数" prop="upper_day" />
+          <el-table-column label="本期销量" prop="sum_num" width="120">
+            <template #default="{ row }">
+              <span v-if="row.sum_num == null">0</span>
+              <span v-else>{{ row.sum_num }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="预计售完天数" prop="expect_day" width="120" />
+          <el-table-column label="上架天数" prop="upper_day" width="80" />
           <el-table-column label="上架时间" prop="upper_time" width="150">
             <template #default="{ row }">
               {{ row.upper_time | formatTime }}
@@ -211,7 +226,7 @@
           <!-- <el-table-column label="毛利率(%)" prop="profit">
             <template #default="{ row }">{{ row.profit * 100 }}%</template>
           </el-table-column> -->
-          <!-- <el-table-column
+          <el-table-column
             align="center"
             fixed="right"
             label="操作"
@@ -219,17 +234,26 @@
           >
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">
-                商品详情
+                单品分析
               </el-button>
             </template>
-          </el-table-column> -->
+          </el-table-column>
         </template>
       </QYList>
+      <el-drawer
+        :before-close="handleClose"
+        size="50%"
+        :title="title"
+        :visible.sync="drawer"
+      >
+        <Drawer :drawer-inof="drawerInof" />
+      </el-drawer>
     </div>
   </div>
 </template>
 
 <script>
+  import Drawer from '@/subview/components/Drawer/ReportGoodsDrawer'
   import VabChart from '@/extra/VabChart'
   import {
     getCommonAllList,
@@ -240,10 +264,13 @@
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'GoodsStatistical',
-    components: { VabChart },
+    components: { VabChart, Drawer },
     mixins: [datajosn],
     data() {
       return {
+        drawerInof: {},
+        drawer: false,
+        title: '单品分析',
         filename: '商品数据分析',
         listLoading: false,
         listType: 2,
@@ -256,8 +283,9 @@
         goodsForm1: {
           page: 1,
           pageSize: 20,
-          type: null,
+          type: -1,
           brand: null,
+          order: null,
           time: this.getPastTime(1),
         },
         selectList: [],
@@ -277,7 +305,7 @@
             typeSta: false,
             name: 'today_new',
             numType: 2,
-            content: '今日上新商品数',
+            content: '今日创建商品款数量',
           },
           {
             title: '商品数',
@@ -287,7 +315,7 @@
             typeSta: false,
             name: 'goods_num',
             numType: 2,
-            content: '商品总数',
+            content: '在选定条件下，累计创建的商品总数量（不包含停售商品）',
           },
           {
             title: '商品sku数',
@@ -297,37 +325,39 @@
             typeSta: false,
             name: 'goods_sku',
             numType: 2,
-            content: '商品sku总数',
+            content:
+              '在选定条件下，累计创建的商品 SKU 总数量（不含停售商品）例如：001款有3个颜色5个尺码，那么该款的商品 SKU 数量为 15',
           },
           {
-            title: '销售参与款数',
+            title: '动销商品数',
             number: 200,
             num: 0,
             type: 1,
             typeSta: false,
             name: 'goods_style_num',
             numType: 2,
-            content: '销售参与款数',
+            content: '在选定条件下，有销量的商品数据',
           },
           {
-            title: '客单价',
+            title: '商品动销率',
             number: 200,
             num: 0,
             type: 1,
             typeSta: false,
             name: 'price_one',
-            numType: 1,
-            content: '客单价',
+            numType: 2,
+            content:
+              '在选定条件下，商品动销率=（动销商品数 ÷ 商品数）* 100% ,比如说， 平台里面有一共有 100 个款，有 50 个款最近多少天之内都有成交的，那么这个动销率就是 50%。',
           },
           {
-            title: '销售数量',
+            title: '销售件数',
             number: 400,
             num: 0,
             type: 2,
             typeSta: false,
             name: 'sale_num',
             numType: 2,
-            content: '客单价',
+            content: '在选定条件下，所有成功提交订单的商品总件数',
           },
           {
             title: '销售金额',
@@ -337,16 +367,18 @@
             typeSta: false,
             name: 'sale_total',
             numType: 1,
-            content: '客单价',
+            content:
+              '在选定条件下，所有支付成功订单实际应付总金额（不含订单优惠金额）',
           },
           {
-            title: '退货数量',
+            title: '退货件数',
             number: 400,
             num: 0,
             type: 2,
             typeSta: false,
             numType: 2,
-            content: '客单价',
+            content: '在选定条件下，所有成功提交退货单的商品件数',
+            name: 'return_num',
           },
           {
             title: '退货金额',
@@ -356,7 +388,7 @@
             typeSta: false,
             name: 'return_total',
             numType: 1,
-            content: '客单价',
+            content: '在选定条件下，所有成功提交退货单的订单金额',
           },
           {
             title: '实际交易金额',
@@ -366,7 +398,7 @@
             typeSta: false,
             name: 'real_total',
             numType: 1,
-            content: '客单价',
+            content: '在选定条件下，所有成功提交订单的销售金额 - 退货金额',
           },
         ],
         initOptions: {
@@ -404,6 +436,10 @@
       this.getTableList()
     },
     methods: {
+      handleDetail(row) {
+        this.drawerInof = JSON.parse(JSON.stringify(row))
+        this.drawer = true
+      },
       resetForm() {
         this.goodsForm = {
           type: null,
@@ -428,7 +464,17 @@
       },
       async getTableList() {
         this.listLoading = true
-        const { data } = await getGoodsRank(this.goodsForm1)
+        let temp = JSON.parse(JSON.stringify(this.goodsForm1))
+        if (temp.type != 0 && temp.type != 1 && temp.type != -1) {
+          temp.order = temp.type
+          temp.type = null
+        } else if (temp.type == -1) {
+          temp.order = null
+          temp.type = null
+        } else {
+          temp.order = null
+        }
+        const { data } = await getGoodsRank(temp)
         this.goosList = data.data
         this.listLoading = false
       },
@@ -446,6 +492,14 @@
             }
           }
         })
+        if (this.goodsStaList[1].num != 0) {
+          this.goodsStaList[4].num =
+            (this.goodsStaList[3].num / this.goodsStaList[1].num) * 100
+          this.goodsStaList[4].num = this.goodsStaList[4].num.toFixed(2) + '%'
+        } else {
+          this.goodsStaList[4].num = '0.00%'
+        }
+
         getGoodsReportForms(this.goodsForm).then((res) => {
           let arr = []
           res.data.forEach((item) => {
@@ -555,6 +609,9 @@
             filename: this.filename,
           })
         })
+      },
+      handleClose() {
+        this.drawer = false
       },
       formatJson(filterVal, jsonData) {
         return jsonData.map((v) => filterVal.map((j) => v[j]))

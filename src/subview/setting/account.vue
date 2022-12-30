@@ -675,7 +675,6 @@
     },
     created() {
       this.fetchData()
-      // console.log(666, this.activities[0].contentList[0])
     },
     methods: {
       handleChange(val) {

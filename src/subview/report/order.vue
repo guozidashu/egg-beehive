@@ -41,6 +41,7 @@
               start-placeholder="开始日期"
               type="daterange"
               unlink-panels
+              value-format="yyyy-MM-dd HH:mm:ss"
             />
             <el-button
               size="small"

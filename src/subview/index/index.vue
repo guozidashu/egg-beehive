@@ -223,9 +223,7 @@
           if (newval == '30天') {
             this.goodsForm.time = this.getPastTime(1)
           } else if (newval == '七天') {
-            const end = new Date()
-            const start = new Date(new Date().getTime() - 3600 * 1000 * 24 * 7)
-            this.goodsForm.time = [start, end]
+            this.goodsForm.time = this.getWeenTime()
           } else if (newval == '半年') {
             this.goodsForm.time = this.getPastTime(6)
           }

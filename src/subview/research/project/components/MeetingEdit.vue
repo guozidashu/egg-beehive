@@ -14,6 +14,7 @@
           format="yyyy-MM-dd"
           placeholder="选择年份"
           type="year"
+          value-format="yyyy-MM-dd HH:mm:ss"
         />
       </el-form-item>
       <el-form-item label="款式" prop="name">

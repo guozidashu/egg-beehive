@@ -131,7 +131,6 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <!-- 表格组件使用 -->
       <QYList
         :list="list"
         :list-type="listType"
@@ -272,7 +271,6 @@
       :visible.sync="drawer"
       :wrapper-closable="false"
     >
-      <!-- 详情抽屉组件 -->
       <Drawer
         :drawer-inof="drawerInof"
         :select-list="selectList"

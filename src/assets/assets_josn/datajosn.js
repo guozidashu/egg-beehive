@@ -102,11 +102,41 @@ export default {
         }
       }
     },
+    // 获取最昨天的时间
+    getYesterdayTime() {
+      let time = new Date()
+      const yy = time.getFullYear() //获取完整的年份(4位,1970-???)
+      const M = time.getMonth() + 1 //获取当前月份(0-11,0代表1月),
+      const d = time.getDate() //获取当前日(1-31)
+      // 获取指定的过去时间
+      // 小于9的，在前面加0
+      const MM = M > 9 ? M : '0' + M
+      const dd = d > 9 ? d : '0' + d
+      const pastM = dd - 1
+
+      // 指定的过去时间
+      const PastTime = yy + '-' + MM + '-' + pastM + ' ' + '00:00:00'
+      // 当前时间
+      const nowTime = yy + '-' + MM + '-' + pastM + ' ' + '23:59:59'
+      return [PastTime, nowTime]
+    },
     // 获取最近一周的时间
     getWeenTime() {
-      const end = new Date()
-      const start = new Date(new Date().getTime() - 3600 * 1000 * 24 * 7)
-      return [start, end]
+      let time = new Date()
+      const yy = time.getFullYear() //获取完整的年份(4位,1970-???)
+      const M = time.getMonth() + 1 //获取当前月份(0-11,0代表1月),
+      const d = time.getDate() //获取当前日(1-31)
+      // 获取指定的过去时间
+      // 小于9的，在前面加0
+      const MM = M > 9 ? M : '0' + M
+      const dd = d > 9 ? d : '0' + d
+      const pastM = dd - 7
+
+      // 指定的过去时间
+      const PastTime = yy + '-' + MM + '-' + pastM + ' ' + '00:00:00'
+      // 当前时间
+      const nowTime = yy + '-' + MM + '-' + dd + ' ' + '23:59:59'
+      return [PastTime, nowTime]
     },
     // 获取过去几个月的时间
     getPastTime(month) {
@@ -127,10 +157,9 @@ export default {
       const mm = m > 9 ? m : '0' + m
       const ss = s > 9 ? s : '0' + s
       // 指定的过去时间
-      const PastTime =
-        yy + '-' + pastM + '-' + dd + ' ' + HH + ':' + mm + ':' + ss
+      const PastTime = yy + '-' + pastM + '-' + dd + ' ' + '00:00:00'
       // 当前时间
-      const nowTime = yy + '-' + MM + '-' + dd + ' ' + HH + ':' + mm + ':' + ss
+      const nowTime = yy + '-' + MM + '-' + dd + ' ' + '23:59:59'
       return [PastTime, nowTime]
     },
   },

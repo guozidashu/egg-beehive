@@ -164,6 +164,7 @@
             start-placeholder="开始日期"
             type="daterange"
             unlink-panels
+            value-format="yyyy-MM-dd HH:mm:ss"
           />
           <el-button type="primary">查询</el-button>
           <el-button type="primary">导出</el-button>

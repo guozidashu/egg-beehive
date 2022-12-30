@@ -143,6 +143,7 @@
                   format="yyyy-MM-dd"
                   placeholder="请选择生日"
                   type="date"
+                  value-format="yyyy-MM-dd HH:mm:ss"
                 />
               </el-form-item>
               <el-form-item class="item" label="性别：">

@@ -404,6 +404,7 @@
               format="yyyy-MM-dd"
               placeholder="选择日期"
               type="date"
+              value-format="yyyy-MM-dd HH:mm:ss"
             />
             的
             <span style="color: #46a6ff">30</span>

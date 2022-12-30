@@ -29,6 +29,7 @@
             format="yyyy-MM-dd"
             placeholder="选择日期时间"
             type="datetime"
+            value-format="yyyy-MM-dd HH:mm:ss"
           />
         </el-form-item>
         <el-form-item label="即时配送" prop="delivery">

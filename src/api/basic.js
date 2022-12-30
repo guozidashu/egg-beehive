@@ -52,6 +52,16 @@ export function editChangePassword(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+
+// 商品分析 单品分析
+
+export function getGoodsDetailAnalysis(data) {
+  return request({
+    url: '/information/goodsDetailAnalysis',
+    method: 'post',
+    data,
+  })
+}
 // 客户保证金
 
 export function editChangeCustomerSync(data) {
