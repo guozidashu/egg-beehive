@@ -276,6 +276,7 @@
           create_time: [], //注册时间区间搜索
           page: 1,
           page_size: 10,
+          id: null,
         },
         form1: {
           search_type: 'mobile', //搜索条件 mobile nick_name name account
@@ -287,21 +288,11 @@
           create_time: [], //注册时间区间搜索
           page: 1,
           page_size: 10,
+          id: null,
         },
         listType: 1,
         formType: 1,
-        list: [
-          {
-            id: 1,
-            img: 'https://img.yzcdn.cn/vant/cat.jpeg',
-            name: '张三',
-            level: '普通客户',
-            type: '普通客户',
-            yuantou: '微信公众号',
-            money: '1000',
-            time: '2020-10-10 10:10:10',
-          },
-        ],
+        list: [],
         listLoading: false,
         total: 0,
       }
@@ -321,6 +312,25 @@
           this.fetchData()
         },
         deep: true,
+      },
+      '$route.query.id': {
+        //表单筛选条件变化实时刷新列表
+        handler: async function (newval) {
+          if (newval == undefined) {
+            this.form.id = null
+            this.form1.id = null
+            await this.fetchData()
+            this.selectData()
+          } else {
+            this.form.id = newval
+            this.form1.id = newval
+            await this.fetchData()
+            this.selectData()
+            this.handleDetail(this.list[0], 1)
+          }
+        },
+        deep: true,
+        immediate: true,
       },
     },
     created() {

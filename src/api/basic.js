@@ -53,6 +53,14 @@ export function editChangePassword(data) {
 
 // 下边是业务数据接口
 
+// 客户分析 客户排行
+export function getHotStyleAnalysis(data) {
+  return request({
+    url: '/information/hotStyleAnalysis',
+    method: 'post',
+    data,
+  })
+}
 // 商品分析 单品分析
 
 export function getGoodsDetailAnalysis(data) {

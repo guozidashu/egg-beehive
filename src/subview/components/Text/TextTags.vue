@@ -2,7 +2,7 @@
   <div>
     <el-row :gutter="20" style="display: flex">
       <el-col v-for="(item, index) in list" :key="index" style="width: 25%">
-        <el-card class="access" shadow="hover">
+        <el-card class="access" shadow="hover" style="border-radius: 5px">
           <template #header>
             <vab-icon icon="line-chart-line" />
             {{ item.title }}

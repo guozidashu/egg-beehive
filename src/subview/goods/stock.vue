@@ -5,6 +5,7 @@
         padding: 20px 20px 20px 20px;
         margin-bottom: 20px;
         background-color: white;
+        border-radius: 5px;
       "
     >
       <el-form
@@ -12,11 +13,15 @@
         :inline="true"
         label-width="80px"
         :model="goodsForm"
-        style="display: flex; justify-content: space-between"
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 20px;
+        "
         @submit.native.prevent
       >
         <span style="margin-top: 10px; font-size: 16px">库存统计</span>
-        <el-form-item label="统计类型:">
+        <!-- <el-form-item label="统计类型:">
           <el-select
             v-model="goodsForm.category"
             size="small"
@@ -29,17 +34,25 @@
               :value="item.id"
             />
           </el-select>
+         
+        </el-form-item> -->
+        <div>
+          <span style="font-size: 12px">更新时间：{{ time }}</span>
           <el-button
             size="small"
             style="margin-left: 10px"
             type="primary"
             @click="resetForm()"
           >
-            重置
+            刷新
           </el-button>
-        </el-form-item>
+        </div>
       </el-form>
-      <QYTextLabels ref="multipleTable" :list="goodsStaList" />
+      <QYTextLabels
+        ref="multipleTable"
+        :list="goodsStaList"
+        :width="widthStyle"
+      />
       <div
         style="
           display: flex;
@@ -57,7 +70,7 @@
         style="width: 100%; height: 400px"
       /> -->
     </div>
-    <div style="padding: 20px; background-color: white">
+    <div style="padding: 20px; background-color: white; border-radius: 5px">
       <el-form
         ref="form"
         :inline="true"
@@ -211,10 +224,13 @@
     getStockCircular,
     getStockRank,
   } from '@/api/basic'
+  import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'GoodsStock',
+    mixins: [datajosn],
     data() {
       return {
+        time: this.getDayTime(),
         listLoading: false,
         listType: 2,
         selectList: [],
@@ -228,6 +244,7 @@
           category: '', //款式分类
           brand: '', //品牌
         },
+        widthStyle: '25%',
         goodsStaList: [
           {
             title: '待发货',
@@ -237,6 +254,7 @@
             typeSta: false,
             name: 'consignment_stock',
             numType: 2,
+            content: '刷新时间截止时，当前所有成功提交订单的商品未发货数量',
           },
           {
             title: '现存库存',
@@ -246,6 +264,7 @@
             typeSta: false,
             name: 'spot_stock',
             numType: 2,
+            content: '刷新时间截止时，当前所有在售商品的现货库存总数量',
           },
           {
             title: '生产中库存',
@@ -255,16 +274,19 @@
             typeSta: false,
             name: 'production_stock',
             numType: 2,
+            content:
+              '刷新时间截止时，所有提交成功的裁床生产订单减去生产入库单的数据',
           },
-          {
-            title: '可售库存',
-            number: 200,
-            num: 94.32,
-            type: 1,
-            typeSta: false,
-            name: 'available_stock',
-            numType: 2,
-          },
+          // {
+          //   title: '预计可售库存',
+          //   number: 200,
+          //   num: 94.32,
+          //   type: 1,
+          //   typeSta: false,
+          //   name: 'available_stock',
+          //   numType: 2,
+          //   content: '刷新时间截止时，在售的现货库存+生产中库存的数据',
+          // },
           {
             title: '总库存',
             number: 200,
@@ -273,6 +295,7 @@
             typeSta: false,
             name: 'total_stock',
             numType: 2,
+            content: '刷新时间截止时，当前在售的现货库存+生产中库存的数据',
           },
           {
             title: '库存预警',
@@ -282,6 +305,8 @@
             typeSta: false,
             name: 'warning_stock',
             numType: 2,
+            content:
+              '刷新时间截止时，当前符合商品现货库存小于多少时预警条件时的实时数据',
           },
           {
             title: '现货库存成本',
@@ -291,6 +316,8 @@
             typeSta: false,
             name: 'present_price',
             numType: 1,
+            content:
+              '刷新时间截止时，当前所有在售现货商品的库存成本总金额，统计方式：当前结存金额=当前结存数量×固定成本价，此种方法一般适用于前后进价一样的商品，最为简单直接。SUM（【例：001款成本金额=001款号的成本价*001款的库存数量】）',
           },
           {
             title: '生产中库存成本',
@@ -300,16 +327,20 @@
             typeSta: false,
             name: 'reproduction_price',
             numType: 1,
+            content:
+              '刷新时间截止时，当前所有生产中的商品成本总金额，统计方式：当前生产中金额=当前生产中数量×固定成本价，此种方法一般适用于前后进价一样的商品，最为简单直接。',
           },
-          {
-            title: '可售库存成本',
-            number: 400,
-            num: 34.32,
-            type: 2,
-            typeSta: false,
-            name: 'available_price',
-            numType: 1,
-          },
+          // {
+          //   title: '可售库存成本',
+          //   number: 400,
+          //   num: 34.32,
+          //   type: 2,
+          //   typeSta: false,
+          //   name: 'available_price',
+          //   numType: 1,
+          //   content:
+          //     '刷新时间截止时，当前生产中库存成本金额+当前现货库存成本金额',
+          // },
           {
             title: '总库存成本',
             number: 400,
@@ -318,6 +349,8 @@
             typeSta: false,
             name: 'total_price',
             numType: 1,
+            content:
+              '刷新时间截止时，当前生产中库存成本金额+当前现货库存成本金额',
           },
         ],
         styleObj: {
@@ -353,9 +386,11 @@
     },
     methods: {
       resetForm() {
-        this.goodsForm = {
-          category: '',
-        }
+        this.time = this.getDayTime()
+        this.branchList = []
+        this.branchList1 = []
+        this.fetchData()
+        this.getCircular()
       },
       resetForm1() {
         this.goodsForm1 = {

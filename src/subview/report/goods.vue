@@ -5,6 +5,7 @@
         padding: 20px 20px 20px 20px;
         margin-bottom: 20px;
         background-color: white;
+        border-radius: 5px;
       "
     >
       <el-form
@@ -81,7 +82,7 @@
         style="width: 100%; height: 400px"
       />
     </div>
-    <div style="padding: 20px; background-color: white">
+    <div style="padding: 20px; background-color: white; border-radius: 5px">
       <el-form
         ref="form"
         :inline="true"
@@ -336,7 +337,7 @@
             typeSta: false,
             name: 'goods_style_num',
             numType: 2,
-            content: '在选定条件下，有销量的商品数据',
+            content: '在选定条件下，有过销售的商品数',
           },
           {
             title: '商品动销率',

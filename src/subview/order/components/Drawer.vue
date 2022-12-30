@@ -182,6 +182,7 @@
                 :list="item.goods_spec"
                 :list-type="listType"
                 :state="listLoading"
+                style="height: 200px; overflow: auto"
               >
                 <!-- 表格组件具名插槽 自定义表头 -->
                 <template #List>
@@ -405,70 +406,70 @@
                 <div style="margin: 20px 0 0 0">款号：{{ item.goods_sn }}</div>
               </div>
             </div>
-            <div style="height: 200px; overflow: hidden">
-              <QYList
-                v-if="dialogType == 1"
-                :list="item.goods_spec"
-                :list-type="listType"
-                :state="listLoading"
-              >
-                <!-- 表格组件具名插槽 自定义表头 -->
-                <template #List>
-                  <el-table-column
-                    align="center"
-                    label="颜色"
-                    prop="colorname"
-                    show-overflow-tooltip
-                  />
-                  <el-table-column
-                    align="center"
-                    label="尺码"
-                    prop="sizename"
-                    show-overflow-tooltip
-                  />
-                  <el-table-column
-                    align="center"
-                    label="改前"
-                    prop="fnum"
-                    show-overflow-tooltip
-                  />
-                  <el-table-column
-                    align="center"
-                    label="改后"
-                    prop="tnum"
-                    show-overflow-tooltip
-                  />
-                </template>
-              </QYList>
-              <QYList
-                v-if="dialogType == 2"
-                :list="item.goods_spec"
-                :list-type="listType"
-                :state="listLoading"
-              >
-                <!-- 表格组件具名插槽 自定义表头 -->
-                <template #List>
-                  <el-table-column
-                    align="center"
-                    label="颜色"
-                    prop="colorname"
-                    show-overflow-tooltip
-                  />
-                  <el-table-column
-                    align="center"
-                    label="尺码"
-                    prop="sizename"
-                    show-overflow-tooltip
-                  />
-                  <el-table-column
-                    align="center"
-                    label="发货数量"
-                    prop="num"
-                    show-overflow-tooltip
-                  />
-                </template>
-              </QYList>
-            </div>
+            <QYList
+              v-if="dialogType == 1"
+              :list="item.goods_spec"
+              :list-type="listType"
+              :state="listLoading"
+              style="height: 200px; overflow: auto"
+            >
+              <!-- 表格组件具名插槽 自定义表头 -->
+              <template #List>
+                <el-table-column
+                  align="center"
+                  label="颜色"
+                  prop="colorname"
+                  show-overflow-tooltip
+                />
+                <el-table-column
+                  align="center"
+                  label="尺码"
+                  prop="sizename"
+                  show-overflow-tooltip
+                />
+                <el-table-column
+                  align="center"
+                  label="改前"
+                  prop="fnum"
+                  show-overflow-tooltip
+                />
+                <el-table-column
+                  align="center"
+                  label="改后"
+                  prop="tnum"
+                  show-overflow-tooltip
+                />
+              </template>
+            </QYList>
+            <QYList
+              v-if="dialogType == 2"
+              :list="item.goods_spec"
+              :list-type="listType"
+              :state="listLoading"
+              style="height: 200px; overflow: auto"
+            >
+              <!-- 表格组件具名插槽 自定义表头 -->
+              <template #List>
+                <el-table-column
+                  align="center"
+                  label="颜色"
+                  prop="colorname"
+                  show-overflow-tooltip
+                />
+                <el-table-column
+                  align="center"
+                  label="尺码"
+                  prop="sizename"
+                  show-overflow-tooltip
+                />
+                <el-table-column
+                  align="center"
+                  label="发货数量"
+                  prop="num"
+                  show-overflow-tooltip
+                />
+              </template>
+            </QYList>
           </el-card>
         </el-col>
       </el-row>

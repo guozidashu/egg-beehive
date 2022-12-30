@@ -174,11 +174,11 @@
           <el-table-column label="库存" prop="xh_num" width="100" />
           <el-table-column label="状态" prop="status" width="80">
             <template #default="{ row }">
-              <div v-if="row.is_shop == 0" style="margin-bottom: 10px">
-                <el-tag type="danger">下架</el-tag>
-              </div>
-              <div v-else-if="row.is_shop == 1" style="margin-bottom: 10px">
+              <div v-if="row.is_shop == 1" style="margin-bottom: 10px">
                 <el-tag>上架</el-tag>
+              </div>
+              <div v-else style="margin-bottom: 10px">
+                <el-tag type="danger">下架</el-tag>
               </div>
             </template>
           </el-table-column>
@@ -197,14 +197,6 @@
                 查看
               </el-button>
               <el-button
-                v-if="row.is_shop == 0"
-                v-has-permi="['btn:MallManage:upshelves']"
-                type="text"
-                @click="handleEdit(4, row)"
-              >
-                上架商品
-              </el-button>
-              <el-button
                 v-if="row.is_shop == 1"
                 v-has-permi="['btn:MallManage:shelves']"
                 type="text"
@@ -212,7 +204,14 @@
               >
                 下架商品
               </el-button>
-
+              <el-button
+                v-else
+                v-has-permi="['btn:MallManage:upshelves']"
+                type="text"
+                @click="handleEdit(4, row)"
+              >
+                上架商品
+              </el-button>
               <el-button
                 v-has-permi="['btn:MallManage:upload']"
                 type="text"
