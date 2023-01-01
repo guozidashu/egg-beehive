@@ -29,14 +29,14 @@
       <el-form-item v-if="form.headimg">
         <img :src="form.headimg" style="width: 80px; height: 80px" />
       </el-form-item>
-      <el-form-item label="小程序二维码">
+      <!-- <el-form-item label="小程序二维码">
         <el-button type="primary" @click="handleShow(2)">图片上传</el-button>
-      </el-form-item>
+      </el-form-item> 
       <el-form-item v-if="form.qrcode">
         <img :src="form.qrcode" style="width: 80px; height: 80px" />
-      </el-form-item>
+      </el-form-item>-->
     </el-form>
-    <div style="font-weight: 600">配置服务器域名</div>
+    <!-- <div style="font-weight: 600">配置服务器域名</div>
     <el-divider />
     <div
       style="
@@ -52,7 +52,7 @@
       <p>
         登录小程序公众平台(mp.weixin.qq.com)在[开发]-[开发设置]-[服务器域名]，配置以下信息：
       </p>
-    </div>
+    </div> -->
     <el-form
       ref="form"
       label-position="right"
@@ -60,7 +60,7 @@
       :model="form"
       style="width: 100%"
     >
-      <el-form-item label="request合法域名">
+      <!-- <el-form-item label="request合法域名">
         <span style="font-weight: 600">https://new.shopvvv.cn</span>
       </el-form-item>
       <el-form-item label="socket合法域名">
@@ -71,10 +71,10 @@
       </el-form-item>
       <el-form-item label="downloadFile合法域名">
         <span style="font-weight: 600">https://new.shopvvv.cn</span>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
         <el-button type="primary" @click="submitForm('form')">保存</el-button>
-        <el-button>上传小程序接口校验文件</el-button>
+        <!-- <el-button>上传小程序接口校验文件</el-button> -->
       </el-form-item>
     </el-form>
     <vab-upload

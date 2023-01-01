@@ -213,7 +213,7 @@
           ],
         },
         goodsForm: {
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         },
       }
     },
@@ -221,11 +221,11 @@
       time: {
         handler: function (newval) {
           if (newval == '30天') {
-            this.goodsForm.time = this.getPastTime(1)
+            this.goodsForm.time = this.getPastTime(30)
           } else if (newval == '七天') {
-            this.goodsForm.time = this.getWeenTime()
+            this.goodsForm.time = this.getWeenTime(6)
           } else if (newval == '半年') {
-            this.goodsForm.time = this.getPastTime(6)
+            this.goodsForm.time = this.getPastTime(180)
           }
           this.branchList = [
             { value: 0, name: '未消费客户' },

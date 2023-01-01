@@ -3,7 +3,7 @@
  */
 const path = require('path')
 const {
-  baseURL,
+  // baseURL,
   /*  baseURL, */
   publicPath,
   assetsDir,
@@ -54,20 +54,22 @@ module.exports = {
       warnings: true,
       errors: true,
     },
-    proxy:
-      process.env.NODE_ENV === 'development'
-        ? {
-            [baseURL]: {
-              // target: `https://luoyi.business.quanyu123.com/QYAPI/index.php`, //所有配置不要动，只改这一个地方，改完重启项目
-              target: `https://demo.quanyu123.com/QYAPI/index.php`, //所有配置不要动，只改这一个地方，改完重启项目
-              ws: true,
-              changeOrigin: true,
-              pathRewrite: {
-                ['^/' + baseURL]: '',
-              },
-            },
-          }
-        : {},
+    // 允许访问的域名地址
+    allowedHosts: ['.quanyu123.com'],
+    // proxy:
+    //   process.env.NODE_ENV === 'development'
+    //     ? {
+    //         [baseURL]: {
+    //           // target: `https://luoyi.business.quanyu123.com/QYAPI/index.php`, //所有配置不要动，只改这一个地方，改完重启项目
+    //           target: `https://demo.quanyu123.com/QYAPI/index.php`, //所有配置不要动，只改这一个地方，改完重启项目
+    //           ws: true,
+    //           changeOrigin: true,
+    //           pathRewrite: {
+    //             ['^/' + baseURL]: '',
+    //           },
+    //         },
+    //       }
+    //     : {},
     after: require('./mock'),
   },
   pwa: {

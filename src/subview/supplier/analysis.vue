@@ -248,7 +248,7 @@
         },
         supplier_type: [],
         form: {
-          create_time: this.getPastTime(1),
+          create_time: this.getPastTime(30),
           type: '',
         },
         supplier_rank: [],
@@ -281,7 +281,7 @@
     methods: {
       resetForm() {
         this.form.type = ''
-        this.form.create_time = this.getPastTime(1)
+        this.form.create_time = this.getPastTime(30)
       },
       // 详情抽屉
       handleDetail() {},

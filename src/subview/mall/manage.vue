@@ -297,7 +297,7 @@
       :before-close="handleMaterialClose1"
       title="提示"
       :visible.sync="dialogVisible1"
-      width="50%"
+      width="60%"
     >
       <el-form
         ref="formDialog"
@@ -328,14 +328,39 @@
         <el-form-item>
           <div style="font-size: 12px; color: gray">推荐图片宽度750px</div>
         </el-form-item>
-        <el-form-item class="vab-quill-content" label="商品详情：">
-          <vab-quill
-            ref="vab-quill"
-            v-model="formCommodityDetails.detail"
-            :min-height="400"
-            :options="options"
-          />
-        </el-form-item>
+        <div style="display: flex">
+          <el-form-item
+            class="vab-quill-content"
+            label="商品详情编辑："
+            style="width: 500px"
+          >
+            <div style="height: 800px; overflow: auto">
+              <vab-quill
+                ref="vab-quill"
+                v-model="formCommodityDetails.detail"
+                :min-height="600"
+                :options="options"
+              />
+            </div>
+          </el-form-item>
+          <el-form-item
+            class="vab-quill-content"
+            label="商品详情预览："
+            style="width: 500px"
+          >
+            <div style="display: flex">
+              <div style="width: 100%; margin-left: 20px">
+                <div class="ql-container ql-snow">
+                  <div
+                    class="ql-editor"
+                    style="width: 100%; height: 720px; border: 1px solid #ccc"
+                    v-html="formCommodityDetails.detail"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </el-form-item>
+        </div>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible1 = false">取 消</el-button>
@@ -479,7 +504,6 @@
       form: {
         handler: function () {
           this.fetchData()
-          this.getTatolData()
         },
         deep: true,
       },
@@ -494,7 +518,6 @@
     created() {
       this.getGoodsTypeList()
       this.fetchData()
-      this.getTatolData()
     },
     methods: {
       async handleMaterialSub() {
@@ -620,6 +643,7 @@
         this.list = data.data
         this.total = data.total
         this.listLoading = false
+        this.getTatolData()
       },
       async getTatolData() {
         const { data } = await getShopGoodTabTotal({
@@ -700,7 +724,7 @@
           } else if (type == 0) {
             let temp = false
             this.selectRowsId.forEach((item) => {
-              if (item.is_shop == 0) {
+              if (item.is_shop == 2 || item.is_shop == 3) {
                 this.$message.error('所选数据中有已下架的商品')
                 temp = true
                 return

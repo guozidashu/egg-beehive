@@ -11,7 +11,7 @@
               订单合计
               <span style="color: red">{{ form.style_num }}</span>
               款 共计
-              <span style="color: red">*{{ form.num }}</span>
+              <span style="color: red">*{{ form.sum_num }}</span>
               已发货
               <span style="color: red">*{{ form.delivery_num }}</span>
               件

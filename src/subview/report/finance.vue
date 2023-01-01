@@ -183,12 +183,12 @@
         AccountList: [],
         CategoryList: [],
         goodsForm: {
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         },
         goodsForm1: {
           account_id: '', //会计科目id
           category_id: '', //收支类型id
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         },
         dataObj: {
           title: '费用单统计',
@@ -334,7 +334,7 @@
         this.goodsForm1 = {
           account_id: '', //会计科目id
           category_id: '', //收支类型id
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         }
       },
       async getTypeAccount() {

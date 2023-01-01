@@ -8,8 +8,11 @@ import '@/utils/filter'
 import hasPermi from '@/utils/hasPermi'
 import QyComponent from '@/qy/qy.js'
 import { permissionFiltering } from '@/utils/filter'
+// import { GlobalConfig } from '@/public/config/config.js'
 // 非按钮权限过滤
+// GlobalConfig
 Vue.prototype.$permissionFiltering = permissionFiltering
+// Vue.prototype.$GlobalConfig = GlobalConfig
 // 圈域全局组件
 Vue.use(QyComponent)
 // 权限自定义指令

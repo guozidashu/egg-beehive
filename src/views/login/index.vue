@@ -14,7 +14,7 @@
         >
           <div class="title">hello !</div>
           <div class="title-tips">
-            圈域数字中台 · 好生意随时掌握 · Manage Account
+            {{ appName }}数字中台 · 好生意随时掌握 · Manage Account
           </div>
           <el-form-item prop="username" style="margin-top: 40px">
             <el-input
@@ -140,6 +140,7 @@
         else callback()
       }
       return {
+        appName: GlobalConfig.appName,
         form: {
           username: '',
           password: '',

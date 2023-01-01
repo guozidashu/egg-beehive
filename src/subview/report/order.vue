@@ -141,7 +141,7 @@
         filename: '订单数据分析',
         goodsForm: {
           brand: null,
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         },
         selectList: [],
         listLoading: false,
@@ -290,7 +290,7 @@
       resetForm() {
         this.goodsForm = {
           brand: null,
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         }
       },
       async getTypeList() {

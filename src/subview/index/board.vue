@@ -99,7 +99,7 @@
           { value: 0, name: '未发货订单数' },
         ],
         goodsForm: {
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         },
         goodsWidth: '16%',
         dateList: [],

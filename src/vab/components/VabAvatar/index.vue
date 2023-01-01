@@ -196,7 +196,6 @@
         this.changePasswordVisible = true
       },
       close() {
-        console.log('close')
         this.form = this.$options.data().form
         this.changePasswordVisible = false
       },

@@ -167,7 +167,7 @@
           } else if (newVal == '七天') {
             this.formList.time = this.getWeenTime()
           } else if (newVal == '30天') {
-            this.formList.time = this.getPastTime(1)
+            this.formList.time = this.getPastTime(30)
           }
           this.fetchData()
         },
@@ -175,9 +175,7 @@
         immediate: true,
       },
     },
-    created() {
-      console.log(666, this.drawerInof)
-    },
+    created() {},
     methods: {
       async fetchData() {
         this.listLoading = true

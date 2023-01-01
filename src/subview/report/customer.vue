@@ -356,14 +356,14 @@
           pageSize: 20,
           brand: null,
           order: 'sum_num',
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         },
         listLoading: false,
         listType: 2,
         goosList: [],
         goodsForm: {
           source: null,
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         },
         selectList: [],
         textTagList: [
@@ -543,13 +543,13 @@
           pageSize: 20,
           order: null,
           brand: null,
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         }
       },
       resetForm() {
         this.goodsForm = {
           source: null,
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         }
       },
       async getTypeList() {

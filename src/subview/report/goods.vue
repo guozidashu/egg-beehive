@@ -279,7 +279,7 @@
         goodsForm: {
           type: null,
           brand: null,
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         },
         goodsForm1: {
           page: 1,
@@ -287,7 +287,7 @@
           type: -1,
           brand: null,
           order: null,
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         },
         selectList: [],
         dateList: [],
@@ -445,7 +445,7 @@
         this.goodsForm = {
           type: null,
           brand: null,
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         }
       },
       resetForm1() {
@@ -454,7 +454,7 @@
           pageSize: 20,
           type: null,
           brand: null,
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         }
       },
       async getTypeList() {

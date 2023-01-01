@@ -72,23 +72,16 @@ export function getGoodsDetailAnalysis(data) {
 }
 // 客户保证金
 
-export function editChangeCustomerSync(data) {
+export function addCustomerEarnest(data) {
   return request({
-    url: '/customer/changeCustomerSync',
+    url: '/customerEarnest/add',
     method: 'post',
     data,
   })
 }
-export function getMarginList(data) {
+export function getCustomerEarnestList(data) {
   return request({
-    url: '/customer/marginList',
-    method: 'post',
-    data,
-  })
-}
-export function editMarginAdd(data) {
-  return request({
-    url: '/customer/marginAdd',
+    url: '/customerEarnest/getList',
     method: 'post',
     data,
   })

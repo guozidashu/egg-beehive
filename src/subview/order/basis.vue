@@ -151,10 +151,10 @@
         listLoading: false,
         listType: 2,
         goodsForm: {
-          date: this.getPastTime(1),
+          date: this.getPastTime(30),
         },
         goodsForm1: {
-          date: this.getPastTime(1),
+          date: this.getPastTime(30),
         },
         goodsStaList: [
           {

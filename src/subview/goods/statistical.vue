@@ -201,7 +201,7 @@
         listType: 2,
         goosList: [],
         goodsForm: {
-          date: this.getPastTime(1),
+          date: this.getPastTime(30),
         },
         goodsForm1: {
           page: 1,
@@ -209,7 +209,7 @@
           start_time: '', // 开始时间
           end_time: '', // 结束时间
           type: '', // 类型 0整手  1散码
-          date: this.getPastTime(1),
+          date: this.getPastTime(30),
         },
         dateList: [],
         dataAllList: {
@@ -301,7 +301,7 @@
           start_time: '', // 开始时间
           end_time: '', // 结束时间
           type: '', // 类型 0整手  1散码
-          date: this.getPastTime(1),
+          date: this.getPastTime(30),
         }
       },
       async tableData() {

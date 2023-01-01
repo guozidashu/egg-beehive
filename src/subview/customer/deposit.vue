@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div style="background-color: #f6f8f9">
     <div
       style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
@@ -215,4 +215,4 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped></style> -->

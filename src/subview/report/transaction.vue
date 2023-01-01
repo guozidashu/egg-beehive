@@ -189,7 +189,7 @@
           time: this.getWeenTime(),
         },
         goodsForm1: {
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         },
         tableData: {},
         selectList: [],

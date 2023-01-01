@@ -79,7 +79,7 @@
               style="width: 300px"
             />
           </el-form-item>
-          <el-form-item v-show="!form.fold" label="客户来源:">
+          <!-- <el-form-item v-show="!form.fold" label="客户来源:">
             <el-select v-model="form.source" style="width: 300px">
               <el-option
                 v-for="(item, index) in selectDataList.customer_source"
@@ -88,7 +88,7 @@
                 :value="item.id"
               />
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item v-show="!form.fold" label="注册时间:">
             <el-date-picker
               v-model="form.create_time"
@@ -153,7 +153,7 @@
       >
         <template #List>
           <el-table-column type="selection" />
-          <el-table-column label="ID" prop="id" width="70" />
+          <el-table-column label="ID" prop="id" width="50" />
           <el-table-column label="客户编码" prop="sn" width="120" />
           <!-- <el-table-column label="头像" width="120">
             <template #default="{ row }">
@@ -168,10 +168,26 @@
             </template>
           </el-table-column> -->
           <el-table-column label="客户名称" prop="name" width="150" />
-          <el-table-column label="手机号" prop="mobile" width="150" />
+          <el-table-column label="手机号" prop="mobile" width="120" />
           <el-table-column label="客户等级" prop="grade_name" width="120" />
           <el-table-column label="客户分类" prop="type_name" width="120" />
-          <el-table-column label="客户来源" prop="source_name" width="120" />
+          <!-- <el-table-column label="客户来源" prop="source_name" width="120" /> -->
+          <el-table-column
+            align="right"
+            label="保证金"
+            prop="earnest_money"
+            width="150"
+          >
+            <template #default="{ row }">
+              <el-tag v-if="row.earnest_money >= 0">
+                ￥{{ row.earnest_money | moneyFormat }}
+              </el-tag>
+              <el-tag v-else type="danger">
+                -￥{{ row.earnest_money | moneyFormat }}
+              </el-tag>
+            </template>
+          </el-table-column>
+
           <el-table-column
             align="right"
             label="成交额"
@@ -227,7 +243,9 @@
               >
                 详情
               </el-button>
-              <!-- <el-button type="text">发货</el-button> -->
+              <el-button type="text" @click="handleDeposit(row.id)">
+                保证金
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -244,20 +262,162 @@
       <!-- 详情抽屉组件 -->
       <Drawer :drawer-inof="drawerInof" @fetch-data="fetchData" />
     </el-drawer>
+    <el-dialog
+      :before-close="handleClose1"
+      title="客户保证金"
+      :visible.sync="dialogVisible"
+      width="50%"
+    >
+      <el-button
+        size="small"
+        style="margin-bottom: 20px"
+        type="primary"
+        @click="handleDepositEdit()"
+      >
+        新增
+      </el-button>
+      <QYList
+        :list="depositList"
+        :list-type="depositListType"
+        :state="depositListLoading"
+      >
+        <template #List>
+          <el-table-column
+            align="center"
+            label="支付支出方式"
+            prop="pay_type"
+            show-overflow-tooltip
+          >
+            <template #default="{ row }">
+              <el-tag v-if="row.pay_type == 1">支付宝</el-tag>
+              <el-tag v-else-if="row.pay_type == 2">微信</el-tag>
+              <el-tag v-else-if="row.pay_type == 3">银行卡</el-tag>
+              <el-tag v-else-if="row.pay_type == 4">信用卡</el-tag>
+              <el-tag v-else-if="row.pay_type == 5">现金</el-tag>
+              <el-tag v-else>其他</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
+            align="center"
+            label="保证金额度"
+            prop="amount"
+            show-overflow-tooltip
+          >
+            <template #default="{ row }">
+              <el-tag v-if="row.amount >= 0">￥{{ row.amount }}</el-tag>
+              <el-tag v-else type="danger">-￥{{ row.amount }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
+            align="center"
+            label="备注"
+            prop="remark"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="操作时间"
+            prop="create_time"
+            show-overflow-tooltip
+          />
+        </template>
+      </QYList>
+    </el-dialog>
+    <el-dialog
+      :before-close="handleCloseEdit1"
+      title="新增客户保证金"
+      :visible.sync="dialogVisibleEdit"
+      width="35%"
+    >
+      <el-form
+        ref="DepositEdit"
+        label-width="120px"
+        :model="DepositEditForm"
+        :rules="DepositEditRules"
+      >
+        <el-form-item label="支付支出方式" prop="pay_type">
+          <el-select v-model="DepositEditForm.pay_type">
+            <el-option label="支付宝" :value="1" />
+            <el-option label="微信" :value="2" />
+            <el-option label="银行卡" :value="3" />
+            <el-option label="信用卡" :value="4" />
+            <el-option label="现金" :value="5" />
+            <el-option label="其他" :value="6" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="保证金额度" prop="money">
+          <el-input
+            v-model="DepositEditForm.money"
+            placeholder="请输入保证金额度"
+            style="width: 215px"
+          />
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input
+            v-model="DepositEditForm.remark"
+            placeholder="请输入备注"
+            :rows="2"
+            style="width: 215px"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="DepositEditClose">取 消</el-button>
+        <el-button type="primary" @click="DepositEditSave">确 定</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import Edit from '@/subview/components/Edit/ManageEdit'
   import Drawer from '@/subview/components/Drawer/ManageDrawer'
-  import { getCommonAllList, getCustomerList } from '@/api/basic'
+  import {
+    getCommonAllList,
+    getCustomerList,
+    getCustomerEarnestList,
+    addCustomerEarnest,
+  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'CustomerManage',
     components: { Edit, Drawer },
     mixins: [datajosn],
     data() {
+      const validateUsername = (rule, value, callback) => {
+        if (!/^[1-9]\d*(\.\d{1,2})?$/.test(value)) {
+          callback(new Error('金额必须是数字且大于0'))
+        } else {
+          callback()
+        }
+      }
       return {
+        DepositEditForm: {
+          customer_id: null,
+          money: null,
+          pay_type: null,
+          remark: '',
+        },
+        DepositEditRules: {
+          //money 金额 且必须大于零
+          money: [
+            { required: true, validator: validateUsername, trigger: 'blur' },
+          ],
+
+          pay_type: [
+            { required: true, message: '请选择状态', trigger: 'blur' },
+          ],
+        },
+        dialogVisibleEdit: false,
+        DepositForm: {
+          page: 1,
+          pageSize: 10,
+        },
+        depositList: [],
+        depositListType: 2,
+        depositListLoading: false,
+        depositTotal: 0,
+        dialogVisible: false,
         title: '',
         selectDataList: [],
         filename: '客户列表',
@@ -271,7 +431,7 @@
           keywords: null, //搜索内容
           level: null, //等级id
           type: null, //客户分类
-          source: null, //客户来源
+          //source: null, //客户来源
           tag: null, //标签id
           create_time: [], //注册时间区间搜索
           page: 1,
@@ -283,7 +443,7 @@
           keywords: null, //搜索内容
           level: null, //等级id
           type: null, //客户分类
-          source: null, //客户来源
+          //source: null, //客户来源
           tag: null, //标签id
           create_time: [], //注册时间区间搜索
           page: 1,
@@ -313,6 +473,15 @@
         },
         deep: true,
       },
+      dialogVisible: {
+        //表单筛选条件变化实时刷新列表
+        handler: function (newval) {
+          if (newval == false) {
+            this.fetchData()
+          }
+        },
+        deep: true,
+      },
       '$route.query.id': {
         //表单筛选条件变化实时刷新列表
         handler: async function (newval) {
@@ -338,6 +507,62 @@
       this.selectData()
     },
     methods: {
+      DepositEditClose() {
+        this.dialogVisibleEdit = false
+      },
+      DepositEditSave() {
+        this.dialogVisibleEdit = false
+        // 二次确认弹框
+        this.$confirm('确认新增保证金吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        })
+          .then(() => {
+            this.$refs['DepositEdit'].validate(async (valid) => {
+              if (valid) {
+                const { code } = await addCustomerEarnest(this.DepositEditForm)
+                if (code == 200) {
+                  this.$message.success('新增成功')
+                  this.dialogVisibleEdit = false
+                  this.handleDeposit(this.DepositEditForm.customer_id)
+                }
+              }
+            })
+          })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消新增',
+            })
+          })
+      },
+      handleDepositEdit() {
+        this.dialogVisibleEdit = true
+        this.DepositEditForm = {
+          customer_id: this.DepositEditForm.customer_id,
+          money: null,
+          status: null,
+          remark: '',
+        }
+      },
+      handleDeposit(ID) {
+        this.getCustomerEarnest(ID)
+        this.dialogVisible = true
+      },
+      async getCustomerEarnest(ID) {
+        this.depositListLoading = true
+        const { data } = await getCustomerEarnestList({ customer_id: ID })
+        this.DepositEditForm.customer_id = ID
+        this.depositList = data
+        this.depositListLoading = false
+      },
+      handleClose1() {
+        this.dialogVisible = false
+      },
+      handleCloseEdit1() {
+        this.dialogVisibleEdit = false
+      },
       // 新增优化圈
       async addCoupons() {
         this.$refs['edit'].showEdit()
@@ -362,6 +587,12 @@
       },
       changeBtnPageSize(data) {
         this.form.pageSize = data
+      },
+      changeBtnPageDeposit(data) {
+        this.DepositForm.page = data
+      },
+      changeBtnPageSizeDeposit(data) {
+        this.DepositForm.pageSize = data
       },
       async fetchData(type) {
         if (type == 1) {

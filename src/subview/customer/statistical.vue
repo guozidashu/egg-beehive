@@ -124,7 +124,7 @@
       return {
         goodsForm: {
           source: '',
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         },
         SelectData: [],
         textTagList: [
@@ -275,7 +275,7 @@
       resetForm() {
         this.goodsForm = {
           source: '',
-          time: this.getPastTime(1),
+          time: this.getPastTime(30),
         }
       },
       async getSelectData() {

@@ -171,8 +171,8 @@
         list: [],
         textwidth: '25%',
         form: {
-          date: this.getPastTime(1),
-          date1: this.getPastTime(1),
+          date: this.getPastTime(30),
+          date1: this.getPastTime(30),
         },
         goodsStaList: [
           {

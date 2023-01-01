@@ -8,7 +8,7 @@
       :rules="rules1"
       style="width: 100%"
     >
-      <el-form-item label="微支付状态：">
+      <!-- <el-form-item label="微支付状态：">
         <el-switch
           v-model="form1.wxpay"
           active-color="#41B584"
@@ -25,7 +25,7 @@
           <el-radio :label="0">普通模式</el-radio>
           <el-radio :label="1">服务商模式</el-radio>
         </el-radio-group>
-      </el-form-item>
+      </el-form-item> 
       <div v-if="form1.wxpay_type == 0">
         <el-form-item label="支付商户号：" prop="wxpay_mchid">
           <el-input v-model="form1.wxpay_mchid" style="width: 40%" />
@@ -75,7 +75,18 @@
         <el-form-item label="支付商户号：" prop="wxpay_sub_mchid">
           <el-input v-model="form1.wxpay_sub_mchid" style="width: 40%" />
         </el-form-item>
-      </div>
+      </div> -->
+      <el-form-item label="支付商户号：" prop="wxpay_mchid">
+        <el-input v-model="form1.wxpay_mchid" style="width: 40%" />
+      </el-form-item>
+      <el-form-item label="支付秘钥：" prop="wxpay_mchkey">
+        <el-input v-model="form1.wxpay_mchkey" style="width: 40%" />
+        <span style="margin-left: 10px">
+          <span style="color: #999">请在</span>
+          <span @click="jumpWX">&nbsp;微信支付商户平台 &nbsp;</span>
+          <span style="color: #999">[账户中心]-[API安全]中设置[API密钥]</span>
+        </span>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('form1')">保存</el-button>
       </el-form-item>

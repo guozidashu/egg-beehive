@@ -121,63 +121,48 @@ export default {
     },
     // 获取最昨天的时间
     getYesterdayTime() {
-      let time = new Date()
-      const yy = time.getFullYear() //获取完整的年份(4位,1970-???)
-      const M = time.getMonth() + 1 //获取当前月份(0-11,0代表1月),
-      const d = time.getDate() //获取当前日(1-31)
-      // 获取指定的过去时间
-      // 小于9的，在前面加0
-      const MM = M > 9 ? M : '0' + M
-      const dd = d > 9 ? d : '0' + d
-      const pastM = dd - 1
-
-      // 指定的过去时间
-      const PastTime = yy + '-' + MM + '-' + pastM + ' ' + '00:00:00'
-      // 当前时间
-      const nowTime = yy + '-' + MM + '-' + pastM + ' ' + '23:59:59'
-      return [PastTime, nowTime]
+      return this.getPastTime(1, false)
     },
     // 获取最近一周的时间
     getWeenTime() {
-      let time = new Date()
-      const yy = time.getFullYear() //获取完整的年份(4位,1970-???)
-      const M = time.getMonth() + 1 //获取当前月份(0-11,0代表1月),
-      const d = time.getDate() //获取当前日(1-31)
-      // 获取指定的过去时间
-      // 小于9的，在前面加0
-      const MM = M > 9 ? M : '0' + M
-      const dd = d > 9 ? d : '0' + d
-      const pastM = dd - 7
-
-      // 指定的过去时间
-      const PastTime = yy + '-' + MM + '-' + pastM + ' ' + '00:00:00'
-      // 当前时间
-      const nowTime = yy + '-' + MM + '-' + dd + ' ' + '23:59:59'
-      return [PastTime, nowTime]
+      return this.getPastTime(7)
     },
     // 获取过去几个月的时间
-    getPastTime(month) {
-      let time = new Date()
-      const yy = time.getFullYear() //获取完整的年份(4位,1970-???)
-      const M = time.getMonth() + 1 //获取当前月份(0-11,0代表1月),
-      const d = time.getDate() //获取当前日(1-31)
-      const H = time.getHours() //获取当前小时数(0-23)
-      const m = time.getMinutes() //获取当前分钟数(0-59)
-      const s = time.getSeconds() //获取当前秒数(0-59)
-      // 获取指定的过去时间
-      const past = M - month
-      const pastM = past < 0 ? past + 12 : past > 9 ? past : '0' + past
-      // 小于9的，在前面加0
-      const MM = M > 9 ? M : '0' + M
-      const dd = d > 9 ? d : '0' + d
-      const HH = H > 9 ? H : '0' + H
-      const mm = m > 9 ? m : '0' + m
-      const ss = s > 9 ? s : '0' + s
+    getPastTime(day, n = true) {
+      let InTime = new Date().getTime()
+      let eTimeArr = this.Get_DateArr(InTime)
+      let Indata = InTime - day * 24 * 60 * 60 * 1000
+      let sTimeArr = this.Get_DateArr(Indata)
       // 指定的过去时间
-      const PastTime = yy + '-' + pastM + '-' + dd + ' ' + '00:00:00'
-      // 当前时间
-      const nowTime = yy + '-' + MM + '-' + dd + ' ' + '23:59:59'
+      const PastTime =
+        sTimeArr[0] + '-' + sTimeArr[1] + '-' + sTimeArr[2] + ' ' + '00:00:00'
+      let nowTime = ''
+      if (n) {
+        // 当前时间
+        nowTime =
+          eTimeArr[0] + '-' + eTimeArr[1] + '-' + eTimeArr[2] + ' ' + '23:59:59'
+      } else {
+        // 当前时间 取某天的开始到某天的结束 不是今天
+        nowTime =
+          sTimeArr[0] + '-' + sTimeArr[1] + '-' + sTimeArr[2] + ' ' + '23:59:59'
+      }
       return [PastTime, nowTime]
+    },
+
+    Get_DateArr(time) {
+      // 时间戳转换日期数组
+      const date = new Date(time / 1)
+      const y = date.getFullYear()
+      let m = date.getMonth() + 1
+      m = m < 10 ? '' + m : m
+      let d = date.getDate()
+      d = d < 10 ? '' + d : d
+      let msrt = m + ''
+      let dsrt = d + ''
+      msrt.length === 1 ? (m = '0' + m) : (m = m)
+      dsrt.length === 1 ? (d = '0' + d) : (d = d)
+
+      return [y, m, d]
     },
   },
 }

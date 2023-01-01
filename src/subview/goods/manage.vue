@@ -52,7 +52,7 @@
           </el-form-item>
           <el-form-item label="状态:">
             <el-select v-model="form.status">
-              <el-option label="停售" value="0" />
+              <el-option label="停售" value="2" />
               <el-option label="在售" value="1" />
             </el-select>
           </el-form-item>
@@ -189,11 +189,11 @@
           <el-table-column label="库存" prop="xh_num" width="100" />
           <el-table-column label="状态" prop="status" width="120">
             <template #default="{ row }">
-              <div v-if="row.status == 0" style="margin-bottom: 10px">
-                <el-tag type="danger">停售</el-tag>
-              </div>
-              <div v-else-if="row.status == 1" style="margin-bottom: 10px">
+              <div v-if="row.status == 1" style="margin-bottom: 10px">
                 <el-tag>在售</el-tag>
+              </div>
+              <div v-else style="margin-bottom: 10px">
+                <el-tag type="danger">停售</el-tag>
               </div>
               <div v-if="row.recommend == 0">
                 <el-tag type="danger">已取消推荐</el-tag>
@@ -225,7 +225,7 @@
                 编辑
               </el-button>
               <el-button
-                v-if="row.status == 0"
+                v-if="row.status == 2 || row.status == 3"
                 type="text"
                 @click="handleEdit(4, row)"
               >
@@ -581,7 +581,7 @@
             this.$baseConfirm('你确定要停售改项吗', null, async () => {
               const { msg } = await editGoodBatchLower({
                 good_ids: row.id,
-                status: 0,
+                status: 2,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
               await this.fetchData()
