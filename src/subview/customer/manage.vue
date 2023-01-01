@@ -284,7 +284,7 @@
         <template #List>
           <el-table-column
             align="center"
-            label="支付支出方式"
+            label="支付类型"
             prop="pay_type"
             show-overflow-tooltip
           >
@@ -335,7 +335,7 @@
         :model="DepositEditForm"
         :rules="DepositEditRules"
       >
-        <el-form-item label="支付支出方式" prop="pay_type">
+        <el-form-item label="支付类型" prop="pay_type">
           <el-select v-model="DepositEditForm.pay_type">
             <el-option label="支付宝" :value="1" />
             <el-option label="微信" :value="2" />
