@@ -3,6 +3,9 @@ module.exports = {
   env: {
     node: true,
   },
+  globals: {
+    GlobalConfig: true,
+  },
   extends: ['plugin:vue/recommended', 'eslint:recommended', '@vue/prettier'],
   parser: 'vue-eslint-parser',
   parserOptions: {
