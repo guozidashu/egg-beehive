@@ -243,8 +243,8 @@
 </template>
 
 <script>
-  import DistributionTime from './DistributionTime'
-  import DistributionTable from './DistributionTable'
+  import DistributionTime from '@/subview/components/Other/DistributionTime'
+  import DistributionTable from '@/subview/components/Other/DistributionTable'
   export default {
     name: 'EmployeesDrawer',
     components: {

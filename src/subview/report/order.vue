@@ -5,6 +5,7 @@
         padding: 20px 20px 20px 20px;
         margin-bottom: 20px;
         background-color: white;
+        border-radius: 5px;
       "
     >
       <el-form
@@ -43,14 +44,14 @@
               unlink-panels
               value-format="yyyy-MM-dd HH:mm:ss"
             />
-            <el-button
+            <!-- <el-button
               size="small"
               style="margin: 0 20px"
               type="primary"
               @click="handleDownload"
             >
               导出
-            </el-button>
+            </el-button> -->
             <el-button
               size="small"
               style="margin-left: 10px"
@@ -74,50 +75,165 @@
         style="width: 100%; height: 400px"
       />
     </div>
-
-    <div style="display: flex; justify-content: space-between">
-      <div
-        style="
-          width: 50%;
-          padding: 20px;
-          margin-right: 20px;
-          background-color: white;
-        "
+    <div
+      style="
+        padding: 20px;
+        margin-top: 20px;
+        background-color: white;
+        border-radius: 5px;
+      "
+    >
+      <el-form
+        ref="form"
+        :inline="true"
+        label-width="80px"
+        :model="goodsForm1"
+        style="display: flex; justify-content: space-between"
+        @submit.native.prevent
       >
-        <div style="margin-bottom: 20px">
-          <span style="font-size: 24px">订单来源分析表格</span>
-        </div>
-        <el-table :data="tableData" height="480px">
+        <span style="margin-top: 10px; font-size: 16px">订单销售排行</span>
+        <el-form-item style="margin-right: 0">
+          <el-form-item label="统计类型:" prop="type">
+            <el-select
+              v-model="goodsForm1.order"
+              size="small"
+              style="width: 150px"
+            >
+              <el-option
+                v-for="(item, index) in orderList"
+                :key="index"
+                :label="item.name"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="品牌:" prop="brand">
+            <el-select
+              v-model="goodsForm1.brand"
+              placeholder="请选择品牌"
+              style="width: 150px"
+            >
+              <el-option
+                v-for="(item, index) in selectList.brand"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="时间筛选:" prop="time">
+            <el-date-picker
+              v-model="goodsForm1.time"
+              align="right"
+              :clearable="false"
+              :default-time="['00:00:00', '23:59:59']"
+              end-placeholder="结束日期"
+              format="yyyy-MM-dd"
+              :picker-options="pickerOptions"
+              range-separator="至"
+              start-placeholder="开始日期"
+              type="daterange"
+              unlink-panels
+              value-format="yyyy-MM-dd HH:mm:ss"
+            />
+            <el-button
+              size="small"
+              style="margin-left: 10px"
+              type="primary"
+              @click="resetForm1()"
+            >
+              重置
+            </el-button>
+          </el-form-item>
+        </el-form-item>
+      </el-form>
+      <QYList :list="goosList" :list-type="listType" :state="listLoading">
+        <template #List>
+          <el-table-column align="center" label="排行" type="index" width="50">
+            <template slot-scope="scope">
+              <span
+                class="index_common"
+                :class="[
+                  scope.$index + 1 == '1'
+                    ? 'index_one'
+                    : scope.$index + 1 == '2'
+                    ? 'index_two'
+                    : scope.$index + 1 == '3'
+                    ? 'index_three'
+                    : 'index_more',
+                ]"
+              >
+                {{ scope.$index + 1 }}
+              </span>
+            </template>
+          </el-table-column>
+
           <el-table-column
             align="center"
-            label="序号"
-            type="index"
-            width="80"
-          />
-          <el-table-column label="来源" prop="name" width="150px" />
-          <el-table-column
-            align="right"
-            label="金额"
-            prop="count"
-            width="150px"
+            label="销售金额"
+            prop="sum_final_amount"
+            show-overflow-tooltip
           >
             <template #default="{ row }">
-              <el-tag>￥{{ row.count | moneyFormat }}</el-tag>
+              <el-tag>￥{{ row.sum_final_amount | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="占比率">
+          <el-table-column
+            align="center"
+            label="销售订单数数"
+            prop="sum_num"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="销售件数"
+            prop="sum_num"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="发货件数"
+            prop="count_order"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="代发货件数"
+            prop="customer_name"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="笔单件"
+            prop="cost_price"
+            show-overflow-tooltip
+          >
             <template #default="{ row }">
-              <el-progress color="#95de64" :percentage="row.percentage" />
+              <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-        </el-table>
-      </div>
-      <div style="width: 49%; padding: 20px; background-color: white">
-        <div style="margin-bottom: 20px">
-          <span style="font-size: 24px">订单来源分析图表</span>
-        </div>
-        <QYBranch :list="branchList" :style-chart="styleObj" />
-      </div>
+          <el-table-column
+            align="center"
+            label="退货率"
+            prop="gross_profit"
+            show-overflow-tooltip
+          >
+            <template #default="{ row }">{{ row.gross_profit }}%</template>
+          </el-table-column>
+          <el-table-column
+            align="center"
+            label="成交客户数"
+            prop="last_order_day"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="日期"
+            prop="last_order_time"
+            show-overflow-tooltip
+          />
+        </template>
+      </QYList>
     </div>
   </div>
 </template>
@@ -129,7 +245,7 @@
     getCommonAllList,
     getInformationOrderList,
     getOrderReportForms,
-    getOrderSourceAssay,
+    getHotStyleAnalysis,
   } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
@@ -143,37 +259,52 @@
           brand: null,
           time: this.getPastTime(30),
         },
-        selectList: [],
         listLoading: false,
         listType: 2,
-        textwidth: '20%',
-        styleObj: {
-          width: '400px',
-          height: '400px',
-          legendx: 0,
-          legendy: 350,
-          center: ['50%', '50%'],
+        goosList: [],
+        goodsForm1: {
+          page: 1,
+          pageSize: 20,
+          brand: null,
+          order: 'sum_num',
+          time: this.getPastTime(30),
         },
+        orderList: [
+          {
+            name: '销售金额',
+            value: 'count_order',
+          },
+          {
+            name: '销售件数',
+            value: 'sum_num',
+          },
+          {
+            name: '销售订单数',
+            value: 'sum_final_amount',
+          },
+          {
+            name: '发货件数',
+            value: 'gross_profit',
+          },
+          {
+            name: '退货件数',
+            value: 'sale_arrears',
+          },
+          {
+            name: '退货率',
+            value: 'sale_arrears',
+          },
+        ],
+        selectList: [],
+        textwidth: '20%',
         dateList: [],
         dataAllList: {
           sale_list_num: [],
           sale_list_amount: [],
           deliver_list_num: [],
           return_list_num: [],
-          return_list_amount: [],
-          confirm: [],
         },
-        branchList: [],
         goodsStaList: [
-          {
-            title: '销售件数',
-            number: 200,
-            num: 0,
-            type: 1,
-            typeSta: false,
-            name: 'sale_list_num',
-            numType: 2,
-          },
           {
             title: '销售金额',
             number: 200,
@@ -182,81 +313,140 @@
             typeSta: false,
             name: 'sale_list_amount',
             numType: 1,
+            onlineBilling: 100,
+            onlineBillingPercentage: '20%',
+            onlineMall: 400,
+            onlineMallPercentage: '80%',
+            content:
+              '在选定条件下，所有成功提交订单实际应付金额（不含订单优惠金额）',
           },
           {
-            title: '发货数量',
+            title: '销售件数',
+            number: 200,
+            num: 0,
+            type: 1,
+            typeSta: false,
+            name: 'sale_list_num',
+            numType: 2,
+            content: '在选定条件下，所有提交成功订单的商品件数',
+            onlineBilling: 100,
+            onlineBillingPercentage: '20%',
+            onlineMall: 400,
+            onlineMallPercentage: '80%',
+          },
+          {
+            title: '销售订单数',
+            number: 200,
+            num: 0,
+            type: 1,
+            typeSta: false,
+            name: 'sale_order_num',
+            numType: 2,
+            content: '在选定条件下，所有提交成功的订单数量',
+            onlineBilling: 100,
+            onlineBillingPercentage: '20%',
+            onlineMall: 400,
+            onlineMallPercentage: '80%',
+          },
+          {
+            title: '发货件数',
             number: 200,
             num: 0,
             type: 1,
             typeSta: false,
             name: 'deliver_list_num',
             numType: 2,
+            content: '在选定条件下，所有提交成功订单的已发货商品件数',
+            onlineBilling: 100,
+            onlineBillingPercentage: '20%',
+            onlineMall: 400,
+            onlineMallPercentage: '80%',
           },
           {
-            title: '发货金额',
-            number: 200,
-            num: 0,
-            type: 1,
-            typeSta: false,
-            name: 'deliver_list_amount',
-            numType: 1,
-          },
-          {
-            title: '待发货金额',
-            number: 200,
-            num: 0,
-            type: 1,
-            typeSta: false,
-            name: 'sale_amount',
-            numType: 1,
-          },
-          {
-            title: '待发货数量',
+            title: '待发货件数',
             number: 200,
             num: 0,
             type: 1,
             typeSta: false,
             name: 'sale_num',
             numType: 2,
+            content: '在选定条件下，所有提交成功订单的待发货商品件数',
+            onlineBilling: 100,
+            onlineBillingPercentage: '20%',
+            onlineMall: 400,
+            onlineMallPercentage: '80%',
           },
           {
-            title: '退货数量',
+            title: '笔单件',
+            number: 200,
+            num: 0,
+            type: 1,
+            typeSta: false,
+            name: 'sale_num',
+            numType: 1,
+            content: '在选定条件下，销售金额/销售订单数',
+            onlineBilling: 100,
+            onlineBillingPercentage: '20%',
+            onlineMall: 400,
+            onlineMallPercentage: '80%',
+          },
+          {
+            title: '退货件数',
             number: 200,
             num: 0,
             type: 1,
             typeSta: false,
             name: 'return_list_num',
             numType: 2,
+            content: '在选定条件下，所有提交成功的退货单件数',
+            onlineBilling: 100,
+            onlineBillingPercentage: '20%',
+            onlineMall: 400,
+            onlineMallPercentage: '80%',
           },
           {
-            title: '退货金额',
+            title: '退货率',
             number: 200,
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'return_list_amount',
-            numType: 1,
-          },
-          {
-            title: '待确认数量',
-            number: 200,
-            num: 0,
-            type: 1,
-            typeSta: false,
-            name: 'confirm_num',
+            name: 'return_list_lv',
             numType: 2,
+            content: '在选定条件下，退货订单数/销售订单数',
+            onlineBilling: 100,
+            onlineBillingPercentage: '20%',
+            onlineMall: 400,
+            onlineMallPercentage: '80%',
           },
           {
-            title: '待确认金额',
+            title: '待转入订单数',
             number: 200,
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'confirm_amount',
-            numType: 1,
+            name: 'return_list_lv',
+            numType: 2,
+            content: '在选定条件下，线上商城待转入的订单数',
+            onlineBilling: 100,
+            onlineBillingPercentage: '20%',
+            onlineMall: 400,
+            onlineMallPercentage: '80%',
+          },
+          {
+            title: '待转入件数',
+            number: 200,
+            num: 0,
+            type: 1,
+            typeSta: false,
+            name: 'return_list_lv',
+            numType: 2,
+            content: '在选定条件下，线上商城待转入的订单商品件数',
+            onlineBilling: 100,
+            onlineBillingPercentage: '20%',
+            onlineMall: 400,
+            onlineMallPercentage: '80%',
           },
         ],
-        tableData: [],
         initOptions: {
           renderer: 'svg',
         },
@@ -266,18 +456,20 @@
     watch: {
       goodsForm: {
         handler: function () {
-          this.tableData = []
-          this.branchList = []
           this.dateList = []
           this.dataAllList = {
             sale_list_num: [],
             sale_list_amount: [],
             deliver_list_num: [],
             return_list_num: [],
-            return_list_amount: [],
-            confirm: [],
           }
           this.fetchData()
+        },
+        deep: true,
+      },
+      goodsForm1: {
+        handler: function () {
+          this.getTableList()
         },
         deep: true,
       },
@@ -285,8 +477,18 @@
     created() {
       this.getTypeList()
       this.fetchData()
+      this.getTableList()
     },
     methods: {
+      resetForm1() {
+        this.goodsForm1 = {
+          page: 1,
+          pageSize: 20,
+          order: null,
+          brand: null,
+          time: this.getPastTime(30),
+        }
+      },
       resetForm() {
         this.goodsForm = {
           brand: null,
@@ -295,7 +497,7 @@
       },
       async getTypeList() {
         const { data } = await getCommonAllList({
-          type: 'brand',
+          type: 'customer_source,brand',
         })
         this.selectList = data
       },
@@ -341,14 +543,7 @@
               },
             },
             legend: {
-              data: [
-                '销售件数',
-                '退货件数',
-                '销售金额',
-                '退货金额',
-                '发货数量',
-                '待转入数量',
-              ],
+              data: ['销售金额', '销售件数', '退货件数', '发货件数'],
             },
             grid: {
               left: '3%',
@@ -378,7 +573,7 @@
             ],
             series: [
               {
-                name: '发货数量',
+                name: '发货件数',
                 type: 'line',
 
                 smooth: true,
@@ -386,17 +581,6 @@
                 yAxisIndex: 1,
                 itemStyle: {
                   color: '#FFC833',
-                },
-              },
-              {
-                name: '待转入数量',
-                type: 'line',
-
-                smooth: true,
-                data: this.dataAllList.confirm,
-                yAxisIndex: 1,
-                itemStyle: {
-                  color: '#FF6C87',
                 },
               },
               {
@@ -429,56 +613,38 @@
                   color: '#55DF7E',
                 },
               },
-              {
-                name: '退货金额',
-                type: 'bar',
-                data: this.dataAllList.return_list_amount,
-                itemStyle: {
-                  color: '#1890FF',
-                },
-              },
             ],
           }
         })
-        getOrderSourceAssay().then((res) => {
-          let temp1 = {}
-          let tempAll = 0
-          res.data.forEach((item) => {
-            tempAll = tempAll + item.count
-            temp1.name = item.name
-            temp1.value = item.count
-            this.branchList.push(temp1)
-            temp1 = {}
-          })
-          let temp = {}
-          res.data.forEach((item) => {
-            temp.name = item.name
-            temp.count = item.count
-            temp.percentage = parseFloat(
-              ((item.count / tempAll) * 100).toFixed(2)
-            )
-            this.tableData.push(temp)
-            temp = {}
-          })
-        })
+      },
+      async getTableList() {
+        this.listLoading = true
+        const { data } = await getHotStyleAnalysis(this.goodsForm1)
+        if (data.arrears_type == 0) {
+          this.orderList[4].value = 'sale_arrears'
+        } else {
+          this.orderList[4].value = 'delivery_arrears'
+        }
+        this.goosList = data.list.data
+        this.listLoading = false
       },
       // 导出
-      handleDownload() {
-        import('@/utils/excel').then((excel) => {
-          const tHeader = ['名称', '数量']
-          const filterVal = ['title', 'num']
-          const list = this.goodsStaList
-          const data = this.formatJson(filterVal, list)
-          excel.export_json_to_excel({
-            header: tHeader,
-            data,
-            filename: this.filename,
-          })
-        })
-      },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map((v) => filterVal.map((j) => v[j]))
-      },
+      // handleDownload() {
+      //   import('@/utils/excel').then((excel) => {
+      //     const tHeader = ['名称', '数量']
+      //     const filterVal = ['title', 'num']
+      //     const list = this.goodsStaList
+      //     const data = this.formatJson(filterVal, list)
+      //     excel.export_json_to_excel({
+      //       header: tHeader,
+      //       data,
+      //       filename: this.filename,
+      //     })
+      //   })
+      // },
+      // formatJson(filterVal, jsonData) {
+      //   return jsonData.map((v) => filterVal.map((j) => v[j]))
+      // },
     },
   }
 </script>

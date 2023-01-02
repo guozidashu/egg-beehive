@@ -256,9 +256,9 @@
 </template>
 
 <script>
-  import edit from './components/MaterialEdit'
+  import Edit from '@/subview/components/Edit/MaterialEdit'
 
-  import Drawer from './components/OrderDrawer'
+  import Drawer from '@/subview/components/Drawer/MaterialDrawer'
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
   import {
@@ -269,7 +269,7 @@
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'SupplierProduct',
-    components: { Drawer, edit },
+    components: { Drawer, Edit },
     mixins: [datajosn],
     data() {
       return {

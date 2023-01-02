@@ -160,7 +160,7 @@
   </div>
 </template>
 <script>
-  import Edit from './components/GoodsEdit'
+  import Edit from '@/subview/components/Edit/IntegralGoodsEdit'
   import { getIntegralGoodsList, delIntegralGoodsDel } from '@/api/basic'
   export default {
     name: 'IntegralGoods',

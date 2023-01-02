@@ -100,7 +100,7 @@
 </template>
 
 <script>
-  import Drawer from './components/DistributionDrawer'
+  import Drawer from '@/subview/components/Drawer/DistributionDrawer'
   // import { getStaffList } from '@/api/basic'
   export default {
     name: 'Distribution',

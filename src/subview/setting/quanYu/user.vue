@@ -139,7 +139,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import Drawer from '../components/UserDrawer'
+  import Drawer from '@/subview/components/Drawer/UserDrawer'
   import { getRoleList, addRoleGroupSave } from '@/api/basic'
   export default {
     name: 'User',

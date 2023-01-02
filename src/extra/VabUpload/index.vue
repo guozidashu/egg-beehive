@@ -61,6 +61,18 @@
         </div>
         <el-button type="primary" @click="handleClose">关闭</el-button>
         <el-button
+          v-if="limit > 0"
+          :loading="loading"
+          size="small"
+          style="margin-left: 10px"
+          type="success"
+          @click="submitUpload"
+        >
+          开始上传
+        </el-button>
+        <el-button
+          v-else
+          disabled
           :loading="loading"
           size="small"
           style="margin-left: 10px"

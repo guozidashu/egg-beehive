@@ -4,118 +4,9 @@
       <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24">
         <div
           style="
-            padding: 20px 20px 0 20px;
-            margin-bottom: 20px;
-            background-color: white;
-          "
-        >
-          <el-form
-            ref="form"
-            :inline="true"
-            label-width="80px"
-            :model="goodsForm"
-            style="display: flex; justify-content: space-between"
-            @submit.native.prevent
-          >
-            <span style="margin-top: 10px; font-size: 16px">交易分析</span>
-
-            <el-form-item
-              style="
-                float: right;
-                margin-right: 0;
-                margin-bottom: 10px;
-                font-size: 12px;
-              "
-            >
-              <el-form-item label="类型:" prop="type">
-                <el-select v-model="goodsForm.type" size="small">
-                  <el-option label="整手" :value="0" />
-                  <el-option label="散码" :value="1" />
-                </el-select>
-              </el-form-item>
-              <el-form-item label="品牌:" prop="brand">
-                <el-select v-model="goodsForm.brand" placeholder="请选择品牌">
-                  <el-option
-                    v-for="(item, index) in selectList.brand"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-                <el-button
-                  size="small"
-                  style="margin-left: 10px"
-                  type="primary"
-                  @click="resetForm()"
-                >
-                  重置
-                </el-button>
-              </el-form-item>
-            </el-form-item>
-          </el-form>
-        </div>
-      </el-col>
-
-      <el-col :lg="12" :md="24" :sm="24" :xl="12" :xs="24">
-        <el-card class="box-card" shadow="hover">
-          <div slot="header" class="clearfix">
-            <span>七日订单金额</span>
-          </div>
-          <Charts :data="dataObj" />
-        </el-card>
-      </el-col>
-      <el-col :lg="6" :md="12" :sm="12" :xl="6" :xs="24">
-        <el-card class="box-card" shadow="hover">
-          <div style="display: flex; margin-bottom: 28px">
-            <div style="width: 50%">
-              今日销售件数 {{ tableData.today_sale }}
-            </div>
-            <div style="width: 50%">
-              昨日销售件数 {{ tableData.yesterday_sale }}
-            </div>
-          </div>
-          <div style="margin: 10px 0">
-            <Charts :data="dataObj1" />
-          </div>
-          <div style="display: flex; margin-top: 28px">
-            <div style="width: 50%">
-              本月销售件数 {{ tableData.this_month_sale }}
-            </div>
-            <div style="width: 50%">
-              上月销售件数 {{ tableData.last_month_sale }}
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :lg="6" :md="12" :sm="12" :xl="6" :xs="24">
-        <el-card class="box-card" shadow="hover">
-          <div style="display: flex; margin-bottom: 28px">
-            <div style="width: 50%">
-              今日付款人数 {{ tableData.today_customer }}
-            </div>
-            <div style="width: 50%">
-              昨日付款人数 {{ tableData.yesterday_customer }}
-            </div>
-          </div>
-          <div style="margin: 10px 0">
-            <Charts :data="dataObj2" />
-          </div>
-          <div style="display: flex; margin-top: 28px">
-            <div style="width: 50%">
-              本月付款人数 {{ tableData.this_month_customer }}
-            </div>
-            <div style="width: 50%">
-              上月付款人数 {{ tableData.last_month_customer }}
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24">
-        <div
-          style="
             padding: 20px 20px 20px 20px;
-            margin-bottom: 20px;
             background-color: white;
+            border-radius: 5px;
           "
         >
           <el-form
@@ -129,7 +20,7 @@
             <span style="margin-top: 10px; font-size: 16px">交易概况</span>
             <el-form-item label="时间筛选:" prop="time">
               <el-date-picker
-                v-model="goodsForm1.time"
+                v-model="goodsForm.time"
                 align="right"
                 :clearable="false"
                 :default-time="['00:00:00', '23:59:59']"
@@ -142,13 +33,21 @@
                 unlink-panels
                 value-format="yyyy-MM-dd HH:mm:ss"
               />
-              <el-button
+              <!-- <el-button
                 size="small"
                 style="margin: 0 20px"
                 type="primary"
                 @click="handleDownload"
               >
                 导出
+              </el-button> -->
+              <el-button
+                size="small"
+                style="margin-left: 10px"
+                type="primary"
+                @click="resetForm()"
+              >
+                重置
               </el-button>
             </el-form-item>
           </el-form>
@@ -164,35 +63,250 @@
           />
         </div>
       </el-col>
+      <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24">
+        <div
+          style="
+            padding: 20px;
+            margin-top: 20px;
+            background-color: white;
+            border-radius: 5px;
+          "
+        >
+          <el-form
+            ref="form"
+            :inline="true"
+            label-width="80px"
+            :model="goodsForm1"
+            style="display: flex; justify-content: space-between"
+            @submit.native.prevent
+          >
+            <span style="margin-top: 10px; font-size: 16px">交易排行</span>
+            <el-form-item style="margin-right: 0">
+              <el-form-item label="统计类型:" prop="type">
+                <el-select
+                  v-model="goodsForm1.order"
+                  size="small"
+                  style="width: 150px"
+                >
+                  <el-option
+                    v-for="(item, index) in orderList"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="时间筛选:" prop="time">
+                <el-date-picker
+                  v-model="goodsForm1.time"
+                  align="right"
+                  :clearable="false"
+                  :default-time="['00:00:00', '23:59:59']"
+                  end-placeholder="结束日期"
+                  format="yyyy-MM-dd"
+                  :picker-options="pickerOptions"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  type="daterange"
+                  unlink-panels
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                />
+                <el-button
+                  size="small"
+                  style="margin-left: 10px"
+                  type="primary"
+                  @click="resetForm1()"
+                >
+                  重置
+                </el-button>
+              </el-form-item>
+            </el-form-item>
+          </el-form>
+          <QYList :list="goosList" :list-type="listType" :state="listLoading">
+            <template #List>
+              <el-table-column
+                align="center"
+                label="排行"
+                type="index"
+                width="50"
+              >
+                <template slot-scope="scope">
+                  <span
+                    class="index_common"
+                    :class="[
+                      scope.$index + 1 == '1'
+                        ? 'index_one'
+                        : scope.$index + 1 == '2'
+                        ? 'index_two'
+                        : scope.$index + 1 == '3'
+                        ? 'index_three'
+                        : 'index_more',
+                    ]"
+                  >
+                    {{ scope.$index + 1 }}
+                  </span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                align="center"
+                label="营业额"
+                prop="sum_final_amount"
+                show-overflow-tooltip
+              >
+                <template #default="{ row }">
+                  <el-tag>￥{{ row.sum_final_amount | moneyFormat }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column
+                align="center"
+                label="交易毛利金额"
+                prop="sum_final_amount"
+                show-overflow-tooltip
+              >
+                <template #default="{ row }">
+                  <el-tag>￥{{ row.sum_final_amount | moneyFormat }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column
+                align="center"
+                label="商品支付金额"
+                prop="cost_price"
+                show-overflow-tooltip
+              >
+                <template #default="{ row }">
+                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column
+                align="center"
+                label="会员保证金"
+                prop="cost_price"
+                show-overflow-tooltip
+              >
+                <template #default="{ row }">
+                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column
+                align="center"
+                label="收银金额"
+                prop="cost_price"
+                show-overflow-tooltip
+              >
+                <template #default="{ row }">
+                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column
+                align="center"
+                label="支出金额"
+                prop="cost_price"
+                show-overflow-tooltip
+              >
+                <template #default="{ row }">
+                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column
+                align="center"
+                label="商品退款金额"
+                prop="cost_price"
+                show-overflow-tooltip
+              >
+                <template #default="{ row }">
+                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column
+                align="center"
+                label="实际营收"
+                prop="cost_price"
+                show-overflow-tooltip
+              >
+                <template #default="{ row }">
+                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column
+                align="center"
+                label="销售成本"
+                prop="cost_price"
+                show-overflow-tooltip
+              >
+                <template #default="{ row }">
+                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column
+                align="center"
+                label="销售毛利"
+                prop="cost_price"
+                show-overflow-tooltip
+              >
+                <template #default="{ row }">
+                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
+                </template>
+              </el-table-column>
+            </template>
+          </QYList>
+        </div>
+      </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
   import VabChart from '@/extra/VabChart'
-  import Charts from './components/Charts'
   import datajosn from '@/assets/assets_josn/datajosn'
-  import { getCommonAllList, getTradeBasic, getTradeList } from '@/api/basic'
+  import { getTradeBasic, getHotStyleAnalysis } from '@/api/basic'
   export default {
     name: 'FinancialOverview',
     components: {
-      Charts,
       VabChart,
     },
     mixins: [datajosn],
     data() {
       return {
-        filename: '交易数据分析',
-        goodsForm: {
-          type: 0,
-          brand: 1,
-          time: this.getWeenTime(),
-        },
+        listLoading: false,
+        listType: 2,
+        goosList: [],
+        orderList: [
+          {
+            name: '营业额',
+            value: 'count_order',
+          },
+          {
+            name: '交易毛利金额',
+            value: 'sum_num',
+          },
+          {
+            name: '会员保证金',
+            value: 'sum_final_amount',
+          },
+          {
+            name: '收银金额',
+            value: 'gross_profit',
+          },
+          {
+            name: '实际营收',
+            value: 'sale_arrears',
+          },
+          {
+            name: '销售毛利',
+            value: 'sale_arrears',
+          },
+        ],
         goodsForm1: {
+          page: 1,
+          pageSize: 20,
+          brand: null,
+          order: 'sum_num',
           time: this.getPastTime(30),
         },
-        tableData: {},
-        selectList: [],
+        filename: '交易数据分析',
+        goodsForm: {
+          time: this.getPastTime(30),
+        },
         dateList: [],
         dataAllList: {
           real_price: [],
@@ -200,7 +314,7 @@
           sale_total: [],
           offline_total: [],
         },
-        textwidth: '25%',
+        textwidth: '20%',
         goodsStaList: [
           {
             title: '营业额',
@@ -210,125 +324,101 @@
             typeSta: false,
             name: 'real_price',
             numType: 1,
+            content: '在选定条件下，商品支付金额+会员保证金',
           },
           {
-            title: '交易毛利额',
+            title: '交易毛利金额',
             number: 200,
             num: 0,
             type: 1,
             typeSta: false,
             name: 'sale_total',
             numType: 1,
+            content: '在选定条件下，交易毛利金额 = 营业额 - 支出金额',
           },
           {
-            title: '销售额',
+            title: '商品支付金额',
             number: 200,
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_price',
+            name: 'sale_total',
             numType: 1,
+            content:
+              '在选定条件下，所有成功提交订单的实际应付金额（不含订单优惠金额）',
           },
           {
-            title: '线下收银金额',
-            number: 400,
+            title: '会员保证金',
+            number: 200,
             num: 0,
-            type: 2,
+            type: 1,
             typeSta: false,
-            name: 'offline_total',
+            name: 'sale_total',
             numType: 1,
+            content: '选定条件下，会员等级的保证金金额',
+          },
+          {
+            title: '收银金额',
+            number: 200,
+            num: 0,
+            type: 1,
+            typeSta: false,
+            name: 'sale_total',
+            numType: 1,
+            content:
+              '选定条件下，用户通过线下转款的金额（包括微信支付、支付宝支付、银行转账支付金额）',
+          },
+          {
+            title: '支出金额',
+            number: 200,
+            num: 0,
+            type: 1,
+            typeSta: false,
+            name: 'sale_total',
+            numType: 1,
+            content: '选定条件下，商品退款金额',
+          },
+          {
+            title: '商品退款金额',
+            number: 200,
+            num: 0,
+            type: 1,
+            typeSta: false,
+            name: 'sale_total',
+            numType: 1,
+            content: '在选定条件下，所有成功提交的退货单商品金额',
+          },
+          {
+            title: '实际营收',
+            number: 200,
+            num: 0,
+            type: 1,
+            typeSta: false,
+            name: 'sale_total',
+            numType: 1,
+            content: '在选定条件下，会员保证金+收银金额',
+          },
+          {
+            title: '销售成本',
+            number: 200,
+            num: 0,
+            type: 1,
+            typeSta: false,
+            name: 'sale_total',
+            numType: 1,
+            content: '在选定条件下，所有订单的商品成本金额',
+          },
+          {
+            title: '销售毛利',
+            number: 200,
+            num: 0,
+            type: 1,
+            typeSta: false,
+            name: 'sale_total',
+            numType: 1,
+            content: '在选定条件下，销售单实际应付金额-商品成本金额',
           },
         ],
-        dataObj: {
-          height: '250px',
-          legend: {
-            data: ['订单金额'],
-          },
-          color: ['#409eff'],
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: [],
-          },
-          yAxis: [
-            {
-              type: 'value',
-              name: '金额',
-            },
-          ],
-          series: [
-            {
-              name: '订单金额',
-              type: 'line',
-
-              smooth: true,
-              data: [],
-              itemStyle: {
-                color: '#FFC833',
-              },
-            },
-          ],
-        },
-        dataObj1: {
-          height: '213px',
-          legend: {
-            data: ['销售件数'],
-          },
-          color: ['#409eff'],
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: [],
-          },
-          yAxis: [
-            {
-              type: 'value',
-              name: '数量',
-            },
-          ],
-          series: [
-            {
-              name: '销售件数',
-              type: 'line',
-
-              smooth: true,
-              data: [],
-              itemStyle: {
-                color: '#FFC833',
-              },
-            },
-          ],
-        },
-        dataObj2: {
-          height: '213px',
-          legend: {
-            data: ['付款人数'],
-          },
-          color: ['#409eff'],
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: [],
-          },
-          yAxis: [
-            {
-              type: 'value',
-              name: '数量',
-            },
-          ],
-          series: [
-            {
-              name: '付款人数',
-              type: 'line',
-
-              smooth: true,
-              data: [],
-              itemStyle: {
-                color: '#FFC833',
-              },
-            },
-          ],
-        },
         initOptions: {
           renderer: 'svg',
         },
@@ -336,7 +426,7 @@
       }
     },
     watch: {
-      goodsForm1: {
+      goodsForm: {
         handler: function () {
           this.branchList = []
           this.dateList = []
@@ -350,7 +440,7 @@
         },
         deep: true,
       },
-      goodsForm: {
+      goodsForm1: {
         handler: function () {
           this.getTableList()
         },
@@ -358,60 +448,26 @@
       },
     },
     created() {
-      this.getTypeList()
       this.fetchData()
       this.getTableList()
     },
     methods: {
-      resetForm() {
-        this.goodsForm = {
-          type: 0,
-          brand: 1,
-          time: this.getWeenTime(),
+      resetForm1() {
+        this.goodsForm1 = {
+          page: 1,
+          pageSize: 20,
+          order: null,
+          brand: null,
+          time: this.getPastTime(30),
         }
       },
-      async getTypeList() {
-        const { data } = await getCommonAllList({
-          type: 'brand',
-        })
-        this.selectList = data
-      },
-      async getTableList() {
-        const { data } = await getTradeList(this.goodsForm)
-        let arr = []
-        let arr1 = []
-        data.final_amount_data.forEach((item) => {
-          for (let i in item) {
-            arr.push(item[i])
-            arr1.push(i)
-          }
-        })
-        this.dataObj.series[0].data = arr
-        this.dataObj.xAxis.data = arr1
-        let arr2 = []
-        let arr3 = []
-        data.sale_sum_data.forEach((item) => {
-          for (let i in item) {
-            arr2.push(item[i])
-            arr3.push(i)
-          }
-        })
-        this.dataObj1.series[0].data = arr2
-        this.dataObj1.xAxis.data = arr3
-        let arr4 = []
-        let arr5 = []
-        data.sale_customer_count.forEach((item) => {
-          for (let i in item) {
-            arr4.push(item[i])
-            arr5.push(i)
-          }
-        })
-        this.dataObj2.series[0].data = arr4
-        this.dataObj2.xAxis.data = arr5
-        this.tableData = data
+      resetForm() {
+        this.goodsForm = {
+          time: this.getPastTime(30),
+        }
       },
       async fetchData() {
-        const { data } = await getTradeBasic(this.goodsForm1)
+        const { data } = await getTradeBasic(this.goodsForm)
         this.goodsStaList.forEach((item) => {
           for (let i in data.list) {
             if (item.name == i) {
@@ -451,7 +507,7 @@
             },
           },
           legend: {
-            data: ['营业额', '交易毛利金额', '销售额', '线下收银金额'],
+            data: ['营业额', '交易毛利金额', '会员保证金', '收银金额'],
           },
           grid: {
             left: '3%',
@@ -495,7 +551,7 @@
               },
             },
             {
-              name: '销售额',
+              name: '会员保证金',
               type: 'bar',
               smooth: true,
               data: this.dataAllList.sale_price,
@@ -504,7 +560,7 @@
               },
             },
             {
-              name: '线下收银金额',
+              name: '收银金额',
               type: 'bar',
               smooth: true,
               data: this.dataAllList.offline_total,
@@ -515,23 +571,34 @@
           ],
         }
       },
+      async getTableList() {
+        this.listLoading = true
+        const { data } = await getHotStyleAnalysis(this.goodsForm1)
+        if (data.arrears_type == 0) {
+          this.orderList[4].value = 'sale_arrears'
+        } else {
+          this.orderList[4].value = 'delivery_arrears'
+        }
+        this.goosList = data.list.data
+        this.listLoading = false
+      },
       // 导出
-      handleDownload() {
-        import('@/utils/excel').then((excel) => {
-          const tHeader = ['名称', '数量']
-          const filterVal = ['title', 'num']
-          const list = this.goodsStaList
-          const data = this.formatJson(filterVal, list)
-          excel.export_json_to_excel({
-            header: tHeader,
-            data,
-            filename: this.filename,
-          })
-        })
-      },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map((v) => filterVal.map((j) => v[j]))
-      },
+      // handleDownload() {
+      //   import('@/utils/excel').then((excel) => {
+      //     const tHeader = ['名称', '数量']
+      //     const filterVal = ['title', 'num']
+      //     const list = this.goodsStaList
+      //     const data = this.formatJson(filterVal, list)
+      //     excel.export_json_to_excel({
+      //       header: tHeader,
+      //       data,
+      //       filename: this.filename,
+      //     })
+      //   })
+      // },
+      // formatJson(filterVal, jsonData) {
+      //   return jsonData.map((v) => filterVal.map((j) => v[j]))
+      // },
     },
   }
 </script>

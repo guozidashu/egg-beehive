@@ -117,7 +117,7 @@
   </div>
 </template>
 <script>
-  import Drawer from './components/ProductPlanningDrawer'
+  import Drawer from '@/subview/components/Drawer/ProductPlanningDrawer'
   import {
     getPlanList,
     getCommonAllList,

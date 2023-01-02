@@ -68,7 +68,7 @@
 </template>
 
 <script>
-  import Edit from '../components/AdministratorEdit.vue'
+  import Edit from '@/subview/components/Edit/AdministratorEdit'
   import { getAdminList, addAdminSave } from '@/api/basic'
   export default {
     name: 'Administrator',

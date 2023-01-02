@@ -352,6 +352,38 @@
             style="width: 215px"
           />
         </el-form-item>
+        <el-form-item label="转账证明">
+          <div style="display: flex">
+            <div>
+              <el-button
+                size="small"
+                style="margin: 0 10px 0 0"
+                type="primary"
+                @click="handleShow(1)"
+              >
+                图片上传
+              </el-button>
+            </div>
+            <div
+              v-if="DepositEditForm.imgList.length > 0"
+              style="display: flex; flex-wrap: wrap; margin-top: 20px"
+            >
+              <div
+                v-for="(item, index) in DepositEditForm.imgList"
+                :key="index"
+                style="position: relative; padding: 10px"
+              >
+                <span
+                  style="position: absolute; top: 0; right: 0"
+                  @click="delImg(index)"
+                >
+                  x
+                </span>
+                <img :src="item" style="width: 100px; height: 100px" />
+              </div>
+            </div>
+          </div>
+        </el-form-item>
         <el-form-item label="备注">
           <el-input
             v-model="DepositEditForm.remark"
@@ -366,12 +398,21 @@
         <el-button type="primary" @click="DepositEditSave">确 定</el-button>
       </template>
     </el-dialog>
+    <vab-upload
+      ref="vabUpload"
+      :limit="imgNum"
+      name="file"
+      :size="2"
+      url="/upload"
+      @submitUpload="getSon"
+    />
   </div>
 </template>
 
 <script>
   import Edit from '@/subview/components/Edit/ManageEdit'
   import Drawer from '@/subview/components/Drawer/ManageDrawer'
+  import VabUpload from '@/extra/VabUpload'
   import {
     getCommonAllList,
     getCustomerList,
@@ -381,7 +422,7 @@
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'CustomerManage',
-    components: { Edit, Drawer },
+    components: { Edit, Drawer, VabUpload },
     mixins: [datajosn],
     data() {
       const validateUsername = (rule, value, callback) => {
@@ -392,11 +433,13 @@
         }
       }
       return {
+        imgNum: 5,
         DepositEditForm: {
           customer_id: null,
           money: null,
           pay_type: null,
           remark: '',
+          imgList: [],
         },
         DepositEditRules: {
           //money 金额 且必须大于零
@@ -501,12 +544,32 @@
         deep: true,
         immediate: true,
       },
+      DepositEditForm: {
+        handler: function (n) {
+          this.imgNum = 5 - n.imgList.length
+        },
+        deep: true,
+        immediate: true,
+      },
     },
     created() {
       this.fetchData()
       this.selectData()
     },
     methods: {
+      delImg(index) {
+        this.DepositEditForm.imgList.splice(index, 1)
+      },
+      getSon(data) {
+        data.forEach((item) => {
+          if (this.DepositEditForm.imgList.indexOf(item) == -1) {
+            this.DepositEditForm.imgList.push(item)
+          }
+        })
+      },
+      handleShow() {
+        this.$refs['vabUpload'].handleShow()
+      },
       DepositEditClose() {
         this.dialogVisibleEdit = false
       },
@@ -544,6 +607,7 @@
           money: null,
           status: null,
           remark: '',
+          imgList: [],
         }
       },
       handleDeposit(ID) {

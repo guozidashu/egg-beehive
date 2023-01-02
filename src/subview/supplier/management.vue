@@ -121,7 +121,7 @@
   </div>
 </template>
 <script>
-  import Drawer from './components/ManagementDrawer'
+  import Drawer from '@/subview/components/Drawer/ManagementDrawer'
   import {
     getSupplierList,
     getCommonAllList,

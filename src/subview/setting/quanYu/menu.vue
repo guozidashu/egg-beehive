@@ -79,7 +79,7 @@
 </template>
 
 <script>
-  import Edit from '../components/MenuManagementEdit'
+  import Edit from '@/subview/components/Edit/MenuManagementEdit'
   import { getMenuList, delMenuDel } from '@/api/basic'
   export default {
     name: 'MenuManagement',

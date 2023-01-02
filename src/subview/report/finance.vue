@@ -157,8 +157,7 @@
 
 <script>
   import VabChart from '@/extra/VabChart'
-
-  import SalesChart from './components/SalesChart'
+  import SalesChart from '@/subview/components/Chart/FinanceChart'
   import datajosn from '@/assets/assets_josn/datajosn'
   import {
     getFinanceListd,

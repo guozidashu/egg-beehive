@@ -237,8 +237,8 @@
 
 <script>
   //  import Edit from '@/subview/components/Edit/OrderEdit'
-  import Drawer from './components/Drawer'
-  import Edit from './components/ListEdit'
+  import Edit from '@/subview/components/Edit/OrderEdit'
+  import Drawer from '@/subview/components/Drawer/OrderDrawer'
   import { getOrderList, getOrderCount } from '@/api/basic'
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'

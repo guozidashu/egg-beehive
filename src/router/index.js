@@ -66,130 +66,11 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'project',
-        name: 'Project',
-        meta: {
-          title: '商品企划',
-          icon: 'archive-line',
-        },
-        children: [
-          {
-            path: 'projectBrand',
-            name: 'ProjectBrand',
-            component: () => import('@/subview/research/project/brand'),
-            meta: {
-              title: '品牌管理',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'projectBand',
-            name: 'ProjectBand',
-            component: () => import('@/subview/research/project/band'),
-            meta: {
-              title: '波段计划',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'projectcategory',
-            name: 'Projectcategory',
-            component: () => import('@/subview/research/project/category'),
-            meta: {
-              title: '类目计划',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'projectPrice',
-            name: 'ProjectPrice',
-            component: () => import('@/subview/research/project/price'),
-            meta: {
-              title: '价格带计划',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'projectPost',
-            name: 'ProjectPost',
-            component: () => import('@/subview/research/project/post'),
-            meta: {
-              title: '岗位目标计划',
-              // icon: 'home-2-line',
-            },
-          },
-          // {
-          //   path: 'projectMeeting',
-          //   name: 'ProjectMeeting',
-          //   component: () => import('@/subview/research/project/meeting'),
-          //   meta: {
-          //     title: '订货会',
-          //     icon: 'archive-line',
-          //   },
-          // },
-        ],
-      },
-      {
         path: 'progress',
         name: 'Progress',
         component: () => import('@/subview/research/progress'),
         meta: {
           title: '研发进度',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'financial',
-        name: 'Financial',
-        meta: {
-          title: '财务管理',
-          icon: 'archive-line',
-        },
-        children: [
-          {
-            path: 'financialDevelopment',
-            name: 'FinancialDevelopment',
-            component: () => import('@/subview/research/financial/development'),
-            meta: {
-              title: '开发核价单',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'financialStandard',
-            name: 'FinancialStandard',
-            component: () => import('@/subview/research/financial/standard'),
-            meta: {
-              title: '标准核价单',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'financialCosts',
-            name: 'FinancialCosts',
-            component: () => import('@/subview/research/financial/costs'),
-            meta: {
-              title: '部门成本分析',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'financialValue',
-            name: 'FinancialValue',
-            component: () => import('@/subview/research/financial/value'),
-            meta: {
-              title: '员工价值分析',
-              // icon: 'home-2-line',
-            },
-          },
-        ],
-      },
-      {
-        path: 'grail',
-        name: 'Grail',
-        component: () => import('@/subview/research/grail'),
-        meta: {
-          title: '研发大盘',
           icon: 'archive-line',
         },
       },
@@ -448,24 +329,6 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
-      // {
-      //   path: 'dingdanList',
-      //   name: 'DingdanList',
-      //   component: () => import('@/subview/order/orderBasis/index.vue'),
-      //   meta: {
-      //     title: '订单统计2',
-      //     icon: 'archive-line',
-      //   },
-      // },
-      {
-        path: 'analysis',
-        name: 'Analysis',
-        component: () => import('@/subview/order/analysis.vue'),
-        meta: {
-          title: '订单统计分析',
-          icon: 'archive-line',
-        },
-      },
     ],
   },
   {
@@ -597,15 +460,6 @@ export const asyncRoutes = [
         component: () => import('@/subview/report/customer'),
         meta: {
           title: '客户分析',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'reportInventory',
-        name: 'ReportInventory',
-        component: () => import('@/subview/report/inventory'),
-        meta: {
-          title: '库存分析',
           icon: 'archive-line',
         },
       },
@@ -907,88 +761,7 @@ export const asyncRoutes = [
           },
         ],
       },
-      {
-        path: 'platform',
-        name: 'Platform',
-        meta: {
-          title: '销售渠道',
-          icon: 'archive-line',
-        },
-        children: [
-          {
-            path: 'platformwxgong',
-            name: 'PlatformWxgong',
-            component: () => import('@/subview/setting/platform/wxgong'),
-            meta: {
-              title: '微信公众号',
-            },
-          },
-          {
-            path: 'platformwxxiao',
-            name: 'PlatformWxxiao',
-            component: () => import('@/subview/setting/platform/wxxiao'),
-            meta: {
-              title: '微信小程序',
-            },
-          },
-          {
-            path: 'platformvideo',
-            name: 'PlatformVideo',
-            component: () => import('@/subview/setting/platform/video'),
-            meta: {
-              title: '视频号矩阵',
-            },
-          },
-          {
-            path: 'platformzfbxiao',
-            name: 'PlatformZfbxiao',
-            component: () => import('@/subview/setting/platform/zfbxiao'),
-            meta: {
-              title: '支付宝小程序',
-            },
-          },
-          {
-            path: 'platformapp',
-            name: 'PlatformApp',
-            component: () => import('@/subview/setting/platform/app'),
-            meta: {
-              title: '移动App',
-            },
-          },
-          {
-            path: 'platformpinduoduoktt',
-            name: 'PlatformPinduoduoktt',
-            component: () => import('@/subview/setting/platform/pinduoduoktt'),
-            meta: {
-              title: '社群快团团',
-            },
-          },
-          {
-            path: 'platformttxiao',
-            name: 'PlatformTtxiao',
-            component: () => import('@/subview/setting/platform/ttxiao'),
-            meta: {
-              title: '头条小程序',
-            },
-          },
-          {
-            path: 'platformdoudin',
-            name: 'PlatformDoudin',
-            component: () => import('@/subview/setting/platform/doudin'),
-            meta: {
-              title: '抖店接入',
-            },
-          },
-          {
-            path: 'platformredbook',
-            name: 'PlatformRedbook',
-            component: () => import('@/subview/setting/platform/redbook'),
-            meta: {
-              title: '小红书',
-            },
-          },
-        ],
-      },
+
       {
         path: 'personal',
         name: 'Personal',
@@ -1031,15 +804,6 @@ export const asyncRoutes = [
         component: () => import('@/subview/setting/logs'),
         meta: {
           title: '操作日志',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'menu',
-        name: 'Menu',
-        component: () => import('@/subview/setting/menu'),
-        meta: {
-          title: '菜单管理',
           icon: 'archive-line',
         },
       },

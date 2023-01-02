@@ -123,8 +123,8 @@
 </template>
 
 <script>
-  import Edit from '../components/EmployeesEdit'
-  // import Drawer from './components/EmployeesDrawer'
+  import Edit from '@/subview/components/Edit/EmployeesEdit'
+  // import Drawer from '@/subview/components/Drawer/EmployeesDrawer'
   import { getEmployeeList, delEmployeeSync } from '@/api/basic'
   export default {
     name: 'Employees',

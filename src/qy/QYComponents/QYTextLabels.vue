@@ -35,6 +35,17 @@
             <span v-if="item.numType == 1">￥{{ item.num | moneyFormat }}</span>
             <span v-else>{{ item.num }}</span>
           </div>
+          <div
+            v-if="item.onlineBilling"
+            style="margin-bottom: 10px; font-size: 12px"
+          >
+            线上开单：&nbsp;￥{{ item.onlineBilling | moneyFormat }} &nbsp;
+            {{ item.onlineBillingPercentage }}
+          </div>
+          <div v-if="item.onlineMall" style="font-size: 12px">
+            线上商城：&nbsp;￥{{ item.onlineMall | moneyFormat }} &nbsp;
+            {{ item.onlineMallPercentage }}
+          </div>
           <div v-if="item.typeSta">
             <span v-if="item.type === 1">较昨日增长：</span>
             <span v-else>较昨日减少：</span>

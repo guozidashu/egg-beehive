@@ -147,7 +147,7 @@
 </template>
 
 <script>
-  import Drawer from './components/StoresDrawer'
+  import Drawer from '@/subview/components/Drawer/StoresDrawer'
   import { parseTime } from '@/utils'
   import { getStoreList, editChangeStatus } from '@/api/basic'
   export default {
