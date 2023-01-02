@@ -122,7 +122,14 @@
               </el-form-item>
             </el-form-item>
           </el-form>
-          <QYList :list="goosList" :list-type="listType" :state="listLoading">
+          <QYList
+            :list="goosList"
+            :list-type="listType"
+            :state="listLoading"
+            :total="listTotal"
+            @changePage="changeBtnPage"
+            @changePageSize="changeBtnPageSize"
+          >
             <template #List>
               <el-table-column
                 align="center"
@@ -247,6 +254,12 @@
                   <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
                 </template>
               </el-table-column>
+              <el-table-column
+                align="center"
+                label="订单日期"
+                prop="last_order_time"
+                show-overflow-tooltip
+              />
             </template>
           </QYList>
         </div>
@@ -269,6 +282,7 @@
       return {
         listLoading: false,
         listType: 2,
+        listTotal: 0,
         goosList: [],
         orderList: [
           {
@@ -452,6 +466,13 @@
       this.getTableList()
     },
     methods: {
+      changeBtnPage(data) {
+        this.goodsForm1.page = data
+      },
+
+      changeBtnPageSize(data) {
+        this.goodsForm1.pageSize = data
+      },
       resetForm1() {
         this.goodsForm1 = {
           page: 1,
@@ -580,6 +601,7 @@
           this.orderList[4].value = 'delivery_arrears'
         }
         this.goosList = data.list.data
+        this.listTotal = data.list.total
         this.listLoading = false
       },
       // 导出

@@ -16,7 +16,7 @@
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">订单数据分析</span>
+        <span style="margin-top: 10px; font-size: 16px">整体分析</span>
 
         <el-form-item style="margin-right: 0; font-size: 12px">
           <el-form-item label="品牌:" prop="brand">
@@ -147,7 +147,14 @@
           </el-form-item>
         </el-form-item>
       </el-form>
-      <QYList :list="goosList" :list-type="listType" :state="listLoading">
+      <QYList
+        :list="goosList"
+        :list-type="listType"
+        :state="listLoading"
+        :total="listTotal"
+        @changePage="changeBtnPage"
+        @changePageSize="changeBtnPageSize"
+      >
         <template #List>
           <el-table-column align="center" label="排行" type="index" width="50">
             <template slot-scope="scope">
@@ -228,7 +235,7 @@
           />
           <el-table-column
             align="center"
-            label="日期"
+            label="订单日期"
             prop="last_order_time"
             show-overflow-tooltip
           />
@@ -260,7 +267,8 @@
           time: this.getPastTime(30),
         },
         listLoading: false,
-        listType: 2,
+        listTotal: 0,
+        listType: 1,
         goosList: [],
         goodsForm1: {
           page: 1,
@@ -427,10 +435,8 @@
             name: 'return_list_lv',
             numType: 2,
             content: '在选定条件下，线上商城待转入的订单数',
-            onlineBilling: 100,
-            onlineBillingPercentage: '20%',
             onlineMall: 400,
-            onlineMallPercentage: '80%',
+            onlineMallPercentage: '100%',
           },
           {
             title: '待转入件数',
@@ -441,10 +447,8 @@
             name: 'return_list_lv',
             numType: 2,
             content: '在选定条件下，线上商城待转入的订单商品件数',
-            onlineBilling: 100,
-            onlineBillingPercentage: '20%',
             onlineMall: 400,
-            onlineMallPercentage: '80%',
+            onlineMallPercentage: '100%',
           },
         ],
         initOptions: {
@@ -480,6 +484,13 @@
       this.getTableList()
     },
     methods: {
+      changeBtnPage(data) {
+        this.goodsForm1.page = data
+      },
+
+      changeBtnPageSize(data) {
+        this.goodsForm1.pageSize = data
+      },
       resetForm1() {
         this.goodsForm1 = {
           page: 1,
@@ -626,6 +637,7 @@
           this.orderList[4].value = 'delivery_arrears'
         }
         this.goosList = data.list.data
+        this.listTotal = data.list.total
         this.listLoading = false
       },
       // 导出

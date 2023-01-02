@@ -244,7 +244,7 @@
           category: '', //款式分类
           brand: '', //品牌
         },
-        widthStyle: '25%',
+        widthStyle: '20%',
         goodsStaList: [
           {
             title: '待发货',
@@ -255,6 +255,17 @@
             name: 'consignment_stock',
             numType: 2,
             content: '刷新时间截止时，当前所有成功提交订单的商品未发货数量',
+          },
+          {
+            title: '商品总数',
+            number: 200,
+            num: 94.32,
+            type: 1,
+            typeSta: false,
+            name: 'available_stock',
+            numType: 2,
+            content:
+              '增加商品总数：刷新时间截止时，累计创建的商品款式总数（不包含停售商品）',
           },
           {
             title: '现存库存',
@@ -277,16 +288,6 @@
             content:
               '刷新时间截止时，所有提交成功的裁床生产订单减去生产入库单的数据',
           },
-          // {
-          //   title: '预计可售库存',
-          //   number: 200,
-          //   num: 94.32,
-          //   type: 1,
-          //   typeSta: false,
-          //   name: 'available_stock',
-          //   numType: 2,
-          //   content: '刷新时间截止时，在售的现货库存+生产中库存的数据',
-          // },
           {
             title: '总库存',
             number: 200,
@@ -307,6 +308,16 @@
             numType: 2,
             content:
               '刷新时间截止时，当前符合商品现货库存小于多少时预警条件时的实时数据',
+          },
+          {
+            title: '缺货率',
+            number: 200,
+            num: 94.32,
+            type: 1,
+            typeSta: false,
+            name: 'available_stock',
+            numType: 2,
+            content: '库存数量为零的商品/商品总数*100%',
           },
           {
             title: '现货库存成本',

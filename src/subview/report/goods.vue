@@ -309,14 +309,14 @@
             content: '今日创建商品款数量',
           },
           {
-            title: '商品数',
+            title: '商品总数',
             number: 200,
             num: 0,
             type: 1,
             typeSta: false,
             name: 'goods_num',
             numType: 2,
-            content: '在选定条件下，累计创建的商品总数量（不包含停售商品）',
+            content: '在选定条件下，累计创建的商品款式总数（不包含停售商品）',
           },
           {
             title: '商品sku数',

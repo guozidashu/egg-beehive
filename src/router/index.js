@@ -49,7 +49,7 @@ export const asyncRoutes = [
         name: 'Board',
         component: () => import('@/subview/index/board'),
         meta: {
-          title: '看板',
+          title: '仓库预警分析',
           icon: 'archive-line',
         },
       },

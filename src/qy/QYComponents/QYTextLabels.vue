@@ -39,7 +39,7 @@
             v-if="item.onlineBilling"
             style="margin-bottom: 10px; font-size: 12px"
           >
-            线上开单：&nbsp;￥{{ item.onlineBilling | moneyFormat }} &nbsp;
+            线下开单：&nbsp;￥{{ item.onlineBilling | moneyFormat }} &nbsp;
             {{ item.onlineBillingPercentage }}
           </div>
           <div v-if="item.onlineMall" style="font-size: 12px">
