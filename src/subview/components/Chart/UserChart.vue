@@ -1,34 +1,84 @@
 <template>
-  <el-card class="authorization" shadow="hover">
+  <el-card shadow="hover">
     <template #header>
-      <vab-icon icon="bar-chart-2-line" />
-      购买用户统计
+      <div style="text-align: center">{{ title }}</div>
     </template>
-    <QYBranch :list="branchList" :style-chart="styleObj" />
+    <vab-chart
+      :init-options="initOptions"
+      :option="option"
+      style="height: 181px"
+      theme="vab-echarts-theme"
+    />
   </el-card>
 </template>
 
 <script>
+  import VabChart from '@/extra/VabChart'
+
   export default {
+    name: 'VabChartGauge',
+    components: {
+      VabChart,
+    },
+    props: {
+      title: {
+        type: String,
+        default: '',
+      },
+      dataList: {
+        type: Object,
+        default: () => ({}),
+      },
+    },
     data() {
       return {
-        styleObj: {
-          width: '400px',
-          height: '250px',
-          legendx: 0,
-          legendy: 200,
-          center: ['50%', '40%'],
+        initOptions: {
+          renderer: 'svg',
         },
-        branchList: [
-          { value: 1048, name: '未消费客户' },
-          { value: 735, name: '消费一次客户' },
-          { value: 580, name: '消费10次客户' },
-          { value: 484, name: '消费20次客户' },
-        ],
+        option: {
+          grid: {
+            top: 20,
+            right: 20,
+            bottom: 20,
+            left: 20,
+          },
+          tooltip: {
+            formatter: '{a} <br/>{b} : {c}%',
+          },
+          series: {
+            name: this.dataList.title,
+            type: 'gauge',
+            radius: '100%',
+            progress: {
+              show: true,
+            },
+            detail: {
+              formatter: '{value}',
+              valueAnimation: true,
+              fontSize: 14,
+              offsetCenter: [0, '70%'],
+            },
+            data: [
+              {
+                value: this.dataList.value,
+                name: this.dataList.name,
+              },
+            ],
+          },
+        },
       }
     },
-    beforeDestroy() {},
-    mounted() {},
+    watch: {
+      dataList: {
+        handler: function (newval) {
+          this.option.series.name = newval.title
+          this.option.series.data[0].value = newval.value
+          this.option.series.data[0].name = newval.name
+          this.$forceUpdate()
+        },
+        deep: true,
+        immediate: true,
+      },
+    },
   }
 </script>
-<style lang="scss" scoped></style>

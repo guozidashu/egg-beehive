@@ -535,7 +535,17 @@
               >
                 <el-radio-group v-model="form.status">
                   <el-radio :label="1">在售</el-radio>
-                  <el-radio :label="0">停售</el-radio>
+                  <el-radio :label="2">停售</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item
+                v-if="form.drawerType == 3 || form.drawerType == 2"
+                class="item"
+                label="是否同步聚水潭："
+              >
+                <el-radio-group v-model="form.is_jushuitan">
+                  <el-radio :label="1">开启</el-radio>
+                  <el-radio :label="0">关闭</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item class="item" label="库存预警：">

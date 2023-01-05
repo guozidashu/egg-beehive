@@ -103,6 +103,14 @@
           :label="'库存预警 (' + tatleData.stock_alert + ')'"
           name="3"
         />
+        <el-tab-pane
+          :label="'已同步聚水潭 (' + tatleData.jushuitan_sync + ')'"
+          name="7"
+        />
+        <el-tab-pane
+          :label="'未同步聚水潭 (' + tatleData.jushuitan_not_sync + ')'"
+          name="8"
+        />
         <!-- <el-tab-pane :label="'待确认 (' + tatleData.confirmed + ')'" name="4" /> -->
         <!-- <el-tab-pane
           :label="'自营商城 (' + tatleData.self_operated + ')'"
@@ -128,6 +136,9 @@
           </el-button>
           <el-button size="small" type="primary" @click="handleEdit(1)">
             批量在售
+          </el-button>
+          <el-button size="small" type="primary" @click="handleEditJST()">
+            批量同步聚水潭
           </el-button>
         </el-form-item>
       </el-form>
@@ -349,6 +360,7 @@
     getGoodTabTotal,
     editSourceMaterialSave,
     editChangeRecommend,
+    saveGoodsSyncJuShuiTan,
   } from '@/api/basic'
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
@@ -374,6 +386,8 @@
           confirmed: null, // 待确认
           self_operated: null, // 自营
           third_platform: null, // 第三方
+          jushuitan_not_sync: null, // 聚水潭未同步
+          jushuitan_sync: null, // 聚水潭已同步
         },
         form: {
           page: 1,
@@ -409,8 +423,6 @@
     },
     created() {
       this.getGoodsTypeList()
-      this.fetchData()
-      this.getTatolData()
     },
     methods: {
       async handleMaterialSub() {
@@ -471,6 +483,7 @@
       },
       handleQuery() {
         this.fetchData()
+        this.getTatolData()
       },
       // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
@@ -510,6 +523,7 @@
           this.drawerInof = {}
           this.drawerInof.drawerType = type
           this.drawerInof.purchase_price = 0
+          this.drawerInof.is_jushuitan = 0
           this.drawerInof.cost_price = 0
           this.drawerInof.sale_price = 0
           this.drawerInof.price = 0
@@ -530,6 +544,25 @@
       },
       handleSelectionChange(val) {
         this.selectRowsId = val
+      },
+      handleEditJST() {
+        if (this.selectRowsId.length > 0) {
+          let ids = this.selectRowsId.map((item) => item.id)
+          this.$baseConfirm(
+            '你确定要将选中商品同步聚水潭吗?',
+            null,
+            async () => {
+              const { msg } = await saveGoodsSyncJuShuiTan({
+                goods_id: ids,
+              })
+              this.$baseMessage(msg, 'success', 'vab-hey-message-success')
+              await this.fetchData()
+              await this.getTatolData()
+            }
+          )
+        } else {
+          this.$message.error('请先选择商品')
+        }
       },
       handleEdit(type, row) {
         if (this.selectRowsId.length > 0) {

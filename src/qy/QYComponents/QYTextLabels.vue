@@ -4,7 +4,7 @@
       <div v-for="(item, index) in list" :key="index" :style="textStyle">
         <vab-icon
           icon="bar-chart-box-fill"
-          style="margin-right: 15px; font-size: 32px; color: #3bdfdf"
+          style="margin-right: 15px; font-size: 32px; color: #1890ff"
         />
         <div style="display: flex; flex-direction: column; margin-top: 5px">
           <div>
@@ -36,14 +36,22 @@
             <span v-else>{{ item.num }}</span>
           </div>
           <div
-            v-if="item.onlineBilling"
+            v-if="item.onlineBillingPercentage"
             style="margin-bottom: 10px; font-size: 12px"
           >
-            线下开单：&nbsp;￥{{ item.onlineBilling | moneyFormat }} &nbsp;
+            线下开单：&nbsp;
+            <span v-if="item.title != '退货率'">
+              ￥{{ item.onlineBilling | moneyFormat }}
+            </span>
+            &nbsp;
             {{ item.onlineBillingPercentage }}
           </div>
-          <div v-if="item.onlineMall" style="font-size: 12px">
-            线上商城：&nbsp;￥{{ item.onlineMall | moneyFormat }} &nbsp;
+          <div v-if="item.onlineBillingPercentage" style="font-size: 12px">
+            线上商城：&nbsp;
+            <span v-if="item.title != '退货率'">
+              ￥{{ item.onlineMall | moneyFormat }}
+            </span>
+            &nbsp;
             {{ item.onlineMallPercentage }}
           </div>
           <div v-if="item.typeSta">

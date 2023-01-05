@@ -216,6 +216,7 @@
               <span v-else>{{ row.sum_num }}</span>
             </template>
           </el-table-column>
+          <el-table-column label="销售占比" prop="final_rate" width="120" />
           <el-table-column label="预计售完天数" prop="expect_day" width="120" />
           <el-table-column label="上架天数" prop="upper_day" width="80" />
           <el-table-column label="上架时间" prop="upper_time" width="150">
@@ -309,7 +310,7 @@
             content: '今日创建商品款数量',
           },
           {
-            title: '商品总数',
+            title: '商品款式总数',
             number: 200,
             num: 0,
             type: 1,

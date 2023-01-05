@@ -63,7 +63,7 @@
           />
         </div>
       </el-col>
-      <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24">
+      <!-- <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24">
         <div
           style="
             padding: 20px;
@@ -263,7 +263,7 @@
             </template>
           </QYList>
         </div>
-      </el-col>
+      </el-col> -->
     </el-row>
   </div>
 </template>
@@ -271,7 +271,7 @@
 <script>
   import VabChart from '@/extra/VabChart'
   import datajosn from '@/assets/assets_josn/datajosn'
-  import { getTradeBasic, getHotStyleAnalysis } from '@/api/basic'
+  import { getTradeBasic, getHotStyleAnalysis, getTradeList } from '@/api/basic'
   export default {
     name: 'FinancialOverview',
     components: {
@@ -281,7 +281,7 @@
     data() {
       return {
         listLoading: false,
-        listType: 2,
+        listType: 1,
         listTotal: 0,
         goosList: [],
         orderList: [
@@ -323,10 +323,10 @@
         },
         dateList: [],
         dataAllList: {
-          real_price: [],
-          sale_price: [],
-          sale_total: [],
-          offline_total: [],
+          cashier_price: [],
+          earnest_price: [],
+          turnover: [],
+          gross_profit_amount: [],
         },
         textwidth: '20%',
         goodsStaList: [
@@ -336,7 +336,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'real_price',
+            name: 'turnover',
             numType: 1,
             content: '在选定条件下，商品支付金额+会员保证金',
           },
@@ -346,7 +346,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_total',
+            name: 'gross_profit_amount',
             numType: 1,
             content: '在选定条件下，交易毛利金额 = 营业额 - 支出金额',
           },
@@ -356,7 +356,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_total',
+            name: 'final_amount',
             numType: 1,
             content:
               '在选定条件下，所有成功提交订单的实际应付金额（不含订单优惠金额）',
@@ -367,7 +367,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_total',
+            name: 'earnest_price',
             numType: 1,
             content: '选定条件下，会员等级的保证金金额',
           },
@@ -377,10 +377,10 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_total',
+            name: 'cashier_price',
             numType: 1,
             content:
-              '选定条件下，用户通过线下转款的金额（包括微信支付、支付宝支付、银行转账支付金额）',
+              '选定条件下，线上订货商城在线支付+用户通过线下转款的金额（ 订单收款，客户收款）',
           },
           {
             title: '支出金额',
@@ -388,7 +388,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_total',
+            name: 'outlay_price',
             numType: 1,
             content: '选定条件下，商品退款金额',
           },
@@ -398,7 +398,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_total',
+            name: 'refund_price',
             numType: 1,
             content: '在选定条件下，所有成功提交的退货单商品金额',
           },
@@ -408,7 +408,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_total',
+            name: 'actual_revenue',
             numType: 1,
             content: '在选定条件下，会员保证金+收银金额',
           },
@@ -418,7 +418,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_total',
+            name: 'sale_cost_price',
             numType: 1,
             content: '在选定条件下，所有订单的商品成本金额',
           },
@@ -428,7 +428,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_total',
+            name: 'gross_profit',
             numType: 1,
             content: '在选定条件下，销售单实际应付金额-商品成本金额',
           },
@@ -445,10 +445,10 @@
           this.branchList = []
           this.dateList = []
           this.dataAllList = {
-            real_price: [],
-            sale_price: [],
-            sale_total: [],
-            offline_total: [],
+            cashier_price: [],
+            earnest_price: [],
+            turnover: [],
+            gross_profit_amount: [],
           }
           this.fetchData()
         },
@@ -463,7 +463,8 @@
     },
     created() {
       this.fetchData()
-      this.getTableList()
+      this.getCardList()
+      // this.getTableList()
     },
     methods: {
       changeBtnPage(data) {
@@ -487,22 +488,25 @@
           time: this.getPastTime(30),
         }
       },
-      async fetchData() {
-        const { data } = await getTradeBasic(this.goodsForm)
+      async getCardList() {
+        const { data } = await getTradeList(this.goodsForm)
         this.goodsStaList.forEach((item) => {
-          for (let i in data.list) {
+          for (let i in data) {
             if (item.name == i) {
-              if (data.list[i] == null) {
-                data.list[i] = 0
-                item.num = data.list[i]
+              if (data[i] == null) {
+                data[i] = 0
+                item.num = data[i]
               } else {
-                item.num = data.list[i]
+                item.num = data[i]
               }
             }
           }
         })
+      },
+      async fetchData() {
+        const { data } = await getTradeBasic(this.goodsForm)
         let arr = []
-        data.line_data.forEach((item) => {
+        data.forEach((item) => {
           for (let i in item) {
             this.dateList.push(i)
             arr.push(item[i])
@@ -557,7 +561,7 @@
               name: '营业额',
               type: 'bar',
               smooth: true,
-              data: this.dataAllList.real_price,
+              data: this.dataAllList.turnover,
               itemStyle: {
                 color: '#FFC833',
               },
@@ -566,7 +570,7 @@
               name: '交易毛利金额',
               type: 'bar',
               smooth: true,
-              data: this.dataAllList.sale_total,
+              data: this.dataAllList.gross_profit_amount,
               itemStyle: {
                 color: '#FF6C87',
               },
@@ -575,7 +579,7 @@
               name: '会员保证金',
               type: 'bar',
               smooth: true,
-              data: this.dataAllList.sale_price,
+              data: this.dataAllList.earnest_price,
               itemStyle: {
                 color: '#55DF7E',
               },
@@ -584,7 +588,7 @@
               name: '收银金额',
               type: 'bar',
               smooth: true,
-              data: this.dataAllList.offline_total,
+              data: this.dataAllList.cashier_price,
               itemStyle: {
                 color: '#3BDFDF',
               },

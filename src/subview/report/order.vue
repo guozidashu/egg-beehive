@@ -75,7 +75,7 @@
         style="width: 100%; height: 400px"
       />
     </div>
-    <div
+    <!-- <div
       style="
         padding: 20px;
         margin-top: 20px;
@@ -93,9 +93,9 @@
       >
         <span style="margin-top: 10px; font-size: 16px">订单销售排行</span>
         <el-form-item style="margin-right: 0">
-          <el-form-item label="统计类型:" prop="type">
+          <el-form-item label="统计类型:" prop="order_type">
             <el-select
-              v-model="goodsForm1.order"
+              v-model="goodsForm1.order_type"
               size="small"
               style="width: 150px"
             >
@@ -221,6 +221,12 @@
           </el-table-column>
           <el-table-column
             align="center"
+            label="退货件数"
+            prop="last_order_day"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
             label="退货率"
             prop="gross_profit"
             show-overflow-tooltip
@@ -241,7 +247,7 @@
           />
         </template>
       </QYList>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -252,7 +258,7 @@
     getCommonAllList,
     getInformationOrderList,
     getOrderReportForms,
-    getHotStyleAnalysis,
+    getInformationOrderSaleRank,
   } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
@@ -274,33 +280,33 @@
           page: 1,
           pageSize: 20,
           brand: null,
-          order: 'sum_num',
+          order_type: null,
           time: this.getPastTime(30),
         },
         orderList: [
           {
             name: '销售金额',
-            value: 'count_order',
+            value: 'sale_amount',
           },
           {
             name: '销售件数',
-            value: 'sum_num',
+            value: 'sale_num',
           },
           {
             name: '销售订单数',
-            value: 'sum_final_amount',
+            value: 'count_order',
           },
           {
             name: '发货件数',
-            value: 'gross_profit',
+            value: 'delivery_num',
           },
           {
             name: '退货件数',
-            value: 'sale_arrears',
+            value: 'return_order_num',
           },
           {
             name: '退货率',
-            value: 'sale_arrears',
+            value: 'return_order_rate',
           },
         ],
         selectList: [],
@@ -362,7 +368,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'deliver_list_num',
+            name: 'delivery_num',
             numType: 2,
             content: '在选定条件下，所有提交成功订单的已发货商品件数',
             onlineBilling: 100,
@@ -376,7 +382,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_num',
+            name: 'wait_delivery_num',
             numType: 2,
             content: '在选定条件下，所有提交成功订单的待发货商品件数',
             onlineBilling: 100,
@@ -390,7 +396,7 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'sale_num',
+            name: 'piece_one',
             numType: 1,
             content: '在选定条件下，销售金额/销售订单数',
             onlineBilling: 100,
@@ -404,13 +410,13 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'return_list_num',
+            name: 'return_order_num',
             numType: 2,
             content: '在选定条件下，所有提交成功的退货单件数',
             onlineBilling: 100,
-            onlineBillingPercentage: '20%',
-            onlineMall: 400,
-            onlineMallPercentage: '80%',
+            onlineBillingPercentage: '100%',
+            onlineMall: 0,
+            onlineMallPercentage: '0%',
           },
           {
             title: '退货率',
@@ -418,13 +424,13 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'return_list_lv',
+            name: 'return_order_rate',
             numType: 2,
-            content: '在选定条件下，退货订单数/销售订单数',
+            content: '在选定条件下，退货件数/销售件数',
             onlineBilling: 100,
-            onlineBillingPercentage: '20%',
-            onlineMall: 400,
-            onlineMallPercentage: '80%',
+            onlineBillingPercentage: '100%',
+            onlineMall: 0,
+            onlineMallPercentage: '0%',
           },
           {
             title: '待转入订单数',
@@ -432,11 +438,13 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'return_list_lv',
+            name: 'confirm_order_num',
             numType: 2,
             content: '在选定条件下，线上商城待转入的订单数',
             onlineMall: 400,
             onlineMallPercentage: '100%',
+            onlineBilling: 0,
+            onlineBillingPercentage: '0%',
           },
           {
             title: '待转入件数',
@@ -444,11 +452,13 @@
             num: 0,
             type: 1,
             typeSta: false,
-            name: 'return_list_lv',
+            name: 'confirm_goods_num',
             numType: 2,
             content: '在选定条件下，线上商城待转入的订单商品件数',
             onlineMall: 400,
             onlineMallPercentage: '100%',
+            onlineBilling: 0,
+            onlineBillingPercentage: '0%',
           },
         ],
         initOptions: {
@@ -495,7 +505,7 @@
         this.goodsForm1 = {
           page: 1,
           pageSize: 20,
-          order: null,
+          order_type: null,
           brand: null,
           time: this.getPastTime(30),
         }
@@ -517,11 +527,12 @@
         this.goodsStaList.forEach((item) => {
           for (let i in data) {
             if (item.name == i) {
-              if (data[i] == null) {
-                data[i] = 0
-                item.num = data[i]
-              } else {
-                item.num = data[i]
+              if (data[i] != null) {
+                item.num = data[i].all
+                item.onlineBilling = data[i].offline
+                item.onlineBillingPercentage = data[i].offline_rate
+                item.onlineMall = data[i].online
+                item.onlineMallPercentage = data[i].online_rate
               }
             }
           }
@@ -630,14 +641,9 @@
       },
       async getTableList() {
         this.listLoading = true
-        const { data } = await getHotStyleAnalysis(this.goodsForm1)
-        if (data.arrears_type == 0) {
-          this.orderList[4].value = 'sale_arrears'
-        } else {
-          this.orderList[4].value = 'delivery_arrears'
-        }
-        this.goosList = data.list.data
-        this.listTotal = data.list.total
+        const { data } = await getInformationOrderSaleRank(this.goodsForm1)
+        this.goosList = data
+        this.listTotal = this.goosList.length
         this.listLoading = false
       },
       // 导出

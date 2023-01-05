@@ -52,6 +52,43 @@ export function editChangePassword(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+// 商品同步聚水潭
+export function saveGoodsSyncJuShuiTan(data) {
+  return request({
+    url: '/goods/goodsSyncJuShuiTan',
+    method: 'post',
+    data,
+  })
+}
+// 仓库预警分析
+export function getWarehouseAnalysisHeadData(data) {
+  return request({
+    url: '/warehouseAnalysis/headData',
+    method: 'post',
+    data,
+  })
+}
+export function getWarehouseAnalysisList(data) {
+  return request({
+    url: '/warehouseAnalysis/list',
+    method: 'post',
+    data,
+  })
+}
+export function getWarehouseAnalysisCustomerRank(data) {
+  return request({
+    url: '/warehouseAnalysis/customerRank',
+    method: 'post',
+    data,
+  })
+}
+export function getWarehouseAnalysisGoodsRank(data) {
+  return request({
+    url: '/warehouseAnalysis/goodsRank',
+    method: 'post',
+    data,
+  })
+}
 
 // 客户分析 客户排行
 export function getHotStyleAnalysis(data) {
@@ -477,6 +514,27 @@ export function getHomePageList(data) {
 export function getHomeReportForms(data) {
   return request({
     url: '/homePage/homeReportForms',
+    method: 'post',
+    data,
+  })
+}
+export function getHomeLatestCustomer(data) {
+  return request({
+    url: '/homePage/latestCustomer',
+    method: 'post',
+    data,
+  })
+}
+export function getHomeLatestOrder(data) {
+  return request({
+    url: '/homePage/latestOrder',
+    method: 'post',
+    data,
+  })
+}
+export function getHomeRightData(data) {
+  return request({
+    url: '/homePage/rightData',
     method: 'post',
     data,
   })
@@ -1107,6 +1165,13 @@ export function getOrderReportForms(data) {
 export function getInformationOrderList(data) {
   return request({
     url: '/information/orderList',
+    method: 'post',
+    data,
+  })
+}
+export function getInformationOrderSaleRank(data) {
+  return request({
+    url: '/information/orderSaleRank',
     method: 'post',
     data,
   })

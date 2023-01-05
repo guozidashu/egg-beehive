@@ -155,6 +155,20 @@
                 />
               </el-select>
             </el-form-item>
+            <el-form-item label="客户等级:" prop="level">
+              <el-select
+                v-model="goodsForm1.level"
+                placeholder="请选择客户等级"
+                style="width: 150px"
+              >
+                <el-option
+                  v-for="(item, index) in selectList.customer_grade"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
             <el-form-item label="时间筛选:" prop="time">
               <el-date-picker
                 v-model="goodsForm1.time"
@@ -292,6 +306,7 @@
               prop="last_order_day"
               width="120"
             />
+            <el-table-column label="销售占比" prop="final_rate" width="120" />
             <el-table-column label="最近拿货时间" prop="last_order_time" />
             <el-table-column
               align="center"
@@ -355,6 +370,7 @@
           page: 1,
           pageSize: 20,
           brand: null,
+          level: null,
           order: 'sum_num',
           time: this.getPastTime(30),
         },
@@ -543,6 +559,7 @@
           pageSize: 20,
           order: null,
           brand: null,
+          level: null,
           time: this.getPastTime(30),
         }
       },
@@ -554,7 +571,7 @@
       },
       async getTypeList() {
         const { data } = await getCommonAllList({
-          type: 'customer_source,brand',
+          type: 'customer_source,brand,customer_grade',
         })
         this.selectList = data
       },

@@ -350,7 +350,7 @@
           >
             <div style="display: flex">
               <div style="width: 100%; margin-left: 20px">
-                <div class="ql-container ql-snow">
+                <div class="ql-container">
                   <div
                     class="ql-editor"
                     style="width: 100%; height: 720px; border: 1px solid #ccc"

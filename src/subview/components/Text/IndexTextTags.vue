@@ -13,10 +13,6 @@
         <template #header>
           <vab-icon icon="line-chart-line" style="color: red" />
           {{ item.title }}
-          <!-- <el-tag v-if="item.type === 1" class="card-header-tag" type="danger">
-            今日
-          </el-tag>
-          <el-tag v-else class="card-header-tag" type="success">今日</el-tag> -->
         </template>
         <div>
           <p
@@ -26,42 +22,108 @@
               color: rgba(0, 0, 0, 0.85);
             "
           >
-            <span v-if="item.numType == 1">￥{{ item.num | moneyFormat }}</span>
-            <span v-else>{{ item.num }}</span>
+            <span v-if="item.numType == 1">
+              ￥{{ item.today | moneyFormat }}
+            </span>
+            <span v-else>{{ item.today }}</span>
           </p>
           <p>
-            昨日
-            <span v-if="item.type === 1" style="color: #f5222d">
-              {{ item.pay }}
+            今日
+            <span v-if="item.numType == 1">
+              ￥{{ item.today | moneyFormat }}
             </span>
-            <span v-else style="color: #39c15b">{{ item.pay }}</span>
-            <span v-if="item.type === 1">较昨日增长：</span>
-            <span v-else>较昨日减少：</span>
-            <i v-if="item.type === 1" style="font-size: 12px; color: #f5222d">
-              {{ item.number }}%
-              <vab-icon icon="arrow-drop-up-fill" />
-            </i>
-            <i v-else style="font-size: 12px; color: #39c15b">
-              {{ item.number }}%
-              <vab-icon icon="arrow-drop-down-fill" />
-            </i>
+            <span v-else>{{ item.today }}</span>
+            较昨日
+            <span v-if="item.numType == 1">
+              ￥{{ item.yesterday_total | moneyFormat }}
+            </span>
+            <span v-else>{{ item.yesterday_total }}</span>
+
+            <span
+              v-if="
+                item.today - item.yesterday_total >= 0 ||
+                item.today == 0 ||
+                item.yesterday_total == 0
+              "
+            >
+              增长
+            </span>
+            <span v-else>减少</span>
+            <span v-if="item.today == 0" style="color: red">0%</span>
+            <span v-else-if="item.yesterday_total == 0" style="color: red">
+              100%
+            </span>
+            <span v-else>
+              <span
+                v-if="item.today - item.yesterday_total >= 0"
+                style="color: red"
+              >
+                {{
+                  (((item.today - item.yesterday_total) /
+                    item.yesterday_total) *
+                    100)
+                    | moneyFormat
+                }}%
+              </span>
+              <span v-else style="color: green">
+                -{{
+                  (((item.today - item.yesterday_total) /
+                    item.yesterday_total) *
+                    100)
+                    | moneyFormat
+                }}%
+              </span>
+            </span>
+          </p>
+          <p>
+            本月
+            <span v-if="item.numType == 1">
+              ￥{{ item.month | moneyFormat }}
+            </span>
+            <span v-else>{{ item.month }}</span>
+            较上月
+            <span v-if="item.numType == 1">
+              ￥{{ item.yesterday_month | moneyFormat }}
+            </span>
+            <span v-else>{{ item.yesterday_month }}</span>
+
+            <span
+              v-if="
+                item.month - item.yesterday_month >= 0 ||
+                item.month == 0 ||
+                item.yesterday_month == 0
+              "
+            >
+              增长
+            </span>
+            <span v-else>减少</span>
+            <span v-if="item.month == 0" style="color: red">0%</span>
+            <span v-else-if="item.yesterday_month == 0" style="color: red">
+              100%
+            </span>
+            <span v-else>
+              <span
+                v-if="item.month - item.yesterday_month >= 0"
+                style="color: red"
+              >
+                {{
+                  (((item.month - item.yesterday_month) /
+                    item.yesterday_month) *
+                    100)
+                    | moneyFormat
+                }}%
+              </span>
+              <span v-else style="color: green">
+                -{{
+                  (((item.month - item.yesterday_month) /
+                    item.yesterday_month) *
+                    100)
+                    | moneyFormat
+                }}%
+              </span>
+            </span>
           </p>
         </div>
-        <!-- <div class="bottom">
-          <span>
-            本月销售额
-            <el-tag
-              v-if="item.type === 1"
-              class="card-footer-tag"
-              type="danger"
-            >
-              {{ item.money }}
-            </el-tag>
-            <el-tag v-else class="card-footer-tag" type="success">
-              {{ item.money }}
-            </el-tag>
-          </span>
-        </div> -->
       </el-card>
     </el-col>
   </div>

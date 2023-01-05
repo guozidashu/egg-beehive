@@ -50,7 +50,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/index/board'),
         meta: {
           title: '仓库预警分析',
-          icon: 'archive-line',
+          icon: 'truck-line',
         },
       },
     ],
@@ -61,7 +61,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '研发',
-      icon: 'archive-line',
+      icon: 'bubble-chart-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -184,7 +184,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '供应商',
-      icon: 'archive-line',
+      icon: 'folder-user-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -194,7 +194,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/supplier/product'),
         meta: {
           title: '成品采购订单',
-          icon: 'archive-line',
+          icon: 'file-list-line',
         },
       },
       {
@@ -203,7 +203,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/supplier/material'),
         meta: {
           title: '物料采购订单',
-          icon: 'archive-line',
+          icon: 'file-list-line',
         },
       },
       {
@@ -212,7 +212,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/supplier/management'),
         meta: {
           title: '供应商管理',
-          icon: 'archive-line',
+          icon: 'user-search-line',
         },
       },
       {
@@ -221,7 +221,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/supplier/productstatistical'),
         meta: {
           title: '成品采购统计',
-          icon: 'archive-line',
+          icon: 'bar-chart-box-line',
         },
       },
       {
@@ -230,7 +230,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/supplier/materialstatistical'),
         meta: {
           title: '物料采购统计',
-          icon: 'archive-line',
+          icon: 'bar-chart-box-line',
         },
       },
       {
@@ -250,7 +250,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '商品',
-      icon: 'archive-line',
+      icon: 'shopping-bag-3-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -260,7 +260,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/goods/manage'),
         meta: {
           title: '商品管理',
-          icon: 'archive-line',
+          icon: 'file-list-line',
         },
       },
       {
@@ -307,7 +307,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '订单',
-      icon: 'archive-line',
+      icon: 'shopping-cart-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -317,7 +317,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/order/list'),
         meta: {
           title: '订单列表',
-          icon: 'archive-line',
+          icon: 'file-list-line',
         },
       },
       {
@@ -338,7 +338,7 @@ export const asyncRoutes = [
     guard: ['Admin'],
     meta: {
       title: '客户',
-      icon: 'archive-line',
+      icon: 'user-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -348,7 +348,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/customer/manage'),
         meta: {
           title: '客户管理',
-          icon: 'archive-line',
+          icon: 'user-search-line',
         },
       },
       {
@@ -357,7 +357,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/customer/level'),
         meta: {
           title: '客户等级',
-          icon: 'archive-line',
+          icon: 'vip-crown-2-line',
         },
       },
       {
@@ -366,7 +366,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/customer/classify'),
         meta: {
           title: '客户分类',
-          icon: 'archive-line',
+          icon: 'vip-diamond-line',
         },
       },
       {
@@ -375,7 +375,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/customer/tags'),
         meta: {
           title: '客户标签',
-          icon: 'archive-line',
+          icon: 'user-star-line',
         },
       },
       {
@@ -384,7 +384,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/customer/application'),
         meta: {
           title: '客户等级申请',
-          icon: 'archive-line',
+          icon: 'user-add-line',
         },
       },
       {
@@ -435,13 +435,14 @@ export const asyncRoutes = [
       },
     ],
   },
+
   {
     path: '/report',
     name: 'Report',
     component: Layout,
     meta: {
       title: '数据',
-      icon: 'archive-line',
+      icon: 'line-chart-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -451,7 +452,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/report/order'),
         meta: {
           title: '订单分析',
-          icon: 'archive-line',
+          icon: 'bar-chart-2-line',
         },
       },
       {
@@ -460,7 +461,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/report/customer'),
         meta: {
           title: '客户分析',
-          icon: 'archive-line',
+          icon: 'bar-chart-2-line',
         },
       },
       {
@@ -469,7 +470,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/report/goods'),
         meta: {
           title: '商品分析',
-          icon: 'archive-line',
+          icon: 'bar-chart-2-line',
         },
       },
       {
@@ -478,7 +479,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/report/transaction'),
         meta: {
           title: '交易分析',
-          icon: 'archive-line',
+          icon: 'bar-chart-2-line',
         },
       },
       {
@@ -487,7 +488,16 @@ export const asyncRoutes = [
         component: () => import('@/subview/report/finance'),
         meta: {
           title: '财务分析',
-          icon: 'archive-line',
+          icon: 'bar-chart-2-line',
+        },
+      },
+      {
+        path: 'salesTarget',
+        name: 'SalesTarget',
+        component: () => import('@/subview/report/salesTarget'),
+        meta: {
+          title: '销售目标',
+          icon: 'bar-chart-2-line',
         },
       },
     ],
@@ -498,7 +508,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '财务',
-      icon: 'archive-line',
+      icon: 'money-cny-box-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -508,7 +518,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/financial/subject'),
         meta: {
           title: '费用科目',
-          icon: 'archive-line',
+          icon: 'money-dollar-box-line',
         },
       },
       {
@@ -517,7 +527,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/financial/customerVoucher'),
         meta: {
           title: '客户收款单',
-          icon: 'archive-line',
+          icon: 'money-dollar-box-line',
         },
       },
       {
@@ -526,7 +536,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/financial/supplierReceipt'),
         meta: {
           title: '供应商收款单',
-          icon: 'archive-line',
+          icon: 'money-dollar-box-line',
         },
       },
       {
@@ -535,7 +545,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/financial/billList'),
         meta: {
           title: '费用单',
-          icon: 'archive-line',
+          icon: 'money-dollar-box-line',
         },
       },
       {
@@ -544,7 +554,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/financial/corporateAccount'),
         meta: {
           title: '结算账户',
-          icon: 'archive-line',
+          icon: 'money-dollar-box-line',
         },
       },
       {
@@ -553,7 +563,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/financial/category'),
         meta: {
           title: '收支分类',
-          icon: 'archive-line',
+          icon: 'money-dollar-box-line',
         },
       },
     ],
@@ -564,7 +574,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '档案',
-      icon: 'archive-line',
+      icon: 'price-tag-3-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -574,7 +584,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/brand'),
         meta: {
           title: '品牌管理',
-          icon: 'archive-line',
+          icon: 'file-settings-line',
         },
       },
       {
@@ -583,7 +593,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/year'),
         meta: {
           title: '年份管理',
-          icon: 'archive-line',
+          icon: 'file-settings-line',
         },
       },
       {
@@ -592,7 +602,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/seasonal'),
         meta: {
           title: '季节管理',
-          icon: 'archive-line',
+          icon: 'file-settings-line',
         },
       },
       {
@@ -601,7 +611,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/bandlist'),
         meta: {
           title: '波段管理',
-          icon: 'archive-line',
+          icon: 'file-settings-line',
         },
       },
       {
@@ -610,7 +620,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/color'),
         meta: {
           title: '颜色管理',
-          icon: 'archive-line',
+          icon: 'file-settings-line',
         },
       },
       {
@@ -619,7 +629,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/size'),
         meta: {
           title: '尺码管理',
-          icon: 'archive-line',
+          icon: 'file-settings-line',
         },
       },
       {
@@ -628,7 +638,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/warehouse'),
         meta: {
           title: '仓库管理',
-          icon: 'archive-line',
+          icon: 'home-6-line',
         },
       },
       {
@@ -637,7 +647,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/bom'),
         meta: {
           title: '物料列表',
-          icon: 'archive-line',
+          icon: 'file-settings-line',
         },
       },
       {
@@ -646,25 +656,16 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/print'),
         meta: {
           title: '吊牌打印',
-          icon: 'archive-line',
+          icon: 'printer-cloud-line',
         },
       },
-      // {
-      //   path: 'archivesArticle',
-      //   name: 'ArchivesArticle',
-      //   component: () => import('@/subview/archives/article'),
-      //   meta: {
-      //     title: '文章列表',
-      //     icon: 'archive-line',
-      //   },
-      // },
       {
         path: 'archivesProcess',
         name: 'ArchivesProcess',
         component: () => import('@/subview/archives/process'),
         meta: {
           title: '工艺管理',
-          icon: 'archive-line',
+          icon: 'file-settings-line',
         },
       },
       {
@@ -673,7 +674,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/procedure'),
         meta: {
           title: '工序管理',
-          icon: 'archive-line',
+          icon: 'file-settings-line',
         },
       },
     ],
@@ -684,7 +685,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '设置',
-      icon: 'archive-line',
+      icon: 'settings-6-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -694,7 +695,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/setting/account'),
         meta: {
           title: '账户信息',
-          icon: 'archive-line',
+          icon: 'account-circle-line',
         },
       },
       {
@@ -702,7 +703,7 @@ export const asyncRoutes = [
         name: 'System',
         meta: {
           title: '系统设置',
-          icon: 'archive-line',
+          icon: 'settings-line',
         },
         children: [
           {
@@ -761,7 +762,88 @@ export const asyncRoutes = [
           },
         ],
       },
-
+      {
+        path: 'platform',
+        name: 'Platform',
+        meta: {
+          title: '销售渠道',
+          icon: 'bubble-chart-line',
+        },
+        children: [
+          {
+            path: 'platformwxgong',
+            name: 'PlatformWxgong',
+            component: () => import('@/subview/setting/platform/wxgong'),
+            meta: {
+              title: '微信公众号',
+            },
+          },
+          {
+            path: 'platformwxxiao',
+            name: 'PlatformWxxiao',
+            component: () => import('@/subview/setting/platform/wxxiao'),
+            meta: {
+              title: '微信小程序',
+            },
+          },
+          {
+            path: 'platformvideo',
+            name: 'PlatformVideo',
+            component: () => import('@/subview/setting/platform/video'),
+            meta: {
+              title: '视频号矩阵',
+            },
+          },
+          {
+            path: 'platformzfbxiao',
+            name: 'PlatformZfbxiao',
+            component: () => import('@/subview/setting/platform/zfbxiao'),
+            meta: {
+              title: '支付宝小程序',
+            },
+          },
+          {
+            path: 'platformapp',
+            name: 'PlatformApp',
+            component: () => import('@/subview/setting/platform/app'),
+            meta: {
+              title: '移动App',
+            },
+          },
+          {
+            path: 'platformpinduoduoktt',
+            name: 'PlatformPinduoduoktt',
+            component: () => import('@/subview/setting/platform/pinduoduoktt'),
+            meta: {
+              title: '社群快团团',
+            },
+          },
+          {
+            path: 'platformttxiao',
+            name: 'PlatformTtxiao',
+            component: () => import('@/subview/setting/platform/ttxiao'),
+            meta: {
+              title: '头条小程序',
+            },
+          },
+          {
+            path: 'platformdoudin',
+            name: 'PlatformDoudin',
+            component: () => import('@/subview/setting/platform/doudin'),
+            meta: {
+              title: '抖店接入',
+            },
+          },
+          {
+            path: 'platformredbook',
+            name: 'PlatformRedbook',
+            component: () => import('@/subview/setting/platform/redbook'),
+            meta: {
+              title: '小红书',
+            },
+          },
+        ],
+      },
       {
         path: 'personal',
         name: 'Personal',
@@ -777,7 +859,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/setting/stores'),
         meta: {
           title: '门店管理',
-          icon: 'archive-line',
+          icon: 'store-2-line',
         },
       },
       {
@@ -804,18 +886,9 @@ export const asyncRoutes = [
         component: () => import('@/subview/setting/logs'),
         meta: {
           title: '操作日志',
-          icon: 'archive-line',
+          icon: 'chat-settings-line',
         },
       },
-      // {
-      //   path: 'design',
-      //   name: 'Design',
-      //   component: () => import('@/subview/setting/design'),
-      //   meta: {
-      //     title: '页面设计',
-      //     icon: 'archive-line',
-      //   },
-      // },
       {
         path: 'mall',
         name: 'Mall',
@@ -847,7 +920,7 @@ export const asyncRoutes = [
         name: 'QuanYu',
         meta: {
           title: '中台管理',
-          icon: 'archive-line',
+          icon: 'microsoft-line',
         },
         children: [
           {
@@ -881,7 +954,7 @@ export const asyncRoutes = [
         name: 'Company',
         meta: {
           title: '员工管理',
-          icon: 'archive-line',
+          icon: 'user-settings-line',
         },
         children: [
           {
@@ -904,21 +977,13 @@ export const asyncRoutes = [
       },
     ],
   },
-  // 1级 商城
-  //     2级 商品管理
-  //     2级 商品分组
-  //     2级 商城设置
-  //     2级 装修
-  //           3级 页面设计
-  //           3级 主题风格
-  //           3级 数据配置
   {
     path: '/mall',
     name: 'Mall',
     component: Layout,
     meta: {
       title: '商城',
-      icon: 'archive-line',
+      icon: 'store-2-line',
       breadcrumbHidden: true,
     },
     children: [
@@ -928,7 +993,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/mall/manage'),
         meta: {
           title: '商品管理',
-          icon: 'archive-line',
+          icon: 'shopping-bag-3-line',
         },
       },
       {
@@ -937,7 +1002,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/mall/commodityunit'),
         meta: {
           title: '商品分组',
-          icon: 'archive-line',
+          icon: 'group-2-line',
         },
       },
       {
@@ -955,7 +1020,7 @@ export const asyncRoutes = [
         component: () => import('@/subview/mall/article'),
         meta: {
           title: '文章列表',
-          icon: 'archive-line',
+          icon: 'article-line',
         },
       },
       {
@@ -972,7 +1037,7 @@ export const asyncRoutes = [
         name: 'decorate',
         meta: {
           title: '商城装修',
-          icon: 'archive-line',
+          icon: 'camera-lens-line',
         },
         children: [
           {

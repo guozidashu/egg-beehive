@@ -243,6 +243,7 @@
                   v-model="form.birthday"
                   placeholder="请选择生日"
                   type="date"
+                  value-format="yyyy-MM-dd"
                 />
               </el-form-item>
               <el-form-item class="item" label="所在城市：">

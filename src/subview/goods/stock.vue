@@ -257,15 +257,14 @@
             content: '刷新时间截止时，当前所有成功提交订单的商品未发货数量',
           },
           {
-            title: '商品总数',
+            title: '商品款式总数',
             number: 200,
             num: 94.32,
             type: 1,
             typeSta: false,
-            name: 'available_stock',
+            name: 'goods_num',
             numType: 2,
-            content:
-              '增加商品总数：刷新时间截止时，累计创建的商品款式总数（不包含停售商品）',
+            content: '刷新时间截止时，累计创建的商品款式总数（不包含停售商品）',
           },
           {
             title: '现存库存',
@@ -315,9 +314,9 @@
             num: 94.32,
             type: 1,
             typeSta: false,
-            name: 'available_stock',
+            name: 'stock_rate',
             numType: 2,
-            content: '库存数量为零的商品/商品总数*100%',
+            content: '库存为零的商品款数/商品总款数*100%',
           },
           {
             title: '现货库存成本',

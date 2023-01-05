@@ -2,7 +2,7 @@
   <el-card class="authorization" shadow="hover">
     <template #header>
       <vab-icon icon="bar-chart-2-line" />
-      客户等级分布概括
+      {{ title }}
     </template>
     <QYList
       :list="goosList"
@@ -11,45 +11,21 @@
       :state="listLoading"
     >
       <template #List>
-        <el-table-column align="center" label="排行" type="index" width="50">
-          <template slot-scope="scope">
-            <span
-              class="index_common"
-              :class="[
-                scope.$index + 1 == '1'
-                  ? 'index_one'
-                  : scope.$index + 1 == '2'
-                  ? 'index_two'
-                  : scope.$index + 1 == '3'
-                  ? 'index_three'
-                  : 'index_more',
-              ]"
-            >
-              {{ scope.$index + 1 }}
-            </span>
-          </template>
-        </el-table-column>
-        <el-table-column label="用户等级" prop="name" />
-        <el-table-column label="等级用户数" prop="level_num" />
-        <el-table-column label="成交用户数" prop="turnover_customer" />
-        <el-table-column label="销售金额占销售总金额占比" prop="all_total">
+        <el-table-column label="批次" prop="id" width="50" />
+        <el-table-column label="订单来源" prop="online">
           <template #default="{ row }">
-            <span v-if="row.all_total == 0">0%</span>
-            <span v-else>
-              {{ (row.sale_price / row.all_total).toFixed(2) * 100 }}%
-            </span>
+            <el-tag v-if="row.online == 1">线上</el-tag>
+            <el-tag v-else type="warning">线下</el-tag>
           </template>
         </el-table-column>
-        <el-table-column
-          align="right"
-          label="销售金额"
-          prop="sale_price"
-          width="150"
-        >
+        <el-table-column label="客户名称" prop="customer_name" />
+        <el-table-column label="订单件数" prop="num" />
+        <el-table-column label="订单状态" prop="status_text">
           <template #default="{ row }">
-            <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
+            <el-tag>{{ row.status_text }}</el-tag>
           </template>
         </el-table-column>
+        <el-table-column label="下单时间" prop="create_time" />
       </template>
     </QYList>
   </el-card>
@@ -61,6 +37,10 @@
       data: {
         type: Array,
         default: () => [],
+      },
+      title: {
+        type: String,
+        default: '',
       },
     },
     data() {

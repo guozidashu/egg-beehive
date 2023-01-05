@@ -59,8 +59,10 @@
             show-overflow-tooltip
           />
           <el-table-column label="状态" prop="status" width="150">
-            <el-tag v-if="row.status == 1">开启</el-tag>
-            <el-tag v-else type="danger">关闭</el-tag>
+            <template #default="{ row }">
+              <el-tag v-if="row.status == 1">开启</el-tag>
+              <el-tag v-else type="danger">关闭</el-tag>
+            </template>
             <!-- <template #default="{ row }">
               <el-switch
                 v-model="row.status"
