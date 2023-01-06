@@ -27,7 +27,7 @@
             </span>
             <span v-else>{{ item.today }}</span>
           </p>
-          <p>
+          <p style="font-size: 12px">
             今日
             <span v-if="item.numType == 1">
               ￥{{ item.today | moneyFormat }}
@@ -49,9 +49,14 @@
               增长
             </span>
             <span v-else>减少</span>
-            <span v-if="item.today == 0" style="color: red">0%</span>
+            &nbsp;
+            <span v-if="item.today == 0" style="color: red">
+              0%
+              <vab-icon icon="arrow-drop-up-fill" />
+            </span>
             <span v-else-if="item.yesterday_total == 0" style="color: red">
               100%
+              <vab-icon icon="arrow-drop-up-fill" />
             </span>
             <span v-else>
               <span
@@ -64,6 +69,7 @@
                     100)
                     | moneyFormat
                 }}%
+                <vab-icon icon="arrow-drop-up-fill" />
               </span>
               <span v-else style="color: green">
                 -{{
@@ -72,10 +78,11 @@
                     100)
                     | moneyFormat
                 }}%
+                <vab-icon icon="arrow-drop-down-fill" />
               </span>
             </span>
           </p>
-          <p>
+          <p style="font-size: 12px">
             本月
             <span v-if="item.numType == 1">
               ￥{{ item.month | moneyFormat }}
@@ -97,9 +104,14 @@
               增长
             </span>
             <span v-else>减少</span>
-            <span v-if="item.month == 0" style="color: red">0%</span>
+            &nbsp;
+            <span v-if="item.month == 0" style="color: red">
+              0%
+              <vab-icon icon="arrow-drop-up-fill" />
+            </span>
             <span v-else-if="item.yesterday_month == 0" style="color: red">
               100%
+              <vab-icon icon="arrow-drop-up-fill" />
             </span>
             <span v-else>
               <span
@@ -112,6 +124,7 @@
                     100)
                     | moneyFormat
                 }}%
+                <vab-icon icon="arrow-drop-up-fill" />
               </span>
               <span v-else style="color: green">
                 -{{
@@ -120,6 +133,7 @@
                     100)
                     | moneyFormat
                 }}%
+                <vab-icon icon="arrow-drop-down-fill" />
               </span>
             </span>
           </p>

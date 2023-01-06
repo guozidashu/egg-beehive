@@ -12,28 +12,109 @@
           "
         >
           <div
-            style="position: relative; top: 10px; width: 20%; font-size: 18px"
+            :style="{
+              position: 'relative',
+              top: '10px',
+              width: !yearState ? '20%' : '24%',
+              fontSize: '18px',
+              height: !yearState ? '20px' : '20px',
+            }"
           >
-            2023年销售目标 &nbsp; ￥ 100,000
+            <span v-if="!yearState" style="padding: 10px 0" @click="changeYear">
+              {{ year }}
+            </span>
+            <el-select
+              v-else
+              v-model="year"
+              placeholder="请选择年份"
+              :style="{
+                position: 'relative',
+                top: '-7px',
+              }"
+            >
+              <el-option
+                v-for="item in yearList"
+                :key="item.id + ''"
+                :label="item.name"
+                :value="item.name"
+              />
+            </el-select>
+            <span
+              :style="{
+                position: 'relative',
+                top: yearState ? '-7px' : '0',
+              }"
+            >
+              年销售目标 &nbsp;
+              <vab-icon
+                v-if="$permissionFiltering('SalesTarget', 'add')"
+                icon="add-box-line"
+                style="position: relative; top: -2px"
+                @click="addYearSale"
+              />
+            </span>
           </div>
-          <div style="position: relative; top: -10px; left: 20%; width: 80%">
-            <el-progress :percentage="50" />
+          <div
+            :style="{
+              position: 'relative',
+              top: '-10px',
+              left: yearState ? '24%' : '20%',
+              width: yearState ? '76%' : '80%',
+            }"
+          >
+            <el-progress :percentage="sale_data.completion_rate1" />
           </div>
         </div>
       </el-col>
       <el-col :lg="4" :md="4" :sm="4" :xl="4" :xs="4">
-        <el-card shadow="hover" style="margin-top: 2px; font-size: 18px">
-          <p style="padding: 8px">年度销售目标</p>
-          <p style="padding: 8px">￥ 100</p>
+        <el-card
+          shadow="hover"
+          style="
+            padding-top: 12px;
+            font-size: 14px;
+            text-align: center;
+            background: -webkit-linear-gradient(top, #fff5d1, #fff);
+          "
+        >
+          <p>年度销售目标</p>
+          <p style="font-size: 20px">
+            ￥ {{ sale_data.target_total | moneyFormat }}
+          </p>
         </el-card>
-        <el-card shadow="hover" style="font-size: 18px">
-          <p style="padding: 8px">目标完成率</p>
-          <p style="padding: 8px">80%</p>
+        <el-card
+          shadow="hover"
+          style="
+            padding-top: 12px;
+            font-size: 14px;
+            text-align: center;
+            background: -webkit-linear-gradient(top, #fff5d1, #fff);
+          "
+        >
+          <p>目标完成率</p>
+          <p style="font-size: 20px">{{ sale_data.completion_rate }}</p>
+        </el-card>
+        <el-card
+          shadow="hover"
+          style="
+            padding-top: 12px;
+            font-size: 14px;
+            text-align: center;
+            background: -webkit-linear-gradient(top, #fff5d1, #fff);
+          "
+        >
+          <p>月均销售目标</p>
+          <p style="font-size: 20px">
+            ￥ {{ sale_data.month_target_total | moneyFormat }}
+          </p>
         </el-card>
       </el-col>
       <el-col :lg="20" :md="20" :sm="20" :xl="20" :xs="20">
         <el-card shadow="hover">
-          <MembersChart :data="dataObj1" style="background-color: white" />
+          <vab-chart
+            :init-options="initOptions"
+            :option="option"
+            style="width: 100%; height: 400px"
+          />
         </el-card>
       </el-col>
       <el-col :span="10">
@@ -42,42 +123,39 @@
             <vab-icon icon="bar-chart-2-line" />
             客户销售排名
           </template>
-          <QYList
-            :list="goodsList"
-            :list-height="250"
-            :list-type="5"
-            :state="listLoading"
-          >
-            <template #List>
-              <el-table-column
-                align="center"
-                label="排名"
-                type="index"
-                width="50"
-              >
-                <template slot-scope="scope">
-                  <span
-                    class="index_common"
-                    :class="[
-                      scope.$index + 1 == '1'
-                        ? 'index_one'
-                        : scope.$index + 1 == '2'
-                        ? 'index_two'
-                        : scope.$index + 1 == '3'
-                        ? 'index_three'
-                        : 'index_more',
-                    ]"
-                  >
-                    {{ scope.$index + 1 }}
-                  </span>
-                </template>
-              </el-table-column>
-              <el-table-column label="客户名称" prop="level_num" />
-              <el-table-column label="拿货件数" prop="turnover_customer" />
-              <el-table-column label="拿货金额" prop="turnover_customer" />
-              <el-table-column label="贡献占比" prop="turnover_customer" />
-            </template>
-          </QYList>
+          <div style="height: 250px; overflow: auto">
+            <QYList :list="goodsList" :list-type="2" :state="listLoading">
+              <template #List>
+                <el-table-column
+                  align="center"
+                  label="排名"
+                  type="index"
+                  width="50"
+                >
+                  <template slot-scope="scope">
+                    <span
+                      class="index_common"
+                      :class="[
+                        scope.$index + 1 == '1'
+                          ? 'index_one'
+                          : scope.$index + 1 == '2'
+                          ? 'index_two'
+                          : scope.$index + 1 == '3'
+                          ? 'index_three'
+                          : 'index_more',
+                      ]"
+                    >
+                      {{ scope.$index + 1 }}
+                    </span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="客户名称" prop="name" />
+                <el-table-column label="拿货件数" prop="count" />
+                <el-table-column label="拿货金额" prop="total" />
+                <el-table-column label="贡献占比" prop="contribution_ratio" />
+              </template>
+            </QYList>
+          </div>
         </el-card>
       </el-col>
       <el-col :span="10">
@@ -86,278 +164,249 @@
             <vab-icon icon="bar-chart-2-line" />
             客户回款排行
           </template>
-          <QYList
-            :list="goodsList"
-            :list-height="250"
-            :list-type="5"
-            :state="listLoading"
-          >
-            <template #List>
-              <el-table-column
-                align="center"
-                label="排名"
-                type="index"
-                width="50"
-              >
-                <template slot-scope="scope">
-                  <span
-                    class="index_common"
-                    :class="[
-                      scope.$index + 1 == '1'
-                        ? 'index_one'
-                        : scope.$index + 1 == '2'
-                        ? 'index_two'
-                        : scope.$index + 1 == '3'
-                        ? 'index_three'
-                        : 'index_more',
-                    ]"
-                  >
-                    {{ scope.$index + 1 }}
-                  </span>
-                </template>
-              </el-table-column>
-              <el-table-column label="客户名称" prop="level_num" />
-              <el-table-column label="拿货金额" prop="turnover_customer" />
-              <el-table-column label="回款余额" prop="turnover_customer" />
-              <el-table-column label="回款率" prop="turnover_customer" />
-            </template>
-          </QYList>
+          <div style="height: 250px; overflow: auto">
+            <QYList :list="goodsList1" :list-type="2" :state="listLoading1">
+              <template #List>
+                <el-table-column
+                  align="center"
+                  label="排名"
+                  type="index"
+                  width="50"
+                >
+                  <template slot-scope="scope">
+                    <span
+                      class="index_common"
+                      :class="[
+                        scope.$index + 1 == '1'
+                          ? 'index_one'
+                          : scope.$index + 1 == '2'
+                          ? 'index_two'
+                          : scope.$index + 1 == '3'
+                          ? 'index_three'
+                          : 'index_more',
+                      ]"
+                    >
+                      {{ scope.$index + 1 }}
+                    </span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="客户名称" prop="name" />
+                <el-table-column label="拿货金额" prop="total" />
+                <el-table-column label="回款余额" prop="collection" />
+                <el-table-column label="回款率" prop="collection_ratio" />
+              </template>
+            </QYList>
+          </div>
         </el-card>
       </el-col>
       <el-col :span="4">
-        <PaymentCollection style="width: 100%" title="回款率" />
+        <PaymentCollection :data="chartData" style="width: 100%" />
       </el-col>
     </el-row>
+    <edit ref="edit" />
   </div>
 </template>
 
 <script>
+  import Edit from '@/subview/components/Edit/SalesTargetEdit'
   import TextTags from '@/subview/components/Text/SalesTargeTextTagst'
-  import MembersChart from '@/subview/components/Chart/MembersChart'
   import PaymentCollection from '@/subview/components/Chart/PaymentCollection'
-  import { getHomePageList, getHomeReportForms } from '@/api/basic'
+  import VabChart from '@/extra/VabChart'
+  import {
+    getlineChartSaleTarget,
+    getYearList,
+    getInformationHeadData,
+    getInformationCustomerSaleRank,
+    getInformationCustomerCollectionRank,
+    getInformationCollectionRatio,
+    getCompleteSaleTarget,
+  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'Index',
     components: {
       TextTags,
-      MembersChart,
       PaymentCollection,
+      Edit,
+      VabChart,
     },
     mixins: [datajosn],
     data() {
       return {
+        year: new Date().getFullYear(),
+        yearState: false,
+        yearList: [],
         textTagList: [
           {
             title: '总销售额',
-            number: 0,
-            num: 0,
-            type: 1,
-            pay: 0,
-            money: 1000,
-            numType: 1,
             dayName: '日均销售额',
-            dayNum: 200,
+            numType: 1,
+            allNum: 0,
+            dayNum: 0,
+            month: 0,
+            yesterday_month: 0,
           },
           {
             title: '总销量',
-            number: 0,
-            num: 0,
-            type: 1,
-            pay: 0,
-            money: 3000,
-            numType: 2,
             dayName: '日均销量',
-            dayNum: 200,
+            numType: 2,
+            allNum: 0,
+            dayNum: 0,
+            month: 0,
+            yesterday_month: 0,
           },
           {
             title: '总客户',
-            number: 0,
-            num: 0,
-            type: 2,
-            pay: 0,
-            money: 2000,
             numType: 2,
+            allNum: 0,
+            dayNum: 0,
+            month: 0,
+            yesterday_month: 0,
             dayName: '日均客户',
-            dayNum: 200,
           },
           {
             title: '总回款',
-            number: 0,
-            num: 0,
-            type: 2,
-            pay: 0,
-            money: 2000,
             numType: 1,
+            allNum: 0,
+            dayNum: 0,
+            month: 0,
+            yesterday_month: 0,
             dayName: '日均回款',
-            dayNum: 200,
           },
         ],
-        dateList: [],
-        dataAllList: {
-          sale_num: [],
-          sale_total: [],
-        },
-        dataObj1: {
-          height: '300px',
-          legend: {
-            data: ['销售件数', '发货件数'],
-          },
-          color: ['#1890FF', '#55DF7E'],
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: [],
-          },
-          yAxis: [
-            {
-              type: 'value',
-              name: '数量',
-            },
-          ],
-          series: [
-            {
-              name: '销售件数',
-              type: 'line',
-              smooth: true,
-              data: [],
-              itemStyle: {
-                color: '#1890FF',
-              },
-            },
-            {
-              name: '发货件数',
-              type: 'line',
-              smooth: true,
-              data: [],
-              itemStyle: {
-                color: '#55DF7E',
-              },
-            },
-          ],
-        },
-        time: '30天',
         goodsList: [],
         listLoading: false,
-        goodsForm: {
-          time: this.getPastTime(30),
+        goodsList1: [],
+        listLoading1: false,
+        chartData: {
+          title: '回款率',
+          data: [
+            { value: 0, name: '回款' },
+            { value: 0, name: '应收' },
+          ],
         },
+        sale_data: {
+          target_total: 0, // 销售目标
+          month_target_total: 0, // y月均销售目标
+          completion_rate: '0%', // 完成率
+          completion_rate1: 0, // 完成率
+        },
+        dateList: [],
+        dataAllList: {
+          sale_target: [],
+          sale_total: [],
+          collection_total: [],
+        },
+        initOptions: {
+          renderer: 'svg',
+        },
+        option: {},
       }
     },
     watch: {
-      time: {
-        handler: function (newval) {
-          if (newval == '30天') {
-            this.goodsForm.time = this.getPastTime(30)
-          } else if (newval == '七天') {
-            this.goodsForm.time = this.getWeenTime(6)
-          } else if (newval == '半年') {
-            this.goodsForm.time = this.getPastTime(180)
-          }
-          this.goodsList = []
+      year: {
+        handler: function () {
           this.dateList = []
           this.dataAllList = {
-            sale_num: [],
+            sale_target: [],
             sale_total: [],
+            collection_total: [],
           }
-          this.fetchData()
+          this.yearState = false
+          this.getHomeReport()
+          this.getYear()
+          this.getHeadDatar()
+          this.getCustomerSaleRank()
+          this.getCustomerCollectionRank()
+          this.getCollectionRatio()
+          this.getSaleTarget()
         },
         deep: true,
       },
     },
     created() {
-      this.fetchData()
+      this.getHomeReport()
+      this.getYear()
+      this.getHeadDatar()
+      this.getCustomerSaleRank()
+      this.getCustomerCollectionRank()
+      this.getCollectionRatio()
+      this.getSaleTarget()
     },
     methods: {
-      async fetchData() {
-        const { data } = await getHomePageList()
-        this.textTagList[0].num = data.list.today_sale_num
-        this.textTagList[0].pay = data.list.yesterday_sale_num
-        // 如果昨天销量为0，今天销量不为0，那么较昨日为100%
-        if (
-          data.list.yesterday_sale_num == 0 &&
-          data.list.today_sale_num != 0
-        ) {
-          this.textTagList[0].number = 100
-        } else {
-          this.textTagList[0].number = data.list.today_sale_num
-            ? (
-                (data.list.today_sale_num - data.list.yesterday_sale_num) /
-                data.list.yesterday_sale_num
-              ).toFixed(2)
-            : 0
-        }
-        if (this.textTagList[0].number < 0) {
-          this.textTagList[0].type = 2
-        } else {
-          this.textTagList[0].type = 1
-        }
-        this.textTagList[1].num = data.list.today_sale_total
-        this.textTagList[1].pay = data.list.yesterday_sale_total
-        if (
-          data.list.yesterday_sale_total == 0 &&
-          data.list.today_sale_total != 0
-        ) {
-          this.textTagList[1].number = 100
-        } else {
-          this.textTagList[1].number = data.list.today_sale_total
-            ? (
-                (data.list.today_sale_total - data.list.yesterday_sale_total) /
-                data.list.yesterday_sale_total
-              ).toFixed(2)
-            : 0
-        }
-        if (this.textTagList[1].number < 0) {
-          this.textTagList[1].type = 2
-        } else {
-          this.textTagList[1].type = 1
-        }
-        this.textTagList[2].num = data.list.today_return_num
-        this.textTagList[2].pay = data.list.yesterday_return_num
-        if (
-          data.list.yesterday_return_num == 0 &&
-          data.list.today_return_num != 0
-        ) {
-          this.textTagList[2].number = 100
-        } else {
-          this.textTagList[2].number = data.list.today_return_num
-            ? (
-                (data.list.today_return_num - data.list.yesterday_return_num) /
-                data.list.yesterday_return_num
-              ).toFixed(2)
-            : 0
-        }
-        if (this.textTagList[2].number < 0) {
-          this.textTagList[2].type = 2
-        } else {
-          this.textTagList[2].type = 1
-        }
-        this.textTagList[3].num = data.list.today_return_total
-        this.textTagList[3].pay = data.list.yesterday_return_total
-        if (
-          data.list.yesterday_return_total == 0 &&
-          data.list.today_return_total != 0
-        ) {
-          this.textTagList[3].number = 100
-        } else {
-          this.textTagList[3].number = data.list.today_return_total
-            ? (
-                (data.list.today_return_total -
-                  data.list.yesterday_return_total) /
-                data.list.yesterday_return_total
-              ).toFixed(2)
-            : 0
-        }
-        if (this.textTagList[3].number < 0) {
-          this.textTagList[3].type = 2
-        } else {
-          this.textTagList[3].type = 1
-        }
-        this.goodsList = data.list.grades
-        this.getHomeReport()
+      // 新增修改
+      addYearSale() {
+        this.$refs['edit'].showEdit(this.year)
+      },
+      changeYear() {
+        this.yearState = true
+      },
+      async getSaleTarget() {
+        this.listLoading = true
+        const { data } = await getCompleteSaleTarget({
+          year: this.year,
+        })
+        this.sale_data = data
+        this.sale_data.completion_rate1 = Number(
+          data.completion_rate.replace('%', '')
+        )
+      },
+      async getCollectionRatio() {
+        this.listLoading = true
+        const { data } = await getInformationCollectionRatio({
+          year: this.year,
+        })
+        this.chartData.data[0].value = data.collection
+        this.chartData.data[1].value = data.receivable
+      },
+
+      async getCustomerSaleRank() {
+        this.listLoading = true
+        const { data } = await getInformationCustomerSaleRank({
+          year: this.year,
+        })
+        this.goodsList = data
+        this.listLoading = false
+      },
+      async getCustomerCollectionRank() {
+        this.listLoading1 = true
+        const { data } = await getInformationCustomerCollectionRank({
+          year: this.year,
+        })
+        this.goodsList1 = data
+        this.listLoading1 = false
+      },
+      async getHeadDatar() {
+        const { data } = await getInformationHeadData({
+          year: this.year,
+        })
+        this.textTagList[0].allNum = data[0].sale_total
+        this.textTagList[0].dayNum = data[0].average_sale_total
+        this.textTagList[0].month = data[0].month_sale_total
+        this.textTagList[0].yesterday_month = data[0].yesterday_month_sale_total
+        this.textTagList[1].allNum = data[1].sale_count
+        this.textTagList[1].dayNum = data[1].average_sale_count
+        this.textTagList[1].month = data[1].month_sale_count
+        this.textTagList[1].yesterday_month = data[1].yesterday_month_sale_count
+        this.textTagList[2].allNum = data[2].customer_count
+        this.textTagList[2].dayNum = data[2].average_customer_count
+        this.textTagList[2].month = data[2].month_customer_count
+        this.textTagList[2].yesterday_month =
+          data[2].yesterday_month_customer_count
+        this.textTagList[3].allNum = data[3].collection_total
+        this.textTagList[3].dayNum = data[3].average_collection_total
+        this.textTagList[3].month = data[3].month_collection_total
+        this.textTagList[3].yesterday_month =
+          data[3].yesterday_month_collection_total
+      },
+      async getYear() {
+        const { data } = await getYearList(this.form)
+        this.yearList = data.data
       },
       async getHomeReport() {
-        const { data } = await getHomeReportForms(this.goodsForm)
+        const { data } = await getlineChartSaleTarget({
+          year: this.year,
+        })
         let arr = []
         data.forEach((item) => {
           for (let i in item) {
@@ -377,10 +426,71 @@
             }
           }
         })
-        this.dataObj1.xAxis.data = this.dateList
-        this.dataObj1.series[0].data = this.dataAllList.sale_num
-        this.dataObj1.series[1].data = this.dataAllList.sale_total
-        this.$forceUpdate()
+        this.option = {
+          tooltip: {
+            trigger: 'axis', //触发类型；轴触发，axis则鼠标hover到一条柱状图显示全部数据，item则鼠标hover到折线点显示相应数据，
+            axisPointer: {
+              type: 'cross', // 十字准星指示器
+            },
+          },
+          legend: {
+            data: ['销售目标', '销售金额', '回款金额'],
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true,
+          },
+          toolbox: {
+            feature: {
+              saveAsImage: {},
+            },
+          },
+          xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: this.dateList,
+          },
+          yAxis: [
+            {
+              type: 'value',
+              name: '金额',
+            },
+          ],
+          series: [
+            {
+              name: '销售目标',
+              type: 'line',
+              areaStyle: {},
+              smooth: true,
+              data: this.dataAllList.sale_target,
+              itemStyle: {
+                color: '#1890FF',
+              },
+            },
+            {
+              name: '销售金额',
+              type: 'line',
+              areaStyle: {},
+              smooth: true,
+              data: this.dataAllList.sale_total,
+              itemStyle: {
+                color: '#55DF7E',
+              },
+            },
+            {
+              name: '回款金额',
+              type: 'line',
+              areaStyle: {},
+              smooth: true,
+              data: this.dataAllList.collection_total,
+              itemStyle: {
+                color: 'red',
+              },
+            },
+          ],
+        }
       },
     },
   }

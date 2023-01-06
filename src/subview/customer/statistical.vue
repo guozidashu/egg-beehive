@@ -210,6 +210,7 @@
             {
               name: '新增客户',
               type: 'line',
+              areaStyle: {},
 
               smooth: true,
               data: [],

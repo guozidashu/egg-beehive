@@ -402,6 +402,7 @@
             {
               name: '在售商品数',
               type: 'line',
+              areaStyle: {},
 
               smooth: true,
               data: this.dataAllList.sku_total,
@@ -412,6 +413,7 @@
             {
               name: '已售罄商品数',
               type: 'line',
+              areaStyle: {},
 
               smooth: true,
               data: this.dataAllList.out_total,

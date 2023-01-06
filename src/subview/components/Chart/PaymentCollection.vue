@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="hover">
     <template #header>
-      <span>{{ title }}</span>
+      <span>{{ data.title }}</span>
     </template>
     <vab-chart
       :init-options="initOptions"
@@ -21,9 +21,9 @@
       VabChart,
     },
     props: {
-      title: {
-        type: String,
-        default: '',
+      data: {
+        type: Object,
+        default: () => {},
       },
     },
     data() {
@@ -64,14 +64,21 @@
               labelLine: {
                 show: false,
               },
-              data: [
-                { value: 1048, name: '回款' },
-                { value: 735, name: '应收' },
-              ],
+              data: this.data.data,
             },
           ],
         },
       }
+    },
+    watch: {
+      data: {
+        handler: function (newval) {
+          this.option.series[0].data = newval.data
+          this.$forceUpdate()
+        },
+        deep: true,
+        immediate: true,
+      },
     },
   }
 </script>

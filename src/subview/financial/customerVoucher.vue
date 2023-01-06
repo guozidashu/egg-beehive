@@ -105,6 +105,7 @@
               </div>
             </template>
           </el-table-column>
+          <el-table-column align="center" label="收款类型" prop="remark" />
           <el-table-column
             align="center"
             label="备注"

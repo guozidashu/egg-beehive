@@ -42,6 +42,7 @@
       <QYTextLabels
         ref="multipleTable"
         :list="goodsStaList"
+        style="margin: 20px 0"
         :width="textwidth"
       />
       <vab-chart
@@ -177,8 +178,8 @@
         goodsStaList: [
           {
             title: '成品采购数量',
-            number: 200,
-            num: 94.32,
+            number: 0,
+            num: 0,
             type: 1,
             typeSta: false,
             name: 'product_num',
@@ -186,8 +187,8 @@
           },
           {
             title: '成品采购金额',
-            number: 200,
-            num: 94.32,
+            number: 0,
+            num: 0,
             type: 1,
             typeSta: false,
             name: 'product_total',
@@ -195,8 +196,8 @@
           },
           {
             title: '总退货数量',
-            number: 400,
-            num: 34.32,
+            number: 0,
+            num: 0,
             type: 2,
             typeSta: false,
             name: 'return_num',
@@ -204,8 +205,8 @@
           },
           {
             title: '总退货金额',
-            number: 400,
-            num: 34.32,
+            number: 0,
+            num: 0,
             type: 2,
             typeSta: false,
             name: 'return_total',
@@ -327,6 +328,7 @@
             {
               name: '成品采购数量',
               type: 'line',
+              areaStyle: {},
 
               smooth: true,
               data: this.dataAllList.product_num,
@@ -338,6 +340,7 @@
             {
               name: '总退货数量',
               type: 'line',
+              areaStyle: {},
 
               smooth: true,
               data: this.dataAllList.return_num,

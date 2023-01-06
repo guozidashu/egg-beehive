@@ -301,7 +301,7 @@
         goodsStaList: [
           {
             title: '今日上新',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -311,7 +311,7 @@
           },
           {
             title: '商品款式总数',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -321,7 +321,7 @@
           },
           {
             title: '商品sku数',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -332,7 +332,7 @@
           },
           {
             title: '动销商品数',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -342,7 +342,7 @@
           },
           {
             title: '商品动销率',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -353,7 +353,7 @@
           },
           {
             title: '销售件数',
-            number: 400,
+            number: 0,
             num: 0,
             type: 2,
             typeSta: false,
@@ -363,7 +363,7 @@
           },
           {
             title: '销售金额',
-            number: 400,
+            number: 0,
             num: 0,
             type: 2,
             typeSta: false,
@@ -374,7 +374,7 @@
           },
           {
             title: '退货件数',
-            number: 400,
+            number: 0,
             num: 0,
             type: 2,
             typeSta: false,
@@ -384,7 +384,7 @@
           },
           {
             title: '退货金额',
-            number: 400,
+            number: 0,
             num: 0,
             type: 2,
             typeSta: false,
@@ -394,7 +394,7 @@
           },
           {
             title: '实际交易金额',
-            number: 400,
+            number: 0,
             num: 0,
             type: 2,
             typeSta: false,
@@ -562,6 +562,7 @@
               {
                 name: '销售数量',
                 type: 'line',
+                areaStyle: {},
                 smooth: true,
                 data: this.dataAllList.sale_num,
                 yAxisIndex: 1,
@@ -580,6 +581,8 @@
               {
                 name: '退货数量',
                 type: 'line',
+                areaStyle: {},
+                smooth: true,
                 yAxisIndex: 1,
                 data: this.dataAllList.return_num,
                 itemStyle: {

@@ -8,6 +8,9 @@ import '@/utils/filter'
 import hasPermi from '@/utils/hasPermi'
 import QyComponent from '@/qy/qy.js'
 import { permissionFiltering } from '@/utils/filter'
+// 测试
+import * as echarts from 'echarts' //引入echart
+Vue.prototype.$echarts = echarts // echarts 需要挂在到VUE原型上
 // import { GlobalConfig } from '@/public/config/config.js'
 // 非按钮权限过滤
 // GlobalConfig

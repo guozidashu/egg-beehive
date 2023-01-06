@@ -290,15 +290,6 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
-      {
-        path: 'goodsStock',
-        name: 'GoodsStock',
-        component: () => import('@/subview/goods/stock'),
-        meta: {
-          title: '库存统计',
-          icon: 'archive-line',
-        },
-      },
     ],
   },
   {
@@ -498,6 +489,15 @@ export const asyncRoutes = [
         meta: {
           title: '销售目标',
           icon: 'bar-chart-2-line',
+        },
+      },
+      {
+        path: 'reportStock',
+        name: 'ReportStock',
+        component: () => import('@/subview/report/stock'),
+        meta: {
+          title: '库存统计',
+          icon: 'archive-line',
         },
       },
     ],

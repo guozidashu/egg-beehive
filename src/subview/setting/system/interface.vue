@@ -71,6 +71,9 @@
           <el-form-item label="聚水潭app_Secret：" prop="jst_app_secret">
             <el-input v-model="form.jst_app_secret" style="width: 40%" />
           </el-form-item>
+          <el-form-item label="聚水潭店铺ID：" prop="jst_shop_id">
+            <el-input v-model="form.jst_shop_id" style="width: 40%" />
+          </el-form-item>
         </div>
         <div v-if="activeName == '旺店通ERP'">
           <el-form-item label="旺店通接口是否开启：">
@@ -240,6 +243,7 @@
           jst_access_token: null, //聚水潭access_token
           jst_app_key: null, //聚水潭app_Key
           jst_app_secret: null, //聚水潭app_Secret
+          jst_shop_id: null, //聚水潭shop_id
           api_open: 1, //接口是否开启
           version: 1, //1：ERP专业版（无精细化库存管理）\r\n\r\n2：ERP企业版（有精细化库存管理）
           auth_url: null, //authUrl
@@ -278,6 +282,9 @@
               message: '请输入聚水潭app_Secret',
               trigger: 'blur',
             },
+          ],
+          jst_shop_id: [
+            { required: true, message: '请输入聚水潭店铺ID', trigger: 'blur' },
           ],
           auth_url: [
             { required: true, message: '请输入旺店通authUrl', trigger: 'blur' },
@@ -424,6 +431,7 @@
                 jst_access_token: this.form.jst_access_token, //聚水潭access_token
                 jst_app_key: this.form.jst_app_key, //聚水潭app_Key
                 jst_app_secret: this.form.jst_app_secret, //聚水潭app_Secret
+                jst_shop_id: this.form.jst_shop_id, //聚水潭shop_id
               })
               if (code === 200) {
                 this.$message.success('保存成功')

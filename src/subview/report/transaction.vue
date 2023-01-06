@@ -1,5 +1,5 @@
 <template>
-  <div class="workbench-container">
+  <div>
     <el-row :gutter="20">
       <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24">
         <div
@@ -54,6 +54,7 @@
           <QYTextLabels
             ref="multipleTable"
             :list="goodsStaList"
+            style="margin: 20px 0"
             :width="textwidth"
           />
           <vab-chart
@@ -332,7 +333,7 @@
         goodsStaList: [
           {
             title: '营业额',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -342,7 +343,7 @@
           },
           {
             title: '交易毛利金额',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -352,7 +353,7 @@
           },
           {
             title: '商品支付金额',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -363,7 +364,7 @@
           },
           {
             title: '会员保证金',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -373,7 +374,7 @@
           },
           {
             title: '收银金额',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -384,7 +385,7 @@
           },
           {
             title: '支出金额',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -394,7 +395,7 @@
           },
           {
             title: '商品退款金额',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -404,7 +405,7 @@
           },
           {
             title: '实际营收',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -414,7 +415,7 @@
           },
           {
             title: '销售成本',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -424,7 +425,7 @@
           },
           {
             title: '销售毛利',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,

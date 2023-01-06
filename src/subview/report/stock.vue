@@ -61,8 +61,8 @@
           padding: 0 200px;
         "
       >
-        <QYBranch :list="branchList" :style-chart="styleObj" />
-        <QYBranch :list="branchList1" :style-chart="styleObj" />
+        <div id="chartmain" style="width: 400px; height: 400px"></div>
+        <QYBranch :list="branSonChList" :style-chart="styleObj" />
       </div>
       <!-- <vab-chart
         :init-options="initOptions"
@@ -223,6 +223,7 @@
     getStockStatistics,
     getStockCircular,
     getStockRank,
+    getStockCircularSonCate,
   } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
@@ -248,8 +249,8 @@
         goodsStaList: [
           {
             title: '待发货',
-            number: 200,
-            num: 94.32,
+            number: 0,
+            num: 0,
             type: 1,
             typeSta: false,
             name: 'consignment_stock',
@@ -258,8 +259,8 @@
           },
           {
             title: '商品款式总数',
-            number: 200,
-            num: 94.32,
+            number: 0,
+            num: 0,
             type: 1,
             typeSta: false,
             name: 'goods_num',
@@ -268,8 +269,8 @@
           },
           {
             title: '现存库存',
-            number: 200,
-            num: 94.32,
+            number: 0,
+            num: 0,
             type: 1,
             typeSta: false,
             name: 'spot_stock',
@@ -278,8 +279,8 @@
           },
           {
             title: '生产中库存',
-            number: 200,
-            num: 94.32,
+            number: 0,
+            num: 0,
             type: 1,
             typeSta: false,
             name: 'production_stock',
@@ -289,8 +290,8 @@
           },
           {
             title: '总库存',
-            number: 200,
-            num: 94.32,
+            number: 0,
+            num: 0,
             type: 1,
             typeSta: false,
             name: 'total_stock',
@@ -299,8 +300,8 @@
           },
           {
             title: '库存预警',
-            number: 400,
-            num: 34.32,
+            number: 0,
+            num: 0,
             type: 2,
             typeSta: false,
             name: 'warning_stock',
@@ -310,8 +311,8 @@
           },
           {
             title: '缺货率',
-            number: 200,
-            num: 94.32,
+            number: 0,
+            num: 0,
             type: 1,
             typeSta: false,
             name: 'stock_rate',
@@ -320,8 +321,8 @@
           },
           {
             title: '现货库存成本',
-            number: 400,
-            num: 34.32,
+            number: 0,
+            num: 0,
             type: 2,
             typeSta: false,
             name: 'present_price',
@@ -331,8 +332,8 @@
           },
           {
             title: '生产中库存成本',
-            number: 400,
-            num: 34.32,
+            number: 0,
+            num: 0,
             type: 2,
             typeSta: false,
             name: 'reproduction_price',
@@ -353,8 +354,8 @@
           // },
           {
             title: '总库存成本',
-            number: 400,
-            num: 34.32,
+            number: 0,
+            num: 0,
             type: 2,
             typeSta: false,
             name: 'total_price',
@@ -370,8 +371,11 @@
           legendy: 350,
           center: ['50%', '50%'],
         },
+        lengSonList: [],
+        lengList: [],
         branchList: [],
-        branchList1: [],
+        branSonChList: [],
+        branchList2: [],
       }
     },
     watch: {
@@ -394,11 +398,63 @@
       this.getCircular()
       this.tableData()
     },
+    mounted() {},
     methods: {
+      initCharts() {
+        let option = {
+          tooltip: {
+            trigger: 'item',
+            formatter: '11',
+          },
+          legend: {
+            data: [...this.lengList, ...this.lengSonList],
+            x: 0,
+            y: 350,
+          },
+          series: [
+            {
+              name: '测试',
+              type: 'pie',
+              selectedMode: 'single',
+              radius: [0, '30%'],
+              label: {
+                position: 'inner',
+                fontSize: 14,
+              },
+              labelLine: {
+                show: false,
+              },
+              data: this.branchList,
+            },
+            {
+              name: '测试',
+              type: 'pie',
+              radius: ['45%', '55%'],
+              labelLine: {
+                length: 30,
+              },
+              data: this.branchList2,
+            },
+          ],
+        }
+        let _this = this
+        var myChart = this.$echarts.init(document.getElementById('chartmain'))
+        myChart.setOption(option)
+        myChart.off('click').on('click', function (params) {
+          if (params.data.state) {
+            _this.branchList2 = []
+            _this.lengSonList = []
+            _this.getCircularSonCate(params.data.id)
+          }
+        })
+      },
       resetForm() {
         this.time = this.getDayTime()
+        this.lengSonList = []
+        this.lengList = []
         this.branchList = []
-        this.branchList1 = []
+        this.branSonChList = []
+        this.branchList2 = []
         this.fetchData()
         this.getCircular()
       },
@@ -439,18 +495,48 @@
       },
       async getCircular() {
         const { data } = await getStockCircular()
-        data.category_stock_data.forEach((item) => {
-          this.branchList.push({
-            value: item.category_stock_num,
-            name: item.category_name,
-          })
+        data.category_stock_data.forEach((item, index) => {
+          this.lengList.push(item.category_name)
+          if (index == 0) {
+            this.branchList.push({
+              value: item.category_stock_num,
+              name: item.category_name,
+              id: item.category_id,
+              selected: true,
+              state: true,
+            })
+          } else {
+            this.branchList.push({
+              value: item.category_stock_num,
+              name: item.category_name,
+              id: item.category_id,
+              selected: false,
+              state: true,
+            })
+          }
         })
+        this.getCircularSonCate(this.branchList[0].id)
         data.year_stock_data.forEach((item) => {
-          this.branchList1.push({
+          this.branSonChList.push({
             value: item.year_stock_num,
             name: item.year_name,
           })
         })
+      },
+      async getCircularSonCate(ID) {
+        const { data } = await getStockCircularSonCate({
+          category_id: ID,
+        })
+        data.category_stock_data.forEach((item) => {
+          this.lengSonList.push(item.category_name)
+          this.branchList2.push({
+            value: item.category_stock_num,
+            name: item.category_name,
+            id: item.category_id,
+            state: false,
+          })
+        })
+        this.initCharts()
       },
       async getGoodsTypeList() {
         const { data } = await getCommonAllList({

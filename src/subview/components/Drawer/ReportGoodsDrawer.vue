@@ -86,13 +86,18 @@
             <el-tag>￥{{ row.total | moneyFormat }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="发货数量" prop="delivery_num" width="100" />
+        <el-table-column label="已发货数量" prop="delivery_num" width="100" />
         <el-table-column
           label="未发货数量"
           prop="not_delivery_num"
           width="100"
         />
-        <el-table-column label="未发货数量" prop="return_num" width="100" />
+        <el-table-column label="退货件数" prop="return_num" width="100" />
+        <el-table-column align="right" label="实际退货率" width="100">
+          <template #default="{ row }">
+            {{ ((row.return_num / row.num) * 100).toFixed(2) | moneyFormat }}%
+          </template>
+        </el-table-column>
       </template>
     </QYList>
   </div>

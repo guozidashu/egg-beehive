@@ -22,29 +22,65 @@
               color: rgba(0, 0, 0, 0.85);
             "
           >
-            <span v-if="item.numType == 1">￥{{ item.num | moneyFormat }}</span>
-            <span v-else>{{ item.num }}</span>
+            <span v-if="item.numType == 1">
+              ￥{{ item.allNum | moneyFormat }}
+            </span>
+            <span v-else>{{ item.allNum }}</span>
           </p>
-          <p>
+          <p style="font-size: 12px">
             本月
-            <span v-if="item.type === 1" style="color: #f5222d">
-              {{ item.pay }}
+            <span v-if="item.numType == 1">
+              ￥{{ item.month | moneyFormat }}
             </span>
-            <span v-else style="color: #39c15b">{{ item.pay }}</span>
-            <span v-if="item.type === 1">
-              较上月
-              <span style="color: #f5222d">{{ item.pay }}</span>
-              增长：
+            <span v-else>{{ item.month }}</span>
+            较上月
+            <span v-if="item.numType == 1">
+              ￥{{ item.yesterday_month | moneyFormat }}
             </span>
-            <span v-else>较上月减少：</span>
-            <i v-if="item.type === 1" style="font-size: 12px; color: #f5222d">
-              {{ item.number }}%
+            <span v-else>{{ item.yesterday_month }}</span>
+
+            <span
+              v-if="
+                item.month - item.yesterday_month >= 0 ||
+                item.month == 0 ||
+                item.yesterday_month == 0
+              "
+            >
+              增长
+            </span>
+            <span v-else>减少</span>
+            &nbsp;
+            <span v-if="item.month == 0" style="color: red">
+              0%
               <vab-icon icon="arrow-drop-up-fill" />
-            </i>
-            <i v-else style="font-size: 12px; color: #39c15b">
-              {{ item.number }}%
-              <vab-icon icon="arrow-drop-down-fill" />
-            </i>
+            </span>
+            <span v-else-if="item.yesterday_month == 0" style="color: red">
+              100%
+              <vab-icon icon="arrow-drop-up-fill" />
+            </span>
+            <span v-else>
+              <span
+                v-if="item.month - item.yesterday_month >= 0"
+                style="color: red"
+              >
+                {{
+                  (((item.month - item.yesterday_month) /
+                    item.yesterday_month) *
+                    100)
+                    | moneyFormat
+                }}%
+                <vab-icon icon="arrow-drop-up-fill" />
+              </span>
+              <span v-else style="color: green">
+                -{{
+                  (((item.month - item.yesterday_month) /
+                    item.yesterday_month) *
+                    100)
+                    | moneyFormat
+                }}%
+                <vab-icon icon="arrow-drop-down-fill" />
+              </span>
+            </span>
           </p>
           <div style="font-size: 14px; color: black">
             {{ item.dayName }} &nbsp;

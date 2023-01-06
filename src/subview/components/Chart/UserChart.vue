@@ -43,10 +43,9 @@
             left: 20,
           },
           tooltip: {
-            formatter: '{a} <br/>{b} : {c}%',
+            formatter: '{b} : {c}%',
           },
           series: {
-            name: this.dataList.title,
             type: 'gauge',
             radius: '100%',
             progress: {

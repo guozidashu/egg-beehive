@@ -44,9 +44,12 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <div style="display: flex; flex-wrap: wrap">
-        <QYTextLabels ref="multipleTable" :list="goodsStaList" />
-      </div>
+      <QYTextLabels
+        ref="multipleTable"
+        :list="goodsStaList"
+        style="margin: 20px 0"
+      />
+
       <vab-chart
         :init-options="initOptions"
         :option="option"
@@ -188,7 +191,7 @@
         goodsStaList: [
           {
             title: '总采购数量',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -197,7 +200,7 @@
           },
           {
             title: '包装辅料采购数量',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -206,7 +209,7 @@
           },
           {
             title: '包装辅料采购金额',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -215,7 +218,7 @@
           },
           {
             title: '面料采购数量',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -224,7 +227,7 @@
           },
           {
             title: '面料采购金额',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -233,7 +236,7 @@
           },
           {
             title: '总采购金额',
-            number: 400,
+            number: 0,
             num: 0,
             type: 2,
             typeSta: false,
@@ -242,7 +245,7 @@
           },
           {
             title: '辅料采购数量',
-            number: 400,
+            number: 0,
             num: 0,
             type: 2,
             typeSta: false,
@@ -251,7 +254,7 @@
           },
           {
             title: '辅料采购金额',
-            number: 400,
+            number: 0,
             num: 0,
             type: 2,
             typeSta: false,
@@ -260,7 +263,7 @@
           },
           {
             title: '总退货数量',
-            number: 400,
+            number: 0,
             num: 0,
             type: 2,
             typeSta: false,
@@ -269,7 +272,7 @@
           },
           {
             title: '总退货金额',
-            number: 400,
+            number: 0,
             num: 0,
             type: 2,
             typeSta: false,
@@ -394,6 +397,7 @@
             {
               name: '包装辅料采购数',
               type: 'line',
+              areaStyle: {},
 
               smooth: true,
               data: this.dataAllList.tare_adjuvant_num,
@@ -405,6 +409,7 @@
             {
               name: '面料采购数',
               type: 'line',
+              areaStyle: {},
 
               smooth: true,
               data: this.dataAllList.material_num,
@@ -416,6 +421,7 @@
             {
               name: '辅料采购数',
               type: 'line',
+              areaStyle: {},
 
               smooth: true,
               yAxisIndex: 1,

@@ -1,49 +1,49 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
-<head>
-  <meta charset="utf-8" />
-  <meta content="IE=edge" http-equiv="X-UA-Compatible" />
-  <meta content="webkit" name="renderer" />
-  <meta
-    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-    name="viewport"
-  />
-  <link href="<%= BASE_URL %>favicon.ico" rel="icon" />
-  <title><%= VUE_APP_TITLE %></title>
-  <meta content="<%= VUE_APP_AUTHOR %>" name="author" />
-  <link
-    href="<%= BASE_URL %>static/css/loading.css?random=<%= VUE_APP_RANDOM %>"
-    rel="stylesheet"
-  />
-  <!-- <script
+  <head>
+    <meta charset="utf-8" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta content="webkit" name="renderer" />
+    <meta
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+      name="viewport"
+    />
+    <link href="<%= BASE_URL %>favicon.ico" rel="icon" />
+    <title><%= VUE_APP_TITLE %></title>
+    <meta content="<%= VUE_APP_AUTHOR %>" name="author" />
+    <link
+      href="<%= BASE_URL %>static/css/loading.css?random=<%= VUE_APP_RANDOM %>"
+      rel="stylesheet"
+    />
+    <!-- <script
     charset="utf-8"
     src="https://map.qq.com/api/gljs?v=1.exp&key=ZZ2BZ-FI5CK-W7JJV-AJ76O-L47TV-7OFT6"
   ></script> -->
-  <script src="./config/config.js"></script>
-</head>
-<body>
-<noscript></noscript>
-<div id="app">
-  <div class="first-loading-wrp">
-    <div class="loading-wrp">
+    <script src="./config/config.js"></script>
+  </head>
+  <body>
+    <noscript></noscript>
+    <div id="app">
+      <div class="first-loading-wrp">
+        <div class="loading-wrp">
           <span class="dot dot-spin">
             <i></i>
             <i></i>
             <i></i>
             <i></i>
           </span>
+        </div>
+        <h1><%= VUE_APP_TITLE %></h1>
+      </div>
     </div>
-    <h1><%= VUE_APP_TITLE %></h1>
-  </div>
-</div>
-</body>
-<script>
-  var _hmt = _hmt || []
-  ;(function() {
-    var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?ea720c97b1f7c235214cffe41ce3a14e";
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(hm, s);
-  })();
-</script>
+  </body>
+  <script>
+    var _hmt = _hmt || []
+    ;(function () {
+      var hm = document.createElement('script')
+      hm.src = 'https://hm.baidu.com/hm.js?ea720c97b1f7c235214cffe41ce3a14e'
+      var s = document.getElementsByTagName('script')[0]
+      s.parentNode.insertBefore(hm, s)
+    })()
+  </script>
 </html>

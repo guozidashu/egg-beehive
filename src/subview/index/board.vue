@@ -484,9 +484,7 @@
             label="欠货率"
             prop="outage_rate"
             show-overflow-tooltip
-          >
-            <template #default="{ row }">{{ row.outage_rate }}%</template>
-          </el-table-column>
+          />
           <el-table-column
             align="center"
             label="欠货天数"
@@ -642,7 +640,7 @@
             count: 0,
             yesterday_count: 0,
             month_count: 0,
-            yesterday_month_count: 8,
+            yesterday_month_count: 0,
             bgColor: '#FFF4F6',
           },
           {
@@ -653,7 +651,7 @@
             count: 0,
             yesterday_count: 0,
             month_count: 0,
-            yesterday_month_count: 8,
+            yesterday_month_count: 0,
             bgColor: '#EEF5FE',
           },
           {
@@ -664,7 +662,7 @@
             count: 0,
             yesterday_count: 0,
             month_count: 0,
-            yesterday_month_count: 8,
+            yesterday_month_count: 0,
             bgColor: '#D8EFE5',
           },
         ],
@@ -927,7 +925,6 @@
       //       },
       //       {
       //         name: '销售件数',
-      //         type: 'line',
       //         smooth: true,
       //         data: this.dataAllList.sale_num,
       //         yAxisIndex: 1,
@@ -945,7 +942,6 @@
       //       },
       //       {
       //         name: '发货件数',
-      //         type: 'line',
       //         smooth: true,
       //         data: this.dataAllList.delivery_num,
       //         yAxisIndex: 1,
@@ -963,7 +959,6 @@
       //       },
       //       {
       //         name: '退货件数',
-      //         type: 'line',
       //         smooth: true,
       //         data: this.dataAllList.return_num,
       //         yAxisIndex: 1,

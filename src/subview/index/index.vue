@@ -87,12 +87,10 @@
           outage_rate_list: {
             name: '欠货率',
             value: 0,
-            title: '欠货率统计',
           },
           outstock_rate_list: {
             name: '缺货率',
             value: 0,
-            title: '缺货率统计',
           },
           spot_stock: 0,
         },
@@ -157,6 +155,7 @@
             {
               name: '销售件数',
               type: 'line',
+              areaStyle: {},
               smooth: true,
               data: [],
               itemStyle: {
@@ -166,6 +165,7 @@
             {
               name: '发货件数',
               type: 'line',
+              areaStyle: {},
               smooth: true,
               data: [],
               itemStyle: {

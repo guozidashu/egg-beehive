@@ -159,7 +159,7 @@
         goodsStaList: [
           {
             title: '订单数',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -168,7 +168,7 @@
           },
           {
             title: '销售件数',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -177,7 +177,7 @@
           },
           {
             title: '销售金额',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -186,7 +186,7 @@
           },
           {
             title: '退货数量',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -195,7 +195,7 @@
           },
           {
             title: '退货金额',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -328,6 +328,7 @@
             {
               name: '销售件数',
               type: 'line',
+              areaStyle: {},
 
               smooth: true,
               data: this.dataAllList.sale_list_num,
@@ -348,6 +349,7 @@
             {
               name: '退货数量',
               type: 'line',
+              areaStyle: {},
 
               smooth: true,
               yAxisIndex: 1,

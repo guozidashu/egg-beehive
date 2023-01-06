@@ -52,6 +52,63 @@ export function editChangePassword(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+// 销售目标
+export function getInformationHeadData(data) {
+  return request({
+    url: '/information/headData',
+    method: 'post',
+    data,
+  })
+}
+export function getInformationCustomerSaleRank(data) {
+  return request({
+    url: '/information/customerSaleRank',
+    method: 'post',
+    data,
+  })
+}
+export function getInformationCustomerCollectionRank(data) {
+  return request({
+    url: '/information/customerCollectionRank',
+    method: 'post',
+    data,
+  })
+}
+export function getInformationCollectionRatio(data) {
+  return request({
+    url: '/information/collectionRatio',
+    method: 'post',
+    data,
+  })
+}
+export function editSaveSaleTarget(data) {
+  return request({
+    url: '/information/saveSaleTarget',
+    method: 'post',
+    data,
+  })
+}
+export function editDetailsSaleTarget(data) {
+  return request({
+    url: '/information/detailsSaleTarget',
+    method: 'post',
+    data,
+  })
+}
+export function getCompleteSaleTarget(data) {
+  return request({
+    url: '/information/completeSaleTarget',
+    method: 'post',
+    data,
+  })
+}
+export function getlineChartSaleTarget(data) {
+  return request({
+    url: '/information/lineChartSaleTarget',
+    method: 'post',
+    data,
+  })
+}
 // 商品同步聚水潭
 export function saveGoodsSyncJuShuiTan(data) {
   return request({
@@ -1272,6 +1329,14 @@ export function getStockRank(data) {
     data,
   })
 }
+export function getStockCircularSonCate(data) {
+  return request({
+    url: '/goods/circularSonCate',
+    method: 'post',
+    data,
+  })
+}
+
 // 积分订单管理
 export function getIntegralOrderList(data) {
   return request({

@@ -215,6 +215,7 @@
             {
               name: '费用单数量',
               type: 'line',
+              areaStyle: {},
               smooth: true,
               data: [],
               yAxisIndex: 1,
@@ -237,7 +238,7 @@
         goodsStaList: [
           {
             title: '客户收款数',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -246,7 +247,7 @@
           },
           {
             title: '客户收款金额',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -255,7 +256,7 @@
           },
           {
             title: '供应商付款数',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -264,7 +265,7 @@
           },
           {
             title: '供应商付款金额',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,

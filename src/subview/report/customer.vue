@@ -24,7 +24,7 @@
         @submit.native.prevent
       >
         <el-form-item>
-          <div style="font-size: 16px">客户统计</div>
+          <div style="font-size: 16px">客户分析</div>
         </el-form-item>
         <el-form-item>
           <el-form-item label="客户渠道:">
