@@ -1,6 +1,6 @@
 <template>
   <div class="comprehensive-form-container">
-    <el-card class="tabs-card" shadow="hover">
+    <el-card class="tabs-card" shadow="hover" style="border-radius: 5px">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <!-- <el-tab-pane label="本地存储" name="本地存储" />
         <el-tab-pane label="阿里云存储" name="阿里云存储" />

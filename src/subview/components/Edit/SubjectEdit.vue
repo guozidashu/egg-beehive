@@ -96,7 +96,7 @@
           page: 1,
           pageSize: 10,
           id: 0, // 父级id （取父级时传0）
-          type: 1, // 类别 1收 2支
+          type: null, // 类别 1收 2支
           name: '', // 科目名称
         })
         this.selectList = data.data

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="border-radius: 5px">
     <vab-chart
       :init-options="initOptions"
       :option="option"

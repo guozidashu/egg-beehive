@@ -1,5 +1,5 @@
 <template>
-  <div class="system-log-container">
+  <div class="system-log-container" style="border-radius: 5px">
     <vab-query-form>
       <vab-query-form-top-panel>
         <el-form

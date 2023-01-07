@@ -9,7 +9,11 @@
         :xl="12"
         :xs="24"
       >
-        <el-card class="authorization" shadow="never">
+        <el-card
+          class="authorization"
+          shadow="never"
+          style="border-radius: 5px"
+        >
           <template #header>
             <div style="display: flex; justify-content: space-between">
               <div>

@@ -1,7 +1,12 @@
 <template>
   <div style="background-color: #f6f8f9">
     <div
-      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+      style="
+        padding-top: 1px;
+        margin-bottom: 20px;
+        background-color: #ffffff;
+        border-radius: 5px;
+      "
     >
       <QYForm
         :form="form"
@@ -81,7 +86,7 @@
       </QYForm>
     </div>
 
-    <el-card shadow="never" style="border: 0">
+    <el-card shadow="never" style="border: 0; border-radius: 5px">
       <el-tabs v-model="form.order_source" @tab-click="handleClick">
         <el-tab-pane
           :label="'所有订单(' + orderCountData.all_order + ')'"

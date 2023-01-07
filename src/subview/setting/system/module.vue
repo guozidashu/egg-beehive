@@ -1,6 +1,6 @@
 <template>
   <div class="comprehensive-form-container">
-    <el-card class="tabs-card" shadow="hover">
+    <el-card class="tabs-card" shadow="hover" style="border-radius: 5px">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="ERP配置" name="ERP配置">
           <div class="textCss">

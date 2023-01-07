@@ -1,6 +1,6 @@
 <template>
   <div class="comprehensive-form-container">
-    <el-card class="tabs-card" shadow="hover">
+    <el-card class="tabs-card" shadow="hover" style="border-radius: 5px">
       <el-tabs v-model="activeName">
         <el-tab-pane label="短信模板" name="first">
           <div class="textCss">

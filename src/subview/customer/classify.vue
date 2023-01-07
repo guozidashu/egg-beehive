@@ -20,7 +20,7 @@
         </template>
       </QYForm>
     </div> -->
-    <el-card shadow="never" style="border: 0">
+    <el-card shadow="never" style="border: 0; border-radius: 5px">
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button

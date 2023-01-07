@@ -320,6 +320,15 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'orderShippingStatistics',
+        name: 'OrderShippingStatistics',
+        component: () => import('@/subview/order/shippingstatistics'),
+        meta: {
+          title: '发货统计列表',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {

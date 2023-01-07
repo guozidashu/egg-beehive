@@ -1,7 +1,12 @@
 <template>
   <div style="background-color: #f6f8f9">
     <div
-      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+      style="
+        padding-top: 1px;
+        margin-bottom: 20px;
+        background-color: #ffffff;
+        border-radius: 5px;
+      "
     >
       <QYForm
         :form="form"
@@ -38,7 +43,7 @@
       <el-card
         v-if="item.id == 1 ? (rolename == '超级管理员' ? true : false) : true"
         shadow="hover"
-        style="border: 0"
+        style="border: 0; border-radius: 5px"
       >
         <div>
           <div style="display: flex; margin-top: 5px 0 0 5px">

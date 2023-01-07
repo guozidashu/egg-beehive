@@ -1,5 +1,5 @@
 <template>
-  <el-card shadow="hover">
+  <el-card shadow="hover" style="border-radius: 5px">
     <template #header>
       <span>{{ data.title }}</span>
     </template>

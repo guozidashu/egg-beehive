@@ -1,5 +1,5 @@
 <template>
-  <el-card class="authorization" shadow="hover">
+  <el-card class="authorization" shadow="hover" style="border-radius: 5px">
     <template #header>
       <vab-icon icon="bar-chart-2-line" />
       {{ title }}

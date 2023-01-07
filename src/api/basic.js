@@ -52,6 +52,21 @@ export function editChangePassword(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+// 发货统计列表
+export function getDeliveryStatisticsList(data) {
+  return request({
+    url: '/order/DeliveryStatisticsList',
+    method: 'post',
+    data,
+  })
+}
+export function getDeliveryStatisticsExport(data) {
+  return request({
+    url: '/order/DeliveryStatisticsExport',
+    method: 'post',
+    data,
+  })
+}
 // 销售目标
 export function getInformationHeadData(data) {
   return request({

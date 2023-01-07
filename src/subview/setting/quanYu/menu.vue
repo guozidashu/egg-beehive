@@ -2,7 +2,7 @@
   <div class="menu-management-container">
     <el-row :gutter="20">
       <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24">
-        <el-card shadow="hover">
+        <el-card shadow="hover" style="border-radius: 5px">
           <vab-query-form>
             <vab-query-form-top-panel :span="12">
               <el-button

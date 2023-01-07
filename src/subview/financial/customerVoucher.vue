@@ -1,7 +1,12 @@
 <template>
   <div style="background-color: #f6f8f9">
     <div
-      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+      style="
+        padding-top: 1px;
+        margin-bottom: 20px;
+        background-color: #ffffff;
+        border-radius: 5px;
+      "
     >
       <QYForm
         :form="form"
@@ -38,7 +43,7 @@
         </template>
       </QYForm>
     </div>
-    <el-card shadow="never" style="border: 0">
+    <el-card shadow="never" style="border: 0; border-radius: 5px">
       <QYList
         :list="list"
         :list-type="listType"
@@ -61,51 +66,30 @@
             show-overflow-tooltip
           />
           <el-table-column
-            align="center"
-            label="日期"
-            prop="ctime"
-            show-overflow-tooltip
-          />
-          <el-table-column
             align="right"
             label="金额"
             prop="total"
             show-overflow-tooltip
           >
             <template #default="{ row }">
-              <el-tag>￥{{ row.total | moneyFormat }}</el-tag>
+              <el-tag v-if="row.total >= 0">
+                ￥{{ row.total | moneyFormat }}
+              </el-tag>
+              <el-tag v-else type="danger">
+                -￥{{ row.total | moneyFormat }}
+              </el-tag>
             </template>
           </el-table-column>
-          <el-table-column
-            align="right"
-            label="收款方式"
-            prop="alipay_amount"
-            show-overflow-tooltip
-          >
+          <el-table-column align="right" label="收款方式" show-overflow-tooltip>
             <template #default="{ row }">
-              <div style="margin: 10px">
-                支付宝:
-                <el-tag>￥{{ row.alipay_amount | moneyFormat }}</el-tag>
-              </div>
-              <div style="margin: 10px">
-                微信:
-                <el-tag>￥{{ row.wechat_amount | moneyFormat }}</el-tag>
-              </div>
-              <div style="margin: 10px">
-                现金:
-                <el-tag>￥{{ row.cash_amount | moneyFormat }}</el-tag>
-              </div>
-              <div style="margin: 10px">
-                银行卡:
-                <el-tag>￥{{ row.bank_amount | moneyFormat }}</el-tag>
-              </div>
-              <div style="margin: 10px">
-                信用卡:
-                <el-tag>￥{{ row.credit_amount | moneyFormat }}</el-tag>
+              <div v-if="row.amount != 0" style="margin: 10px">
+                {{ row.amount_text }}:
+                <el-tag>￥{{ row.amount | moneyFormat }}</el-tag>
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="收款类型" prop="remark" />
+          <el-table-column align="center" label="收款类型" prop="title" />
+          <el-table-column align="center" label="操作人" prop="employee_name" />
           <el-table-column
             align="center"
             label="备注"
@@ -123,6 +107,12 @@
               <el-tag v-else>正常</el-tag>
             </template>
           </el-table-column>
+          <el-table-column
+            align="center"
+            label="创建日期"
+            prop="ctime"
+            show-overflow-tooltip
+          />
         </template>
       </QYList>
     </el-card>

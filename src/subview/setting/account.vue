@@ -443,9 +443,27 @@
       </el-card>
       <el-card shadow="never" style="width: 26%; border-radius: 5px">
         <div slot="header">
-          <span style="font-size: 16px; font-weight: 600">企业VIP专属客服</span>
+          <span style="font-size: 16px; font-weight: 600">技术支持团队</span>
         </div>
-        <el-card
+        <div style="padding-left: 10px">
+          <p>核心开发团队</p>
+          <p style="font-size: 12px">产品：老何是刀客</p>
+          <p style="font-size: 12px">技术：时间不等人、@Dong、小杨哥、Liquor</p>
+          <p style="font-size: 12px">
+            设计 UI：时间不等人、TheFireflyAwn、xy-yyds、LXT
+          </p>
+          <p style="font-size: 12px">质检：老何、绵绵绵、Xaboy</p>
+          <p style="margin-top: 40px">参与开发人员</p>
+          <p style="font-size: 12px">产品：小雨、晓啾--Leoy Studio、大师兄</p>
+          <p style="font-size: 12px">
+            技术：WeChat
+            Pay、以爱为半径、斌、武香君、很复杂、聆听、吖珊、不点@%、娜娜、归来仍是少年
+          </p>
+          <p style="font-size: 12px">
+            设计：蒹葭、莹宝 70、啵一口小奶勋、Sɪʟᴇɴᴛ . 测试：夏天是草原
+          </p>
+        </div>
+        <!-- <el-card
           v-for="(item, index) in serviceList"
           :key="index"
           :body-style="{ padding: '10px' }"
@@ -466,7 +484,7 @@
               </p>
             </div>
           </div>
-        </el-card>
+        </el-card> -->
       </el-card>
     </div>
     <el-dialog
@@ -628,7 +646,28 @@
         inof: {},
         activities: [
           {
-            timestamp: '2022-12-31 03:49',
+            timestamp: '2023-01-13 08:29:13 ',
+            timestamp1: '版本：V2.0.6',
+            content: '【新增】[数据中台] 增加销售目标看板',
+            contentList: [
+              '【新增】[数据中台] 增加欠货数据预警分析功能',
+              '【新增】[数据中台] 增加发货统计报表和导出EXCEL功能',
+              '【新增】[订货商城] 会员中心增加销售分析自定义模板',
+              '【新增】[订货商城] 客户提醒品牌商/供应链补货功能',
+              '【优化】[数据中台] 优化数据分析决策模块，着重优化经营指导、预警、洞察数据呈现',
+              '【优化】[数据中台] 优化首页看板和规范全局UI界面的统一性',
+              '【优化】[数据中台] 优化完善账户信息的完整性',
+              '【优化】[数据中台] 优化调整中台菜单的布局和图标优化',
+              '【优化】[数据中台] 同步聚水潭的商品、订单、库存的业务流程优化',
+              '【优化】[SCRM] 企业微信用户画像侧边栏优化',
+              '【优化】[订货商城] 客户等级申请流程优化',
+              '【修复】[订货商城] 商城详情页图片适配问题',
+              '【修得】[SCRM] 企业微信授权方式问题',
+              '【其它】其它细节及BUG优化',
+            ],
+          },
+          {
+            timestamp: '2022-12-31 03:49:32',
             timestamp1: '版本：V2.0.5',
             content: '【新增】[数据中台] 增加账户信息功能',
             contentList: [
@@ -643,7 +682,7 @@
             ],
           },
           {
-            timestamp: '2022-09-19 00:46',
+            timestamp: '2022-11-19 00:46:18',
             timestamp1: '版本：V2.0.4',
             content: '【新增】[SCRM] 分销活动链接加密',
             contentList: [
@@ -656,12 +695,29 @@
             ],
           },
           {
-            timestamp: '2022-07-12 02:35',
+            timestamp: '2022-10-12 02:35:40',
             timestamp1: '版本：V2.0.3',
             content: '【安全性更新】修复分销漏洞',
             contentList: [
               '【安全性更新】新增上下架和改价需要管理员密码',
               '【安全性更新】暂时关闭分销回调',
+            ],
+          },
+          {
+            timestamp: '2022-09-16 05:28:18',
+            timestamp1: '版本：V2.0.2',
+            content:
+              '【全新设计并重构】供应链SCM数据后台全面VUE+Element UI 重构',
+            contentList: [
+              '由于本次更新内容较多,请联系您的私人专属顾问协助升级',
+            ],
+          },
+          {
+            timestamp: '2022-04-22 04:01:06',
+            timestamp1: '版本：V2.0.1',
+            content: '智多链V2.0 大客户定制版SCM全面上线',
+            contentList: [
+              '内测版本非市场销售标准版，非定制版大客户，请耐心等待后更新',
             ],
           },
         ],

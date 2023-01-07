@@ -1,6 +1,6 @@
 <template>
   <div class="comprehensive-form-container">
-    <el-card shadow="never">
+    <el-card shadow="never" style="border-radius: 5px">
       <el-tabs v-model="activeName" style="font-size: 16px; font-weight: 600">
         <el-tab-pane label="小程序绑定" name="小程序绑定" />
         <el-tab-pane label="支付设置" name="支付设置" />

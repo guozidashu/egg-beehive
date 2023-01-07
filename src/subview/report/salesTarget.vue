@@ -9,6 +9,7 @@
             padding: 10px;
             margin-bottom: 20px;
             background-color: white;
+            border-radius: 5px;
           "
         >
           <div
@@ -74,6 +75,7 @@
             font-size: 14px;
             text-align: center;
             background: -webkit-linear-gradient(top, #fff5d1, #fff);
+            border-radius: 5px;
           "
         >
           <p>年度销售目标</p>
@@ -87,7 +89,8 @@
             padding-top: 12px;
             font-size: 14px;
             text-align: center;
-            background: -webkit-linear-gradient(top, #fff5d1, #fff);
+            background: -webkit-linear-gradient(top, #d5fdff, #fff);
+            border-radius: 5px;
           "
         >
           <p>目标完成率</p>
@@ -99,7 +102,8 @@
             padding-top: 12px;
             font-size: 14px;
             text-align: center;
-            background: -webkit-linear-gradient(top, #fff5d1, #fff);
+            background: -webkit-linear-gradient(top, #fee7df, #fff);
+            border-radius: 5px;
           "
         >
           <p>月均销售目标</p>
@@ -109,7 +113,7 @@
         </el-card>
       </el-col>
       <el-col :lg="20" :md="20" :sm="20" :xl="20" :xs="20">
-        <el-card shadow="hover">
+        <el-card shadow="hover" style="border-radius: 5px">
           <vab-chart
             :init-options="initOptions"
             :option="option"
@@ -118,7 +122,11 @@
         </el-card>
       </el-col>
       <el-col :span="10">
-        <el-card class="authorization" shadow="hover">
+        <el-card
+          class="authorization"
+          shadow="hover"
+          style="border-radius: 5px"
+        >
           <template #header>
             <vab-icon icon="bar-chart-2-line" />
             客户销售排名
@@ -151,7 +159,11 @@
                 </el-table-column>
                 <el-table-column label="客户名称" prop="name" />
                 <el-table-column label="拿货件数" prop="count" />
-                <el-table-column label="拿货金额" prop="total" />
+                <el-table-column align="right" label="拿货金额" prop="total">
+                  <template #default="{ row }">
+                    <el-tag>￥{{ row.total | moneyFormat }}</el-tag>
+                  </template>
+                </el-table-column>
                 <el-table-column label="贡献占比" prop="contribution_ratio" />
               </template>
             </QYList>
@@ -159,7 +171,11 @@
         </el-card>
       </el-col>
       <el-col :span="10">
-        <el-card class="authorization" shadow="hover">
+        <el-card
+          class="authorization"
+          shadow="hover"
+          style="border-radius: 5px"
+        >
           <template #header>
             <vab-icon icon="bar-chart-2-line" />
             客户回款排行
@@ -191,8 +207,20 @@
                   </template>
                 </el-table-column>
                 <el-table-column label="客户名称" prop="name" />
-                <el-table-column label="拿货金额" prop="total" />
-                <el-table-column label="回款余额" prop="collection" />
+                <el-table-column align="right" label="拿货金额" prop="total">
+                  <template #default="{ row }">
+                    <el-tag>￥{{ row.total | moneyFormat }}</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  align="right"
+                  label="回款余额"
+                  prop="collection"
+                >
+                  <template #default="{ row }">
+                    <el-tag>￥{{ row.collection | moneyFormat }}</el-tag>
+                  </template>
+                </el-table-column>
                 <el-table-column label="回款率" prop="collection_ratio" />
               </template>
             </QYList>

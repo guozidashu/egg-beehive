@@ -6,7 +6,7 @@
     @close="close"
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item label="收支类别:">
+      <el-form-item label="收支类别:" prop="category_id">
         <el-select v-model="form.category_id" placeholder="请选择收支类别">
           <el-option
             v-for="(item, index) in selectList.finance_category"
@@ -16,7 +16,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="结算账户:">
+      <el-form-item label="结算账户:" prop="corporate_account_id">
         <el-select
           v-model="form.corporate_account_id"
           placeholder="请选择结算账户"
@@ -36,7 +36,7 @@
           style="width: 220px"
         />
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
+      <el-form-item label="备注">
         <el-input
           v-model="form.remark"
           placeholder="请输入备注"
@@ -69,7 +69,12 @@
         },
         rules: {
           amount: [{ required: true, trigger: 'blur', message: '请输入金额' }],
-          remark: [{ required: true, trigger: 'blur', message: '请输入备注' }],
+          category_id: [
+            { required: true, trigger: 'blur', message: '请选择收支类别' },
+          ],
+          corporate_account_id: [
+            { required: true, trigger: 'blur', message: '请选择结算账户' },
+          ],
         },
         title: '',
         dialogFormVisible: false,

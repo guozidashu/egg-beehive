@@ -4,7 +4,12 @@
       <el-col :lg="6" :md="8" :sm="24" :xl="4" :xs="24">
         <el-card
           shadow="never"
-          style="height: 100%; min-height: calc(70vh); border: 0"
+          style="
+            height: 100%;
+            min-height: calc(70vh);
+            border: 0;
+            border-radius: 5px;
+          "
         >
           <el-menu
             class="el-menu-vertical-demo"
@@ -62,7 +67,7 @@
         </el-card>
       </el-col>
       <el-col :lg="18" :md="16" :sm="24" :xl="20" :xs="24">
-        <el-card shadow="never" style="border: 0">
+        <el-card shadow="never" style="border: 0; border-radius: 5px">
           <el-form ref="form" :inline="true" @submit.native.prevent>
             <el-form-item>
               <el-button
@@ -104,7 +109,12 @@
               <el-table-column label="分类名称" prop="pid_name" />
               <el-table-column label="款式名称" prop="name" />
               <el-table-column label="使用商品数量" prop="goods_num" />
-              <el-table-column label="状态" prop="status" />
+              <el-table-column label="状态" prop="status">
+                <template #default="{ row }">
+                  <el-tag v-if="row.status == 1">开启</el-tag>
+                  <el-tag v-if="row.status == 0" type="danger">关闭</el-tag>
+                </template>
+              </el-table-column>
               <el-table-column
                 align="center"
                 fixed="right"

@@ -1,6 +1,6 @@
 <template>
   <div class="comprehensive-form-container">
-    <el-card shadow="never">
+    <el-card shadow="never" style="border-radius: 5px">
       <template #header>
         <span style="font-size: 16px; font-weight: 600">绑定支付宝小程序</span>
       </template>

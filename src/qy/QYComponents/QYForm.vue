@@ -18,7 +18,7 @@
           type="primary"
           @click="handleQuery"
         >
-          搜索
+          查询
         </el-button>
         <el-button size="small" type="primary" @click="resetForm('form')">
           重置

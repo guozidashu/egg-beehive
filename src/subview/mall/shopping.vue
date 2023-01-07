@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 20px">
+  <div style="padding: 20px; border-radius: 5px">
     <div style="font-weight: 600">商城配置</div>
     <el-divider style="margin-bottom: 0" />
     <!-- <div class="textCss" style="margin-bottom: 25px">

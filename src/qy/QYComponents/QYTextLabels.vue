@@ -41,7 +41,10 @@
           >
             线下开单：&nbsp;
             <span v-if="item.title != '退货率'">
-              ￥{{ item.onlineBilling | moneyFormat }}
+              <span v-if="item.numType == 1">
+                ￥{{ item.onlineBilling | moneyFormat }}
+              </span>
+              <span v-else>{{ item.onlineBilling }}</span>
             </span>
             &nbsp;
             {{ item.onlineBillingPercentage }}
@@ -49,7 +52,10 @@
           <div v-if="item.onlineBillingPercentage" style="font-size: 12px">
             线上商城：&nbsp;
             <span v-if="item.title != '退货率'">
-              ￥{{ item.onlineMall | moneyFormat }}
+              <span v-if="item.numType == 1">
+                ￥{{ item.onlineMall | moneyFormat }}
+              </span>
+              <span v-else>{{ item.onlineMall }}</span>
             </span>
             &nbsp;
             {{ item.onlineMallPercentage }}

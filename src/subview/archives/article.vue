@@ -1,7 +1,12 @@
 <template>
   <div style="background-color: #f6f8f9">
     <div
-      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+      style="
+        padding-top: 1px;
+        margin-bottom: 20px;
+        background-color: #ffffff;
+        border-radius: 5px;
+      "
     >
       <QYForm
         :form="form"
@@ -16,7 +21,7 @@
         </template>
       </QYForm>
     </div>
-    <el-card shadow="never" style="border: 0">
+    <el-card shadow="never" style="border: 0; border-radius: 5px">
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button

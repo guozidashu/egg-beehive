@@ -1,7 +1,12 @@
 <template>
   <div style="background-color: #f6f8f9">
     <div
-      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
+      style="
+        padding-top: 1px;
+        margin-bottom: 20px;
+        background-color: #ffffff;
+        border-radius: 5px;
+      "
     >
       <QYForm
         :form="form"
@@ -35,7 +40,7 @@
       @mouseenter="mouseOver(index)"
       @mouseleave="mouseLeave(index)"
     >
-      <el-card shadow="hover" style="border: 0">
+      <el-card shadow="hover" style="border: 0; border-radius: 5px">
         <div>
           <div style="display: flex; margin-top: 5px 0 0 5px">
             <div style="width: 50%">

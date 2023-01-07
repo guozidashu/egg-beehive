@@ -1,6 +1,6 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <div style="padding: 20px; background-color: white">
+    <div style="padding: 20px; background-color: white; border-radius: 5px">
       <el-tabs v-model="activeName">
         <el-tab-pane label="打印吊牌条码" name="打印吊牌条码" />
         <el-tab-pane label="导入打印吊牌条码" name="导入打印吊牌条码" />

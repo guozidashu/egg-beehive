@@ -20,7 +20,7 @@
         </template>
       </QYForm>
     </div> -->
-    <el-card shadow="never" style="border: 0">
+    <el-card shadow="never" style="border: 0; border-radius: 5px">
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
@@ -44,9 +44,14 @@
         <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column type="selection" width="50px" />
-          <el-table-column label="等级图标" prop="banner" width="150px">
+          <el-table-column
+            align="center"
+            label="等级图标"
+            prop="banner"
+            width="80px"
+          >
             <template #default="{ row }">
-              <img :src="row.icon" style="width: 100px; height: 100px" />
+              <img :src="row.icon" style="width: 50px; height: 50px" />
             </template>
           </el-table-column>
           <el-table-column label="等级名称" prop="name" width="150px" />

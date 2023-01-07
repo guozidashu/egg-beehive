@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="padding: 20px 0 0 20px">
+    <div style="padding: 20px 0 0 20px; border-radius: 5px">
       <el-form
         ref="form"
         :inline="true"
@@ -38,7 +38,12 @@
       </el-form>
     </div>
 
-    <el-table v-loading="listLoading" border :data="transData">
+    <el-table
+      v-loading="listLoading"
+      border
+      :data="transData"
+      style="border-radius: 5px"
+    >
       <el-table-column
         v-for="(item, index) in transTitle"
         :key="index"

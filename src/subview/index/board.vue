@@ -233,7 +233,7 @@
               :list="goosList1"
               :list-type="2"
               :state="listLoading1"
-              style="height: 450px"
+              style="height: 450px; overflow: auto"
             >
               <template #List>
                 <el-table-column
@@ -260,7 +260,11 @@
                   </template>
                 </el-table-column>
                 <el-table-column label="商品名称" prop="goods_name" />
-                <el-table-column label="商品图片" prop="goods_img">
+                <el-table-column
+                  align="center"
+                  label="商品图片"
+                  prop="goods_img"
+                >
                   <template #default="{ row }">
                     <el-tooltip placement="top">
                       <el-image
@@ -276,9 +280,17 @@
                   </template>
                 </el-table-column>
                 <el-table-column label="商品款号" prop="goods_sn" />
-                <el-table-column label="订货件数" prop="num" />
-                <el-table-column label="欠货件数" prop="not_delivery_num" />
-                <el-table-column label="欠货率" prop="outage_rate" />
+                <el-table-column align="center" label="订货件数" prop="num" />
+                <el-table-column
+                  align="center"
+                  label="欠货件数"
+                  prop="not_delivery_num"
+                />
+                <el-table-column
+                  align="center"
+                  label="欠货率"
+                  prop="outage_rate"
+                />
               </template>
             </QYList>
           </div>
@@ -292,7 +304,7 @@
               :list="goosList2"
               :list-type="2"
               :state="listLoading2"
-              style="height: 450px"
+              style="height: 450px; overflow: auto"
             >
               <template #List>
                 <el-table-column

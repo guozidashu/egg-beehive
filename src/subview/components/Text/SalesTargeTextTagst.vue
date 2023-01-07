@@ -9,7 +9,7 @@
       :xl="6"
       :xs="24"
     >
-      <el-card class="access" shadow="hover">
+      <el-card class="access" shadow="hover" style="border-radius: 5px">
         <template #header>
           <vab-icon icon="line-chart-line" style="color: red" />
           {{ item.title }}

@@ -161,6 +161,7 @@
           this.form = JSON.parse(JSON.stringify(newVal))
           this.formList.goods_id = newVal.id
           this.time = '昨天'
+          this.fetchData()
         },
         deep: true,
         immediate: true,

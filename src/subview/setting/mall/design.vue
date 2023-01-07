@@ -1,6 +1,6 @@
 <template>
   <div class="system-log-container">
-    <el-card v-if="viewSta == 1" class="box-card">
+    <el-card v-if="viewSta == 1" class="box-card" style="border-radius: 5px">
       <div slot="header" class="clearfix">
         <span>页面列表</span>
       </div>

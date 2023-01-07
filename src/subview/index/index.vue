@@ -4,7 +4,7 @@
       <el-col :span="20" style="padding: 0">
         <TextTags :list="textTagList" />
         <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24">
-          <el-card shadow="hover">
+          <el-card shadow="hover" style="border-radius: 5px">
             <template #header>
               <el-radio-group v-model="time">
                 <el-radio-button label="七天" />
@@ -21,7 +21,7 @@
         </el-col>
       </el-col>
       <el-col :span="4">
-        <el-card shadow="hover">
+        <el-card shadow="hover" style="border-radius: 5px">
           <template #header>
             <p style="text-align: center">在售库存数</p>
             <p style="font-size: 18px; font-weight: 600; text-align: center">
@@ -33,7 +33,7 @@
         </el-card>
       </el-col>
       <el-col :span="8">
-        <el-card shadow="hover">
+        <el-card shadow="hover" style="border-radius: 5px">
           <template #header>
             <div>最新加入会员</div>
           </template>

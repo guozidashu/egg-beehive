@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 20px">
+  <div style="padding: 20px; border-radius: 5px">
     <div class="textCss">
       <p style="font-weight: 600">使用说明</p>
     </div>

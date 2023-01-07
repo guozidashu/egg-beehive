@@ -5,6 +5,7 @@
         padding: 20px 20px 20px 20px;
         margin-bottom: 20px;
         background-color: white;
+        border-radius: 5px;
       "
     >
       <el-form
@@ -51,7 +52,7 @@
         style="width: 100%; height: 400px"
       />
     </div>
-    <div style="padding: 20px; background-color: white">
+    <div style="padding: 20px; background-color: white; border-radius: 5px">
       <el-form
         ref="form"
         :inline="true"

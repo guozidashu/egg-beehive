@@ -1,6 +1,13 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <div style="padding: 20px; margin-bottom: 20px; background-color: #ffffff">
+    <div
+      style="
+        padding: 20px;
+        margin-bottom: 20px;
+        background-color: #ffffff;
+        border-radius: 5px;
+      "
+    >
       <el-button size="small" type="primary" @click="handleBatch(1)">
         批量显示
       </el-button>
@@ -8,7 +15,7 @@
         批量隐藏
       </el-button>
     </div>
-    <el-card shadow="never" style="border: 0">
+    <el-card shadow="never" style="border: 0; border-radius: 5px">
       <QYList
         :list="list"
         :list-type="listType"

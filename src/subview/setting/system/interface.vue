@@ -1,6 +1,6 @@
 <template>
   <div class="comprehensive-form-container">
-    <el-card class="tabs-card" shadow="hover">
+    <el-card class="tabs-card" shadow="hover" style="border-radius: 5px">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="聚水潭ERP" name="聚水潭ERP" />
         <el-tab-pane label="旺店通ERP" name="旺店通ERP" />
@@ -73,6 +73,19 @@
           </el-form-item>
           <el-form-item label="聚水潭店铺ID：" prop="jst_shop_id">
             <el-input v-model="form.jst_shop_id" style="width: 40%" />
+          </el-form-item>
+          <el-form-item label="聚水潭refresh_token：" prop="jst_refresh_token">
+            <el-input v-model="form.jst_refresh_token" style="width: 40%" />
+          </el-form-item>
+          <el-form-item
+            label="聚水潭access_token过期时间："
+            prop="jst_expiration_period"
+          >
+            <el-input
+              v-model="form.jst_expiration_period"
+              disabled
+              style="width: 40%"
+            />
           </el-form-item>
         </div>
         <div v-if="activeName == '旺店通ERP'">
@@ -244,6 +257,8 @@
           jst_app_key: null, //聚水潭app_Key
           jst_app_secret: null, //聚水潭app_Secret
           jst_shop_id: null, //聚水潭shop_id
+          jst_refresh_token: null, //聚水潭refresh_token
+          jst_expiration_period: null, //聚水潭过期时间
           api_open: 1, //接口是否开启
           version: 1, //1：ERP专业版（无精细化库存管理）\r\n\r\n2：ERP企业版（有精细化库存管理）
           auth_url: null, //authUrl
@@ -285,6 +300,20 @@
           ],
           jst_shop_id: [
             { required: true, message: '请输入聚水潭店铺ID', trigger: 'blur' },
+          ],
+          jst_refresh_token: [
+            {
+              required: true,
+              message: '请输入聚水潭refresh_token',
+              trigger: 'blur',
+            },
+          ],
+          jst_expiration_period: [
+            {
+              required: true,
+              message: '请输入聚水潭过期时间',
+              trigger: 'blur',
+            },
           ],
           auth_url: [
             { required: true, message: '请输入旺店通authUrl', trigger: 'blur' },
@@ -432,6 +461,8 @@
                 jst_app_key: this.form.jst_app_key, //聚水潭app_Key
                 jst_app_secret: this.form.jst_app_secret, //聚水潭app_Secret
                 jst_shop_id: this.form.jst_shop_id, //聚水潭shop_id
+                jst_refresh_token: this.form.jst_refresh_token, //聚水潭refresh_token
+                jst_expiration_period: this.form.jst_expiration_period, //聚水潭过期时间
               })
               if (code === 200) {
                 this.$message.success('保存成功')

@@ -1,6 +1,6 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <el-card shadow="never" style="border: 0">
+    <el-card shadow="never" style="border: 0; border-radius: 5px">
       <el-form ref="form">
         <el-form-item>
           <el-button
