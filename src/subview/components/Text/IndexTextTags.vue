@@ -11,8 +11,15 @@
     >
       <el-card class="access" shadow="hover" style="border-radius: 5px">
         <template #header>
-          <vab-icon icon="line-chart-line" style="color: red" />
-          {{ item.title }}
+          <div style="display: flex; justify-content: space-between">
+            <div style="margin-top: 5px">
+              <vab-icon icon="line-chart-line" style="color: red" />
+              {{ item.title }}
+            </div>
+            <div>
+              <el-tag type="danger">今日</el-tag>
+            </div>
+          </div>
         </template>
         <div>
           <p
@@ -28,11 +35,6 @@
             <span v-else>{{ item.today }}</span>
           </p>
           <p style="font-size: 12px">
-            今日
-            <span v-if="item.numType == 1">
-              ￥{{ item.today | moneyFormat }}
-            </span>
-            <span v-else>{{ item.today }}</span>
             较昨日
             <span v-if="item.numType == 1">
               ￥{{ item.yesterday_total | moneyFormat }}
@@ -88,6 +90,8 @@
               ￥{{ item.month | moneyFormat }}
             </span>
             <span v-else>{{ item.month }}</span>
+          </p>
+          <p style="font-size: 12px">
             较上月
             <span v-if="item.numType == 1">
               ￥{{ item.yesterday_month | moneyFormat }}

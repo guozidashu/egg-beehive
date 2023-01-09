@@ -404,7 +404,7 @@
         let option = {
           tooltip: {
             trigger: 'item',
-            formatter: '11',
+            formatter: '{b}: {c} ({d}%)',
           },
           legend: {
             data: [...this.lengList, ...this.lengSonList],
@@ -413,7 +413,6 @@
           },
           series: [
             {
-              name: '测试',
               type: 'pie',
               selectedMode: 'single',
               radius: [0, '30%'],
@@ -427,7 +426,6 @@
               data: this.branchList,
             },
             {
-              name: '测试',
               type: 'pie',
               radius: ['45%', '55%'],
               labelLine: {

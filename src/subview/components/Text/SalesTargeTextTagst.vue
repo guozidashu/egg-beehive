@@ -11,8 +11,15 @@
     >
       <el-card class="access" shadow="hover" style="border-radius: 5px">
         <template #header>
-          <vab-icon icon="line-chart-line" style="color: red" />
-          {{ item.title }}
+          <div style="display: flex; justify-content: space-between">
+            <div style="margin-top: 5px">
+              <vab-icon icon="line-chart-line" style="color: red" />
+              {{ item.title }}
+            </div>
+            <div>
+              <el-tag type="danger">今日</el-tag>
+            </div>
+          </div>
         </template>
         <div>
           <p

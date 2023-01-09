@@ -29,14 +29,20 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="金额" prop="amount">
+      <el-form-item label="金额:" prop="amount">
         <el-input
           v-model="form.amount"
           placeholder="请输入金额"
           style="width: 220px"
         />
       </el-form-item>
-      <el-form-item label="备注">
+      <el-form-item label="报销凭证:" prop="voucher_image">
+        <el-button type="primary" @click="handleShow()">图片上传</el-button>
+      </el-form-item>
+      <el-form-item v-if="form.voucher_image">
+        <img :src="form.voucher_image" style="width: 80px; height: 80px" />
+      </el-form-item>
+      <el-form-item label="备注:">
         <el-input
           v-model="form.remark"
           placeholder="请输入备注"
@@ -50,13 +56,29 @@
       <el-button @click="close">取 消</el-button>
       <el-button type="primary" @click="save">确 定</el-button>
     </template>
+    <vab-upload
+      ref="vabUpload"
+      :limit="1"
+      name="file"
+      :size="2"
+      url="/upload"
+      @submitUpload="getSon"
+    />
   </el-dialog>
 </template>
 
 <script>
-  import { editBillSave, getCommonAllList } from '@/api/basic'
+  import {
+    editBillSave,
+    getCommonAllList,
+    getDefaultCorporateAccount,
+  } from '@/api/basic'
+  import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'LevelDeit',
+    components: {
+      VabUpload,
+    },
     data() {
       return {
         selectList: [],
@@ -66,6 +88,7 @@
           corporate_account_id: null, // 结算账户id
           amount: '', // 金额
           remark: '', // 备注信息
+          voucher_image: '', // 凭证图片
         },
         rules: {
           amount: [{ required: true, trigger: 'blur', message: '请输入金额' }],
@@ -75,22 +98,36 @@
           corporate_account_id: [
             { required: true, trigger: 'blur', message: '请选择结算账户' },
           ],
+          voucher_image: [
+            { required: true, trigger: 'blur', message: '请上传报销凭证' },
+          ],
         },
         title: '',
         dialogFormVisible: false,
       }
     },
-    created() {
-      this.getTypeList()
-    },
+    created() {},
     methods: {
+      getSon(data) {
+        this.form.voucher_image = data[0]
+        this.$forceUpdate()
+      },
+      handleShow() {
+        this.$refs['vabUpload'].handleShow()
+      },
       async getTypeList() {
         const { data } = await getCommonAllList({
           type: 'finance_category,corporate_account',
         })
         this.selectList = data
+        this.getDefault()
       },
-      showEdit(row) {
+      async getDefault() {
+        const { data } = await getDefaultCorporateAccount()
+        this.form.corporate_account_id = data.id
+      },
+      async showEdit(row) {
+        this.getTypeList()
         if (!row) {
           this.title = '添加'
         } else {

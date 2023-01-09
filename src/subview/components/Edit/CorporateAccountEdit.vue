@@ -23,6 +23,12 @@
       <el-form-item label="账户:" prop="account">
         <el-input v-model="form.account" size="small" style="width: 215px" />
       </el-form-item>
+      <el-form-item label="是否默认:">
+        <el-radio-group v-model="form.is_default">
+          <el-radio :label="1">是</el-radio>
+          <el-radio :label="0">否</el-radio>
+        </el-radio-group>
+      </el-form-item>
     </el-form>
     <template #footer>
       <el-button @click="close">取 消</el-button>
@@ -44,6 +50,7 @@
           bank_name: '', // 开户银行
           account: '', // 账号
           type: null, // 类别 1银行 2支付宝 3微信 4其它
+          is_default: 0, // 是否默认 0否 1是
         },
         rules: {
           amount: [{ required: true, trigger: 'blur', message: '请输入金额' }],

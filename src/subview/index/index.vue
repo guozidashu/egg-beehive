@@ -28,8 +28,14 @@
               {{ RightData.spot_stock }}
             </p>
           </template>
-          <UserChart :data-list="RightData.outage_rate_list" title="欠货率" />
-          <UserChart :data-list="RightData.outstock_rate_list" title="缺货率" />
+          <UserChart
+            :data-list="RightData.outage_rate_list"
+            title="发货欠货率"
+          />
+          <UserChart
+            :data-list="RightData.outstock_rate_list"
+            title="发货缺货率"
+          />
         </el-card>
       </el-col>
       <el-col :span="8">

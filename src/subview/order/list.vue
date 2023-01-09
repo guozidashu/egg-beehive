@@ -21,6 +21,7 @@
               <el-option label="待收款" :value="1" />
               <el-option label="待发货" :value="2" />
               <el-option label="待确认" :value="3" />
+              <el-option label="已作废" :value="4" />
             </el-select>
           </el-form-item>
           <!-- <el-form-item label="配送方式:">
@@ -269,12 +270,12 @@
           order_time: [], //订单时间搜索
           pay_type: '', //付款状态 0全部 1未付款 2部分付款 3已付款
           order_type: '', //订单状态 0 全部 1待收款 2待发货 3待确认
-          delivery_type: '', //发货状态 0 全部 1未发货 2部分发货 3发货完成
+          delivery_type: '', //发货状态 0 全部 1未发货 2部分发货 3发货完成 4 已作废
           search_type: 'sn', //搜索条件 sn订单号 name 商品名称 mobile 手机号
           keywords: '', //搜索关键字
           order_source: '0', //0 所有订单 1ERP平台 2私有商城
           page: 1,
-          pageSize: 20,
+          pageSize: 10,
         },
         listType: 1,
         formType: 4,

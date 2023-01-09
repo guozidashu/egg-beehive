@@ -27,7 +27,7 @@
           <div style="font-size: 16px">客户分析</div>
         </el-form-item>
         <el-form-item>
-          <el-form-item label="客户渠道:">
+          <!-- <el-form-item label="客户渠道:">
             <el-select v-model="goodsForm.source">
               <el-option
                 v-for="item in selectList.customer_source"
@@ -36,7 +36,7 @@
                 :value="item.id"
               />
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item
             label="时间筛选:"
             style="margin-right: 0; font-size: 12px"
@@ -378,7 +378,7 @@
         listType: 2,
         goosList: [],
         goodsForm: {
-          source: null,
+          // source: null,
           time: this.getPastTime(30),
         },
         selectList: [],
@@ -565,7 +565,7 @@
       },
       resetForm() {
         this.goodsForm = {
-          source: null,
+          // source: null,
           time: this.getPastTime(30),
         }
       },

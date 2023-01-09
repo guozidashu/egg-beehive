@@ -196,11 +196,11 @@
           <el-table-column
             align="right"
             label="成交额"
-            prop="money"
+            prop="final_count"
             width="150"
           >
             <template #default="{ row }">
-              <el-tag>￥{{ row.money | moneyFormat }}</el-tag>
+              <el-tag>￥{{ row.final_count | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column

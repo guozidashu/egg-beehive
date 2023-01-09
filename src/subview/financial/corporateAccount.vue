@@ -94,6 +94,17 @@
             prop="account"
             show-overflow-tooltip
           />
+          <el-table-column
+            align="center"
+            label="是否默认"
+            prop="is_default"
+            show-overflow-tooltip
+          >
+            <template #default="{ row }">
+              <span v-if="row.is_default == 1">是</span>
+              <span v-else>否</span>
+            </template>
+          </el-table-column>
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
               <el-button

@@ -1151,6 +1151,13 @@ export function delCorporateAccountDel(data) {
   })
 }
 // 费用单
+export function getDefaultCorporateAccount(data) {
+  return request({
+    url: '/finance/getDefaultCorporateAccount',
+    method: 'post',
+    data,
+  })
+}
 export function getBillList(data) {
   return request({
     url: '/finance/billList',
