@@ -18,6 +18,13 @@
           <el-button
             style="margin-top: 20px"
             type="primary"
+            @click="handleExternalSyncExternal()"
+          >
+            同步
+          </el-button>
+          <el-button
+            style="margin-top: 20px"
+            type="primary"
             @click="handleDetail('add', 3)"
           >
             批量添加客户标签
@@ -35,7 +42,7 @@
       >
         <template #List>
           <el-table-column type="selection" width="55" />
-          <el-table-column label="ID" prop="external_userid" width="120" />
+          <!-- <el-table-column label="ID" prop="external_userid" width="120" /> -->
 
           <el-table-column label="昵称" prop="external_name" width="120" />
           <el-table-column label="头像" prop="avatar" width="120">
@@ -149,7 +156,7 @@
 </template>
 <script>
   import Drawer from '@/subview/components/Drawer/EnterpriseDrawer'
-  import { getExternalList } from '@/api/basic'
+  import { getExternalList, getExternalSyncExternal } from '@/api/basic'
   export default {
     name: 'ProjectBandlist',
     components: { Drawer },
@@ -184,6 +191,24 @@
       this.fetchData()
     },
     methods: {
+      handleExternalSyncExternal() {
+        this.$confirm('是否同步企业微信客户数据？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        })
+          .then(() => {
+            getExternalSyncExternal().then((res) => {
+              this.$baseMessage(
+                '同步成功',
+                'success',
+                'vab-hey-message-success'
+              )
+              this.fetchData()
+            })
+          })
+          .catch(() => {})
+      },
       async handleEdit(row, type) {
         this.$refs['edit'].showEdit(row, type)
       },

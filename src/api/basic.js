@@ -52,6 +52,16 @@ export function editChangePassword(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+
+// 企业微信同步客户
+export function getExternalSyncExternal(data) {
+  return request({
+    url: '/external/syncExternal',
+    method: 'post',
+    data,
+  })
+}
+
 // 发货统计列表
 export function getDeliveryStatisticsList(data) {
   return request({

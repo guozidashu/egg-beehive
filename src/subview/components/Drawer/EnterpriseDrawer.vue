@@ -17,7 +17,7 @@
         </el-card>
       </el-timeline-item>
     </el-timeline>
-    <div style="margin-left: 20px">
+    <div v-if="list.length == 0" style="margin-left: 20px">
       <h3>暂无记录</h3>
     </div>
   </div>
