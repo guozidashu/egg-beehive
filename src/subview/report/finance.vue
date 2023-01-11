@@ -1,43 +1,60 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <div
-      style="
-        padding: 20px 20px 20px 20px;
-        margin-bottom: 20px;
-        background-color: white;
-      "
-    >
+    <div style="display: flex">
+      <div
+        v-for="(item, index) in headList"
+        :key="index"
+        :style="{
+          flex: '1',
+          padding: '20px',
+          marginRight: index != 4 ? '20px' : '0',
+          background: '-webkit-linear-gradient(top,' + item.color + ' , #fff)',
+          borderRadius: '5px',
+        }"
+      >
+        <h3>
+          {{ item.name }}
+          <el-popover placement="right" trigger="hover">
+            <div style="font-size: 12px">{{ item.content }}</div>
+            <vab-icon
+              slot="reference"
+              icon="question-line"
+              style="position: relative; top: -3px; font-size: 14px"
+            />
+          </el-popover>
+        </h3>
+        <p v-if="item.value >= 0" style="font-size: 30px; color: black">
+          ￥{{ item.value | moneyFormat }}
+        </p>
+        <p v-else style="font-size: 30px; color: black">
+          - ￥{{ item.value | moneyFormat }}
+        </p>
+      </div>
+    </div>
+    <div style="margin: 20px 0; background-color: white; border-radius: 5px">
       <el-form
         ref="form"
         :inline="true"
         label-width="80px"
         :model="goodsForm"
-        style="display: flex; justify-content: space-between"
+        style="
+          position: relative;
+          top: 20px;
+          display: flex;
+          flex-direction: row-reverse;
+        "
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">财务分析</span>
-        <el-form-item style="margin-right: 0; font-size: 12px">
-          <!-- <el-form-item label="会计科目：">
-            <el-select v-model="goodsForm.level" placeholder="请选择">
-              <el-option
-                v-for="(item, index) in AccountList"
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="收支类型：">
-            <el-select v-model="goodsForm.level1" placeholder="请选择">
-              <el-option
-                v-for="(item, index) in CategoryList"
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item> -->
-          <el-form-item label="时间筛选:">
+        <el-form-item>
+          <el-radio-group v-model="time">
+            <el-radio-button label="今天" />
+            <el-radio-button label="七天" />
+            <el-radio-button label="30天" />
+          </el-radio-group>
+          <el-form-item
+            label="时间筛选:"
+            style="margin-right: 0; font-size: 12px"
+          >
             <el-date-picker
               v-model="goodsForm.time"
               align="right"
@@ -50,152 +67,175 @@
               start-placeholder="开始日期"
               type="daterange"
               unlink-panels
-              value-format="yyyy-MM-dd HH:mm:ss"
             />
-            <!-- <el-button
+            <el-button
               size="small"
-              style="margin: 0 0 0 20px"
+              style="margin-left: 10px"
               type="primary"
-              @click="handleDownload"
+              @click="resetForm()"
             >
-              导出
-            </el-button> -->
+              重置
+            </el-button>
           </el-form-item>
         </el-form-item>
       </el-form>
-      <QYTextLabels
-        ref="multipleTable"
-        :list="goodsStaList"
-        :width="goodsWidth"
-      />
-      <p>营业趋势</p>
-      <vab-chart
-        :init-options="initOptions"
-        :option="option"
-        style="width: 100%; height: 400px"
-      />
     </div>
-
-    <div style="padding: 20px; background-color: white">
-      <div>
-        <el-form
-          ref="form"
-          :inline="true"
-          label-width="80px"
-          :model="goodsForm1"
-          style="display: flex; justify-content: space-between"
-          @submit.native.prevent
-        >
-          <span style="margin-top: 10px; font-size: 16px">财务分析</span>
-          <el-form-item style="margin-right: 0; font-size: 12px">
-            <el-form-item label="会计科目：">
-              <el-select v-model="goodsForm1.account_id" placeholder="请选择">
-                <el-option
-                  v-for="(item, index) in AccountList"
-                  :key="index"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="收支类型：">
-              <el-select v-model="goodsForm1.category_id" placeholder="请选择">
-                <el-option
-                  v-for="(item, index) in CategoryList"
-                  :key="index"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="时间筛选:">
-              <el-date-picker
-                v-model="goodsForm1.time"
-                align="right"
-                :clearable="false"
-                :default-time="['00:00:00', '23:59:59']"
-                end-placeholder="结束日期"
-                format="yyyy-MM-dd"
-                :picker-options="pickerOptions"
-                range-separator="至"
-                start-placeholder="开始日期"
-                type="daterange"
-                unlink-panels
-                value-format="yyyy-MM-dd HH:mm:ss"
+    <el-row :gutter="20">
+      <el-col :span="8">
+        <el-card class="box-card" shadow="hover" style="border-radius: 5px">
+          <h3>
+            今日营业额
+            <el-popover placement="right" trigger="hover">
+              <div style="font-size: 12px">
+                在选定条件下，销售收入加上保证金收入
+              </div>
+              <vab-icon
+                slot="reference"
+                icon="question-line"
+                style="position: relative; top: -3px; font-size: 14px"
               />
-              <!-- <el-button
-                size="small"
-                style="margin: 0 0 0 20px"
-                type="primary"
-                @click="handleDownload"
-              >
-                导出
-              </el-button> -->
-              <el-button
-                size="small"
-                style="margin-left: 10px"
-                type="primary"
-                @click="resetForm()"
-              >
-                重置
-              </el-button>
-            </el-form-item>
-          </el-form-item>
-        </el-form>
-        <div style="display: flex; justify-content: space-between">
-          <SalesChart
-            :data="dataObj"
-            style="width: 50%; margin-right: 20px; background-color: white"
-          />
+            </el-popover>
+          </h3>
+          <p style="font-size: 30px; color: black">￥ 111</p>
           <QYBranch :list="branchList" :style-chart="styleObj" />
-          <QYBranch :list="branchList1" :style-chart="styleObj" />
-        </div>
-      </div>
-    </div>
+        </el-card>
+      </el-col>
+      <el-col :span="8">
+        <el-card class="box-card" shadow="hover" style="border-radius: 5px">
+          <h3>
+            今日收款项
+            <el-popover placement="right" trigger="hover">
+              <div style="font-size: 12px">
+                在选定条件下，收银金额加上保证金收入
+              </div>
+              <vab-icon
+                slot="reference"
+                icon="question-line"
+                style="position: relative; top: -3px; font-size: 14px"
+              />
+            </el-popover>
+          </h3>
+          <p style="font-size: 30px; color: black">￥ 111</p>
+          <MembersChart :data="dataObj1" style="background-color: white" />
+        </el-card>
+      </el-col>
+      <el-col :span="8">
+        <el-card class="box-card" shadow="hover" style="border-radius: 5px">
+          <h3>
+            今日支出项
+            <el-popover placement="right" trigger="hover">
+              <div style="font-size: 12px">
+                在选定条件下，供应商付款金额加上费用支出金额
+              </div>
+              <vab-icon
+                slot="reference"
+                icon="question-line"
+                style="position: relative; top: -3px; font-size: 14px"
+              />
+            </el-popover>
+          </h3>
+          <p style="font-size: 30px; color: black">￥ 111</p>
+          <MembersChart :data="dataObj2" style="background-color: white" />
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20">
+      <el-col :span="4">
+        <el-card
+          class="box-card"
+          shadow="hover"
+          style="
+            padding: 20px;
+            background: -webkit-linear-gradient(top, #fff5d1, #fff);
+            border-radius: 5px;
+          "
+        >
+          <h3>
+            经营利润
+            <el-popover placement="right" trigger="hover">
+              <div style="font-size: 12px">
+                在选定条件下，销售毛利减去支出项减去库存成本加上其他收入项
+              </div>
+              <vab-icon
+                slot="reference"
+                icon="question-line"
+                style="position: relative; top: -3px; font-size: 14px"
+              />
+            </el-popover>
+          </h3>
+          <div style="font-size: 30px; color: black">￥ 111</div>
+        </el-card>
+        <el-card
+          class="box-card"
+          shadow="hover"
+          style="
+            padding: 20px 20px 25px 20px;
+            background: -webkit-linear-gradient(top, #fff5d1, #fff);
+            border-radius: 5px;
+          "
+        >
+          <h3>
+            销售毛利额
+            <el-popover placement="right" trigger="hover">
+              <div style="font-size: 12px">
+                在选定条件下，销售单实际应付金额-商品成本金额
+              </div>
+              <vab-icon
+                slot="reference"
+                icon="question-line"
+                style="position: relative; top: -3px; font-size: 14px"
+              />
+            </el-popover>
+          </h3>
+          <div style="font-size: 30px; color: black">￥ 111</div>
+        </el-card>
+      </el-col>
+      <el-col :span="10">
+        <el-card
+          class="box-card"
+          shadow="hover"
+          style="padding-left: 10px; border-radius: 5px"
+        >
+          <h3>费用支出</h3>
+          <QYBranch :list="branchList1" :style-chart="styleObj1" />
+        </el-card>
+      </el-col>
+      <el-col :span="10">
+        <el-card
+          class="box-card"
+          shadow="hover"
+          style="padding-left: 10px; border-radius: 5px"
+        >
+          <h3>业务收入</h3>
+          <QYBranch :list="branchList2" :style-chart="styleObj1" />
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
-
 <script>
-  import VabChart from '@/extra/VabChart'
-  import SalesChart from '@/subview/components/Chart/FinanceChart'
+  import { getHomeReportForms } from '@/api/basic'
+  import MembersChart from '@/subview/components/Chart/MembersChart'
   import datajosn from '@/assets/assets_josn/datajosn'
-  import {
-    getFinanceListd,
-    getAccountList,
-    getCategoryList,
-    getFinanceCostCount,
-    getFinanceReportForms,
-  } from '@/api/basic'
   export default {
-    name: 'GoodsStatistical',
-    components: { VabChart, SalesChart },
+    name: 'ArchivesArticle',
+    components: {
+      MembersChart,
+    },
     mixins: [datajosn],
     data() {
       return {
-        styleObj: {
-          width: '400px',
-          height: '400px',
-          legendx: 0,
-          legendy: 350,
-          center: ['50%', '50%'],
-        },
-        AccountList: [],
-        CategoryList: [],
-        goodsForm: {
-          time: this.getPastTime(30),
-        },
-        goodsForm1: {
-          account_id: '', //会计科目id
-          category_id: '', //收支类型id
-          time: this.getPastTime(30),
+        dateList: [],
+        dataAllList: {
+          sale_num: [],
+          delivery_num: [],
         },
         dataObj: {
-          title: '费用单统计',
-          height: '300px',
+          height: '250px',
           legend: {
-            data: ['费用单数量', '费用单金额'],
+            data: ['客户收款金额', '费用收入金额'],
           },
-          color: ['#409eff'],
+          color: ['#1890FF', '#55DF7E'],
           xAxis: {
             type: 'category',
             boundaryGap: false,
@@ -206,328 +246,291 @@
               type: 'value',
               name: '金额',
             },
-            {
-              type: 'value',
-              name: '数量',
-            },
           ],
           series: [
             {
-              name: '费用单数量',
+              name: '客户收款金额',
               type: 'line',
               areaStyle: {},
               smooth: true,
               data: [],
-              yAxisIndex: 1,
               itemStyle: {
-                color: '#FFC833',
+                color: '#1890FF',
               },
             },
             {
-              name: '费用单金额',
-              type: 'bar',
+              name: '费用收入金额',
+              type: 'line',
+              areaStyle: {},
               smooth: true,
               data: [],
               itemStyle: {
-                color: '#1A9EFF',
+                color: '#55DF7E',
               },
             },
           ],
         },
-        goodsWidth: '25%',
-        goodsStaList: [
+        dataObj1: {
+          height: '250px',
+          legend: {
+            data: ['客户收款金额'],
+          },
+          color: ['#1890FF'],
+          xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: [],
+          },
+          yAxis: [
+            {
+              type: 'value',
+              name: '金额',
+            },
+          ],
+          series: [
+            {
+              name: '客户收款金额',
+              type: 'line',
+              areaStyle: {},
+              smooth: true,
+              data: [],
+              itemStyle: {
+                color: '#1890FF',
+              },
+            },
+          ],
+        },
+        dataObj2: {
+          height: '250px',
+          legend: {
+            data: ['费用支出金额', '供应商付款金额'],
+          },
+          color: ['#1890FF', '#55DF7E'],
+          xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: [],
+          },
+          yAxis: [
+            {
+              type: 'value',
+              name: '金额',
+            },
+          ],
+          series: [
+            {
+              name: '费用支出金额',
+              type: 'line',
+              areaStyle: {},
+              smooth: true,
+              data: [],
+              itemStyle: {
+                color: '#1890FF',
+              },
+            },
+            {
+              name: '供应商付款金额',
+              type: 'line',
+              areaStyle: {},
+              smooth: true,
+              data: [],
+              itemStyle: {
+                color: '#55DF7E',
+              },
+            },
+          ],
+        },
+        styleObj: {
+          width: '300px',
+          height: '250px',
+          legendx: 0,
+          legendy: 0,
+          center: ['50%', '50%'],
+        },
+        styleObj1: {
+          width: '600px',
+          height: '250px',
+          legendx: 200,
+          legendy: 0,
+          center: ['60%', '50%'],
+        },
+        branchList1: [
           {
-            title: '客户收款数',
-            number: 0,
-            num: 0,
-            type: 1,
-            typeSta: false,
-            name: 'receipts_num',
-            numType: 2,
+            name: '费用支出1',
+            value: 10,
           },
           {
-            title: '客户收款金额',
-            number: 0,
-            num: 0,
-            type: 1,
-            typeSta: false,
-            name: 'receipts_total',
-            numType: 1,
+            name: '费用支出2',
+            value: 20,
           },
           {
-            title: '供应商付款数',
-            number: 0,
-            num: 0,
-            type: 1,
-            typeSta: false,
-            name: 'supplier_receipts_num',
-            numType: 2,
-          },
-          {
-            title: '供应商付款金额',
-            number: 0,
-            num: 0,
-            type: 1,
-            typeSta: false,
-            name: 'supplier_receipts_total',
-            numType: 1,
+            name: '费用支出3',
+            value: 30,
           },
         ],
-        branchList: [],
-        branchList1: [],
-        dateList: [],
-        dateList1: [],
-        dataAllList: {
-          receipts_total: [],
-          receipts_num: [],
-          supplier_receipts_total: [],
-          supplier_receipts_num: [],
+        branchList2: [
+          {
+            name: '主营业务收入',
+            value: 10,
+          },
+          {
+            name: '其他业务收入',
+            value: 20,
+          },
+        ],
+        branchList: [
+          {
+            name: '今天',
+            value: 10,
+          },
+          {
+            name: '昨天',
+            value: 20,
+          },
+          {
+            name: '前天',
+            value: 30,
+          },
+        ],
+        time: '今天',
+        headList: [
+          {
+            name: '销售收入',
+            value: 11,
+            color: '#FFF5D2',
+            content:
+              '在选定条件下，所有成功提交订单实际应付金额（不含订单优惠金额）',
+          },
+          {
+            name: '销售成本',
+            value: 11,
+            color: '#D7FDFF',
+            content: '在选定条件下，所有订单的商品成本金额',
+          },
+          {
+            name: '库存成本',
+            value: 11,
+            color: '#FEE8E0',
+            content: '选定条件下，当前所有在售现货商品的库存成本总金额',
+          },
+          {
+            name: '保证金收入',
+            value: 11,
+            color: '#E8F4FF',
+            content: '选定条件下，会员等级的保证金金额',
+          },
+          // {
+          //   name: '销售毛利额',
+          //   value: 11,
+          //   color: '#F2F6FC',
+          //   content: '在选定条件下，销售单实际应付金额-商品成本金额',
+          // },
+        ],
+        goodsForm: {
+          time: this.getPastTime(30),
         },
-        dataAllList1: {
-          count_num: [],
-          sum_total: [],
-        },
-        initOptions: {
-          renderer: 'svg',
-        },
-        option: {},
       }
     },
     watch: {
       goodsForm: {
-        handler: function () {
-          this.dateList = []
-          this.dataAllList = {
-            receipts_total: [],
-            receipts_num: [],
-            supplier_receipts_total: [],
-            supplier_receipts_num: [],
-            count_num: [],
-            sum_total: [],
-          }
-          this.fetchData()
-        },
+        handler: function () {},
         deep: true,
       },
-      goodsForm1: {
-        handler: function () {
-          this.branchList = []
-          this.branchList1 = []
-          this.dateList1 = []
-          this.dataAllList1 = {
-            count_num: [],
-            sum_total: [],
+      time: {
+        handler: function (newVal) {
+          if (newVal == '今天') {
+            this.goodsForm.time = this.getPastTime(1)
+            this.branchList = [
+              {
+                name: '今天',
+                value: 10,
+              },
+              {
+                name: '昨天',
+                value: 20,
+              },
+              {
+                name: '前天',
+                value: 30,
+              },
+            ]
+          } else if (newVal == '七天') {
+            this.goodsForm.time = this.getPastTime(7)
+            this.branchList = [
+              {
+                name: '本周',
+                value: 10,
+              },
+              {
+                name: '上周',
+                value: 20,
+              },
+              {
+                name: '前周',
+                value: 30,
+              },
+            ]
+          } else if (newVal == '30天') {
+            this.goodsForm.time = this.getPastTime(30)
+            this.branchList = [
+              {
+                name: '本月',
+                value: 10,
+              },
+              {
+                name: '上月',
+                value: 20,
+              },
+              {
+                name: '前月',
+                value: 30,
+              },
+            ]
           }
-          this.getCircular()
         },
         deep: true,
       },
     },
     created() {
-      this.getTypeCategory()
-      this.getTypeAccount()
-      this.fetchData()
-      this.getCircular()
+      // this.getCustomerArea()
+      this.getHomeReport()
     },
     methods: {
       resetForm() {
-        this.goodsForm1 = {
-          account_id: '', //会计科目id
-          category_id: '', //收支类型id
+        this.branchList = []
+        this.goodsForm = {
+          // source: null,
           time: this.getPastTime(30),
         }
       },
-      async getTypeAccount() {
-        const { data } = await getAccountList({
-          page: 1,
-          pageSize: 10,
-          id: 0, // 父级id （取父级时传0） -1 = 所有子分类
-          type: '', // 类别 1收 2支
-          name: '', // 科目名称
-        })
-        this.AccountList = data.data
-      },
-      async getTypeCategory() {
-        const { data } = await getCategoryList({
-          page: 1,
-          pageSize: 10,
-          id: 0, // 父级id （取父级时传0） -1 = 所有子分类
-          type: '', // 类别 1收 2支
-          name: '', // 科目名称
-        })
-        this.CategoryList = data.data
-      },
-      async getCircular() {
-        const { data } = await getFinanceCostCount(this.goodsForm1)
+      async getHomeReport() {
+        const { data } = await getHomeReportForms(this.goodsForm)
         let arr = []
-        data.line_date.forEach((item) => {
+        data.forEach((item) => {
           for (let i in item) {
-            this.dateList1.push(i)
+            this.dateList.push(i)
             arr.push(item[i])
           }
         })
         arr.forEach((item) => {
           for (let i in item) {
-            if (i != 'time_range' && this.dataAllList1[i] !== undefined) {
+            if (i != 'time_range' && this.dataAllList[i] !== undefined) {
               if (item[i] == null) {
                 item[i] = 0
-                this.dataAllList1[i].push(item[i])
+                this.dataAllList[i].push(item[i])
               } else {
-                this.dataAllList1[i].push(item[i])
+                this.dataAllList[i].push(item[i])
               }
             }
           }
         })
-        this.dataObj.xAxis.data = this.dateList1
-        this.dataObj.series[0].data = this.dataAllList1.count_num
-        this.dataObj.series[1].data = this.dataAllList1.sum_total
-        data.list.accounts.forEach((item) => {
-          this.branchList.push({
-            value: item.num,
-            name: item.name,
-          })
-        })
-        data.list.categorys.forEach((item) => {
-          this.branchList1.push({
-            value: item.num,
-            name: item.name,
-          })
-        })
-      },
-      async fetchData() {
-        const { data } = await getFinanceListd(this.goodsForm)
-        this.goodsStaList.forEach((item) => {
-          for (let i in data) {
-            if (item.name == i) {
-              if (data[i] == null) {
-                data[i] = 0
-                item.num = data[i]
-              } else {
-                item.num = data[i]
-              }
-            }
-          }
-        })
-        getFinanceReportForms(this.goodsForm).then((res) => {
-          let arr = []
-          res.data.forEach((item) => {
-            for (let i in item) {
-              this.dateList.push(i)
-              arr.push(item[i])
-            }
-          })
-          arr.forEach((item) => {
-            for (let i in item) {
-              if (i != 'time_range' && this.dataAllList[i] !== undefined) {
-                if (item[i] == null) {
-                  item[i] = 0
-                  this.dataAllList[i].push(item[i])
-                } else {
-                  this.dataAllList[i].push(item[i])
-                }
-              }
-            }
-          })
-          this.option = {
-            tooltip: {
-              trigger: 'axis',
-              axisPointer: {
-                type: 'cross',
-              },
-            },
-            legend: {
-              data: [
-                '客户收款数',
-                '客户收款金额',
-                '供应商付款数',
-                '供应商付款金额',
-              ],
-            },
-            grid: {
-              left: '3%',
-              right: '4%',
-              bottom: '3%',
-              containLabel: true,
-            },
-            toolbox: {
-              feature: {
-                saveAsImage: {},
-              },
-            },
-            xAxis: {
-              type: 'category',
-              boundaryGap: false,
-              data: this.dateList,
-            },
-            yAxis: [
-              {
-                type: 'value',
-                name: '金额',
-              },
-              {
-                type: 'value',
-                name: '数量',
-              },
-            ],
-            series: [
-              {
-                name: '客户收款数',
-                type: 'bar',
-                data: this.dataAllList.receipts_num,
-                yAxisIndex: 1,
-                itemStyle: {
-                  color: '#FFC833',
-                },
-              },
-
-              {
-                name: '客户收款金额',
-                type: 'bar',
-                data: this.dataAllList.receipts_total,
-                itemStyle: {
-                  color: '#FF6C87',
-                },
-              },
-              {
-                name: '供应商付款数',
-                type: 'bar',
-                yAxisIndex: 1,
-                data: this.dataAllList.supplier_receipts_num,
-                itemStyle: {
-                  color: '#55DF7E',
-                },
-              },
-              {
-                name: '供应商付款金额',
-                type: 'bar',
-                data: this.dataAllList.supplier_receipts_total,
-                itemStyle: {
-                  color: '#1890FF',
-                },
-              },
-            ],
-          }
-        })
-      },
-      // 导出
-      handleDownload() {
-        import('@/utils/excel').then((excel) => {
-          const tHeader = ['名称', '数量', '较昨日数量']
-          const filterVal = ['title', 'num', 'number']
-          const list = this.goodsStaList
-          const data = this.formatJson(filterVal, list)
-          excel.export_json_to_excel({
-            header: tHeader,
-            data,
-            filename: this.filename,
-          })
-        })
-      },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map((v) => filterVal.map((j) => v[j]))
+        this.dataObj1.xAxis.data = this.dateList
+        this.dataObj1.series[0].data = this.dataAllList.sale_num
+        this.dataObj2.series[0].data = this.dataAllList.sale_num
+        this.dataObj2.series[1].data = this.dataAllList.delivery_num
+        this.$forceUpdate()
       },
     },
   }
 </script>
-
 <style lang="scss" scoped></style>
