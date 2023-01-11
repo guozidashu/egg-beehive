@@ -38,9 +38,9 @@
           >
             重置
           </el-button>
-          <el-button size="small" type="primary" @click="handleDownload">
+          <!-- <el-button size="small" type="primary" @click="handleDownload">
             导出
-          </el-button>
+          </el-button> -->
         </el-form-item>
         <el-form-item label="供应商类别:" style="float: right">
           <el-select v-model="form.type">

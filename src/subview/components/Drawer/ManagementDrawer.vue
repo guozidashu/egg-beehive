@@ -651,6 +651,7 @@ d
               this.form.craft_type = [Number(this.form.craft_type)]
             }
           }
+          console.log(666, this.form)
         },
         deep: true,
         immediate: true,

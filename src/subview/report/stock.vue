@@ -231,7 +231,7 @@
     mixins: [datajosn],
     data() {
       return {
-        time: this.getDayTime(),
+        time: this.getPastTime(1),
         listLoading: false,
         listType: 2,
         selectList: [],
@@ -447,7 +447,7 @@
         })
       },
       resetForm() {
-        this.time = this.getDayTime()
+        this.time = this.getPastTime(1)
         this.lengSonList = []
         this.lengList = []
         this.branchList = []

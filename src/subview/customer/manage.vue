@@ -141,9 +141,9 @@
           >
             发送优惠券
           </el-button> -->
-          <el-button size="small" type="primary" @click="handleDownload">
+          <!-- <el-button size="small" type="primary" @click="handleDownload">
             批量导出
-          </el-button>
+          </el-button> -->
         </el-form-item>
       </el-form>
       <QYList

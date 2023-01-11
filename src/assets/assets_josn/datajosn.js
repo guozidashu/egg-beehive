@@ -102,23 +102,6 @@ export default {
         }
       }
     },
-    getDayTime() {
-      // 获取今天的时间 返回 ‘2022-12-12 15:15:15’
-      let time = new Date()
-      const yy = time.getFullYear() //获取完整的年份(4位,1970-???)
-      const M = time.getMonth() + 1 //获取当前月份(0-11,0代表1月),
-      const d = time.getDate() //获取当前日(1-31)
-      const h = time.getHours() //获取当前小时数(0-23)
-      const m = time.getMinutes() //获取当前分钟数(0-59)
-      const s = time.getSeconds() //获取当前秒数(0-59)
-      // 小于9的，在前面加0
-      const MM = M > 9 ? M : '0' + M
-      const dd = d > 9 ? d : '0' + d
-      const hh = h > 9 ? h : '0' + h
-      const mm = m > 9 ? m : '0' + m
-      const ss = s > 9 ? s : '0' + s
-      return yy + '-' + MM + '-' + dd + ' ' + hh + ':' + mm + ':' + ss
-    },
     // 获取最昨天的时间
     getYesterdayTime() {
       return this.getPastTime(1, false)
@@ -127,7 +110,7 @@ export default {
     getWeenTime() {
       return this.getPastTime(7)
     },
-    // 获取过去几个月的时间
+    // 获取时间区间返回格式 [2022-12-12 15:15:15,2022-12-12 15:15:15] 传入天数
     getPastTime(day, n = true) {
       let InTime = new Date().getTime()
       let eTimeArr = this.Get_DateArr(InTime)

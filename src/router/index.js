@@ -329,6 +329,15 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'orderReturnOrder',
+        name: 'OrderReturnOrder',
+        component: () => import('@/subview/order/returnorder'),
+        meta: {
+          title: '退货单列表',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {

@@ -7,14 +7,19 @@
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
       <el-form-item label="收支类别:" prop="category_id">
-        <el-select v-model="form.category_id" placeholder="请选择收支类别">
+        <el-cascader
+          v-model="form.category_id"
+          :options="options"
+          :props="{ expandTrigger: 'hover' }"
+        />
+        <!-- <el-select v-model="form.category_id" placeholder="请选择收支类别">
           <el-option
             v-for="(item, index) in selectList.finance_category"
             :key="index"
             :label="item.name"
             :value="item.id"
           />
-        </el-select>
+        </el-select> -->
       </el-form-item>
       <el-form-item label="结算账户:" prop="corporate_account_id">
         <el-select
@@ -72,6 +77,7 @@
     editBillSave,
     getCommonAllList,
     getDefaultCorporateAccount,
+    getFinanceCategory,
   } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   export default {
@@ -81,6 +87,7 @@
     },
     data() {
       return {
+        options: [],
         selectList: [],
         form: {
           id: 0, // 主键id (新增时传0),
@@ -117,22 +124,39 @@
       },
       async getTypeList() {
         const { data } = await getCommonAllList({
-          type: 'finance_category,corporate_account',
+          type: 'corporate_account',
         })
         this.selectList = data
         this.getDefault()
+      },
+      async getFinance() {
+        const { data } = await getFinanceCategory()
+        data.forEach((item) => {
+          item.value = item.type
+          item.label = item.type_text
+          if (item.children) {
+            item.children.forEach((child) => {
+              child.value = child.id
+              child.label = child.name
+            })
+          }
+        })
+        this.options = data
       },
       async getDefault() {
         const { data } = await getDefaultCorporateAccount()
         this.form.corporate_account_id = data.id
       },
       async showEdit(row) {
+        this.getFinance()
         this.getTypeList()
         if (!row) {
           this.title = '添加'
         } else {
           this.title = '编辑'
           this.form = Object.assign({}, row)
+          this.form.category_id = [row.category_type, row.category_id]
+          console.log(666, this.form)
         }
         this.dialogFormVisible = true
       },
@@ -144,6 +168,7 @@
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
+            this.form.category_id = this.form.category_id[1]
             if (this.title === '添加') {
               const { code } = await editBillSave(this.form)
               if (code != 200) {

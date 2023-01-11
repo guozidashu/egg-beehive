@@ -52,14 +52,14 @@
               unlink-panels
               value-format="yyyy-MM-dd HH:mm:ss"
             />
-            <el-button
+            <!-- <el-button
               size="small"
               style="margin: 0 0 0 20px"
               type="primary"
               @click="handleDownload"
             >
               导出
-            </el-button>
+            </el-button> -->
           </el-form-item>
         </el-form-item>
       </el-form>
@@ -123,14 +123,14 @@
                 unlink-panels
                 value-format="yyyy-MM-dd HH:mm:ss"
               />
-              <el-button
+              <!-- <el-button
                 size="small"
                 style="margin: 0 0 0 20px"
                 type="primary"
                 @click="handleDownload"
               >
                 导出
-              </el-button>
+              </el-button> -->
               <el-button
                 size="small"
                 style="margin-left: 10px"

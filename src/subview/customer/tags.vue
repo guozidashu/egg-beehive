@@ -180,7 +180,7 @@
           if (code != 200) {
             return
           }
-          this.$baseMessage('删除成功', 'success', 'vab-hey-message-success')
+          this.$baseMessage('同步成功', 'success', 'vab-hey-message-success')
           this.fetchData()
         })
       },

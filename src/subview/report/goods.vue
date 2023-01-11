@@ -59,14 +59,14 @@
               unlink-panels
               value-format="yyyy-MM-dd HH:mm:ss"
             />
-            <el-button
+            <!-- <el-button
               size="small"
               style="margin: 0 0 0 10px"
               type="primary"
               @click="handleDownload"
             >
               导出
-            </el-button>
+            </el-button> -->
             <el-button size="small" type="primary" @click="resetForm()">
               重置
             </el-button>

@@ -34,9 +34,9 @@
             unlink-panels
             value-format="yyyy-MM-dd HH:mm:ss"
           />
-          <el-button size="small" type="primary" @click="handleDownload">
+          <!-- <el-button size="small" type="primary" @click="handleDownload">
             导出
-          </el-button>
+          </el-button> -->
         </el-form-item>
       </el-form>
       <QYTextLabels

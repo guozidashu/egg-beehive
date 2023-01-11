@@ -123,9 +123,9 @@
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
-          <el-button size="small" type="primary" @click="handleDownload">
+          <!-- <el-button size="small" type="primary" @click="handleDownload">
             导出订单
-          </el-button>
+          </el-button> -->
           <!-- <el-button
             size="small"
             type="primary"

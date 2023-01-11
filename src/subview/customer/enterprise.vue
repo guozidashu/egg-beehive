@@ -1,36 +1,45 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <el-card shadow="never" style="border: 0; border-radius: 5px">
-      <div style="display: flex; justify-content: space-between">
-        <QYForm
-          :form="form"
-          :form-type="formType"
-          @changeSearch="handleQuery"
-          @resetForm="resetForm"
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        padding-top: 1px;
+        margin-bottom: 20px;
+        background-color: #ffffff;
+        border-radius: 5px;
+      "
+    >
+      <QYForm
+        :form="form"
+        :form-type="formType"
+        @changeSearch="handleQuery"
+        @resetForm="resetForm"
+      >
+        <template #Form>
+          <el-form-item label="名称" prop="region">
+            <el-input v-model="form.name" size="small" />
+          </el-form-item>
+        </template>
+      </QYForm>
+      <div style="margin-right: 20px">
+        <el-button
+          style="margin-top: 20px"
+          type="primary"
+          @click="handleExternalSyncExternal()"
         >
-          <template #Form>
-            <el-form-item label="名称" prop="region">
-              <el-input v-model="form.name" size="small" />
-            </el-form-item>
-          </template>
-        </QYForm>
-        <div>
-          <el-button
-            style="margin-top: 20px"
-            type="primary"
-            @click="handleExternalSyncExternal()"
-          >
-            同步
-          </el-button>
-          <el-button
-            style="margin-top: 20px"
-            type="primary"
-            @click="handleDetail('add', 3)"
-          >
-            批量添加客户标签
-          </el-button>
-        </div>
+          同步
+        </el-button>
+        <el-button
+          style="margin-top: 20px"
+          type="primary"
+          @click="handleDetail('add', 3)"
+        >
+          批量添加客户标签
+        </el-button>
       </div>
+    </div>
+    <el-card shadow="never" style="border: 0; border-radius: 5px">
       <QYList
         :list="list"
         :list-type="listType"
@@ -114,10 +123,10 @@
           </el-table-column>
           <el-table-column label="跟进状态" width="120">
             <template #default="{ row }">
-              <el-tag v-if="row.follow_type == 0" type="info">未跟进</el-tag>
               <el-tag v-if="row.follow_type == 1">跟进中</el-tag>
               <el-tag v-if="row.follow_type == 2" type="success">已成单</el-tag>
               <el-tag v-if="row.follow_type == 3" type="danger">异常</el-tag>
+              <el-tag v-if="row.follow_type == 4" type="info">记录</el-tag>
             </template>
           </el-table-column>
           <el-table-column
@@ -150,6 +159,7 @@
         :drawer-id-list="drawerIdList"
         :drawer-type="drawerType"
         @fetch-data="fetchData"
+        @handleClose="handleClose"
       />
     </el-drawer>
   </div>

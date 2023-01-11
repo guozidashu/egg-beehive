@@ -33,9 +33,9 @@
           <el-button size="small" type="primary" @click="handleDetail('add')">
             添加
           </el-button>
-          <el-button size="small" type="primary" @click="handleDownload">
+          <!-- <el-button size="small" type="primary" @click="handleDownload">
             导出
-          </el-button>
+          </el-button> -->
         </el-form-item>
       </el-form>
       <!-- 表格组件使用 -->

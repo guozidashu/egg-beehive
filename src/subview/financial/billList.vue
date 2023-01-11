@@ -15,6 +15,22 @@
         @resetForm="resetForm"
       >
         <template #Form>
+          <el-form-item label="类型:">
+            <el-select v-model="form.type">
+              <el-option label="收" :value="1" />
+              <el-option label="支" :value="2" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="收支分类:">
+            <el-select v-model="form.category_id" placeholder="请选择收支类别">
+              <el-option
+                v-for="(item, index) in selectList"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
           <el-form-item label="日期筛选" prop="region">
             <el-date-picker
               v-model="form.date"
@@ -64,6 +80,17 @@
           />
           <el-table-column
             align="center"
+            label="类型"
+            prop="category_type"
+            show-overflow-tooltip
+          >
+            <template #default="{ row }">
+              <el-tag v-if="row.category_type == 1">收</el-tag>
+              <el-tag v-if="row.category_type == 2" type="danger">支</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
+            align="center"
             label="收支分类"
             prop="category_name"
             show-overflow-tooltip
@@ -76,12 +103,6 @@
           />
           <el-table-column
             align="center"
-            label="日期"
-            prop="create_time"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
             label="金额"
             prop="amount"
             show-overflow-tooltip
@@ -90,6 +111,12 @@
               <el-tag>￥{{ row.amount | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
+          <el-table-column
+            align="center"
+            label="经手人"
+            prop="admin_name"
+            show-overflow-tooltip
+          />
           <el-table-column
             align="center"
             label="备注"
@@ -107,6 +134,12 @@
               <el-tag v-else>正常</el-tag>
             </template>
           </el-table-column>
+          <el-table-column
+            align="center"
+            label="创建时间"
+            prop="create_time"
+            show-overflow-tooltip
+          />
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
               <el-button
@@ -135,7 +168,7 @@
 
 <script>
   import Edit from '@/subview/components/Edit/BillListEdit'
-  import { getBillList, delBillOut } from '@/api/basic'
+  import { getBillList, delBillOut, getCategoryList } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'FinancialBillList',
@@ -143,7 +176,10 @@
     mixins: [datajosn],
     data() {
       return {
+        selectList: [],
         form: {
+          type: null, // 类型 1收 2支
+          category_id: null, // 收支分类
           page: 1,
           pageSize: 10,
           date: [],
@@ -169,9 +205,20 @@
       },
     },
     created() {
+      this.getCategory()
       this.fetchData()
     },
     methods: {
+      async getCategory() {
+        const { data } = await getCategoryList({
+          page: 1,
+          pageSize: 10,
+          id: -1, // 父级id （取父级时传0）-1 = 所有子分类
+          name: '', // 分类名称
+          search: true, // 搜索
+        })
+        this.selectList = data
+      },
       // 新增修改
       async handleEdit(row) {
         if (row === 'add') {

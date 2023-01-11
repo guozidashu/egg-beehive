@@ -192,7 +192,7 @@
             this.goodsForm.time = this.getPastTime(30)
           } else if (newval == '七天') {
             this.goodsForm.time = this.getWeenTime(6)
-          } else if (newval == '半年') {
+          } else if (newval == '90天') {
             this.goodsForm.time = this.getPastTime(90)
           }
           this.dateList = []

@@ -5,24 +5,17 @@ import store from './store'
 import router from './router'
 import '@/vab'
 import '@/utils/filter'
-import hasPermi from '@/utils/hasPermi'
-import QyComponent from '@/qy/qy.js'
-import { permissionFiltering } from '@/utils/filter'
-// 测试
+import hasPermi from '@/utils/hasPermi' //引入权限自定义指令
+import QyComponent from '@/qy/qy.js' //引入圈域全局组件
+import { permissionFiltering } from '@/utils/filter' //引入非权限按钮过滤器
 import * as echarts from 'echarts' //引入echart
-Vue.prototype.$echarts = echarts // echarts 需要挂在到VUE原型上
-// import { GlobalConfig } from '@/public/config/config.js'
-// 非按钮权限过滤
-// GlobalConfig
-Vue.prototype.$permissionFiltering = permissionFiltering
-// Vue.prototype.$GlobalConfig = GlobalConfig
-// 圈域全局组件
-Vue.use(QyComponent)
-// 权限自定义指令
-Vue.use(hasPermi)
-// 全局事件总线
-const Event = new Vue()
-Vue.prototype.$event = Event
+const Event = new Vue() // 全局事件总线声明
+Vue.prototype.$echarts = echarts // echarts 全局注册
+Vue.prototype.$permissionFiltering = permissionFiltering // 非按钮权限过滤
+Vue.prototype.$event = Event // 全局事件总线
+Vue.use(QyComponent) // 圈域全局组件
+Vue.use(hasPermi) // 权限自定义指令
+
 // 字体引入
 // import './assets/font/index.scss'
 

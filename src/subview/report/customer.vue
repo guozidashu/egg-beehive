@@ -54,14 +54,14 @@
               type="daterange"
               unlink-panels
             />
-            <el-button
+            <!-- <el-button
               size="small"
               style="margin-left: 10px"
               type="primary"
               @click="handleDownload"
             >
               导出
-            </el-button>
+            </el-button> -->
             <el-button
               size="small"
               style="margin-left: 10px"
@@ -386,7 +386,7 @@
           {
             title: '全部客户',
             content: '累计创建的客户数据，不受选定时间控制',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -395,7 +395,7 @@
           },
           {
             title: '新增客户数',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -405,7 +405,7 @@
           },
           {
             title: '下单客户数',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,
@@ -415,7 +415,7 @@
           },
           {
             title: '欠款客户',
-            number: 200,
+            number: 0,
             num: 0,
             type: 1,
             typeSta: false,

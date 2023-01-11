@@ -8,12 +8,12 @@
         :timestamp="item.create_time"
       >
         <el-card shadow="hover">
-          <h4 v-if="item.type == 0">未跟进记录</h4>
-          <h4 v-if="item.type == 1">跟进中记录</h4>
-          <h4 v-if="item.type == 2">已成单记录</h4>
-          <h4 v-if="item.type == 3">异常记录</h4>
-          <p>{{ item.employee_name }}</p>
-          <p>{{ item.content }}</p>
+          <el-tag v-if="item.type == 1">跟进中</el-tag>
+          <el-tag v-if="item.type == 2" type="success">已成单</el-tag>
+          <el-tag v-if="item.type == 3" type="danger">异常</el-tag>
+          <el-tag v-if="item.type == 4" type="info">记录</el-tag>
+          <p>员工：{{ item.employee_name }}</p>
+          <p>内容：{{ item.content }}</p>
         </el-card>
       </el-timeline-item>
     </el-timeline>
@@ -112,8 +112,6 @@
         }
       },
       async BindSubmit() {
-        console.log(this.listTemp)
-        // this.$emit('fetch-data')
         let inof = {
           tags: [],
           external_ids: [],
@@ -123,8 +121,16 @@
           this.listTemp.forEach((item) => {
             inof.tags.push(item.tag_id)
           })
+          if (inof.tags.length == 0) {
+            this.$message({
+              message: '请选择标签',
+              type: 'warning',
+            })
+            return
+          }
           const { code } = await addTagToExternal(inof)
           if (code == 200) {
+            this.$emit('handleClose')
             this.$emit('fetch-data')
           }
         } else {
@@ -132,8 +138,16 @@
           this.listTemp.forEach((item) => {
             inof.tags.push(item.tag_id)
           })
+          if (inof.tags.length == 0) {
+            this.$message({
+              message: '请选择标签',
+              type: 'warning',
+            })
+            return
+          }
           const { code } = await addTagToExternal(inof)
           if (code == 200) {
+            this.$emit('handleClose')
             this.$emit('fetch-data')
           }
         }

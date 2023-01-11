@@ -53,6 +53,14 @@ export function editChangePassword(data) {
 
 // 下边是业务数据接口
 
+//退货订单列表
+export function getReturnOrderList(data) {
+  return request({
+    url: '/returnOrder/List',
+    method: 'post',
+    data,
+  })
+}
 // 企业微信同步客户
 export function getExternalSyncExternal(data) {
   return request({
@@ -1161,6 +1169,13 @@ export function delCorporateAccountDel(data) {
   })
 }
 // 费用单
+export function getFinanceCategory(data) {
+  return request({
+    url: '/finance/getFinanceCategory',
+    method: 'post',
+    data,
+  })
+}
 export function getDefaultCorporateAccount(data) {
   return request({
     url: '/finance/getDefaultCorporateAccount',

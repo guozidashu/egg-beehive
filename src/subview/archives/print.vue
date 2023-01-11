@@ -6,10 +6,11 @@
         <el-tab-pane label="导入打印吊牌条码" name="导入打印吊牌条码" />
       </el-tabs>
       <div class="textCss">
+        <p v-if="activeName === '打印吊牌条码'">①打印机保证链接正常</p>
         <p v-if="activeName === '打印吊牌条码'">
-          Tabs 组件提供了选项卡功能，默认选中第一个标签页，你也可以通过 value
-          属性来指定当前选中的标签页。
+          ②输入商品款号，选择颜色、尺码，预览打印
         </p>
+        <p v-if="activeName === '打印吊牌条码'">③本功能适用于单款补打</p>
         <p v-if="activeName === '导入打印吊牌条码'">
           ①找到订单单号，复制到粘贴框
         </p>
@@ -31,7 +32,7 @@
           <el-form-item label="商品搜索">
             <el-input
               v-model="form.keywords"
-              placeholder="请输入商品名称"
+              placeholder="请输入商品款号"
               style="width: 215px; margin-right: 10px"
             />
             <el-button type="primary" @click="handlePrintSn()">查询</el-button>
@@ -283,7 +284,7 @@
     data() {
       return {
         activeName: '打印吊牌条码',
-        form: { keywords: 'WZ32001', sizeid: null, colorid: null },
+        form: { keywords: '', sizeid: null, colorid: null },
         goodsInof: null,
         sizeNanme: '',
         colorNanme: '',
