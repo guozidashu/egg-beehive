@@ -245,33 +245,35 @@
         const { data } = await editDetailsSaleTarget({
           year: this.year,
         })
-        this.form.money = Number(data.total)
-        this.form.one = data.content[0].target
-        this.form.two = data.content[1].target
-        this.form.three = data.content[2].target
-        this.form.four = data.content[3].target
-        this.form.five = data.content[4].target
-        this.form.six = data.content[5].target
-        this.form.seven = data.content[6].target
-        this.form.eight = data.content[7].target
-        this.form.nine = data.content[8].target
-        this.form.ten = data.content[9].target
-        this.form.eleven = data.content[10].target
-        this.form.twelve = data.content[11].target
+        if (data.length != 0) {
+          this.form.money = Number(data.total)
+          this.form.one = data.content[0].target
+          this.form.two = data.content[1].target
+          this.form.three = data.content[2].target
+          this.form.four = data.content[3].target
+          this.form.five = data.content[4].target
+          this.form.six = data.content[5].target
+          this.form.seven = data.content[6].target
+          this.form.eight = data.content[7].target
+          this.form.nine = data.content[8].target
+          this.form.ten = data.content[9].target
+          this.form.eleven = data.content[10].target
+          this.form.twelve = data.content[11].target
+        }
       },
       Allocation() {
-        this.form.one = Math.floor(this.form.money / 12)
-        this.form.two = Math.floor(this.form.money / 12)
-        this.form.three = Math.floor(this.form.money / 12)
-        this.form.four = Math.floor(this.form.money / 12)
-        this.form.five = Math.floor(this.form.money / 12)
-        this.form.six = Math.floor(this.form.money / 12)
-        this.form.seven = Math.floor(this.form.money / 12)
-        this.form.eight = Math.floor(this.form.money / 12)
-        this.form.nine = Math.floor(this.form.money / 12)
-        this.form.ten = Math.floor(this.form.money / 12)
-        this.form.eleven = Math.floor(this.form.money / 12)
-        this.form.twelve = Math.floor(this.form.money / 12)
+        this.form.one = (this.form.money / 12).toFixed(2)
+        this.form.two = (this.form.money / 12).toFixed(2)
+        this.form.three = (this.form.money / 12).toFixed(2)
+        this.form.four = (this.form.money / 12).toFixed(2)
+        this.form.five = (this.form.money / 12).toFixed(2)
+        this.form.six = (this.form.money / 12).toFixed(2)
+        this.form.seven = (this.form.money / 12).toFixed(2)
+        this.form.eight = (this.form.money / 12).toFixed(2)
+        this.form.nine = (this.form.money / 12).toFixed(2)
+        this.form.ten = (this.form.money / 12).toFixed(2)
+        this.form.eleven = (this.form.money / 12).toFixed(2)
+        this.form.twelve = (this.form.money / 12).toFixed(2)
         this.$baseMessage('分配成功', 'success', 'vab-hey-message-success')
       },
       changeHandler(value) {

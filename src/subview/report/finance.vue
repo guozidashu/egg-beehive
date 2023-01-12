@@ -222,7 +222,7 @@
           style="padding-left: 10px; border-radius: 5px"
         >
           <h3>费用支出</h3>
-          <div id="chartmain" style="width: 400px; height: 300px"></div>
+          <div id="chartmain" style="width: 580px; height: 300px"></div>
         </el-card>
       </el-col>
       <el-col :span="9">
@@ -319,11 +319,11 @@
         businessIncomeBranchList: [],
         // 业务收入样式配置
         businessIncomeStyleObj: {
-          width: '500px',
+          width: '580px',
           height: '300px',
           legendx: 0,
-          legendy: 0,
-          center: ['60%', '70%'],
+          legendy: 220,
+          center: ['50%', '30%'],
         },
         // 营业额度
         turnoverMoney: 0,
@@ -632,14 +632,14 @@
           legend: {
             data: [...this.expenseLengList, ...this.expenseSonLengSonList],
             x: 0,
-            y: 0,
+            y: 220,
           },
           series: [
             {
               type: 'pie',
               selectedMode: 'single',
               radius: [0, '30%'],
-              center: ['50%', '70%'],
+              center: ['50%', '30%'],
               label: {
                 position: 'inner',
                 fontSize: 14,
@@ -652,7 +652,7 @@
             {
               type: 'pie',
               radius: ['45%', '55%'],
-              center: ['50%', '70%'],
+              center: ['50%', '30%'],
               labelLine: {
                 length: 30,
               },
