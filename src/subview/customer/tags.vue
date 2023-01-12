@@ -73,7 +73,11 @@
                 添加标签
               </el-button>
 
-              <el-button type="primary" @click="addCopy()">
+              <el-button
+                :loading="addCopySta"
+                type="primary"
+                @click="addCopy()"
+              >
                 同步企业微信标签
               </el-button>
             </el-form-item>
@@ -134,6 +138,7 @@
     components: { Edit },
     data() {
       return {
+        addCopySta: false,
         form: {
           group_id: 0,
           page: 1,
@@ -176,10 +181,17 @@
       },
       addCopy() {
         this.$baseConfirm('你确定要同步吗？', null, async () => {
+          this.addCopySta = true
+          this.$baseMessage(
+            '同步中请勿刷新或关闭页面',
+            'error',
+            'vab-hey-message-error'
+          )
           const { code } = await addCorpTagSync()
           if (code != 200) {
             return
           }
+          this.addCopySta = false
           this.$baseMessage('同步成功', 'success', 'vab-hey-message-success')
           this.fetchData()
         })

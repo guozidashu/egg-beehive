@@ -107,7 +107,6 @@
                 map: that.map,
                 position: result.detail.location,
               })
-              console.log(marker)
             },
           })
           // 通过坐标来显示地图地址

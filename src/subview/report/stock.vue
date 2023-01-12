@@ -37,7 +37,7 @@
          
         </el-form-item> -->
         <div>
-          <span style="font-size: 12px">更新时间：{{ time }}</span>
+          <span style="font-size: 12px">更新时间：{{ time[1] }}</span>
           <el-button
             size="small"
             style="margin-left: 10px"

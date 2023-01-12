@@ -375,9 +375,8 @@
         this.total = data.total
         this.listLoading = false
       },
-      async handleDetail(row) {
-        const { data } = await getFinishGoodDetail({ id: row.id })
-        console.log(data)
+      async handleDetail() {
+        // const { data } = await getFinishGoodDetail({ id: row.id })
       },
       // 导出
       handleDownload() {

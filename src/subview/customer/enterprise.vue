@@ -24,6 +24,7 @@
       </QYForm>
       <div style="margin-right: 20px">
         <el-button
+          :loading="addCopyStatus"
           style="margin-top: 20px"
           type="primary"
           @click="handleExternalSyncExternal()"
@@ -172,6 +173,7 @@
     components: { Drawer },
     data() {
       return {
+        addCopyStatus: false,
         title: '',
         drawer: false,
         drawerId: null,
@@ -208,7 +210,14 @@
           type: 'warning',
         })
           .then(() => {
+            this.addCopyStatus = true
+            this.$baseMessage(
+              '同步中请勿刷新或关闭页面',
+              'error',
+              'vab-hey-message-error'
+            )
             getExternalSyncExternal().then((res) => {
+              this.addCopyStatus = false
               this.$baseMessage(
                 '同步成功',
                 'success',

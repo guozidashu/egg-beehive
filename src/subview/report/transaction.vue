@@ -452,6 +452,7 @@
             gross_profit_amount: [],
           }
           this.fetchData()
+          this.getCardList()
         },
         deep: true,
       },

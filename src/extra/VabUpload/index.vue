@@ -145,9 +145,7 @@
     },
     watch: {
       size: {
-        handler: function (val) {
-          console.log(val)
-        },
+        handler: function () {},
         immediate: true,
         deep: true,
       },

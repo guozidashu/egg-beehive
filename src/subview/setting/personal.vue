@@ -118,8 +118,7 @@
     }),
     watch: {
       userInof: {
-        handler: function (res) {
-          console.log(666, res)
+        handler: function () {
           // this.form = res
         },
         deep: true,

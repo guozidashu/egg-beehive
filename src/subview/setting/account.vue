@@ -733,9 +733,7 @@
       this.fetchData()
     },
     methods: {
-      handleChange(val) {
-        console.log(val)
-      },
+      handleChange() {},
       async fetchData() {
         const { data } = await getAccountDetail()
         if (data.merchant != null) {

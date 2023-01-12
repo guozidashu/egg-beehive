@@ -464,9 +464,8 @@
         this.total = data.total
         this.listLoading = false
       },
-      async handleDetail(row) {
-        const { data } = await getMaterialMaterialDetail({ id: row.id })
-        console.log(data)
+      async handleDetail() {
+        // const { data } = await getMaterialMaterialDetail({ id: row.id })
       },
       // 导出
       handleDownload() {
