@@ -446,6 +446,9 @@
           this.form.jst_access_token = temp.jst_access_token
           this.form.jst_app_key = temp.jst_app_key
           this.form.jst_app_secret = temp.jst_app_secret
+          this.form.jst_shop_id = temp.jst_shop_id
+          this.form.jst_refresh_token = temp.jst_refresh_token
+          this.form.jst_expiration_period = temp.jst_expiration_period
         }
       },
       submitForm(formName) {

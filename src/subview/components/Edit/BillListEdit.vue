@@ -10,6 +10,7 @@
         <el-cascader
           v-model="form.category_id"
           :options="options"
+          placeholder="请选择收支类别"
           :props="{ expandTrigger: 'hover' }"
         />
         <!-- <el-select v-model="form.category_id" placeholder="请选择收支类别">
@@ -156,7 +157,6 @@
           this.title = '编辑'
           this.form = Object.assign({}, row)
           this.form.category_id = [row.category_type, row.category_id]
-          console.log(666, this.form)
         }
         this.dialogFormVisible = true
       },

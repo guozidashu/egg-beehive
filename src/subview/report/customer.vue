@@ -53,6 +53,7 @@
               start-placeholder="开始日期"
               type="daterange"
               unlink-panels
+              value-format="yyyy-MM-dd HH:mm:ss"
             />
             <!-- <el-button
               size="small"
@@ -91,7 +92,7 @@
       </el-col>
       <el-col :span="7">
         <div style="padding: 20px; background-color: white; border-radius: 5px">
-          <QYBranch
+          <QYBranchTooltip
             :list="branchList1"
             :style-chart="styleObj1"
             :title="branchTitle1"
@@ -472,13 +473,23 @@
             content: '最近【30】天内未提交订单的客户数据',
           },
         ],
-        branchTitle1: '客户类型分析',
+        branchTitle1: '客户RFM分析',
         styleObj1: {
           width: '400px',
           height: '500px',
           legendx: 0,
           legendy: 450,
           center: ['50%', '50%'],
+          tooltip: {
+            trigger: 'item',
+            formatter(params) {
+              let res = ` <ul>
+    <li><span>${params.data.name}:</span> <span> ${params.data.value}</span></li>
+    <li><span> ${params.data.content}</span></li>
+  </ul>`
+              return res
+            },
+          },
         },
         branchList: [],
         branchTitle: '客户等级分析',

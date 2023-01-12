@@ -102,9 +102,30 @@ export default {
         }
       }
     },
+    // 获取当天前后日期
+    getIntervalTime(date) {
+      let InTime = new Date(date).getTime()
+      let InTime1 = InTime - 1 * 24 * 60 * 60 * 1000
+      let InTime2 = InTime + 1 * 24 * 60 * 60 * 1000
+      let eTimeArr = this.Get_DateArr(InTime2)
+      let sTimeArr = this.Get_DateArr(InTime1)
+      let nowTime = eTimeArr[0] + '-' + eTimeArr[1] + '-' + eTimeArr[2]
+      let PastTime = sTimeArr[0] + '-' + sTimeArr[1] + '-' + sTimeArr[2]
+      return [PastTime, date, nowTime]
+    },
     // 获取最昨天的时间
     getYesterdayTime() {
       return this.getPastTime(1, false)
+    },
+    // 获取最今天的时间
+    getTodayTime() {
+      let InTime = new Date().getTime()
+      let eTimeArr = this.Get_DateArr(InTime)
+      let nowTime =
+        eTimeArr[0] + '-' + eTimeArr[1] + '-' + eTimeArr[2] + ' ' + '23:59:59'
+      let PastTime =
+        eTimeArr[0] + '-' + eTimeArr[1] + '-' + eTimeArr[2] + ' ' + '00:00:00'
+      return [PastTime, nowTime]
     },
     // 获取最近一周的时间
     getWeenTime() {

@@ -52,7 +52,56 @@ export function editChangePassword(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
-
+// 财务分析
+export function getTodayExpenditureList(data) {
+  return request({
+    url: '/information/todayExpenditure',
+    method: 'post',
+    data,
+  })
+}
+export function getTodayCollectionList(data) {
+  return request({
+    url: '/information/todayCollection',
+    method: 'post',
+    data,
+  })
+}
+export function getTodayTurnoverList(data) {
+  return request({
+    url: '/information/todayTurnover',
+    method: 'post',
+    data,
+  })
+}
+export function getBusinessIncomeList(data) {
+  return request({
+    url: '/information/businessIncome',
+    method: 'post',
+    data,
+  })
+}
+export function getFinanceList(data) {
+  return request({
+    url: '/information/financeList',
+    method: 'post',
+    data,
+  })
+}
+export function getExpensesList(data) {
+  return request({
+    url: '/information/expenses',
+    method: 'post',
+    data,
+  })
+}
+export function getexpensesSonList(data) {
+  return request({
+    url: '/information/expensesSon',
+    method: 'post',
+    data,
+  })
+}
 //退货订单列表
 export function getReturnOrderList(data) {
   return request({
@@ -1103,6 +1152,13 @@ export function getGoodsRank(data) {
   })
 }
 // 收支类别
+export function getFinanceAccountList(data) {
+  return request({
+    url: '/finance/getFinanceAccount',
+    method: 'post',
+    data,
+  })
+}
 export function getCategoryList(data) {
   return request({
     url: '/finance/categoryList',

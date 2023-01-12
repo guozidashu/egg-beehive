@@ -11,6 +11,7 @@ import QYFangMap from '@/qy/QYComponents/QYFangMap'
 import QYStroeMap from '@/qy/QYComponents/QYStroeMap'
 import QYTextLabels from '@/qy/QYComponents/QYTextLabels'
 import QYYuanMap from '@/qy/QYComponents/QYYuanMap'
+import QYBranchTooltip from '@/qy/QYComponents/QYBranchTooltip'
 export default {
   install(Vue) {
     Vue.component('QyColorSelect', QyColorSelect)
@@ -26,5 +27,6 @@ export default {
     Vue.component('QYStroeMap', QYStroeMap)
     Vue.component('QYTextLabels', QYTextLabels)
     Vue.component('QYYuanMap', QYYuanMap)
+    Vue.component('QYBranchTooltip', QYBranchTooltip)
   },
 }

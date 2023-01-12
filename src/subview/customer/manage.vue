@@ -176,6 +176,12 @@
           <el-table-column label="手机号" prop="mobile" width="120" />
           <el-table-column label="客户等级" prop="grade_name" width="120" />
           <el-table-column label="客户分类" prop="type_name" width="120" />
+          <el-table-column label="订单归属" prop="order_belong" width="120">
+            <template #default="{ row }">
+              <span v-if="row.order_belong == 1">ERP商城</span>
+              <span v-else>聚水潭</span>
+            </template>
+          </el-table-column>
           <!-- <el-table-column label="客户来源" prop="source_name" width="120" /> -->
           <el-table-column
             align="right"
@@ -703,6 +709,7 @@
         if (row == 'add') {
           this.drawerInof = {}
           this.drawerInof.drawerType = type
+          this.drawerInof.order_belong = 1
           this.drawerInof.status = 1
         } else {
           this.drawerInof = JSON.parse(JSON.stringify(row))

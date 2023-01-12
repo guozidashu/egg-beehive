@@ -17,14 +17,20 @@
         </el-select>
       </el-form-item>
       <el-form-item label="会计科目" prop="account_id">
-        <el-select v-model="form.account_id" placeholder="请选择会计科目">
+        <el-cascader
+          v-model="form.account_id"
+          :options="options"
+          placeholder="请选择会计科目"
+          :props="{ expandTrigger: 'hover' }"
+        />
+        <!-- <el-select v-model="form.account_id" placeholder="请选择会计科目">
           <el-option
             v-for="(item, index) in typeList"
             :key="index"
             :label="item.name"
             :value="item.id"
           />
-        </el-select>
+        </el-select> -->
       </el-form-item>
       <el-form-item label="排序" prop="sort">
         <el-input
@@ -58,12 +64,14 @@
   import {
     editCategorySave,
     getCategoryList,
-    getAccountList,
+    getFinanceAccountList,
   } from '@/api/basic'
   export default {
     name: 'TagsEdit',
     data() {
       return {
+        options: [],
+        // typeList: [],
         form: {
           id: 0, // 主键id (新增时传0),
           pid: null, // 父级id (添加主分类传0)
@@ -73,7 +81,6 @@
           type: null, // 类别 1收 2支
         },
         selectList: [],
-        typeList: [],
         type: 1,
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
@@ -94,17 +101,18 @@
         this.type = type
         if (row === 'add') {
           if (type === 1) {
-            this.title = '添加标签'
+            this.title = '添加收支'
           } else {
             this.title = '添加分类'
           }
         } else {
           if (type === 1) {
-            this.title = '编辑标签'
+            this.title = '编辑收支'
           } else {
             this.title = '编辑分类'
           }
           this.form = Object.assign({}, row)
+          this.form.account_id = [row.type, row.account_id]
         }
 
         this.dialogFormVisible = true
@@ -121,14 +129,19 @@
         this.selectList = data.data
       },
       async getTypeList() {
-        const { data } = await getAccountList({
-          page: 1,
-          pageSize: 10,
-          id: 0, // 父级id （取父级时传0）
-          type: null, // 类别 1收 2支
-          name: '', // 科目名称
+        const { data } = await getFinanceAccountList()
+        data.forEach((item) => {
+          item.value = item.type
+          item.label = item.type_text
+          if (item.children) {
+            item.children.forEach((child) => {
+              child.value = child.id
+              child.label = child.name
+            })
+          }
         })
-        this.typeList = data.data
+        this.options = data
+        // this.typeList = data.data
       },
       close() {
         this.$refs['form'].resetFields()
@@ -138,6 +151,7 @@
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
+            this.form.account_id = this.form.account_id[1]
             if (this.title == '添加标签' || this.title == '添加分类') {
               if (this.type == 2) {
                 this.form.pid = 0
