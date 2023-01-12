@@ -231,7 +231,7 @@
             <el-table-column
               label="客户名称"
               prop="customer_name"
-              width="100"
+              width="150"
             />
             <el-table-column label="订单数" prop="count_order" width="100" />
             <el-table-column label="拿货件数" prop="sum_num" width="100" />
