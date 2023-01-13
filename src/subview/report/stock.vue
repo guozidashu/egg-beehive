@@ -37,7 +37,7 @@
          
         </el-form-item> -->
         <div>
-          <span style="font-size: 12px">更新时间：{{ time[1] }}</span>
+          <span style="font-size: 12px">更新时间：{{ time }}</span>
           <el-button
             size="small"
             style="margin-left: 10px"
@@ -231,7 +231,7 @@
     mixins: [datajosn],
     data() {
       return {
-        time: this.getPastTime(1),
+        time: this.getNowTime(),
         listLoading: false,
         listType: 2,
         selectList: [],
@@ -447,7 +447,7 @@
         })
       },
       resetForm() {
-        this.time = this.getPastTime(1)
+        this.time = this.getNowTime()
         this.lengSonList = []
         this.lengList = []
         this.branchList = []

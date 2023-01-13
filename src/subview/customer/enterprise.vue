@@ -31,13 +31,13 @@
         >
           同步
         </el-button>
-        <el-button
+        <!-- <el-button
           style="margin-top: 20px"
           type="primary"
           @click="handleDetail('add', 3)"
         >
           批量添加客户标签
-        </el-button>
+        </el-button> -->
       </div>
     </div>
     <el-card shadow="never" style="border: 0; border-radius: 5px">
@@ -135,14 +135,14 @@
             prop="create_time"
             show-overflow-tooltip
           />
-          <el-table-column fixed="right" label="操作" width="200">
+          <el-table-column fixed="right" label="操作" width="100">
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row, 1)">
                 客户跟进记录
               </el-button>
-              <el-button type="text" @click="handleDetail(row, 2)">
+              <!-- <el-button type="text" @click="handleDetail(row, 2)">
                 添加客户标签
-              </el-button>
+              </el-button> -->
             </template>
           </el-table-column>
         </template>

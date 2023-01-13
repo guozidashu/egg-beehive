@@ -48,12 +48,20 @@
                     </span>
                     <el-dropdown-menu slot="dropdown">
                       <el-dropdown-item>
-                        <el-button type="text" @click="handleEdit(item, 2)">
+                        <el-button
+                          v-has-permi="['btn:CustomerTags:edit']"
+                          type="text"
+                          @click="handleEdit(item, 2)"
+                        >
                           编辑
                         </el-button>
                       </el-dropdown-item>
                       <el-dropdown-item>
-                        <el-button type="text" @click="handleDelete(item, 2)">
+                        <el-button
+                          v-has-permi="['btn:CustomerTags:del']"
+                          type="text"
+                          @click="handleDelete(item, 2)"
+                        >
                           删除
                         </el-button>
                       </el-dropdown-item>
@@ -109,10 +117,18 @@
                 width="85"
               >
                 <template #default="{ row }">
-                  <el-button type="text" @click="handleEdit(row, 1)">
+                  <el-button
+                    v-has-permi="['btn:CustomerTags:edit']"
+                    type="text"
+                    @click="handleEdit(row, 1)"
+                  >
                     编辑
                   </el-button>
-                  <el-button type="text" @click="handleDelete(row, 1)">
+                  <el-button
+                    v-has-permi="['btn:CustomerTags:del']"
+                    type="text"
+                    @click="handleDelete(row, 1)"
+                  >
                     删除
                   </el-button>
                 </template>
