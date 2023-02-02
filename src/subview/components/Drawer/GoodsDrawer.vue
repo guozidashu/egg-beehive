@@ -193,8 +193,8 @@
             <!-- <div style="width: 50%">操作人员： 暂无</div> -->
             <div>
               上架商城：
-              <span v-if="goodsDetails.online_id == 0">待确认</span>
-              <span v-else>已确定</span>
+              <span v-if="goodsDetails.is_shop == 1">上架</span>
+              <span v-if="goodsDetails.is_shop == 2">下架</span>
             </div>
             <!-- <div>是否同步到聚水潭： 暂无</div>
             <div>库存预警： 暂无</div> -->
@@ -203,7 +203,12 @@
             <div>
               商品状态：
               <span v-if="goodsDetails.status == 1">在售</span>
-              <span v-if="goodsDetails.status == 0">停售</span>
+              <span v-if="goodsDetails.status == 2">停售</span>
+            </div>
+            <div style="width: 100%">
+              是否同步聚水潭：
+              <span v-if="goodsDetails.is_jushuitan == 1">开启</span>
+              <span v-if="goodsDetails.is_jushuitan == 0">关闭</span>
             </div>
           </div>
         </div>

@@ -346,10 +346,10 @@
                   <el-radio :label="1">运行线下付款</el-radio>
                 </el-radio-group>
               </el-form-item>
-              <el-form-item class="item" label="订单归属：" style="width: 100%">
+              <el-form-item class="item" label="发货方式：" style="width: 100%">
                 <el-radio-group v-model="form.order_belong">
-                  <el-radio :label="1">ERP商城</el-radio>
-                  <el-radio :label="2">聚水潭</el-radio>
+                  <el-radio :label="1">自主发货</el-radio>
+                  <el-radio :label="2">聚水潭发货</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item class="item" label="客户状态：">

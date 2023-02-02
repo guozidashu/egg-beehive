@@ -76,14 +76,14 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item v-show="!form.fold" label="客户标签:">
+          <!-- <el-form-item v-show="!form.fold" label="客户标签:">
             <el-cascader
               v-model="form.tag"
               :options="selectDataList.customer_tag"
               :show-all-levels="false"
               style="width: 300px"
             />
-          </el-form-item>
+          </el-form-item> -->
           <!-- <el-form-item v-show="!form.fold" label="客户来源:">
             <el-select v-model="form.source" style="width: 300px">
               <el-option
@@ -176,10 +176,10 @@
           <el-table-column label="手机号" prop="mobile" width="120" />
           <el-table-column label="客户等级" prop="grade_name" width="120" />
           <el-table-column label="客户分类" prop="type_name" width="120" />
-          <el-table-column label="订单归属" prop="order_belong" width="120">
+          <el-table-column label="发货方式" prop="order_belong" width="120">
             <template #default="{ row }">
-              <span v-if="row.order_belong == 1">ERP商城</span>
-              <span v-else>聚水潭</span>
+              <span v-if="row.order_belong == 1">自主发货</span>
+              <span v-else>聚水潭发货</span>
             </template>
           </el-table-column>
           <!-- <el-table-column label="客户来源" prop="source_name" width="120" /> -->
