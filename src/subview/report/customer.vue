@@ -246,6 +246,7 @@
               </template>
             </el-table-column>
             <el-table-column
+              v-if="$permissionFiltering('ReportCustomer', 'cost')"
               align="right"
               label="商品成本价"
               prop="cost_price"
@@ -256,6 +257,7 @@
               </template>
             </el-table-column>
             <el-table-column
+              v-if="$permissionFiltering('ReportCustomer', 'profit')"
               align="right"
               label="预计毛利润"
               prop="gross_profit"
@@ -266,6 +268,7 @@
               </template>
             </el-table-column>
             <el-table-column
+              v-if="$permissionFiltering('ReportCustomer', 'payment')"
               align="right"
               label="客户回款"
               prop="voucher_amount"
@@ -275,7 +278,12 @@
                 <el-tag>￥{{ row.voucher_amount | moneyFormat }}</el-tag>
               </template>
             </el-table-column>
-            <el-table-column align="right" label="期末余额/欠款" width="150">
+            <el-table-column
+              v-if="$permissionFiltering('ReportCustomer', 'arrears')"
+              align="right"
+              label="期末余额/欠款"
+              width="150"
+            >
               <template #default="{ row }">
                 <div v-if="(orderList[4].value = 'sale_arrears')">
                   <el-tag v-if="row.sale_arrears >= 0">

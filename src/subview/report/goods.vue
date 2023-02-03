@@ -224,7 +224,6 @@
               {{ row.upper_time | formatTime }}
             </template>
           </el-table-column>
-          <!-- v-if="$permissionFiltering('ReportGoods', 'sales')" -->
           <!-- <el-table-column label="毛利率(%)" prop="profit">
             <template #default="{ row }">{{ row.profit * 100 }}%</template>
           </el-table-column> -->

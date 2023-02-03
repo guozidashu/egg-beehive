@@ -175,6 +175,7 @@
             </template>
           </el-table-column>
           <el-table-column
+            v-if="$permissionFiltering('ReportStock', 'cost')"
             align="right"
             label="成本价"
             prop="cost_price"
@@ -185,6 +186,7 @@
             </template>
           </el-table-column>
           <el-table-column
+            v-if="$permissionFiltering('ReportStock', 'costMoney')"
             align="right"
             label="库存成本金额"
             prop="stock_cost"
