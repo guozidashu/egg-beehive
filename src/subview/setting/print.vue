@@ -59,7 +59,6 @@
       @changePage="changeBtnPage"
       @changePageSize="changeBtnPageSize"
     >
-      <!-- 表格组件具名插槽 自定义表头 -->
       <template #List>
         <el-table-column type="selection" width="55" />
         <el-table-column label="ID" prop="id" width="80" />
@@ -391,22 +390,19 @@
       handleClose1() {
         this.dialogVisible1 = false
       },
-      // 列表数据封装函数
 
-      // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         this.form.page = data
       },
-      // 多选获取数据   公共部分
+
       selectBtnRows(data) {
         this.selectRows = data
       },
 
-      // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
-      // 列表数据请求函数 公共部分
+
       async fetchData() {
         // this.listLoading = true
         // const {
@@ -416,7 +412,7 @@
         // this.total = total
         // this.listLoading = false
       },
-      // 查询
+
       handleQuery() {
         this.form.page = 1
       },

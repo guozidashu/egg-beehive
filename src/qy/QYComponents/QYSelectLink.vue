@@ -430,7 +430,6 @@
             obj = null
           })
           this.$emit('SelectLink', this.selectList, this.classifyInof)
-          // this.$emit('SelectLink', item)
         } else if (item == 2) {
           let temp = {}
           if (this.formInline.tel != '') {
@@ -470,7 +469,6 @@
           }
           item.index = this.index
           this.close()
-          // this.$emit('SelectLink', inof)
           this.$emit('SelectLink', item)
         }
       },

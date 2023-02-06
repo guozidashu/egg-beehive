@@ -147,7 +147,6 @@
       this.fetchData()
     },
     methods: {
-      // 详情抽屉
       handleDetail(id) {
         this.drawerId = id
         this.drawer = true

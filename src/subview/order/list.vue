@@ -190,13 +190,24 @@
                     "
                   />
                 </el-tooltip>
-                <div style="margin-top: 15px">
+                <div v-if="row.sum_num == null" style="margin-top: 15px">
+                  {{ row.info.name }}0件
+                </div>
+                <div v-if="row.sum_num == 1" style="margin-top: 15px">
+                  {{ row.info.name }}1件
+                </div>
+                <div v-else style="margin-top: 15px">
                   {{ row.info.name }}...等{{ row.sum_num }}件
                 </div>
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="总数量" prop="sum_num" width="80" />
+          <el-table-column label="总数量" width="80">
+            <template #default="{ row }">
+              <p v-if="row.sum_num == null">0</p>
+              <p v-else>{{ row.sum_num }}</p>
+            </template>
+          </el-table-column>
           <el-table-column label="已发数量" prop="delivery_num" width="80" />
           <el-table-column label="订单来源" prop="order_type" width="120">
             <template #default="{ row }">

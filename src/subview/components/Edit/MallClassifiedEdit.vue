@@ -9,7 +9,6 @@
       <el-form-item label="商品别名">
         <el-input v-model="form.another_name" />
       </el-form-item>
-      <!-- shop_is_display: 1, //1启用 0 禁用 -->
       <el-form-item label="商城是否显示" prop="shop_is_display">
         <el-radio-group v-model="form.shop_is_display">
           <el-radio :label="1">显示</el-radio>

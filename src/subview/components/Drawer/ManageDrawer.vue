@@ -716,7 +716,6 @@
     methods: {
       async getDetail() {
         const { data } = await giteCustomerDetail({ id: this.form.id })
-        // 深拷贝
         let type = this.form.drawerType
         this.form = JSON.parse(JSON.stringify(data[0]))
         this.form.drawerType = type
@@ -772,7 +771,6 @@
         })
         this.selectData = data
       },
-      // 列表数据表头切换监听 自定义部分
       async handleClick(tab) {
         this.listLoading = true
         this.tabLabel = tab.label

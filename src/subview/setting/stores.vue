@@ -57,7 +57,6 @@
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column type="selection" />
           <el-table-column label="ID" prop="id" width="80" />
@@ -232,7 +231,7 @@
         this.total = data.total
         this.listLoading = false
       },
-      // 详情抽屉
+
       handleDetail(row) {
         if (row === 'add') {
           this.formDrawer = {}

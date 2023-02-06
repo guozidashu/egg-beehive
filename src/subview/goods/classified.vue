@@ -86,6 +86,13 @@
               >
                 添加分类
               </el-button>
+              <el-button
+                size="small"
+                type="primary"
+                @click="handleSynchronization()"
+              >
+                同步到聚水潭
+              </el-button>
             </el-form-item>
             <el-form-item label="款式名称：" style="float: right">
               <el-input
@@ -153,6 +160,7 @@
     getCategorySonList,
     delCategorySonDel,
     delCategoryMainDel,
+    getCategoryUpload,
   } from '@/api/basic'
   export default {
     name: 'GoodsClassified',
@@ -185,6 +193,15 @@
       this.fetchData()
     },
     methods: {
+      handleSynchronization() {
+        this.$baseConfirm('你确定要同步到聚水潭吗', null, async () => {
+          const { code } = await getCategoryUpload()
+          if (code != 200) {
+            return
+          }
+          this.$baseMessage('同步成功', 'success')
+        })
+      },
       async handleEdit(row, type) {
         if (row === 'add') {
           this.$refs['edit'].showEdit(row, type)
@@ -246,7 +263,6 @@
         } = await getCategorySonList(this.form)
         this.list = data
         this.total = total
-        // this.listLoading = false
       },
       handleGrouPQuery(id) {
         this.form.id = id

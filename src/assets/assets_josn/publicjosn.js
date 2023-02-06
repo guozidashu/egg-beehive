@@ -1,6 +1,5 @@
 export default {
   methods: {
-    // 列表数据改变页数   公共部分
     changeBtnPage(data) {
       this.form.page = data
     },

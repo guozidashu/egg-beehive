@@ -116,7 +116,6 @@
       Goodsgroup,
       Hotspots,
       Info,
-      // TemplateExample,
     },
     props: {
       itemId: {

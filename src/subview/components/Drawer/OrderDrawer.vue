@@ -184,7 +184,6 @@
                 :state="listLoading"
                 style="height: 200px; overflow: auto"
               >
-                <!-- 表格组件具名插槽 自定义表头 -->
                 <template #List>
                   <el-table-column
                     align="center"
@@ -253,7 +252,6 @@
       </el-tab-pane>
       <el-tab-pane label=" 操作记录" name="2">
         <QYList :list="orderList" :list-type="listType" :state="listLoading">
-          <!-- 表格组件具名插槽 自定义表头 -->
           <template #List>
             <el-table-column
               align="center"
@@ -310,7 +308,6 @@
       </el-tab-pane>
       <el-tab-pane label="发货记录" name="3">
         <QYList :list="orderList" :list-type="listType" :state="listLoading">
-          <!-- 表格组件具名插槽 自定义表头 -->
           <template #List>
             <!-- <el-table-column
               align="center"
@@ -413,7 +410,6 @@
               :state="listLoading"
               style="height: 200px; overflow: auto"
             >
-              <!-- 表格组件具名插槽 自定义表头 -->
               <template #List>
                 <el-table-column
                   align="center"
@@ -448,7 +444,6 @@
               :state="listLoading"
               style="height: 200px; overflow: auto"
             >
-              <!-- 表格组件具名插槽 自定义表头 -->
               <template #List>
                 <el-table-column
                   align="center"

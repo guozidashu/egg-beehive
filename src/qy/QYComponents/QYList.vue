@@ -148,15 +148,12 @@
     },
     created() {},
     methods: {
-      // 改变每页条数事件 公共
       handleSizeChange(val) {
         this.$emit('changePageSize', val)
       },
-      // 改变页数事件 公共
       handleCurrentChange(val) {
         this.$emit('changePage', val)
       },
-      //多选
       setSelectRows(val) {
         this.$emit('selectRows', val)
       },

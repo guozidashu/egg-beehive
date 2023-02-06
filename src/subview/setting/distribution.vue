@@ -49,7 +49,6 @@
         @changePageSize="changeBtnPageSize"
         @selectRows="handleSelectionChange"
       >
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column type="selection" width="55" />
           <el-table-column label="ID" prop="id" width="80" />
@@ -181,9 +180,7 @@
     },
     methods: {
       handleQuery() {},
-      // 列表数据封装函数
 
-      // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         this.form.page = data
       },
@@ -191,7 +188,7 @@
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
-      // 列表数据请求函数 公共部分
+
       async fetchData() {
         // this.listLoading = true
         // const {
@@ -217,7 +214,7 @@
           }
         })
       },
-      // 详情抽屉
+
       handleDetail(row) {
         if (row === 'add') {
           this.formDrawer.title = '新增配送方式'
@@ -227,7 +224,7 @@
         }
         this.drawer = true
       },
-      // 新增修改
+
       // async handleEdit(row) {
       //   this.$refs.edit.typeData = this.typeData
       //   if (row === 'add') {

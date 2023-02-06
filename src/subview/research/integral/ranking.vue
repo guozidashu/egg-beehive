@@ -81,13 +81,12 @@
     name: 'ProjectBandlist',
     data() {
       return {
-        // 表单数据/列表参数
         form: {
           page: 1,
           pageSize: 10,
         },
         formType: 4,
-        // 列表数据相关
+
         listType: 1,
         list: [],
         listLoading: false,
@@ -112,15 +111,15 @@
       resetForm() {
         this.form = this.$options.data().form
       },
-      // 列表数据改变页数   公共部分
+
       changeBtnPage(data) {
         this.form.page = data
       },
-      // 列表数据改变每页条数  公共部分
+
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
-      // 列表数据请求函数 公共部分
+
       async fetchData() {
         this.listLoading = true
         const { data } = await getEmployeeIntegralRank(this.form)

@@ -362,7 +362,6 @@
       this.getSaleTarget()
     },
     methods: {
-      // 新增修改
       addYearSale() {
         this.$refs['edit'].showEdit(this.year)
       },

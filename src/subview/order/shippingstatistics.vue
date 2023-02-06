@@ -74,7 +74,6 @@
         @changePageSize="changeBtnPageSize"
         @selectRows="selectBtnRows"
       >
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column align="center" type="selection" />
           <!-- <el-table-column align="center" label="图片" prop="id" /> -->
@@ -158,7 +157,7 @@
     data() {
       return {
         order_source: '0',
-        // 表单数据/列表参数
+
         form: {
           sn: '', //订单号
           type: '1', //导出数据格式  1颜色  2颜色+尺码 3 按款号
@@ -168,7 +167,7 @@
           order_time: this.getPastTime(30),
         },
         formType: 4,
-        // 列表数据相关
+
         selectRows: [],
         listType: 1,
         list: [],
@@ -205,7 +204,7 @@
           this.$message.error('导出失败')
         }
       },
-      // 查询
+
       handleQuery() {
         this.fetchData()
       },

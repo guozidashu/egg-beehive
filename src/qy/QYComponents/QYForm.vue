@@ -128,7 +128,6 @@
     },
     data() {
       return {
-        // 隐藏展示参数
         fold: this.form.fold,
         height: this.$baseTableHeight(3) - 30,
       }
@@ -138,23 +137,18 @@
       handleFold() {
         this.fold = !this.fold
         this.handleHeight()
-        // 展示闭合事件
         this.$emit('changeSta', this.fold)
       },
-      // 隐藏展示函数
       handleHeight() {
         if (this.fold) this.height = this.$baseTableHeight(2) - 47
         else this.height = this.$baseTableHeight(3) - 30
       },
-      // 查询事件 公共
       handleQuery() {
         this.$emit('changeSearch', this.form)
       },
-      // 添加事件 公共
       handleEdit() {
         this.$emit('addDate', 1)
       },
-      // 删除事件 公共
       handleDelete() {
         this.$emit('deleteDate', 1)
       },

@@ -83,7 +83,6 @@
       this.fetchData()
     },
     methods: {
-      // 列表数据请求函数 公共部分
       async fetchData() {
         const { data } = await getBaseConfigDetail()
         this.form = JSON.parse(data)

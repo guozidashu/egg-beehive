@@ -230,7 +230,6 @@
             this.formDrawer.longitude,
             this.formDrawer.latitude,
           ]
-          // 强制刷新视图
           this.$forceUpdate()
         },
         deep: true,

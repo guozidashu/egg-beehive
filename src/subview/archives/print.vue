@@ -228,12 +228,8 @@
             @changePageSize="changeBtnPageSize"
             @selectRows="selectBtnRows"
           >
-            <!-- 表格组件具名插槽 自定义表头 -->
             <template #List>
               <el-table-column type="selection" width="55" />
-              "name": "73-90", "img":
-              "https://img.wechatboss.com/Fnjf-kda-MuL6GAZk1rcWnB0eYyw", "sn":
-              "WZ32001", "barcode": "wz32001-0-0015-73-90", "df_num": 182
               <el-table-column align="center" label="图片" prop="img">
                 <template slot-scope="{ row }">
                   <img
@@ -293,7 +289,7 @@
         CommoditySn: [],
         colorList: [],
         sizeList: [],
-        // 列表数据相关
+
         selectRows: [],
         listType: 1,
         list: [],
@@ -386,18 +382,15 @@
         await VabPrint(this.$refs[val], { noPrintParent: true })
         await this.openSideBar()
       },
-      // 列表数据封装函数
 
-      // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         this.form1.page = data
       },
-      // 多选获取数据   公共部分
+
       selectBtnRows(data) {
         this.selectRows = data
       },
 
-      // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
         this.form1.pageSize = data
       },

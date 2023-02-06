@@ -78,7 +78,6 @@
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column align="center" type="selection" />
           <el-table-column align="center" label="批次号" prop="order_id" />
@@ -147,7 +146,7 @@
           online: 0,
         },
         order_source: '0',
-        // 表单数据/列表参数
+
         form: {
           search_type: 'id', //搜索条件 sn订单号 goods_sn商品款号 id批次号
           keywords: '', //搜索关键字
@@ -158,7 +157,7 @@
           customer_name: '', //客户名称
         },
         formType: 4,
-        // 列表数据相关
+
         selectRows: [],
         listType: 1,
         list: [],
@@ -178,7 +177,6 @@
       this.fetchData()
     },
     methods: {
-      // 查询
       handleQuery() {
         this.fetchData()
       },

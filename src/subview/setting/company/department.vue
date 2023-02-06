@@ -267,7 +267,7 @@
           this.cartList[index].btnIconStatus = false
         }
       },
-      // 查询
+
       handleQuery() {
         this.fetchData()
       },

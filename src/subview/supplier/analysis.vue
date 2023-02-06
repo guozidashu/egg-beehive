@@ -146,7 +146,6 @@
         </el-form-item> -->
       </el-form>
       <QYList :list="supplier_rank" :list-type="listType" :state="listLoading">
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column
             align="center"
@@ -283,7 +282,7 @@
         this.form.type = ''
         this.form.create_time = this.getPastTime(30)
       },
-      // 详情抽屉
+
       handleDetail() {},
       // 导出
       handleDownload() {

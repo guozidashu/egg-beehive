@@ -52,6 +52,30 @@ export function editChangePassword(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+// 商品分类同步到聚水潭
+export function getCategoryUpload(data) {
+  return request({
+    url: '/goods/category/jstUpload',
+    method: 'post',
+    data,
+  })
+}
+// 客户发货列表导出
+export function getCustomerDeliveryOrderExport(data) {
+  return request({
+    url: '/customerDeliveryOrder/export',
+    method: 'post',
+    data,
+  })
+}
+// 客户发货列表
+export function getCustomerDeliveryOrderList(data) {
+  return request({
+    url: '/customerDeliveryOrder/list',
+    method: 'post',
+    data,
+  })
+}
 // 财务分析
 export function getTodayExpenditureList(data) {
   return request({

@@ -229,7 +229,6 @@
       padding: 0 10px;
       margin: 0;
 
-      // overflow: auto;
       &::-webkit-scrollbar-thumb {
         background: #dbdbdb;
         border-radius: 10px;

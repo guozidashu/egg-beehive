@@ -275,15 +275,15 @@
       resetForm() {
         this.formEdit = this.$options.data().formEdit
       },
-      // 列表数据改变页数   公共部分
+
       changeBtnPage(data) {
         this.formEdit.page = data
       },
-      // 列表数据改变每页条数  公共部分
+
       changeBtnPageSize(data) {
         this.formEdit.pageSize = data
       },
-      // 列表数据请求函数 公共部分
+
       async fetchData() {
         this.listLoading = true
         this.formEdit.group_id = this.formInline.group_id

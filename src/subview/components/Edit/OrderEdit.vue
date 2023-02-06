@@ -157,7 +157,6 @@
 </template>
 
 <script>
-  // import { updateWave, addWave } from '@/api/basic'
   export default {
     name: 'BandEdit',
     data() {

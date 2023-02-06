@@ -90,7 +90,6 @@
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
           sort: [{ required: true, trigger: 'blur', message: '请输入排序' }],
-          // sn: [{ required: true, trigger: 'blur', message: '请输入编号' }],
           pid: [{ required: true, trigger: 'blur', message: '请选择分类' }],
           status: [{ required: true, trigger: 'blur', message: '请选择状态' }],
         },

@@ -330,6 +330,15 @@ export const asyncRoutes = [
         },
       },
       {
+        path: 'orderCustomerDelivery',
+        name: 'OrderCustomerDelivery',
+        component: () => import('@/subview/order/customerdelivery'),
+        meta: {
+          title: '客户发货列表',
+          icon: 'archive-line',
+        },
+      },
+      {
         path: 'orderReturnOrder',
         name: 'OrderReturnOrder',
         component: () => import('@/subview/order/returnorder'),

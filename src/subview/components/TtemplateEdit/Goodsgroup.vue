@@ -336,7 +336,6 @@
     methods: {
       SelectLink() {
         this.$refs['edit'].showEdit(null, '10', 2)
-        // '1,7,8,9,10,11,12'
       },
       removeImage(index) {
         this.list.parameters.goods_item.splice(index, 1)

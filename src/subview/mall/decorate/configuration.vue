@@ -351,7 +351,7 @@
       delImg(index) {
         this.inof_list.splice(index, 1)
       },
-      // 列表数据请求函数 公共部分
+
       async fetchData() {
         this.listLoading = true
         const { data } = await getAdminList(this.form)

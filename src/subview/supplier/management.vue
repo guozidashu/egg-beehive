@@ -53,7 +53,6 @@
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column label="ID" prop="id" sortable width="80" />
           <el-table-column label="供应商名称" prop="name" width="150" />
@@ -147,7 +146,7 @@
           page: 1,
           pageSize: 10,
         },
-        // 列表数据相关
+
         // 公共参数
         listType: 1,
         formType: 4,
@@ -193,7 +192,7 @@
         const { data } = await getCommonAllList({ type: 'supplier_type' })
         this.supplier_type = data.supplier_type
       },
-      // 详情抽屉
+
       async handleDetail(row, type) {
         if (type === 1) {
           this.title = '供应商详情'

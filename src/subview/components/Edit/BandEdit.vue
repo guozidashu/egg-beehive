@@ -12,7 +12,6 @@
       <el-form-item label="排序" prop="sort">
         <el-input v-model="form.sort" />
       </el-form-item>
-      <!-- status: 1, //1启用 0 禁用 -->
       <el-form-item label="状态" prop="status">
         <el-radio-group v-model="form.status">
           <el-radio :label="1">启用</el-radio>

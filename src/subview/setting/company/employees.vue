@@ -50,7 +50,6 @@
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column
             align="center"
@@ -185,7 +184,7 @@
         })
         this.fetchData()
       },
-      // 详情抽屉
+
       // handleDetail(row, type) {
       //   if (row == 'add') {
       //     this.drawerInof = {}

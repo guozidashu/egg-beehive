@@ -442,7 +442,6 @@
               </span>
             </template>
           </el-table-column>
-          <!-- { "num": 32, // 总数量 "status_text": "部分发货", // 状态文本 -->
           <el-table-column label="批次" prop="id" width="50" />
           <el-table-column label="客户名称" prop="name" />
 

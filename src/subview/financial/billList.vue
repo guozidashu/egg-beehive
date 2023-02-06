@@ -71,7 +71,6 @@
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
       >
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column
             align="center"
@@ -219,7 +218,7 @@
         })
         this.selectList = data
       },
-      // 新增修改
+
       async handleEdit(row) {
         if (row === 'add') {
           this.$refs['edit'].showEdit()
@@ -231,7 +230,7 @@
           }
         }
       },
-      // 删除
+
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要作废当前项吗', null, async () => {

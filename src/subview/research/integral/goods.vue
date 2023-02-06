@@ -172,7 +172,6 @@
     components: { Edit },
     data() {
       return {
-        // 表单数据/列表参数
         form: {
           id: 0,
           name: '',
@@ -180,7 +179,7 @@
           pageSize: 100,
         },
         formType: 4,
-        // 列表数据相关
+
         selectRows: [],
         // listType: 1,
         list: [],
@@ -200,7 +199,6 @@
       this.fetchData()
     },
     methods: {
-      // 新增修改
       async handleEdit(row) {
         if (row === 'add') {
           this.$refs['edit'].showEdit()
@@ -218,7 +216,7 @@
       resetForm() {
         this.form = this.$options.data().form
       },
-      // 删除
+
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
@@ -231,22 +229,19 @@
           })
         }
       },
-      // 列表数据封装函数
 
-      // 列表数据改变页数   公共部分
       changeBtnPage(data) {
         this.form.page = data
       },
-      // 多选获取数据   公共部分
+
       selectBtnRows(data) {
         this.selectRows = data
       },
 
-      // 列表数据改变每页条数  公共部分
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
-      // 列表数据请求函数 公共部分
+
       async fetchData() {
         // this.listLoading = true
         const { data } = await getIntegralGoodsList(this.form)

@@ -327,12 +327,10 @@
         this.dataObj.series[0].data = this.dataAllList.add_customer
         this.dataObj1.xAxis.data = this.dateList
         this.dataObj1.series[0].data = this.dataAllList.sum_final_amount
-        // 强制刷新
         this.$forceUpdate()
       },
-      // 详情抽屉
+
       handleDetail() {},
-      // 导出
       handleDownload() {
         import('@/utils/excel').then((excel) => {
           const tHeader = ['名称', '数量', '较昨日数量']

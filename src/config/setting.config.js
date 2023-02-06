@@ -62,7 +62,7 @@ module.exports = {
     '/vab/editor',
   ],
   // 需要加loading层的请求，防止重复提交
-  debounce: ['doEdit', 'syncExternal', 'corpTagSync'],
+  debounce: ['doEdit', 'syncExternal', 'corpTagSync', 'jstUpload'],
   // 分栏布局和综合布局时，是否点击一级菜单默认开启二级菜单(默认第一个，可通过redirect自定义)
   openFirstMenu: true,
 }

@@ -144,7 +144,6 @@
   import {
     getGoodsGroupList,
     getGoodsGroupDetail,
-    // delCategorySonDel,
     delGoodsGroupDel,
   } from '@/api/basic'
   export default {

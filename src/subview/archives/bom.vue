@@ -183,7 +183,6 @@
       this.getSelectData()
     },
     methods: {
-      // 详情抽屉
       async handleDetail(row, type) {
         if (type === 1) {
           this.title = '物料详情'

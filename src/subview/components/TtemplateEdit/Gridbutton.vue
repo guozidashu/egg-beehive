@@ -268,7 +268,6 @@
           this.$forceUpdate()
         },
         deep: true,
-        // immediate: true,
       },
       data: {
         handler(val) {
@@ -333,7 +332,6 @@
       urlPopup(index) {
         this.show = true
         this.index = index
-        // this.url = link
       },
       removeImage(index) {
         this.list.parameters.grid_items.splice(index, 1)

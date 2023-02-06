@@ -156,7 +156,6 @@
         @changePageSize="changeBtnPageSize"
         @selectRows="handleSelectionChange"
       >
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column type="selection" />
           <el-table-column label="商品Id" prop="id" width="80" />
@@ -494,7 +493,7 @@
       handleClick(tab) {
         this.form.list_type = tab.name
       },
-      // 列表数据请求函数 公共部分
+
       async fetchData(type) {
         if (type == 1) {
           this.drawer = false
@@ -515,7 +514,7 @@
         })
         this.selectList = data
       },
-      // 详情抽屉
+
       handleDetail(row, type) {
         if (type === 1) {
           this.title = '商品详情'

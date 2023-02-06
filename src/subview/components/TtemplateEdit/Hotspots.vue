@@ -204,7 +204,6 @@
         this.$refs['edit'].showEdit(index, '1,7,8,9,10,11,12', 1)
       },
       getSelectLink(data) {
-        // this.list.parameters.hotspots[data.index].url = data.name
         this.list.parameters.hotspots[data.index].url = data.selectUrl
         this.list.parameters.hotspots[data.index].title = data.selectName
         this.list.parameters.hotspots[data.index].selectTitle = data.selectTitle
@@ -257,7 +256,6 @@
     padding: 0 10px;
     margin: 0;
 
-    // overflow: auto;
     &::-webkit-scrollbar-thumb {
       background: #dbdbdb;
       border-radius: 10px;

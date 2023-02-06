@@ -154,7 +154,7 @@
         roleType: 1,
         drawerId: 0,
         drawer: false,
-        // 表单数据/列表参数
+
         dialogFormVisible: false,
         title: '',
         formType: 3,
@@ -189,7 +189,6 @@
       this.fetchData()
     },
     methods: {
-      // 详情抽屉
       handleDetail(index) {
         this.drawerId = index
         this.drawer = true
@@ -284,14 +283,14 @@
           this.cartList[index].btnIconStatus = false
         }
       },
-      // 查询
+
       handleQuery() {
         this.fetchData()
       },
       resetForm() {
         this.form = this.$options.data().form
       },
-      // 列表数据请求函数 公共部分
+
       async fetchData() {
         const { data } = await getRoleList(this.form)
         data.forEach((item) => {

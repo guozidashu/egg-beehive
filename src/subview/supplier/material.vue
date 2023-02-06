@@ -282,7 +282,7 @@
         exclList: [],
         supplier_type: [],
         activeName: '0',
-        // 表单数据/列表参数
+
         form: {
           fold: true,
           page: 1,
@@ -369,7 +369,7 @@
           }
         }
       },
-      // 详情抽屉
+
       handleDetail(row, type) {
         if (row == 'add') {
           this.drawerInof = {}

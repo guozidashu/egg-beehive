@@ -697,7 +697,7 @@
         })
         this.selectDataList = data
       },
-      // 详情抽屉
+
       handleDetail(row, type) {
         if (type === 1) {
           this.title = '客户详情'

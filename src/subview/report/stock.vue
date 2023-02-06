@@ -120,7 +120,6 @@
         </el-form-item>
       </el-form>
       <QYList :list="list" :list-type="listType" :state="listLoading">
-        <!-- 表格组件具名插槽 自定义表头 -->
         <template #List>
           <el-table-column align="center" label="排行" type="index" width="50">
             <template slot-scope="scope">
@@ -466,9 +465,9 @@
           brand: '', //品牌
         }
       },
-      // 详情抽屉
+
       handleDetail() {},
-      // 列表数据请求函数 公共部分
+
       async fetchData() {
         const { data } = await getStockStatistics({
           category_id: this.goodsForm.category,

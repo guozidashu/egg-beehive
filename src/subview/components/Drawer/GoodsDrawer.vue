@@ -1036,7 +1036,6 @@
       handleShow() {
         this.$refs['vabUpload'].handleShow()
       },
-      // 列表数据表头切换监听 自定义部分
       async handleClick(tab) {
         this.tabindex = tab.name
         this.listLoading = true
@@ -1069,7 +1068,6 @@
         }
         const { data } = await getGradeList()
         data.data.forEach((item) => {
-          // 保留小数点后两位
           let temp = this.form.price * (item.discount / 10)
           let temp1 = this.form.price * (item.discount_single / 10)
           item.price = temp.toFixed(2)
