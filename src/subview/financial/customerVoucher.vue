@@ -2,6 +2,8 @@
   <div style="background-color: #f6f8f9">
     <div
       style="
+        display: flex;
+        justify-content: space-between;
         padding-top: 1px;
         margin-bottom: 20px;
         background-color: #ffffff;
@@ -42,6 +44,16 @@
           </el-form-item>
         </template>
       </QYForm>
+      <div>
+        <el-button
+          size="small"
+          style="margin-top: 20px; margin-right: 20px"
+          type="primary"
+          @click="handleExport"
+        >
+          导出全部
+        </el-button>
+      </div>
     </div>
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <QYList
@@ -119,7 +131,10 @@
 </template>
 
 <script>
-  import { getCustomerVoucherList } from '@/api/basic'
+  import {
+    getCustomerVoucherList,
+    getFinanceCustomerVoucherExport,
+  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'FinancialCustomerVoucher',
@@ -157,6 +172,26 @@
       this.fetchData()
     },
     methods: {
+      async handleExport() {
+        let temp = ['', '']
+        if (this.form.date.length != 0) {
+          temp[0] = this.form.date[0]
+          temp[1] = this.form.date[1]
+        }
+        const { code, data } = await getFinanceCustomerVoucherExport({
+          start_time: temp[0],
+          end_time: temp[1],
+          name: this.form.name,
+          is_void: this.form.is_void,
+        })
+        if (code == 200) {
+          window.open(data.url)
+          this.$message.success('导出成功')
+          this.fetchData()
+        } else {
+          this.$message.error('导出失败')
+        }
+      },
       resetForm() {
         this.form = this.$options.data().form
       },

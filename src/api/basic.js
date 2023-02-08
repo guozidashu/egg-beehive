@@ -52,6 +52,15 @@ export function editChangePassword(data) {
 // 上边全是基础数据接口
 
 // 下边是业务数据接口
+
+// 客户收款单导出
+export function getFinanceCustomerVoucherExport(data) {
+  return request({
+    url: '/finance/customerVoucherExport',
+    method: 'post',
+    data,
+  })
+}
 // 商品分类同步到聚水潭
 export function getCategoryUpload(data) {
   return request({

@@ -142,7 +142,12 @@
           <el-button size="small" type="primary" @click="handleEdit(1)">
             批量在售
           </el-button>
-          <el-button size="small" type="primary" @click="handleEditJST()">
+          <el-button
+            v-has-permi="['btn:GoodsManage:synchronization']"
+            size="small"
+            type="primary"
+            @click="handleEditJST()"
+          >
             批量同步聚水潭
           </el-button>
         </el-form-item>

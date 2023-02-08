@@ -82,6 +82,7 @@
               </el-button>
 
               <el-button
+                v-has-permi="['btn:CustomerTags:synchronization']"
                 :loading="addCopySta"
                 type="primary"
                 @click="addCopy()"

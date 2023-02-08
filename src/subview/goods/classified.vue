@@ -87,6 +87,7 @@
                 添加分类
               </el-button>
               <el-button
+                v-has-permi="['btn:GoodsClassified:synchronization']"
                 size="small"
                 type="primary"
                 @click="handleSynchronization()"

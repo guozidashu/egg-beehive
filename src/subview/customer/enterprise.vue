@@ -24,6 +24,7 @@
       </QYForm>
       <div style="margin-right: 20px">
         <el-button
+          v-has-permi="['btn:CustomerEnterprise:synchronization']"
           :loading="addCopyStatus"
           style="margin-top: 20px"
           type="primary"
