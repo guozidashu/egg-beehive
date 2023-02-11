@@ -110,13 +110,13 @@
                     >
                       删除
                     </el-button>
-                    <el-button
+                    <!-- <el-button
                       v-has-permi="['btn:DecorateDesign:view']"
                       type="text"
                       @click="handleEdit(row, 3)"
                     >
                       预览
-                    </el-button>
+                    </el-button> -->
                     <el-button
                       v-if="row.is_default != 1"
                       v-has-permi="['btn:DecorateDesign:default']"
@@ -275,7 +275,10 @@
           this.getTypeList()
         } else {
           if (type == 0) {
-            window.open(`#/design?id=${item.id}&lx=${item.class_id}`, '_blank')
+            window.open(
+              `#/design?id=${item.id}&lx=${item.class_id}&is_default=${item.is_default}`,
+              '_blank'
+            )
           } else if (type == 1) {
             this.title = '编辑模板'
             this.dialogFormVisible = true

@@ -1,6 +1,8 @@
 const GlobalConfig = {
   baseApiUrl: 'https://luoyi.business.quanyu123.com/QYAPI/index.php/platform',
   appName: '丸纸',
+  // baseApiUrl: 'https://demo.quanyu123.com/QYAPI/index.php/platform',
+  // appName: '圈域',
 }
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {

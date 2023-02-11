@@ -32,7 +32,7 @@
                 打印
               </el-button> -->
               <el-button
-                v-if="form.drawerType == 1"
+                v-if="form.drawerType == 1 && form.path == 'erp'"
                 v-has-permi="['btn:GoodsManage:edit']"
                 size="small"
                 style="float: right; margin-right: 10px"
@@ -66,6 +66,14 @@
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">库存数</span>
             <span>{{ goodsAllNum.stock_total }}</span>
+          </div>
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">聚水潭库存</span>
+            <span>{{ goodsAllNum.jst_stock_total }}</span>
+          </div>
+          <div style="display: flex; flex: 1; flex-direction: column">
+            <span style="margin-bottom: 12px">聚水潭占用库存</span>
+            <span>{{ goodsAllNum.jst_occupy_stock_total }}</span>
           </div>
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">库存价值</span>
@@ -216,7 +224,7 @@
       <el-form
         v-if="form.drawerType == 2 || form.drawerType == 3"
         ref="form"
-        label-width="120px"
+        label-width="180px"
         :model="form"
         :rules="rules"
         style="width: 100%"
@@ -544,9 +552,12 @@
                 </el-radio-group>
               </el-form-item>
               <el-form-item
-                v-if="form.drawerType == 3 || form.drawerType == 2"
+                v-if="
+                  (form.drawerType == 3 || form.drawerType == 2) &&
+                  form.id == undefined
+                "
                 class="item"
-                label="是否同步聚水潭："
+                label="是否同步聚水潭(仅限散码)："
               >
                 <el-radio-group v-model="form.is_jushuitan">
                   <el-radio :label="1">开启</el-radio>
@@ -701,6 +712,16 @@
       <template #List>
         <el-table-column label="尺码" prop="size_name" show-overflow-tooltip />
         <el-table-column label="颜色" prop="color_name" show-overflow-tooltip />
+        <el-table-column
+          label="聚水潭库存"
+          prop="jst_xh_num"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          label="聚水潭占用库存"
+          prop="jst_occupy_num"
+          width="150"
+        />
         <el-table-column
           label="待发货数量"
           prop="df_num"

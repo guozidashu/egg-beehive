@@ -527,6 +527,15 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'reportJststock',
+        name: 'ReportJststock',
+        component: () => import('@/subview/report/jststock'),
+        meta: {
+          title: '聚水潭库存统计',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {

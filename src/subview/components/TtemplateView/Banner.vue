@@ -17,6 +17,7 @@
           }"
         >
           <el-image
+            fit="fill"
             :src="item.img"
             :style="{ width: '100%', height: data.parameters.height + 'px' }"
           />

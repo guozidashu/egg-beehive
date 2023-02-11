@@ -119,11 +119,19 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <QYList :list="list" :list-type="listType" :state="listLoading">
+      <QYList
+        :list="list"
+        :list-type="listType"
+        :state="listLoading"
+        :total="total"
+        @changePage="changeBtnPage"
+        @changePageSize="changeBtnPageSize"
+      >
         <template #List>
           <el-table-column align="center" label="排行" type="index" width="50">
             <template slot-scope="scope">
               <span
+                v-if="goodsForm1.page == 1"
                 class="index_common"
                 :class="[
                   scope.$index + 1 == '1'
@@ -136,6 +144,9 @@
                 ]"
               >
                 {{ scope.$index + 1 }}
+              </span>
+              <span v-else class="index_more index_common">
+                {{ 10 * (goodsForm1.page - 1) + scope.$index + 1 }}
               </span>
             </template>
           </el-table-column>
@@ -234,8 +245,9 @@
       return {
         time: this.getNowTime(),
         listLoading: false,
-        listType: 2,
+        listType: 1,
         selectList: [],
+        total: 0,
         list: [],
         goodsForm: {
           category: '',
@@ -467,7 +479,12 @@
       },
 
       handleDetail() {},
-
+      changeBtnPage(data) {
+        this.goodsForm1.page = data
+      },
+      changeBtnPageSize(data) {
+        this.goodsForm1.pageSize = data
+      },
       async fetchData() {
         const { data } = await getStockStatistics({
           category_id: this.goodsForm.category,

@@ -53,6 +53,7 @@
             </template>
           </el-table-column>
           <el-table-column label="创建时间" prop="create_time" width="150" />
+          <el-table-column label="备注" prop="remark" />
           <el-table-column label="角色名称" prop="group_name" />
           <el-table-column
             align="center"

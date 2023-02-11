@@ -92,12 +92,12 @@
           name="1"
         />
         <el-tab-pane
-          :label="'已下架(' + tatleData.down_the_shelf + '款)'"
-          name="0"
+          :label="'已下架(' + tatleData.stock_zero + '款)'"
+          name="2"
         />
         <el-tab-pane
-          :label="'售空 (' + tatleData.stock_zero + '款)'"
-          name="2"
+          :label="'售空 (' + tatleData.down_the_shelf + '款)'"
+          name="4"
         />
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
@@ -176,6 +176,12 @@
           </el-table-column>
           <el-table-column label="销量" prop="xl_num" width="120" />
           <el-table-column label="库存" prop="xh_num" width="100" />
+          <el-table-column label="聚水潭库存" prop="jst_xh_num" width="100" />
+          <el-table-column
+            label="聚水潭占用库存"
+            prop="jst_occupy_num"
+            width="100"
+          />
           <el-table-column label="状态" prop="status" width="80">
             <template #default="{ row }">
               <div v-if="row.is_shop == 1" style="margin-bottom: 10px">
@@ -673,6 +679,7 @@
       handleDetail(row, type) {
         if (type === 1) {
           this.title = '商品详情'
+          this.drawerInof.path = 'mall'
         } else if (type === 2) {
           this.title = '编辑商品'
         } else {

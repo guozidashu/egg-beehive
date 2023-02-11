@@ -83,9 +83,9 @@
           this.selectProvince = newVal[0]
           this.selectCity = newVal[1]
           this.selectArea = newVal[2]
-          this.selectProvinceFun(this.selectProvince)
-          this.selectCityFun(this.selectCity)
-          this.selectAreaFun(this.selectArea)
+          // this.selectProvinceFun(this.selectProvince)
+          // this.selectCityFun(this.selectCity)
+          // this.selectAreaFun(this.selectArea)
         },
         deep: true,
         immediate: true,
@@ -95,12 +95,14 @@
       // 省份 市 县联动
       selectProvinceFun(event) {
         if (event) {
-          this.cityList = city.filter(function (item) {
-            return item.name == event
-          })[0].city
-          this.selectCity = this.cityList[0].name
-          this.areaList = this.cityList[0].area
-          this.selectArea = this.cityList[0].area[0]
+          city.forEach((item) => {
+            if (item.name.indexOf(event) != -1) {
+              this.cityList = item.city
+              this.selectCity = this.cityList[0].name
+              this.areaList = this.cityList[0].area
+              this.selectArea = this.cityList[0].area[0]
+            }
+          })
         } else {
           this.cityList = []
         }

@@ -44,7 +44,7 @@
       width="70%"
       @close="close"
     >
-      <div style="display: flex; justify-content: space-between">
+      <div style="position: relative; top: -30px">
         <QYForm
           :form="formEdit"
           :form-type="formType"
@@ -52,7 +52,64 @@
           @resetForm="resetForm"
         >
           <template #Form>
-            <el-form-item>
+            <el-form-item label="款式类别:">
+              <el-select
+                v-model="formEdit.category"
+                placeholder="请选择类别款式"
+              >
+                <el-option
+                  v-for="(item, index) in selectLists.category"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="品牌:">
+              <el-select v-model="formEdit.brand" placeholder="请选择品牌">
+                <el-option
+                  v-for="(item, index) in selectLists.brand"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="年份:">
+              <el-select v-model="formEdit.year" placeholder="请选择年份">
+                <el-option
+                  v-for="(item, index) in selectLists.year"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="季节:">
+              <el-select v-model="formEdit.season" placeholder="请选择季节">
+                <el-option
+                  v-for="(item, index) in selectLists.season"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="波段:">
+              <el-select
+                v-model="formEdit.band"
+                placeholder="请选择波段"
+                style="width: 215px"
+              >
+                <el-option
+                  v-for="(item, index) in selectLists.band"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品搜索:">
               <el-input
                 v-model="formEdit.name"
                 placeholder="请输入商品名称"
@@ -61,13 +118,8 @@
             </el-form-item>
           </template>
         </QYForm>
-        <el-form
-          class="demo-form-inline"
-          :inline="true"
-          :model="formInline"
-          style="margin-top: 20px"
-        >
-          <el-form-item label="分组名称">
+        <el-form class="demo-form-inline" :inline="true" :model="formInline">
+          <el-form-item label="分组名称:" label-width="100px">
             <el-select v-model="formInline.group_id" placeholder="请选择分组">
               <el-option
                 v-for="(item, index) in selectList"
@@ -83,45 +135,52 @@
             </el-button>
           </el-form-item>
         </el-form>
-      </div>
-
-      <div style="height: 500px; overflow: auto">
-        <QYList
-          :list="list"
-          :list-type="listType"
-          :state="listLoading"
-          :total="total"
-          @changePage="changeBtnPage"
-          @changePageSize="changeBtnPageSize"
-          @selectRows="handleSelectionChange"
-        >
-          <template #List>
-            <el-table-column type="selection" />
-            <el-table-column label="ID" prop="id" />
-            <el-table-column label="商品名称" prop="name" />
-            <el-table-column label="商品图" prop="img" width="80">
-              <template #default="{ row }">
-                <el-tooltip placement="top">
-                  <el-image
-                    slot="content"
-                    :src="row.img"
-                    style="width: 200px; height: 200px"
-                  />
-                  <el-image :src="row.img" style="width: 50px; height: 50px" />
-                </el-tooltip>
-              </template>
-            </el-table-column>
-            <el-table-column label="商品标题" prop="shoptitle" />
-            <el-table-column label="商品编号" prop="sn" />
-            <el-table-column label="商品价格" prop="price" />
-            <el-table-column label="状态" prop="status" width="150">
-              <template #default="{ row }">
-                <el-tag v-if="row.is_shop == 1">上架</el-tag>
-                <el-tag v-else type="danger">下架</el-tag>
-              </template>
-            </el-table-column>
-          </template>
-        </QYList>
+        <div style="height: 500px; overflow: auto">
+          <QYList
+            :list="list"
+            :list-type="listType"
+            :state="listLoading"
+            :total="total"
+            @changePage="changeBtnPage"
+            @changePageSize="changeBtnPageSize"
+            @selectRows="handleSelectionChange"
+          >
+            <template #List>
+              <el-table-column type="selection" />
+              <el-table-column label="ID" prop="id" width="50" />
+              <el-table-column label="商品名称" prop="name" />
+              <el-table-column label="商品图" prop="img" width="80">
+                <template #default="{ row }">
+                  <el-tooltip placement="top">
+                    <el-image
+                      slot="content"
+                      :src="row.img"
+                      style="width: 200px; height: 200px"
+                    />
+                    <el-image
+                      :src="row.img"
+                      style="width: 50px; height: 50px"
+                    />
+                  </el-tooltip>
+                </template>
+              </el-table-column>
+              <el-table-column label="商品标题" prop="shoptitle" />
+              <el-table-column label="商品编号" prop="sn" />
+              <el-table-column label="商品价格" prop="price" />
+              <el-table-column label="款式类别" prop="cate_name" />
+              <el-table-column label="波段" prop="band_name" />
+              <el-table-column label="季节" prop="season_name" />
+              <el-table-column label="品牌" prop="brand_name" />
+              <el-table-column label="年份" prop="year_name" />
+              <el-table-column label="状态" prop="status" width="150">
+                <template #default="{ row }">
+                  <el-tag v-if="row.is_shop == 1">上架</el-tag>
+                  <el-tag v-else type="danger">下架</el-tag>
+                </template>
+              </el-table-column>
+            </template>
+          </QYList>
+        </div>
       </div>
 
       <!-- <template #footer>
@@ -134,6 +193,7 @@
 
 <script>
   import {
+    getCommonAllList,
     editGoodsGroupSave,
     getGoodsUnitList,
     addGroupGoodsAdd,
@@ -144,6 +204,7 @@
     name: 'TagsEdit',
     data() {
       return {
+        selectLists: [],
         selectList: [],
         formInline: {
           group_id: null,
@@ -153,6 +214,11 @@
           page: 1,
           pageSize: 10,
           name: '',
+          category: null,
+          brand: null,
+          year: null,
+          season: null,
+          band: null,
         },
         formType: 4,
         listType: 1,
@@ -176,8 +242,8 @@
     },
     watch: {
       formEdit: {
-        handler: function (val) {
-          this.fetchList(val.id)
+        handler: function () {
+          this.fetchData()
         },
         deep: true,
       },
@@ -190,8 +256,15 @@
     },
     created() {
       this.getSelectType()
+      this.getGoodsTypeList()
     },
     methods: {
+      async getGoodsTypeList() {
+        const { data } = await getCommonAllList({
+          type: 'brand,year,season,category,band',
+        })
+        this.selectLists = data
+      },
       showEdit(row, type) {
         this.type = type
         if (row === 'add') {

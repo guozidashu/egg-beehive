@@ -201,7 +201,7 @@
             销售商品毛利
             <el-popover placement="right" trigger="hover">
               <div style="font-size: 12px">
-                在选定条件下，销售单实际应付金额-商品成本金额
+                在选定条件下，销售单实际应收金额-商品成本金额
               </div>
               <vab-icon
                 slot="reference"
@@ -222,7 +222,32 @@
           style="padding-left: 10px; border-radius: 5px"
         >
           <h3>费用支出</h3>
-          <div id="chartmain" style="width: 580px; height: 300px"></div>
+          <div
+            v-show="expenseShow"
+            id="chartmain"
+            style="width: 580px; height: 300px"
+          ></div>
+          <div
+            v-show="!expenseShow"
+            style="position: relative; width: 580px; height: 300px"
+          >
+            <div
+              style="
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                padding: 20px;
+                font-size: 16px;
+                font-weight: 600;
+                text-align: center;
+                background-color: #ffffff;
+                border-radius: 5px;
+                transform: translate(-50%, -50%);
+              "
+            >
+              该时间段内没有费用支出
+            </div>
+          </div>
         </el-card>
       </el-col>
       <el-col :span="9">
@@ -279,7 +304,7 @@
             value: 0,
             color: '#FFF5D2',
             content:
-              '在选定条件下，所有成功提交订单实际应付金额（不含订单优惠金额）',
+              '在选定条件下，所有成功提交订单实际应收金额（不含订单优惠金额）',
           },
           {
             name: '销售商品成本',
@@ -307,6 +332,7 @@
           time: this.getTodayTime(),
         },
         // 费用单 父子联动图表相关数据
+        expenseShow: true,
         expenseLengList: [],
         expenseSonLengSonList: [],
         expenseBranchList: [],
@@ -606,6 +632,8 @@
             this.todayExpenditureData.series[1].data.push(0)
             this.todayExpenditureData.series[2].data.push(0)
             this.todayExpenditureData.series[3].data.push(0)
+            // 强制刷新视图
+            this.$forceUpdate()
           }
         },
         deep: true,
@@ -675,6 +703,12 @@
       // 费用单父级获取
       async getExpenses() {
         const { data } = await getExpensesList(this.goodsForm)
+        if (data.length == 0) {
+          this.expenseShow = false
+          return
+        } else {
+          this.expenseShow = true
+        }
         data.forEach((item, index) => {
           this.expenseLengList.push(item.name)
           item.value = item.total

@@ -35,6 +35,9 @@
           style="margin: 0 10px"
         />
       </el-form-item>
+      <el-form-item label="备注">
+        <el-input v-model="form.remark" :rows="2" type="textarea" />
+      </el-form-item>
     </el-form>
     <template #footer>
       <el-button @click="close">取 消</el-button>

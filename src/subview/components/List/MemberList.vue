@@ -9,6 +9,7 @@
       :list-height="listHeight"
       :list-type="listType"
       :state="listLoading"
+      style="height: 347px"
     >
       <template #List>
         <el-table-column label="批次" prop="id" width="50" />
@@ -45,7 +46,7 @@
     },
     data() {
       return {
-        listHeight: 250,
+        listHeight: 320,
         listLoading: false,
         listType: 5,
         goosList: this.data,

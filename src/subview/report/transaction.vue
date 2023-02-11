@@ -352,7 +352,7 @@
             content: '在选定条件下，交易毛利金额 = 营业额 - 支出金额',
           },
           {
-            title: '商品支付金额',
+            title: '商品销售金额',
             number: 0,
             num: 0,
             type: 1,
@@ -360,7 +360,7 @@
             name: 'final_amount',
             numType: 1,
             content:
-              '在选定条件下，所有成功提交订单的实际应付金额（不含订单优惠金额）',
+              '在选定条件下，所有成功提交订单的实际应收金额（不含订单优惠金额）',
           },
           {
             title: '会员保证金',
@@ -431,7 +431,7 @@
             typeSta: false,
             name: 'gross_profit',
             numType: 1,
-            content: '在选定条件下，销售单实际应付金额-商品成本金额',
+            content: '在选定条件下，销售单实际应收金额-商品成本金额',
           },
         ],
         initOptions: {

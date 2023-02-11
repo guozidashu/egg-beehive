@@ -207,6 +207,12 @@
           </el-table-column>
           <el-table-column label="销量" prop="xl_num" width="120" />
           <el-table-column label="库存" prop="xh_num" width="100" />
+          <el-table-column label="聚水潭库存" prop="jst_xh_num" width="100" />
+          <el-table-column
+            label="聚水潭占用库存"
+            prop="jst_occupy_num"
+            width="100"
+          />
           <el-table-column label="状态" prop="status" width="120">
             <template #default="{ row }">
               <div v-if="row.status == 1" style="margin-bottom: 10px">
@@ -523,6 +529,7 @@
       handleDetail(row, type) {
         if (type === 1) {
           this.title = '商品详情'
+          this.drawerInof.path = 'erp'
         } else if (type === 2) {
           this.title = '编辑商品'
         } else {

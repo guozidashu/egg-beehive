@@ -245,7 +245,15 @@
           </el-form-item>
         </el-form>
       </div>
-      <div v-if="tabindex == 7 && tabsItem != null">
+      <div
+        v-if="
+          (tabindex == 7 ||
+            tabindex == 21 ||
+            tabindex == 22 ||
+            tabindex == 23) &&
+          tabsItem != null
+        "
+      >
         <div style="display: flex; flex-wrap: wrap">
           <el-button
             v-for="(item, dex) in tabsItem"
@@ -308,6 +316,7 @@
 
 <script>
   import {
+    getCommonAllList,
     getTemplateMenuDetail,
     getGoodsGroupList,
     getCategoryMainList,
@@ -315,6 +324,7 @@
     getArticleList,
     getGoodList,
     getTemplateList,
+    getConfig,
   } from '@/api/basic'
   export default {
     name: 'QYSelectLink',
@@ -351,15 +361,52 @@
     watch: {
       tabindex: {
         async handler(val) {
+          let temp = {}
+          if (this.tabsList != null) {
+            temp = this.tabsList.filter((item) => item.id == val)[0]
+          }
           if (val == 1 || val == 12) {
             this.tabsItem = this.tabsList.filter((item) => item.id == val)[0]
           } else if (val == 7) {
             const { data } = await getGoodsGroupList()
+            data.forEach((item) => {
+              item.url = temp.url
+              item.pname = temp.name
+            })
             this.tabsItem = data
+          } else if (val == 21) {
+            const { data } = await getCommonAllList({
+              type: 'brand',
+            })
+            data.brand.forEach((item) => {
+              item.url = temp.url
+              item.pname = temp.name
+            })
+            this.tabsItem = data.brand
+          } else if (val == 22) {
+            const { data } = await getCommonAllList({
+              type: 'year',
+            })
+            data.year.forEach((item) => {
+              item.url = temp.url
+              item.pname = temp.name
+            })
+            this.tabsItem = data.year
+          } else if (val == 23) {
+            const { data } = await getCommonAllList({
+              type: 'season',
+            })
+            data.season.forEach((item) => {
+              item.url = temp.url
+              item.pname = temp.name
+            })
+            this.tabsItem = data.season
           } else if (val == 8) {
             const { data } = await getCategoryMainList()
             data.forEach((item) => {
               item.checked = false
+              item.url = temp.url
+              item.pname = temp.name
             })
             this.tabsItem = data
           } else {
@@ -406,6 +453,10 @@
         item.checked = !item.checked
         if (item.checked) {
           const { data } = await getCategorySonList({ id: item.id })
+          data.data.forEach((item1) => {
+            item1.url = item.url
+            item1.pname = item.name
+          })
           this.tabsItem.forEach((item1) => {
             if (item1.id == item.id) {
               item1.children = data.data
@@ -462,6 +513,24 @@
             item.selectName = item.pname + '>' + item.id
             item.selectTitle = item.name
             item.selectUrl = item.url + item.id
+          } else if (
+            this.tabindex == 7 ||
+            this.tabindex == 21 ||
+            this.tabindex == 22 ||
+            this.tabindex == 23
+          ) {
+            item.selectName = item.name
+            item.selectUrl = item.url + item.id
+            item.selectTitle = null
+          } else if (this.tabindex == 8) {
+            if (item.pid_name != undefined) {
+              item.selectName = item.pid_name + '>' + item.name
+            } else {
+              item.selectName = item.name
+            }
+            item.link_type = 'tab'
+            item.selectUrl = item.url + '=' + item.id
+            item.selectTitle = null
           } else {
             item.selectName = item.name
             item.selectUrl = item.url
@@ -516,6 +585,10 @@
       handleSelectionChange(val) {
         this.selectList = val
       },
+      async getConfigState() {
+        const { data } = await getConfig({ key: 'jst_api_open' })
+        return data
+      },
       async fetchData() {
         this.listLoading = true
         let temp = {}
@@ -531,7 +604,11 @@
           this.list = data.data
           this.total = data.total
         } else if (this.tabindex == 10) {
-          this.form.status == 1
+          let temp1 = await this.getConfigState()
+          if (temp1 == 1) {
+            this.form.is_shop = 1
+            this.form.list_type = 7
+          }
           const { data } = await getGoodList(this.form)
           data.data.forEach((item) => {
             item.url = temp.url

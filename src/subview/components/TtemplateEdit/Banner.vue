@@ -147,7 +147,7 @@
         <div style="padding: 0 10px">
           <el-slider
             v-model="list.parameters.height"
-            :max="400"
+            :max="800"
             :min="100"
             show-input
           />
@@ -255,7 +255,7 @@
 
     methods: {
       SelectLink(index) {
-        this.$refs['edit'].showEdit(index, '1,7,8,9,10,11,12', 1)
+        this.$refs['edit'].showEdit(index, '1,7,8,9,10,11,12,21,22,23', 1)
       },
       getSelectLink(data) {
         this.list.parameters.swiper_items[data.index].url = data.name

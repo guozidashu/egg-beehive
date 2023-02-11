@@ -43,8 +43,8 @@
           <template #header>
             <div>最新加入会员</div>
           </template>
-          <div style="height: 248px; overflow: auto">
-            <el-timeline>
+          <div style="height: 350px; overflow: auto">
+            <el-timeline style="padding-top: 20px">
               <el-timeline-item
                 v-for="(activity, index) in activities"
                 :key="index"

@@ -281,7 +281,7 @@
 
     methods: {
       SelectLink(index) {
-        this.$refs['edit'].showEdit(index, '1,7,8,9,10,11,12', 1)
+        this.$refs['edit'].showEdit(index, '1,7,8,9,10,11,12,21,22,23', 1)
       },
       getSelectLink(data) {
         this.list.parameters.image_items[data.index].url = data.selectUrl

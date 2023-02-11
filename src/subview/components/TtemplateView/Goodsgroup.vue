@@ -110,12 +110,12 @@
               </div>
             </div>
             <img
-              src="https://img.quanyu.link/FuEmfNWb9-lb_Wags8seNOwppS2C"
+              src="https://img.wechatboss.com/FraFiH4brOQ6U1g4--W9m9rxORSI"
               :style="img_style"
             />
             <div style="padding: 10px">
               <div class="line__2" style="font-size: 14px">
-                坚实的快乐大萨达进口量撒娇打卡时间第六届奥斯卡来得及雷克萨就打开链接开了多久萨拉科技
+                商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介
               </div>
               <!-- <div style="color: gray">副标题副标题副标题</div> -->
               <div>

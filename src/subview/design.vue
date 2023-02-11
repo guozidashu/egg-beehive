@@ -32,8 +32,8 @@
         </span>
       </div>
       <div>
-        <el-button type="primary" @click="submit(1)">保存默认</el-button>
-        <el-button type="primary" @click="submit(0)">保存</el-button>
+        <!-- <el-button type="primary" @click="submit()">保存默认</el-button> -->
+        <el-button type="primary" @click="submit()">保存</el-button>
         <el-button type="primary" @click="reset">重置</el-button>
       </div>
     </div>
@@ -117,14 +117,16 @@
       Hotspots,
       Info,
     },
-    props: {
-      itemId: {
-        type: Number,
-        default: 0,
-      },
-    },
+    // props: {
+    //   itemId: {
+    //     type: Number,
+    //     default: 0,
+    //   },
+    // },
     data() {
       return {
+        itemId: 0,
+        is_default: 0,
         testsrn: '',
         centerDialogVisible: false,
         selectList: [],
@@ -219,6 +221,7 @@
     },
     created() {
       this.itemId = this.$route.query.id
+      this.is_default = this.$route.query.is_default
       this.getTypeList()
     },
     methods: {
@@ -229,17 +232,17 @@
         if (data.length == 0) {
           return
         }
-        let arr = []
+        // let arr = []
         data.forEach((item) => {
           let temp = ''
           temp = JSON.parse(item.content)
-          if (temp.type == this.view[0].type) {
-            this.view[0].id = item.assembly_id
-          }
+          // if (temp.type == this.view[0].type) {
+          //   this.view[0].id = item.assembly_id
+          // }
           temp.id = item.assembly_id
-          arr.push(temp)
+          this.view.push(temp)
         })
-        this.view = arr
+        // this.view = arr
         this.$forceUpdate()
       },
       async getTypeList() {
@@ -282,7 +285,7 @@
           type: 'warning',
         })
           .then(() => {
-            this.submit(0)
+            this.submit()
             this.$router.push({
               path: '/decorate/decorateDesign',
             })
@@ -293,72 +296,134 @@
             })
           })
       },
-      async submit(subType) {
+      async submit() {
         // JSON 转换会丢失 formData
-        const form = JSON.parse(JSON.stringify(this.view))
-        form.forEach((item) => {
+        const form1 = JSON.parse(JSON.stringify(this.view))
+        let form = []
+        form1.forEach((item, index) => {
+          if (item.template != undefined) {
+            form.push(item)
+          }
+        })
+        form.forEach((item, index) => {
           // 字符转换数字
           if (item.tab_type != null) {
             item.tab_type = Number(item.tab_type)
             item.parameters.type = Number(item.tab_type)
           }
         })
-        let temp1 = {
-          name: 'TemplateExample',
-          status: 1,
-          content: JSON.stringify({
-            template: 'qy-template-example',
-            type: 'TemplateExample',
-            options: {},
-            parameters: {
-              type: 1,
-              bg_color: '#F8F7F7',
-              color_goods_bg: '#FFFFFF',
-              margin_lr: 5,
-              margin_tb: 7,
-              padding_lr: 4,
-              padding_tb: 9,
-              magin_goods_lr: 9,
-              magin_goods_tb: 10,
-              radius_t: 7,
-              radius_b: 13,
-              goods_tag: 1,
-              goods_grouping: 1,
-              goods_classify: [55, 57],
-              goods_type: 2,
-              goods_corner_mark: 1,
-              goods_original_price: 1,
-              goods_num: 1,
-              goods_text_state: 1,
-              goods_item: [
-                {
-                  url: '/main_pages/goods/goods_details?id=772',
-                  title: '商品详情>772',
-                  selectTitle: '999888',
-                  img: 'https://img.quanyu.link/FkpDvX6OeEcKJjlT1_7oEaR6Qk2Q',
-                  type: 0,
-                  goods_id: 772,
-                  opentype: null,
-                },
-                {
-                  url: '/main_pages/goods/goods_details?id=773',
-                  title: '商品详情>773',
-                  selectTitle: '999888',
-                  img: 'https://img.wechatboss.com/FvXc5ZSE-0sIW8arI3m0Wq0hIYBQ',
-                  type: 1,
-                  goods_id: 773,
-                  opentype: null,
-                },
-              ],
-              goodsGroupNum: 1,
-              goods_tag_text: '热卖1',
-              show_sales: 1,
-            },
-            id: 38,
-            tabType: 1,
-            tab_type: 1,
-          }),
-        }
+        // let ssdd = {
+        //   template: 'qy-goods-group',
+        //   type: 'Goodsgroup',
+        //   options: {},
+        //   parameters: {
+        //     type: 1,
+        //     bg_color: '#FFFAFA',
+        //     color_goods_bg: '#FFFFFF',
+        //     margin_lr: 4,
+        //     margin_tb: 7,
+        //     padding_lr: 4,
+        //     padding_tb: 9,
+        //     magin_goods_lr: 9,
+        //     magin_goods_tb: 10,
+        //     radius_t: 7,
+        //     radius_b: 13,
+        //     goods_tag: 1,
+        //     goods_grouping: 1,
+        //     goods_classify: [25, 34],
+        //     goods_type: 2,
+        //     goods_corner_mark: 1,
+        //     goods_original_price: 1,
+        //     goods_num: 2,
+        //     goods_text_state: 1,
+        //     goods_item: [
+        //       {
+        //         url: '/main_pages/goods/goods_details?id=788',
+        //         title: '商品详情>788',
+        //         selectTitle: '三件套2023丸纸春款印花小熊三件套WZ13020',
+        //         img: 'https://img.wechatboss.com/FtHP6x6WZkaznS4yxUdmi-2meU1S',
+        //         type: 0,
+        //         goods_id: 788,
+        //         opentype: null,
+        //       },
+        //       {
+        //         url: '/main_pages/goods/goods_details?id=789',
+        //         title: '商品详情>789',
+        //         selectTitle: '三件套2023丸纸春款印花小熊三件套WZ13020',
+        //         img: 'https://img.wechatboss.com/FtHP6x6WZkaznS4yxUdmi-2meU1S',
+        //         type: 1,
+        //         goods_id: 789,
+        //         opentype: null,
+        //       },
+        //     ],
+        //     goodsGroupNum: 1,
+        //     goods_tag_text: '热卖',
+        //     show_sales: 1,
+        //     goods_group_id: 1,
+        //   },
+        //   id: 38,
+        //   tabType: 1,
+        //   tab_type: 1,
+        // }
+        // console.log(666666, ssdd)
+        // console.log(7777, form[0])
+        // console.log(777777, JSON.stringify(ssdd))
+        // let temp1 = {
+        //   name: 'TemplateExample',
+        //   status: 1,
+        //   content: JSON.stringify({
+        //     template: 'qy-template-example',
+        //     type: 'TemplateExample',
+        //     options: {},
+        //     parameters: {
+        //       type: 1,
+        //       bg_color: '#F8F7F7',
+        //       color_goods_bg: '#FFFFFF',
+        //       margin_lr: 5,
+        //       margin_tb: 7,
+        //       padding_lr: 4,
+        //       padding_tb: 9,
+        //       magin_goods_lr: 9,
+        //       magin_goods_tb: 10,
+        //       radius_t: 7,
+        //       radius_b: 13,
+        //       goods_tag: 1,
+        //       goods_grouping: 1,
+        //       goods_classify: [55, 57],
+        //       goods_type: 2,
+        //       goods_corner_mark: 1,
+        //       goods_original_price: 1,
+        //       goods_num: 1,
+        //       goods_text_state: 1,
+        //       goods_item: [
+        //         {
+        //           url: '/main_pages/goods/goods_details?id=772',
+        //           title: '商品详情>772',
+        //           selectTitle: '999888',
+        //           img: 'https://img.quanyu.link/FkpDvX6OeEcKJjlT1_7oEaR6Qk2Q',
+        //           type: 0,
+        //           goods_id: 772,
+        //           opentype: null,
+        //         },
+        //         {
+        //           url: '/main_pages/goods/goods_details?id=773',
+        //           title: '商品详情>773',
+        //           selectTitle: '999888',
+        //           img: 'https://img.wechatboss.com/FvXc5ZSE-0sIW8arI3m0Wq0hIYBQ',
+        //           type: 1,
+        //           goods_id: 773,
+        //           opentype: null,
+        //         },
+        //       ],
+        //       goodsGroupNum: 1,
+        //       goods_tag_text: '热卖1',
+        //       show_sales: 1,
+        //     },
+        //     id: 38,
+        //     tabType: 1,
+        //     tab_type: 1,
+        //   }),
+        // }
         // if (form.length == 1) {
         //   this.$message.error('请添加模块！')
         //   return
@@ -383,18 +448,12 @@
         temp.div_template_id = this.itemId
         temp.content = arr
         temp.name = '模板名称'
-        if (subType == 0) {
-          temp.is_default = 0
-        } else {
-          temp.is_default = 1
-        }
+        temp.is_default = this.is_default
         temp.status = 1
         temp.img = ''
         temp.class_id = this.$route.query.lx
         const { data } = await editTemplateAssemblyLayout(temp)
-        // this.$message.success(
-        //   '数据提交成功，请按F12打开控制台查看待提交数据集合！'
-        // )
+        this.$message.success('保存成功！')
         this.itemId = data.id
         // this.setImage()
         return

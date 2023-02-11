@@ -332,7 +332,7 @@
             onlineMall: 0,
             onlineMallPercentage: '0',
             content:
-              '在选定条件下，所有成功提交订单实际应付金额（不含订单优惠金额）',
+              '在选定条件下，所有成功提交订单实际应收金额（不含订单优惠金额）',
           },
           {
             title: '销售件数',
@@ -391,7 +391,7 @@
             onlineMallPercentage: '0',
           },
           {
-            title: '笔单件',
+            title: '笔单价',
             number: 0,
             num: 0,
             type: 1,
