@@ -112,23 +112,10 @@
               <el-table-column label="ID" prop="id" />
               <el-table-column label="颜色名称" prop="name" />
               <el-table-column label="颜色组" prop="group_name" />
-              <!-- <el-table-column label="使用商品" prop="zhekou" /> -->
               <el-table-column label="状态" prop="status" width="150">
                 <template #default="{ row }">
                   <el-tag v-if="row.status == 1">开启</el-tag>
                   <el-tag v-else type="danger">关闭</el-tag>
-                  <!-- <el-switch
-                    v-model="row.status"
-                    active-color="#41B584"
-                    active-text="开启"
-                    :active-value="1"
-                    class="switch"
-                    inactive-color="#D2D2D2"
-                    inactive-text="关闭"
-                    :inactive-value="0"
-                    style="margin: 0 10px"
-                    @change="turnOnOff(row)"
-                  /> -->
                 </template>
               </el-table-column>
               <el-table-column label="排序" prop="sort" width="80" />

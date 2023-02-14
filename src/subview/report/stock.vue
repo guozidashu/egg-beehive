@@ -560,7 +560,7 @@
         })
         this.selectList = data
       },
-      // 导出
+
       handleDownload() {
         import('@/utils/excel').then((excel) => {
           const tHeader = ['名称', '数量', '较昨日数量']

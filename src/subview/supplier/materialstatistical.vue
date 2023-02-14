@@ -467,7 +467,7 @@
       async handleDetail() {
         // const { data } = await getMaterialMaterialDetail({ id: row.id })
       },
-      // 导出
+
       handleDownload() {
         this.downloadLoading = true
         import('@/utils/excel').then((excel) => {

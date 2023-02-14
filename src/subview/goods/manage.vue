@@ -150,6 +150,9 @@
           >
             批量同步聚水潭
           </el-button>
+          <el-button size="small" type="primary" @click="handleDerive()">
+            批量导出
+          </el-button>
         </el-form-item>
       </el-form>
       <QYList
@@ -376,6 +379,7 @@
     editSourceMaterialSave,
     editChangeRecommend,
     saveGoodsSyncJuShuiTan,
+    getGoodsExport,
   } from '@/api/basic'
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
@@ -440,6 +444,16 @@
       this.getGoodsTypeList()
     },
     methods: {
+      async handleDerive() {
+        const { code, data } = await getGoodsExport(this.form)
+        if (code == 200) {
+          window.open(data.url)
+          this.$message.success('导出成功')
+          this.fetchData()
+        } else {
+          this.$message.error('导出失败')
+        }
+      },
       async handleMaterialSub() {
         const { code } = await editSourceMaterialSave(this.formDialog)
         if (code == 200) {

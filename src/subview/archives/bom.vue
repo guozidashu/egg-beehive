@@ -134,7 +134,6 @@
       :visible.sync="drawer"
       :wrapper-closable="false"
     >
-      <!-- 详情抽屉组件 -->
       <Drawer :drawer-inof="drawerInof" />
     </el-drawer>
   </div>

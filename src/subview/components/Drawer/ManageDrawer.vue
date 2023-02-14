@@ -60,6 +60,14 @@
               >
                 完成
               </el-button>
+              <el-button
+                size="small"
+                style="float: right; margin-right: 10px"
+                type="primary"
+                @click="getBillList()"
+              >
+                对账单
+              </el-button>
             </el-col>
           </el-row>
         </div>
@@ -724,6 +732,9 @@
           this.form.city,
           this.form.district,
         ]
+      },
+      getBillList() {
+        console.log(111, '打印对账单')
       },
       async changeTypeBtn(e) {
         if (e != 1) {

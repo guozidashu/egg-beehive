@@ -67,7 +67,6 @@
             </template>
           </el-table-column> -->
           <el-table-column label="排序" prop="sort" />
-          <!-- <el-table-column label="创建时间" prop="create_time" /> -->
           <el-table-column
             align="center"
             label="操作"

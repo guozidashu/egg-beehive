@@ -610,7 +610,7 @@
         this.listTotal = data.list.total
         this.listLoading = false
       },
-      // 导出
+
       // handleDownload() {
       //   import('@/utils/excel').then((excel) => {
       //     const tHeader = ['名称', '数量']

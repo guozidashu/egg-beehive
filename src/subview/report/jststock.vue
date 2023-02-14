@@ -21,7 +21,7 @@
         @submit.native.prevent
       >
         <span style="margin-top: 10px; font-size: 18px; font-weight: 600">
-          今日概况
+          全渠道概况
         </span>
         <div>
           <span style="font-size: 12px">更新时间：{{ time }}</span>
@@ -43,6 +43,7 @@
               borderRadius: '5px',
               padding: '10px',
               background: item.checked ? '#F0F5FE' : '#fff',
+              marginBottom: '20px',
             }"
             @click="channelBtnClick(1, index)"
           >
@@ -66,6 +67,22 @@
                 color: rgba(0, 0, 0, 0.85);
               "
             >
+              <span v-if="item.type == 1">￥{{ item.num | moneyFormat }}</span>
+              <span v-else>{{ item.num }}</span>
+            </div>
+            <div style="font-size: 12px; color: rgba(0, 0, 0, 0.85)">
+              聚水潭{{ item.title }}
+              <span v-if="item.type == 1">￥{{ item.num | moneyFormat }}</span>
+              <span v-else>{{ item.num }}</span>
+            </div>
+            <div
+              style="
+                margin-top: 10px;
+                font-size: 12px;
+                color: rgba(0, 0, 0, 0.85);
+              "
+            >
+              自主渠道{{ item.title }}
               <span v-if="item.type == 1">￥{{ item.num | moneyFormat }}</span>
               <span v-else>{{ item.num }}</span>
             </div>
@@ -99,7 +116,15 @@
               "
             >
               <div style="margin-top: 5px; font-size: 16px; font-weight: 600">
-                今日渠道分析
+                <span v-if="channelBtnIndex == 0">
+                  总销售金额 ￥{{ channelBtnList[channelBtnIndex].value }}
+                </span>
+                <span v-if="channelBtnIndex == 1">
+                  总销售件数 {{ channelBtnList[channelBtnIndex].value }}
+                </span>
+                <span v-if="channelBtnIndex == 2">
+                  总销售单数 {{ channelBtnList[channelBtnIndex].value }}
+                </span>
               </div>
               <div style="display: flex">
                 <div
@@ -217,8 +242,8 @@
         <el-col :span="12">
           <div style="padding-left: 20px">
             <el-tabs v-model="rankType" @tab-click="handleRankTypeChange">
-              <el-tab-pane label="今日店铺排行" name="1" />
-              <el-tab-pane label="今日分销商排行" name="2" />
+              <el-tab-pane label="店铺销售排行" name="1" />
+              <el-tab-pane label="自主分销商排行" name="2" />
             </el-tabs>
             <QYList
               :list="goosList"
@@ -280,7 +305,7 @@
             :list="goosList"
             :list-type="2"
             :state="listLoading"
-            style="height: 450px; overflow: auto"
+            style="height: 700px; overflow: auto"
           >
             <template #List>
               <el-table-column
@@ -306,11 +331,39 @@
                   </span>
                 </template>
               </el-table-column>
-              <el-table-column label="款式排名&款式编码" prop="customer_name" />
-              <el-table-column label="销售件数" prop="num" />
-              <el-table-column label="销售金额" prop="outage_rate" />
-              <el-table-column label="销售订单数" prop="outage_rate" />
-              <el-table-column label="占比" prop="outage_rate" />
+              <el-table-column
+                label="款式编码"
+                prop="customer_name"
+                width="100"
+              />
+              <el-table-column label="销售件数" prop="num">
+                <template #default="{ row }">
+                  <p>总销售件数 {{ row.num }}</p>
+                  <p>聚水潭销售件数 {{ row.num - 10 }}</p>
+                  <p>自主渠道销售件数 {{ 10 }}</p>
+                </template>
+              </el-table-column>
+              <el-table-column label="销售金额" prop="outage_rate">
+                <template #default="{ row }">
+                  <p>总销售金额 ￥{{ row.num }}</p>
+                  <p>聚水潭销售金额 ￥{{ row.num - 10 }}</p>
+                  <p>自主渠道销售金额 ￥{{ 10 }}</p>
+                </template>
+              </el-table-column>
+              <el-table-column label="销售订单数" prop="outage_rate">
+                <template #default="{ row }">
+                  <p>总销售订单数 {{ row.num }}</p>
+                  <p>聚水潭销售订单数 {{ row.num - 10 }}</p>
+                  <p>自主渠道销售订单数 {{ 10 }}</p>
+                </template>
+              </el-table-column>
+              <el-table-column label="占比" prop="outage_rate">
+                <template #default="{ row }">
+                  <p>总占比 {{ row.num }}%</p>
+                  <p>聚水潭占比 {{ row.num - 10 }}%</p>
+                  <p>自主渠道占比 {{ 10 }}%</p>
+                </template>
+              </el-table-column>
             </template>
           </QYList>
         </div>
@@ -324,7 +377,7 @@
             :list="goosList"
             :list-type="2"
             :state="listLoading"
-            style="height: 450px; overflow: auto"
+            style="height: 700px; overflow: auto"
           >
             <template #List>
               <el-table-column
@@ -350,11 +403,39 @@
                   </span>
                 </template>
               </el-table-column>
-              <el-table-column label="款式排名&款式编码" prop="customer_name" />
-              <el-table-column label="库存数" prop="num" />
-              <el-table-column label="库存占用数" prop="outage_rate" />
-              <el-table-column label="占比" prop="outage_rate" />
-              <el-table-column label="库存金额" prop="outage_rate" />
+              <el-table-column
+                label="款式编码"
+                prop="customer_name"
+                width="100"
+              />
+              <el-table-column label="库存数" prop="num">
+                <template #default="{ row }">
+                  <p>总库存数 {{ row.num }}</p>
+                  <p>聚水潭库存数 {{ row.num - 10 }}</p>
+                  <p>自主渠道库存数 {{ 10 }}</p>
+                </template>
+              </el-table-column>
+              <el-table-column label="库存占用数" prop="outage_rate">
+                <template #default="{ row }">
+                  <p>总库存占用数 {{ row.num }}</p>
+                  <p>聚水潭库库存占用数 {{ row.num - 10 }}</p>
+                  <p>自主渠道库存占用数 {{ 10 }}</p>
+                </template>
+              </el-table-column>
+              <el-table-column label="库存金额" prop="outage_rate">
+                <template #default="{ row }">
+                  <p>总库库存金额 ￥{{ row.num }}</p>
+                  <p>聚水潭库存金额 ￥{{ row.num - 10 }}</p>
+                  <p>自主渠库存金额 ￥{{ 10 }}</p>
+                </template>
+              </el-table-column>
+              <el-table-column label="占比" prop="outage_rate">
+                <template #default="{ row }">
+                  <p>总库占比 {{ row.num }}%</p>
+                  <p>聚水潭占比 {{ row.num - 10 }}%</p>
+                  <p>自主渠占比 {{ 10 }}%</p>
+                </template>
+              </el-table-column>
               <el-table-column label="上架日期" prop="outage_rate" />
             </template>
           </QYList>
@@ -384,42 +465,84 @@
         // 顶部数据
         cardList: [
           {
-            title: '销售金额',
+            title: '总销售金额',
             content: '1111111',
             type: 1,
             num: 20,
             checked: true,
           },
           {
-            title: '销售订单数',
+            title: '总销售件数',
             content: '1111111',
             type: 2,
             num: 20,
             checked: false,
           },
           {
-            title: '销售件数',
+            title: '总销售订单数',
             content: '1111111',
             type: 2,
             num: 20,
             checked: false,
           },
           {
-            title: '发货金额',
+            title: '总发货件数',
+            content: '1111111',
+            type: 2,
+            num: 20,
+            checked: false,
+          },
+          {
+            title: '总发货金额',
             content: '1111111',
             type: 1,
             num: 20,
             checked: false,
           },
           {
-            title: '发货件数',
+            title: '总退货件数',
             content: '1111111',
             type: 2,
             num: 20,
             checked: false,
           },
           {
-            title: '退款金额',
+            title: '总退货金额',
+            content: '1111111',
+            type: 1,
+            num: 20,
+            checked: false,
+          },
+          {
+            title: '铺货店铺数',
+            content: '1111111',
+            type: 1,
+            num: 20,
+            checked: false,
+          },
+          {
+            title: '商品款式总数',
+            content: '1111111',
+            type: 1,
+            num: 20,
+            checked: false,
+          },
+          {
+            title: '动销商品数',
+            content: '1111111',
+            type: 1,
+            num: 20,
+            checked: false,
+          },
+          {
+            title: '商品动销率',
+            content: '1111111',
+            type: 1,
+            num: 20,
+            checked: false,
+          },
+          {
+            title: '库存预警',
             content: '1111111',
             type: 1,
             num: 20,
@@ -464,26 +587,30 @@
           ],
         },
         // 渠道分析
+        channelBtnIndex: 0,
         channelBtnList: [
           {
             name: '销售金额',
             type: 1,
             checked: true,
+            value: 0,
           },
           {
             name: '销售订单数',
             type: 2,
             checked: false,
+            value: 0,
           },
           {
             name: '销售件数',
             type: 3,
             checked: false,
+            value: 0,
           },
         ],
         channelCardList: [
           {
-            title: '自营店铺',
+            title: '聚水潭云仓',
             content: '1111111',
             type: 1,
             num: 80,
@@ -491,7 +618,7 @@
             checked: true,
           },
           {
-            title: '分销渠道',
+            title: '自主渠道',
             content: '1111111',
             type: 1,
             num: 20,
@@ -560,6 +687,7 @@
             item.checked = false
           })
           this.channelBtnList[index].checked = true
+          this.channelBtnIndex = index
         } else if (type == 3) {
           this.channelCardList.forEach((item) => {
             item.checked = false

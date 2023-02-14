@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- 全局悬浮客服 -->
     <div v-if="!state" class="side">
       <div class="zixun">
         <img

@@ -53,6 +53,22 @@ export function editChangePassword(data) {
 
 // 下边是业务数据接口
 
+// 商品管理导出
+export function getGoodsExport(data) {
+  return request({
+    url: '/goods/export',
+    method: 'post',
+    data,
+  })
+}
+// 客户管理导出
+export function getCustomerExport(data) {
+  return request({
+    url: '/customer/export',
+    method: 'post',
+    data,
+  })
+}
 // 客户收款单导出
 export function getFinanceCustomerVoucherExport(data) {
   return request({
@@ -261,11 +277,18 @@ export function getWarehouseAnalysisGoodsRank(data) {
     data,
   })
 }
-
-// 客户分析 客户排行
+// 客户分析 客户排行导出
 export function getHotStyleAnalysis(data) {
   return request({
     url: '/information/hotStyleAnalysis',
+    method: 'post',
+    data,
+  })
+}
+// 客户分析 客户排行
+export function getHotStyleAnalysisExport(data) {
+  return request({
+    url: '/information/hotStyleAnalysisExport',
     method: 'post',
     data,
   })

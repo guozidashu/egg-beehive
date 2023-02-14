@@ -6,22 +6,6 @@
           <template #header>
             <vab-icon icon="line-chart-line" />
             {{ item.title }}
-            <!-- <el-tag
-              v-if="item.type === 1"
-              class="card-header-tag"
-              style="float: right"
-              type="danger"
-            >
-              今日
-            </el-tag>
-            <el-tag
-              v-else
-              class="card-header-tag"
-              style="float: right"
-              type="success"
-            >
-              今日
-            </el-tag> -->
           </template>
           <div>
             <p
@@ -31,47 +15,61 @@
                 color: rgba(0, 0, 0, 0.85);
               "
             >
-              <span v-if="item.type == 1">{{ item.num }}</span>
-              <span v-if="item.type == 2">￥{{ item.num | moneyFormat }}</span>
+              <span>{{ item.num }}</span>
             </p>
-            <!-- <p>
-              较昨日
-              <span v-if="item.type === 1" style="color: #f5222d">
-                {{ item.pay }}
+            <p v-if="item.type == 1">
+              较上期
+              <span
+                v-if="item.oldNum == 0 || item.num - item.oldNum >= 0"
+                style="color: #f5222d"
+              >
+                {{ item.oldNum }} &nbsp;
               </span>
-              <span v-else style="color: #39c15b">{{ item.pay }}</span>
-              <span v-if="item.type === 1">较昨日增长：</span>
-              <span v-else>较昨日减少：</span>
-              <i v-if="item.type === 1" style="font-size: 12px; color: #f5222d">
+              <span v-else style="color: #39c15b">{{ item.oldNum }}</span>
+              <span v-if="item.oldNum == 0 || item.num - item.oldNum >= 0">
+                增长：
+              </span>
+              <span v-else>减少：</span>
+              <span v-if="item.oldNum == 0" style="color: #f5222d">100%</span>
+              <span v-else-if="item.num == 0" style="color: #39c15b">0%</span>
+              <span
+                v-else-if="item.num - item.oldNum >= 0"
+                style="color: #f5222d"
+              >
                 {{ item.number }}%
+              </span>
+              <span v-else style="color: #39c15b">{{ item.number }}%</span>
+              <i
+                v-if="item.oldNum == 0 || item.num - item.oldNum >= 0"
+                style="font-size: 12px; color: #f5222d"
+              >
                 <vab-icon icon="arrow-drop-up-fill" />
               </i>
               <i v-else style="font-size: 12px; color: #39c15b">
-                {{ item.number }}%
                 <vab-icon icon="arrow-drop-down-fill" />
               </i>
-            </p> -->
-          </div>
-          <div class="bottom">
-            <span>
-              <!-- 本月销售额 -->
-              <!-- <el-tag
-                v-if="item.type === 1"
-                class="card-footer-tag"
-                style="float: right"
-                type="danger"
-              >
-                {{ item.money }}
-              </el-tag>
-              <el-tag
-                v-else
-                class="card-footer-tag"
-                style="float: right"
-                type="success"
-              >
-                {{ item.money }}
-              </el-tag> -->
-            </span>
+            </p>
+            <p v-if="item.type == 2">
+              动销客户占比&nbsp;
+              <span style="color: #f5222d">{{ item.number }}</span>
+            </p>
+            <p v-if="item.type == 3">
+              欠款总金额&nbsp;
+              <span style="color: #f5222d">
+                ￥ {{ item.money | moneyFormat }}
+              </span>
+              欠款客户占比 &nbsp;
+              <span style="color: #f5222d">{{ item.number }}</span>
+            </p>
+            <p v-if="item.type == 4">
+              回款总金额&nbsp;
+              <span style="color: #f5222d">
+                ￥{{ item.money | moneyFormat }}
+              </span>
+              回款客户占比 &nbsp;
+              <span style="color: #f5222d">{{ item.number }}</span>
+            </p>
+            <p>总客户 &nbsp; {{ item.allNum }}</p>
           </div>
         </el-card>
       </el-col>

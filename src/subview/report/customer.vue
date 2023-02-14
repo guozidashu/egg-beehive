@@ -193,6 +193,9 @@
               >
                 重置
               </el-button>
+              <el-button size="small" type="primary" @click="handleDerive()">
+                导出
+              </el-button>
             </el-form-item>
           </el-form-item>
         </el-form>
@@ -221,13 +224,6 @@
                 </span>
               </template>
             </el-table-column>
-            <!-- "cost_price": "1136.00", //商成成本价
-				"gross_profit": "408.80",//毛利润
-				
-				"arrears_type": 0,// 0 开单扣款 1 发货扣款
-				"voucher_amount": 110,//客户回款
-				"last_order_time": "2022-12-23 16:53:28",//拿货时间
-				"last_order_day": 7//拿货天数 -->
             <el-table-column
               label="客户名称"
               prop="customer_name"
@@ -344,6 +340,7 @@
     getCustomerArea,
     getCustomerLevel,
     getHotStyleAnalysis,
+    getHotStyleAnalysisExport,
   } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   import mapjson from '@/assets/assets_josn/mapjson'
@@ -393,43 +390,38 @@
         selectList: [],
         textTagList: [
           {
-            title: '全部客户',
+            title: '新增客户数',
             content: '累计创建的客户数据，不受选定时间控制',
-            number: 0,
-            num: 0,
+            num: 10,
+            oldNum: 5,
+            number: '10',
             type: 1,
-            typeSta: false,
-            name: 'all_customer',
-            numType: 2,
+            allNum: 180,
           },
           {
-            title: '新增客户数',
-            number: 0,
-            num: 0,
-            type: 1,
-            typeSta: false,
-            name: 'add_customer',
-            numType: 2,
+            title: '动销客户数',
+            allNum: 180,
+            num: 47,
+            number: '27',
+            type: 2,
             content: '在选定条件下，新创建的客户数量',
           },
           {
-            title: '下单客户数',
-            number: 0,
-            num: 0,
-            type: 1,
-            typeSta: false,
-            name: 'sale_customer',
-            numType: 2,
+            title: '欠款客户',
+            num: 20,
+            money: '20000',
+            number: '27',
+            allNum: 180,
+            type: 3,
             content: '在选定条件下，成功提交订单的客户的数量',
           },
           {
-            title: '欠款客户',
-            number: 0,
-            num: 0,
-            type: 1,
-            typeSta: false,
-            name: 'sale_arrears',
-            numType: 2,
+            title: '回款客户',
+            num: 20,
+            money: '20000',
+            number: '27',
+            allNum: 180,
+            type: 4,
             content: '在选定条件下，期末余额有欠款的客户数量合计',
           },
         ],
@@ -564,6 +556,16 @@
       this.getTableList()
     },
     methods: {
+      async handleDerive() {
+        const { code, data } = await getHotStyleAnalysisExport(this.goodsForm1)
+        if (code == 200) {
+          window.open(data.url)
+          this.$message.success('导出成功')
+          this.fetchData()
+        } else {
+          this.$message.error('导出失败')
+        }
+      },
       handleDetail(row) {
         this.$router.push({
           path: '/customer/customerManage',
@@ -596,18 +598,25 @@
       },
       async fetchData() {
         const { data } = await getInformationCustomerList(this.goodsForm)
-        this.textTagList.forEach((item) => {
-          for (let i in data) {
-            if (item.name == i) {
-              if (data[i] == null) {
-                data[i] = 0
-                item.num = data[i]
-              } else {
-                item.num = data[i]
-              }
-            }
-          }
-        })
+        this.textTagList[0].num = data.add_customer
+        this.textTagList[0].allNum = data.all_customer
+        this.textTagList[0].oldNum = data.previous_period
+        this.textTagList[0].number =
+          (
+            (data.add_customer - data.previous_period) /
+            data.previous_period
+          ).toFixed(2) * 100
+        this.textTagList[1].num = data.sale_customer
+        this.textTagList[1].number = data.sale_customer_proportion
+        this.textTagList[1].allNum = data.all_customer
+        this.textTagList[2].num = data.sale_arrears
+        this.textTagList[2].number = data.arrears_customers_proportion
+        this.textTagList[2].money = data.sale_arrears_amount
+        this.textTagList[2].allNum = data.all_customer
+        this.textTagList[3].num = data.return_arrears
+        this.textTagList[3].number = data.return_customers_proportion
+        this.textTagList[3].money = data.return_arrears_amount
+        this.textTagList[3].allNum = data.all_customer
         this.branchList1.forEach((item) => {
           for (let i in data) {
             if (item.title == i) {
@@ -671,7 +680,7 @@
         this.goosList = data.list.data
         this.listLoading = false
       },
-      // 导出
+
       handleDownload() {
         import('@/utils/excel').then((excel) => {
           const tHeader = ['名称', '数量', '较昨日数量']

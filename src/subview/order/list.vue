@@ -374,7 +374,7 @@
         await VabPrint(this.$refs[val], { noPrintParent: true })
         await this.openSideBar()
       },
-      // 导出
+
       handleSelectionChange(val) {
         this.exclList = val
       },

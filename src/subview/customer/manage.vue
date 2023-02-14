@@ -133,6 +133,9 @@
           >
             添加客户
           </el-button>
+          <el-button size="small" type="primary" @click="handleDerive()">
+            批量导出
+          </el-button>
           <!-- <el-button
             
             size="small"
@@ -429,6 +432,7 @@
     getCustomerList,
     getCustomerEarnestList,
     addCustomerEarnest,
+    getCustomerExport,
   } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
@@ -568,6 +572,15 @@
       this.selectData()
     },
     methods: {
+      async handleDerive() {
+        const { code, data } = await getCustomerExport(this.form)
+        if (code == 200) {
+          window.open(data.url)
+          this.$message.success('导出成功')
+        } else {
+          this.$message.error('导出失败')
+        }
+      },
       delImg(index) {
         this.DepositEditForm.imgList.splice(index, 1)
       },
@@ -638,7 +651,6 @@
       handleCloseEdit1() {
         this.dialogVisibleEdit = false
       },
-      // 新增优化圈
       async addCoupons() {
         this.$refs['edit'].showEdit()
       },
@@ -679,7 +691,6 @@
         this.total = data.total
         this.listLoading = false
       },
-      // 下拉框数据请求
       async selectData() {
         const { data } = await getCommonAllList({
           type: 'customer_grade,customer_type,customer_source,customer_tag',
@@ -717,7 +728,7 @@
         }
         this.drawer = true
       },
-      // 导出
+
       handleSelectionChange(val) {
         this.exclList = val
       },
