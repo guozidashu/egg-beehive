@@ -926,6 +926,15 @@ export const asyncRoutes = [
         },
       },
       {
+        path: 'jstStore',
+        name: 'JstStore',
+        component: () => import('@/subview/setting/jststore'),
+        meta: {
+          title: 'JST店铺',
+          icon: 'chat-settings-line',
+        },
+      },
+      {
         path: 'mall',
         name: 'Mall',
         meta: {

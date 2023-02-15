@@ -202,190 +202,6 @@
           </div>
         </div>
       </el-card>
-      <!-- <el-card
-        class="card-ra"
-        shadow="never"
-        style="width: 50%; margin-right: 20px"
-      >
-        <div slot="header">
-          <span>公司信息</span>
-        </div>
-        <div>111</div>
-        <p style="padding-left: 20px">公司名：{{ inof.name1 }}</p>
-        <p style="padding-left: 20px">会员类型：{{ inof.type1 }}</p>
-        <p style="padding-left: 20px">绑定手机：{{ inof.phone1 }}</p>
-        <p style="padding-left: 20px">绑定邮箱：{{ inof.email }}</p>
-        <el-divider />
-        <div>111</div>
-        <el-form
-          ref="form"
-          label-width="120px"
-          :model="inof"
-          style="width: 100%; min-height: 500px; padding-left: 20px"
-        >
-          <div v-if="!state">
-            <el-form-item label="商户名称：" style="height: 33px">
-              {{ inof.name }}
-              <el-button
-                v-has-permi="['btn:Account:edit']"
-                circle
-                icon="el-icon-edit"
-                style="float: right"
-                type="primary"
-                @click="editForm"
-              />
-            </el-form-item>
-            <el-form-item label="商户联系方式：" style="height: 33px">
-              {{ inof.tel }}
-            </el-form-item>
-            <el-form-item label="商户地址：" style="height: 33px">
-              {{ inof.address }}
-            </el-form-item>
-            <el-form-item label="邮箱：" style="height: 33px">
-              {{ inof.email }}
-            </el-form-item>
-            <el-form-item label="税号：" style="height: 33px">
-              {{ inof.invoice }}
-            </el-form-item>
-            <el-form-item label="开户行：" style="height: 33px">
-              {{ inof.bank }}
-            </el-form-item>
-            <el-form-item label="银行账户：" style="height: 33px">
-              {{ inof.bank_card }}
-            </el-form-item>
-            <el-form-item label="银行开户名：" style="height: 33px">
-              {{ inof.bank_name }}
-            </el-form-item>
-          </div>
-          <div v-else style="width: 100%">
-            <el-form-item label="商户名称：">
-              <el-input v-model="inof.name" style="width: 70%" />
-              <el-button
-                v-has-permi="['btn:Account:edit']"
-                circle
-                icon="el-icon-edit"
-                style="float: right"
-                type="primary"
-                @click="editForm"
-              />
-            </el-form-item>
-            <el-form-item label="商户联系方式：">
-              <el-input v-model="inof.tel" style="width: 70%" />
-            </el-form-item>
-            <el-form-item label="商户地址：">
-              <el-input v-model="inof.address" style="width: 70%" />
-            </el-form-item>
-            <el-form-item label="邮箱：">
-              <el-input v-model="inof.email" style="width: 70%" />
-            </el-form-item>
-            <el-form-item label="税号：">
-              <el-input v-model="inof.invoice" style="width: 70%" />
-            </el-form-item>
-            <el-form-item label="开户行：">
-              <el-input v-model="inof.bank" style="width: 70%" />
-            </el-form-item>
-            <el-form-item label="银行账户：">
-              <el-input v-model="inof.bank_card" style="width: 70%" />
-            </el-form-item>
-            <el-form-item label="银行开户名：">
-              <el-input v-model="inof.bank_name" style="width: 70%" />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="subSave">保存</el-button>
-            </el-form-item>
-          </div>
-        </el-form>
-      </el-card>
-      <el-card class="card-ra" shadow="never" style="width: 50%">
-        <div slot="header">
-          <span>服务信息</span>
-        </div>
-        <el-form
-          ref="form"
-          label-width="20px"
-          :model="inof"
-          style="width: 100%; padding-left: 20px"
-        >
-        <div>111</div>
-          <el-form-item v-for="(item, index) in goodsList" :key="index">
-            <el-checkbox v-model="item.checked" disabled>
-              <span style="color: #606266">{{ item.name }}</span>
-              <span v-if="item.checked">
-                <span style="color: #606266">
-                  服务到期时间： {{ item.time }}
-                </span>
-                <el-dropdown>
-                  <el-badge class="item" value="促销">
-                    <el-button type="primary">去续费</el-button>
-                  </el-badge>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item
-                      v-for="(item1, index1) in item.list"
-                      :key="index1"
-                    >
-                      {{ item1 }}
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </span>
-              <el-button v-else type="primary">购买</el-button>
-            </el-checkbox>
-          </el-form-item>
-          <div>111</div>
-          <div style="margin: 20px 0">
-            <el-checkbox v-model="erp_openChecked" disabled>
-              <span style="color: #606266">ERP权限</span>
-              <span>
-                <span style="margin-right: 10px; color: #606266">
-                  服务开通时间： {{ inof.erp_starttime | formatTime }}
-                </span>
-                <span style="margin-right: 10px; color: #606266">
-                  服务到期时间： {{ inof.erp_starttime | formatTime }}
-                </span>
-                <span style="color: #606266">
-                  可使用账号数量： {{ inof.erp_num }}
-                </span>
-              </span>
-            </el-checkbox>
-          </div>
-          <div style="margin: 20px 0">
-            <el-checkbox v-model="design_openChecked" disabled>
-              <span style="color: #606266">研发模块</span>
-              <span>
-                <span style="margin-right: 10px; color: #606266">
-                  服务开通时间： {{ inof.design_starttime | formatTime }}
-                </span>
-                <span style="margin-right: 10px; color: #606266">
-                  服务到期时间： {{ inof.design_endtime | formatTime }}
-                </span>
-                <span style="color: #606266">
-                  研发允许账号数量： {{ inof.design_num }}
-                </span>
-              </span>
-            </el-checkbox>
-          </div>
-          <div style="margin: 20px 0">
-            <el-checkbox v-model="platform_openChecked" disabled>
-              <span style="color: #606266">中台服务</span>
-              <span>
-                <span style="margin-right: 10px; color: #606266">
-                  服务开通时间： {{ inof.platform_starttime | formatTime }}
-                </span>
-                <span style="margin-right: 10px; color: #606266">
-                  服务到期时间： {{ inof.platform_endtime | formatTime }}
-                </span>
-                <span style="color: #606266">
-                  中台允许最大账号数量： {{ inof.platform_num }}
-                </span>
-              </span>
-            </el-checkbox>
-          </div>
-        </el-form>
-        <div>111</div>
-        <el-divider />
-        <AccountProgress :list="progressList" />
-        <div>111</div>
-      </el-card> -->
     </div>
 
     <div style="display: flex; justify-content: space-between">
@@ -395,12 +211,6 @@
       >
         <div slot="header">
           <span style="font-size: 16px; font-weight: 600">版本更新记录</span>
-          <!-- <el-select v-model="selevt" style="float: right; margin-top: -5px">
-            <el-option label="ERP" :value="1" />
-            <el-option label="商城" :value="2" />
-            <el-option label="中台" :value="3" />
-            <el-option label="生产" :value="4" />
-          </el-select> -->
         </div>
         <div style="width: 100%; max-height: calc(35vh); overflow: scroll">
           <el-timeline>
@@ -463,28 +273,6 @@
             设计：蒹葭、莹宝 70、啵一口小奶勋、Sɪʟᴇɴᴛ . 测试：夏天是草原
           </p>
         </div>
-        <!-- <el-card
-          v-for="(item, index) in serviceList"
-          :key="index"
-          :body-style="{ padding: '10px' }"
-          shadow="hover"
-          style="border-radius: 6px"
-        >
-          <div style="display: flex">
-            <img class="customer-img" :src="avatar" />
-            <div>
-              <p>{{ item.name }}</p>
-              <p>{{ item.remark }}</p>
-              <p>
-                Tel：15236804776 微信
-                <el-tooltip placement="top">
-                  <img slot="content" :src="avatar" style="margin: 10px" />
-                  <span style="color: #1890ff">扫码</span>
-                </el-tooltip>
-              </p>
-            </div>
-          </div>
-        </el-card> -->
       </el-card>
     </div>
     <el-dialog
@@ -567,84 +355,37 @@
         platform_openChecked: true,
         state: false,
         serviceList: [],
-        // goodsList: [
-        //   {
-        //     name: 'ERP开单系统：',
-        //     time: '2023年10月26号',
-        //     checked: true,
-        //     list: ['买一年送三个月', '买两年送一年'],
-        //   },
-        //   {
-        //     name: '设计师打版系统：',
-        //     time: '2023年10月26号',
-        //     checked: true,
-        //     list: ['买一年送三个月', '买两年送一年'],
-        //   },
-        //   {
-        //     name: '生产成本控制系统：',
-        //     time: '2023年10月26号',
-        //     checked: true,
-        //     list: ['买一年送三个月', '买两年送一年'],
-        //   },
-        //   {
-        //     name: '研发进度中台系统：',
-        //     time: '2023年10月26号',
-        //     checked: false,
-        //     list: ['买一年送三个月', '买两年送一年'],
-        //   },
-        //   {
-        //     name: '数据中台（标准版）：',
-        //     time: '2023年10月26号',
-        //     checked: false,
-        //     list: ['买一年送三个月', '买两年送一年'],
-        //   },
-        //   {
-        //     name: '数据中台（企业版）：',
-        //     time: '2023年10月26号',
-        //     checked: false,
-        //     list: ['买一年送三个月', '买两年送一年'],
-        //   },
-        // ],
         selevt: 1,
-        // progressList: [
-        //   {
-        //     name: 'ERP',
-        //     right: '80%',
-        //     error: '20%',
-        //     Number: 20,
-        //     num: 10,
-        //   },
-        //   {
-        //     name: 'PCM',
-        //     right: '60%',
-        //     error: '40%',
-        //     Number: 20,
-        //     num: 10,
-        //   },
-        //   {
-        //     name: 'PDC',
-        //     right: '50%',
-        //     error: '50%',
-        //     Number: 20,
-        //     num: 10,
-        //   },
-        //   {
-        //     name: 'SCRM',
-        //     right: '30%',
-        //     error: '70%',
-        //     Number: 20,
-        //     num: 10,
-        //   },
-        //   {
-        //     name: 'SCM',
-        //     right: '80%',
-        //     error: '20%',
-        //     num: 10,
-        //     Number: 20,
-        //   },
-        // ],
         inof: {},
         activities: [
+          {
+            timestamp: '2023-02-11 20:39:16',
+            timestamp1: '版本：V2.0.7',
+            content: '【新增】[数据中台] 增加销售目标看板',
+            contentList: [
+              '【新增】[数据中台] 全渠道数据大屏实时数据分析功能',
+              '【新增】[数据中台] 聚水潭占用库存，聚水潭现货库存',
+              '【新增】[数据中台] 聚水潭开放接口服务商应用授权方式',
+              '【新增】[数据中台] 增加吊牌/条码打印模块，商品管理增加SKU条形码',
+              '【新增】[数据中台] 商品管理 | 客户管理 | 客户销售排行，增加EXCEL导出功能',
+              '【新增】[数据中台] 客户提醒补货申请订单统计',
+              '【新增】[ERP开单] 聚水潭云仓和自主渠道智能分仓、相互调拨功能',
+              '【新增】[ERP开单] 商品入仓的库存可直接入聚水潭云仓，且自动同步到聚水潭',
+              '【新增】[ERP开单] 聚水潭发货后返回ERP&数据中台物流信息、快递信息',
+              '【新增】[订货商城] 商品预售功能，营造紧迫抢货的氛围细节优化',
+              '【新增】[SCRM] 企微AI机器人，ChatGPT营销功能',
+              '【新增】[SCRM] 视频号直播裂变模块上线',
+              '【新增】[SCRM] 引流外链增加跳转直播间模式',
+              '【新增】[SCRM] 营销自动化群SOP上线',
+              '【优化】[数据中台] 客户分析，库存统计报表细节修化',
+              '【优化】[订货商城] 聚水潭发货返回发货单物流信息、快递信息',
+              '【优化】[SCRM] 转盘类应用概率优化',
+              '【修复】[数据中台] 商城首页装修模板图片预览自适应问题',
+              '【修复】[SCRM] 群发宝分组超1万发送bug',
+              '【修复】[SCRM] 任务宝营销推广小尾巴发送文字bug',
+              '【其它】更多细节优化~~',
+            ],
+          },
           {
             timestamp: '2023-01-13 08:29:13 ',
             timestamp1: '版本：V2.0.6',

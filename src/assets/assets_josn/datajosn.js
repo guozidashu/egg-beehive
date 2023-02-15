@@ -102,6 +102,33 @@ export default {
         }
       }
     },
+    // 获取聚水潭更新事件 格式为 每天的 00:00:00
+    getJSTUpdateTime() {
+      let date = new Date()
+      let year = date.getFullYear()
+      let month = date.getMonth() + 1
+      let day = date.getDate()
+      let hour = date.getHours()
+      let minutes = date.getMinutes()
+      let seconds = date.getSeconds()
+
+      if (month >= 1 && month <= 9) {
+        month = '0' + month
+      }
+      if (day >= 0 && day <= 9) {
+        day = '0' + day
+      }
+      if (hour >= 0 && hour <= 9) {
+        hour = '0' + hour
+      }
+      if (minutes >= 0 && minutes <= 9) {
+        minutes = '0' + minutes
+      }
+      if (seconds >= 0 && seconds <= 9) {
+        seconds = '0' + seconds
+      }
+      return year + '-' + month + '-' + day + ' ' + '00:30:00'
+    },
     // 获取当前时间，返年月日时分秒
     getNowTime() {
       var date = new Date()
@@ -179,7 +206,7 @@ export default {
     },
     // 获取最近一周的时间
     getWeenTime() {
-      return this.getPastTime(7)
+      return this.getPastTime(6)
     },
     // 获取时间区间返回格式 [2022-12-12 15:15:15,2022-12-12 15:15:15] 传入天数
     getPastTime(day, n = true) {
