@@ -8,7 +8,10 @@
         <div>
           <el-avatar :src="avatar" />
           <span style="position: relative; top: -5px; left: 10px">
-            您好， {{ username }} &nbsp;&nbsp;授权编码：UID54646852111WX
+            您好，
+            {{ username }}
+            &nbsp;&nbsp;授权编码：UID54646852111WX &nbsp;
+            服务商ID：UID54646852111
           </span>
         </div>
         <div style="padding-top: 10px; margin-right: 40px">
@@ -270,8 +273,9 @@
             Pay、以爱为半径、斌、武香君、很复杂、聆听、吖珊、不点@%、娜娜、归来仍是少年
           </p>
           <p style="font-size: 12px">
-            设计：蒹葭、莹宝 70、啵一口小奶勋、Sɪʟᴇɴᴛ . 测试：夏天是草原
+            设计：蒹葭、莹宝 70、啵一口小奶勋、Sɪʟᴇɴᴛ
           </p>
+          <p style="font-size: 12px">测试：夏天是草原</p>
         </div>
       </el-card>
     </div>
@@ -361,9 +365,8 @@
           {
             timestamp: '2023-02-11 20:39:16',
             timestamp1: '版本：V2.0.7',
-            content: '【新增】[数据中台] 增加销售目标看板',
+            content: '【新增】[数据中台] 全渠道数据大屏实时数据分析功能',
             contentList: [
-              '【新增】[数据中台] 全渠道数据大屏实时数据分析功能',
               '【新增】[数据中台] 聚水潭占用库存，聚水潭现货库存',
               '【新增】[数据中台] 聚水潭开放接口服务商应用授权方式',
               '【新增】[数据中台] 增加吊牌/条码打印模块，商品管理增加SKU条形码',

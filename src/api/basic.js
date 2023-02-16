@@ -1,45 +1,6 @@
 import request from '@/utils/request'
 
-// 没有用到的接口
-export function editPurchaseShipment(data) {
-  return request({
-    url: '/supplier/purchaseShipment',
-    method: 'post',
-    data,
-  })
-}
-export function editCategorySonStatus(data) {
-  return request({
-    url: '/goods/categorySonStatus',
-    method: 'post',
-    data,
-  })
-}
-export function getOrderSourceAssay(data) {
-  return request({
-    url: '/information/orderSourceAssay',
-    method: 'post',
-    data,
-  })
-}
-export function getInformationOrderSaleRank(data) {
-  return request({
-    url: '/information/orderSaleRank',
-    method: 'post',
-    data,
-  })
-}
-
-// 模板新增 跳转 商品树形分类
-export function getGoodsCategoryTree(data) {
-  return request({
-    url: '/goods/goodsCategoryTree',
-    method: 'post',
-    data,
-  })
-}
-
-// 上边全是基础数据接口
+// 全局基础数据接口
 //获取仓库
 export function getWarehouseList(data) {
   return request({
@@ -65,6 +26,36 @@ export function getgetDesignerList(data) {
   })
 }
 // 下拉框数据获取
+//客户等级：customer_grade
+//客户分类/类型：customer_type，
+//客户来源：customer_source
+//客户标签： customer_tag  多个英文逗号分隔
+//供应商标签： supplier_tag  多个英文逗号分隔
+//商品标签： good_tag  多个英文逗号分隔
+//仓库类型 warehouse_type （type:1样衣 2成品 3面料 4辅料），
+//物料分类 material_category
+//供应商分类 supplier_type
+//供应商等级 supplier_grade
+//品牌分类 brand
+//年份 year
+//季节 season
+//波段 band
+//款式类别 category
+//父级款式类别 parent_category
+//年龄段 agegroup
+//颜色 color
+//尺码 size
+//收支类别 finance_category
+//结算账户 corporate_account
+//岗位 role
+//部门 department
+//工艺类型 craft_type
+//工序类型 produce_type
+//专属客服 customer_service
+//供应商 supplier
+//单位 unit
+//模板组件 div_assembly template_id必传
+//模板分类 template_class
 export function getCommonAllList(data) {
   return request({
     url: '/common/getBasicInfo',
@@ -1436,153 +1427,8 @@ export function getBrandList(data) {
     data,
   })
 }
-// 物料管理
-export function getMaterialInfoList(data) {
-  return request({
-    url: '/archive/materialInfoList',
-    method: 'post',
-    data,
-  })
-}
-export function delMaterialDel(data) {
-  return request({
-    url: '/archive/materialDel',
-    method: 'post',
-    data,
-  })
-}
-export function addMaterialSave(data) {
-  return request({
-    url: '/archive/materialSave',
-    method: 'post',
-    data,
-  })
-}
-export function getMaterialList(data) {
-  return request({
-    url: '/archive/materialList',
-    method: 'post',
-    data,
-  })
-}
-export function getMaterialInfo(data) {
-  return request({
-    url: '/archive/materialInfo',
-    method: 'post',
-    data,
-  })
-}
-// 尺码管理
-export function delSizeDel(data) {
-  return request({
-    url: '/archive/sizeDel',
-    method: 'post',
-    data,
-  })
-}
-export function addSizeSave(data) {
-  return request({
-    url: '/archive/sizeSave',
-    method: 'post',
-    data,
-  })
-}
-export function getSizeList(data) {
-  return request({
-    url: '/archive/sizeList',
-    method: 'post',
-    data,
-  })
-}
-// 尺码组管理
-export function delSizeGroupDel(data) {
-  return request({
-    url: '/archive/sizeGroupDel',
-    method: 'post',
-    data,
-  })
-}
-export function addSizeGroupSave(data) {
-  return request({
-    url: '/archive/sizeGroupSave',
-    method: 'post',
-    data,
-  })
-}
-export function getSizeGroupList(data) {
-  return request({
-    url: '/archive/sizeGroupList',
-    method: 'post',
-    data,
-  })
-}
-// 颜色管理
-export function delColorDel(data) {
-  return request({
-    url: '/archive/colorDel',
-    method: 'post',
-    data,
-  })
-}
-export function addColorSave(data) {
-  return request({
-    url: '/archive/colorSave',
-    method: 'post',
-    data,
-  })
-}
-export function getColorList(data) {
-  return request({
-    url: '/archive/colorList',
-    method: 'post',
-    data,
-  })
-}
-// 颜色组管理
-export function delColorGroupDel(data) {
-  return request({
-    url: '/archive/colorGroupDel',
-    method: 'post',
-    data,
-  })
-}
-export function addColorGroupSave(data) {
-  return request({
-    url: '/archive/colorGroupSave',
-    method: 'post',
-    data,
-  })
-}
-export function getColorGroupList(data) {
-  return request({
-    url: '/archive/colorGroupList',
-    method: 'post',
-    data,
-  })
-}
-// 季节管理
-export function delSeasonDel(data) {
-  return request({
-    url: '/archive/seasonDel',
-    method: 'post',
-    data,
-  })
-}
-export function addSeasonSave(data) {
-  return request({
-    url: '/archive/seasonSave',
-    method: 'post',
-    data,
-  })
-}
-export function getSeasonList(data) {
-  return request({
-    url: '/archive/seasonList',
-    method: 'post',
-    data,
-  })
-}
-// 年份管理
+// 档案-年份管理
+// 年份管理 -删除
 export function delYearDel(data) {
   return request({
     url: '/archive/yearDel',
@@ -1590,6 +1436,7 @@ export function delYearDel(data) {
     data,
   })
 }
+// 年份管理 -新增编辑
 export function addYearSave(data) {
   return request({
     url: '/archive/yearSave',
@@ -1597,6 +1444,7 @@ export function addYearSave(data) {
     data,
   })
 }
+// 年份管理 -列表
 export function getYearList(data) {
   return request({
     url: '/archive/yearList',
@@ -1604,31 +1452,133 @@ export function getYearList(data) {
     data,
   })
 }
-
-//库位管理
-export function delDepotPositionSave(data) {
+// 档案-季节管理
+// 季节管理 - 删除
+export function delSeasonDel(data) {
   return request({
-    url: '/archive/depotPositionDel',
+    url: '/archive/seasonDel',
     method: 'post',
     data,
   })
 }
-export function addDepotPositionSave(data) {
+// 季节管理 - 新增编辑
+export function addSeasonSave(data) {
   return request({
-    url: '/archive/depotPositionSave',
+    url: '/archive/seasonSave',
     method: 'post',
     data,
   })
 }
-export function getDepotPositionSaveList(data) {
+// 季节管理 - 列表
+export function getSeasonList(data) {
   return request({
-    url: '/archive/depotPositionList',
+    url: '/archive/seasonList',
     method: 'post',
     data,
   })
 }
-// 仓库管理
-
+// 档案-颜色管理
+// 颜色管理 - 删除
+export function delColorDel(data) {
+  return request({
+    url: '/archive/colorDel',
+    method: 'post',
+    data,
+  })
+}
+// 颜色管理 - 新增编辑
+export function addColorSave(data) {
+  return request({
+    url: '/archive/colorSave',
+    method: 'post',
+    data,
+  })
+}
+// 颜色管理 - 列表
+export function getColorList(data) {
+  return request({
+    url: '/archive/colorList',
+    method: 'post',
+    data,
+  })
+}
+// 档案-颜色组管理
+// 颜色组管理 - 删除
+export function delColorGroupDel(data) {
+  return request({
+    url: '/archive/colorGroupDel',
+    method: 'post',
+    data,
+  })
+}
+// 颜色组管理 - 新增编辑
+export function addColorGroupSave(data) {
+  return request({
+    url: '/archive/colorGroupSave',
+    method: 'post',
+    data,
+  })
+}
+// 颜色组管理 - 列表
+export function getColorGroupList(data) {
+  return request({
+    url: '/archive/colorGroupList',
+    method: 'post',
+    data,
+  })
+}
+// 档案-尺码管理
+// 尺码管理 - 删除
+export function delSizeDel(data) {
+  return request({
+    url: '/archive/sizeDel',
+    method: 'post',
+    data,
+  })
+}
+// 尺码管理 - 新增编辑
+export function addSizeSave(data) {
+  return request({
+    url: '/archive/sizeSave',
+    method: 'post',
+    data,
+  })
+}
+// 尺码管理 - 列表
+export function getSizeList(data) {
+  return request({
+    url: '/archive/sizeList',
+    method: 'post',
+    data,
+  })
+}
+// 档案-尺码组管理
+// 尺码组管理 - 删除
+export function delSizeGroupDel(data) {
+  return request({
+    url: '/archive/sizeGroupDel',
+    method: 'post',
+    data,
+  })
+}
+// 尺码组管理 - 新增编辑
+export function addSizeGroupSave(data) {
+  return request({
+    url: '/archive/sizeGroupSave',
+    method: 'post',
+    data,
+  })
+}
+// 尺码组管理 - 列表
+export function getSizeGroupList(data) {
+  return request({
+    url: '/archive/sizeGroupList',
+    method: 'post',
+    data,
+  })
+}
+// 档案-仓库管理
+// 仓库管理 - 列表
 export function getArchive(data) {
   return request({
     url: '/archive/depotList',
@@ -1636,6 +1586,7 @@ export function getArchive(data) {
     data,
   })
 }
+// 仓库管理 - 删除
 export function delArchive(data) {
   return request({
     url: '/archive/depotDel',
@@ -1643,6 +1594,7 @@ export function delArchive(data) {
     data,
   })
 }
+// 仓库管理 - 新增编辑
 export function editArchive(data) {
   return request({
     url: '/archive/depotSave',
@@ -1650,20 +1602,176 @@ export function editArchive(data) {
     data,
   })
 }
-// 设置模块接口
-// 设置-聚水潭店铺
-// 同步聚水潭店铺
-export function jstShopSync(data) {
+// 档案-库位管理
+//库位管理 - 删除
+export function delDepotPositionSave(data) {
   return request({
-    url: '/setting/jstShopSync',
+    url: '/archive/depotPositionDel',
     method: 'post',
     data,
   })
 }
-// 获取聚水潭店铺
-export function getjstShopList(data) {
+//库位管理 - 新增编辑
+export function addDepotPositionSave(data) {
   return request({
-    url: '/setting/jstShopList',
+    url: '/archive/depotPositionSave',
+    method: 'post',
+    data,
+  })
+}
+//库位管理 - 列表
+export function getDepotPositionSaveList(data) {
+  return request({
+    url: '/archive/depotPositionList',
+    method: 'post',
+    data,
+  })
+}
+// 档案 - 工艺管理
+// 工艺管理 - 工艺列表
+export function getCraftTypeList(data) {
+  return request({
+    url: '/archive/craftTypeList',
+    method: 'post',
+    data,
+  })
+}
+// 工艺管理  - 编辑
+export function editCraftTypeSave(data) {
+  return request({
+    url: '/archive/craftTypeSave',
+    method: 'post',
+    data,
+  })
+}
+// 工艺管理 - 删除
+export function delCraftTypeDel(data) {
+  return request({
+    url: '/archive/craftTypeDel',
+    method: 'post',
+    data,
+  })
+}
+// 档案 - 工序管理
+// 工序管理 - 工序列表
+export function getProduceTypeList(data) {
+  return request({
+    url: '/archive/produceTypeList',
+    method: 'post',
+    data,
+  })
+}
+// 工序管理 - 编辑
+export function editProduceTypeSave(data) {
+  return request({
+    url: '/archive/produceTypeSave',
+    method: 'post',
+    data,
+  })
+}
+// 工序管理 - 删除
+export function delProduceTypeDel(data) {
+  return request({
+    url: '/archive/produceTypeDel',
+    method: 'post',
+    data,
+  })
+}
+// 档案 - 物料管理
+// 物料管理 - 详情tab
+export function getMaterialInfoList(data) {
+  return request({
+    url: '/archive/materialInfoList',
+    method: 'post',
+    data,
+  })
+}
+// 物料管理 - 删除
+export function delMaterialDel(data) {
+  return request({
+    url: '/archive/materialDel',
+    method: 'post',
+    data,
+  })
+}
+// 物料管理 - 新增编辑
+export function addMaterialSave(data) {
+  return request({
+    url: '/archive/materialSave',
+    method: 'post',
+    data,
+  })
+}
+// 物料管理 - 列表
+export function getMaterialList(data) {
+  return request({
+    url: '/archive/materialList',
+    method: 'post',
+    data,
+  })
+}
+// 物料管理 - 详情
+export function getMaterialInfo(data) {
+  return request({
+    url: '/archive/materialInfo',
+    method: 'post',
+    data,
+  })
+}
+// 档案 - 波段管理
+// 波段管理 - 列表
+export function getBandList(data) {
+  return request({
+    url: '/archive/bandList',
+    method: 'post',
+    data,
+  })
+}
+// 波段管理 - 新增编辑
+export function editBandSave(data) {
+  return request({
+    url: '/archive/bandSave',
+    method: 'post',
+    data,
+  })
+}
+// 波段管理 - 删除
+export function delBandDel(data) {
+  return request({
+    url: '/archive/bandDel',
+    method: 'post',
+    data,
+  })
+}
+// 档案 - 吊牌打印
+// 吊牌打印 打印吊牌码 - 获取商品sn
+export function getPrintSn(data) {
+  return request({
+    url: '/archive/printSn',
+    method: 'post',
+    data,
+  })
+}
+// 吊牌打印 打印吊牌码 - 获取商品sku
+export function getPrintList(data) {
+  return request({
+    url: '/archive/printList',
+    method: 'post',
+    data,
+  })
+}
+// 吊牌打印 打印吊牌码 - 获取商品条码编码
+export function getGoodBarcode(data) {
+  return request({
+    url: '/archive/getGoodBarcode',
+    method: 'post',
+    data,
+  })
+}
+// 吊牌打印 导入打印吊牌条码 - 导入吊牌打印 成品采购单
+export function getStockPrint(data) {
+  return request({
+    url: '/archive/stockPrint',
     method: 'post',
     data,
   })
@@ -1698,96 +1806,6 @@ export function editChangeIsShop(data) {
 export function editSourceMaterialSave(data) {
   return request({
     url: '/goods/sourceMaterialSave',
-    method: 'post',
-    data,
-  })
-}
-// 商城 - 商品分类
-// 商品分类 - 编辑
-export function editShopCateGoryEdit(data) {
-  return request({
-    url: '/goods/shopCateGoryEdit',
-    method: 'post',
-    data,
-  })
-}
-// 商品分类 - 批量隐藏和显示
-export function editBatchDisplayCateGory(data) {
-  return request({
-    url: '/goods/batchDisplayCateGory',
-    method: 'post',
-    data,
-  })
-}
-// 商品分类 - 树状返回
-export function getShopGoodsCategoryTree(data) {
-  return request({
-    url: '/goods/shopGoodsCategoryTree',
-    method: 'post',
-    data,
-  })
-}
-// 商城 - 商城配置
-// 商城配置 - 获取小程序配置信息
-export function getShopConfigWeChatAppletDetail(data) {
-  return request({
-    url: '/admin/shopConfig/WeChatAppletDetail',
-    method: 'post',
-    data,
-  })
-}
-// 商城配置 - 获取小程序支付配置信息
-export function getShopConfigWeChatPayDetail(data) {
-  return request({
-    url: '/admin/shopConfig/WeChatPayDetail',
-    method: 'post',
-    data,
-  })
-}
-// 商城配置 - 小程序配置信息保存
-export function editShopConfigWeChatApplet(data) {
-  return request({
-    url: '/admin/shopConfig/WeChatApplet',
-    method: 'post',
-    data,
-  })
-}
-// 商城配置 - 小程序支付配置信息保存
-export function editShopConfigWeChatPay(data) {
-  return request({
-    url: '/admin/shopConfig/WeChatPay',
-    method: 'post',
-    data,
-  })
-}
-// 商城配置 - 获取基础配置详情
-export function getBaseConfigDetail(data) {
-  return request({
-    url: '/admin/baseConfigDetail',
-    method: 'post',
-    data,
-  })
-}
-// 商城配置 - 获取注册协议详情
-export function getRegisterDealDetail(data) {
-  return request({
-    url: '/admin/registerDealDetail',
-    method: 'post',
-    data,
-  })
-}
-// 商城配置 - 基础配置详情保存
-export function editBaseConfigSave(data) {
-  return request({
-    url: '/admin/baseConfigSave',
-    method: 'post',
-    data,
-  })
-}
-// 商城配置 - 注册协议详情保存
-export function editRegisterDealSave(data) {
-  return request({
-    url: '/admin/registerDealSave',
     method: 'post',
     data,
   })
@@ -1841,29 +1859,74 @@ export function getGoodsGroupDetail(data) {
     data,
   })
 }
-// 模板组件配置
-export function getTemplateMenuDetail(data) {
+// 商城 - 商品分类
+// 商品分类 - 编辑
+export function editShopCateGoryEdit(data) {
   return request({
-    url: '/admin/templateMenuDetail',
+    url: '/goods/shopCateGoryEdit',
     method: 'post',
     data,
   })
 }
-export function getTemplateAssemblyInfo(data) {
+// 商品分类 - 批量隐藏和显示
+export function editBatchDisplayCateGory(data) {
   return request({
-    url: '/admin/templateAssemblyInfo',
+    url: '/goods/batchDisplayCateGory',
     method: 'post',
     data,
   })
 }
-export function editTemplateAssemblyLayout(data) {
+// 商品分类 - 树状返回
+export function getShopGoodsCategoryTree(data) {
   return request({
-    url: '/admin/templateAssemblyLayout',
+    url: '/goods/shopGoodsCategoryTree',
+    method: 'post',
+    data,
+  })
+}
+// 商城 - 商城配置
+// 商城配置 - 获取小程序配置信息
+export function getShopConfigWeChatAppletDetail(data) {
+  return request({
+    url: '/admin/shopConfig/WeChatAppletDetail',
+    method: 'post',
+    data,
+  })
+}
+// 商城-文章管理
+// 文章管理  - 列表
+export function getArticleList(data) {
+  return request({
+    url: '/archive/articleList',
+    method: 'post',
+    data,
+  })
+}
+// 文章管理  - 编辑
+export function editArticleSave(data) {
+  return request({
+    url: '/archive/articleSave',
+    method: 'post',
+    data,
+  })
+}
+// 文章管理  - 删除
+export function delArticleDel(data) {
+  return request({
+    url: '/archive/articleDel',
     method: 'post',
     data,
   })
 }
 // 商城 - 商城装修 - 页面设计
+// 模板组件  商品组组件模板 获取商品树形
+export function getGoodsCategoryTree(data) {
+  return request({
+    url: '/goods/goodsCategoryTree',
+    method: 'post',
+    data,
+  })
+}
 //模板复制
 export function getTemplateCopy(data) {
   return request({
@@ -1896,84 +1959,321 @@ export function addTemplateSave(data) {
     data,
   })
 }
-// 档案模块
-// 档案 - 工艺管理
-// 工艺管理 - 工艺列表
-export function getCraftTypeList(data) {
+// 商城 - 商城装修 - 模板设计页面
+// 模板设计页面
+// 获取模板跳转链接
+export function getTemplateMenuDetail(data) {
   return request({
-    url: '/archive/craftTypeList',
+    url: '/admin/templateMenuDetail',
     method: 'post',
     data,
   })
 }
-// 工艺管理  - 编辑
-export function editCraftTypeSave(data) {
+// 获取模板组件配置
+export function getTemplateAssemblyInfo(data) {
   return request({
-    url: '/archive/craftTypeSave',
+    url: '/admin/templateAssemblyInfo',
     method: 'post',
     data,
   })
 }
-// 工艺管理 - 删除
-export function delCraftTypeDel(data) {
+// 保存模板组件配置
+export function editTemplateAssemblyLayout(data) {
   return request({
-    url: '/archive/craftTypeDel',
+    url: '/admin/templateAssemblyLayout',
     method: 'post',
     data,
   })
 }
-// 档案 - 工序管理
-// 工序管理 - 工序列表
-export function getProduceTypeList(data) {
+// 商城-商城配置
+// 商城配置 - 获取小程序支付配置信息
+export function getShopConfigWeChatPayDetail(data) {
   return request({
-    url: '/archive/produceTypeList',
+    url: '/admin/shopConfig/WeChatPayDetail',
     method: 'post',
     data,
   })
 }
-// 工序管理 - 编辑
-export function editProduceTypeSave(data) {
+// 商城配置 - 小程序配置信息保存
+export function editShopConfigWeChatApplet(data) {
   return request({
-    url: '/archive/produceTypeSave',
+    url: '/admin/shopConfig/WeChatApplet',
     method: 'post',
     data,
   })
 }
-// 工序管理 - 删除
-export function delProduceTypeDel(data) {
+// 商城配置 - 小程序支付配置信息保存
+export function editShopConfigWeChatPay(data) {
   return request({
-    url: '/archive/produceTypeDel',
+    url: '/admin/shopConfig/WeChatPay',
     method: 'post',
     data,
   })
 }
-// 档案-文章管理
-// 文章管理  - 列表
-export function getArticleList(data) {
+// 商城配置 - 获取基础配置详情 商城装修主题配置详情获取
+export function getBaseConfigDetail(data) {
   return request({
-    url: '/archive/articleList',
+    url: '/admin/baseConfigDetail',
     method: 'post',
     data,
   })
 }
-// 文章管理  - 编辑
-export function editArticleSave(data) {
+// 商城配置 - 获取注册协议详情
+export function getRegisterDealDetail(data) {
   return request({
-    url: '/archive/articleSave',
+    url: '/admin/registerDealDetail',
     method: 'post',
     data,
   })
 }
-// 文章管理  - 删除
-export function delArticleDel(data) {
+// 商城配置 - 基础配置详情保存 商城装修主题配置保存
+export function editBaseConfigSave(data) {
   return request({
-    url: '/archive/articleDel',
+    url: '/admin/baseConfigSave',
+    method: 'post',
+    data,
+  })
+}
+// 商城配置 - 注册协议详情保存
+export function editRegisterDealSave(data) {
+  return request({
+    url: '/admin/registerDealSave',
     method: 'post',
     data,
   })
 }
 // 设置模块接口
-// 设置 - 部门管理
+// 设置 - 系统设置 -模块设置
+// 模块设置 - 企业微信模块编辑
+export function editWeComeConfig(data) {
+  return request({
+    url: '/setting/weComeConfig',
+    method: 'post',
+    data,
+  })
+}
+// 模块设置 - 企业微信模块详情
+export function getWeComeConfigInfo(data) {
+  return request({
+    url: '/setting/getWeComeConfigInfo',
+    method: 'post',
+    data,
+  })
+}
+// 模块设置- 研发模块保存
+export function editDesignConfig(data) {
+  return request({
+    url: '/setting/designConfig',
+    method: 'post',
+    data,
+  })
+}
+// 模块设置- 研发模块详情
+export function getDesignConfigInfo(data) {
+  return request({
+    url: '/setting/getDesignConfigInfo',
+    method: 'post',
+    data,
+  })
+}
+// 模块设置- 待开发模块编辑
+export function editAgentErpConfig(data) {
+  return request({
+    url: '/setting/agentErpConfig',
+    method: 'post',
+    data,
+  })
+}
+// 模块设置- 待开发模块详情
+export function getAgentErpInfo(data) {
+  return request({
+    url: '/setting/getAgentErpInfo',
+    method: 'post',
+    data,
+  })
+}
+// 模块设置- erp 模块编辑
+export function editErpConfig(data) {
+  return request({
+    url: '/setting/erpConfig',
+    method: 'post',
+    data,
+  })
+}
+// 模块设置- erp 模块详情
+export function getErpInfo(data) {
+  return request({
+    url: '/setting/getErpInfo',
+    method: 'post',
+    data,
+  })
+}
+// 设置 - 系统设置 -开放接口
+// 开放接口 - 获取聚水潭详情
+export function gitJuShuiTanInfo(data) {
+  return request({
+    url: '/setting/juShuiTanInfo',
+    method: 'post',
+    data,
+  })
+}
+// 开放接口 - 聚水潭保存
+export function editJuShuiTan(data) {
+  return request({
+    url: '/setting/juShuiTan',
+    method: 'post',
+    data,
+  })
+}
+// 开放接口 - 旺店通保存
+export function editWangDianTong(data) {
+  return request({
+    url: '/setting/wangDianTong',
+    method: 'post',
+    data,
+  })
+}
+// 开放接口 - 伯俊保存
+export function editBoJun(data) {
+  return request({
+    url: '/setting/boJun',
+    method: 'post',
+    data,
+  })
+}
+// 开放接口 - 百胜保存
+export function editBaiSheng(data) {
+  return request({
+    url: '/setting/baiSheng',
+    method: 'post',
+    data,
+  })
+}
+// 开放接口 - 紫日保存
+export function editZiRi(data) {
+  return request({
+    url: '/setting/ziRi',
+    method: 'post',
+    data,
+  })
+}
+// 设置 - 中台管理 - 角色管理
+// 角色管理 - 列表
+export function getRoleList(data) {
+  return request({
+    url: '/admin/roleList',
+    method: 'post',
+    data,
+  })
+}
+// 角色管理 - 新增编辑
+export function addRoleGroupSave(data) {
+  return request({
+    url: '/admin/roleGroupSave',
+    method: 'post',
+    data,
+  })
+}
+// 角色管理 - 权限详情列表
+export function getRoleInfo(data) {
+  return request({
+    url: '/admin/roleInfo',
+    method: 'post',
+    data,
+  })
+}
+// 角色管理 - 权限详情列表保存
+export function addRoleSave(data) {
+  return request({
+    url: '/admin/roleSave',
+    method: 'post',
+    data,
+  })
+}
+// 设置 - 中台管理 - 用户管理
+// 用户管理 - 详情
+export function getAdminInfo(data) {
+  return request({
+    url: '/admin/adminInfo',
+    method: 'post',
+    data,
+  })
+}
+// 用户管理 - 新增编辑
+export function addAdminSave(data) {
+  return request({
+    url: '/admin/adminSave',
+    method: 'post',
+    data,
+  })
+}
+// 用户管理 - 列表
+export function getAdminList(data) {
+  return request({
+    url: '/admin/adminList',
+    method: 'post',
+    data,
+  })
+}
+// 设置 - 中台管理 - 菜单管理
+// 菜单管理 -按钮保存
+export function editButtonSave(data) {
+  return request({
+    url: '/menu/buttonSave',
+    method: 'post',
+    data,
+  })
+}
+// 菜单管理 - 列表
+export function getMenuList(data) {
+  return request({
+    url: '/menu/menuList',
+    method: 'post',
+    data,
+  })
+}
+// 菜单管理 - 新增编辑
+export function editMenuSave(data) {
+  return request({
+    url: '/menu/menuSave',
+    method: 'post',
+    data,
+  })
+}
+// 菜单管理 - 删除
+export function delMenuDel(data) {
+  return request({
+    url: '/menu/menuDel',
+    method: 'post',
+    data,
+  })
+}
+// 设置 - 员工管理 - 员工管理
+// 员工管理 - 列表
+export function getEmployeeList(data) {
+  return request({
+    url: '/employee/employeeList',
+    method: 'post',
+    data,
+  })
+}
+// 员工管理 - 编辑
+export function editEmployeeSave(data) {
+  return request({
+    url: '/employee/employeeSave',
+    method: 'post',
+    data,
+  })
+}
+// 员工管理 - 同步
+export function delEmployeeSync(data) {
+  return request({
+    url: '/employee/employeeSync',
+    method: 'post',
+    data,
+  })
+}
+// 设置 - 员工管理 - 部门管理
 // 部门管理 - 权限保存
 export function editEmployeeRoleSave(data) {
   return request({
@@ -1998,152 +2298,66 @@ export function getEmployeeRoleList(data) {
     data,
   })
 }
-// 账户信息
-
-export function getAccountDetail(data) {
+// 设置 - 销售渠道
+// 销售渠道 - 微信公众号保存
+export function editWeChatOfficialAccounts(data) {
   return request({
-    url: '/admin/accountDetail',
+    url: '/admin/weChatOfficialAccounts',
     method: 'post',
     data,
   })
 }
-export function editAdminAccountSave(data) {
+// 销售渠道 - 微信小程序保存
+export function editWeChatApplet(data) {
   return request({
-    url: '/admin/accountSave',
+    url: '/admin/WeChatApplet',
     method: 'post',
     data,
   })
 }
-// 吊牌打印
-export function getPrintSn(data) {
+// 销售渠道 - 视频号带货 保存
+export function editMoveApp(data) {
   return request({
-    url: '/archive/printSn',
+    url: '/admin/moveApp',
     method: 'post',
     data,
   })
 }
-export function getPrintList(data) {
+// 销售渠道 - 头条 保存
+export function editTopLine(data) {
   return request({
-    url: '/archive/printList',
+    url: '/admin/topLine',
     method: 'post',
     data,
   })
 }
-export function getGoodBarcode(data) {
+// 销售渠道 - 支付宝 保存
+export function editAliPay(data) {
   return request({
-    url: '/archive/getGoodBarcode',
+    url: '/admin/aliPay',
     method: 'post',
     data,
   })
 }
-export function getStockPrint(data) {
+// 设置-聚水潭店铺
+// 同步聚水潭店铺
+export function jstShopSync(data) {
   return request({
-    url: '/archive/stockPrint',
+    url: '/setting/jstShopSync',
     method: 'post',
     data,
   })
 }
-// 财务分析
-
-export function getFinanceReportForms(data) {
+// 获取聚水潭店铺
+export function getjstShopList(data) {
   return request({
-    url: '/information/financeReportForms',
+    url: '/setting/jstShopList',
     method: 'post',
     data,
   })
 }
-export function getFinanceCostCount(data) {
-  return request({
-    url: '/information/financeCostCount',
-    method: 'post',
-    data,
-  })
-}
-export function getFinanceListd(data) {
-  return request({
-    url: '/information/financeList',
-    method: 'post',
-    data,
-  })
-}
-
-// 看板
-
-export function getBoardReportForms(data) {
-  return request({
-    url: '/homePage/boardReportForms',
-    method: 'post',
-    data,
-  })
-}
-export function getCustomerRanch(data) {
-  return request({
-    url: '/homePage/customerRanch',
-    method: 'post',
-    data,
-  })
-}
-export function getGoodsRanch(data) {
-  return request({
-    url: '/homePage/goodsRanch',
-    method: 'post',
-    data,
-  })
-}
-export function getShipmentWarning(data) {
-  return request({
-    url: '/homePage/shipmentWarning',
-    method: 'post',
-    data,
-  })
-}
-export function getCustomerSource(data) {
-  return request({
-    url: '/homePage/customerSource',
-    method: 'post',
-    data,
-  })
-}
-export function getHomePageBoard(data) {
-  return request({
-    url: '/homePage/board',
-    method: 'post',
-    data,
-  })
-}
-// 客户统计
-export function getCountList(data) {
-  return request({
-    url: '/customer/countList',
-    method: 'post',
-    data,
-  })
-}
-
-// 波段管理
-export function getBandList(data) {
-  return request({
-    url: '/archive/bandList',
-    method: 'post',
-    data,
-  })
-}
-export function editBandSave(data) {
-  return request({
-    url: '/archive/bandSave',
-    method: 'post',
-    data,
-  })
-}
-export function delBandDel(data) {
-  return request({
-    url: '/archive/bandDel',
-    method: 'post',
-    data,
-  })
-}
-
-// 门店列表
+//  设置-门店列表
+// 门店列表 - 列表
 export function getStoreList(data) {
   return request({
     url: '/setting/storeList',
@@ -2151,6 +2365,7 @@ export function getStoreList(data) {
     data,
   })
 }
+// 门店列表 - 新增编辑
 export function editStoreSave(data) {
   return request({
     url: '/setting/storeSave',
@@ -2158,6 +2373,7 @@ export function editStoreSave(data) {
     data,
   })
 }
+// 门店列表 - 状态修改
 export function editChangeStatus(data) {
   return request({
     url: '/setting/changeStatus',
@@ -2165,23 +2381,109 @@ export function editChangeStatus(data) {
     data,
   })
 }
+//  设置-操作日志
+// 操作日志 -列表
+export function getLogList(data) {
+  return request({
+    url: '/admin/LogList',
+    method: 'post',
+    data,
+  })
+}
 
-// 商城配置
-export function editShopConfig(data) {
-  return request({
-    url: '/setting/shopConfig',
-    method: 'post',
-    data,
-  })
-}
-export function getShopConfigInfo(data) {
-  return request({
-    url: '/setting/shopConfigInfo',
-    method: 'post',
-    data,
-  })
-}
-// 模块设置
+// 以下接口 要么 没有用到 要么 页面路由弃用
+// export function getFinanceReportForms(data) {
+//   return request({
+//     url: '/information/financeReportForms',
+//     method: 'post',
+//     data,
+//   })
+// }
+// export function getFinanceCostCount(data) {
+//   return request({
+//     url: '/information/financeCostCount',
+//     method: 'post',
+//     data,
+//   })
+// }
+// export function getFinanceListd(data) {
+//   return request({
+//     url: '/information/financeList',
+//     method: 'post',
+//     data,
+//   })
+// }
+
+// export function getBoardReportForms(data) {
+//   return request({
+//     url: '/homePage/boardReportForms',
+//     method: 'post',
+//     data,
+//   })
+// }
+// export function getCustomerRanch(data) {
+//   return request({
+//     url: '/homePage/customerRanch',
+//     method: 'post',
+//     data,
+//   })
+// }
+// export function getGoodsRanch(data) {
+//   return request({
+//     url: '/homePage/goodsRanch',
+//     method: 'post',
+//     data,
+//   })
+// }
+// export function getShipmentWarning(data) {
+//   return request({
+//     url: '/homePage/shipmentWarning',
+//     method: 'post',
+//     data,
+//   })
+// }
+// export function getCustomerSource(data) {
+//   return request({
+//     url: '/homePage/customerSource',
+//     method: 'post',
+//     data,
+//   })
+// }
+// export function getHomePageBoard(data) {
+//   return request({
+//     url: '/homePage/board',
+//     method: 'post',
+//     data,
+//   })
+// }
+// export function editPurchaseShipment(data) {
+//   return request({
+//     url: '/supplier/purchaseShipment',
+//     method: 'post',
+//     data,
+//   })
+// }
+// export function editCategorySonStatus(data) {
+//   return request({
+//     url: '/goods/categorySonStatus',
+//     method: 'post',
+//     data,
+//   })
+// }
+// export function getOrderSourceAssay(data) {
+//   return request({
+//     url: '/information/orderSourceAssay',
+//     method: 'post',
+//     data,
+//   })
+// }
+// export function getInformationOrderSaleRank(data) {
+//   return request({
+//     url: '/information/orderSaleRank',
+//     method: 'post',
+//     data,
+//   })
+// }
 export function editScrmConfig(data) {
   return request({
     url: '/setting/scrmConfig',
@@ -2196,63 +2498,72 @@ export function editProduceConfig(data) {
     data,
   })
 }
-export function editWeComeConfig(data) {
+export function getAccountDetail(data) {
   return request({
-    url: '/setting/weComeConfig',
+    url: '/admin/accountDetail',
     method: 'post',
     data,
   })
 }
-export function getWeComeConfigInfo(data) {
+export function editAdminAccountSave(data) {
   return request({
-    url: '/setting/getWeComeConfigInfo',
+    url: '/admin/accountSave',
     method: 'post',
     data,
   })
 }
-export function editDesignConfig(data) {
+export function editWechatVideo(data) {
   return request({
-    url: '/setting/designConfig',
+    url: '/admin/wechatVideo',
     method: 'post',
     data,
   })
 }
-export function getDesignConfigInfo(data) {
+
+export function editQuickly(data) {
   return request({
-    url: '/setting/getDesignConfigInfo',
+    url: '/admin/quickly',
     method: 'post',
     data,
   })
 }
-export function editAgentErpConfig(data) {
+
+export function editTiktokShop(data) {
   return request({
-    url: '/setting/agentErpConfig',
+    url: '/admin/tiktokShop',
     method: 'post',
     data,
   })
 }
-export function getAgentErpInfo(data) {
+export function editLittleRedBook(data) {
   return request({
-    url: '/setting/getAgentErpInfo',
+    url: '/admin/littleRedBook',
     method: 'post',
     data,
   })
 }
-export function editErpConfig(data) {
+export function getCountList(data) {
   return request({
-    url: '/setting/erpConfig',
+    url: '/customer/countList',
     method: 'post',
     data,
   })
 }
-export function getErpInfo(data) {
+
+export function editShopConfig(data) {
   return request({
-    url: '/setting/getErpInfo',
+    url: '/setting/shopConfig',
     method: 'post',
     data,
   })
 }
-// 存储设置
+export function getShopConfigInfo(data) {
+  return request({
+    url: '/setting/shopConfigInfo',
+    method: 'post',
+    data,
+  })
+}
 export function editLocalStore(data) {
   return request({
     url: '/setting/localStore',
@@ -2281,146 +2592,6 @@ export function editQiNiuOss(data) {
     data,
   })
 }
-// 开放接口
-export function gitJuShuiTanInfo(data) {
-  return request({
-    url: '/setting/juShuiTanInfo',
-    method: 'post',
-    data,
-  })
-}
-
-export function editJuShuiTan(data) {
-  return request({
-    url: '/setting/juShuiTan',
-    method: 'post',
-    data,
-  })
-}
-export function editWangDianTong(data) {
-  return request({
-    url: '/setting/wangDianTong',
-    method: 'post',
-    data,
-  })
-}
-export function editBoJun(data) {
-  return request({
-    url: '/setting/boJun',
-    method: 'post',
-    data,
-  })
-}
-export function editBaiSheng(data) {
-  return request({
-    url: '/setting/baiSheng',
-    method: 'post',
-    data,
-  })
-}
-export function editZiRi(data) {
-  return request({
-    url: '/setting/ziRi',
-    method: 'post',
-    data,
-  })
-}
-// 销售渠道
-export function editWeChatOfficialAccounts(data) {
-  return request({
-    url: '/admin/weChatOfficialAccounts',
-    method: 'post',
-    data,
-  })
-}
-export function editWeChatApplet(data) {
-  return request({
-    url: '/admin/WeChatApplet',
-    method: 'post',
-    data,
-  })
-}
-export function editWechatVideo(data) {
-  return request({
-    url: '/admin/wechatVideo',
-    method: 'post',
-    data,
-  })
-}
-export function editAliPay(data) {
-  return request({
-    url: '/admin/aliPay',
-    method: 'post',
-    data,
-  })
-}
-export function editMoveApp(data) {
-  return request({
-    url: '/admin/moveApp',
-    method: 'post',
-    data,
-  })
-}
-export function editQuickly(data) {
-  return request({
-    url: '/admin/quickly',
-    method: 'post',
-    data,
-  })
-}
-export function editTopLine(data) {
-  return request({
-    url: '/admin/topLine',
-    method: 'post',
-    data,
-  })
-}
-export function editTiktokShop(data) {
-  return request({
-    url: '/admin/tiktokShop',
-    method: 'post',
-    data,
-  })
-}
-export function editLittleRedBook(data) {
-  return request({
-    url: '/admin/littleRedBook',
-    method: 'post',
-    data,
-  })
-}
-// 日志列表
-export function getLogList(data) {
-  return request({
-    url: '/admin/LogList',
-    method: 'post',
-    data,
-  })
-}
-// 员工列表
-export function getEmployeeList(data) {
-  return request({
-    url: '/employee/employeeList',
-    method: 'post',
-    data,
-  })
-}
-export function editEmployeeSave(data) {
-  return request({
-    url: '/employee/employeeSave',
-    method: 'post',
-    data,
-  })
-}
-export function delEmployeeSync(data) {
-  return request({
-    url: '/employee/employeeSync',
-    method: 'post',
-    data,
-  })
-}
-
-// 订单统计
 export function getOrderCountList(data) {
   return request({
     url: '/order/CountList',
@@ -2435,7 +2606,6 @@ export function getOrderCountDetail(data) {
     data,
   })
 }
-// 商品统计
 export function getGoodStatistics(data) {
   return request({
     url: '/goods/goodStatistics',
@@ -2457,113 +2627,3 @@ export function getGoodRank(data) {
     data,
   })
 }
-// 菜单管理
-export function editButtonSave(data) {
-  return request({
-    url: '/menu/buttonSave',
-    method: 'post',
-    data,
-  })
-}
-export function getMenuList(data) {
-  return request({
-    url: '/menu/menuList',
-    method: 'post',
-    data,
-  })
-}
-export function editMenuSave(data) {
-  return request({
-    url: '/menu/menuSave',
-    method: 'post',
-    data,
-  })
-}
-export function delMenuDel(data) {
-  return request({
-    url: '/menu/menuDel',
-    method: 'post',
-    data,
-  })
-}
-
-// 权限管理
-
-export function addRoleGroupSave(data) {
-  return request({
-    url: '/admin/roleGroupSave',
-    method: 'post',
-    data,
-  })
-}
-export function getRoleInfo(data) {
-  return request({
-    url: '/admin/roleInfo',
-    method: 'post',
-    data,
-  })
-}
-export function addRoleSave(data) {
-  return request({
-    url: '/admin/roleSave',
-    method: 'post',
-    data,
-  })
-}
-export function getRoleList(data) {
-  return request({
-    url: '/admin/roleList',
-    method: 'post',
-    data,
-  })
-}
-// 用户管理
-export function getAdminInfo(data) {
-  return request({
-    url: '/admin/adminInfo',
-    method: 'post',
-    data,
-  })
-}
-export function addAdminSave(data) {
-  return request({
-    url: '/admin/adminSave',
-    method: 'post',
-    data,
-  })
-}
-export function getAdminList(data) {
-  return request({
-    url: '/admin/adminList',
-    method: 'post',
-    data,
-  })
-}
-// export function getParentTag(data) {
-//   return request({
-//     url: '/customer/getParentTag',
-//     method: 'post',
-//     data,
-//   })
-// }
-// export function getTagList(data) {
-//   return request({
-//     url: '/customer/tagList',
-//     method: 'post',
-//     data,
-//   })
-// }
-// export function editTagSave(data) {
-//   return request({
-//     url: '/customer/tagSave',
-//     method: 'post',
-//     data,
-//   })
-// }
-// export function delTagDel(data) {
-//   return request({
-//     url: '/customer/tagDel',
-//     method: 'post',
-//     data,
-//   })
-// }

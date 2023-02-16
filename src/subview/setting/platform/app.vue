@@ -2,7 +2,7 @@
   <div class="comprehensive-form-container">
     <el-card shadow="never" style="border-radius: 5px">
       <template #header>
-        <span style="font-size: 16px; font-weight: 600">绑定移动APP</span>
+        <span style="font-size: 16px; font-weight: 600">视频号直播带货</span>
       </template>
       <div
         style="

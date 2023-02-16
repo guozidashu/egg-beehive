@@ -822,14 +822,14 @@ export const asyncRoutes = [
               title: '微信小程序',
             },
           },
-          {
-            path: 'platformvideo',
-            name: 'PlatformVideo',
-            component: () => import('@/subview/setting/platform/video'),
-            meta: {
-              title: '视频号矩阵',
-            },
-          },
+          // {
+          //   path: 'platformvideo',
+          //   name: 'PlatformVideo',
+          //   component: () => import('@/subview/setting/platform/video'),
+          //   meta: {
+          //     title: '视频号矩阵',
+          //   },
+          // },
           {
             path: 'platformzfbxiao',
             name: 'PlatformZfbxiao',
@@ -843,17 +843,17 @@ export const asyncRoutes = [
             name: 'PlatformApp',
             component: () => import('@/subview/setting/platform/app'),
             meta: {
-              title: '移动App',
+              title: '视频号直播带货',
             },
           },
-          {
-            path: 'platformpinduoduoktt',
-            name: 'PlatformPinduoduoktt',
-            component: () => import('@/subview/setting/platform/pinduoduoktt'),
-            meta: {
-              title: '社群快团团',
-            },
-          },
+          // {
+          //   path: 'platformpinduoduoktt',
+          //   name: 'PlatformPinduoduoktt',
+          //   component: () => import('@/subview/setting/platform/pinduoduoktt'),
+          //   meta: {
+          //     title: '社群快团团',
+          //   },
+          // },
           {
             path: 'platformttxiao',
             name: 'PlatformTtxiao',
@@ -862,22 +862,22 @@ export const asyncRoutes = [
               title: '头条小程序',
             },
           },
-          {
-            path: 'platformdoudin',
-            name: 'PlatformDoudin',
-            component: () => import('@/subview/setting/platform/doudin'),
-            meta: {
-              title: '抖店接入',
-            },
-          },
-          {
-            path: 'platformredbook',
-            name: 'PlatformRedbook',
-            component: () => import('@/subview/setting/platform/redbook'),
-            meta: {
-              title: '小红书',
-            },
-          },
+          // {
+          //   path: 'platformdoudin',
+          //   name: 'PlatformDoudin',
+          //   component: () => import('@/subview/setting/platform/doudin'),
+          //   meta: {
+          //     title: '抖店接入',
+          //   },
+          // },
+          // {
+          //   path: 'platformredbook',
+          //   name: 'PlatformRedbook',
+          //   component: () => import('@/subview/setting/platform/redbook'),
+          //   meta: {
+          //     title: '小红书',
+          //   },
+          // },
         ],
       },
       {
