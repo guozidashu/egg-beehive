@@ -10,12 +10,38 @@
     >
       <QYForm :form="form" :form-type="formType" @changeSearch="handleQuery">
         <template #Form>
-          <el-form-item label="搜索:">
+          <el-form-item label="搜索：">
             <el-input
               v-model="form.name"
               placeholder="请输入姓名或账号"
               style="width: 215px"
             />
+          </el-form-item>
+          <el-form-item label="岗位：">
+            <el-select v-model="form.role" placeholder="请选择">
+              <el-option
+                v-for="(item, index) in selectData.role"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="部门：">
+            <el-select v-model="form.department_id" placeholder="请选择">
+              <el-option
+                v-for="(item, index) in selectData.department"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="状态：">
+            <el-select v-model="form.status">
+              <el-option label="停职" :value="0" />
+              <el-option label="在职" :value="1" />
+            </el-select>
           </el-form-item>
         </template>
       </QYForm>
@@ -70,7 +96,7 @@
           </el-table-column>
           <el-table-column label="员工姓名" prop="name" show-overflow-tooltip />
           <el-table-column
-            label="权限"
+            label="部门"
             prop="department_name"
             show-overflow-tooltip
           />
@@ -129,18 +155,26 @@
 <script>
   import Edit from '@/subview/components/Edit/EmployeesEdit'
   // import Drawer from '@/subview/components/Drawer/EmployeesDrawer'
-  import { getEmployeeList, delEmployeeSync } from '@/api/basic'
+  import {
+    getEmployeeList,
+    getCommonAllList,
+    delEmployeeSync,
+  } from '@/api/basic'
   export default {
     name: 'Employees',
     components: { Edit },
     data() {
       return {
+        selectData: {},
         drawerInof: {},
         drawer: false,
         form: {
           name: '',
           page: 1,
           pageSize: 10,
+          department_id: '', //部门id
+          role: null, //岗位id
+          status: 1, // 状态 1=在职 0=停职 默认传1
         },
         formType: 3,
         listType: 1,
@@ -158,9 +192,14 @@
       },
     },
     created() {
+      this.getConfigState()
       this.fetchData()
     },
     methods: {
+      async getConfigState() {
+        const { data } = await getCommonAllList({ type: 'role,department' })
+        this.selectData = data
+      },
       async handleEdit(row) {
         if (row === 'add') {
           this.$refs['edit'].showEdit()

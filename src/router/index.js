@@ -53,6 +53,15 @@ export const asyncRoutes = [
           icon: 'truck-line',
         },
       },
+      {
+        path: 'jststock',
+        name: 'Jststock',
+        component: () => import('@/subview/index/jststock'),
+        meta: {
+          title: '聚水潭库存统计',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {
@@ -524,15 +533,6 @@ export const asyncRoutes = [
         component: () => import('@/subview/report/stock'),
         meta: {
           title: '库存统计',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'reportJststock',
-        name: 'ReportJststock',
-        component: () => import('@/subview/report/jststock'),
-        meta: {
-          title: '聚水潭库存统计',
           icon: 'archive-line',
         },
       },

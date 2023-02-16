@@ -22,7 +22,7 @@
       >
         <span style="margin-top: 10px; font-size: 18px; font-weight: 600">
           全渠道概况
-          <span style="font-size: 12px">
+          <span style="font-size: 12px; font-weight: 400; color: #515a6e">
             更新时间：{{ time }}(因为数据量巨大,所以每天零点更新)
           </span>
         </span>
@@ -120,13 +120,13 @@
             >
               <div style="margin-top: 5px; font-size: 16px; font-weight: 600">
                 <span v-if="channelBtnIndex == 0">
-                  总销售金额 ￥{{ channelBtnValue }}
+                  ￥{{ channelBtnValue | moneyFormat }}
                 </span>
                 <span v-if="channelBtnIndex == 1">
-                  总销售件数 {{ channelBtnValue }}
+                  {{ channelBtnValue }}
                 </span>
                 <span v-if="channelBtnIndex == 2">
-                  总销售单数 {{ channelBtnValue }}
+                  {{ channelBtnValue }}
                 </span>
               </div>
               <div style="display: flex">
@@ -313,174 +313,216 @@
     </div>
     <!-- 商品分析 库存预警 -->
     <el-row :gutter="20" style="margin-top: 20px">
-      <div style="padding: 20px; background-color: #ffffff">
-        <el-tabs v-model="ListType" @tab-click="handleListTypeChange">
-          <el-tab-pane label="商品分析" name="1" />
-          <el-tab-pane label="库存预警" name="2" />
-        </el-tabs>
-        <QYList
-          v-if="ListType == 1"
-          :list="goodsAnalysisList"
-          :list-type="1"
-          :state="goodslistLoading"
-          style="height: 700px; overflow: auto"
-          :total="goodsAnalysisTotal"
-          @changePage="changeBtnPage"
-          @changePageSize="changeBtnPageSize"
-        >
-          <template #List>
-            <el-table-column
-              align="center"
-              label="排行"
-              type="index"
-              width="50"
-            >
-              <template slot-scope="scope">
-                <span
-                  v-if="goodsAnalysisForm.page == 1"
-                  class="index_common"
-                  :class="[
-                    scope.$index + 1 == '1'
-                      ? 'index_one'
-                      : scope.$index + 1 == '2'
-                      ? 'index_two'
-                      : scope.$index + 1 == '3'
-                      ? 'index_three'
-                      : 'index_more',
-                  ]"
-                >
-                  {{ scope.$index + 1 }}
-                </span>
-                <span v-else class="index_more index_common">
-                  {{ 10 * (goodsAnalysisForm.page - 1) + scope.$index + 1 }}
-                </span>
-              </template>
-            </el-table-column>
-            <el-table-column label="款式编码" prop="sn" width="100" />
-            <el-table-column label="销售件数" prop="num">
-              <template #default="{ row }">
-                <div style="margin: 5px 0">
-                  总销售件数 {{ row.sale_num.all }}
-                </div>
-                <div style="margin: 5px 0">聚水潭 {{ row.sale_num.jst }}</div>
-                <div style="margin: 5px 0">自主渠道 {{ row.sale_num.erp }}</div>
-              </template>
-            </el-table-column>
-            <el-table-column label="销售金额" prop="outage_rate">
-              <template #default="{ row }">
-                <div style="margin: 5px 0">
-                  总销售金额 ￥{{ row.sale_price.all }}
-                </div>
-                <div style="margin: 5px 0">
-                  聚水潭 ￥{{ row.sale_price.jst }}
-                </div>
-                <div style="margin: 5px 0">
-                  自主渠道 ￥{{ row.sale_price.erp }}
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column label="销售订单数" prop="outage_rate">
-              <template #default="{ row }">
-                <div style="margin: 5px 0">
-                  总销售订单数 {{ row.sale_order_num.all }}
-                </div>
-                <div style="margin: 5px 0">
-                  聚水潭 {{ row.sale_order_num.jst }}
-                </div>
-                <div style="margin: 5px 0">
-                  自主渠道 {{ row.sale_order_num.erp }}
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column label="占比" prop="outage_rate">
-              <template #default="{ row }">
-                <div style="margin: 5px 0">总占比 {{ row.proportion.all }}</div>
-                <div style="margin: 5px 0">聚水潭 {{ row.proportion.jst }}</div>
-                <div style="margin: 5px 0">
-                  自主渠道 {{ row.proportion.erp }}
-                </div>
-              </template>
-            </el-table-column>
-          </template>
-        </QYList>
-        <QYList
-          v-if="ListType == 2"
-          :list="stockAnalysisList"
-          :list-type="1"
-          :state="stocklistLoading"
-          style="height: 700px; overflow: auto"
-          :total="stockAnalysisTotal"
-          @changePage="changeBtnPageStock"
-          @changePageSize="changeBtnPageSizeStock"
-        >
-          <template #List>
-            <el-table-column
-              align="center"
-              label="排行"
-              type="index"
-              width="50"
-            >
-              <template slot-scope="scope">
-                <span
-                  v-if="stockAnalysisForm.page == 1"
-                  class="index_common"
-                  :class="[
-                    scope.$index + 1 == '1'
-                      ? 'index_one'
-                      : scope.$index + 1 == '2'
-                      ? 'index_two'
-                      : scope.$index + 1 == '3'
-                      ? 'index_three'
-                      : 'index_more',
-                  ]"
-                >
-                  {{ scope.$index + 1 }}
-                </span>
-                <span v-else class="index_more index_common">
-                  {{ 10 * (stockAnalysisForm.page - 1) + scope.$index + 1 }}
-                </span>
-              </template>
-            </el-table-column>
-            <el-table-column label="款式编码" prop="sn" width="150" />
-            <el-table-column label="商品名称" prop="name" width="150" />
-            <el-table-column label="图片" prop="img">
-              <template #default="{ row }">
-                <el-image :src="row.img" style="width: 100px; height: 100px" />
-              </template>
-            </el-table-column>
+      <el-col :span="12">
+        <div style="padding: 20px; background-color: #ffffff">
+          <p style="margin-top: 10px; font-size: 18px; font-weight: 600">
+            爆款分析
+          </p>
+          <QYList
+            :list="goodsAnalysisList"
+            :list-type="1"
+            :state="goodslistLoading"
+            style="height: 700px; overflow: auto"
+            :total="goodsAnalysisTotal"
+            @changePage="changeBtnPage"
+            @changePageSize="changeBtnPageSize"
+          >
+            <template #List>
+              <el-table-column
+                align="center"
+                label="排行"
+                type="index"
+                width="50"
+              >
+                <template slot-scope="scope">
+                  <span
+                    v-if="goodsAnalysisForm.page == 1"
+                    class="index_common"
+                    :class="[
+                      scope.$index + 1 == '1'
+                        ? 'index_one'
+                        : scope.$index + 1 == '2'
+                        ? 'index_two'
+                        : scope.$index + 1 == '3'
+                        ? 'index_three'
+                        : 'index_more',
+                    ]"
+                  >
+                    {{ scope.$index + 1 }}
+                  </span>
+                  <span v-else class="index_more index_common">
+                    {{ 10 * (goodsAnalysisForm.page - 1) + scope.$index + 1 }}
+                  </span>
+                </template>
+              </el-table-column>
+              <el-table-column label="款式&名称&图片" prop="sn">
+                <template #default="{ row }">
+                  <el-image :src="row.img" style="width: 50px; height: 50px" />
+                  <p style="margin: 5px 0">{{ row.sn }}</p>
+                  <p style="margin: 5px 0">{{ row.name }}</p>
+                </template>
+              </el-table-column>
+              <el-table-column label="销售件数" prop="num">
+                <template #default="{ row }">
+                  <div style="margin: 5px 0; font-size: 14px; font-weight: 600">
+                    {{ row.sale_num.all }}
+                  </div>
+                  <div style="margin: 5px 0">聚水潭 {{ row.sale_num.jst }}</div>
+                  <div style="margin: 5px 0">
+                    自主渠道 {{ row.sale_num.erp }}
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column label="销售金额" prop="outage_rate">
+                <template #default="{ row }">
+                  <div style="margin: 5px 0; font-size: 14px; font-weight: 600">
+                    ￥{{ row.sale_price.all | moneyFormat }}
+                  </div>
+                  <div style="margin: 5px 0">
+                    聚水潭 ￥{{ row.sale_price.jst | moneyFormat }}
+                  </div>
+                  <div style="margin: 5px 0">
+                    自主渠道 ￥{{ row.sale_price.erp | moneyFormat }}
+                  </div>
+                </template>
+              </el-table-column>
+              <!-- <el-table-column label="销售订单数" prop="outage_rate">
+                <template #default="{ row }">
+                  <div style="margin: 5px 0">
+                    总销售订单数 {{ row.sale_order_num.all }}
+                  </div>
+                  <div style="margin: 5px 0">
+                    聚水潭 {{ row.sale_order_num.jst }}
+                  </div>
+                  <div style="margin: 5px 0">
+                    自主渠道 {{ row.sale_order_num.erp }}
+                  </div>
+                </template>
+              </el-table-column> -->
+              <el-table-column label="占比" prop="outage_rate">
+                <template #default="{ row }">
+                  <div style="margin: 5px 0; font-size: 14px; font-weight: 600">
+                    {{ row.proportion.all }}
+                  </div>
+                  <div style="margin: 5px 0">
+                    聚水潭 {{ row.proportion.jst }}
+                  </div>
+                  <div style="margin: 5px 0">
+                    自主渠道 {{ row.proportion.erp }}
+                  </div>
+                </template>
+              </el-table-column>
+            </template>
+          </QYList>
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <div style="padding: 20px; background-color: #ffffff">
+          <P style="margin-top: 10px; font-size: 18px; font-weight: 600">
+            库存预警
+          </P>
+          <QYList
+            :list="stockAnalysisList"
+            :list-type="1"
+            :state="stocklistLoading"
+            style="height: 700px; overflow: auto"
+            :total="stockAnalysisTotal"
+            @changePage="changeBtnPageStock"
+            @changePageSize="changeBtnPageSizeStock"
+          >
+            <template #List>
+              <el-table-column
+                align="center"
+                label="排行"
+                type="index"
+                width="50"
+              >
+                <template slot-scope="scope">
+                  <span
+                    v-if="stockAnalysisForm.page == 1"
+                    class="index_common"
+                    :class="[
+                      scope.$index + 1 == '1'
+                        ? 'index_one'
+                        : scope.$index + 1 == '2'
+                        ? 'index_two'
+                        : scope.$index + 1 == '3'
+                        ? 'index_three'
+                        : 'index_more',
+                    ]"
+                  >
+                    {{ scope.$index + 1 }}
+                  </span>
+                  <span v-else class="index_more index_common">
+                    {{ 10 * (stockAnalysisForm.page - 1) + scope.$index + 1 }}
+                  </span>
+                </template>
+              </el-table-column>
+              <el-table-column label="款式&名称&图片" prop="sn">
+                <template #default="{ row }">
+                  <el-image :src="row.img" style="width: 50px; height: 50px" />
+                  <p style="margin: 5px 0">{{ row.sn }}</p>
+                  <p style="margin: 5px 0">{{ row.name }}</p>
+                </template>
+              </el-table-column>
+              <!-- <el-table-column label="商品名称" prop="name" /> -->
+              <!-- <el-table-column label="图片" prop="img">
+                <template #default="{ row }">
+                  <el-image :src="row.img" style="width: 50px; height: 50px" />
+                </template>
+              </el-table-column> -->
 
-            <el-table-column label="库存数" prop="num">
-              <template #default="{ row }">
-                <p>总库存数 {{ row.stock_num.all }}</p>
-                <p>聚水潭 {{ row.stock_num.jst }}</p>
-                <p>自主渠道 {{ row.stock_num.erp }}</p>
-              </template>
-            </el-table-column>
-            <el-table-column label="库存占用数" prop="outage_rate">
-              <template #default="{ row }">
-                <p>总库存占用数{{ row.stock_occupy_num.all }}</p>
-                <p>聚水潭 {{ row.stock_occupy_num.jst }}</p>
-                <p>自主渠道 {{ row.stock_occupy_num.erp }}</p>
-              </template>
-            </el-table-column>
-            <el-table-column label="库存金额" prop="outage_rate">
-              <template #default="{ row }">
-                <p>总库存金额 ￥{{ row.stock_price.all }}</p>
-                <p>聚水潭 ￥{{ row.stock_price.jst }}</p>
-                <p>自主渠道 ￥{{ row.stock_price.erp }}</p>
-              </template>
-            </el-table-column>
-            <el-table-column label="占比" prop="outage_rate">
-              <template #default="{ row }">
-                <p>总占比 {{ row.stock_ratio.all }}</p>
-                <p>聚水潭 {{ row.stock_ratio.jst }}</p>
-                <p>自主渠道 {{ row.stock_ratio.erp }}</p>
-              </template>
-            </el-table-column>
-            <el-table-column label="上架日期" prop="upper_time" />
-          </template>
-        </QYList>
-      </div>
+              <el-table-column label="库存数" prop="num">
+                <template #default="{ row }">
+                  <div style="margin: 5px 0; font-size: 14px; font-weight: 600">
+                    {{ row.stock_num.all }}
+                  </div>
+                  <div style="margin: 5px 0">
+                    聚水潭 {{ row.stock_num.jst }}
+                  </div>
+                  <div style="margin: 5px 0">
+                    自主渠道 {{ row.stock_num.erp }}
+                  </div>
+                </template>
+              </el-table-column>
+              <!-- <el-table-column label="库存占用数" prop="outage_rate">
+                <template #default="{ row }">
+                  <p>总库存占用数{{ row.stock_occupy_num.all }}</p>
+                  <p>聚水潭 {{ row.stock_occupy_num.jst }}</p>
+                  <p>自主渠道 {{ row.stock_occupy_num.erp }}</p>
+                </template>
+              </el-table-column> -->
+              <el-table-column label="库存金额" prop="outage_rate">
+                <template #default="{ row }">
+                  <div style="margin: 5px 0; font-size: 14px; font-weight: 600">
+                    ￥{{ row.stock_price.all | moneyFormat }}
+                  </div>
+                  <div style="margin: 5px 0">
+                    聚水潭 ￥{{ row.stock_price.jst | moneyFormat }}
+                  </div>
+                  <div style="margin: 5px 0">
+                    自主渠道 ￥{{ row.stock_price.erp | moneyFormat }}
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column label="占比" prop="outage_rate">
+                <template #default="{ row }">
+                  <div style="margin: 5px 0; font-size: 14px; font-weight: 600">
+                    {{ row.stock_ratio.all }}
+                  </div>
+                  <div style="margin: 5px 0">
+                    聚水潭 {{ row.stock_ratio.jst }}
+                  </div>
+                  <div style="margin: 5px 0">
+                    自主渠道 {{ row.stock_ratio.erp }}
+                  </div>
+                </template>
+              </el-table-column>
+              <!-- <el-table-column label="上架日期" prop="upper_time" /> -->
+            </template>
+          </QYList>
+        </div>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -714,18 +756,18 @@
         channelCardList: [
           {
             title: '聚水潭云仓',
-            content: '1111111',
+            content: '聚水潭云仓销售金额/订单数/件数',
             type: 1,
-            num: 80,
-            percent: '80%',
+            num: 0,
+            percent: '0%',
             checked: true,
           },
           {
             title: '自主渠道',
-            content: '1111111',
+            content: '自主渠道销售金额/订单数/件数',
             type: 1,
-            num: 80,
-            percent: '20%',
+            num: 0,
+            percent: '0%',
             checked: false,
           },
         ],
@@ -738,7 +780,7 @@
           center: ['50%', '50%'],
         },
         // 商品分析
-        ListType: '1',
+        // ListType: '1',
         goodsAnalysisForm: {
           page: 1,
           pageSize: 10,
@@ -898,6 +940,15 @@
           })
           this.channelBtnList[index].checked = true
           this.channelBtnIndex = index
+          if (index == 0) {
+            this.channelCardList.forEach((item) => {
+              item.type = 1
+            })
+          } else {
+            this.channelCardList.forEach((item) => {
+              item.type = 2
+            })
+          }
         } else if (type == 3) {
           this.channelCardList.forEach((item) => {
             item.checked = false
@@ -991,7 +1042,6 @@
             '-',
           ]
           this.$forceUpdate()
-          console.log(111111, this.chartList)
         } else if (this.cardListChecked != 11) {
           this.chartList.xAxis.data = this.dateList
           this.chartList.series[0].data = this.dataAllList.total
@@ -1002,7 +1052,6 @@
           this.chartList.series[1].data = this.dataAllList.jst
           this.chartList.series[2].data = this.dataAllList.erp
           this.$forceUpdate()
-          console.log(22222, this.chartList)
         }
       },
     },

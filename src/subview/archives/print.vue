@@ -90,41 +90,52 @@
               </div>
             </el-form-item>
             <el-form-item label="打印种类">
-              <el-radio-group v-model="form.radio2" size="small">
-                <el-radio label="打印吊牌" />
-                <el-radio label="打印条码" />
-                <el-radio label="BT打印" />
+              <el-radio-group v-model="form.printType" size="small">
+                <el-radio :label="1">打印吊牌</el-radio>
+                <el-radio :label="2">打印条码</el-radio>
+                <el-radio :label="3">BT打印</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="打印模板">
-              <el-select
-                v-model="form.status1"
-                style="width: 150px; margin-right: 10px"
-              >
-                <el-option label="110x90mm" :value="1" />
-                <el-option label="120x90mm" :value="2" />
-                <el-option label="130x90mm" :value="3" />
-              </el-select>
-              <el-radio v-model="form.radio1" border label="1">
-                默认使用模板设置的打印机
-              </el-radio>
-            </el-form-item>
-            <el-form-item label="打印数量">
-              <el-input
-                v-model="form.num"
-                style="width: 50px; margin-right: 10px"
-              />
-              <el-button type="primary" @click="print('vab-print-table')">
-                打印预览
-              </el-button>
-              <el-button type="primary">立即打印</el-button>
-            </el-form-item>
-            <el-form-item label="自定义打印内容">
-              <el-input v-model="form.content" style="width: 215px" />
-            </el-form-item>
+            <div v-if="form.printType == 2">
+              <el-form-item v-if="printerList.length > 0" label="打印机类型">
+                <el-select
+                  v-model="form.printerType"
+                  placeholder="请选择打印机类型"
+                >
+                  <el-option
+                    v-for="(item, index) in printerList"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="纸张大小">
+                <el-input
+                  v-model="form.printerWidth"
+                  placeholder="宽"
+                  style="width: 100px; margin-right: 10px"
+                  type="number"
+                />
+                <el-input
+                  v-model="form.printerHeight"
+                  placeholder="高"
+                  style="width: 100px; margin-right: 10px"
+                  type="number"
+                />
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="btnClickPrint(1)">
+                  打印预览
+                </el-button>
+                <el-button type="primary" @click="btnClickPrint(2)">
+                  立即打印
+                </el-button>
+              </el-form-item>
+            </div>
           </div>
         </el-form>
-        <div v-if="goodsInof != null" style="width: 50%">
+        <div v-if="goodsInof != null && form.printType != 2" style="width: 50%">
           <el-card shadow="hover" style="width: 50%; margin-left: 25%">
             <div
               ref="vab-print-table"
@@ -193,6 +204,9 @@
               </h5>
             </div>
           </el-card>
+        </div>
+        <div v-if="form.printType == 2" style="width: 50%">
+          <img id="barcode" />
         </div>
       </div>
       <div v-else style="margin-top: 20px">
@@ -267,7 +281,9 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { getLodop } from '@/utils/LodopFuncs' //导入打印模块
+  import JsBarcode from 'jsbarcode' // 商品条码生成插件
+  import { mapState, mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
   import {
     getPrintSn,
@@ -279,8 +295,20 @@
     name: 'ArchivesPrint',
     data() {
       return {
+        printer: {}, //打印机信息
+        printerList: [],
+        barcodeSrc: '',
         activeName: '打印吊牌条码',
-        form: { keywords: '', sizeid: null, colorid: null },
+        form: {
+          keywords: '',
+          sizeid: null,
+          colorid: null,
+          printType: 2,
+          printerType: null,
+          printerWidth: '',
+          printerHeight: '',
+          num: 1,
+        },
         goodsInof: null,
         sizeNanme: '',
         colorNanme: '',
@@ -297,7 +325,19 @@
         total: 0,
       }
     },
+    computed: mapState({
+      userInof: (state) => state.user,
+    }),
     watch: {
+      userInof: {
+        handler: function (val) {
+          this.form.printerType = val.printer.printerType
+          this.form.printerWidth = val.printer.printerWidth
+          this.form.printerHeight = val.printer.printerHeight
+        },
+        deep: true,
+        immediate: true,
+      },
       'form.sn': {
         handler: function () {
           this.handlePrintList()
@@ -319,6 +359,25 @@
             )[0].name
             this.handleGoodBarcode()
           }
+          if (
+            newvlaue.printerType != null ||
+            newvlaue.printerWidth != '' ||
+            newvlaue.printerHeight != ''
+          ) {
+            this.setPrinter({
+              printerType: newvlaue.printerType,
+              printerWidth: newvlaue.printerWidth,
+              printerHeight: newvlaue.printerHeight,
+            })
+          }
+        },
+        deep: true,
+      },
+      goodsInof: {
+        handler: function (newvlaue) {
+          if (this.form.printType == 2 && newvlaue != null) {
+            this.setJsBarcode()
+          }
         },
         deep: true,
       },
@@ -329,8 +388,80 @@
         deep: true,
       },
     },
-    created() {},
+    // 页面加载时打印模块读取设备
+    mounted() {
+      setTimeout(() => {
+        const Name = []
+        const LODOP = getLodop()
+        console.log('LODOP', LODOP)
+        const iPrinterCount = LODOP.GET_PRINTER_COUNT()
+        for (let i = 0; i < iPrinterCount; i++) {
+          Name.push({ name: LODOP.GET_PRINTER_NAME(i), id: i })
+        }
+        this.printerList = Name
+        console.log('获取到可用的打印机及其id', Name)
+        // let i = 0
+        // 循环执行btnClickPrint 间隔1秒 批量
+        // const int = setInterval(() => {
+        //   i = i + 1
+        //   this.btnClickPrint()
+        //   // 当i=3时，停止循环
+        //   if (i === 3) {
+        //     clearInterval(int)
+        //   }
+        // }, 1000)
+      }, 2000)
+    },
     methods: {
+      ...mapActions({
+        setPrinter: 'user/setPrinter',
+      }),
+      setJsBarcode() {
+        JsBarcode('#barcode', this.goodsInof.barcode, {
+          format: 'CODE128',
+          displayValue: true,
+          fontSize: 18,
+          width: 1.4,
+          height: 100,
+        })
+      },
+      // 商品条码打印
+      btnClickPrint: function (type) {
+        if (this.form.printerType == null) {
+          this.$message.error('请选择打印机')
+          return
+        }
+        if (this.form.printerWidth == '') {
+          this.$message.error('纸张宽度不能为空')
+          return
+        }
+        if (this.form.printerHeight == '') {
+          this.$message.error('纸张高度不能为空')
+          return
+        }
+        const LODOP = getLodop() //调用getLodop获取LODOP对象
+        LODOP.PRINT_INIT('初始化') // 初始化打印
+        LODOP.SET_PRINTER_INDEX(this.form.printerType) // 设置打印机
+        LODOP.ADD_PRINT_BARCODE(
+          '0', // top
+          '20', // left
+          '190', // width
+          '60', // height
+          '128Auto', // type
+          this.goodsInof.barcode // value
+        ) //生成条形码
+        LODOP.SET_PRINT_PAGESIZE(
+          1,
+          this.form.printerWidth,
+          this.form.printerHeight,
+          ''
+        ) // 这里3表示纵向打印且纸高“按内容的高度”；580表示纸宽58mm；45表示页底空白4.5mm
+        if (type == 1) {
+          LODOP.PREVIEW() // 预览
+        } else {
+          LODOP.PRINT() // 打印
+        }
+      },
       async handlePrintSn() {
         if (this.form.keywords == '') {
           this.$message.error('请输入商品编码')

@@ -198,22 +198,22 @@
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
-            if (this.form.tag[0].name == '') {
-              this.$baseMessage(
-                '请输入标签名称',
-                'success',
-                'vab-hey-message-success'
-              )
-              return
-            }
-            if (this.form.tag[0].order == '') {
-              this.$baseMessage(
-                '请输入标签排序',
-                'success',
-                'vab-hey-message-success'
-              )
-              return
-            }
+            // if (this.form.tag[0].name == '') {
+            //   this.$baseMessage(
+            //     '请输入标签名称',
+            //     'success',
+            //     'vab-hey-message-success'
+            //   )
+            //   return
+            // }
+            // if (this.form.tag[0].order == '') {
+            //   this.$baseMessage(
+            //     '请输入标签排序',
+            //     'success',
+            //     'vab-hey-message-success'
+            //   )
+            //   return
+            // }
             if (this.title === '添加分类' || this.title === '添加标签') {
               const { code } = await addCorpTag(this.form)
               if (code != 200) {

@@ -15,6 +15,7 @@ const state = () => ({
   rolename: '游客',
   avatar: 'https://i.gtimg.cn/club/item/face/img/2/15922_100.gif',
   userRouteList: [],
+  printer: {},
 })
 const getters = {
   token: (state) => state.token,
@@ -22,6 +23,7 @@ const getters = {
   rolename: (state) => state.rolename,
   avatar: (state) => state.avatar,
   userRouteList: (state) => state.userRouteList,
+  printer: (state) => state.printer,
 }
 const mutations = {
   /**
@@ -64,6 +66,14 @@ const mutations = {
    */
   setUserRouteList(state, userRouteList) {
     state.userRouteList = userRouteList
+  },
+  /**
+   * @description 设置打印机参数
+   * @param {*} state
+   * @param {*} printer
+   */
+  setPrinter(state, printer) {
+    state.printer = printer
   },
 }
 const actions = {
@@ -168,6 +178,11 @@ const actions = {
       return
     }
     if (data.list.auth_info) commit('setUserRouteList', data.list.auth_info)
+    commit('setPrinter', {
+      printerType: null,
+      printerWidth: 45,
+      printerHeight: 30,
+    })
     /**
      * 检验返回数据是否正常，无对应参数，将使用默认用户名,头像,Roles和Permissions
      * username {String}
@@ -240,6 +255,14 @@ const actions = {
    */
   setAvatar({ commit }, avatar) {
     commit('setAvatar', avatar)
+  },
+  /**
+   * @description 设置打印机参数
+   * @param {*} state
+   * @param {*} printer
+   */
+  setPrinter({ commit }, printer) {
+    commit('setPrinter', printer)
   },
 }
 export default { state, getters, mutations, actions }

@@ -258,7 +258,7 @@
     getCommonAllList,
     getInformationOrderList,
     getOrderReportForms,
-    getInformationOrderSaleRank,
+    // getInformationOrderSaleRank,
   } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
@@ -483,7 +483,7 @@
       },
       goodsForm1: {
         handler: function () {
-          this.getTableList()
+          // this.getTableList()
         },
         deep: true,
       },
@@ -491,7 +491,7 @@
     created() {
       this.getTypeList()
       this.fetchData()
-      this.getTableList()
+      // this.getTableList()
     },
     methods: {
       changeBtnPage(data) {
@@ -642,13 +642,13 @@
           }
         })
       },
-      async getTableList() {
-        this.listLoading = true
-        const { data } = await getInformationOrderSaleRank(this.goodsForm1)
-        this.goosList = data
-        this.listTotal = this.goosList.length
-        this.listLoading = false
-      },
+      // async getTableList() {
+      //   this.listLoading = true
+      //   const { data } = await getInformationOrderSaleRank(this.goodsForm1)
+      //   this.goosList = data
+      //   this.listTotal = this.goosList.length
+      //   this.listLoading = false
+      // },
 
       // handleDownload() {
       //   import('@/utils/excel').then((excel) => {
