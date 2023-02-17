@@ -1007,9 +1007,10 @@
         } else {
           this.form.lock_price = 0
         }
+        let temp1 = []
         if (this.form.sizeid != undefined) {
           if (this.form.sizeid[0].type == 'zs') {
-            this.form.sizeid = this.form.sizeid.map((item) => {
+            temp1 = this.form.sizeid.map((item) => {
               return item.id
             })
           } else {
@@ -1019,19 +1020,23 @@
               temp = item.pid
               return item.id
             })
-            this.form.sizeid = [temp]
+            temp1 = [temp]
           }
         }
+        let obj1 = JSON.parse(JSON.stringify(this.form))
+        obj1.sizeid = temp1
         if (this.form.id == undefined) {
-          this.form.id = 0
-          const { code } = await editGoodSave(this.form)
+          // this.form.id = 0
+          obj1.id = 0
+          const { code } = await editGoodSave(obj1)
           if (code == 200) {
             this.form.drawerType = e
             this.$baseMessage('新增成功', 'success', 'vab-hey-message-success')
             this.$emit('fetch-data', 1)
+            this.$emit('handle-close')
           }
         } else {
-          const { code } = await editGoodSave(this.form)
+          const { code } = await editGoodSave(obj1)
           if (code == 200) {
             this.form.drawerType = e
             this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')

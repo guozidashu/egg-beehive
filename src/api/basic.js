@@ -580,6 +580,22 @@ export function saveGoodsSyncJuShuiTan(data) {
     data,
   })
 }
+// 商品管理 设置预售
+export function editPresellAdd(data) {
+  return request({
+    url: '/goods/presellAdd',
+    method: 'post',
+    data,
+  })
+}
+// 商品管理 设置预售状态
+export function changePresellStatus(data) {
+  return request({
+    url: '/goods/changePresellStatus',
+    method: 'post',
+    data,
+  })
+}
 // 商品 - 商品分类
 //商品分类 父级 列表
 export function getCategoryMainList(data) {
@@ -2157,6 +2173,24 @@ export function editZiRi(data) {
     data,
   })
 }
+// 设置 - 系统设置 -编码配置
+// 编码配置 - 获取编码
+export function getCodeRule(data) {
+  return request({
+    url: '/setting/getCodeRule',
+    method: 'post',
+    data,
+  })
+}
+// 编码配置 - 设置编码
+export function setCodeRule(data) {
+  return request({
+    url: '/setting/setCodeRule',
+    method: 'post',
+    data,
+  })
+}
+
 // 设置 - 中台管理 - 角色管理
 // 角色管理 - 列表
 export function getRoleList(data) {
@@ -2391,7 +2425,7 @@ export function getLogList(data) {
   })
 }
 
-// 以下接口 要么 没有用到 要么 页面路由弃用
+// 以下接口 注释掉的没有用到或者功能弃用  没有注释的页面路由弃用
 // export function getFinanceReportForms(data) {
 //   return request({
 //     url: '/information/financeReportForms',

@@ -57,7 +57,7 @@
             </el-input>
           </el-form-item>
           <el-form-item v-show="!form.fold" label="客户等级:">
-            <el-select v-model="form.level" style="width: 300px">
+            <el-select v-model="form.level" style="width: 200px">
               <el-option
                 v-for="(item, index) in selectDataList.customer_grade"
                 :key="index"
@@ -67,7 +67,7 @@
             </el-select>
           </el-form-item>
           <el-form-item v-show="!form.fold" label="客户分类:">
-            <el-select v-model="form.type" style="width: 300px">
+            <el-select v-model="form.type" style="width: 200px">
               <el-option
                 v-for="(item, index) in selectDataList.customer_type"
                 :key="index"
@@ -240,7 +240,7 @@
             align="center"
             fixed="right"
             label="操作"
-            width="100"
+            width="120"
           >
             <template #default="{ row }">
               <el-button
@@ -260,6 +260,9 @@
               <el-button type="text" @click="handleDeposit(row.id)">
                 保证金
               </el-button>
+              <!-- <el-button type="text" @click="handleIntegral(row.id)">
+                积分
+              </el-button> -->
             </template>
           </el-table-column>
         </template>
@@ -412,6 +415,7 @@
         <el-button type="primary" @click="DepositEditSave">确 定</el-button>
       </template>
     </el-dialog>
+    <IntegralEdit ref="IntegralEdit" @fetch-data="fetchData" />
     <vab-upload
       ref="vabUpload"
       :limit="imgNum"
@@ -425,6 +429,7 @@
 
 <script>
   import Edit from '@/subview/components/Edit/ManageEdit'
+  import IntegralEdit from '@/subview/components/Edit/customerIntegralEdit'
   import Drawer from '@/subview/components/Drawer/ManageDrawer'
   import VabUpload from '@/extra/VabUpload'
   import {
@@ -437,7 +442,7 @@
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'CustomerManage',
-    components: { Edit, Drawer, VabUpload },
+    components: { Edit, Drawer, VabUpload, IntegralEdit },
     mixins: [datajosn],
     data() {
       const validateUsername = (rule, value, callback) => {
@@ -572,6 +577,9 @@
       this.selectData()
     },
     methods: {
+      handleIntegral(row) {
+        this.$refs['IntegralEdit'].showEdit(row)
+      },
       async handleDerive() {
         const { code, data } = await getCustomerExport(this.form)
         if (code == 200) {

@@ -743,6 +743,15 @@ export const asyncRoutes = [
         },
         children: [
           {
+            path: 'systemCoderule',
+            name: 'SystemCoderule',
+            component: () => import('@/subview/setting/system/coderule'),
+            meta: {
+              title: '编码规则',
+              // icon: 'home-2-line',
+            },
+          },
+          {
             path: 'systemmodule',
             name: 'SystemModule',
             component: () => import('@/subview/setting/system/module'),

@@ -216,7 +216,7 @@
             prop="jst_occupy_num"
             width="100"
           />
-          <el-table-column label="状态" prop="status" width="120">
+          <el-table-column label="预售状态" prop="status" width="120">
             <template #default="{ row }">
               <div v-if="row.status == 1" style="margin-bottom: 10px">
                 <el-tag>在售</el-tag>
@@ -229,6 +229,30 @@
               </div>
               <div v-else-if="row.recommend == 1">
                 <el-tag>推荐中</el-tag>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="状态" prop="status" width="120">
+            <template #default="{ row }">
+              <div
+                v-if="row.goods_persell.length == 0"
+                style="margin-bottom: 10px"
+              >
+                <el-tag>没有设置预售</el-tag>
+              </div>
+              <div v-else style="margin-bottom: 10px">
+                <el-switch
+                  v-model="row.goods_persell.status"
+                  active-color="#41B584"
+                  active-text="开启"
+                  :active-value="1"
+                  class="switch"
+                  inactive-color="#D2D2D2"
+                  inactive-text="关闭"
+                  :inactive-value="0"
+                  style="margin: 0 10px"
+                  @change="turnOnOff(row)"
+                />
               </div>
             </template>
           </el-table-column>
@@ -281,13 +305,13 @@
               >
                 设置推荐
               </el-button>
-              <!-- <el-button
-                v-has-permi="['btn:GoodsManage:edit']"
+              <el-button
+                v-has-permi="['btn:GoodsManage:presell']"
                 type="text"
-                @click="handleMaterial(row)"
+                @click="handlePresell(row)"
               >
-                素材上传
-              </el-button> -->
+                设置预售
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -304,6 +328,7 @@
         :drawer-inof="drawerInof"
         :select-list="selectList"
         @fetch-data="fetchData"
+        @handle-close="handleClose"
       />
     </el-drawer>
     <el-dialog
@@ -365,11 +390,13 @@
       url="/upload"
       @submitUpload="getSon"
     />
+    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 
 <script>
   import Drawer from '@/subview/components/Drawer/GoodsDrawer'
+  import Edit from '@/subview/components/Edit/PresellEdit'
   import VabUpload from '@/extra/VabUpload'
   import {
     getGoodList,
@@ -380,11 +407,12 @@
     editChangeRecommend,
     saveGoodsSyncJuShuiTan,
     getGoodsExport,
+    changePresellStatus,
   } from '@/api/basic'
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
     name: 'GoodsManage',
-    components: { Drawer, VabUpload },
+    components: { Drawer, VabUpload, Edit },
     mixins: [publicjosn],
     data() {
       return {
@@ -444,6 +472,18 @@
       this.getGoodsTypeList()
     },
     methods: {
+      async turnOnOff(row) {
+        const { code } = await changePresellStatus({ goods_id: row.id })
+        if (code != 200) {
+          return
+        }
+        this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
+        this.fetchData()
+      },
+      // 预售设置
+      handlePresell(row) {
+        this.$refs['edit'].showEdit(row)
+      },
       async handleDerive() {
         const { code, data } = await getGoodsExport(this.form)
         if (code == 200) {

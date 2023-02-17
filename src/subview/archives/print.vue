@@ -97,10 +97,10 @@
               </el-radio-group>
             </el-form-item>
             <div v-if="form.printType == 2">
-              <el-form-item v-if="printerList.length > 0" label="打印机类型">
+              <el-form-item v-if="printerList.length > 0" label="打印机">
                 <el-select
                   v-model="form.printerType"
-                  placeholder="请选择打印机类型"
+                  placeholder="请选择打印机"
                 >
                   <el-option
                     v-for="(item, index) in printerList"
@@ -110,7 +110,7 @@
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item label="纸张大小">
+              <el-form-item label="纸张大小(mm)">
                 <el-input
                   v-model="form.printerWidth"
                   placeholder="宽"
@@ -445,15 +445,16 @@
         LODOP.ADD_PRINT_BARCODE(
           '0', // top
           '20', // left
-          '190', // width
+          '170', // width
           '60', // height
           '128Auto', // type
           this.goodsInof.barcode // value
         ) //生成条形码
+        LODOP.SET_PRINT_STYLEA(0, 'FontSize', 10) // 设置字体大小
         LODOP.SET_PRINT_PAGESIZE(
           1,
-          this.form.printerWidth,
-          this.form.printerHeight,
+          this.form.printerWidth + 'mm',
+          this.form.printerHeight + 'mm',
           ''
         ) // 这里3表示纵向打印且纸高“按内容的高度”；580表示纸宽58mm；45表示页底空白4.5mm
         if (type == 1) {

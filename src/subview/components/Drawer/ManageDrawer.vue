@@ -331,6 +331,20 @@
                   />
                 </el-select>
               </el-form-item>
+              <!-- <el-form-item class="item" label="推荐人：">
+                <el-select
+                  v-model="form.source11"
+                  filterable
+                  placeholder="可以输入客户搜索"
+                >
+                  <el-option
+                    v-for="(item, index) in selectData.customer_grade"
+                    :key="index"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
+              </el-form-item> -->
             </div>
           </div>
         </div>
