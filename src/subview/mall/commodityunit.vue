@@ -5,8 +5,8 @@
         <el-card
           shadow="never"
           style="
-            height: 100%;
-            min-height: calc(70vh);
+            height: calc(97vh);
+            overflow: auto;
             border: 0;
             border-radius: 5px;
           "
@@ -237,9 +237,14 @@
         this.fetchList(data[0].id)
       },
       async fetchList(temp) {
+        this.form.id = temp
         const {
           data: { data, total },
-        } = await getGoodsGroupDetail({ id: temp })
+        } = await getGoodsGroupDetail({
+          id: temp,
+          page: this.form.page,
+          pageSize: this.form.pageSize,
+        })
         this.list = data
         this.total = total
         // this.listLoading = false

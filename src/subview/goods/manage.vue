@@ -232,7 +232,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="状态" prop="status" width="120">
+          <!-- <el-table-column label="状态" prop="status" width="120">
             <template #default="{ row }">
               <div
                 v-if="row.goods_persell.length == 0"
@@ -255,7 +255,7 @@
                 />
               </div>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
             align="center"
             fixed="right"
@@ -298,7 +298,7 @@
               >
                 取消推荐
               </el-button>
-              <el-button
+              <!-- <el-button
                 v-if="row.recommend == 0"
                 type="text"
                 @click="handleEdit(6, row)"
@@ -311,7 +311,7 @@
                 @click="handlePresell(row)"
               >
                 设置预售
-              </el-button>
+              </el-button> -->
             </template>
           </el-table-column>
         </template>

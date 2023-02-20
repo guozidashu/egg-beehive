@@ -86,6 +86,20 @@
             style="width: 415px"
           />
         </el-form-item>
+        <el-form-item label="下单件数" prop="full_num">
+          <el-input
+            v-model="form.full_num"
+            placeholder="请输入下单件数"
+            style="width: 415px"
+          />
+        </el-form-item>
+        <el-form-item label="下单金额" prop="full_amount">
+          <el-input
+            v-model="form.full_amount"
+            placeholder="请输入下单金额"
+            style="width: 415px"
+          />
+        </el-form-item>
         <el-form-item label="能否散批" prop="single_buy">
           <el-radio-group v-model="form.single_buy">
             <el-radio :label="1">关闭</el-radio>
@@ -126,7 +140,7 @@
             {{ item.name }}
           </span>
         </el-form-item>
-        <el-form-item
+        <!-- <el-form-item
           v-if="tagsList[0].type == 2"
           label="单笔消费金额"
           prop="zhekou"
@@ -167,7 +181,7 @@
           >
             删除
           </el-button>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item
           v-if="tagsList[2].type == 2"
           label="单笔充值金额"
@@ -473,6 +487,31 @@
           discount_single: [
             { required: true, message: '请输入散码折扣', trigger: 'blur' },
           ],
+          // full_num: [
+          //   { required: true, message: '请输入满足数量', trigger: 'blur' },
+          //   {
+          //     validator: (rule, value, callback) => {
+          //       if (value && !/^[1-9]\d*$/.test(value)) {
+          //         callback(new Error('请输入正整数'))
+          //       } else {
+          //         callback()
+          //       }
+          //     },
+          //   },
+          // ],
+          // full_amount: [
+          //   { required: true, message: '请输入满足金额', trigger: 'blur' },
+          //   {
+          //     validator: (rule, value, callback) => {
+          //       if (value && !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(value)) {
+          //         callback(new Error('金额正数且最多两位小数'))
+          //       } else {
+          //         callback()
+          //       }
+          //     },
+          //   },
+          // ],
+
           remark: [{ required: true, message: '请输入备注', trigger: 'blur' }],
         },
         title: '',
