@@ -2190,7 +2190,15 @@ export function setCodeRule(data) {
     data,
   })
 }
-
+// 设置 - 系统设置 -预售配置
+// 预售配置 - 保存
+export function setPresellCancelMins(data) {
+  return request({
+    url: '/setting/setPresellCancelMins',
+    method: 'post',
+    data,
+  })
+}
 // 设置 - 中台管理 - 角色管理
 // 角色管理 - 列表
 export function getRoleList(data) {

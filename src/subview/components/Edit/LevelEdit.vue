@@ -487,30 +487,30 @@
           discount_single: [
             { required: true, message: '请输入散码折扣', trigger: 'blur' },
           ],
-          // full_num: [
-          //   { required: true, message: '请输入满足数量', trigger: 'blur' },
-          //   {
-          //     validator: (rule, value, callback) => {
-          //       if (value && !/^[1-9]\d*$/.test(value)) {
-          //         callback(new Error('请输入正整数'))
-          //       } else {
-          //         callback()
-          //       }
-          //     },
-          //   },
-          // ],
-          // full_amount: [
-          //   { required: true, message: '请输入满足金额', trigger: 'blur' },
-          //   {
-          //     validator: (rule, value, callback) => {
-          //       if (value && !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(value)) {
-          //         callback(new Error('金额正数且最多两位小数'))
-          //       } else {
-          //         callback()
-          //       }
-          //     },
-          //   },
-          // ],
+          full_num: [
+            { required: true, message: '请输入满足数量', trigger: 'blur' },
+            {
+              validator: (rule, value, callback) => {
+                if (value && !/^[1-9]\d*$/.test(value)) {
+                  callback(new Error('请输入正整数'))
+                } else {
+                  callback()
+                }
+              },
+            },
+          ],
+          full_amount: [
+            { required: true, message: '请输入满足金额', trigger: 'blur' },
+            {
+              validator: (rule, value, callback) => {
+                if (value && !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(value)) {
+                  callback(new Error('金额正数且最多两位小数'))
+                } else {
+                  callback()
+                }
+              },
+            },
+          ],
 
           remark: [{ required: true, message: '请输入备注', trigger: 'blur' }],
         },

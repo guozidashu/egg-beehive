@@ -752,6 +752,15 @@ export const asyncRoutes = [
             },
           },
           {
+            path: 'systemPresell',
+            name: 'SystemPresell',
+            component: () => import('@/subview/setting/system/presell'),
+            meta: {
+              title: '预售设置',
+              // icon: 'home-2-line',
+            },
+          },
+          {
             path: 'systemmodule',
             name: 'SystemModule',
             component: () => import('@/subview/setting/system/module'),
