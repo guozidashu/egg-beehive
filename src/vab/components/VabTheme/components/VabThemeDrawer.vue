@@ -367,22 +367,6 @@
             flex: 0 0 auto;
           }
 
-          @font-face {
-            font-family: 'remixicon';
-            src: url('~remixicon/fonts/remixicon.eot?t=1590207869815'); /* IE9*/
-            src: url('~remixicon/fonts/remixicon.eot?t=1590207869815#iefix')
-                format('embedded-opentype'),
-              url('~remixicon/fonts/remixicon.woff2?t=1590207869815')
-                format('woff2'),
-              url('~remixicon/fonts/remixicon.woff?t=1590207869815')
-                format('woff'),
-              url('~remixicon/fonts/remixicon.ttf?t=1590207869815')
-                format('truetype'),
-              url('~remixicon/fonts/remixicon.svg?t=1590207869815#remixicon')
-                format('svg');
-            font-display: swap;
-          }
-
           &.vab-item-custom {
             display: block !important;
           }
@@ -408,20 +392,6 @@
             .el-radio-button__orig-radio,
             .el-radio-button__inner {
               display: none;
-            }
-
-            &.none {
-              font-family: 'remixicon', sans-serif !important;
-              font-size: 16px;
-              font-weight: 580;
-              line-height: 80px;
-              text-align: center;
-              background: #f7f7f7 none;
-              background-size: cover;
-
-              &:before {
-                content: '\eace';
-              }
             }
 
             &.vab-background {

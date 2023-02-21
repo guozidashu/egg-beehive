@@ -1484,30 +1484,4 @@
       }
     }
   }
-
-  @font-face {
-    font-family: 'remixicon';
-    src: url('~remixicon/fonts/remixicon.eot?t=1590207869815'); /* IE9*/
-    src: url('~remixicon/fonts/remixicon.eot?t=1590207869815#iefix')
-        format('embedded-opentype'),
-      url('~remixicon/fonts/remixicon.woff2?t=1590207869815') format('woff2'),
-      url('~remixicon/fonts/remixicon.woff?t=1590207869815') format('woff'),
-      url('~remixicon/fonts/remixicon.ttf?t=1590207869815') format('truetype'),
-      url('~remixicon/fonts/remixicon.svg?t=1590207869815#remixicon')
-        format('svg');
-    font-display: swap;
-  }
-  ::v-deep {
-    .vab-quill {
-      .ql-vab-upload-image {
-        font-family: 'remixicon', sans-serif !important;
-        font-size: 16px;
-        font-weight: 580;
-
-        &:before {
-          content: '\ee46';
-        }
-      }
-    }
-  }
 </style>

@@ -26,11 +26,6 @@ import { baseURL, pwa } from './config'
 
 import { isExternal } from '@/utils/validate'
 
-if (process.env.NODE_ENV === 'production' && !isExternal(baseURL)) {
-  const { mockXHR } = require('@/utils/static')
-  mockXHR()
-}
-
 if (pwa) require('./registerServiceWorker')
 
 Vue.config.productionTip = false

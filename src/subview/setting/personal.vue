@@ -89,17 +89,14 @@
         </el-card>
       </el-col>
     </el-row>
-    <vab-cropper ref="vabCropper" />
   </div>
 </template>
 
 <script>
   import { mapState } from 'vuex'
-  import VabCropper from '@/extra/VabCropper'
 
   export default {
     name: 'Personal',
-    components: { VabCropper },
     data() {
       return {
         activeName: 'second',
@@ -129,9 +126,7 @@
       onSubmit() {
         this.$baseMessage('模拟保存成功', 'success', 'vab-hey-message-success')
       },
-      openDialog() {
-        this.$refs['vabCropper'].dialogVisible = true
-      },
+      openDialog() {},
     },
   }
 </script>
