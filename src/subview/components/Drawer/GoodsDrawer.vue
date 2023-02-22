@@ -874,10 +874,18 @@
           this.lockSta = false
           this.tabindex = '0'
           this.activeName = '0'
+          console.log(newVal)
           if (newVal.drawerType != 3) {
             this.getGoodsAllDetail()
             this.getGoodsDetail()
           }
+        },
+        deep: true,
+        immediate: true,
+      },
+      selectList: {
+        handler: function (newVal) {
+          this.selectData = JSON.parse(JSON.stringify(newVal))
         },
         deep: true,
         immediate: true,
@@ -944,12 +952,6 @@
         },
         deep: true,
       },
-      selectList: {
-        handler: function (newVal) {
-          this.selectData = Object.assign({}, newVal)
-        },
-        deep: true,
-      },
     },
     created() {
       this.initSelect()
@@ -973,6 +975,7 @@
         this.form.warehouse = data.warehouse_id
         this.form.position = data.position_id
         this.form.drawerType = temp
+        this.selectProvinceFun(data.warehouse_id)
       },
       async selectProvinceFun(e) {
         const { data } = await getWarehousePositionList({ warehouse_id: e })

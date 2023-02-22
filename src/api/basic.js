@@ -720,6 +720,14 @@ export function getReturnOrderList(data) {
     data,
   })
 }
+// 退货订单列表导出
+export function getReturnOrderExport(data) {
+  return request({
+    url: '/returnOrder/export',
+    method: 'post',
+    data,
+  })
+}
 // 订单 - 发货统计列表
 // 发货统计列表
 export function getDeliveryStatisticsList(data) {

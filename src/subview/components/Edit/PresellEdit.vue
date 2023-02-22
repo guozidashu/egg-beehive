@@ -90,9 +90,7 @@
           },
         },
         DisableDatesOption1: {
-          disabledDate(date) {
-            return date.getTime() < Date.now() - 24 * 60 * 60 * 1000
-          },
+          disabledDate: this.disabledDate,
         },
         selectDataList: {},
         form: {
@@ -239,6 +237,9 @@
       this.selectData()
     },
     methods: {
+      disabledDate(date) {
+        return date.getTime() < new Date(this.form.time[1]).getTime()
+      },
       async selectData() {
         const { data } = await getCommonAllList({
           type: 'customer_grade',

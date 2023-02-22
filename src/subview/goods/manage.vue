@@ -208,31 +208,7 @@
               <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="销量" prop="xl_num" width="120" />
-          <el-table-column label="库存" prop="xh_num" width="100" />
-          <el-table-column label="聚水潭库存" prop="jst_xh_num" width="100" />
-          <el-table-column
-            label="聚水潭占用库存"
-            prop="jst_occupy_num"
-            width="100"
-          />
-          <el-table-column label="预售状态" prop="status" width="120">
-            <template #default="{ row }">
-              <div v-if="row.status == 1" style="margin-bottom: 10px">
-                <el-tag>在售</el-tag>
-              </div>
-              <div v-else style="margin-bottom: 10px">
-                <el-tag type="danger">停售</el-tag>
-              </div>
-              <div v-if="row.recommend == 0">
-                <el-tag type="danger">已取消推荐</el-tag>
-              </div>
-              <div v-else-if="row.recommend == 1">
-                <el-tag>推荐中</el-tag>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column label="状态" prop="status" width="120">
+          <!-- <el-table-column label="预售状态" prop="status" width="120">
             <template #default="{ row }">
               <div
                 v-if="row.goods_persell.length == 0"
@@ -255,7 +231,31 @@
                 />
               </div>
             </template>
+          </el-table-column> -->
+          <el-table-column label="状态" prop="status" width="120">
+            <template #default="{ row }">
+              <div v-if="row.status == 1" style="margin-bottom: 10px">
+                <el-tag>在售</el-tag>
+              </div>
+              <div v-else style="margin-bottom: 10px">
+                <el-tag type="danger">停售</el-tag>
+              </div>
+              <div v-if="row.recommend == 0">
+                <el-tag type="danger">已取消推荐</el-tag>
+              </div>
+              <div v-else-if="row.recommend == 1">
+                <el-tag>推荐中</el-tag>
+              </div>
+            </template>
           </el-table-column>
+          <el-table-column label="销量" prop="xl_num" width="120" />
+          <el-table-column label="库存" prop="xh_num" width="100" />
+          <el-table-column label="聚水潭库存" prop="jst_xh_num" width="100" />
+          <el-table-column
+            label="聚水潭占用库存"
+            prop="jst_occupy_num"
+            width="100"
+          />
           <el-table-column
             align="center"
             fixed="right"
@@ -305,13 +305,13 @@
               >
                 设置推荐
               </el-button>
-              <el-button
+              <!-- <el-button
                 v-has-permi="['btn:GoodsManage:presell']"
                 type="text"
                 @click="handlePresell(row)"
               >
                 设置预售
-              </el-button>
+              </el-button> -->
             </template>
           </el-table-column>
         </template>

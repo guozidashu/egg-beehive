@@ -2,6 +2,8 @@
   <div style="background-color: #f6f8f9">
     <div
       style="
+        display: flex;
+        justify-content: space-between;
         padding-top: 1px;
         margin-bottom: 20px;
         background-color: #ffffff;
@@ -57,6 +59,16 @@
           </el-form-item>
         </template>
       </QYForm>
+      <div>
+        <el-button
+          size="small"
+          style="margin-top: 20px; margin-right: 20px"
+          type="primary"
+          @click="handleDownload()"
+        >
+          全部导出
+        </el-button>
+      </div>
     </div>
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <el-tabs v-model="form.order_source" @tab-click="handleClick">
@@ -134,7 +146,7 @@
 <script>
   import Edit from '@/subview/components/Edit/BandEdit'
   import datajosn from '@/assets/assets_josn/datajosn'
-  import { getReturnOrderList } from '@/api/basic'
+  import { getReturnOrderList, getReturnOrderExport } from '@/api/basic'
   export default {
     components: { Edit },
     mixins: [datajosn],
@@ -177,6 +189,17 @@
       this.fetchData()
     },
     methods: {
+      async handleDownload() {
+        const { code, data } = await getReturnOrderExport(this.form)
+        if (code == 200) {
+          window.open(data.url)
+          this.$message.success('导出成功')
+          this.dialogVisible = false
+          this.fetchData()
+        } else {
+          this.$message.error('导出失败')
+        }
+      },
       handleQuery() {
         this.fetchData()
       },
