@@ -55,6 +55,16 @@
               />
             </el-select>
           </el-form-item>
+          <el-form-item label="上市波段:">
+            <el-select v-model="form.band" placeholder="请选择波段">
+              <el-option
+                v-for="(item, index) in selectList.band"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
           <el-form-item label="状态:">
             <el-select v-model="form.status">
               <el-option label="停售" value="2" />
@@ -67,20 +77,16 @@
               <el-option label="推荐中" value="1" />
             </el-select>
           </el-form-item>
+          <el-form-item label="预售状态:">
+            <el-select v-model="form.presell">
+              <el-option label="未预售" value="0" />
+              <el-option label="预售中" value="1" />
+            </el-select>
+          </el-form-item>
           <el-form-item label="尺码类型:">
             <el-select v-model="form.type">
               <el-option label="整手" value="0" />
               <el-option label="散码" value="1" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="上市波段:">
-            <el-select v-model="form.band" placeholder="请选择波段">
-              <el-option
-                v-for="(item, index) in selectList.band"
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-              />
             </el-select>
           </el-form-item>
           <el-form-item label="商品搜索:">
@@ -208,7 +214,7 @@
               <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="预售状态" prop="status" width="120">
+          <el-table-column label="预售状态" prop="status" width="120">
             <template #default="{ row }">
               <div
                 v-if="row.goods_persell.length == 0"
@@ -231,7 +237,7 @@
                 />
               </div>
             </template>
-          </el-table-column> -->
+          </el-table-column>
           <el-table-column label="状态" prop="status" width="120">
             <template #default="{ row }">
               <div v-if="row.status == 1" style="margin-bottom: 10px">
@@ -305,13 +311,13 @@
               >
                 设置推荐
               </el-button>
-              <!-- <el-button
+              <el-button
                 v-has-permi="['btn:GoodsManage:presell']"
                 type="text"
                 @click="handlePresell(row)"
               >
                 设置预售
-              </el-button> -->
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -448,6 +454,7 @@
           band: '', //波段
           name: '', //商品名称
           recommend: '', //推荐
+          presell: '', //预售
           status: '', //状态
         },
         listType: 1,

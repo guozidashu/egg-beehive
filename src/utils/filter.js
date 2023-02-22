@@ -23,6 +23,7 @@ export function permissionFiltering(path, role) {
   // console.log('权限状态', temp)
   return temp
 }
+
 // 人民币过滤器
 Vue.filter('moneyFormat', (value) => {
   // 金额分割符
