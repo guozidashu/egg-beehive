@@ -124,6 +124,8 @@
       <QYList
         :list="list"
         :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
         :state="listLoading"
         :total="total"
         @changePage="changeBtnPage"
@@ -488,6 +490,9 @@
           down_the_shelf: null,
           stock_zero: null,
         },
+        formTemp: null,
+        page: 1,
+        pageSize: 10,
         form: {
           page: 1,
           pageSize: 10,
@@ -512,8 +517,21 @@
     },
     watch: {
       form: {
-        handler: function () {
+        handler: function (newVal) {
+          this.formTemp = JSON.parse(JSON.stringify(newVal))
+          if (this.pageState) {
+            this.formTemp.page = newVal.page
+            this.formTemp.pageSize = newVal.pageSize
+            this.page = newVal.page
+            this.pageSize = newVal.pageSize
+          } else {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 10
+            this.page = 1
+            this.pageSize = 10
+          }
           this.fetchData()
+          this.pageState = false
         },
         deep: true,
       },
@@ -558,10 +576,12 @@
         this.dialogVisible1 = false
       },
       changeBtnPage(data) {
+        this.pageState = true
         this.form.page = data
       },
 
       changeBtnPageSize(data) {
+        this.pageState = true
         this.form.pageSize = data
       },
       handleRemove(index) {
@@ -649,7 +669,10 @@
           this.drawer = false
         }
         this.listLoading = true
-        const { data } = await getGoodList(this.form)
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        const { data } = await getGoodList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

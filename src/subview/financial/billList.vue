@@ -66,6 +66,8 @@
       <QYList
         :list="list"
         :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
         :state="listLoading"
         :total="total"
         @changePage="changeBtnPage"
@@ -176,6 +178,9 @@
     data() {
       return {
         selectList: [],
+        formTemp: null,
+        page: 1,
+        pageSize: 10,
         form: {
           type: null, // 类型 1收 2支
           category_id: null, // 收支分类
@@ -197,8 +202,21 @@
     },
     watch: {
       form: {
-        handler: function () {
+        handler: function (newVal) {
+          this.formTemp = JSON.parse(JSON.stringify(newVal))
+          if (this.pageState) {
+            this.formTemp.page = newVal.page
+            this.formTemp.pageSize = newVal.pageSize
+            this.page = newVal.page
+            this.pageSize = newVal.pageSize
+          } else {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 10
+            this.page = 1
+            this.pageSize = 10
+          }
           this.fetchData()
+          this.pageState = false
         },
         deep: true,
       },
@@ -251,9 +269,11 @@
         this.fetchData()
       },
       changeBtnPage(data) {
+        this.pageState = true
         this.form.page = data
       },
       changeBtnPageSize(data) {
+        this.pageState = true
         this.form.pageSize = data
       },
       async fetchData() {
@@ -262,7 +282,10 @@
           this.form.start_time = this.form.date[0]
           this.form.end_time = this.form.date[1]
         }
-        const { data } = await getBillList(this.form)
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        const { data } = await getBillList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

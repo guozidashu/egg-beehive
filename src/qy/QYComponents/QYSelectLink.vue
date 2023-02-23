@@ -571,6 +571,8 @@
         this.dialogFormVisible = false
       },
       handleQuery() {
+        this.form.page = 1
+        this.form.pageSize = 10
         this.fetchData()
       },
       changeBtnPage(data) {
@@ -579,7 +581,7 @@
       },
 
       changeBtnPageSize(data) {
-        this.form.page_size = data
+        this.form.pageSize = data
         this.fetchData()
       },
       handleSelectionChange(val) {

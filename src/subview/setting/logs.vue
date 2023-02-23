@@ -110,6 +110,9 @@
         listLoading: false,
         layout: 'total, sizes, prev, pager, next, jumper',
         total: 0,
+        formTemp: null,
+        page: 1,
+        pageSize: 10,
         queryForm: {
           name: '', //操作名称
           admin_name: '', //操作人
@@ -121,8 +124,21 @@
     },
     watch: {
       queryForm: {
-        handler: function () {
+        handler: function (newVal) {
+          this.formTemp = JSON.parse(JSON.stringify(newVal))
+          if (this.pageState) {
+            this.formTemp.page = newVal.page
+            this.formTemp.pageSize = newVal.pageSize
+            this.page = newVal.page
+            this.pageSize = newVal.pageSize
+          } else {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 10
+            this.page = 1
+            this.pageSize = 10
+          }
           this.fetchData()
+          this.pageState = false
         },
         deep: true,
       },
@@ -132,12 +148,12 @@
     },
     methods: {
       handleSizeChange(val) {
+        this.pageState = true
         this.queryForm.pageSize = val
-        this.fetchData()
       },
       handleCurrentChange(val) {
+        this.pageState = true
         this.queryForm.page = val
-        this.fetchData()
       },
       queryData() {
         this.queryForm = {
@@ -150,7 +166,10 @@
       },
       async fetchData() {
         this.listLoading = true
-        const { data } = await getLogList(this.queryForm)
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.queryForm))
+        }
+        const { data } = await getLogList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
