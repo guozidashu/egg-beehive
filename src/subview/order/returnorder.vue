@@ -85,6 +85,8 @@
       <QYList
         :list="list"
         :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
         :state="listLoading"
         :total="total"
         @changePage="changeBtnPage"
@@ -158,12 +160,14 @@
           online: 0,
         },
         order_source: '0',
-
+        formTemp: null,
+        page: 1,
+        pageSize: 10,
         form: {
           search_type: 'id', //搜索条件 sn订单号 goods_sn商品款号 id批次号
           keywords: '', //搜索关键字
           page: 1,
-          pageSize: 20,
+          pageSize: 10,
           order_time: this.getPastTime(30),
           order_source: '0', //0 所有订单 1线下退货单 2线上退货单
           customer_name: '', //客户名称
@@ -179,8 +183,21 @@
     },
     watch: {
       form: {
-        handler: function () {
+        handler: function (newVal) {
+          this.formTemp = JSON.parse(JSON.stringify(newVal))
+          if (this.pageState) {
+            this.formTemp.page = newVal.page
+            this.formTemp.pageSize = newVal.pageSize
+            this.page = newVal.page
+            this.pageSize = newVal.pageSize
+          } else {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 10
+            this.page = 1
+            this.pageSize = 10
+          }
           this.fetchData()
+          this.pageState = false
         },
         deep: true,
       },
@@ -218,14 +235,19 @@
         this.order_source = tab.name
       },
       changeBtnPage(data) {
+        this.pageState = true
         this.form.page = data
       },
       changeBtnPageSize(data) {
+        this.pageState = true
         this.form.pageSize = data
       },
       async fetchData() {
         this.listLoading = true
-        const { data } = await getReturnOrderList(this.form)
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        const { data } = await getReturnOrderList(this.formTemp)
         this.list = data.list
         this.total = data.count
         this.count_data = data.count_data

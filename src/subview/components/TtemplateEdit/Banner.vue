@@ -98,6 +98,21 @@
           <el-color-picker v-model="list.parameters.bg_color" />
         </div>
       </el-form-item>
+      <div style="margin: 10px">图片样式</div>
+      <el-form-item>
+        <el-select
+          v-model="list.parameters.img_mode"
+          placeholder="请选择图片样式"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+
       <div style="margin: 10px">左右外边距</div>
       <el-form-item>
         <div style="padding: 0 10px">
@@ -220,6 +235,28 @@
         index: null,
         show: false,
         imageIndex: null,
+        options: [
+          {
+            value: 'scaleTofill',
+            label: '图片高宽完全拉伸至填满 image 元素',
+          },
+          {
+            value: 'aspectFit',
+            label: '保持比例缩放图片，使图片的长边能完全显示出来',
+          },
+          {
+            value: 'aspectFill',
+            label: '保持比例缩放图片，使图片的短边能完全显示出来',
+          },
+          {
+            value: 'widthFix',
+            label: '宽度不变，高度自动变化，保持原图宽高比不变',
+          },
+          {
+            value: 'heightFix',
+            label: '高度不变，宽度自动变化，保持原图宽高比不变',
+          },
+        ],
       }
     },
     computed: {

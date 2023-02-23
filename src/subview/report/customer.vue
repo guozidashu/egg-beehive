@@ -570,7 +570,7 @@
         this.$router.push({
           path: '/customer/customerManage',
           query: {
-            id: row.customer_id,
+            id: row.id,
           },
         })
       },

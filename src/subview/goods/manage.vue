@@ -164,6 +164,8 @@
       <QYList
         :list="list"
         :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
         :state="listLoading"
         :total="total"
         @changePage="changeBtnPage"
@@ -442,6 +444,10 @@
           jushuitan_not_sync: null, // 聚水潭未同步
           jushuitan_sync: null, // 聚水潭已同步
         },
+        pageState: false,
+        formTemp: null,
+        page: 1,
+        pageSize: 10,
         form: {
           page: 1,
           pageSize: 10,
@@ -468,9 +474,22 @@
     },
     watch: {
       form: {
-        handler: function () {
+        handler: function (newVal) {
+          this.formTemp = JSON.parse(JSON.stringify(newVal))
+          if (this.pageState) {
+            this.formTemp.page = newVal.page
+            this.formTemp.pageSize = newVal.pageSize
+            this.page = newVal.page
+            this.pageSize = newVal.pageSize
+          } else {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 10
+            this.page = 1
+            this.pageSize = 10
+          }
           this.fetchData()
           this.getTatolData()
+          this.pageState = false
         },
         deep: true,
       },
@@ -492,7 +511,10 @@
         this.$refs['edit'].showEdit(row)
       },
       async handleDerive() {
-        const { code, data } = await getGoodsExport(this.form)
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        const { code, data } = await getGoodsExport(this.formTemp)
         if (code == 200) {
           window.open(data.url)
           this.$message.success('导出成功')
@@ -515,9 +537,11 @@
         }
       },
       changeBtnPage(data) {
+        this.pageState = true
         this.form.page = data
       },
       changeBtnPageSize(data) {
+        this.pageState = true
         this.form.pageSize = data
       },
       handleRemove(index) {
@@ -570,13 +594,19 @@
           this.drawer = false
         }
         this.listLoading = true
-        const { data } = await getGoodList(this.form)
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        const { data } = await getGoodList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
       },
       async getTatolData() {
-        const { data } = await getGoodTabTotal(this.form)
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        const { data } = await getGoodTabTotal(this.formTemp)
         this.tatleData = data
       },
       async getGoodsTypeList() {

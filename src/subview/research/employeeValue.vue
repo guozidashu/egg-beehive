@@ -48,6 +48,8 @@
       <QYList
         :list="list"
         :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
         :state="listLoading"
         :total="total"
         @changePage="changeBtnPage"
@@ -102,6 +104,8 @@
     mixins: [datajosn],
     data() {
       return {
+        page: 1,
+        pageSize: 10,
         form: {
           page: 1,
           pageSize: 10,
@@ -118,8 +122,16 @@
     },
     watch: {
       form: {
-        handler: function () {
+        handler: function (newVal) {
+          if (this.pageState) {
+            this.page = newVal.page
+            this.pageSize = newVal.pageSize
+          } else {
+            this.page = 1
+            this.pageSize = 10
+          }
           this.fetchData()
+          this.pageState = false
         },
         deep: true,
       },
@@ -155,18 +167,20 @@
       },
 
       changeBtnPage(data) {
+        this.pageState = true
         this.form.page = data
       },
 
       changeBtnPageSize(data) {
+        this.pageState = true
         this.form.pageSize = data
       },
 
       async fetchData() {
         this.listLoading = true
         const { data } = await getEmployeeCostAnalysis({
-          page: this.form.page,
-          pageSize: this.form.pageSize,
+          page: this.page,
+          pageSize: this.pageSize,
           start_date: this.form.date[0], // 开始时间
           end_date: this.form.date[1], // 结束时间
           role_id: this.form.role_id, // 季节id

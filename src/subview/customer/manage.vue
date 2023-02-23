@@ -153,6 +153,8 @@
         ref="multipleTable"
         :list="list"
         :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
         :state="listLoading"
         :total="total"
         @changePage="changeBtnPage"
@@ -260,9 +262,9 @@
               <el-button type="text" @click="handleDeposit(row.id)">
                 保证金
               </el-button>
-              <!-- <el-button type="text" @click="handleIntegral(row.id)">
+              <el-button type="text" @click="handleIntegral(row.id)">
                 积分
-              </el-button> -->
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -489,6 +491,9 @@
         drawer: false,
         drawerInof: {},
         activeName: 'first',
+        formTemp: null,
+        page: 1,
+        pageSize: 10,
         form: {
           search_type: 'mobile', //搜索条件 mobile nick_name name account
           keywords: null, //搜索内容
@@ -498,19 +503,7 @@
           tag: null, //标签id
           create_time: [], //注册时间区间搜索
           page: 1,
-          page_size: 10,
-          id: null,
-        },
-        form1: {
-          search_type: 'mobile', //搜索条件 mobile nick_name name account
-          keywords: null, //搜索内容
-          level: null, //等级id
-          type: null, //客户分类
-          //source: null, //客户来源
-          tag: null, //标签id
-          create_time: [], //注册时间区间搜索
-          page: 1,
-          page_size: 10,
+          pageSize: 10,
           id: null,
         },
         listType: 1,
@@ -523,16 +516,21 @@
     watch: {
       form: {
         //表单筛选条件变化实时刷新列表
-        handler: function (newval) {
-          this.form1 = JSON.parse(JSON.stringify(newval))
-          if (newval.tag != undefined) {
-            if (newval.tag.length == 2) {
-              this.form1.tag = newval.tag[1]
-            } else {
-              this.form1.tag = null
-            }
+        handler: function (newVal) {
+          this.formTemp = JSON.parse(JSON.stringify(newVal))
+          if (this.pageState) {
+            this.formTemp.page = newVal.page
+            this.formTemp.pageSize = newVal.pageSize
+            this.page = newVal.page
+            this.pageSize = newVal.pageSize
+          } else {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 10
+            this.page = 1
+            this.pageSize = 10
           }
           this.fetchData()
+          this.pageState = false
         },
         deep: true,
       },
@@ -548,16 +546,9 @@
       '$route.query.id': {
         //表单筛选条件变化实时刷新列表
         handler: async function (newval) {
-          if (newval == undefined) {
-            this.form.id = null
-            this.form1.id = null
-            await this.fetchData()
-            this.selectData()
-          } else {
+          if (newval != undefined) {
             this.form.id = newval
-            this.form1.id = newval
-            await this.fetchData()
-            this.selectData()
+            await this.selectData()
             this.handleDetail(this.list[0], 1)
           }
         },
@@ -571,10 +562,6 @@
         deep: true,
         immediate: true,
       },
-    },
-    created() {
-      this.fetchData()
-      this.selectData()
     },
     methods: {
       handleIntegral(row) {
@@ -678,23 +665,22 @@
         this.form.page = 1
       },
       changeBtnPage(data) {
+        this.pageState = true
         this.form.page = data
       },
       changeBtnPageSize(data) {
+        this.pageState = true
         this.form.pageSize = data
-      },
-      changeBtnPageDeposit(data) {
-        this.DepositForm.page = data
-      },
-      changeBtnPageSizeDeposit(data) {
-        this.DepositForm.pageSize = data
       },
       async fetchData(type) {
         if (type == 1) {
           this.drawer = false
         }
         this.listLoading = true
-        const { data } = await getCustomerList(this.form1)
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        const { data } = await getCustomerList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

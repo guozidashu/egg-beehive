@@ -123,6 +123,8 @@
         ref="multipleTable"
         :list="list"
         :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
         :state="listLoading"
         :total="total"
         @changePage="changeBtnPage"
@@ -276,6 +278,9 @@
           shop_count: null,
           all_order: null,
         },
+        formTemp: null,
+        page: 1,
+        pageSize: 10,
         form: {
           fold: true,
           order_time: [], //订单时间搜索
@@ -297,9 +302,22 @@
     },
     watch: {
       form: {
-        handler: function () {
+        handler: function (newVal) {
+          this.formTemp = JSON.parse(JSON.stringify(newVal))
+          if (this.pageState) {
+            this.formTemp.page = newVal.page
+            this.formTemp.pageSize = newVal.pageSize
+            this.page = newVal.page
+            this.pageSize = newVal.pageSize
+          } else {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 10
+            this.page = 1
+            this.pageSize = 10
+          }
           this.fetchData()
           this.orderCount()
+          this.pageState = false
         },
         deep: true,
       },
@@ -323,14 +341,19 @@
         this.form = this.$options.data().form
       },
       changeBtnPage(data) {
+        this.pageState = true
         this.form.page = data
       },
       changeBtnPageSize(data) {
+        this.pageState = true
         this.form.pageSize = data
       },
       async fetchData() {
         this.listLoading = true
-        const { data } = await getOrderList(this.form)
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        const { data } = await getOrderList(this.formTemp)
         data.data.forEach((item) => {
           item.inofText = item.info.name
           item.orderStatus = item.order_status.slice(1)
@@ -341,7 +364,10 @@
         this.listLoading = false
       },
       async orderCount() {
-        const { data } = await getOrderCount(this.form)
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        const { data } = await getOrderCount(this.formTemp)
         this.orderCountData = data
       },
       handleDetail(row) {

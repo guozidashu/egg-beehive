@@ -83,6 +83,8 @@
       <QYList
         :list="list"
         :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
         :state="listLoading"
         :total="total"
         @changePage="changeBtnPage"
@@ -173,7 +175,8 @@
       return {
         dialogVisible: false,
         order_source: '0',
-
+        page: 1,
+        pageSize: 10,
         form: {
           sn: '', //订单号
           search_type: 'mobile', //搜索条件 mobile nick_name name account
@@ -195,8 +198,16 @@
     },
     watch: {
       form: {
-        handler: function () {
+        handler: function (newVal) {
+          if (this.pageState) {
+            this.page = newVal.page
+            this.pageSize = newVal.pageSize
+          } else {
+            this.page = 1
+            this.pageSize = 10
+          }
           this.fetchData()
+          this.pageState = false
         },
         deep: true,
       },
@@ -267,12 +278,14 @@
         this.order_source = tab.name
       },
       changeBtnPage(data) {
+        this.pageState = true
         this.form.page = data
       },
       selectBtnRows(data) {
         this.selectRows = data
       },
       changeBtnPageSize(data) {
+        this.pageState = true
         this.form.pageSize = data
       },
       async fetchData() {
@@ -283,8 +296,8 @@
           search_type: this.form.search_type, //搜索条件 mobile nick_name name account
           keywords: this.form.keywords, //搜索内容
           sn: this.form.sn,
-          page: this.form.page,
-          pageSize: this.form.pageSize,
+          page: this.page,
+          pageSize: this.pageSize,
         })
         this.list = data.data
         this.total = data.total

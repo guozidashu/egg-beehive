@@ -101,9 +101,9 @@
     <el-pagination
       v-if="listType === 1 || listType === 3"
       background
-      :current-page="list.pageNo"
+      :current-page="pageNo"
       :layout="layout"
-      :page-size="list.pageSize"
+      :page-size="pageSize"
       :page-sizes="[10, 20, 30, 40]"
       :total="total"
       @current-change="handleCurrentChange"
@@ -139,6 +139,14 @@
       listHeight: {
         type: Number,
         default: 0,
+      },
+      pageNo: {
+        type: Number,
+        default: 1,
+      },
+      pageSize: {
+        type: Number,
+        default: 10,
       },
     },
     data() {

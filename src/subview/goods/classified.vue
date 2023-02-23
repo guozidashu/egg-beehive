@@ -106,6 +106,8 @@
           <QYList
             :list="list"
             :list-type="listType"
+            :page-no="page"
+            :page-size="pageSize"
             :state="listLoading"
             :total="total"
             @changePage="changeBtnPage"
@@ -168,6 +170,9 @@
     components: { Edit },
     data() {
       return {
+        formTemp: null,
+        page: 1,
+        pageSize: 10,
         form: {
           id: 0,
           page: 1,
@@ -184,8 +189,21 @@
     },
     watch: {
       form: {
-        handler: function () {
+        handler: function (newVal) {
+          this.formTemp = JSON.parse(JSON.stringify(newVal))
+          if (this.pageState) {
+            this.formTemp.page = newVal.page
+            this.formTemp.pageSize = newVal.pageSize
+            this.page = newVal.page
+            this.pageSize = newVal.pageSize
+          } else {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 10
+            this.page = 1
+            this.pageSize = 10
+          }
           this.fetchList()
+          this.pageState = false
         },
         deep: true,
       },
@@ -238,9 +256,11 @@
         }
       },
       changeBtnPage(data) {
+        this.pageState = true
         this.form.page = data
       },
       changeBtnPageSize(data) {
+        this.pageState = true
         this.form.pageSize = data
       },
       async fetchData() {
@@ -259,9 +279,12 @@
         this.fetchList()
       },
       async fetchList() {
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
         const {
           data: { data, total },
-        } = await getCategorySonList(this.form)
+        } = await getCategorySonList(this.formTemp)
         this.list = data
         this.total = total
       },

@@ -139,6 +139,8 @@
         ref="multipleTable"
         :list="list"
         :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
         :state="listLoading"
         :total="total"
         @changePage="changeBtnPage"
@@ -282,6 +284,9 @@
 
         activeName: '0',
         supplier_type: [],
+        formTemp: null,
+        page: 1,
+        pageSize: 10,
         form: {
           fold: true,
           page: 1,
@@ -311,9 +316,22 @@
     },
     watch: {
       form: {
-        handler: function () {
+        handler: function (newVal) {
+          this.formTemp = JSON.parse(JSON.stringify(newVal))
+          if (this.pageState) {
+            this.formTemp.page = newVal.page
+            this.formTemp.pageSize = newVal.pageSize
+            this.page = newVal.page
+            this.pageSize = newVal.pageSize
+          } else {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 10
+            this.page = 1
+            this.pageSize = 10
+          }
           this.fetchData()
           this.getTatleAll()
+          this.pageState = false
         },
         deep: true,
       },
@@ -339,16 +357,21 @@
         }
       },
       async getTatleAll() {
-        const { data } = await getFinishGetCount(this.form)
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        const { data } = await getFinishGetCount(this.formTemp)
         this.tatleData = data
       },
       handleQuery() {
         this.fetchData()
       },
       changeBtnPage(data) {
+        this.pageState = true
         this.form.page = data
       },
       changeBtnPageSize(data) {
+        this.pageState = true
         this.form.pageSize = data
       },
       handleClick(tab) {
@@ -359,7 +382,10 @@
       },
       async fetchData() {
         this.listLoading = true
-        const { data } = await getFinishList(this.form)
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        const { data } = await getFinishList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

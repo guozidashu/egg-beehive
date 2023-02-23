@@ -418,6 +418,8 @@
       <QYList
         :list="goosList"
         :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
         :state="listLoading"
         :total="listTotal"
         @changePage="changeBtnPage"
@@ -677,6 +679,9 @@
             bgColor: '#D8EFE5',
           },
         ],
+        formTemp: null,
+        page: 1,
+        pageSize: 10,
         goodsForm1: {
           page: 1,
           pageSize: 20,
@@ -788,8 +793,21 @@
     },
     watch: {
       goodsForm1: {
-        handler: function () {
+        handler: function (newVal) {
+          this.formTemp = JSON.parse(JSON.stringify(newVal))
+          if (this.pageState) {
+            this.formTemp.page = newVal.page
+            this.formTemp.pageSize = newVal.pageSize
+            this.page = newVal.page
+            this.pageSize = newVal.pageSize
+          } else {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 10
+            this.page = 1
+            this.pageSize = 10
+          }
           this.getTableList()
+          this.pageState = false
         },
         deep: true,
       },
@@ -819,10 +837,12 @@
     },
     methods: {
       changeBtnPage(data) {
+        this.pageState = true
         this.goodsForm1.page = data
       },
 
       changeBtnPageSize(data) {
+        this.pageState = true
         this.goodsForm1.pageSize = data
       },
       resetForm1() {
@@ -843,7 +863,10 @@
       },
       async getTableList() {
         this.listLoading = true
-        const { data } = await getWarehouseAnalysisList(this.goodsForm1)
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        const { data } = await getWarehouseAnalysisList(this.formTemp)
         this.goosList = data.data
         this.listTotal = data.total
         this.listLoading = false

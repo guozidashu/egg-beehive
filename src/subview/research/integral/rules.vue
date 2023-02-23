@@ -90,6 +90,14 @@
     watch: {
       form: {
         handler: function (newVal) {
+          if (this.form.category_id == '') {
+            this.$baseMessage(
+              '请选择供应商类别',
+              'warning',
+              'vab-hey-message-warning'
+            )
+            return
+          }
           if (newVal.typeName == '奖励') {
             this.form.type = 'reward'
           } else {

@@ -68,6 +68,8 @@
       <QYList
         :list="list"
         :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
         :state="listLoading"
         :total="total"
         @changePage="changeBtnPage"
@@ -157,7 +159,9 @@
     data() {
       return {
         order_source: '0',
-
+        formTemp: null,
+        page: 1,
+        pageSize: 10,
         form: {
           sn: '', //订单号
           type: '1', //导出数据格式  1颜色  2颜色+尺码 3 按款号
@@ -177,8 +181,17 @@
     },
     watch: {
       form: {
-        handler: function () {
+        handler: function (newVal) {
+          this.formTemp = JSON.parse(JSON.stringify(newVal))
+          if (this.pageState) {
+            this.page = newVal.page
+            this.pageSize = newVal.pageSize
+          } else {
+            this.page = 1
+            this.pageSize = 10
+          }
           this.fetchData()
+          this.pageState = false
         },
         deep: true,
       },
@@ -194,8 +207,8 @@
           type: Number(this.form.type),
           status: this.form.status,
           sn: this.form.sn,
-          page: this.form.page,
-          pageSize: this.form.pageSize,
+          page: this.page,
+          pageSize: this.pageSize,
         })
         if (code == 200) {
           window.open(data.url)
@@ -222,12 +235,14 @@
         this.order_source = tab.name
       },
       changeBtnPage(data) {
+        this.pageState = true
         this.form.page = data
       },
       selectBtnRows(data) {
         this.selectRows = data
       },
       changeBtnPageSize(data) {
+        this.pageState = true
         this.form.pageSize = data
       },
       async fetchData() {
@@ -238,8 +253,8 @@
           type: Number(this.form.type),
           status: this.form.status,
           sn: this.form.sn,
-          page: this.form.page,
-          pageSize: this.form.pageSize,
+          page: this.page,
+          pageSize: this.pageSize,
         })
         this.list = data.list
         this.total = data.count
