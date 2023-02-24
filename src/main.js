@@ -5,6 +5,7 @@ import store from './store'
 import router from './router'
 import '@/vab'
 import '@/utils/filter'
+import * as API from '@/api/basic.js' //引入api
 import hasPermi from '@/utils/hasPermi' //引入权限自定义指令
 import QyComponent from '@/qy/qy.js' //引入圈域全局组件
 import { permissionFiltering } from '@/utils/filter' //引入非权限按钮过滤器
@@ -13,6 +14,7 @@ const Event = new Vue() // 全局事件总线声明
 Vue.prototype.$echarts = echarts // echarts 全局注册
 Vue.prototype.$permissionFiltering = permissionFiltering // 非按钮权限过滤
 Vue.prototype.$event = Event // 全局事件总线
+Vue.prototype.api = API // 全局api
 Vue.use(QyComponent) // 圈域全局组件
 Vue.use(hasPermi) // 权限自定义指令
 

@@ -69,6 +69,7 @@
             <el-select v-model="form.status">
               <el-option label="停售" value="2" />
               <el-option label="在售" value="1" />
+              <el-option label="待上市" value="3" />
             </el-select>
           </el-form-item>
           <el-form-item label="推荐:">
@@ -245,8 +246,11 @@
               <div v-if="row.status == 1" style="margin-bottom: 10px">
                 <el-tag>在售</el-tag>
               </div>
-              <div v-else style="margin-bottom: 10px">
+              <div v-else-if="row.status == 2" style="margin-bottom: 10px">
                 <el-tag type="danger">停售</el-tag>
+              </div>
+              <div v-else-if="row.status == 3" style="margin-bottom: 10px">
+                <el-tag type="warning">待上市</el-tag>
               </div>
               <div v-if="row.recommend == 0">
                 <el-tag type="danger">已取消推荐</el-tag>
@@ -633,7 +637,7 @@
           this.drawerInof.cost_price = 0
           this.drawerInof.sale_price = 0
           this.drawerInof.price = 0
-          this.drawerInof.status = 1
+          this.drawerInof.status = 3
           this.drawerInof.lockSta = false
         } else {
           this.drawerInof = JSON.parse(JSON.stringify(row))

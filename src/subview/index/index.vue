@@ -16,7 +16,10 @@
               <vab-icon icon="bar-chart-2-line" />
               销售趋势
             </div>
-            <MembersChart :data="dataObj1" style="background-color: white" />
+            <MembersChart
+              :data="chartDataObj"
+              style="background-color: white"
+            />
           </el-card>
         </el-col>
       </el-col>
@@ -46,7 +49,7 @@
           <div style="height: 350px; overflow: auto">
             <el-timeline style="padding-top: 20px">
               <el-timeline-item
-                v-for="(activity, index) in activities"
+                v-for="(activity, index) in membershipList"
                 :key="index"
                 :timestamp="activity.create_time"
               >
@@ -57,27 +60,18 @@
         </el-card>
       </el-col>
       <el-col :span="16">
-        <MemberList :data="goodsList" title="最新订单" />
+        <MemberList :data="orderList" title="最新订单" />
       </el-col>
     </el-row>
   </div>
 </template>
-
 <script>
   import TextTags from '@/subview/components/Text/IndexTextTags'
   import MembersChart from '@/subview/components/Chart/MembersChart'
   import MemberList from '@/subview/components/List/MemberList'
   import UserChart from '@/subview/components/Chart/UserChart'
-  import {
-    getHomePageList,
-    getHomeReportForms,
-    getHomeLatestCustomer,
-    getHomeLatestOrder,
-    getHomeRightData,
-  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    name: 'Index',
     components: {
       TextTags,
       MembersChart,
@@ -87,8 +81,11 @@
     mixins: [datajosn],
     data() {
       return {
-        activities: [],
-        goodsList: [],
+        // 会员列表
+        membershipList: [],
+        // 订单列表
+        orderList: [],
+        // 右侧数据
         RightData: {
           outage_rate_list: {
             name: '欠货率',
@@ -100,6 +97,7 @@
           },
           spot_stock: 0,
         },
+        // 7 30 90
         time: '30天',
         textTagList: [
           {
@@ -135,12 +133,15 @@
             yesterday_month: 0,
           },
         ],
+        // 图表 x轴数据
         dateList: [],
+        // 图表 series数据
         dataAllList: {
           sale_num: [],
           delivery_num: [],
         },
-        dataObj1: {
+        // 图表 配置数据
+        chartDataObj: {
           height: '300px',
           legend: {
             data: ['销售件数', '发货件数'],
@@ -180,20 +181,22 @@
             },
           ],
         },
-        goodsForm: {
+        // 图表 查询条件
+        form: {
           time: this.getPastTime(30),
         },
       }
     },
     watch: {
+      // 监听时间变化
       time: {
         handler: function (newval) {
           if (newval == '30天') {
-            this.goodsForm.time = this.getPastTime(30)
+            this.form.time = this.getPastTime(30)
           } else if (newval == '七天') {
-            this.goodsForm.time = this.getWeenTime(6)
+            this.form.time = this.getWeenTime(6)
           } else if (newval == '90天') {
-            this.goodsForm.time = this.getPastTime(90)
+            this.form.time = this.getPastTime(90)
           }
           this.dateList = []
           this.dataAllList = {
@@ -212,22 +215,26 @@
       this.fetchData()
     },
     methods: {
+      // 获取右侧数据
       async getRightData() {
-        const { data } = await getHomeRightData()
+        const { data } = await this.api.getHomeRightData()
         this.RightData.outage_rate_list.value = data.outage_rate
         this.RightData.outstock_rate_list.value = data.outstock_rate
         this.RightData.spot_stock = data.spot_stock
       },
+      // 获取最新会员
       async getLatestCustomer() {
-        const { data } = await getHomeLatestCustomer()
-        this.activities = data
+        const { data } = await this.api.getHomeLatestCustomer()
+        this.membershipList = data
       },
+      // 获取最新订单
       async getLatestOrder() {
-        const { data } = await getHomeLatestOrder()
-        this.goodsList = data
+        const { data } = await this.api.getHomeLatestOrder()
+        this.orderList = data
       },
+      // 获取顶部数据
       async fetchData() {
-        const { data } = await getHomePageList()
+        const { data } = await this.api.getHomePageList()
         this.textTagList[0].today = data.list.head[0].today_sale_total
         this.textTagList[0].yesterday_total =
           data.list.head[0].yesterday_sale_total
@@ -254,8 +261,9 @@
           data.list.head[3].yesterday_month_return_num
         this.getHomeReport()
       },
+      // 获取图表数据
       async getHomeReport() {
-        const { data } = await getHomeReportForms(this.goodsForm)
+        const { data } = await this.api.getHomeReportForms(this.form)
         let arr = []
         data.forEach((item) => {
           for (let i in item) {
@@ -275,68 +283,32 @@
             }
           }
         })
-        this.dataObj1.xAxis.data = this.dateList
-        this.dataObj1.series[0].data = this.dataAllList.sale_num
-        this.dataObj1.series[1].data = this.dataAllList.delivery_num
+        this.chartDataObj.xAxis.data = this.dateList
+        this.chartDataObj.series[0].data = this.dataAllList.sale_num
+        this.chartDataObj.series[1].data = this.dataAllList.delivery_num
         this.$forceUpdate()
       },
     },
   }
 </script>
-
 <style lang="scss" scoped>
   .index-container {
     padding: 0 !important;
     background: $base-color-background !important;
-
     ::v-deep {
       .access,
       .authorization,
       .version-information {
         min-height: 268px;
       }
-
       .el-card {
-        .el-card__header {
-          position: relative;
-
-          .card-header-tag {
-            position: absolute;
-            top: 15px;
-            right: $base-margin;
-          }
-
-          > div > span {
-            display: flex;
-            align-items: center;
-
-            i {
-              margin-right: 3px;
-            }
-          }
-        }
-
         .el-card__body {
           position: relative;
-
           .echarts {
             width: 100%;
             height: 127px;
           }
-          .card-footer-tag {
-            position: absolute;
-            right: $base-margin;
-            bottom: 15px;
-          }
         }
-      }
-
-      .bottom {
-        padding-top: 20px;
-        margin-top: 5px;
-        color: #595959;
-        text-align: left;
-        border-top: 1px solid $base-border-color;
       }
     }
   }

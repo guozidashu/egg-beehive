@@ -1,5 +1,6 @@
 <template>
   <div style="background-color: #f6f8f9">
+    <!-- 顶部卡片 -->
     <el-row :gutter="20">
       <el-col :span="6">
         <div
@@ -214,6 +215,7 @@
         </el-row>
       </el-col>
     </el-row>
+    <!-- 商品客户欠货排行 -->
     <div
       style="
         padding: 20px;
@@ -228,11 +230,10 @@
             <div style="margin-bottom: 20px; font-size: 16px">
               按商品欠货排行
             </div>
-
             <QYList
-              :list="goosList1"
+              :list="goodsDebtList"
               :list-type="2"
-              :state="listLoading1"
+              :state="goodsDebtListLoading"
               style="height: 450px; overflow: auto"
             >
               <template #List>
@@ -301,9 +302,9 @@
               按客户欠货排行
             </div>
             <QYList
-              :list="goosList2"
+              :list="customerDebtList"
               :list-type="2"
-              :state="listLoading2"
+              :state="customerDebListLoading"
               style="height: 450px; overflow: auto"
             >
               <template #List>
@@ -340,6 +341,7 @@
         </el-col>
       </el-row>
     </div>
+    <!-- 欠货订单明细 -->
     <div
       style="
         padding: 20px;
@@ -352,20 +354,16 @@
         ref="form"
         :inline="true"
         label-width="80px"
-        :model="goodsForm1"
+        :model="form"
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
         <span style="margin-top: 10px; font-size: 16px">欠货订单明细</span>
         <el-form-item style="margin-right: 0">
           <el-form-item label="统计类型:" prop="type">
-            <el-select
-              v-model="goodsForm1.type"
-              size="small"
-              style="width: 150px"
-            >
+            <el-select v-model="form.type" size="small" style="width: 150px">
               <el-option
-                v-for="(item, index) in orderList"
+                v-for="(item, index) in statisticalTypeList"
                 :key="index"
                 :label="item.name"
                 :value="item.value"
@@ -374,7 +372,7 @@
           </el-form-item>
           <el-form-item label="会员等级:" prop="level_id">
             <el-select
-              v-model="goodsForm1.level_id"
+              v-model="form.level_id"
               placeholder="请选择会员等级"
               style="width: 150px"
             >
@@ -387,11 +385,11 @@
             </el-select>
           </el-form-item>
           <el-form-item label="客户名称" prop="name">
-            <el-input v-model="goodsForm1.name" size="small" />
+            <el-input v-model="form.name" size="small" />
           </el-form-item>
           <el-form-item label="时间筛选:" prop="create_time">
             <el-date-picker
-              v-model="goodsForm1.create_time"
+              v-model="form.create_time"
               align="right"
               :clearable="false"
               :default-time="['00:00:00', '23:59:59']"
@@ -408,7 +406,7 @@
               size="small"
               style="margin-left: 10px"
               type="primary"
-              @click="resetForm1()"
+              @click="resetForm()"
             >
               重置
             </el-button>
@@ -416,7 +414,7 @@
         </el-form-item>
       </el-form>
       <QYList
-        :list="goosList"
+        :list="goodsOwedList"
         :list-type="listType"
         :page-no="page"
         :page-size="pageSize"
@@ -514,99 +512,17 @@
         </template>
       </QYList>
     </div>
-    <!-- <div style="padding: 20px; margin-bottom: 20px; background-color: white">
-      <el-form
-        ref="form"
-        :inline="true"
-        label-width="80px"
-        :model="goodsForm"
-        style="display: flex; justify-content: space-between"
-        @submit.native.prevent
-      >
-        <span style="margin-top: 10px; font-size: 16px">看板</span>
-        <el-form-item
-          label="时间筛选:"
-          style="margin-right: 0; font-size: 12px"
-        >
-          <el-date-picker
-            v-model="goodsForm.time"
-            align="right"
-            :clearable="false"
-            :default-time="['00:00:00', '23:59:59']"
-            end-placeholder="结束日期"
-            format="yyyy-MM-dd"
-            :picker-options="pickerOptions"
-            range-separator="至"
-            start-placeholder="开始日期"
-            type="daterange"
-            unlink-panels
-            value-format="yyyy-MM-dd HH:mm:ss"
-          />
-          <el-button
-            size="small"
-            style="margin-left: 10px"
-            type="primary"
-            @click="handleDownload"
-          >
-            导出
-          </el-button>
-        </el-form-item>
-      </el-form>
-      <QYTextLabels :list="goodsStaList" :width="goodsWidth" />
-      <vab-chart
-        :init-options="initOptions"
-        :option="option"
-        style="width: 100%; height: 400px"
-      />
-    </div>
-    <el-row>
-      <BoardText :list="goosList" :list1="goosList1" />
-    </el-row>
-    <el-row :gutter="20">
-      <el-col :lg="12" :md="24" :sm="24" :xl="12" :xs="24">
-        <ProductAnalysis :list="branchList" />
-      </el-col>
-      <el-col :lg="12" :md="24" :sm="24" :xl="12" :xs="24">
-        <DeliveryWarning :list="branchList1" />
-      </el-col>
-    </el-row> -->
   </div>
 </template>
 
 <script>
   import datajosn from '@/assets/assets_josn/datajosn'
-  // import VabChart from '@/extra/VabChart'
-  // import BoardText from '@/subview/components/Text/BoardText'
-  // import ProductAnalysis from '@/subview/components/Text/ProductAnalysis'
-  // import DeliveryWarning from '@/subview/components/Text/DeliveryWarning'
-  // import BoardText from './componentscopy/BoardText'
-  // import ProductAnalysis from './componentscopy/ProductAnalysis'
-  // import DeliveryWarning from './componentscopy/DeliveryWarning'
-  import {
-    getCommonAllList,
-    getWarehouseAnalysisList,
-    getWarehouseAnalysisHeadData,
-    getWarehouseAnalysisGoodsRank,
-    getWarehouseAnalysisCustomerRank,
-    // getHomePageBoard,
-    // getBoardReportForms,
-    // getCustomerRanch,
-    // getGoodsRanch,
-    // getShipmentWarning,
-    // getCustomerSource,
-  } from '@/api/basic'
   export default {
-    name: 'Board',
-    // components: {
-    //   VabChart,
-    //   BoardText,
-    //   ProductAnalysis,
-    //   DeliveryWarning,
-    // },
     mixins: [datajosn],
     data() {
       return {
-        orderList: [
+        // 欠货明细 查询条件 统计类型
+        statisticalTypeList: [
           {
             name: '总数量',
             value: 1,
@@ -628,6 +544,7 @@
             value: 5,
           },
         ],
+        // 头部卡片 未发货数据
         not_deliver_data: [
           {
             total: null,
@@ -644,6 +561,7 @@
             h72count: null,
           },
         ],
+        // 头部卡片 其余数据
         cardList: [
           {
             name: '已发货',
@@ -679,120 +597,37 @@
             bgColor: '#D8EFE5',
           },
         ],
+        // 查询，分页表格处理相关参数
         formTemp: null,
         page: 1,
         pageSize: 10,
-        goodsForm1: {
+        // 查询条件表单
+        form: {
           page: 1,
           pageSize: 20,
-          name: null, // 客户名称
-          create_time: this.getPastTime(30), //加入时间区间搜索
-          level_id: null, // 等级id筛选
+          name: null,
+          create_time: this.getPastTime(30),
+          level_id: null,
           type: null, // 统计类型 1=总数量 2=已发数量 3=现货库存 4=生产中库存 5=待发数量 默认订单创建时间
         },
+        // 欠货明细 下拉框数据
         selectList: [],
+        // 欠货明细 表格数据
         listTotal: 0,
         listLoading: false,
         listType: 1,
-        goosList: [],
-        listLoading1: false,
-        goosList1: [],
-        listLoading2: false,
-        goosList2: [],
-        // filename: '今日看板',
-        // listLoading: false,
-        // listType: 2,
-        // goosList: [],
-        // goosList1: [],
-        // branchList: [],
-        // branchList1: [
-        //   { value: 0, name: '今日发货订单数' },
-        //   { value: 0, name: '昨日发货订单数' },
-        //   { value: 0, name: '未发货订单数' },
-        // ],
-        // goodsForm: {
-        //   time: this.getPastTime(30),
-        // },
-        // goodsWidth: '16%',
-        // dateList: [],
-        // dataAllList: {
-        //   sale_num: [],
-        //   sale_total: [],
-        //   return_num: [],
-        //   return_total: [],
-        //   delivery_num: [],
-        //   delivery_total: [],
-        // },
-        // goodsStaList: [
-        //   {
-        //     title: '销售金额',
-        //     number: 200,
-        //     num: 0,
-        //     type: 1,
-        //     typeSta: false,
-        //     name: 'sale_total',
-        //     numType: 1,
-        //     color: '#FFC833',
-        //   },
-        //   {
-        //     title: '销售件数',
-        //     number: 200,
-        //     num: 0,
-        //     type: 1,
-        //     typeSta: false,
-        //     name: 'sale_num',
-        //     numType: 2,
-        //     color: '#FFC833',
-        //   },
-        //   {
-        //     title: '发货金额',
-        //     number: 200,
-        //     num: 0,
-        //     type: 1,
-        //     typeSta: false,
-        //     name: 'delivery_total',
-        //     numType: 1,
-        //     color: '#55DF7E',
-        //   },
-        //   {
-        //     title: '发货件数',
-        //     number: 200,
-        //     num: 0,
-        //     type: 1,
-        //     typeSta: false,
-        //     name: 'delivery_num',
-        //     numType: 2,
-        //     color: '#55DF7E',
-        //   },
-        //   {
-        //     title: '退货金额',
-        //     number: 200,
-        //     num: 0,
-        //     type: 1,
-        //     typeSta: false,
-        //     name: 'return_total',
-        //     numType: 1,
-        //     color: '#527AA4',
-        //   },
-        //   {
-        //     title: '退货件数',
-        //     number: 200,
-        //     num: 0,
-        //     type: 1,
-        //     typeSta: false,
-        //     name: 'return_num',
-        //     numType: 2,
-        //     color: '#527AA4',
-        //   },
-        // ],
-        // initOptions: {
-        //   renderer: 'svg',
-        // },
-        // option: {},
+        goodsOwedList: [],
+        // 商品欠货 表格数据
+        goodsDebtListLoading: false,
+        goodsDebtList: [],
+        // 客户欠货 表格数据
+        customerDebListLoading: false,
+        customerDebtList: [],
       }
     },
     watch: {
-      goodsForm1: {
+      // 欠货查询表单监听
+      form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
           if (this.pageState) {
@@ -806,227 +641,78 @@
             this.page = 1
             this.pageSize = 10
           }
-          this.getTableList()
+          this.getGoodsOwedTableList()
           this.pageState = false
         },
         deep: true,
       },
-      // goodsForm: {
-      //   handler: function () {
-      //     this.branchList = []
-      //     this.dateList = []
-      //     this.dataAllList = {
-      //       sale_num: [],
-      //       sale_total: [],
-      //       return_num: [],
-      //       return_total: [],
-      //       delivery_num: [],
-      //       delivery_total: [],
-      //     }
-      //     this.fetchData()
-      //   },
-      //   deep: true,
-      // },
     },
     created() {
       this.getTypeList()
-      this.getTableList()
-      this.getTableList1()
-      this.getTableList2()
+      this.getGoodsOwedTableList()
+      this.getGoodsDebTableList()
+      this.getCustomerDebTableList()
       this.fetchData()
     },
     methods: {
+      // 欠货明细表格切换页数
       changeBtnPage(data) {
         this.pageState = true
-        this.goodsForm1.page = data
+        this.form.page = data
       },
-
+      // 欠货明细表格切换条数
       changeBtnPageSize(data) {
         this.pageState = true
-        this.goodsForm1.pageSize = data
+        this.form.pageSize = data
       },
-      resetForm1() {
-        this.goodsForm1 = {
+      // 欠货明细 查询表单重置
+      resetForm() {
+        this.form = {
           page: 1,
           pageSize: 20,
-          name: null, // 客户名称
-          create_time: this.getPastTime(30), //加入时间区间搜索
-          level_id: null, // 等级id筛选
+          name: null,
+          create_time: this.getPastTime(30),
+          level_id: null,
           type: null, // 统计类型 1=总数量 2=已发数量 3=现货库存 4=生产中库存 5=待发数量 默认订单创建时间
         }
       },
+      // 欠货明细 查询表单 会员等级下拉框
       async getTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'customer_grade',
         })
         this.selectList = data
       },
-      async getTableList() {
+      // 获取欠货明细表格
+      async getGoodsOwedTableList() {
         this.listLoading = true
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getWarehouseAnalysisList(this.formTemp)
-        this.goosList = data.data
+        const { data } = await this.api.getWarehouseAnalysisList(this.formTemp)
+        this.goodsOwedList = data.data
         this.listTotal = data.total
         this.listLoading = false
       },
-      async getTableList1() {
-        this.listLoading1 = true
-        const { data } = await getWarehouseAnalysisGoodsRank(this.goodsForm1)
-        this.goosList1 = data
-        this.listLoading1 = false
+      // 获取商品欠货表格
+      async getGoodsDebTableList() {
+        this.goodsDebtListLoading = true
+        const { data } = await this.api.getWarehouseAnalysisGoodsRank(this.form)
+        this.goodsDebtList = data
+        this.goodsDebtListLoading = false
       },
-      async getTableList2() {
-        this.listLoading2 = true
-        const { data } = await getWarehouseAnalysisCustomerRank(this.goodsForm1)
-        this.goosList2 = data
-        this.listLoading2 = false
+      // 获取客户欠货表格
+      async getCustomerDebTableList() {
+        this.customerDebListLoading = true
+        const { data } = await this.api.getWarehouseAnalysisCustomerRank(
+          this.form
+        )
+        this.customerDebtList = data
+        this.customerDebListLoading = false
       },
-      // async getBoardReport() {
-      //   const { data } = await getBoardReportForms(this.goodsForm)
-      //   let arr = []
-      //   data.forEach((item) => {
-      //     for (let i in item) {
-      //       this.dateList.push(i)
-      //       arr.push(item[i])
-      //     }
-      //   })
-      //   arr.forEach((item) => {
-      //     for (let i in item) {
-      //       if (i != 'time_range' && this.dataAllList[i] !== undefined) {
-      //         if (item[i] == null) {
-      //           item[i] = 0
-      //           this.dataAllList[i].push(item[i])
-      //         } else {
-      //           this.dataAllList[i].push(item[i])
-      //         }
-      //       }
-      //     }
-      //   })
-      //   this.option = {
-      //     tooltip: {
-      //       trigger: 'axis', //触发类型；轴触发，axis则鼠标hover到一条柱状图显示全部数据，item则鼠标hover到折线点显示相应数据，
-      //       axisPointer: {
-      //         type: 'cross', // 十字准星指示器
-      //       },
-      //     },
-      //     legend: {
-      //       data: [
-      //         '销售金额',
-      //         '销售件数',
-      //         '发货金额',
-      //         '发货件数',
-      //         '退货金额',
-      //         '退货件数',
-      //       ],
-      //     },
-      //     grid: {
-      //       left: '3%',
-      //       right: '4%',
-      //       bottom: '3%',
-      //       containLabel: true,
-      //     },
-      //     toolbox: {
-      //       feature: {
-      //         saveAsImage: {},
-      //       },
-      //     },
-      //     xAxis: {
-      //       type: 'category',
-      //       boundaryGap: false,
-      //       data: this.dateList,
-      //     },
-      //     yAxis: [
-      //       {
-      //         type: 'value',
-      //         name: '金额',
-      //       },
-      //       {
-      //         type: 'value',
-      //         name: '数量',
-      //       },
-      //     ],
-      //     series: [
-      //       {
-      //         name: '销售金额',
-      //         type: 'bar',
-      //         smooth: true,
-      //         data: this.dataAllList.sale_total,
-      //         itemStyle: {
-      //           color: '#FFC833',
-      //         },
-      //       },
-      //       {
-      //         name: '销售件数',
-      //         smooth: true,
-      //         data: this.dataAllList.sale_num,
-      //         yAxisIndex: 1,
-      //         itemStyle: {
-      //           color: '#FFC833',
-      //         },
-      //       },
-      //       {
-      //         name: '发货金额',
-      //         type: 'bar',
-      //         data: this.dataAllList.delivery_total,
-      //         itemStyle: {
-      //           color: '#55DF7E',
-      //         },
-      //       },
-      //       {
-      //         name: '发货件数',
-      //         smooth: true,
-      //         data: this.dataAllList.delivery_num,
-      //         yAxisIndex: 1,
-      //         itemStyle: {
-      //           color: '#55DF7E',
-      //         },
-      //       },
-      //       {
-      //         name: '退货金额',
-      //         type: 'bar',
-      //         data: this.dataAllList.return_total,
-      //         itemStyle: {
-      //           color: '#527AA4',
-      //         },
-      //       },
-      //       {
-      //         name: '退货件数',
-      //         smooth: true,
-      //         data: this.dataAllList.return_num,
-      //         yAxisIndex: 1,
-      //         itemStyle: {
-      //           color: '#527AA4',
-      //         },
-      //       },
-      //     ],
-      //   }
-      //   getGoodsRanch().then((res) => {
-      //     this.goosList = res.data.data
-      //   })
-      //   getCustomerRanch().then((res) => {
-      //     this.goosList1 = res.data.data
-      //   })
-      //   getCustomerSource().then((res) => {
-      //     res.data.forEach((item) => {
-      //       this.branchList.push({
-      //         value: item.sale_num,
-      //         name: item.name,
-      //         sale_price: item.sale_price,
-      //         all_total: item.all_total,
-      //         all_sum: item.all_sum,
-      //       })
-      //     })
-      //   })
-      //   getShipmentWarning().then((res) => {
-      //     this.branchList1[0].value = res.data.today_shipped_num
-      //     this.branchList1[1].value = res.data.yesterday_shipped_num
-      //     this.branchList1[2].value = res.data.unshipped_num
-      //   })
-      // },
+      // 获取头部数据
       async fetchData() {
-        const { data } = await getWarehouseAnalysisHeadData()
+        const { data } = await this.api.getWarehouseAnalysisHeadData()
         let arr = data
         arr.already_deliver_data.name = '已发货'
         arr.already_deliver_data.content1 = '发货单数'
@@ -1045,25 +731,6 @@
         this.cardList[1] = data.inbound_data
         this.cardList[2] = data.sale_data
       },
-      // handleDownload() {
-      //   this.downloadLoading = true
-      //   import('@/utils/excel').then((excel) => {
-      //     const tHeader = ['名称', '数量']
-      //     const filterVal = ['title', 'num']
-      //     const list = this.goodsStaList
-      //     const data = this.formatJson(filterVal, list)
-      //     excel.export_json_to_excel({
-      //       header: tHeader,
-      //       data,
-      //       filename: this.filename,
-      //     })
-      //   })
-      // },
-      // formatJson(filterVal, jsonData) {
-      //   return jsonData.map((v) => filterVal.map((j) => v[j]))
-      // },
     },
   }
 </script>
-
-<style lang="scss" scoped></style>

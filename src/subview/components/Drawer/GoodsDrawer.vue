@@ -542,13 +542,14 @@
             <div class="conten-title">其它信息</div>
             <div class="conten-list-com">
               <el-form-item
-                v-if="form.drawerType == 3"
+                v-if="form.drawerType == 3 || form.drawerType == 2"
                 class="item"
                 label="商品状态："
               >
                 <el-radio-group v-model="form.status">
                   <el-radio :label="1">在售</el-radio>
                   <el-radio :label="2">停售</el-radio>
+                  <el-radio :label="3">待上市</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item
@@ -558,19 +559,6 @@
                 "
                 class="item"
                 label="是否同步聚水潭(仅限散码)："
-              >
-                <el-radio-group v-model="form.is_jushuitan">
-                  <el-radio :label="1">开启</el-radio>
-                  <el-radio :label="0">关闭</el-radio>
-                </el-radio-group>
-              </el-form-item>
-              <el-form-item
-                v-if="
-                  (form.drawerType == 3 || form.drawerType == 2) &&
-                  form.id == undefined
-                "
-                class="item"
-                label="是否显示该商品："
               >
                 <el-radio-group v-model="form.is_jushuitan">
                   <el-radio :label="1">开启</el-radio>

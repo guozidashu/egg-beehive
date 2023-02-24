@@ -200,7 +200,10 @@
             </el-row>
             <el-row :gutter="20" style="margin-top: 20px">
               <el-col :span="12">
-                <QYBranch :list="branSonChList" :style-chart="styleObj" />
+                <QYBranch
+                  :list="branSonChList"
+                  :style-chart="branSonChStyleObj"
+                />
               </el-col>
               <el-col :span="12">
                 <QYList
@@ -526,28 +529,18 @@
     </el-row>
   </div>
 </template>
-
 <script>
-  import {
-    getInformationJstList,
-    getInformationJstLineChart,
-    getInformationJstSaleRank,
-    getInformationGoodsAnalysis,
-    getInformationJstChannel,
-    getInformationStockWarning,
-  } from '@/api/basic'
   import MembersChart from '@/subview/components/Chart/MembersChart'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    name: 'ReportJststock',
     components: {
       MembersChart,
     },
     mixins: [datajosn],
     data() {
       return {
+        // 更新时间
         time: this.getJSTUpdateTime(),
-        chartTime: '昨天',
         // 顶部数据
         cardList: [
           {
@@ -666,17 +659,23 @@
             checked: false,
           },
         ],
+        // 顶部卡片选中索引
         cardListChecked: 1,
-        // 折线图
-        goodsForm: {
+        // 图表 时间查询条件
+        chartTime: '昨天',
+        // 图表 表单查询条件
+        form: {
           time: this.getYesterdayTime(),
         },
+        // 图表 x轴数据
         dateList: [],
+        // 图表 series 数据
         dataAllList: {
           total: [],
           jst: [],
           erp: [],
         },
+        // 图表 配置数据
         chartList: {
           height: '300px',
           color: ['#1890FF'],
@@ -727,14 +726,14 @@
             },
           ],
         },
-        // 渠道分析
+        // 渠道分析 店铺 分销商排行公用列表数据
         goosList: [],
+        listLoading: false,
+        rankType: '1', // 店铺分销切换
+        // 渠道分析 列表数据
         channellistLoading: false,
         channelList: [],
-        listLoading: false,
-        rankType: '1',
-        channelBtnIndex: 0,
-        channelBtnValue: 0,
+        // 渠道分析 btn数据
         channelBtnList: [
           {
             name: '销售金额',
@@ -752,6 +751,11 @@
             checked: false,
           },
         ],
+        // 渠道分析 选中btn
+        channelBtnIndex: 0,
+        // 渠道分析 选中btn的值
+        channelBtnValue: 0,
+        // 渠道分析 自主和聚水潭卡片数据
         channelCardIndex: 0,
         channelCardList: [
           {
@@ -771,16 +775,17 @@
             checked: false,
           },
         ],
+        // 渠道分析 饼图图表数据
         branSonChList: [],
-        styleObj: {
+        // 渠道分析 饼图图表样式
+        branSonChStyleObj: {
           width: '400px',
           height: '400px',
           legendx: 0,
           legendy: 350,
           center: ['50%', '50%'],
         },
-        // 商品分析
-        // ListType: '1',
+        // 爆款分析
         goodsAnalysisForm: {
           page: 1,
           pageSize: 10,
@@ -799,14 +804,15 @@
       }
     },
     watch: {
+      // 折线图时间切换
       chartTime: {
         handler: function (newval) {
           if (newval == '昨天') {
-            this.goodsForm.time = this.getYesterdayTime()
+            this.form.time = this.getYesterdayTime()
           } else if (newval == '近7天') {
-            this.goodsForm.time = this.getWeenTime()
+            this.form.time = this.getWeenTime()
           } else if (newval == '近30天') {
-            this.goodsForm.time = this.getPastTime(29)
+            this.form.time = this.getPastTime(29)
           }
           this.dateList = []
           this.dataAllList = {
@@ -819,42 +825,28 @@
         },
         deep: true,
       },
+      // 店铺分销切换
       rankType: {
         handler: function () {
           this.getJstSaleRank()
         },
         deep: true,
       },
-      ListType: {
-        handler: function (val) {
-          if (val == 1) {
-            this.goodsAnalysisForm = {
-              page: 1,
-              pageSize: 10,
-            }
-            this.getJstGoodslist()
-          } else {
-            this.stockAnalysisForm = {
-              page: 1,
-              pageSize: 10,
-            }
-            this.getJstStocklist()
-          }
-        },
-        deep: true,
-      },
+      // 爆款分析 表单监听
       goodsAnalysisForm: {
         handler: function () {
           this.getJstGoodslist()
         },
         deep: true,
       },
+      // 库存预警 表单监听
       stockAnalysisForm: {
         handler: function () {
           this.getJstStocklist()
         },
         deep: true,
       },
+      // 渠道分析 btn 监听
       channelBtnIndex: {
         handler: function () {
           this.branSonChList = []
@@ -862,6 +854,7 @@
         },
         deep: true,
       },
+      // 渠道分析 自主和聚水潭 监听
       channelCardIndex: {
         handler: function () {
           this.branSonChList = []
@@ -880,39 +873,44 @@
     },
     mounted() {},
     methods: {
+      // 库存预警 页数条数改变
       changeBtnPageStock(data) {
         this.stockAnalysisForm.page = data
       },
       changeBtnPageSizeStock(data) {
         this.stockAnalysisForm.pageSize = data
       },
+      // 爆品分析 页数条数改变
       changeBtnPage(data) {
         this.goodsAnalysisForm.page = data
       },
       changeBtnPageSize(data) {
         this.goodsAnalysisForm.pageSize = data
       },
+      // 获取库存预警数据
       async getJstStocklist() {
         this.stocklistLoading = true
-        const { data } = await getInformationStockWarning(
+        const { data } = await this.api.getInformationStockWarning(
           this.stockAnalysisForm
         )
         this.stockAnalysisList = data.list
         this.stockAnalysisTotal = data.count
         this.stocklistLoading = false
       },
+      // 获取爆款分析数据
       async getJstGoodslist() {
         this.goodslistLoading = true
-        const { data } = await getInformationGoodsAnalysis(
+        const { data } = await this.api.getInformationGoodsAnalysis(
           this.goodsAnalysisForm
         )
         this.goodsAnalysisList = data.list
         this.goodsAnalysisTotal = data.count
         this.goodslistLoading = false
       },
+      // 获取头部卡片数据
       async getHeadList() {
-        const { data } = await getInformationJstList({
-          time: this.goodsForm.time,
+        const { data } = await this.api.getInformationJstList({
+          time: this.form.time,
         })
         data.forEach((item, index) => {
           this.cardList[index].total = item.total
@@ -920,6 +918,7 @@
           this.cardList[index].erp = item.erp
         })
       },
+      // 切换点击事件 type 1.顶部卡片 2.渠道分析 btn 3.渠道分析 聚水潭和自主
       channelBtnClick(type, index) {
         if (type == 1) {
           this.cardList.forEach((item) => {
@@ -957,15 +956,14 @@
           this.channelCardIndex = index
         }
       },
+      // 店铺分销排行切换
       handleRankTypeChange(tab) {
         this.rankType = tab.name
       },
-      handleListTypeChange(tab) {
-        this.ListType = tab.name
-      },
+      // 渠道分销  店铺 分销表格数据
       async getJstSaleRank() {
         this.listLoading = true
-        const { data } = await getInformationJstSaleRank()
+        const { data } = await this.api.getInformationJstSaleRank()
         if (this.rankType == 1) {
           this.goosList = data.jst
         } else {
@@ -973,9 +971,10 @@
         }
         this.listLoading = false
       },
+      // 渠道分销 表格数据
       async getJstChannel() {
         this.channellistLoading = true
-        const { data } = await getInformationJstChannel({
+        const { data } = await this.api.getInformationJstChannel({
           type: this.channelBtnIndex + 1,
         })
         this.channelBtnValue = data.list.total
@@ -1003,9 +1002,10 @@
         this.channellistLoading = false
         this.$forceUpdate()
       },
+      // 折线图数据
       async getHomeReport() {
-        const { data } = await getInformationJstLineChart({
-          time: this.goodsForm.time,
+        const { data } = await this.api.getInformationJstLineChart({
+          time: this.form.time,
           type: this.cardListChecked,
         })
         data.forEach((item) => {
@@ -1057,5 +1057,3 @@
     },
   }
 </script>
-
-<style lang="scss" scoped></style>
