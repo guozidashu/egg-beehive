@@ -74,11 +74,9 @@
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
-        @selectRows="selectBtnRows"
       >
         <template #List>
           <el-table-column align="center" type="selection" />
-          <!-- <el-table-column align="center" label="图片" prop="id" /> -->
           <el-table-column align="center" label="款号" prop="goods_sn" />
           <el-table-column
             v-if="order_source != 3"
@@ -92,14 +90,7 @@
             label="尺码"
             prop="size_name"
           />
-          <!-- <el-table-column
-            v-if="order_source != 2"
-            align="center"
-            label="商品名称"
-            prop="id"
-          /> -->
           <el-table-column align="center" label="品牌" prop="brand_name" />
-          <!-- <el-table-column align="center" label="类别款式" prop="id" /> -->
           <el-table-column align="center" label="发货数量" prop="num" />
           <el-table-column align="right" label="出库金额" prop="total">
             <template #default="{ row }">
@@ -148,22 +139,18 @@
 <script>
   import Edit from '@/subview/components/Edit/BandEdit'
   import datajosn from '@/assets/assets_josn/datajosn'
-  import {
-    getDeliveryStatisticsList,
-    getDeliveryStatisticsExport,
-  } from '@/api/basic'
   export default {
-    name: 'ArchivesBandlist',
     components: { Edit },
     mixins: [datajosn],
     data() {
       return {
+        // tab页签
         order_source: '0',
         formTemp: null,
         page: 1,
         pageSize: 10,
         form: {
-          sn: '', //订单号
+          sn: '',
           type: '1', //导出数据格式  1颜色  2颜色+尺码 3 按款号
           status: 1, //是否减去退货数量  1：减去 0：不减
           page: 1,
@@ -171,8 +158,6 @@
           order_time: this.getPastTime(30),
         },
         formType: 4,
-
-        selectRows: [],
         listType: 1,
         list: [],
         listLoading: false,
@@ -200,8 +185,9 @@
       this.fetchData()
     },
     methods: {
+      // 导出
       async handleDownload() {
-        const { code, data } = await getDeliveryStatisticsExport({
+        const { code, data } = await this.api.getDeliveryStatisticsExport({
           start_date: this.form.order_time[0],
           end_date: this.form.order_time[1],
           type: Number(this.form.type),
@@ -223,7 +209,7 @@
       },
       resetForm() {
         this.form = {
-          sn: '', //订单号
+          sn: '',
           type: '1', //导出数据格式  1颜色  2颜色+尺码 3 按款号
           status: 1, //是否减去退货数量  1：减去 0：不减
           page: 1,
@@ -238,16 +224,13 @@
         this.pageState = true
         this.form.page = data
       },
-      selectBtnRows(data) {
-        this.selectRows = data
-      },
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
       async fetchData() {
         this.listLoading = true
-        const { data } = await getDeliveryStatisticsList({
+        const { data } = await this.api.getDeliveryStatisticsList({
           start_date: this.form.order_time[0],
           end_date: this.form.order_time[1],
           type: Number(this.form.type),
@@ -263,4 +246,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

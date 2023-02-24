@@ -148,33 +148,32 @@
 <script>
   import Edit from '@/subview/components/Edit/BandEdit'
   import datajosn from '@/assets/assets_josn/datajosn'
-  import { getReturnOrderList, getReturnOrderExport } from '@/api/basic'
   export default {
     components: { Edit },
     mixins: [datajosn],
     data() {
       return {
+        // tab 数据
         count_data: {
           all: 0,
           offline: 0,
           online: 0,
         },
+        // tab 页签
         order_source: '0',
         formTemp: null,
         page: 1,
         pageSize: 10,
         form: {
           search_type: 'id', //搜索条件 sn订单号 goods_sn商品款号 id批次号
-          keywords: '', //搜索关键字
+          keywords: '', //关键字
           page: 1,
           pageSize: 10,
           order_time: this.getPastTime(30),
           order_source: '0', //0 所有订单 1线下退货单 2线上退货单
-          customer_name: '', //客户名称
+          customer_name: '',
         },
         formType: 4,
-
-        selectRows: [],
         listType: 1,
         list: [],
         listLoading: false,
@@ -206,8 +205,9 @@
       this.fetchData()
     },
     methods: {
+      // 导出
       async handleDownload() {
-        const { code, data } = await getReturnOrderExport(this.form)
+        const { code, data } = await this.api.getReturnOrderExport(this.form)
         if (code == 200) {
           window.open(data.url)
           this.$message.success('导出成功')
@@ -223,12 +223,12 @@
       resetForm() {
         this.form = {
           search_type: 'id', //搜索条件 sn订单号 goods_sn商品款号 id批次号
-          keywords: '', //搜索关键字
+          keywords: '', //关键字
           page: 1,
           pageSize: 20,
           order_time: this.getPastTime(30),
           order_source: '0', //0 所有订单 1线下退货单 2线上退货单
-          customer_name: '', //客户名称
+          customer_name: '',
         }
       },
       handleClick(tab) {
@@ -247,7 +247,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getReturnOrderList(this.formTemp)
+        const { data } = await this.api.getReturnOrderList(this.formTemp)
         this.list = data.list
         this.total = data.count
         this.count_data = data.count_data
@@ -256,4 +256,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

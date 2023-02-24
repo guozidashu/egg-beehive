@@ -158,15 +158,7 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/ClassifiedEdit'
-  import {
-    getCategoryMainList,
-    getCategorySonList,
-    delCategorySonDel,
-    delCategoryMainDel,
-    getCategoryUpload,
-  } from '@/api/basic'
   export default {
-    name: 'GoodsClassified',
     components: { Edit },
     data() {
       return {
@@ -212,9 +204,10 @@
       this.fetchData()
     },
     methods: {
+      // 聚水潭同步
       handleSynchronization() {
         this.$baseConfirm('你确定要同步到聚水潭吗', null, async () => {
-          const { code } = await getCategoryUpload()
+          const { code } = await this.api.getCategoryUpload()
           if (code != 200) {
             return
           }
@@ -239,12 +232,12 @@
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
             if (type == 1) {
-              const { code } = await delCategorySonDel({ id: row.id })
+              const { code } = await this.api.delCategorySonDel({ id: row.id })
               if (code != 200) {
                 return
               }
             } else {
-              const { code } = await delCategoryMainDel({ id: row.id })
+              const { code } = await this.api.delCategoryMainDel({ id: row.id })
               if (code != 200) {
                 return
               }
@@ -263,8 +256,9 @@
         this.pageState = true
         this.form.pageSize = data
       },
+      // 商品分类 父级 子级
       async fetchData() {
-        const { data } = await getCategoryMainList(this.form)
+        const { data } = await this.api.getCategoryMainList(this.form)
         let list = [
           {
             id: 0,
@@ -284,7 +278,7 @@
         }
         const {
           data: { data, total },
-        } = await getCategorySonList(this.formTemp)
+        } = await this.api.getCategorySonList(this.formTemp)
         this.list = data
         this.total = total
       },
@@ -293,6 +287,7 @@
       },
       handleOpen() {},
       handleClose() {},
+      // 鼠标移入移出
       mouseOver(index) {
         if (this.menuList[index].btnIconStatus == false) {
           this.menuList[index].btnIconStatus = true
@@ -310,4 +305,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

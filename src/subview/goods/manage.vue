@@ -106,10 +106,6 @@
           :label="'全部商品 (' + tatleData.all_order + ')'"
           name="0"
         />
-        <!-- <el-tab-pane
-          :label="'仓库中 (' + tatleData.repository + ')'"
-          name="1"
-        /> -->
         <el-tab-pane :label="'已售罄 (' + tatleData.sole_out + ')'" name="2" />
         <el-tab-pane
           :label="'库存预警 (' + tatleData.stock_alert + ')'"
@@ -123,15 +119,6 @@
           :label="'未同步聚水潭 (' + tatleData.jushuitan_not_sync + ')'"
           name="8"
         />
-        <!-- <el-tab-pane :label="'待确认 (' + tatleData.confirmed + ')'" name="4" /> -->
-        <!-- <el-tab-pane
-          :label="'自营商城 (' + tatleData.self_operated + ')'"
-          name="5"
-        />
-        <el-tab-pane
-          :label="'第三方平台 (' + tatleData.third_platform + ')'"
-          name="6"
-        /> -->
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -410,33 +397,24 @@
   import Drawer from '@/subview/components/Drawer/GoodsDrawer'
   import Edit from '@/subview/components/Edit/PresellEdit'
   import VabUpload from '@/extra/VabUpload'
-  import {
-    getGoodList,
-    getCommonAllList,
-    editGoodBatchLower,
-    getGoodTabTotal,
-    editSourceMaterialSave,
-    editChangeRecommend,
-    saveGoodsSyncJuShuiTan,
-    getGoodsExport,
-    changePresellStatus,
-  } from '@/api/basic'
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
-    name: 'GoodsManage',
     components: { Drawer, VabUpload, Edit },
     mixins: [publicjosn],
     data() {
       return {
+        // 弹窗相关
         title: '',
         drawer: false,
         drawerInof: {},
+        // 商品文案相关
         dialogVisible: false,
         formDialog: {
           goods_id: null,
           source_material: [],
           copywriting: '',
         },
+        // 表格 tab 数据
         tatleData: {
           all_order: null, // 全部
           repository: null, // 仓库中
@@ -448,6 +426,11 @@
           jushuitan_not_sync: null, // 聚水潭未同步
           jushuitan_sync: null, // 聚水潭已同步
         },
+        // 下拉框数据
+        selectList: [],
+        // 表格选中 ids
+        selectRowsId: [],
+        // 表格相关数据
         pageState: false,
         formTemp: null,
         page: 1,
@@ -456,22 +439,20 @@
           page: 1,
           pageSize: 10,
           list_type: 0, // 列表类型 0=全部 1=仓库中 2=已售完 3=库存预警 4=待确认 5=自营商城 6=第三方平台
-          category: '', //款式分类
-          brand: '', //品牌
-          year: '', //年份
-          season: '', //季节
+          category: '',
+          brand: '',
+          year: '',
+          season: '',
           type: '', //尺码类型 0整手  1散码
-          band: '', //波段
-          name: '', //商品名称
-          recommend: '', //推荐
-          presell: '', //预售
-          status: '', //状态
+          band: '',
+          name: '',
+          recommend: '',
+          presell: '',
+          status: '', //状态 1 在售 2 售罄 3 待上市
         },
         listType: 1,
         formType: 4,
         list: [],
-        selectList: [],
-        selectRowsId: [],
         listLoading: false,
         total: 0,
       }
@@ -502,8 +483,11 @@
       this.getGoodsTypeList()
     },
     methods: {
+      // 预售状态修改
       async turnOnOff(row) {
-        const { code } = await changePresellStatus({ goods_id: row.id })
+        const { code } = await this.api.changePresellStatus({
+          goods_id: row.id,
+        })
         if (code != 200) {
           return
         }
@@ -514,11 +498,12 @@
       handlePresell(row) {
         this.$refs['edit'].showEdit(row)
       },
+      // 导出
       async handleDerive() {
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { code, data } = await getGoodsExport(this.formTemp)
+        const { code, data } = await this.api.getGoodsExport(this.formTemp)
         if (code == 200) {
           window.open(data.url)
           this.$message.success('导出成功')
@@ -527,8 +512,9 @@
           this.$message.error('导出失败')
         }
       },
+      // 商品文案保存
       async handleMaterialSub() {
-        const { code } = await editSourceMaterialSave(this.formDialog)
+        const { code } = await this.api.editSourceMaterialSave(this.formDialog)
         if (code == 200) {
           this.$message.success('操作成功')
           this.dialogVisible = false
@@ -548,31 +534,15 @@
         this.pageState = true
         this.form.pageSize = data
       },
+      // 商品文章 图片删除
       handleRemove(index) {
         this.formDialog.source_material.splice(index, 1)
       },
+      // 商品文章 图片上传数据回传
       getSon(data) {
         this.formDialog.source_material = data
       },
-      handleMaterial(row) {
-        if (row.source_material != null) {
-          this.formDialog = row.source_material
-          this.formDialog.source_material = JSON.parse(
-            this.formDialog.source_material
-          )
-          this.formDialog.copywriting = this.formDialog.copywriting.replace(
-            /\\n/g,
-            '\n'
-          )
-        } else {
-          this.formDialog = {
-            goods_id: row.id,
-            source_material: [],
-            copywriting: '',
-          }
-        }
-        this.dialogVisible = true
-      },
+      // 商品文章弹框关闭
       handleMaterialClose() {
         this.dialogVisible = false
         this.formDialog = {
@@ -588,11 +558,10 @@
         this.fetchData()
         this.getTatolData()
       },
-      // 列表数据表头切换监听 自定义部分
       handleClick(tab) {
         this.form.list_type = tab.name
       },
-
+      // 商品列表
       async fetchData(type) {
         if (type == 1) {
           this.drawer = false
@@ -601,25 +570,26 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getGoodList(this.formTemp)
+        const { data } = await this.api.getGoodList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
       },
+      // 商品 tab 总数
       async getTatolData() {
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getGoodTabTotal(this.formTemp)
+        const { data } = await this.api.getGoodTabTotal(this.formTemp)
         this.tatleData = data
       },
       async getGoodsTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'brand,year,season,band,category,agegroup,color,size',
         })
         this.selectList = data
       },
-
+      // 商品详情编辑新增
       handleDetail(row, type) {
         if (type === 1) {
           this.title = '商品详情'
@@ -655,6 +625,7 @@
       handleSelectionChange(val) {
         this.selectRowsId = val
       },
+      // 同步聚水潭
       handleEditJST() {
         if (this.selectRowsId.length > 0) {
           let ids = this.selectRowsId.map((item) => item.id)
@@ -662,18 +633,19 @@
             '你确定要将选中商品同步聚水潭吗?',
             null,
             async () => {
-              const { msg } = await saveGoodsSyncJuShuiTan({
+              const { msg } = await this.api.saveGoodsSyncJuShuiTan({
                 goods_id: ids,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.fetchData()
-              await this.getTatolData()
+              await this.api.this.fetchData()
+              await this.api.this.getTatolData()
             }
           )
         } else {
           this.$message.error('请先选择商品')
         }
       },
+      // 停在售 推荐 取消推荐 批量停在售
       handleEdit(type, row) {
         if (this.selectRowsId.length > 0) {
           if (type == 1) {
@@ -690,12 +662,12 @@
             }
             let ids = this.selectRowsId.map((item) => item.id)
             this.$baseConfirm('你确定要在售选中项吗', null, async () => {
-              const { msg } = await editGoodBatchLower({
+              const { msg } = await this.api.editGoodBatchLower({
                 good_ids: ids,
                 status: type,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.fetchData()
+              await this.api.this.fetchData()
             })
           } else if (type == 0) {
             let temp = false
@@ -711,48 +683,48 @@
             }
             let ids = this.selectRowsId.map((item) => item.id)
             this.$baseConfirm('你确定要停售选中项吗', null, async () => {
-              const { msg } = await editGoodBatchLower({
+              const { msg } = await this.api.editGoodBatchLower({
                 good_ids: ids,
                 status: type,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.fetchData()
+              await this.api.this.fetchData()
             })
           }
         } else {
           if (type == 3) {
             this.$baseConfirm('你确定要停售改项吗', null, async () => {
-              const { msg } = await editGoodBatchLower({
+              const { msg } = await this.api.editGoodBatchLower({
                 good_ids: row.id,
                 status: 2,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.fetchData()
+              await this.api.this.fetchData()
             })
           } else if (type == 4) {
             this.$baseConfirm('你确定要在售改项吗', null, async () => {
-              const { msg } = await editGoodBatchLower({
+              const { msg } = await this.api.editGoodBatchLower({
                 good_ids: row.id,
                 status: 1,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.fetchData()
+              await this.api.this.fetchData()
             })
           } else if (type == 5) {
             this.$baseConfirm('你确定要设置该项为推荐吗？', null, async () => {
-              const { msg } = await editChangeRecommend({
+              const { msg } = await this.api.editChangeRecommend({
                 id: row.id,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.fetchData()
+              await this.api.this.fetchData()
             })
           } else if (type == 6) {
             this.$baseConfirm('你确定要取消该项为推荐吗', null, async () => {
-              const { msg } = await editChangeRecommend({
+              const { msg } = await this.api.editChangeRecommend({
                 id: row.id,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.fetchData()
+              await this.api.this.fetchData()
             })
           } else {
             this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')
@@ -762,4 +734,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

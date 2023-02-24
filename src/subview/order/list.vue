@@ -24,14 +24,6 @@
               <el-option label="已作废" :value="4" />
             </el-select>
           </el-form-item>
-          <!-- <el-form-item label="配送方式:">
-            <el-select v-model="form.region1">
-              <el-option label="全部" value="1" />
-              <el-option label="普通快递" value="2" />
-              <el-option label="门店自提" value="3" />
-              <el-option label="送货上门" value="4" />
-            </el-select>
-          </el-form-item> -->
           <el-form-item label="付款状态:">
             <el-select v-model="form.pay_type">
               <el-option label="全部" :value="0" />
@@ -101,24 +93,7 @@
           :label="'线上订单 (' + orderCountData.shop_count + ')'"
           name="2"
         />
-        <!-- <el-tab-pane :label="'快团团独立对接 (0)'" name="3" />
-        <el-tab-pane :label="'第三方聚水潭 (0)'" name="4" /> -->
       </el-tabs>
-      <el-form ref="form" :inline="true" @submit.native.prevent>
-        <el-form-item>
-          <!-- <el-button
-            size="small"
-            type="primary"
-            @click="print('multipleTable')"
-          >
-            打印配发单
-          </el-button> -->
-          <!-- <el-button size="small" type="primary" @click="handleDownload">
-            导出订单
-          </el-button> -->
-        </el-form-item>
-      </el-form>
-      <!-- 表格组件使用 -->
       <QYList
         ref="multipleTable"
         :list="list"
@@ -129,7 +104,6 @@
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
-        @selectRows="handleSelectionChange"
       >
         <template #List>
           <el-table-column type="selection" />
@@ -145,7 +119,6 @@
               <el-tag>￥{{ row.final_amount | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="配送方式" prop="pay" width="120" /> -->
           <el-table-column label="订单状态" prop="order_status" width="120">
             <template #default="{ row }">
               <div v-for="(item, index) in row.order_status" :key="index">
@@ -222,14 +195,6 @@
           <el-table-column label="订单日期" prop="ctime" sortable width="200" />
           <el-table-column fixed="right" label="操作" width="100">
             <template #default="{ row }">
-              <!-- <el-button
-                v-if="row.state === '待收款'"
-                type="text"
-                @click="handleEdit(row)"
-              >
-                发送货
-              </el-button>
-              <span v-if="row.state === '待收款'">|</span> -->
               <el-button
                 v-has-permi="['btn:OrderList:view']"
                 type="text"
@@ -243,36 +208,24 @@
       </QYList>
     </el-card>
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
-      <!-- 详情抽屉组件 -->
-      <Drawer
-        :drawer-inof="drawerInof"
-        @drawerPrint="print"
-        @drawerhandleEdit="handleEdit"
-      />
+      <Drawer :drawer-inof="drawerInof" @drawerhandleEdit="handleEdit" />
     </el-drawer>
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 
 <script>
-  //  import Edit from '@/subview/components/Edit/OrderEdit'
   import Edit from '@/subview/components/Edit/OrderEdit'
   import Drawer from '@/subview/components/Drawer/OrderDrawer'
-  import { getOrderList, getOrderCount } from '@/api/basic'
-  import { mapActions } from 'vuex'
-  import VabPrint from '@/extra/VabPrint'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    name: 'OrderList',
     components: { Drawer, Edit },
     mixins: [datajosn],
     data() {
       return {
-        filename: '订单列表',
-        downloadLoading: false,
         drawerInof: {},
-        exclList: [],
         drawer: false,
+        // 表格 tab 数据
         orderCountData: {
           erp_count: null,
           shop_count: null,
@@ -283,7 +236,7 @@
         pageSize: 10,
         form: {
           fold: true,
-          order_time: [], //订单时间搜索
+          order_time: [],
           pay_type: '', //付款状态 0全部 1未付款 2部分付款 3已付款
           order_type: '', //订单状态 0 全部 1待收款 2待发货 3待确认
           delivery_type: '', //发货状态 0 全部 1未发货 2部分发货 3发货完成 4 已作废
@@ -353,7 +306,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getOrderList(this.formTemp)
+        const { data } = await this.api.getOrderList(this.formTemp)
         data.data.forEach((item) => {
           item.inofText = item.info.name
           item.orderStatus = item.order_status.slice(1)
@@ -363,11 +316,12 @@
         this.total = data.total
         this.listLoading = false
       },
+      // 获取 tab 数据
       async orderCount() {
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getOrderCount(this.formTemp)
+        const { data } = await this.api.getOrderCount(this.formTemp)
         this.orderCountData = data
       },
       handleDetail(row) {
@@ -390,73 +344,6 @@
           }
         }
       },
-      // 打印
-      ...mapActions({
-        openSideBar: 'settings/openSideBar',
-        foldSideBar: 'settings/foldSideBar',
-      }),
-      async print(val) {
-        await this.foldSideBar()
-        await VabPrint(this.$refs[val], { noPrintParent: true })
-        await this.openSideBar()
-      },
-
-      handleSelectionChange(val) {
-        this.exclList = val
-      },
-      handleDownload() {
-        if (this.exclList.length) {
-          this.downloadLoading = true
-          import('@/utils/excel').then((excel) => {
-            const tHeader = [
-              '批次号',
-              '订单号',
-              '订单日期',
-              '客户名称',
-              '商品信息',
-              '总数量',
-              '总金额',
-              '订单状态',
-            ]
-            const filterVal = [
-              'id',
-              'sn',
-              'ctime',
-              'name',
-              'inofText',
-              'sum_num',
-              'sum_price',
-              'orderStatus',
-            ]
-            const list = this.exclList
-            const data = this.formatJson(filterVal, list)
-            excel.export_json_to_excel({
-              header: tHeader,
-              data,
-              filename: this.filename,
-            })
-            this.$refs.multipleTable.$children[0].clearSelection()
-            this.downloadLoading = false
-          })
-        } else {
-          this.$baseMessage('请至少选择一行', 'error', 'vab-hey-message-error')
-        }
-      },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map((v) => filterVal.map((j) => v[j]))
-      },
     },
   }
 </script>
-<style>
-  .dateArrClass > div ::after {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    width: 5px;
-    height: 5px;
-    content: '';
-    background-color: #1890ff;
-    border-radius: 50%;
-  }
-</style>

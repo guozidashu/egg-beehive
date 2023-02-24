@@ -163,32 +163,27 @@
 <script>
   import Edit from '@/subview/components/Edit/BandEdit'
   import datajosn from '@/assets/assets_josn/datajosn'
-  import {
-    getCustomerDeliveryOrderList,
-    getCustomerDeliveryOrderExport,
-  } from '@/api/basic'
   export default {
-    name: 'ArchivesBandlist',
     components: { Edit },
     mixins: [datajosn],
     data() {
       return {
+        // 导出数据
         dialogVisible: false,
-        order_source: '0',
+        ids: [],
+        radio: 2,
+        // 列表表单数据
         page: 1,
         pageSize: 10,
         form: {
-          sn: '', //订单号
+          sn: '',
           search_type: 'mobile', //搜索条件 mobile nick_name name account
-          keywords: null, //搜索内容
+          keywords: null, //关键字
           page: 1,
           pageSize: 10,
           order_time: this.getPastTime(30),
         },
-        ids: [],
-        radio: 2,
         formType: 4,
-
         selectRows: [],
         listType: 1,
         list: [],
@@ -219,8 +214,9 @@
       handleClose() {
         this.dialogVisible = false
       },
+      // 导出
       async handleExport() {
-        const { code, data } = await getCustomerDeliveryOrderExport({
+        const { code, data } = await this.api.getCustomerDeliveryOrderExport({
           start_date: this.form.order_time[0],
           end_date: this.form.order_time[1],
           sn: this.form.sn,
@@ -238,6 +234,7 @@
           this.$message.error('导出失败')
         }
       },
+      // 导出选择数据
       handleDownload(type, row) {
         let temp = []
         if (type == 1) {
@@ -266,16 +263,13 @@
       },
       resetForm() {
         this.form = {
-          sn: '', //订单号
+          sn: '',
           search_type: 'mobile', //搜索条件 mobile nick_name name account
-          keywords: null, //搜索内容
+          keywords: null, //关键字
           page: 1,
           pageSize: 10,
           order_time: this.getPastTime(30),
         }
-      },
-      handleClick(tab) {
-        this.order_source = tab.name
       },
       changeBtnPage(data) {
         this.pageState = true
@@ -290,11 +284,11 @@
       },
       async fetchData() {
         this.listLoading = true
-        const { data } = await getCustomerDeliveryOrderList({
+        const { data } = await this.api.getCustomerDeliveryOrderList({
           start_date: this.form.order_time[0],
           end_date: this.form.order_time[1],
           search_type: this.form.search_type, //搜索条件 mobile nick_name name account
-          keywords: this.form.keywords, //搜索内容
+          keywords: this.form.keywords, //关键字
           sn: this.form.sn,
           page: this.page,
           pageSize: this.pageSize,
@@ -306,4 +300,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>
