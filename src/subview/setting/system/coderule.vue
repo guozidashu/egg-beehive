@@ -2,9 +2,9 @@
   <div style="padding: 20px; background-color: white">
     <el-form ref="form" label-width="120px" :model="form" :rules="rules">
       <el-tabs v-model="activeName">
-        <el-tab-pane label="防伪编码" name="防伪编码">
+        <el-tab-pane label="商品编码" name="商品编码">
           <div class="textCss">
-            <h2>商品防伪编码规则设置</h2>
+            <h2>商品内部编码规则设置</h2>
             <p style="font-weight: 600">
               内部商品编码的组成规则规则：商品编码（款号）+ 颜色编码 + 尺码编码
             </p>
@@ -16,14 +16,14 @@
             </p>
             <p>
               <span style="color: red">举例</span>
-              ：如果前缀设置成QY款号为WZ231108，颜色编码为HUA，尺码编号为080、090、100、100、110、120
+              ：如果前缀设置成QY，款号为：WZ231108，颜色编码为HUA，尺码编号为080、090、100、100、110、120
             </p>
             <p>散码生成的商品编码就为：QYWZ231108HUA080</p>
             <p>散码生成的商品编码就为：QY-WZ231108-HUA-090</p>
             <p>散码生成的商品编码就为：QY WZ231108 HUA100</p>
 
             <p>散码生成的商品编码就为：OYWZ231108HUA110</p>
-            <p>散码生成的商品编码就为：QYWZ231108HUA120QYWZ231108HUA000</p>
+            <p>散码生成的商品编码就为：QYWZ231108HUA120</p>
             <p>整手生成的商品编码就为：QYWZ231108HUA000</p>
           </div>
           <el-form-item label="编码名称:" prop="fakeName">
@@ -57,9 +57,9 @@
             <el-button type="primary" @click="onSubmit">保存</el-button>
           </el-form-item>
         </el-tab-pane>
-        <el-tab-pane label="商品编码" name="商品编码">
+        <el-tab-pane label="防伪编码" name="防伪编码">
           <div class="textCss">
-            <h2>商品编码规则设置</h2>
+            <h2>防伪编码规则设置</h2>
             <p style="font-weight: 600">
               前5位由系统定义随机值以@@@@@占位， 编码不能连续两个 -，不能以 -
               结尾，可自定义长度最长10位，最少7位
@@ -98,7 +98,7 @@
   export default {
     data() {
       return {
-        activeName: '防伪编码',
+        activeName: '商品编码',
         preview: this.code('@@@@@'),
         form: {
           name: '商品条码',

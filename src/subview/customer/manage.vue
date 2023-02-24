@@ -76,24 +76,6 @@
               />
             </el-select>
           </el-form-item>
-          <!-- <el-form-item v-show="!form.fold" label="客户标签:">
-            <el-cascader
-              v-model="form.tag"
-              :options="selectDataList.customer_tag"
-              :show-all-levels="false"
-              style="width: 300px"
-            />
-          </el-form-item> -->
-          <!-- <el-form-item v-show="!form.fold" label="客户来源:">
-            <el-select v-model="form.source" style="width: 300px">
-              <el-option
-                v-for="(item, index) in selectDataList.customer_source"
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item> -->
           <el-form-item v-show="!form.fold" label="注册时间:">
             <el-date-picker
               v-model="form.create_time"
@@ -114,15 +96,6 @@
       </QYForm>
     </div>
     <el-card shadow="never" style="border: 0; border-radius: 5px">
-      <!-- <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="全部" name="first" />
-        <el-tab-pane label="ERP平台 (100)" name="second" />
-        <el-tab-pane label=" 微信公众号 (10)" name="three" />
-        <el-tab-pane label="微信小程序 (100)" name="four" />
-        <el-tab-pane label="移动App (10)" name="five" />
-        <el-tab-pane label="第三方平台 (100)" name="six" />
-        <el-tab-pane label="企业微信 (10)" name="seven" />
-      </el-tabs> -->
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
@@ -136,17 +109,6 @@
           <el-button size="small" type="primary" @click="handleDerive()">
             批量导出
           </el-button>
-          <!-- <el-button
-            
-            size="small"
-            type="primary"
-            @click="addCoupons()"
-          >
-            发送优惠券
-          </el-button> -->
-          <!-- <el-button size="small" type="primary" @click="handleDownload">
-            批量导出
-          </el-button> -->
         </el-form-item>
       </el-form>
       <QYList
@@ -159,24 +121,11 @@
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
-        @selectRows="handleSelectionChange"
       >
         <template #List>
           <el-table-column type="selection" />
           <el-table-column label="ID" prop="id" width="50" />
           <el-table-column label="客户编码" prop="sn" width="120" />
-          <!-- <el-table-column label="头像" width="120">
-            <template #default="{ row }">
-              <el-tooltip placement="top">
-                <el-image
-                  slot="content"
-                  :src="row.avatar"
-                  style="width: 200px; height: 200px"
-                />
-                <el-image :src="row.avatar" style="width: 50px; height: 50px" />
-              </el-tooltip>
-            </template>
-          </el-table-column> -->
           <el-table-column label="客户名称" prop="name" width="150" />
           <el-table-column label="手机号" prop="mobile" width="120" />
           <el-table-column label="客户等级" prop="grade_name" width="120" />
@@ -187,7 +136,6 @@
               <span v-else>聚水潭发货</span>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="客户来源" prop="source_name" width="120" /> -->
           <el-table-column
             align="right"
             label="保证金"
@@ -278,7 +226,6 @@
       :visible.sync="drawer"
       :wrapper-closable="false"
     >
-      <!-- 详情抽屉组件 -->
       <Drawer :drawer-inof="drawerInof" @fetch-data="fetchData" />
     </el-drawer>
     <el-dialog
@@ -434,16 +381,8 @@
   import IntegralEdit from '@/subview/components/Edit/customerIntegralEdit'
   import Drawer from '@/subview/components/Drawer/ManageDrawer'
   import VabUpload from '@/extra/VabUpload'
-  import {
-    getCommonAllList,
-    getCustomerList,
-    getCustomerEarnestList,
-    addCustomerEarnest,
-    getCustomerExport,
-  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    name: 'CustomerManage',
     components: { Edit, Drawer, VabUpload, IntegralEdit },
     mixins: [datajosn],
     data() {
@@ -455,7 +394,9 @@
         }
       }
       return {
-        imgNum: 5,
+        // 新增客户保证金相关
+        imgNum: 5, // 上传图片数量
+        // 新增保证金表单
         DepositEditForm: {
           customer_id: null,
           money: null,
@@ -463,8 +404,8 @@
           remark: '',
           imgList: [],
         },
+        // 新增保证金表单验证
         DepositEditRules: {
-          //money 金额 且必须大于零
           money: [
             { required: true, validator: validateUsername, trigger: 'blur' },
           ],
@@ -474,34 +415,28 @@
           ],
         },
         dialogVisibleEdit: false,
-        DepositForm: {
-          page: 1,
-          pageSize: 10,
-        },
+        // 客户保证金列表相关
         depositList: [],
         depositListType: 2,
         depositListLoading: false,
-        depositTotal: 0,
         dialogVisible: false,
+        // 抽屉相关
         title: '',
-        selectDataList: [],
-        filename: '客户列表',
-        downloadLoading: false,
-        exclList: [],
         drawer: false,
         drawerInof: {},
-        activeName: 'first',
+        // 表格 表单相关
+        // 下拉框数据
+        selectDataList: [],
         formTemp: null,
         page: 1,
         pageSize: 10,
         form: {
           search_type: 'mobile', //搜索条件 mobile nick_name name account
-          keywords: null, //搜索内容
-          level: null, //等级id
-          type: null, //客户分类
-          //source: null, //客户来源
-          tag: null, //标签id
-          create_time: [], //注册时间区间搜索
+          keywords: null, //关键字
+          level: null,
+          type: null,
+          tag: null,
+          create_time: [],
           page: 1,
           pageSize: 10,
           id: null,
@@ -515,7 +450,6 @@
     },
     watch: {
       form: {
-        //表单筛选条件变化实时刷新列表
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
           if (this.pageState) {
@@ -534,8 +468,8 @@
         },
         deep: true,
       },
+      // 客户保证金列表
       dialogVisible: {
-        //表单筛选条件变化实时刷新列表
         handler: function (newval) {
           if (newval == false) {
             this.fetchData()
@@ -543,18 +477,19 @@
         },
         deep: true,
       },
+      // 客户分析跳转
       '$route.query.id': {
-        //表单筛选条件变化实时刷新列表
         handler: async function (newval) {
           if (newval != undefined) {
             this.form.id = newval
-            await this.selectData()
+            await this.api.this.selectData()
             this.handleDetail(this.list[0], 1)
           }
         },
         deep: true,
         immediate: true,
       },
+      // 新增保证金表单
       DepositEditForm: {
         handler: function (n) {
           this.imgNum = 5 - n.imgList.length
@@ -563,12 +498,17 @@
         immediate: true,
       },
     },
+    created() {
+      this.fetchData()
+    },
     methods: {
+      // 客户积分
       handleIntegral(row) {
         this.$refs['IntegralEdit'].showEdit(row)
       },
+      // 客户导出
       async handleDerive() {
-        const { code, data } = await getCustomerExport(this.form)
+        const { code, data } = await this.api.getCustomerExport(this.form)
         if (code == 200) {
           window.open(data.url)
           this.$message.success('导出成功')
@@ -576,9 +516,11 @@
           this.$message.error('导出失败')
         }
       },
+      // 新增客户保证金 删除图片
       delImg(index) {
         this.DepositEditForm.imgList.splice(index, 1)
       },
+      // 新增客户保证金 上传图片 数据回传
       getSon(data) {
         data.forEach((item) => {
           if (this.DepositEditForm.imgList.indexOf(item) == -1) {
@@ -586,15 +528,16 @@
           }
         })
       },
+      // 新增客户保证金 上传图片
       handleShow() {
         this.$refs['vabUpload'].handleShow()
       },
       DepositEditClose() {
         this.dialogVisibleEdit = false
       },
+      // 新增客户保证金 确认
       DepositEditSave() {
         this.dialogVisibleEdit = false
-        // 二次确认弹框
         this.$confirm('确认新增保证金吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -603,7 +546,9 @@
           .then(() => {
             this.$refs['DepositEdit'].validate(async (valid) => {
               if (valid) {
-                const { code } = await addCustomerEarnest(this.DepositEditForm)
+                const { code } = await this.api.addCustomerEarnest(
+                  this.DepositEditForm
+                )
                 if (code == 200) {
                   this.$message.success('新增成功')
                   this.dialogVisibleEdit = false
@@ -619,6 +564,7 @@
             })
           })
       },
+      // 新增客户保证金 打开
       handleDepositEdit() {
         this.dialogVisibleEdit = true
         this.DepositEditForm = {
@@ -629,49 +575,22 @@
           imgList: [],
         }
       },
+      // 客户保证金列表 选中
       handleDeposit(ID) {
         this.getCustomerEarnest(ID)
         this.dialogVisible = true
       },
+      // 客户保证金列表 新增界面
       async getCustomerEarnest(ID) {
         this.depositListLoading = true
-        const { data } = await getCustomerEarnestList({ customer_id: ID })
+        const { data } = await this.api.getCustomerEarnestList({
+          customer_id: ID,
+        })
         this.DepositEditForm.customer_id = ID
         this.depositList = data
         this.depositListLoading = false
       },
-      handleClose1() {
-        this.dialogVisible = false
-      },
-      handleCloseEdit1() {
-        this.dialogVisibleEdit = false
-      },
-      async addCoupons() {
-        this.$refs['edit'].showEdit()
-      },
-      resetForm() {
-        this.form = this.$options.data().form
-      },
-      handleClose() {
-        this.drawer = false
-      },
-      handleQuery() {
-        this.fetchData()
-      },
-      changeBtnSta(data) {
-        this.form.fold = data
-      },
-      handleClick() {
-        this.form.page = 1
-      },
-      changeBtnPage(data) {
-        this.pageState = true
-        this.form.page = data
-      },
-      changeBtnPageSize(data) {
-        this.pageState = true
-        this.form.pageSize = data
-      },
+      // 获取客户列表
       async fetchData(type) {
         if (type == 1) {
           this.drawer = false
@@ -680,13 +599,14 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getCustomerList(this.formTemp)
+        const { data } = await this.api.getCustomerList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
       },
+      // 获取下拉框数据
       async selectData() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'customer_grade,customer_type,customer_source,customer_tag',
         })
         data.customer_tag.forEach((item) => {
@@ -702,7 +622,7 @@
         })
         this.selectDataList = data
       },
-
+      // 客户详情新增编辑
       handleDetail(row, type) {
         if (type === 1) {
           this.title = '客户详情'
@@ -722,54 +642,32 @@
         }
         this.drawer = true
       },
-
-      handleSelectionChange(val) {
-        this.exclList = val
+      handleClose1() {
+        this.dialogVisible = false
       },
-      handleDownload() {
-        if (this.exclList.length) {
-          this.downloadLoading = true
-          import('@/utils/excel').then((excel) => {
-            const tHeader = [
-              'ID',
-              '客户编码',
-              '客户名称',
-              '客户等级',
-              '客户分类',
-              '客户来源',
-              '成交额',
-              '余额/欠款',
-              '注册时间',
-            ]
-            const filterVal = [
-              'id',
-              'sn',
-              'name',
-              'grade_name',
-              'type_name',
-              'source_name',
-              'money',
-              'final_count',
-              'create_time',
-            ]
-            const list = this.exclList
-            const data = this.formatJson(filterVal, list)
-            excel.export_json_to_excel({
-              header: tHeader,
-              data,
-              filename: this.filename,
-            })
-            this.$refs.multipleTable.$children[0].clearSelection()
-            this.downloadLoading = false
-          })
-        } else {
-          this.$baseMessage('请至少选择一行', 'error', 'vab-hey-message-error')
-        }
+      handleCloseEdit1() {
+        this.dialogVisibleEdit = false
       },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map((v) => filterVal.map((j) => v[j]))
+      resetForm() {
+        this.form = this.$options.data().form
+      },
+      handleClose() {
+        this.drawer = false
+      },
+      handleQuery() {
+        this.fetchData()
+      },
+      changeBtnSta(data) {
+        this.form.fold = data
+      },
+      changeBtnPage(data) {
+        this.pageState = true
+        this.form.page = data
+      },
+      changeBtnPageSize(data) {
+        this.pageState = true
+        this.form.pageSize = data
       },
     },
   }
 </script>
-<style lang="scss" scoped></style>

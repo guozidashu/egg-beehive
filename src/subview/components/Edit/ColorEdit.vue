@@ -54,6 +54,12 @@
       <el-form-item v-if="type === 1" label="排序" prop="sort">
         <el-input v-model="form.sort" style="width: 215px" />
       </el-form-item>
+      <el-form-item v-if="type === 1" label="颜色编码" prop="sn">
+        <el-input v-model="form.sn" style="width: 215px" />
+        <div style="font-size: 12px; color: #c0c4cc">
+          颜色编码为3个大写字母拼音首字母，例如：HUA,HUB,HUC
+        </div>
+      </el-form-item>
       <el-form-item
         v-if="type === 2 && title == '添加颜色组'"
         label="颜色组名称"
@@ -84,6 +90,7 @@
       return {
         form: {
           status: 0,
+          sn: '',
         },
         selectList: [],
         type: 1,
@@ -91,6 +98,14 @@
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
           sort: [{ required: true, trigger: 'blur', message: '请输入排序' }],
           pid: [{ required: true, trigger: 'blur', message: '请选择分类' }],
+          sn: [
+            { required: true, trigger: 'blur', message: '请输入颜色编码' },
+            {
+              pattern: /^[A-Z]{3}$/,
+              trigger: 'blur',
+              message: '请输入3个大写字母',
+            },
+          ],
           status: [{ required: true, trigger: 'blur', message: '请选择状态' }],
         },
         title: '',
