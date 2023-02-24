@@ -15,7 +15,6 @@
         @resetForm="resetForm"
       >
         <template #Form>
-          <!-- <div class="ceshi">china 中国制造</div> -->
           <el-form-item label="订单号">
             <el-input v-model="form.order_sn" size="small" />
           </el-form-item>
@@ -104,12 +103,7 @@
   </div>
 </template>
 <script>
-  import {
-    getIntegralOrderList,
-    editIntegralOrderVerification,
-  } from '@/api/basic'
   export default {
-    name: 'IntegralOrder',
     data() {
       return {
         formTemp: null,
@@ -161,7 +155,9 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要核销当前项吗', null, async () => {
-            const { code } = await editIntegralOrderVerification({ id: row.id })
+            const { code } = await this.api.editIntegralOrderVerification({
+              id: row.id,
+            })
             if (code != 200) {
               return
             }
@@ -186,7 +182,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getIntegralOrderList(this.formTemp)
+        const { data } = await this.api.getIntegralOrderList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
@@ -194,8 +190,3 @@
     },
   }
 </script>
-<style lang="scss" scoped>
-  // .ceshi {
-  //   font-family: 'whzzlsf' !important;
-  // }
-</style>

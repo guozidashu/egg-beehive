@@ -36,6 +36,9 @@
             :value="item.id"
           />
         </el-select>
+        <div style="font-size: 12px; color: #c0c4cc">
+          充许选择的客户等级，参与预售抢购
+        </div>
       </el-form-item>
       <el-form-item label="预售价格" prop="price">
         <el-input
@@ -50,6 +53,9 @@
           <el-radio :label="1">是</el-radio>
           <el-radio :label="2">否</el-radio>
         </el-radio-group>
+        <div style="font-size: 12px; color: #c0c4cc">
+          预售结束时未付尾款、付完尾款ERP作废取消会影响
+        </div>
       </el-form-item>
       <el-form-item label="尾款支付天数" prop="final_payment_day">
         <el-input
@@ -58,6 +64,9 @@
           placeholder="请输入尾款支付天数"
           style="width: 215px"
         />
+        <div style="font-size: 12px; color: #c0c4cc">
+          预售结束日期向后推迟多少天内
+        </div>
       </el-form-item>
       <el-form-item label="订金支付金" prop="payment_ratio">
         <el-input v-model="form.payment_ratio" style="width: 100px" />
@@ -66,6 +75,9 @@
       <el-form-item label="超期违约金" prop="penalty_ratio">
         <el-input v-model="form.penalty_ratio" style="width: 100px" />
         %
+        <div style="font-size: 12px; color: #c0c4cc">
+          每超过发货日期1天24小时，就算一次
+        </div>
       </el-form-item>
     </el-form>
     <template #footer>

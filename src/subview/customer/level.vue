@@ -1,25 +1,5 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <!-- <div
-      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
-    >
-      <QYForm
-        :form="form"
-        :form-type="formType"
-        @changeSearch="handleQuery"
-        @resetForm="resetForm"
-      >
-        <template #Form>
-          <el-form-item label="等级名称" prop="region">
-            <el-input
-              v-model="form.name"
-              placeholder="请输入等级名称"
-              size="small"
-            />
-          </el-form-item>
-        </template>
-      </QYForm>
-    </div> -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -86,13 +66,6 @@
               >
                 编辑
               </el-button>
-              <!-- <el-button
-                v-has-permi="['btn:CustomerLevel:del']"
-                type="text"
-                @click="handleDelete(row)"
-              >
-                删除
-              </el-button> -->
             </template>
           </el-table-column>
         </template>

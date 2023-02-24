@@ -106,19 +106,17 @@
   </div>
 </template>
 <script>
-  import { getBandCostAnalysis, getCommonAllList } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    name: 'CostAnalysisBand',
     mixins: [datajosn],
     data() {
       return {
         selectList: [],
         form: {
           date: ['', ''],
-          brand_id: null, // 品牌id
-          year_id: null, // 年份id
-          season_id: null, // 季节id
+          brand_id: null,
+          year_id: null,
+          season_id: null,
         },
         formType: 4,
         listType: 2,
@@ -147,19 +145,19 @@
         this.form = this.$options.data().form
       },
       async getTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'brand,year,season',
         })
         this.selectList = data
       },
       async fetchData() {
         this.listLoading = true
-        const { data } = await getBandCostAnalysis({
-          start_date: this.form.date[0], // 开始时间
-          end_date: this.form.date[1], // 结束时间
-          brand_id: this.form.brand_id, // 品牌id
-          year_id: this.form.year_id, // 年份id
-          season_id: this.form.season_id, // 季节id
+        const { data } = await this.api.getBandCostAnalysis({
+          start_date: this.form.date[0],
+          end_date: this.form.date[1],
+          brand_id: this.form.brand_id,
+          year_id: this.form.year_id,
+          season_id: this.form.season_id,
         })
         this.list = data
         this.listLoading = false
@@ -167,4 +165,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

@@ -121,20 +121,6 @@
           name="5"
         />
       </el-tabs>
-      <el-form ref="form" :inline="true" @submit.native.prevent>
-        <el-form-item>
-          <!-- <el-button size="small" type="primary" @click="handleDownload">
-            导出订单
-          </el-button> -->
-          <!-- <el-button
-            size="small"
-            type="primary"
-            @click="print('multipleTable')"
-          >
-            打印入库单
-          </el-button> -->
-        </el-form-item>
-      </el-form>
       <QYList
         ref="multipleTable"
         :list="list"
@@ -145,7 +131,6 @@
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
-        @selectRows="handleSelectionChange"
       >
         <template #List>
           <el-table-column type="selection" />
@@ -239,19 +224,12 @@
               >
                 详情
               </el-button>
-              <!-- <el-button type="text" @click="handleEdit(row, 1)">
-                收货
-              </el-button>
-              <el-button type="text" @click="handleEdit(row, 2)">
-                退货
-              </el-button> -->
             </template>
           </el-table-column>
         </template>
       </QYList>
     </el-card>
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
-      <!-- 详情抽屉组件 -->
       <Drawer :drawer-inof="drawerInof" :drawer-type="drawerType" />
     </el-drawer>
     <edit ref="edit" @fetch-data="fetchData" />
@@ -261,29 +239,19 @@
 <script>
   import Drawer from '@/subview/components/Drawer/MaterialDrawer'
   import Edit from '@/subview/components/Edit/MaterialEdit'
-  import { mapActions } from 'vuex'
-  import VabPrint from '@/extra/VabPrint'
-  import {
-    getPurchaseList,
-    getCommonAllList,
-    getpurchaseGetCount,
-  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
-    name: 'SupplierMaterial',
     components: { Drawer, Edit },
     mixins: [datajosn, publicjosn],
     data() {
       return {
+        // 抽屉相关
         drawer: false,
         drawerInof: {},
         drawerType: 1,
-        filename: '物料采购订单',
-        downloadLoading: false,
-        exclList: [],
+        // 供应商下拉框
         supplier_type: [],
-        activeName: '0',
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -303,6 +271,8 @@
         list: [],
         listLoading: false,
         total: 0,
+        // tab 数据
+        activeName: '0',
         tatleData: {
           all_order: null, // 全部
           all_warehouse: null, // 仓库中
@@ -315,7 +285,6 @@
     },
     watch: {
       form: {
-        //表单筛选条件变化实时刷新列表
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
           if (this.pageState) {
@@ -354,11 +323,12 @@
       resetForm() {
         this.form = this.$options.data().form
       },
+      // 获取 tab 数据
       async getTatleAll() {
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getpurchaseGetCount(this.formTemp)
+        const { data } = await this.api.getpurchaseGetCount(this.formTemp)
         this.tatleData = data
       },
       async fetchData() {
@@ -366,7 +336,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getPurchaseList(this.formTemp)
+        const { data } = await this.api.getPurchaseList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
@@ -378,7 +348,9 @@
         })
       },
       async getSelectData() {
-        const { data } = await getCommonAllList({ type: 'supplier_type' })
+        const { data } = await this.api.getCommonAllList({
+          type: 'supplier_type',
+        })
         this.supplier_type = data.supplier_type
       },
       handleEdit(row, type) {
@@ -403,16 +375,6 @@
         }
         this.drawer = true
       },
-      // 打印
-      ...mapActions({
-        openSideBar: 'settings/openSideBar',
-        foldSideBar: 'settings/foldSideBar',
-      }),
-      async print(val) {
-        await this.foldSideBar()
-        await VabPrint(this.$refs[val], { noPrintParent: true })
-        await this.openSideBar()
-      },
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
@@ -422,55 +384,6 @@
         this.pageState = true
         this.form.pageSize = data
       },
-      handleSelectionChange(val) {
-        this.exclList = val
-      },
-      handleDownload() {
-        if (this.exclList.length) {
-          this.downloadLoading = true
-          import('@/utils/excel').then((excel) => {
-            const tHeader = [
-              '订单号',
-              '采购日期',
-              '供应商名称',
-              '商品信息',
-              '采购数量',
-              '入库数量',
-              '金额',
-              '预计交货时间',
-              '订单状态',
-              '完成状态',
-            ]
-            const filterVal = [
-              'sn',
-              'add_date',
-              'su_name',
-              'inofText',
-              'num',
-              'receipt_num',
-              'total',
-              'expected_date',
-              'order_status',
-              'delay',
-            ]
-            const list = this.exclList
-            const data = this.formatJson(filterVal, list)
-            excel.export_json_to_excel({
-              header: tHeader,
-              data,
-              filename: this.filename,
-            })
-            this.$refs.multipleTable.$children[0].clearSelection()
-            this.downloadLoading = false
-          })
-        } else {
-          this.$baseMessage('请至少选择一行', 'error', 'vab-hey-message-error')
-        }
-      },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map((v) => filterVal.map((j) => v[j]))
-      },
     },
   }
 </script>
-<style lang="scss" scoped></style>

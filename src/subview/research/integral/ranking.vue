@@ -78,9 +78,7 @@
   </div>
 </template>
 <script>
-  import { getEmployeeIntegralRank } from '@/api/basic'
   export default {
-    name: 'ProjectBandlist',
     data() {
       return {
         formTemp: null,
@@ -145,7 +143,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getEmployeeIntegralRank(this.formTemp)
+        const { data } = await this.api.getEmployeeIntegralRank(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
@@ -153,4 +151,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

@@ -94,13 +94,7 @@
 </template>
 <script>
   import datajosn from '@/assets/assets_josn/datajosn'
-  import {
-    getEmployeeCostAnalysis,
-    editIntegralOrderVerification,
-    getCommonAllList,
-  } from '@/api/basic'
   export default {
-    name: 'EmployeeValue',
     mixins: [datajosn],
     data() {
       return {
@@ -144,7 +138,9 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要核销当前项吗', null, async () => {
-            const { code } = await editIntegralOrderVerification({ id: row.id })
+            const { code } = await this.api.editIntegralOrderVerification({
+              id: row.id,
+            })
             if (code != 200) {
               return
             }
@@ -154,7 +150,7 @@
         }
       },
       async getTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'role',
         })
         this.selectList = data
@@ -178,12 +174,12 @@
 
       async fetchData() {
         this.listLoading = true
-        const { data } = await getEmployeeCostAnalysis({
+        const { data } = await this.api.getEmployeeCostAnalysis({
           page: this.page,
           pageSize: this.pageSize,
-          start_date: this.form.date[0], // 开始时间
-          end_date: this.form.date[1], // 结束时间
-          role_id: this.form.role_id, // 季节id
+          start_date: this.form.date[0],
+          end_date: this.form.date[1],
+          role_id: this.form.role_id,
         })
         this.list = data.data.data
         this.total = data.data.total
@@ -192,4 +188,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

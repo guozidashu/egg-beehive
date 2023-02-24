@@ -58,66 +58,11 @@
           </el-card>
         </el-col>
       </el-row>
-      <!-- <QYList
-        :list="list"
-        :list-type="listType"
-        :state="listLoading"
-        :total="total"
-        @changePage="changeBtnPage"
-        @changePageSize="changeBtnPageSize"
-      >
-        <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="员工头像"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          >
-            <template #default="{ row }">
-              <el-image :src="row.avatar" />
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            label="姓名"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="积分"
-            prop="integral"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="积分来源"
-            prop="remark"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="时间"
-            prop="create_time"
-            show-overflow-tooltip
-          />
-        </template>
-      </QYList> -->
     </el-card>
   </div>
 </template>
 <script>
-  //
-
-  import { getEmployeeIntegralList } from '@/api/basic'
   export default {
-    name: 'ProjectBandlist',
     data() {
       return {
         form: {
@@ -162,7 +107,7 @@
 
       async fetchData() {
         this.listLoading = true
-        const { data } = await getEmployeeIntegralList(this.form)
+        const { data } = await this.api.getEmployeeIntegralList(this.form)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
@@ -170,4 +115,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

@@ -67,10 +67,8 @@
   </div>
 </template>
 <script>
-  import { getPositionCostAnalysis, getCommonAllList } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    name: 'CostAnalysisJobs',
     mixins: [datajosn],
     data() {
       return {
@@ -104,16 +102,16 @@
         this.form = this.$options.data().form
       },
       async getTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'brand,year,season',
         })
         this.selectList = data
       },
       async fetchData() {
         this.listLoading = true
-        const { data } = await getPositionCostAnalysis({
-          start_date: this.form.date[0], // 开始时间
-          end_date: this.form.date[1], // 结束时间
+        const { data } = await this.api.getPositionCostAnalysis({
+          start_date: this.form.date[0],
+          end_date: this.form.date[1],
         })
         this.list = data
         this.listLoading = false
@@ -121,4 +119,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

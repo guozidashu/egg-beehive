@@ -1,35 +1,95 @@
 <template>
   <div style="padding: 20px; background-color: white">
-    <div class="textCss">
-      <p style="font-weight: 600">
-        前5位由系统定义随机值以@@@@@占位， 编码不能连续两个 -，不能以 -
-        结尾，可自定义长度最长10位，最少7位
-      </p>
-      <p style="font-weight: 400">1、@是随机字符串包括数字和字母大写</p>
-      <p style="font-weight: 400">2、#是随机数字</p>
-      <p style="font-weight: 400">3、A是随机字母大写</p>
-      <p style="font-weight: 400">4、-既是-（分隔符）</p>
-    </div>
-    <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item label="编码名称:" prop="name">
-        <el-input v-model="form.name" disabled style="width: 300px" />
-      </el-form-item>
-      <el-form-item label="编码字符:" prop="code">
-        <el-input
-          v-model="form.code"
-          maxlength="10"
-          placeholder="请输入编码"
-          style="width: 300px"
-        >
-          <template slot="prepend">@@@@@</template>
-        </el-input>
-      </el-form-item>
-      <el-form-item label="预览">
-        <div>{{ preview }}</div>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">保存</el-button>
-      </el-form-item>
+    <el-form ref="form" label-width="120px" :model="form" :rules="rules">
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="防伪编码" name="防伪编码">
+          <div class="textCss">
+            <h2>商品防伪编码规则设置</h2>
+            <p style="font-weight: 600">
+              内部商品编码的组成规则规则：商品编码（款号）+ 颜色编码 + 尺码编码
+            </p>
+            <p style="font-weight: 400">
+              前缀（默认没有）长度两位，只能输入数组和字母
+            </p>
+            <p style="font-weight: 400">
+              间隔符（默认没有）长度一位，只能输入- 或者 _
+            </p>
+            <p>
+              <span style="color: red">举例</span>
+              ：如果前缀设置成QY款号为WZ231108，颜色编码为HUA，尺码编号为080、090、100、100、110、120
+            </p>
+            <p>散码生成的商品编码就为：QYWZ231108HUA080</p>
+            <p>散码生成的商品编码就为：QY-WZ231108-HUA-090</p>
+            <p>散码生成的商品编码就为：QY WZ231108 HUA100</p>
+
+            <p>散码生成的商品编码就为：OYWZ231108HUA110</p>
+            <p>散码生成的商品编码就为：QYWZ231108HUA120QYWZ231108HUA000</p>
+            <p>整手生成的商品编码就为：QYWZ231108HUA000</p>
+          </div>
+          <el-form-item label="编码名称:" prop="fakeName">
+            <el-input v-model="form.fakeName" disabled style="width: 300px" />
+          </el-form-item>
+          <el-form-item label="前缀:">
+            <el-switch
+              v-model="form.prefix"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+            />
+          </el-form-item>
+          <el-form-item v-if="form.prefix" label="前缀文本:" prop="prefixValue">
+            <el-input v-model="form.prefixValue" style="width: 300px" />
+          </el-form-item>
+          <el-form-item label="间隔符:">
+            <el-switch
+              v-model="form.spacer"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+            />
+          </el-form-item>
+          <el-form-item
+            v-if="form.spacer"
+            label="间隔符文本:"
+            prop="spacerValue"
+          >
+            <el-input v-model="form.spacerValue" style="width: 300px" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">保存</el-button>
+          </el-form-item>
+        </el-tab-pane>
+        <el-tab-pane label="商品编码" name="商品编码">
+          <div class="textCss">
+            <h2>商品编码规则设置</h2>
+            <p style="font-weight: 600">
+              前5位由系统定义随机值以@@@@@占位， 编码不能连续两个 -，不能以 -
+              结尾，可自定义长度最长10位，最少7位
+            </p>
+            <p style="font-weight: 400">1、@是随机字符串包括数字和字母大写</p>
+            <p style="font-weight: 400">2、#是随机数字</p>
+            <p style="font-weight: 400">3、A是随机字母大写</p>
+            <p style="font-weight: 400">4、-既是-（分隔符）</p>
+          </div>
+          <el-form-item label="编码名称:" prop="name">
+            <el-input v-model="form.name" disabled style="width: 300px" />
+          </el-form-item>
+          <el-form-item label="编码字符:" prop="code">
+            <el-input
+              v-model="form.code"
+              maxlength="10"
+              placeholder="请输入编码"
+              style="width: 300px"
+            >
+              <template slot="prepend">@@@@@</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="预览">
+            <div>{{ preview }}</div>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">保存</el-button>
+          </el-form-item>
+        </el-tab-pane>
+      </el-tabs>
     </el-form>
   </div>
 </template>
@@ -38,14 +98,71 @@
   export default {
     data() {
       return {
+        activeName: '防伪编码',
         preview: this.code('@@@@@'),
         form: {
-          name: '商品条码1',
+          name: '商品条码',
+          fakeName: '商品防伪条码',
           code: '',
+          prefix: false,
+          spacer: false,
+          prefixValue: 'A0',
+          spacerValue: '-',
         },
         rules: {
+          fakeName: [
+            { required: true, trigger: 'blur', message: '请输入防伪编码名称' },
+          ],
           name: [
-            { required: true, trigger: 'blur', message: '请输入编码名称' },
+            { required: true, trigger: 'blur', message: '请输入商品编码名称' },
+          ],
+          spacerValue: [
+            { required: true, trigger: 'blur', message: '请输入间隔符文本' },
+            {
+              validator: (rule, value, callback) => {
+                if (value.length > 1) {
+                  callback(new Error('长度只能为1个字符'))
+                } else {
+                  callback()
+                }
+              },
+              trigger: 'blur',
+            },
+            {
+              validator: (rule, value, callback) => {
+                const reg = /^[-_]+$/
+                if (!reg.test(value)) {
+                  callback(new Error('只能是-或者_'))
+                } else {
+                  callback()
+                }
+              },
+              trigger: 'blur',
+            },
+          ],
+          prefixValue: [
+            { required: true, trigger: 'blur', message: '请输入前缀文本' },
+            {
+              validator: (rule, value, callback) => {
+                if (value.length > 2) {
+                  callback(new Error('长度只能为2个字符'))
+                } else {
+                  callback()
+                }
+              },
+              trigger: 'blur',
+            },
+            {
+              validator: (rule, value, callback) => {
+                const reg = /^[A-Za-z0-9]+$/
+                if (!reg.test(value)) {
+                  callback(new Error('只能是数字和字母'))
+                } else {
+                  callback()
+                }
+              },
+              trigger: 'blur',
+            },
           ],
           code: [
             { required: true, trigger: 'blur', message: '请输入编码字符' },
@@ -121,11 +238,27 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             let temp = '@@@@@' + this.form.code
-            const { code } = await setCodeRule({
-              type: 1,
-              name: this.form.name,
-              code: temp,
-            })
+            let temp1 = null
+            if (this.form.prefix && this.form.spacer) {
+              temp1 = this.form.prefixValue + '+' + this.form.spacerValue
+            } else if (!this.form.prefix && !this.form.spacer) {
+              temp1 = null
+            } else if (this.form.prefix && !this.form.spacer) {
+              temp1 = this.form.prefixValue + '+'
+            } else if (!this.form.prefix && this.form.spacer) {
+              temp1 = '+' + this.form.spacerValue
+            }
+            let ogj = {}
+            if (this.activeName == '防伪编码') {
+              ogj.type = 2
+              ogj.name = this.form.fakeName
+              ogj.code = temp1
+            } else if (this.activeName == '商品编码') {
+              ogj.type = 1
+              ogj.name = this.form.name
+              ogj.code = temp
+            }
+            const { code } = await setCodeRule(ogj)
             if (code == 200) {
               this.$message.success('保存成功')
             } else {

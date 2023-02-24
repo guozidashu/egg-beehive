@@ -38,9 +38,6 @@
           >
             重置
           </el-button>
-          <!-- <el-button size="small" type="primary" @click="handleDownload">
-            导出
-          </el-button> -->
         </el-form-item>
         <el-form-item label="供应商类别:" style="float: right">
           <el-select v-model="form.type">
@@ -109,41 +106,6 @@
         @submit.native.prevent
       >
         <span style="margin: 10px 0; font-size: 16px">供应商排行</span>
-        <!-- <el-form-item style="margin-right: 0">
-          <el-form-item label="统计类型:" prop="region">
-            <el-select v-model="form.region" size="small" style="width: 150px">
-              <el-option label="浏览量" value="shanghai" />
-              <el-option label="访问数" value="beijing" />
-            </el-select>
-          </el-form-item>
-          <el-form-item
-            label="时间筛选:"
-            style="float: right; margin-right: 0; font-size: 12px"
-          >
-            <el-date-picker
-              v-model="form.date"
-              align="right"
-              end-placeholder="结束日期"
-              :picker-options="pickerOptions"
-              range-separator="至"
-              start-placeholder="开始日期"
-              type="daterange"
-              unlink-panels
-                format="yyyy-MM-dd"
-             :clearable="false"
-            value-format="yyyy-MM-dd HH:mm:ss"  :default-time="['00:00:00', '23:59:59']"
-              
-            />
-            <el-button
-              
-              size="small"
-              style="margin: 0 20px"
-              type="primary"
-            >
-              查询
-            </el-button>
-          </el-form-item>
-        </el-form-item> -->
       </el-form>
       <QYList :list="supplier_rank" :list-type="listType" :state="listLoading">
         <template #List>
@@ -191,27 +153,6 @@
               <el-tag>￥{{ row.total | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <!-- <el-table-column
-            label="准时交货率"
-            prop="orders"
-            show-overflow-tooltip
-          >
-            <template #default="{ row }">{{ row.orders * 100 }}%</template>
-          </el-table-column>
-          <el-table-column
-            label="损坏率/质量率"
-            prop="pay"
-            show-overflow-tooltip
-          >
-            <template #default="{ row }">
-              {{ row.pay * 100 }}%/{{ row.orders * 100 }}%
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="操作" width="85">
-            <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">查看</el-button>
-            </template>
-          </el-table-column> -->
         </template>
       </QYList>
     </div>
@@ -219,20 +160,16 @@
 </template>
 
 <script>
-  import { getDissectList, getCommonAllList } from '@/api/basic'
   import mapjson from '@/assets/assets_josn/mapjson'
   import datajosn from '@/assets/assets_josn/datajosn'
   import publicjosn from '@/assets/assets_josn/publicjosn'
-
   export default {
-    name: 'GoodsStatistical',
     mixins: [mapjson, datajosn, publicjosn],
     data() {
       return {
-        filename: '供应商分析',
-        downloadLoading: false,
         listLoading: false,
         listType: 4,
+        // 地图图表数据
         mapTitle: '供应商地域分布',
         mapType: {
           trigger: 'item',
@@ -245,14 +182,19 @@
             return res
           },
         },
+        // 供应商下拉框
         supplier_type: [],
         form: {
           create_time: this.getPastTime(30),
           type: '',
         },
+        // 供应商地域分布
         supplier_rank: [],
+        // 头部卡片宽度
         supplier_width: '25%',
+        // 头部卡片数据
         supplier_case: [],
+        // 饼图数据
         branchTitle: '供应商类别占比',
         styleObj: {
           width: '400px',
@@ -282,26 +224,9 @@
         this.form.type = ''
         this.form.create_time = this.getPastTime(30)
       },
-
-      handleDetail() {},
-
-      handleDownload() {
-        this.downloadLoading = true
-        import('@/utils/excel').then((excel) => {
-          const tHeader = ['名称', '数量']
-          const filterVal = ['title', 'num']
-          const list = this.supplier_case
-          const data = this.formatJson(filterVal, list)
-          excel.export_json_to_excel({
-            header: tHeader,
-            data,
-            filename: this.filename,
-          })
-        })
-      },
       async fetchData() {
         this.listLoading = true
-        const { data } = await getDissectList(this.form)
+        const { data } = await this.api.getDissectList(this.form)
         let arr = [
           {
             id: 0,
@@ -352,7 +277,9 @@
         this.listLoading = false
       },
       async getSelectData() {
-        const { data } = await getCommonAllList({ type: 'supplier_type' })
+        const { data } = await this.api.getCommonAllList({
+          type: 'supplier_type',
+        })
         this.supplier_type = data.supplier_type
       },
       formatJson(filterVal, jsonData) {
@@ -361,5 +288,3 @@
     },
   }
 </script>
-
-<style lang="scss" scoped></style>

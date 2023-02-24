@@ -118,39 +118,35 @@
       </QYList>
     </el-card>
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
-      <!-- 详情抽屉组件 -->
       <Drawer :drawer-inof="drawerInof" :drawer-inof-id="drawerInofId" />
     </el-drawer>
   </div>
 </template>
 <script>
   import Drawer from '@/subview/components/Drawer/ProductPlanningDrawer'
-  import {
-    getPlanList,
-    getCommonAllList,
-    // getPlanDetails,
-    getgetDesignerList,
-  } from '@/api/basic'
   export default {
-    name: 'ProductPlanning',
     components: { Drawer },
     data() {
       return {
+        // 抽屉参数
         drawer: false,
         drawerInof: [],
         drawerInofId: '',
+        // 查询表单下拉框
         selectList: [],
+        // 查询表单和表格分页冲突解决
         formTemp: null,
         page: 1,
         pageSize: 10,
+        // 查询表单
         form: {
           page: 1,
           pageSize: 10,
-          brand_id: null, // 品牌id
-          year_id: null, // 年份id
-          season_id: null, // 季节id
-          band_id: null, // 波段id
-          name: '', // 任务名称
+          brand_id: null,
+          year_id: null,
+          season_id: null,
+          band_id: null,
+          name: '',
         },
         formType: 4,
         listType: 1,
@@ -183,14 +179,9 @@
     created() {
       this.getTypeList()
       this.fetchData()
-      this.getTypeList1()
     },
     methods: {
       async handleDetail(row) {
-        // const { data } = await getPlanDetails({
-        //   plan_id: 1, // 目标id
-        //   designer_id: null, // 设计师id
-        // })
         this.drawerInofId = row.plan_id
         this.drawer = true
       },
@@ -201,14 +192,10 @@
         this.form = this.$options.data().form
       },
       async getTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'brand,year,season,band',
         })
         this.selectList = data
-      },
-      async getTypeList1() {
-        const { data } = await getgetDesignerList()
-        this.selectList1 = this.drawerInof = data.designer
       },
       changeBtnPage(data) {
         this.pageState = true
@@ -223,7 +210,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getPlanList(this.formTemp)
+        const { data } = await this.api.getPlanList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
@@ -231,4 +218,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

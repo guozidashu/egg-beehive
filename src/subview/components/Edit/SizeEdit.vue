@@ -54,6 +54,12 @@
       <el-form-item v-if="type === 1" label="排序" prop="sort">
         <el-input v-model="form.sort" style="width: 215px" />
       </el-form-item>
+      <el-form-item v-if="type === 1" label="尺码编码" prop="sn">
+        <el-input v-model="form.sn" style="width: 215px" />
+        <div style="font-size: 12px; color: #c0c4cc">
+          尺码编码为3位数字，例如：080、090、110
+        </div>
+      </el-form-item>
       <el-form-item
         v-if="type === 1 && title == '添加尺码'"
         label="尺码类型"
@@ -100,13 +106,21 @@
           status: 0,
           type: 0,
           size: '',
+          sn: '',
         },
         selectList: [],
         type: 1,
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
           sort: [{ required: true, trigger: 'blur', message: '请输入排序' }],
-          sn: [{ required: true, trigger: 'blur', message: '请输入编号' }],
+          sn: [
+            { required: true, trigger: 'blur', message: '请输入编号' },
+            {
+              pattern: /^[0-9]{3}$/,
+              trigger: 'blur',
+              message: '长度为3，只能输入数字',
+            },
+          ],
           pid: [{ required: true, trigger: 'blur', message: '请选择分类' }],
           status: [{ required: true, trigger: 'blur', message: '请选择状态' }],
           type: [{ required: true, trigger: 'blur', message: '请选择类型' }],

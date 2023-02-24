@@ -46,7 +46,7 @@
       </el-form>
       <QYTextLabels
         ref="multipleTable"
-        :list="goodsStaList"
+        :list="goodsList"
         style="margin: 20px 0"
       />
 
@@ -135,21 +135,6 @@
             </template>
           </el-table-column>
           <el-table-column label="最后一次入库时间" prop="lasttime" />
-          <!-- <el-table-column label="超期状态" prop="pay">
-            <template #default="{ row }">暂无{{ row.id }}</template>
-          </el-table-column> -->
-          <!-- <el-table-column
-            align="center"
-            fixed="right"
-            label="操作"
-            width="100"
-          >
-            <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">
-                商品详情
-              </el-button>
-            </template>
-          </el-table-column> -->
         </template>
       </QYList>
     </div>
@@ -158,20 +143,12 @@
 
 <script>
   import VabChart from '@/extra/VabChart'
-
-  import {
-    getMaterialCountListt,
-    getMaterialCountRank,
-    getMaterialMaterialDetail,
-  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    name: 'SupplierMaterialStatistical',
     components: { VabChart },
     mixins: [datajosn],
     data() {
       return {
-        filename: '物料采购统计',
         listLoading: false,
         listType: 2,
         list: [],
@@ -179,6 +156,7 @@
           date: this.getPastTime(30),
           date1: this.getPastTime(30),
         },
+        // 图表数据
         dateList: [],
         dataAllList: {
           tare_adjuvant_num: [],
@@ -188,7 +166,12 @@
           adjuvant_num: [],
           adjuvant_total: [],
         },
-        goodsStaList: [
+        initOptions: {
+          renderer: 'svg',
+        },
+        option: {},
+        // 卡片数据
+        goodsList: [
           {
             title: '总采购数量',
             number: 0,
@@ -280,10 +263,6 @@
             numType: 1,
           },
         ],
-        initOptions: {
-          renderer: 'svg',
-        },
-        option: {},
       }
     },
     watch: {
@@ -314,12 +293,15 @@
       this.fetchList()
     },
     methods: {
+      // 获取图表
       async fetchData() {
-        const { data } = await getMaterialCountListt({ time: this.form.date })
+        const { data } = await this.api.getMaterialCountListt({
+          time: this.form.date,
+        })
         this.Initial(data)
       },
       Initial(data) {
-        this.goodsStaList.forEach((item) => {
+        this.goodsList.forEach((item) => {
           for (let i in data.list) {
             if (item.name == i) {
               if (data.list[i] == null) {
@@ -457,41 +439,16 @@
           ],
         }
       },
+      // 获取表格
       async fetchList() {
         this.listLoading = true
-        const { data } = await getMaterialCountRank({ time: this.form.date1 })
+        const { data } = await this.api.getMaterialCountRank({
+          time: this.form.date1,
+        })
         this.list = data.data
         this.total = data.total
         this.listLoading = false
       },
-      async handleDetail() {
-        // const { data } = await getMaterialMaterialDetail({ id: row.id })
-      },
-
-      handleDownload() {
-        this.downloadLoading = true
-        import('@/utils/excel').then((excel) => {
-          const tHeader = ['名称', '数量']
-          const filterVal = ['title', 'num']
-          const list = this.goodsStaList
-          const data = this.formatJson(filterVal, list)
-          excel.export_json_to_excel({
-            header: tHeader,
-            data,
-            filename: this.filename,
-          })
-        })
-      },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map((v) => filterVal.map((j) => v[j]))
-      },
     },
   }
 </script>
-
-<style lang="scss" scoped>
-  .workbench-container {
-    padding: 0 !important;
-    background: $base-color-background !important;
-  }
-</style>

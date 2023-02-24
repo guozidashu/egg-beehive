@@ -100,9 +100,7 @@
   </div>
 </template>
 <script>
-  import { getPlannedList, getCommonAllList } from '@/api/basic'
   export default {
-    name: 'ProjectBandlist',
     data() {
       return {
         formTemp: null,
@@ -112,7 +110,7 @@
           page: 1,
           pageSize: 10,
           design_type: '', //1头版 2复色
-          brand_id: '', //1品牌id
+          brand_id: '',
           paytype: '', //1签单 2现金
           order_type: '', //1设计中 2设计完成 3制版中 4制版完成 5剪板中 6剪板完成 7样衣中 8样衣完成 9审核完成
         },
@@ -167,7 +165,7 @@
         this.form.pageSize = data
       },
       async getTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'brand',
         })
         this.selectList = data
@@ -178,7 +176,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getPlannedList(this.formTemp)
+        const { data } = await this.api.getPlannedList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
@@ -186,4 +184,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

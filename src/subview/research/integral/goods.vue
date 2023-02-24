@@ -85,90 +85,13 @@
           </el-card>
         </el-col>
       </el-row>
-
-      <!-- <QYList
-        :list="list"
-        :list-type="listType"
-        :state="listLoading"
-        :total="total"
-        @changePage="changeBtnPage"
-        @changePageSize="changeBtnPageSize"
-        @selectRows="selectBtnRows"
-      >
-        <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="图片"
-            prop="pic"
-            show-overflow-tooltip
-            sortable
-          >
-            <template #default="{ row }">
-              <el-image :src="row.pic" />
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            label="商品名称"
-            prop="name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="积分"
-            prop="integral"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="库存"
-            prop="stock"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="上下架"
-            prop="status"
-            show-overflow-tooltip
-          >
-            <template #default="{ row }">
-              <span v-if="row.status == 1">上架</span>
-              <span v-else>下架</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            label="添加时间"
-            prop="create_time"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
-          >
-            <template #default="{ row }">
-              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <el-button type="text" @click="handleDelete(row)">删除</el-button>
-            </template>
-          </el-table-column>
-        </template>
-      </QYList> -->
     </el-card>
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 <script>
   import Edit from '@/subview/components/Edit/IntegralGoodsEdit'
-  import { getIntegralGoodsList, delIntegralGoodsDel } from '@/api/basic'
   export default {
-    name: 'IntegralGoods',
     components: { Edit },
     data() {
       return {
@@ -179,12 +102,8 @@
           pageSize: 100,
         },
         formType: 4,
-
         selectRows: [],
-        // listType: 1,
         list: [],
-        // listLoading: false,
-        // total: 0,
       }
     },
     watch: {
@@ -220,7 +139,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delIntegralGoodsDel({ id: row.id })
+            const { code } = await this.api.delIntegralGoodsDel({ id: row.id })
             if (code != 200) {
               return
             }
@@ -243,13 +162,9 @@
       },
 
       async fetchData() {
-        // this.listLoading = true
-        const { data } = await getIntegralGoodsList(this.form)
+        const { data } = await this.api.getIntegralGoodsList(this.form)
         this.list = data.data
-        // this.total = data.total
-        // this.listLoading = false
       },
     },
   }
 </script>
-<style lang="scss" scoped></style>

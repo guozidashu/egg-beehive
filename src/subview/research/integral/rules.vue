@@ -63,13 +63,7 @@
 </template>
 
 <script>
-  import {
-    getIntegralRule,
-    editIntegralRuleSave,
-    getCommonAllList,
-  } from '@/api/basic'
   export default {
-    name: 'IntegralRules',
     data() {
       return {
         form: {
@@ -114,7 +108,7 @@
     methods: {
       async fetchData() {
         this.listLoading = true
-        const { data } = await getIntegralRule(this.form)
+        const { data } = await this.api.getIntegralRule(this.form)
         this.list = data
         this.total = data.total
         this.listLoading = false
@@ -170,7 +164,7 @@
             }
           })
         })
-        const { code } = await editIntegralRuleSave(arr)
+        const { code } = await this.api.editIntegralRuleSave(arr)
         if (code != 200) {
           return
         }
@@ -178,7 +172,9 @@
         this.fetchData()
       },
       async getSelectData() {
-        const { data } = await getCommonAllList({ type: 'parent_category' })
+        const { data } = await this.api.getCommonAllList({
+          type: 'parent_category',
+        })
         this.parent_category = data.parent_category
       },
     },

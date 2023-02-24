@@ -44,7 +44,6 @@
           </el-button>
         </el-form-item>
       </el-form>
-      <!-- 表格组件使用 -->
       <QYList
         :list="list"
         :list-type="listType"
@@ -116,21 +115,14 @@
       :visible.sync="drawer"
       :wrapper-closable="false"
     >
-      <!-- 详情抽屉组件 -->
       <Drawer :drawer-inof="drawerInof" @fetch-data="fetchData" />
     </el-drawer>
   </div>
 </template>
 <script>
   import Drawer from '@/subview/components/Drawer/ManagementDrawer'
-  import {
-    getSupplierList,
-    getCommonAllList,
-    getSupplierEditDetail,
-  } from '@/api/basic'
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
-    name: 'SupplierOrder',
     components: { Drawer },
     mixins: [publicjosn],
     data() {
@@ -144,15 +136,11 @@
         page: 1,
         pageSize: 10,
         form: {
-          // 自定义参数
-          // 公共参数
           type: '',
           name: '',
           page: 1,
           pageSize: 10,
         },
-
-        // 公共参数
         listType: 1,
         formType: 4,
         list: [],
@@ -162,7 +150,6 @@
     },
     watch: {
       form: {
-        //表单筛选条件变化实时刷新列表
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
           if (this.pageState) {
@@ -213,13 +200,15 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getSupplierList(this.formTemp)
+        const { data } = await this.api.getSupplierList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
       },
       async getSelectData() {
-        const { data } = await getCommonAllList({ type: 'supplier_type' })
+        const { data } = await this.api.getCommonAllList({
+          type: 'supplier_type',
+        })
         this.supplier_type = data.supplier_type
       },
 
@@ -237,7 +226,7 @@
           this.drawerInof.status = 1
           this.drawerInof.initial_amount = 0
         } else {
-          const { data } = await getSupplierEditDetail({ id: row.id })
+          const { data } = await this.api.getSupplierEditDetail({ id: row.id })
           this.drawerInof = JSON.parse(JSON.stringify(data[0]))
           this.drawerInof.drawerType = type
         }
