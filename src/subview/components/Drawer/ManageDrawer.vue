@@ -24,24 +24,6 @@
                 icon="align-center"
                 style="float: right; margin: 6px 0 0 0"
               />
-              <!-- <el-button
-                
-                size="small"
-                style="float: right; margin-right: 10px"
-                type="primary"
-                @click="upMembers(2)"
-              >
-                升级会员
-              </el-button> -->
-              <!-- <el-button
-                
-                size="small"
-                style="float: right; margin-right: 10px"
-                type="primary"
-                @click="upMembers(1)"
-              >
-                积分余额
-              </el-button> -->
               <el-button
                 v-if="form.drawerType == 1"
                 size="small"
@@ -115,11 +97,7 @@
         <el-tab-pane label="发货记录" name="2" />
         <el-tab-pane label="退货记录" name="3" />
         <el-tab-pane label="收银记录" name="4" />
-        <!-- <el-tab-pane label="持有优惠券" name="5" /> -->
-        <!-- <el-tab-pane label="积分明细" name="6" /> -->
-        <!-- <el-tab-pane label="签到记录" name="7" /> -->
         <el-tab-pane label="欠货统计" name="8" />
-        <!-- <el-tab-pane label="电子合同" name="9" /> -->
       </el-tabs>
     </div>
     <div v-if="form.drawerType == 3" style="margin-bottom: 20px">
@@ -174,19 +152,11 @@
             <div>详细地址： {{ form.addr }}</div>
           </div>
         </div>
-        <!-- <div class="conten-warp">
-          <div class="conten-title">登录账户</div>
-          <div class="conten-list-row">
-            <div>登录账户：{{ form.account }}</div>
-            <div>登录密码：{{ form.password }}</div>
-          </div>
-        </div> -->
         <div class="conten-warp">
           <div class="conten-title">客户概况</div>
           <div class="conten-list-row">
             <div>客户等级： {{ form.grade_name }}</div>
             <div>客户分类： {{ form.type_name }}</div>
-            <!-- <div style="width: 100%">客户标签： {{ form.tag_name }}</div> -->
             <div>客户来源： {{ form.source_name }}</div>
           </div>
         </div>
@@ -203,7 +173,6 @@
               <span>{{ form.initial_amount }}</span>
             </div>
             <div>加入时间： {{ form.create_time }}</div>
-            <!-- <div style="width: 100%">专属客服： {{ form.service }}</div> -->
             <div style="width: 100%">备注信息： {{ form.remark }}</div>
           </div>
         </div>
@@ -220,13 +189,6 @@
           <div class="conten-warp">
             <div class="conten-title">基本信息</div>
             <div class="conten-list-com">
-              <!-- <el-form-item class="item" label="用户编号：">
-                <el-input
-                  v-model="form.sn"
-                  placeholder="请输入用户编号"
-                  style="width: 215px"
-                />
-              </el-form-item> -->
               <el-form-item
                 v-if="form.drawerType == 3"
                 class="item"
@@ -270,27 +232,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="drawer-tab">
-          <div class="conten-warp">
-            <div class="conten-title">登录账户</div>
-            <div class="conten-list-com">
-              <el-form-item class="item" label="登录账户：">
-                <el-input
-                  v-model="form.account"
-                  placeholder="请输入登录账户"
-                  style="width: 215px"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="登录密码：">
-                <el-input
-                  v-model="form.password"
-                  placeholder="请输入登录密码"
-                  style="width: 215px"
-                />
-              </el-form-item>
-            </div>
-          </div>
-        </div> -->
         <div class="drawer-tab">
           <div class="conten-warp">
             <div class="conten-title">客户概况</div>
@@ -315,12 +256,6 @@
                   />
                 </el-select>
               </el-form-item>
-              <!-- <el-form-item class="item" label="客户标签：">
-                <el-cascader
-                  v-model="form.tag"
-                  :options="selectData.customer_tag"
-                />
-              </el-form-item> -->
               <el-form-item class="item" label="客户来源：">
                 <el-select v-model="form.source" placeholder="请选择">
                   <el-option
@@ -331,20 +266,6 @@
                   />
                 </el-select>
               </el-form-item>
-              <!-- <el-form-item class="item" label="推荐人：">
-                <el-select
-                  v-model="form.source11"
-                  filterable
-                  placeholder="可以输入客户搜索"
-                >
-                  <el-option
-                    v-for="(item, index) in selectData.customer_grade"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item> -->
             </div>
           </div>
         </div>
@@ -352,16 +273,6 @@
           <div class="conten-warp">
             <div class="conten-title">其它信息</div>
             <div class="conten-list-com">
-              <!-- <el-form-item class="item" label="专属客服：">
-                <el-select v-model="form.service" placeholder="请选择">
-                  <el-option
-                    v-for="(item, index) in selectData.customer_service"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item> -->
               <el-form-item class="item" label="汇款方式：" style="width: 100%">
                 <el-radio-group v-model="form.remit_role">
                   <el-radio :label="0">仅上线付款</el-radio>
@@ -478,7 +389,6 @@
     >
       <template #List>
         <el-table-column label="类型" prop="type" width="100" />
-        <!-- <el-table-column label="支付类型" prop="title" width="100" /> -->
         <el-table-column label="收款金额" prop="total" width="120" />
         <el-table-column label="优惠金额" prop="discount" width="80" />
         <el-table-column
@@ -488,73 +398,6 @@
         />
       </template>
     </QYList>
-    <!-- <QYList
-      v-if="tabLabel == '持有优惠券'"
-      :list="orderList"
-      :list-type="listType"
-      :state="listLoading"
-      style="margin: 20px"
-    >
-      <template #List>
-        <el-table-column
-          label="优惠券名称"
-          prop="couponname"
-          show-overflow-tooltip
-        />
-        <el-table-column
-          label="优惠券金额"
-          prop="money"
-          show-overflow-tooltip
-        />
-        <el-table-column label="到期时间" prop="endtime" show-overflow-tooltip>
-          <template #default="{ row }">
-            <span>{{ row.endtime | formatTime }}</span>
-          </template>
-        </el-table-column>
-      </template>
-    </QYList> -->
-    <!-- <QYList
-      v-if="tabLabel == '积分明细'"
-      :list="orderList"
-      :list-type="listType"
-      :state="listLoading"
-      style="margin: 20px"
-    >
-      <template #List>
-        <el-table-column label="ID" prop="mid" show-overflow-tooltip />
-        <el-table-column label="备注" prop="remark" show-overflow-tooltip />
-        <el-table-column
-          label="创建时间"
-          prop="createtime"
-          show-overflow-tooltip
-        >
-          <template #default="{ row }">
-            <span>{{ row.createtime | formatTime }}</span>
-          </template>
-        </el-table-column>
-      </template>
-    </QYList>
-    <QYList
-      v-if="tabLabel == '签到记录'"
-      :list="orderList"
-      :list-type="listType"
-      :state="listLoading"
-      style="margin: 20px"
-    >
-      <template #List>
-        <el-table-column label="ID" prop="mid" show-overflow-tooltip />
-        <el-table-column label="备注" prop="remark" show-overflow-tooltip />
-        <el-table-column
-          label="创建时间"
-          prop="createtime"
-          show-overflow-tooltip
-        >
-          <template #default="{ row }">
-            <span>{{ row.createtime | formatTime }}</span>
-          </template>
-        </el-table-column>
-      </template>
-    </QYList> -->
     <QYList
       v-if="tabLabel == '欠货统计'"
       :list="orderList"
@@ -653,7 +496,6 @@
     </el-dialog>
   </div>
 </template>
-
 <script>
   import datajosn from '@/assets/assets_josn/datajosn'
   import { mapGetters } from 'vuex'

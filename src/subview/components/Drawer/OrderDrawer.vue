@@ -22,51 +22,9 @@
               icon="align-center"
               style="float: right; margin: 6px 0 0 0"
             />
-            <!-- <el-button
-              size="small"
-              style="float: right; margin-right: 10px"
-              type="primary"
-              @click="PrintBtn"
-            >
-              打印
-            </el-button> -->
-            <!-- <el-button
-              
-              size="small"
-              style="float: right; margin-right: 10px"
-              type="primary"
-              @click="EditBtn"
-            >
-              发送货
-            </el-button> -->
           </el-col>
         </el-row>
       </div>
-      <!-- <div style="display: flex">
-        <div style="display: flex; flex: 1; flex-direction: column">
-          <span style="margin-bottom: 12px">订单状态</span>
-          <span>{{ form.order_status1 }}</span>
-        </div>
-        <div style="display: flex; flex: 1; flex-direction: column">
-          <span style="margin-bottom: 12px">实际支付</span>
-          <span>{{ form.received_amount }}</span>
-        </div>
-        <div style="display: flex; flex: 1; flex-direction: column">
-          <span style="margin-bottom: 12px">支付方式</span>
-          <span>暂无</span>
-        </div>
-        <div style="display: flex; flex: 1; flex-direction: column">
-          <span style="margin-bottom: 12px">支付时间</span>
-          <span>暂无</span>
-        </div>
-        <div style="display: flex; flex: 1; flex-direction: column">
-          <span style="margin-bottom: 12px">累计欠款</span>
-          <span v-if="form.sale_arrears < 0">
-            -￥{{ form.sale_arrears | moneyFormat }}
-          </span>
-          <span v-else>￥{{ form.sale_arrears | moneyFormat }}</span>
-        </div>
-      </div> -->
     </div>
     <el-tabs v-model="search_type" class="drawer-tab" @tab-click="handleClick">
       <el-tab-pane label="订单信息" name="0">
@@ -123,23 +81,6 @@
             <div>收货地址：{{ form.consignee_address }}</div>
           </div>
         </div>
-        <!-- <div class="conten-warp">
-          <div class="conten-title">物流信息</div>
-          <div class="conten-list-row">
-            <div>快递公司： {{ form.delivery.company_name }}</div>
-            <div>快递单号： {{ form.delivery.express_number }}</div>
-          </div>
-        </div> -->
-        <!-- <div class="conten-warp">
-          <div class="conten-title">其它信息</div>
-          <div class="conten-list-row">
-            <div style="width: 50%">创建时间： {{ form.create_time }}</div>
-            <div style="width: 50%">操作人员： 暂无</div>
-            <div style="width: 50%">更新时间： 暂无</div>
-            <div style="width: 50%">操作人员： 暂无</div>
-            <div style="width: 100%">订单备注： 暂无</div>
-          </div>
-        </div> -->
       </el-tab-pane>
       <el-tab-pane label="商品信息" name="1">
         <el-row :gutter="20">
@@ -221,34 +162,6 @@
             </el-card>
           </el-col>
         </el-row>
-        <!-- <QYList :list="orderList" :list-type="listType" :state="listLoading">
-          <template #List>
-            <el-table-column
-              align="center"
-              label="商品编号"
-              prop="sn"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="商品数量"
-              prop="num"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="商品单价"
-              prop="price"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="商品总金额"
-              prop="total"
-              show-overflow-tooltip
-            />
-          </template>
-        </QYList> -->
       </el-tab-pane>
       <el-tab-pane label=" 操作记录" name="2">
         <QYList :list="orderList" :list-type="listType" :state="listLoading">
@@ -281,17 +194,6 @@
               prop="ctime"
               show-overflow-tooltip
             />
-            <!-- <el-table-column
-              align="center"
-              label="备注"
-              prop="remark"
-              show-overflow-tooltip
-            >
-              <template #default="{ row }">
-                <span v-if="remark == '' || remark == null">无</span>
-                <span v-else>{{ row.remark }}</span>
-              </template>
-            </el-table-column> -->
             <el-table-column fixed="right" label="操作" width="50">
               <template #default="{ row }">
                 <el-button
@@ -309,18 +211,6 @@
       <el-tab-pane label="发货记录" name="3">
         <QYList :list="orderList" :list-type="listType" :state="listLoading">
           <template #List>
-            <!-- <el-table-column
-              align="center"
-              label="快递公司"
-              prop="company_name"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="快递单号"
-              prop="express_number"
-              show-overflow-tooltip
-            /> -->
             <el-table-column
               align="center"
               label="发货批次"

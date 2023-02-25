@@ -389,19 +389,6 @@
                   </div>
                 </template>
               </el-table-column>
-              <!-- <el-table-column label="销售订单数" prop="outage_rate">
-                <template #default="{ row }">
-                  <div style="margin: 5px 0">
-                    总销售订单数 {{ row.sale_order_num.all }}
-                  </div>
-                  <div style="margin: 5px 0">
-                    聚水潭 {{ row.sale_order_num.jst }}
-                  </div>
-                  <div style="margin: 5px 0">
-                    自主渠道 {{ row.sale_order_num.erp }}
-                  </div>
-                </template>
-              </el-table-column> -->
               <el-table-column label="占比" prop="outage_rate">
                 <template #default="{ row }">
                   <div style="margin: 5px 0; font-size: 14px; font-weight: 600">
@@ -468,13 +455,6 @@
                   <p style="margin: 5px 0">{{ row.name }}</p>
                 </template>
               </el-table-column>
-              <!-- <el-table-column label="商品名称" prop="name" /> -->
-              <!-- <el-table-column label="图片" prop="img">
-                <template #default="{ row }">
-                  <el-image :src="row.img" style="width: 50px; height: 50px" />
-                </template>
-              </el-table-column> -->
-
               <el-table-column label="库存数" prop="num">
                 <template #default="{ row }">
                   <div style="margin: 5px 0; font-size: 14px; font-weight: 600">
@@ -488,13 +468,6 @@
                   </div>
                 </template>
               </el-table-column>
-              <!-- <el-table-column label="库存占用数" prop="outage_rate">
-                <template #default="{ row }">
-                  <p>总库存占用数{{ row.stock_occupy_num.all }}</p>
-                  <p>聚水潭 {{ row.stock_occupy_num.jst }}</p>
-                  <p>自主渠道 {{ row.stock_occupy_num.erp }}</p>
-                </template>
-              </el-table-column> -->
               <el-table-column label="库存金额" prop="outage_rate">
                 <template #default="{ row }">
                   <div style="margin: 5px 0; font-size: 14px; font-weight: 600">

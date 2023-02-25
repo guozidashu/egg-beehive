@@ -21,25 +21,6 @@
               icon="align-center"
               style="float: right; margin: 6px 0 0 0"
             />
-            <!-- <el-button
-              
-              size="small"
-              style="float: right; margin-right: 10px"
-              type="primary"
-              @click="upMembers(1)"
-            >
-              启用
-            </el-button> -->
-            <!-- <el-button
-              v-if="form.drawerType == 1"
-              size="small"
-              style="float: right; margin-right: 10px"
-              type="primary"
-              @click="print('vab-print-table')"
-            >
-              打印
-            </el-button> -->
-
             <el-button
               v-if="form.drawerType == 1"
               size="small"
@@ -349,8 +330,6 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import VabPrint from '@/extra/VabPrint'
   import VabUpload from '@/extra/VabUpload'
   import { mapGetters } from 'vuex'
   export default {
@@ -401,17 +380,8 @@
       this.getGoodsTypeList()
     },
     methods: {
-      ...mapActions({
-        openSideBar: 'settings/openSideBar',
-        foldSideBar: 'settings/foldSideBar',
-      }),
       getImgList(data) {
         this.form.material_pic = data[0]
-      },
-      async print(val) {
-        await this.foldSideBar()
-        await VabPrint(this.$refs[val], { noPrintParent: true })
-        await this.openSideBar()
       },
       handleShow() {
         this.$refs['vabUpload'].handleShow()
@@ -463,21 +433,6 @@
             type: tab.index, //1入库信息 2出库信息 3调整明细 4库存明细
           })
           this.orderList = data.data
-        }
-      },
-      handleClose1() {
-        this.dialogVisible1 = false
-      },
-      upMembers(type) {
-        if (type == 1) {
-          this.$baseConfirm('你确定要启用当前项吗', null, async () => {
-            // const { code } = await this.api.deleteBrand({ id: row.id })
-            // if (code != 200) {
-            //   return
-            // }
-            this.$baseMessage('审核成功', 'success', 'vab-hey-message-success')
-            this.fetchData()
-          })
         }
       },
     },

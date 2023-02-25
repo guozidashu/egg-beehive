@@ -171,31 +171,7 @@
           })
         }
         fn(data.list)
-        // data.inof[0].auth 值是‘1，2,4’的字符串 用逗号分割成数组
-        // const temp1 = data.inof[0].auth.split(',')
-        // temp1.forEach((item) => {
-        //   this.formData[item] = true
-        // })
         arr.forEach((item) => {
-          // if (item.ppid) {
-          //   if (item.checked) {
-          //     this.formData[item.pid] = item.checked
-          //     this.formData[item.ppid] = item.checked
-          //     this.formData[item.id] = item.checked
-          //   } else {
-          //     this.formData[item.pid] = item.checked
-          //     this.formData[item.ppid] = item.checked
-          //     this.formData[item.id] = item.checked
-          //   }
-          // } else {
-          //   if (item.checked) {
-          //     this.formData[item.pid] = item.checked
-          //     this.formData[item.id] = item.checked
-          //   } else {
-          //     this.formData[item.pid] = item.checked
-          //     this.formData[item.id] = item.checked
-          //   }
-          // }
           if (!item.children) {
             item.guard.forEach((item2) => {
               this.formData[item2.id] = item2.checked
@@ -357,42 +333,6 @@
             this.formData[row.Twoid] = checked
             this.formData[row.id] = checked
           }
-          // else {
-          //   let temp = false
-          //   row.guard.forEach((item1) => {
-          //     if (this.formData[item1.id]) {
-          //       temp = true
-          //       return
-          //     }
-          //   })
-          //   if (!temp) {
-          //     this.formData[row.id] = false
-          //   }
-          //   let temp2 = false
-          //   this.list.forEach((item) => {
-          //     if (row.Twoid == item.Twoid) {
-          //       if (this.formData[item.id]) {
-          //         temp2 = true
-          //         return
-          //       }
-          //     }
-          //   })
-          //   if (!temp2) {
-          //     this.formData[row.Twoid] = false
-          //   }
-          //   let temp1 = false
-          //   this.list.forEach((item) => {
-          //     if (row.Oneid == item.Oneid) {
-          //       if (this.formData[item.Twoid]) {
-          //         temp1 = true
-          //         return
-          //       }
-          //     }
-          //   })
-          //   if (!temp1) {
-          //     this.formData[row.Oneid] = false
-          //   }
-          // }
         }
         this.checked = !this.checked
         this.$forceUpdate()

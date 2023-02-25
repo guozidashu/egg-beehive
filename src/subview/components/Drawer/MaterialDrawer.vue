@@ -41,32 +41,6 @@
               icon="align-center"
               style="float: right; margin: 6px 0 0 0"
             />
-            <!-- <el-button
-              
-              size="small"
-              style="float: right; margin-right: 10px"
-              type="primary"
-              @click="upMembers(3)"
-            >
-              提醒发货
-            </el-button> -->
-            <!-- <el-button
-              size="small"
-              style="float: right; margin-right: 10px"
-              type="primary"
-              @click="print('vab-print-table')"
-            >
-              打印
-            </el-button> -->
-            <!-- <el-button
-              
-              size="small"
-              style="float: right"
-              type="primary"
-              @click="upMembers(1)"
-            >
-              作废
-            </el-button> -->
           </el-col>
         </el-row>
       </div>

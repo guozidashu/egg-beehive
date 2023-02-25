@@ -14,15 +14,6 @@ d
                 icon="align-center"
                 style="float: right; margin: 6px 0 0 0"
               />
-              <!-- <el-button
-                v-if="form.drawerType == 1"
-                size="small"
-                style="float: right; margin-right: 10px"
-                type="primary"
-                @click="print('vab-print-table')"
-              >
-                打印
-              </el-button> -->
               <el-button
                 v-if="form.drawerType == 1"
                 size="small"
@@ -65,14 +56,6 @@ d
             <span style="margin-bottom: 12px">总退货金额</span>
             <span>￥{{ form.material_return_total | moneyFormat }}</span>
           </div>
-          <!-- <div style="display: flex; flex: 1; flex-direction: column">
-            <span style="margin-bottom: 12px">累计付款</span>
-            <span>暂无</span>
-          </div> -->
-          <!-- <div style="display: flex; flex: 1; flex-direction: column">
-            <span style="margin-bottom: 12px">供应商等级</span>
-            <span>{{ form.grade_name }}</span>
-          </div> -->
         </div>
       </div>
       <el-tabs
@@ -85,7 +68,6 @@ d
         <el-tab-pane label="入库信息 " name="2" />
         <el-tab-pane label="退货记录" name="3" />
         <el-tab-pane label="付款记录" name="4" />
-        <!-- <el-tab-pane label="对账单记录" name="5" /> -->
       </el-tabs>
     </div>
     <div v-if="form.drawerType == 3">
@@ -113,7 +95,6 @@ d
         <div class="conten-warp">
           <div class="conten-title">基本信息</div>
           <div class="conten-list-row">
-            <!-- <div>供应商编号：{{ form.sn }}</div> -->
             <div>供应商名称： {{ form.name }}</div>
             <div>联系人：{{ form.contact_name }}</div>
             <div>手机号码： {{ form.tel }}</div>
@@ -127,8 +108,6 @@ d
           <div class="conten-title">供应商概况</div>
           <div class="conten-list-row">
             <div>供应商类别：{{ form.type_name }}</div>
-            <!-- <div>供应商等级：{{ form.grade_name }}</div> -->
-            <!-- <div>供应商标签：{{ form.tag_name }}</div> -->
             <div>
               工艺类型：
               <span v-for="item in form.craft_name" :key="item">
@@ -143,31 +122,10 @@ d
             </div>
           </div>
         </div>
-        <!-- <div class="conten-warp">
-          <div class="conten-title">账户信息</div>
-          <div class="conten-list-row">
-            <div>账户名：{{ form.user_name }}</div>
-            <div>密码：{{ form.password }}</div>
-          </div>
-        </div> -->
-        <!-- <div class="conten-warp">
-          <div class="conten-title">账户资金</div>
-          <div class="conten-list-row">
-            <div>开户人： {{ form.account_name }}</div>
-            <div>账号： {{ form.account_no }}</div>
-            <div>账号类型： {{ form.account_type }}</div>
-            <div>开户行名称： {{ form.bank_name }}</div>
-            <div>开户行地址： {{ form.bank_address }}</div>
-          </div>
-        </div> -->
         <div class="conten-warp">
           <div class="conten-title">其它信息</div>
           <div class="conten-list-row">
             <div style="width: 50%">创建时间：{{ form.create_time }}</div>
-            <!-- <v distyle="width: 50%">创建时间：{{ form.create_time }}</v>
-            <div style="width: 50%">操作人员： 暂无</div>
-            <div style="width: 50%">更新时间： 暂无</div>
-            <div style="width: 50%">操作人员： 暂无</div> -->
             <div v-if="form.status == 1" style="width: 50%">
               供应商状态： 合作中
             </div>
@@ -193,17 +151,6 @@ d
           <div class="conten-warp">
             <div class="conten-title">基本信息</div>
             <div class="conten-list-com">
-              <!-- <el-form-item
-                class="item"
-                label="供应商编号："
-                style="font-size: 12px"
-              >
-                <el-input
-                  v-model="form.sn"
-                  placeholder="请输入编号"
-                  style="width: 215px"
-                />
-              </el-form-item> -->
               <el-form-item
                 v-if="form.drawerType == 3"
                 class="item"
@@ -265,34 +212,6 @@ d
                   />
                 </el-select>
               </el-form-item>
-              <!-- <el-form-item class="item" label="供应商等级：" prop="grade_id">
-                <el-select
-                  v-model="form.grade_id"
-                  placeholder="请选择供应商等级："
-                  style="width: 215px"
-                >
-                  <el-option
-                    v-for="(item, index) in selectData.supplier_grade"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item> -->
-              <!-- <el-form-item class="item" label="供应商标签：">
-                <el-select
-                  v-model="form.tag"
-                  placeholder="请选择供应商标签："
-                  style="width: 215px"
-                >
-                  <el-option
-                    v-for="(item, index) in selectData.supplier_tag"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item> -->
               <el-form-item class="item" label="工艺类型：">
                 <el-select
                   v-model="form.craft_type"
@@ -326,75 +245,6 @@ d
             </div>
           </div>
         </div>
-        <!-- <div class="drawer-tab">
-          <div class="conten-warp">
-            <div class="conten-title">账户信息</div>
-            <div class="conten-list-com">
-              <el-form-item class="item" label="用户名：">
-                <el-input
-                  v-model="form.user_name"
-                  placeholder="请输入用户名"
-                  style="width: 215px"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="登录密码：">
-                <el-input
-                  v-model="form.password"
-                  placeholder="请输入密码"
-                  style="width: 215px"
-                />
-              </el-form-item>
-            </div>
-          </div>
-        </div> -->
-        <!-- <div class="drawer-tab">
-          <div class="conten-warp">
-            <div class="conten-title">账户资金</div>
-            <div class="conten-list-com">
-              <el-form-item class="item" label="开户人：">
-                <el-input
-                  v-model="form.account_name"
-                  placeholder="请输入开户人"
-                  style="width: 215px"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="账号：">
-                <el-input
-                  v-model="form.account_no"
-                  placeholder="请输入账户"
-                  style="width: 215px"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="账户类型：">
-                <el-select
-                  v-model="form.account_type"
-                  placeholder="请选择账户类型："
-                  style="width: 215px"
-                >
-                  <el-option label="银行卡" :value="1" />
-                  <el-option label="支付宝" :value="2" />
-                  <el-option label="微信" :value="3" />
-                  <el-option label="现金" :value="4" />
-                  <el-option label="信用卡" :value="5" />
-                </el-select>
-              </el-form-item>
-              <el-form-item class="item" label="开户行名称：">
-                <el-input
-                  v-model="form.bank_name"
-                  placeholder="请输入开户行名称"
-                  style="width: 215px"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="开户行地址：">
-                <el-input
-                  v-model="form.bank_address"
-                  placeholder="请输入开户行地址"
-                  style="width: 215px"
-                />
-              </el-form-item>
-            </div>
-          </div>
-        </div> -->
         <div class="drawer-tab">
           <div class="conten-warp">
             <div class="conten-title">其它信息</div>
@@ -513,33 +363,6 @@ d
         <el-table-column label="付款金额" prop="total" width="100" />
       </template>
     </QYList>
-    <!-- <QYList
-      v-if="search_type == '5'"
-      :list="orderList"
-      :list-type="listType"
-      :state="listLoading"
-      style="margin: 20px"
-    >
-      <template #List>
-        <el-table-column
-          label="开始时间"
-          prop="start_date"
-          show-overflow-tooltip
-        />
-        <el-table-column
-          label="结束时间"
-          prop="end_date"
-          show-overflow-tooltip
-        />
-        <el-table-column
-          label="创建时间"
-          prop="create_time"
-          show-overflow-tooltip
-        />
-        <el-table-column label="价格" prop="price" show-overflow-tooltip />
-        <el-table-column label="pdf文件" prop="pdf" show-overflow-tooltip />
-      </template>
-    </QYList> -->
   </div>
 </template>
 

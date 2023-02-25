@@ -64,15 +64,6 @@
             </span>
           </template>
         </el-table-column>
-        <!-- {
-				"id": 58,
-				"name": "老何1",//客户名称
-				"num": "32", //拿货数量
-				"total": "1444.80",//拿货金额
-				"delivery_num": "8",//发货数量
-				"not_delivery_num": 24,//未发货数量
-				"return_num": 23//未发货数量
-			} -->
         <el-table-column label="ID" prop="id" width="50" />
         <el-table-column label="客户名称" prop="name" />
         <el-table-column label="拿货件数" prop="num" width="100" />
