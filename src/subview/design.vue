@@ -365,9 +365,6 @@
         //   tabType: 1,
         //   tab_type: 1,
         // }
-        // console.log(666666, ssdd)
-        // console.log(7777, form[0])
-        // console.log(777777, JSON.stringify(ssdd))
         // let temp1 = {
         //   name: 'TemplateExample',
         //   status: 1,

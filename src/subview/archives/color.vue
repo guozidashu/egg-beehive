@@ -113,6 +113,7 @@
               <el-table-column type="selection" />
               <el-table-column label="ID" prop="id" />
               <el-table-column label="颜色名称" prop="name" />
+              <el-table-column label="颜色编码" prop="sn" />
               <el-table-column label="颜色组" prop="group_name" />
               <el-table-column label="状态" prop="status" width="150">
                 <template #default="{ row }">

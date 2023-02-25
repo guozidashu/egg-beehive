@@ -71,7 +71,7 @@
       <el-form-item v-if="type === 1" label="尺码编码" prop="sn">
         <el-input v-model="form.sn" style="width: 215px" />
         <div style="font-size: 12px; color: #c0c4cc">
-          尺码编码为3位数字，散码：080、090、110，整手：000
+          尺码编码为3位数字：080、090、110、000
         </div>
       </el-form-item>
 
@@ -117,7 +117,14 @@
           pid: [{ required: true, trigger: 'blur', message: '请选择分类' }],
           status: [{ required: true, trigger: 'blur', message: '请选择状态' }],
           type: [{ required: true, trigger: 'blur', message: '请选择类型' }],
-          size: [{ required: true, trigger: 'blur', message: '请输入尺码' }],
+          size: [
+            { required: true, trigger: 'blur', message: '请输入尺码' },
+            {
+              pattern: /^([0-9]+\/)*[0-9]+$/,
+              trigger: 'blur',
+              message: '请输入正确的尺码',
+            },
+          ],
         },
         title: '',
         dialogFormVisible: false,

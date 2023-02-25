@@ -20,7 +20,6 @@ export function permissionFiltering(path, role) {
       }
     }
   })
-  // console.log('权限状态', temp)
   return temp
 }
 

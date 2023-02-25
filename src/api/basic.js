@@ -572,6 +572,14 @@ export function getGoodsExport(data) {
     data,
   })
 }
+// 商品管理导出条形码
+export function getGoodsExportBarcode(data) {
+  return request({
+    url: '/goods/exportBarcode',
+    method: 'post',
+    data,
+  })
+}
 // 商品管理同步聚水潭
 export function saveGoodsSyncJuShuiTan(data) {
   return request({

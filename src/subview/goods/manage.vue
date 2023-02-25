@@ -147,6 +147,9 @@
           <el-button size="small" type="primary" @click="handleDerive()">
             批量导出
           </el-button>
+          <el-button size="small" type="primary" @click="handleExportBarcode()">
+            批量导出条形码
+          </el-button>
         </el-form-item>
       </el-form>
       <QYList
@@ -498,7 +501,23 @@
       handlePresell(row) {
         this.$refs['edit'].showEdit(row)
       },
-      // 导出
+      // 导出商品条形码
+      async handleExportBarcode() {
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        const { code, data } = await this.api.getGoodsExportBarcode(
+          this.formTemp
+        )
+        if (code == 200) {
+          window.open(data.url)
+          this.$message.success('导出成功')
+          this.fetchData()
+        } else {
+          this.$message.error('导出失败')
+        }
+      },
+      // 导出商品
       async handleDerive() {
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))

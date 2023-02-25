@@ -1,742 +1,38 @@
 <template>
   <div class="components-drawer">
-    <div v-if="form.drawerType != 3">
-      <div style="padding: 0 20px 20px 20px">
-        <div>
-          <el-row :gutter="20">
-            <el-col :span="12" style="display: flex">
-              <img
-                :src="goodsDetails.img"
-                style="width: 50px; height: 50px; margin: 0 10px 10px 0"
-              />
-              <div style="margin-top: -5px">
-                <div style="margin: 15px 0 0 0">
-                  款号：{{ goodsDetails.sn }}
-                </div>
-                <div>名称：{{ goodsDetails.name }}</div>
-              </div>
-            </el-col>
-
-            <el-col :span="12">
-              <vab-icon
-                icon="align-center"
-                style="float: right; margin: 6px 0 0 0"
-              />
-              <!-- <el-button
-                v-if="form.drawerType == 1"
-                size="small"
-                style="float: right; margin-right: 10px"
-                type="primary"
-                @click="print('vab-print-table')"
-              >
-                打印
-              </el-button> -->
-              <el-button
-                v-if="form.drawerType == 1 && form.path == 'erp'"
-                v-has-permi="['btn:GoodsManage:edit']"
-                size="small"
-                style="float: right; margin-right: 10px"
-                type="primary"
-                @click="changeTypeBtn(2)"
-              >
-                编辑
-              </el-button>
-              <el-button
-                v-if="form.drawerType == 2"
-                v-has-permi="['btn:GoodsManage:edit']"
-                size="small"
-                style="float: right; margin-right: 10px"
-                type="primary"
-                @click="changeTypeBtn(1)"
-              >
-                完成
-              </el-button>
-            </el-col>
-          </el-row>
-        </div>
-        <div style="display: flex">
-          <div style="display: flex; flex: 1; flex-direction: column">
-            <span style="margin-bottom: 12px">总销量</span>
-            <span>{{ goodsAllNum.sales_total }}</span>
-          </div>
-          <div style="display: flex; flex: 1; flex-direction: column">
-            <span style="margin-bottom: 12px">总销售额</span>
-            <span>￥{{ goodsAllNum.volume_total | moneyFormat }}</span>
-          </div>
-          <div style="display: flex; flex: 1; flex-direction: column">
-            <span style="margin-bottom: 12px">库存数</span>
-            <span>{{ goodsAllNum.stock_total }}</span>
-          </div>
-          <div style="display: flex; flex: 1; flex-direction: column">
-            <span style="margin-bottom: 12px">聚水潭库存</span>
-            <span>{{ goodsAllNum.jst_stock_total }}</span>
-          </div>
-          <div style="display: flex; flex: 1; flex-direction: column">
-            <span style="margin-bottom: 12px">聚水潭占用库存</span>
-            <span>{{ goodsAllNum.jst_occupy_stock_total }}</span>
-          </div>
-          <div style="display: flex; flex: 1; flex-direction: column">
-            <span style="margin-bottom: 12px">库存价值</span>
-            <span>￥{{ goodsAllNum.inventory_value | moneyFormat }}</span>
-          </div>
-          <div style="display: flex; flex: 1; flex-direction: column">
-            <span style="margin-bottom: 12px">总发货</span>
-            <span>{{ goodsAllNum.shipments_total }}</span>
-          </div>
-          <div style="display: flex; flex: 1; flex-direction: column">
-            <span style="margin-bottom: 12px">总入库</span>
-            <span>{{ goodsAllNum.warehousing_total }}</span>
-          </div>
-        </div>
-      </div>
-      <el-tabs
-        v-model="activeName"
-        style="padding: 0 25px"
-        @tab-click="handleClick"
-      >
-        <el-tab-pane label="商品信息" name="0" />
-        <el-tab-pane label="客户销售" name="1" />
-        <el-tab-pane label="发货信息" name="2" />
-        <el-tab-pane label="退货信息" name="3" />
-        <el-tab-pane label="入库信息" name="4" />
-        <el-tab-pane label="出库信息" name="5" />
-        <el-tab-pane label="调整信息" name="6" />
-        <el-tab-pane label="库存明细" name="7" />
-      </el-tabs>
-    </div>
-    <div v-if="form.drawerType == 3">
-      <el-button
-        v-if="form.drawerType == 1"
-        v-has-permi="['btn:GoodsManage:edit']"
-        size="small"
-        style="float: right; margin-right: 10px"
-        type="primary"
-        @click="changeTypeBtn(2)"
-      >
-        编辑
-      </el-button>
-      <el-button
-        v-if="form.drawerType == 2 || form.drawerType == 3"
-        v-has-permi="['btn:GoodsManage:edit']"
-        size="small"
-        style="float: right; margin-right: 10px"
-        type="primary"
-        @click="changeTypeBtn(1)"
-      >
-        完成
-      </el-button>
-    </div>
-    <div v-if="tabindex == '0'">
-      <div v-if="form.drawerType == 1" ref="vab-print-table" class="drawer-tab">
-        <div class="conten-warp">
-          <div class="conten-title">基本信息</div>
-          <div class="conten-list-row">
-            <div>商品款号：{{ goodsDetails.sn }}</div>
-            <div>商品名称： {{ goodsDetails.name }}</div>
-            <div>商品标题： {{ goodsDetails.shoptitle }}</div>
-            <div>商品分类：{{ goodsDetails.category_name }}</div>
-            <div>商品品牌： {{ goodsDetails.brand_name }}</div>
-            <div>年份：{{ goodsDetails.year_name }}</div>
-            <div>季节： {{ goodsDetails.season_name }}</div>
-            <div>上市波段： {{ goodsDetails.band_name }}</div>
-            <div>年龄段： {{ goodsDetails.agegroup_name }}</div>
-            <div>
-              性别：
-              <span v-if="goodsDetails.gender == 1">男</span>
-              <span v-if="goodsDetails.gender == 2">女</span>
-              <span v-if="goodsDetails.gender == 3">中</span>
-            </div>
-            <!-- <div>供应商： 暂无</div> -->
-            <div>
-              商品图片：
-              <img :src="goodsDetails.img" style="width: 20px; height: 20px" />
-            </div>
-          </div>
-        </div>
-        <div class="conten-warp">
-          <div class="conten-title">规格及库位</div>
-          <div class="conten-list-row">
-            <div>
-              颜色：
-              <span
-                v-for="(item, index) in goodsDetails.color_name"
-                :key="index"
-              >
-                {{ item }}
-              </span>
-            </div>
-            <div>
-              尺码：
-              <span
-                v-for="(item, index) in goodsDetails.size_name"
-                :key="index"
-              >
-                {{ item }}
-              </span>
-            </div>
-            <!-- <div>商品条码： 暂无</div> -->
-            <div>库位名称：{{ goodsDetails.position_name }}</div>
-          </div>
-        </div>
-        <div class="conten-warp">
-          <div class="conten-title">价格信息</div>
-          <div class="conten-list-row">
-            <div>采购价： ￥{{ goodsDetails.purchase_price }}</div>
-            <div>成本价： ￥{{ goodsDetails.cost_price }}</div>
-            <div>吊牌价： ￥{{ goodsDetails.sale_price }}</div>
-            <div>销售价： ￥{{ goodsDetails.price }}</div>
-          </div>
-        </div>
-        <div class="conten-warp">
-          <div class="conten-title">其它信息</div>
-          <div class="conten-list-row">
-            <div style="width: 50%">
-              创建时间： {{ goodsDetails.create_time }}
-            </div>
-            <!-- <div style="width: 50%">操作人员： 暂无</div> -->
-            <div style="width: 50%">
-              更新时间：
-              {{ goodsDetails.update_time }}
-            </div>
-            <!-- <div style="width: 50%">操作人员： 暂无</div> -->
-            <div>
-              上架商城：
-              <span v-if="goodsDetails.is_shop == 1">上架</span>
-              <span v-if="goodsDetails.is_shop == 2">下架</span>
-            </div>
-            <!-- <div>是否同步到聚水潭： 暂无</div>
-            <div>库存预警： 暂无</div> -->
-            <div>设计师： {{ goodsDetails.designer_name }}</div>
-            <div>设计师编号： {{ goodsDetails.order_sn }}</div>
-            <div>
-              商品状态：
-              <span v-if="goodsDetails.status == 1">在售</span>
-              <span v-if="goodsDetails.status == 2">停售</span>
-            </div>
-            <div style="width: 100%">
-              是否同步聚水潭：
-              <span v-if="goodsDetails.is_jushuitan == 1">开启</span>
-              <span v-if="goodsDetails.is_jushuitan == 0">关闭</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <el-form
-        v-if="form.drawerType == 2 || form.drawerType == 3"
-        ref="form"
-        label-width="180px"
-        :model="form"
-        :rules="rules"
-        style="width: 100%"
-      >
-        <div class="drawer-tab">
-          <div class="conten-warp">
-            <div class="conten-title">基本信息</div>
-            <div class="conten-list-com">
-              <el-form-item
-                v-if="form.is_quote == 1"
-                class="item"
-                label="商品款号："
-                prop="sn"
-                style="font-size: 12px"
-              >
-                <el-input
-                  v-model="form.sn"
-                  :disabled="true"
-                  placeholder="请输入款号"
-                  style="width: 215px"
-                />
-              </el-form-item>
-              <el-form-item
-                v-else
-                class="item"
-                label="商品款号："
-                prop="sn"
-                style="font-size: 12px"
-              >
-                <el-input
-                  v-model="form.sn"
-                  placeholder="请输入款号"
-                  style="width: 215px"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="商品名称：" prop="name">
-                <el-input
-                  v-model="form.name"
-                  placeholder="请输入商品名称"
-                  style="width: 215px"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="商品描述：" prop="content">
-                <el-input
-                  v-model="form.content"
-                  placeholder="请输入商品名称"
-                  style="width: 215px"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="商品标题：" prop="shoptitle">
-                <el-input
-                  v-model="form.shoptitle"
-                  placeholder="请输入商品标题"
-                  style="width: 215px"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="商品款式：" prop="category">
-                <el-select
-                  v-model="form.category"
-                  placeholder="请选择商品款式"
-                  style="width: 130px"
-                >
-                  <el-option
-                    v-for="(item, index) in selectData.category"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-              <el-form-item class="item" label="商品品牌：" prop="brand">
-                <el-select
-                  v-model="form.brand"
-                  placeholder="请选择商品品牌："
-                  style="width: 130px"
-                >
-                  <el-option
-                    v-for="(item, index) in selectData.brand"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-              <el-form-item class="item" label="年份：" prop="year">
-                <el-select
-                  v-model="form.year"
-                  placeholder="请选择年份："
-                  style="width: 130px"
-                >
-                  <el-option
-                    v-for="(item, index) in selectData.year"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-
-              <el-form-item class="item" label="季节：" prop="season">
-                <el-select
-                  v-model="form.season"
-                  placeholder="请选择季节："
-                  style="width: 130px"
-                >
-                  <el-option
-                    v-for="(item, index) in selectData.season"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-
-              <el-form-item class="item" label="上市波段：">
-                <el-select
-                  v-model="form.band"
-                  placeholder="请选择上市波段："
-                  style="width: 130px"
-                >
-                  <el-option
-                    v-for="(item, index) in selectData.band"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-              <el-form-item class="item" label="年龄段：">
-                <el-select
-                  v-model="form.agegroup"
-                  placeholder="请选择年龄段："
-                  style="width: 130px"
-                >
-                  <el-option
-                    v-for="(item, index) in selectData.agegroup"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-              <el-form-item class="item" label="性别：">
-                <el-select
-                  v-model="form.gender"
-                  placeholder="请选择性别："
-                  style="width: 130px"
-                >
-                  <el-option label="女" :value="1" />
-                  <el-option label="男" :value="2" />
-                  <el-option label="中" :value="3" />
-                </el-select>
-              </el-form-item>
-              <el-form-item class="item" label="商品图片：">
-                <div style="display: flex">
-                  <div>
-                    <el-button
-                      size="small"
-                      style="margin: 0 10px 0 0"
-                      type="primary"
-                      @click="handleShow()"
-                    >
-                      上传
-                    </el-button>
-                  </div>
-                  <img
-                    v-if="form.img"
-                    :src="form.img"
-                    style="width: 80px; height: 80px"
-                  />
-                </div>
-              </el-form-item>
-            </div>
-          </div>
-        </div>
-        <div class="drawer-tab">
-          <div class="conten-warp">
-            <div class="conten-title">规格及库位</div>
-            <div class="conten-list-com">
-              <el-form-item
-                v-if="form.drawerType == 3"
-                class="item"
-                label="颜色："
-                prop="colorid"
-              >
-                <qy-color-select v-model="form.colorid" />
-                <div style="width: 200px; margin: -33px 0 0 90px">
-                  <span v-for="(item, idex) in form.color_name" :key="idex">
-                    {{ item }}
-                  </span>
-                </div>
-              </el-form-item>
-              <el-form-item
-                v-if="form.drawerType == 3"
-                class="item"
-                label="尺码："
-                prop="sizeid"
-              >
-                <qy-size-select v-model="form.sizeid" />
-                <div style="width: 200px; margin: -33px 0 0 90px">
-                  <span v-for="(item, idex) in form.size_name" :key="idex">
-                    {{ item }}
-                  </span>
-                </div>
-              </el-form-item>
-              <el-form-item class="item" label="仓库">
-                <el-select
-                  v-model="form.warehouse"
-                  placeholder="请选择仓库："
-                  style="width: 130px"
-                  @change="selectProvinceFun($event)"
-                >
-                  <el-option
-                    v-for="(item, index) in WarehouseList"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-              <el-form-item v-show="form.warehouse" class="item" label="库位：">
-                <el-select
-                  v-model="form.position"
-                  filterable
-                  placeholder="请选择/搜索库位："
-                  style="width: 130px"
-                >
-                  <el-option
-                    v-for="(item, index) in WarehousePositionList"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-            </div>
-          </div>
-        </div>
-        <div class="drawer-tab">
-          <div class="conten-warp">
-            <div class="conten-title">价格信息</div>
-            <div class="conten-list-com">
-              <el-form-item class="item" label="采购价：" prop="purchase_price">
-                <el-input v-model="form.purchase_price" style="width: 215px" />
-              </el-form-item>
-              <el-form-item class="item" label="成本价：" prop="cost_price">
-                <el-input v-model="form.cost_price" style="width: 215px" />
-              </el-form-item>
-              <el-form-item class="item" label="吊牌价：" prop="sale_price">
-                <el-input v-model="form.sale_price" style="width: 215px" />
-              </el-form-item>
-              <el-form-item class="item" label="销售价：" prop="price">
-                <el-input v-model="form.price" clearable style="width: 215px">
-                  <el-button slot="append" @click="changeType()">
-                    固定价
-                  </el-button>
-                </el-input>
-              </el-form-item>
-              <!-- <el-form-item
-                v-if="form.drawerType == 2"
-                class="item"
-                label="销售价："
-                prop="price"
-              >
-                <el-input v-model="form.price" clearable style="width: 215px" />
-              </el-form-item> -->
-              <el-form-item v-if="lockSta" class="item" style="width: 100%">
-                <QYList
-                  :list="zhekouList"
-                  :list-type="listType"
-                  :state="listLoading"
-                >
-                  <template #List>
-                    <el-table-column
-                      label="会员等级"
-                      prop="name"
-                      show-overflow-tooltip
-                    />
-                    <el-table-column
-                      label="整手折扣"
-                      prop="discount"
-                      show-overflow-tooltip
-                    />
-                    <el-table-column
-                      label="金额"
-                      prop="price"
-                      show-overflow-tooltip
-                    >
-                      <template #default="{ row }">
-                        <el-input v-model="row.price" />
-                      </template>
-                    </el-table-column>
-                    <el-table-column
-                      label="散码折扣"
-                      prop="discount_single"
-                      show-overflow-tooltip
-                    />
-                    <el-table-column
-                      label="金额"
-                      prop="price1"
-                      show-overflow-tooltip
-                    >
-                      <template #default="{ row }">
-                        <el-input v-model="row.price1" />
-                      </template>
-                    </el-table-column>
-                  </template>
-                </QYList>
-              </el-form-item>
-            </div>
-          </div>
-        </div>
-        <div class="drawer-tab">
-          <div class="conten-warp">
-            <div class="conten-title">其它信息</div>
-            <div class="conten-list-com">
-              <el-form-item
-                v-if="form.drawerType == 3 || form.drawerType == 2"
-                class="item"
-                label="商品状态："
-              >
-                <el-radio-group v-model="form.status">
-                  <el-radio :label="1">在售</el-radio>
-                  <el-radio :label="2">停售</el-radio>
-                  <el-radio :label="3">待上市</el-radio>
-                </el-radio-group>
-              </el-form-item>
-              <el-form-item
-                v-if="
-                  (form.drawerType == 3 || form.drawerType == 2) &&
-                  form.id == undefined
-                "
-                class="item"
-                label="是否同步聚水潭(仅限散码)："
-              >
-                <el-radio-group v-model="form.is_jushuitan">
-                  <el-radio :label="1">开启</el-radio>
-                  <el-radio :label="0">关闭</el-radio>
-                </el-radio-group>
-              </el-form-item>
-              <el-form-item class="item" label="库存预警：">
-                <el-input
-                  v-model="form.goods_stock_warning"
-                  min="0"
-                  placeholder="商品现货库存小于多少时预警"
-                  style="width: 215px"
-                  type="number"
-                />
-              </el-form-item>
-              <!-- <el-form-item class="item" label="是否同步到聚水潭：">
-                <el-radio-group v-model="form.name">
-                  <el-radio :label="0">充许</el-radio>
-                  <el-radio :label="1">禁止</el-radio>
-                </el-radio-group>
-              </el-form-item>
-              <el-form-item class="item" label="设计师：">
-                <el-input
-                  v-model="form.addressKeyword"
-                  placeholder="请输入设计师"
-                  style="width: 215px"
-                />
-              </el-form-item>
-              <el-form-item class="item" label="商品状态：">
-                <el-radio-group v-model="form.name">
-                  <el-radio :label="0">在售</el-radio>
-                  <el-radio :label="1">备用</el-radio>
-                  <el-radio :label="2">禁用停售</el-radio>
-                </el-radio-group>
-              </el-form-item> -->
-            </div>
-          </div>
-        </div>
-      </el-form>
-    </div>
-    <QYList
-      v-if="tabindex == '1'"
+    <!-- 头部数据 -->
+    <HeaderText
+      :active-name="activeName"
+      :form="form"
+      :goods-all-num="goodsAllNum"
+      :goods-details="goodsDetails"
+      @changeTypeBtn="changeTypeBtn"
+      @handleClick="handleClick"
+    />
+    <!-- 商品信息 和 商品编辑 表单-->
+    <Form
+      :form-temp="form"
+      :goods-details="goodsDetails"
+      :list-loading="listLoading"
+      :list-type="listType"
+      :lock-sta="lockSta"
+      :rules="rules"
+      :select-data="selectData"
+      :tabindex="tabindex"
+      :warehouse-list="WarehouseList"
+      :warehouse-position-list="WarehousePositionList"
+      :zhekou-list="zhekouList"
+      @changeType="changeType"
+      @handleShow="handleShow"
+    />
+    <!-- tab 出去首页 表格 -->
+    <List
       :list="orderList"
       :list-type="listType"
       :state="listLoading"
-      style="margin: 20px"
-    >
-      <template #List>
-        <el-table-column label="客户名称" prop="name" show-overflow-tooltip />
-        <el-table-column
-          label="创建时间"
-          prop="create_time"
-          show-overflow-tooltip
-        />
-        <el-table-column
-          label="已发货数量"
-          prop="delivery_num"
-          show-overflow-tooltip
-        />
-        <el-table-column label="未发货数量" show-overflow-tooltip>
-          <template #default="{ row }">
-            <span>{{ row.num - row.delivery_num }}</span>
-          </template>
-        </el-table-column>
-      </template>
-    </QYList>
-    <QYList
-      v-if="tabindex == '2'"
-      :list="orderList"
-      :list-type="listType"
-      :state="listLoading"
-      style="margin: 20px"
-    >
-      <template #List>
-        <el-table-column label="批次号" prop="id" width="50" />
-        <el-table-column label="订单号" prop="sn" show-overflow-tooltip />
-        <el-table-column label="客户名称" prop="name" show-overflow-tooltip />
-        <el-table-column label="发货时间" prop="ctime" show-overflow-tooltip />
-        <el-table-column label="发货数量" prop="num" show-overflow-tooltip />
-      </template>
-    </QYList>
-    <QYList
-      v-if="tabindex == '3'"
-      :list="orderList"
-      :list-type="listType"
-      :state="listLoading"
-      style="margin: 20px"
-    >
-      <template #List>
-        <el-table-column label="订单号" prop="sn" show-overflow-tooltip />
-        <el-table-column label="客户名称" prop="name" show-overflow-tooltip />
-        <el-table-column label="退货时间" prop="ctime" show-overflow-tooltip />
-        <el-table-column label="退货数量" prop="num" show-overflow-tooltip />
-      </template>
-    </QYList>
-    <QYList
-      v-if="tabindex == '4'"
-      :list="orderList"
-      :list-type="listType"
-      :state="listLoading"
-      style="margin: 20px"
-    >
-      <template #List>
-        <el-table-column label="订单号" prop="sn" show-overflow-tooltip />
-        <el-table-column label="供应商" prop="name" show-overflow-tooltip />
-        <el-table-column
-          label="入库时间"
-          prop="add_date"
-          show-overflow-tooltip
-        />
-        <el-table-column label="入库数量" prop="num" show-overflow-tooltip />
-      </template>
-    </QYList>
-    <QYList
-      v-if="tabindex == '5'"
-      :list="orderList"
-      :list-type="listType"
-      :state="listLoading"
-      style="margin: 20px"
-    >
-      <template #List>
-        <el-table-column label="订单号" prop="sn" show-overflow-tooltip />
-        <el-table-column label="客户" prop="name" show-overflow-tooltip />
-        <el-table-column
-          label="出库时间"
-          prop="add_date"
-          show-overflow-tooltip
-        />
-        <el-table-column label="出库数量" prop="num" show-overflow-tooltip />
-      </template>
-    </QYList>
-    <QYList
-      v-if="tabindex == '6'"
-      :list="orderList"
-      :list-type="listType"
-      :state="listLoading"
-      style="margin: 20px"
-    >
-      <template #List>
-        <el-table-column label="商品款号" prop="sn" show-overflow-tooltip />
-        <el-table-column label="调整前" prop="fnum" show-overflow-tooltip />
-        <el-table-column label="调整后" prop="tnum" show-overflow-tooltip />
-      </template>
-    </QYList>
-    <QYList
-      v-if="tabindex == '7'"
-      :list="orderList"
-      :list-type="listType"
-      :state="listLoading"
-      style="margin: 20px"
-    >
-      <template #List>
-        <el-table-column label="尺码" prop="size_name" show-overflow-tooltip />
-        <el-table-column label="颜色" prop="color_name" show-overflow-tooltip />
-        <el-table-column
-          label="聚水潭库存"
-          prop="jst_xh_num"
-          show-overflow-tooltip
-        />
-        <el-table-column
-          label="聚水潭占用库存"
-          prop="jst_occupy_num"
-          width="150"
-        />
-        <el-table-column
-          label="待发货数量"
-          prop="df_num"
-          show-overflow-tooltip
-        />
-        <el-table-column
-          label="再生产数量"
-          prop="zsc_num"
-          show-overflow-tooltip
-        />
-        <el-table-column label="现货数量" prop="xh_num" show-overflow-tooltip />
-        <el-table-column label="销量数量" prop="xl_num" show-overflow-tooltip />
-      </template>
-    </QYList>
+      :tabindex="tabindex"
+    />
+    <!-- 上传图片 -->
     <vab-upload
       ref="vabUpload"
       :limit="1"
@@ -747,14 +43,14 @@
     />
   </div>
 </template>
-
 <script>
-  import { mapActions } from 'vuex'
-  import VabPrint from '@/extra/VabPrint'
   import VabUpload from '@/extra/VabUpload'
+  import List from '@/subview/components/List/GoodsDrawerList'
+  import HeaderText from '@/subview/components/Text/GoodsDrawerText'
+  import Form from '@/subview/components/Form/GoodsDrawerForm'
   import { mapGetters } from 'vuex'
   export default {
-    components: { VabUpload },
+    components: { VabUpload, List, HeaderText, Form },
     props: {
       drawerInof: {
         type: Object,
@@ -864,7 +160,6 @@
           this.lockSta = false
           this.tabindex = '0'
           this.activeName = '0'
-          console.log(newVal)
           if (newVal.drawerType != 3) {
             this.getGoodsAllDetail()
             this.getGoodsDetail()
@@ -959,16 +254,18 @@
           good_id: this.form.id,
         })
         this.goodsDetails = JSON.parse(JSON.stringify(data))
-        this.form = JSON.parse(JSON.stringify(data))
-        this.form.category = data.category_id
-        this.form.brand = data.brand_id
-        this.form.year = data.year_id
-        this.form.season = data.season_id
-        this.form.agegroup = data.agegroup_id
-        this.form.band = data.band_id
-        this.form.warehouse = data.warehouse_id
-        this.form.position = data.position_id
-        this.form.drawerType = temp
+        let tempForm = JSON.parse(JSON.stringify(data))
+        tempForm.category = data.category_id
+        tempForm.brand = data.brand_id
+        tempForm.year = data.year_id
+        tempForm.season = data.season_id
+        tempForm.agegroup = data.agegroup_id
+        tempForm.band = data.band_id
+        tempForm.warehouse = data.warehouse_id
+        tempForm.position = data.position_id
+        tempForm.drawerType = temp
+        this.form = JSON.parse(JSON.stringify(tempForm))
+        this.$forceUpdate()
         this.selectProvinceFun(data.warehouse_id)
       },
       async selectProvinceFun(e) {
@@ -1044,16 +341,6 @@
           }
         }
       },
-      // 打印
-      ...mapActions({
-        openSideBar: 'settings/openSideBar',
-        foldSideBar: 'settings/foldSideBar',
-      }),
-      async print(val) {
-        await this.foldSideBar()
-        await VabPrint(this.$refs[val], { noPrintParent: true })
-        await this.openSideBar()
-      },
       getSon(data) {
         this.form.img = data[0]
         this.$forceUpdate()
@@ -1103,52 +390,3 @@
     },
   }
 </script>
-<style lang="scss" scoped>
-  ::v-deep {
-    .el-form-item__label,
-    .el-input__inner {
-      font-size: 12px;
-    }
-  }
-
-  .head {
-    padding: 30px 35px 25px;
-  }
-
-  .drawer-tab {
-    padding: 0 25px;
-
-    .conten-warp {
-      padding: 25px 0;
-      border-bottom: 1px dashed #eee;
-
-      .conten-title {
-        padding-left: 10px;
-        font-size: 15px;
-        line-height: 15px;
-        color: #303133;
-        border-left: 3px solid #1890ff;
-      }
-
-      .conten-list-row {
-        display: flex;
-        flex-wrap: wrap;
-
-        div {
-          width: 33%;
-          margin-top: 16px;
-        }
-      }
-
-      .conten-list-com {
-        display: flex;
-        flex-wrap: wrap;
-
-        .item {
-          width: 50%;
-          margin-top: 16px;
-        }
-      }
-    }
-  }
-</style>

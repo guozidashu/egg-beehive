@@ -443,7 +443,6 @@
       },
       // 商品分类 父级关闭
       delGoodsClassifyItem(item1) {
-        console.log(11, item1)
         this.tabsItem.forEach((item) => {
           if (item.id == item1.id) {
             item.checked = false
