@@ -151,11 +151,6 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/CommodityUnitEdit'
-  import {
-    getGoodsGroupList,
-    getGoodsGroupDetail,
-    delGoodsGroupDel,
-  } from '@/api/basic'
   export default {
     name: 'GoodsCommodityunit',
     components: { Edit },
@@ -205,12 +200,12 @@
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
             if (type == 1) {
-              // const { code } = await delCategorySonDel({ id: row.id })
+              // const { code } = await this.api.delCategorySonDel({ id: row.id })
               // if (code != 200) {
               //   return
               // }
             } else {
-              const { code } = await delGoodsGroupDel({ id: row.id })
+              const { code } = await this.api.delGoodsGroupDel({ id: row.id })
               if (code != 200) {
                 return
               }
@@ -228,7 +223,7 @@
         this.form.pageSize = data
       },
       async fetchData() {
-        const { data } = await getGoodsGroupList(this.form)
+        const { data } = await this.api.getGoodsGroupList(this.form)
         let list = data
         list.forEach((item) => {
           item.btnIconStatus = false
@@ -240,7 +235,7 @@
         this.form.id = temp
         const {
           data: { data, total },
-        } = await getGoodsGroupDetail({
+        } = await this.api.getGoodsGroupDetail({
           id: temp,
           page: this.form.page,
           pageSize: this.form.pageSize,

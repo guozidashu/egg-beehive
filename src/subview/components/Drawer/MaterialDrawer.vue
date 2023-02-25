@@ -250,14 +250,7 @@
   import VabPrint from '@/extra/VabPrint'
 
   import { mapGetters } from 'vuex'
-  import {
-    editFinishCancellation,
-    editPurchaseCancellation,
-    getFinishDetail,
-    getPurchaseDetail,
-  } from '@/api/basic'
   export default {
-    name: 'ComponentsDrawer',
     props: {
       drawerInof: {
         type: Object,
@@ -334,7 +327,7 @@
           return
         }
         if (this.drawerType == 2) {
-          const { data } = await getFinishDetail({
+          const { data } = await this.api.getFinishDetail({
             search_type: tab.name, //搜索条件 1成品信息 2订单记录 3入库记录 4退货记录 5电子合同
             id: this.drawerInof.id, //物料采购订单id
             page: 1,
@@ -342,7 +335,7 @@
           })
           this.orderList = data.data
         } else {
-          const { data } = await getPurchaseDetail({
+          const { data } = await this.api.getPurchaseDetail({
             search_type: tab.name, //搜索条件 1物料信息 2订单记录 3入库记录 4退货记录 5电子合同
             id: this.drawerInof.id, //物料采购订单id
             page: 1,
@@ -356,14 +349,14 @@
         if (type == 1) {
           this.$baseConfirm('你确定要作废吗？', null, async () => {
             if (this.drawerType == 2) {
-              const { code } = await editFinishCancellation({
+              const { code } = await this.api.editFinishCancellation({
                 id: this.form.id,
               })
               if (code != 200) {
                 return
               }
             } else {
-              const { code } = await editPurchaseCancellation({
+              const { code } = await this.api.editPurchaseCancellation({
                 id: this.form.id,
               })
               if (code != 200) {
@@ -377,7 +370,7 @@
           })
         } else if (type == 3) {
           this.$baseConfirm('你确定要提醒发货吗？接口暂无', null, async () => {
-            // const { code } = await deleteBrand({ id: row.id })
+            // const { code } = await this.api.deleteBrand({ id: row.id })
             // if (code != 200) {
             //   return
             // }

@@ -184,7 +184,6 @@
 </template>
 
 <script>
-  import { getConfig, editMoveApp } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'PlatformApp',
@@ -244,7 +243,7 @@
     },
     methods: {
       async fetchData() {
-        const { data } = await getConfig({ key: 'move_app' })
+        const { data } = await this.api.getConfig({ key: 'move_app' })
         if (data !== null) {
           this.form = JSON.parse(data)
         }
@@ -252,7 +251,7 @@
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            const { code } = await editMoveApp(this.form)
+            const { code } = await this.api.editMoveApp(this.form)
             if (code === 200) {
               this.$message.success('保存成功')
             } else {

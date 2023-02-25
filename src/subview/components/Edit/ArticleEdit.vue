@@ -34,7 +34,6 @@
 </template>
 
 <script>
-  import { editArticleSave } from '@/api/basic'
   import VabQuill from '@/extra/VabQuill'
   import VabUpload from '@/extra/VabUpload'
   export default {
@@ -138,7 +137,7 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await editArticleSave(this.form)
+              const { code } = await this.api.editArticleSave(this.form)
               if (code != 200) {
                 return
               }
@@ -150,7 +149,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await editArticleSave(this.form)
+              const { code } = await this.api.editArticleSave(this.form)
               if (code != 200) {
                 return
               }

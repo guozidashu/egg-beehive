@@ -346,11 +346,8 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  // import AccountProgress from './components/AccountProgress'
-  import { getAccountDetail, editAdminAccountSave } from '@/api/basic'
   export default {
     name: 'Account',
-    // components: { AccountProgress },
     data() {
       return {
         centerDialogVisible: false,
@@ -479,7 +476,7 @@
     methods: {
       handleChange() {},
       async fetchData() {
-        const { data } = await getAccountDetail()
+        const { data } = await this.api.getAccountDetail()
         if (data.merchant != null) {
           this.inof = data.merchant
         }
@@ -508,7 +505,7 @@
           type: 'warning',
         })
           .then(async () => {
-            const { code } = await editAdminAccountSave({
+            const { code } = await this.api.editAdminAccountSave({
               name: this.inof.name, //商户名称
               tel: this.inof.tel, //商户联系方式
               address: this.inof.address, //商户地址

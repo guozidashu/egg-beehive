@@ -43,7 +43,6 @@
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
-        @selectRows="selectBtnRows"
       >
         <template #List>
           <el-table-column
@@ -101,10 +100,7 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/BandEdit'
-
-  import { getBandList, delBandDel, editBandSave } from '@/api/basic'
   export default {
-    name: 'ArchivesBandlist',
     components: { Edit },
     data() {
       return {
@@ -118,8 +114,6 @@
           pageSize: 10,
         },
         formType: 4,
-
-        selectRows: [],
         listType: 1,
         list: [],
         listLoading: false,
@@ -163,25 +157,23 @@
         }
       },
       async turnOnOff(row) {
-        const { code } = await editBandSave(row)
+        const { code } = await this.api.editBandSave(row)
         if (code != 200) {
           return
         }
         this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
         this.fetchData()
       },
-
       handleQuery() {
         this.fetchData()
       },
       resetForm() {
         this.form = this.$options.data().form
       },
-
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delBandDel({ id: row.id })
+            const { code } = await this.api.delBandDel({ id: row.id })
             if (code != 200) {
               return
             }
@@ -190,27 +182,20 @@
           })
         }
       },
-
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
-
-      selectBtnRows(data) {
-        this.selectRows = data
-      },
-
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
-
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getBandList(this.formTemp)
+        const { data } = await this.api.getBandList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

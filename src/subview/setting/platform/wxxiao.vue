@@ -230,7 +230,6 @@
 </template>
 
 <script>
-  import { getConfig, editWeChatApplet } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'PlatformWxxiao',
@@ -330,7 +329,7 @@
     },
     methods: {
       async fetchData() {
-        const { data } = await getConfig({ key: 'wechat_applet' })
+        const { data } = await this.api.getConfig({ key: 'wechat_applet' })
 
         if (data !== null) {
           let temp = JSON.parse(data)
@@ -351,7 +350,7 @@
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            const { code } = await editWeChatApplet({
+            const { code } = await this.api.editWeChatApplet({
               appid: this.form.appid, //应用id
               appsecret: this.form.appsecret, //应用secret
               nickname: this.form.nickname, //小程序名称

@@ -133,10 +133,6 @@
 </template>
 
 <script>
-  import {
-    getCustomerVoucherList,
-    getFinanceCustomerVoucherExport,
-  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'FinancialCustomerVoucher',
@@ -196,7 +192,7 @@
           temp[0] = this.form.date[0]
           temp[1] = this.form.date[1]
         }
-        const { code, data } = await getFinanceCustomerVoucherExport({
+        const { code, data } = await this.api.getFinanceCustomerVoucherExport({
           start_time: temp[0],
           end_time: temp[1],
           name: this.form.name,
@@ -233,7 +229,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getCustomerVoucherList(this.formTemp)
+        const { data } = await this.api.getCustomerVoucherList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

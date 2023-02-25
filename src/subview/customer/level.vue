@@ -76,15 +76,7 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/LevelEdit'
-
-  import {
-    getGradeList,
-    getInfoGradeList,
-    delGradeList,
-    editGradeList,
-  } from '@/api/basic'
   export default {
-    name: 'CustomerLevel',
     components: { Edit },
     data() {
       return {
@@ -94,8 +86,6 @@
           pageSize: 10,
         },
         formType: 4,
-
-        selectRows: [],
         listType: 1,
         list: [],
         listLoading: false,
@@ -119,7 +109,7 @@
           this.$refs['edit'].showEdit()
         } else {
           if (row.id) {
-            const { data } = await getInfoGradeList({ id: row.id })
+            const { data } = await this.api.getInfoGradeList({ id: row.id })
             this.$refs['edit'].showEdit(data)
           } else {
             this.$refs['edit'].showEdit()
@@ -136,7 +126,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delGradeList({ id: row.id })
+            const { code } = await this.api.delGradeList({ id: row.id })
             if (code != 200) {
               return
             }
@@ -146,7 +136,7 @@
         }
       },
       async turnOnOff(row) {
-        const { code } = await editGradeList(row)
+        const { code } = await this.api.editGradeList(row)
         if (code != 200) {
           return
         }
@@ -164,7 +154,7 @@
 
       async fetchData() {
         this.listLoading = true
-        const { data } = await getGradeList(this.form)
+        const { data } = await this.api.getGradeList(this.form)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
@@ -172,4 +162,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

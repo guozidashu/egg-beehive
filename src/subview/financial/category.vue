@@ -153,7 +153,6 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/categoryEdit'
-  import { getCategoryList, delCategoryDel } from '@/api/basic'
   export default {
     name: 'FinancialCategory',
     components: { Edit },
@@ -218,7 +217,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delCategoryDel({ id: row.id })
+            const { code } = await this.api.delCategoryDel({ id: row.id })
             if (code != 200) {
               return
             }
@@ -238,7 +237,7 @@
       async fetchData(type) {
         if (type == 1) {
           this.form.id = 0
-          const { data } = await getCategoryList(this.form)
+          const { data } = await this.api.getCategoryList(this.form)
           let list = [
             {
               id: 0,
@@ -258,7 +257,7 @@
           if (this.formTemp == null) {
             this.formTemp = JSON.parse(JSON.stringify(this.form))
           }
-          const { data } = await getCategoryList(this.formTemp)
+          const { data } = await this.api.getCategoryList(this.formTemp)
           this.list = data.data
           this.total = data.total
         }

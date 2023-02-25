@@ -157,14 +157,7 @@
 </template>
 <script>
   import datajosn from '@/assets/assets_josn/datajosn'
-  import {
-    getApplyList,
-    getGradeList,
-    editApplyDisagree,
-    editApplyAgree,
-  } from '@/api/basic'
   export default {
-    name: 'CustomerApplication',
     mixins: [datajosn],
     data() {
       return {
@@ -215,7 +208,7 @@
         if (row.id) {
           if (type == 1) {
             this.$baseConfirm('你确定要审核当前项吗', null, async () => {
-              const { code } = await editApplyAgree({
+              const { code } = await this.api.editApplyAgree({
                 id: row.id,
               })
               if (code != 200) {
@@ -239,7 +232,7 @@
               },
               inputErrorMessage: '请输入拒绝原因',
             }).then(async ({ value }) => {
-              const { code } = await editApplyDisagree({
+              const { code } = await this.api.editApplyDisagree({
                 id: row.id,
                 fail_remark: value,
               })
@@ -257,7 +250,7 @@
         }
       },
       async getTypeList() {
-        const { data } = await getGradeList()
+        const { data } = await this.api.getGradeList()
         this.selectList = data.data
       },
       handleQuery() {
@@ -282,7 +275,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getApplyList(this.formTemp)
+        const { data } = await this.api.getApplyList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
@@ -290,4 +283,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

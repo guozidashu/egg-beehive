@@ -194,16 +194,7 @@
 </template>
 
 <script>
-  import {
-    getCommonAllList,
-    editGoodsGroupSave,
-    getGoodsUnitList,
-    addGroupGoodsAdd,
-    getGoodsGroupList,
-  } from '@/api/basic'
-
   export default {
-    name: 'TagsEdit',
     data() {
       return {
         selectLists: [],
@@ -278,7 +269,7 @@
     },
     methods: {
       async getGoodsTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'brand,year,season,category,band',
         })
         this.selectLists = data
@@ -306,7 +297,7 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await editGoodsGroupSave(this.form)
+              const { code } = await this.api.editGoodsGroupSave(this.form)
               if (code != 200) {
                 return
               }
@@ -318,7 +309,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await editGoodsGroupSave(this.form)
+              const { code } = await this.api.editGoodsGroupSave(this.form)
               if (code != 200) {
                 return
               }
@@ -343,7 +334,7 @@
           this.selectRowsId.forEach((item) => {
             temp.push(item.id)
           })
-          const { msg } = await addGroupGoodsAdd({
+          const { msg } = await this.api.addGroupGoodsAdd({
             group_id: this.formInline.group_id,
             goods_id: temp,
           })
@@ -354,7 +345,7 @@
         }
       },
       async getSelectType() {
-        const { data } = await getGoodsGroupList(this.form)
+        const { data } = await this.api.getGoodsGroupList(this.form)
         this.selectList = data
       },
       handleSelectionChange(val) {
@@ -383,7 +374,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.formEdit))
         }
-        const { data } = await getGoodsUnitList(this.formTemp)
+        const { data } = await this.api.getGoodsUnitList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

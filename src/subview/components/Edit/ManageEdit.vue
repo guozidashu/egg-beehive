@@ -129,7 +129,7 @@
         // this.listLoading = true
         // const {
         //   data: { list, total },
-        // } = await getManagementList(this.form)
+        // } = await this.api.getManagementList(this.form)
         // this.list = list
         // this.total = total
         // this.listLoading = false
@@ -138,7 +138,7 @@
       handleDelete(row) {
         if (row) {
           this.$baseConfirm('你确定要发送当前优惠券吗', null, async () => {
-            // const { code } = await addManagementList({ id: row.id })
+            // const { code } = await this.api.addManagementList({ id: row.id })
             // if (code != 200) {
             //   return
             // }

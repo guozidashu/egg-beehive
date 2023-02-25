@@ -169,7 +169,6 @@
 
 <script>
   import Edit from '@/subview/components/Edit/BillListEdit'
-  import { getBillList, delBillOut, getCategoryList } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'FinancialBillList',
@@ -227,7 +226,7 @@
     },
     methods: {
       async getCategory() {
-        const { data } = await getCategoryList({
+        const { data } = await this.api.getCategoryList({
           page: 1,
           pageSize: 10,
           id: -1, // 父级id （取父级时传0）-1 = 所有子分类
@@ -252,7 +251,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要作废当前项吗', null, async () => {
-            const { code } = await delBillOut({ id: row.id })
+            const { code } = await this.api.delBillOut({ id: row.id })
             if (code != 200) {
               return
             }
@@ -285,7 +284,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getBillList(this.formTemp)
+        const { data } = await this.api.getBillList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

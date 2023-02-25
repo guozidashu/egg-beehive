@@ -126,12 +126,6 @@
 
 <script>
   import Decorate from './decorate.vue'
-  import {
-    getTemplateList,
-    delTemplateDel,
-    addTemplateSave,
-    getTemplateCopy,
-  } from '@/api/basic'
   // import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'Design',
@@ -193,7 +187,7 @@
         }
       },
       async addTemplate() {
-        const { code } = await addTemplateSave(this.form)
+        const { code } = await this.api.addTemplateSave(this.form)
         if (code == 200) {
           this.$message({
             message: '添加成功',
@@ -221,7 +215,7 @@
           .then(() => {
             let temp = item
             temp.is_default = 1
-            addTemplateSave(temp).then(() => {
+            this.api.addTemplateSave(temp).then(() => {
               this.$message({
                 type: 'success',
                 message: '设置成功!',
@@ -248,7 +242,7 @@
         this.fetchData()
       },
       async addTemplateSaveBtn(item) {
-        const { code } = await getTemplateCopy({ id: item.id })
+        const { code } = await this.api.getTemplateCopy({ id: item.id })
         if (code == 200) {
           this.$message({
             message: '复制成功',
@@ -264,7 +258,7 @@
           type: 'warning',
         })
           .then(() => {
-            delTemplateDel({ id: item }).then(() => {
+            this.api.delTemplateDel({ id: item }).then(() => {
               this.$message({
                 type: 'success',
                 message: '删除成功!',
@@ -298,7 +292,7 @@
       },
       async fetchData() {
         this.listLoading = true
-        const { data } = await getTemplateList(this.queryForm)
+        const { data } = await this.api.getTemplateList(this.queryForm)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

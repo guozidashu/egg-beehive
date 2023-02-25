@@ -299,7 +299,6 @@
 </template>
 
 <script>
-  import { getGoodsGroupList, getGoodsCategoryTree } from '@/api/basic'
   import vuedraggable from 'vuedraggable'
   export default {
     name: 'Goodsgroup',
@@ -365,11 +364,11 @@
           })
       },
       async getGoodsGroup() {
-        const { data } = await getGoodsGroupList()
+        const { data } = await this.api.getGoodsGroupList()
         this.goodsGroupList = data
       },
       async getGoodsCategory() {
-        const { data } = await getGoodsCategoryTree()
+        const { data } = await this.api.getGoodsCategoryTree()
         data.forEach((item) => {
           item.label = item.name
           item.value = item.id

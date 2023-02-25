@@ -256,12 +256,6 @@
 <script>
   import Drawer from '@/subview/components/Drawer/ReportGoodsDrawer'
   import VabChart from '@/extra/VabChart'
-  import {
-    getCommonAllList,
-    getGoodsList,
-    getGoodsRank,
-    getGoodsReportForms,
-  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'GoodsStatistical',
@@ -458,7 +452,7 @@
         }
       },
       async getTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'brand',
         })
         this.selectList = data
@@ -475,12 +469,12 @@
         } else {
           temp.order = null
         }
-        const { data } = await getGoodsRank(temp)
+        const { data } = await this.api.getGoodsRank(temp)
         this.goosList = data.data
         this.listLoading = false
       },
       async fetchData() {
-        const { data } = await getGoodsList(this.goodsForm)
+        const { data } = await this.api.getGoodsList(this.goodsForm)
         this.goodsStaList.forEach((item) => {
           for (let i in data) {
             if (item.name == i) {
@@ -501,7 +495,7 @@
           this.goodsStaList[4].num = '0.00%'
         }
 
-        getGoodsReportForms(this.goodsForm).then((res) => {
+        this.api.getGoodsReportForms(this.goodsForm).then((res) => {
           let arr = []
           res.data.forEach((item) => {
             for (let i in item) {

@@ -133,7 +133,6 @@
 
 <script>
   import Edit from '@/subview/components/Edit/CorporateAccountEdit'
-  import { getCorporateAccountList, delCorporateAccountDel } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'FinancialCorporateAccount',
@@ -204,7 +203,9 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delCorporateAccountDel({ id: row.id })
+            const { code } = await this.api.delCorporateAccountDel({
+              id: row.id,
+            })
             if (code != 200) {
               return
             }
@@ -233,7 +234,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getCorporateAccountList(this.formTemp)
+        const { data } = await this.api.getCorporateAccountList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

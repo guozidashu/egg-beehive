@@ -253,13 +253,6 @@
 
 <script>
   import VabChart from '@/extra/VabChart'
-
-  import {
-    getCommonAllList,
-    getInformationOrderList,
-    getOrderReportForms,
-    // getInformationOrderSaleRank,
-  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'GoodsStatistical',
@@ -517,13 +510,13 @@
         }
       },
       async getTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'customer_source,brand',
         })
         this.selectList = data
       },
       async fetchData() {
-        const { data } = await getInformationOrderList(this.goodsForm)
+        const { data } = await this.api.getInformationOrderList(this.goodsForm)
         this.goodsStaList.forEach((item) => {
           for (let i in data) {
             if (item.name == i) {
@@ -537,7 +530,7 @@
             }
           }
         })
-        getOrderReportForms(this.goodsForm).then((res) => {
+        this.api.getOrderReportForms(this.goodsForm).then((res) => {
           let arr = []
           res.data.forEach((item) => {
             for (let i in item) {
@@ -644,7 +637,7 @@
       },
       // async getTableList() {
       //   this.listLoading = true
-      //   const { data } = await getInformationOrderSaleRank(this.goodsForm1)
+      //   const { data } = await this.api.getInformationOrderSaleRank(this.goodsForm1)
       //   this.goosList = data
       //   this.listTotal = this.goosList.length
       //   this.listLoading = false

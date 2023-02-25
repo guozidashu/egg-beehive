@@ -49,7 +49,6 @@
   </div>
 </template>
 <script>
-  import { getjstShopList, jstShopSync } from '@/api/basic'
   export default {
     name: 'ArchivesBrand',
     data() {
@@ -78,7 +77,7 @@
     },
     methods: {
       async handleEdit() {
-        const { data, code } = await jstShopSync()
+        const { data, code } = await this.api.jstShopSync()
         if (code == 200) {
           this.$message.success('同步成功')
           this.fetchData()
@@ -94,7 +93,7 @@
       },
       async fetchData() {
         this.listLoading = true
-        const { data } = await getjstShopList()
+        const { data } = await this.api.getjstShopList()
         this.list = data
         this.total = data.length
         this.listLoading = false

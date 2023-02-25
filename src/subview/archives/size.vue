@@ -38,23 +38,6 @@
                         class="el-icon-menu"
                       ></i>
                     </span>
-                    <!-- <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item>
-                        <span @click="handleEdit(item, 2)">编辑</span>
-                      </el-dropdown-item> 
-                      <el-dropdown-item>
-                        <el-button
-                          v-has-permi="['btn:ArchivesSize:del']"
-                          type="text"
-                          @click="handleDelete(item, 2)"
-                        >
-                          删除
-                        </el-button>
-                      </el-dropdown-item>
-                      <el-dropdown-item>
-                        <span @click="handleDelete(item, 3)">设置默认</span>
-                      </el-dropdown-item>
-                    </el-dropdown-menu> -->
                   </el-dropdown>
                 </div>
               </div>
@@ -110,6 +93,7 @@
               <el-table-column label="ID" prop="id" />
               <el-table-column label="尺码组名" prop="name" />
               <el-table-column label="尺码" prop="size" />
+              <el-table-column label="尺码编码" prop="sn" />
               <el-table-column label="类型" prop="type">
                 <template #default="{ row }">
                   <el-tag v-if="row.type == 0">散码</el-tag>
@@ -121,18 +105,6 @@
                 <template #default="{ row }">
                   <el-tag v-if="row.status == 1">开启</el-tag>
                   <el-tag v-else type="danger">关闭</el-tag>
-                  <!-- <el-switch
-                    v-model="row.status"
-                    active-color="#41B584"
-                    active-text="开启"
-                    :active-value="1"
-                    class="switch"
-                    inactive-color="#D2D2D2"
-                    inactive-text="关闭"
-                    :inactive-value="0"
-                    style="margin: 0 10px"
-                    @change="turnOnOff(row)"
-                  /> -->
                 </template>
               </el-table-column>
               <el-table-column label="创建时间" prop="create_time" />
@@ -169,15 +141,7 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/SizeEdit'
-  import {
-    getSizeGroupList,
-    getSizeList,
-    delSizeDel,
-    delSizeGroupDel,
-    addSizeSave,
-  } from '@/api/basic'
   export default {
-    name: 'ArchivesSize',
     components: { Edit },
     data() {
       return {
@@ -208,7 +172,7 @@
     },
     methods: {
       async turnOnOff(row) {
-        const { code } = await addSizeSave(row)
+        const { code } = await this.api.addSizeSave(row)
         if (code != 200) {
           return
         }
@@ -235,7 +199,7 @@
             '你确定要删除当前尺码组吗？</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
-              const { code } = await delSizeGroupDel({ id: row.id })
+              const { code } = await this.api.delSizeGroupDel({ id: row.id })
               if (code != 200) {
                 return
               }
@@ -252,7 +216,7 @@
             '你确定要删除当前尺码吗？</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
-              const { code } = await delSizeDel({ id: row.id })
+              const { code } = await this.api.delSizeDel({ id: row.id })
               if (code != 200) {
                 return
               }
@@ -273,7 +237,7 @@
         this.form.pageSize = data
       },
       async fetchData() {
-        const { data } = await getSizeGroupList(this.form)
+        const { data } = await this.api.getSizeGroupList(this.form)
         let list = [
           {
             id: 0,
@@ -291,7 +255,7 @@
         this.listLoading = true
         const {
           data: { data, total },
-        } = await getSizeList(this.form)
+        } = await this.api.getSizeList(this.form)
         this.list = data
         this.total = total
         this.listLoading = false
@@ -318,4 +282,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

@@ -47,9 +47,7 @@
 </template>
 
 <script>
-  import { getFollowList, getAllTag, addTagToExternal } from '@/api/basic'
   export default {
-    name: 'ComponentsDrawer',
     props: {
       drawerId: {
         type: String,
@@ -128,7 +126,7 @@
             })
             return
           }
-          const { code } = await addTagToExternal(inof)
+          const { code } = await this.api.addTagToExternal(inof)
           if (code == 200) {
             this.$emit('handleClose')
             this.$emit('fetch-data')
@@ -145,7 +143,7 @@
             })
             return
           }
-          const { code } = await addTagToExternal(inof)
+          const { code } = await this.api.addTagToExternal(inof)
           if (code == 200) {
             this.$emit('handleClose')
             this.$emit('fetch-data')
@@ -154,7 +152,7 @@
       },
 
       async fetchList() {
-        const { data } = await getAllTag()
+        const { data } = await this.api.getAllTag()
         data.forEach((item) => {
           item.tags.forEach((item1) => {
             item1.select = false
@@ -164,7 +162,7 @@
       },
       async fetchData() {
         if (this.type != 1) return
-        const { data } = await getFollowList(this.form)
+        const { data } = await this.api.getFollowList(this.form)
         this.list = data.data
       },
     },

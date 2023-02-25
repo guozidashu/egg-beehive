@@ -84,7 +84,6 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/ArticleEdit'
-  import { getArticleList, delArticleDel } from '@/api/basic'
   export default {
     name: 'ArchivesArticle',
     components: { Edit },
@@ -155,7 +154,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delArticleDel({ id: row.id })
+            const { code } = await this.api.delArticleDel({ id: row.id })
             if (code != 200) {
               return
             }
@@ -184,7 +183,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getArticleList(this.formTemp)
+        const { data } = await this.api.getArticleList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

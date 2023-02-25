@@ -111,7 +111,6 @@
 
 <script>
   import VabUpload from '@/extra/VabUpload'
-  import { getConfig, editTopLine } from '@/api/basic'
   export default {
     name: 'PlatformTtxiao',
     components: {
@@ -182,7 +181,7 @@
     },
     methods: {
       async fetchData() {
-        const { data } = await getConfig({ key: 'top_line' })
+        const { data } = await this.api.getConfig({ key: 'top_line' })
         if (data !== null) {
           this.form = JSON.parse(data)
         }
@@ -190,7 +189,7 @@
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            const { code } = await editTopLine(this.form)
+            const { code } = await this.api.editTopLine(this.form)
             if (code === 200) {
               this.$message.success('保存成功')
             } else {

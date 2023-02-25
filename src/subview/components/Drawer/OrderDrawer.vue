@@ -474,13 +474,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import {
-    getOrderDetail,
-    getModifySpec,
-    getDeliveryOrderSpec,
-  } from '@/api/basic'
   export default {
-    name: 'ComponentsDrawer',
     props: {
       drawerInof: {
         type: Object,
@@ -534,13 +528,13 @@
         this.dialogType = type
         if (type == 1) {
           this.title = '操作记录'
-          const { data } = await getModifySpec({
+          const { data } = await this.api.getModifySpec({
             id: row.id,
           })
           this.DetailList = data
         } else {
           this.title = '发货记录'
-          const { data } = await getDeliveryOrderSpec({
+          const { data } = await this.api.getDeliveryOrderSpec({
             id: row.id,
           })
           this.DetailList = data
@@ -549,7 +543,7 @@
       },
       async orderDetail() {
         this.listLoading = true
-        const { data } = await getOrderDetail({
+        const { data } = await this.api.getOrderDetail({
           search_type: this.search_type,
           id: this.form.id,
           page: 1,

@@ -231,15 +231,6 @@
 </template>
 
 <script>
-  import {
-    gitJuShuiTanInfo,
-    getConfig,
-    editJuShuiTan,
-    editWangDianTong,
-    editBoJun,
-    editBaiSheng,
-    editZiRi,
-  } from '@/api/basic'
   import clip from '@/utils/clipboard'
   export default {
     name: 'SystemStorage',
@@ -386,7 +377,7 @@
         if (tab.label == '聚水潭ERP') {
           this.fetchData()
         } else if (tab.label == '旺店通ERP') {
-          const { data } = await getConfig({ key: 'wdt_erp' })
+          const { data } = await this.api.getConfig({ key: 'wdt_erp' })
           if (data !== null) {
             let temp = JSON.parse(data)
             this.form.api_open = Number(temp.api_open)
@@ -398,7 +389,7 @@
             this.form.app_secret = temp.app_secret
           }
         } else if (tab.label == '伯俊BOS') {
-          const { data } = await getConfig({ key: 'bj_bos' })
+          const { data } = await this.api.getConfig({ key: 'bj_bos' })
           if (data !== null) {
             let temp = JSON.parse(data)
             this.form.api_open1 = Number(temp.api_open)
@@ -410,7 +401,7 @@
             this.form.erp_admin = temp.erp_admin
           }
         } else if (tab.label == '百胜ERP') {
-          const { data } = await getConfig({ key: 'bs_erp' })
+          const { data } = await this.api.getConfig({ key: 'bs_erp' })
           if (data !== null) {
             let temp = JSON.parse(data)
             this.form.api_open1 = Number(temp.api_open)
@@ -422,7 +413,7 @@
             this.form.erp_admin = temp.erp_admin
           }
         } else if (tab.label == '紫日ERP') {
-          const { data } = await getConfig({ key: 'zr_erp' })
+          const { data } = await this.api.getConfig({ key: 'zr_erp' })
           if (data !== null) {
             let temp = JSON.parse(data)
             this.form.api_open1 = Number(temp.api_open)
@@ -436,7 +427,7 @@
         }
       },
       async fetchData() {
-        const { data } = await gitJuShuiTanInfo()
+        const { data } = await this.api.gitJuShuiTanInfo()
         if (data !== null) {
           let temp = data
           this.form.jst_api_open = Number(temp.jst_api_open)
@@ -455,7 +446,7 @@
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
             if (this.activeName == '聚水潭ERP') {
-              const { code } = await editJuShuiTan({
+              const { code } = await this.api.editJuShuiTan({
                 jst_api_open: this.form.jst_api_open, //聚水潭接口是否开启
                 jst_version: this.form.jst_version, //1：ERP专业版（无精细化库存管理）\r\n\r\n2：ERP企业版（有精细化库存管理）
                 jst_auth_url: this.form.jst_auth_url, //聚水潭authUrl
@@ -473,7 +464,7 @@
                 this.$message.error('保存失败')
               }
             } else if (this.activeName == '旺店通ERP') {
-              const { code } = await editWangDianTong({
+              const { code } = await this.api.editWangDianTong({
                 api_open: this.form.api_open, //接口是否开启
                 version: this.form.version, //1：ERP专业版（无精细化库存管理）\r\n\r\n2：ERP企业版（有精细化库存管理）
                 auth_url: this.form.auth_url, //authUrl
@@ -488,7 +479,7 @@
                 this.$message.error('保存失败')
               }
             } else if (this.activeName == '伯俊BOS') {
-              const { code } = await editBoJun({
+              const { code } = await this.api.editBoJun({
                 api_open: this.form.api_open1, //接口是否开启
                 version: this.form.version1, //1：ERP专业版（无精细化库存管理）\r\n\r\n2：ERP企业版（有精细化库存管理）
                 sql_url: this.form.sql_url, //数据库链接地址
@@ -503,7 +494,7 @@
                 this.$message.error('保存失败')
               }
             } else if (this.activeName == '百胜ERP') {
-              const { code } = await editBaiSheng({
+              const { code } = await this.api.editBaiSheng({
                 api_open: this.form.api_open1, //接口是否开启
                 version: this.form.version1, //1：ERP专业版（无精细化库存管理）\r\n\r\n2：ERP企业版（有精细化库存管理）
                 sql_url: this.form.sql_url, //数据库链接地址
@@ -518,7 +509,7 @@
                 this.$message.error('保存失败')
               }
             } else if (this.activeName == '紫日ERP') {
-              const { code } = await editZiRi({
+              const { code } = await this.api.editZiRi({
                 api_open: this.form.api_open1, //接口是否开启
                 version: this.form.version1, //1：ERP专业版（无精细化库存管理）\r\n\r\n2：ERP企业版（有精细化库存管理）
                 sql_url: this.form.sql_url, //数据库链接地址

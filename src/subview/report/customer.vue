@@ -334,14 +334,6 @@
 
 <script>
   import TextTags from '@/subview/components/Text/TextTags'
-  import {
-    getCommonAllList,
-    getInformationCustomerList,
-    getCustomerArea,
-    getCustomerLevel,
-    getHotStyleAnalysis,
-    getHotStyleAnalysisExport,
-  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   import mapjson from '@/assets/assets_josn/mapjson'
   export default {
@@ -557,7 +549,9 @@
     },
     methods: {
       async handleDerive() {
-        const { code, data } = await getHotStyleAnalysisExport(this.goodsForm1)
+        const { code, data } = await this.api.getHotStyleAnalysisExport(
+          this.goodsForm1
+        )
         if (code == 200) {
           window.open(data.url)
           this.$message.success('导出成功')
@@ -591,13 +585,15 @@
         }
       },
       async getTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'customer_source,brand,customer_grade',
         })
         this.selectList = data
       },
       async fetchData() {
-        const { data } = await getInformationCustomerList(this.goodsForm)
+        const { data } = await this.api.getInformationCustomerList(
+          this.goodsForm
+        )
         this.textTagList[0].num = data.add_customer
         this.textTagList[0].allNum = data.all_customer
         this.textTagList[0].oldNum = data.previous_period
@@ -629,7 +625,7 @@
             }
           }
         })
-        getCustomerArea(this.goodsForm).then((res) => {
+        this.api.getCustomerArea(this.goodsForm).then((res) => {
           let chainList = JSON.parse(JSON.stringify(this.chainList))
           chainList.forEach((item, index) => {
             res.data.forEach((item1) => {
@@ -659,7 +655,7 @@
           })
           this.chainList = chainList
         })
-        getCustomerLevel().then((res) => {
+        this.api.getCustomerLevel().then((res) => {
           let temp1 = {}
           res.data.forEach((item) => {
             temp1.name = item.name
@@ -671,7 +667,7 @@
       },
       async getTableList() {
         this.listLoading = true
-        const { data } = await getHotStyleAnalysis(this.goodsForm1)
+        const { data } = await this.api.getHotStyleAnalysis(this.goodsForm1)
         if (data.arrears_type == 0) {
           this.orderList[4].value = 'sale_arrears'
         } else {

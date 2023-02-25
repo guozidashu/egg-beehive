@@ -36,7 +36,6 @@
 </template>
 
 <script>
-  import { getBaseConfigDetail, editBaseConfigSave } from '@/api/basic'
   export default {
     name: 'DecorateTheme',
     data() {
@@ -84,14 +83,14 @@
     },
     methods: {
       async fetchData() {
-        const { data } = await getBaseConfigDetail()
+        const { data } = await this.api.getBaseConfigDetail()
         this.form = JSON.parse(data)
         this.form.customer_service_type = Number(
           this.form.customer_service_type
         )
       },
       async submitForm() {
-        const { code } = await editBaseConfigSave(this.form)
+        const { code } = await this.api.editBaseConfigSave(this.form)
         if (code === 200) {
           this.$message.success('保存成功')
         } else {

@@ -142,17 +142,11 @@
 </template>
 <script>
   import Drawer from '@/subview/components/Drawer/BomDrawer'
-  import {
-    getCommonAllList,
-    getMaterialList,
-    delMaterialDel,
-    getMaterialInfo,
-  } from '@/api/basic'
   export default {
-    name: 'ArchivesBom',
     components: { Drawer },
     data() {
       return {
+        // 抽屉相关
         title: '',
         drawer: false,
         drawerInof: {},
@@ -171,6 +165,7 @@
         list: [],
         listLoading: false,
         total: 0,
+        // 物料分类下拉框
         material_category: [],
       }
     },
@@ -221,7 +216,7 @@
           }
           this.drawerInof = JSON.parse(JSON.stringify(arr))
         } else {
-          const { data } = await getMaterialInfo({
+          const { data } = await this.api.getMaterialInfo({
             material_id: row.id,
           })
           data[0].material_stock = row.material_stock
@@ -249,7 +244,7 @@
             '你确定要删除当前物料吗？</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
-              const { code } = await delMaterialDel({
+              const { code } = await this.api.delMaterialDel({
                 material_id: row.id,
               })
               if (code != 200) {
@@ -279,16 +274,17 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getMaterialList(this.formTemp)
+        const { data } = await this.api.getMaterialList(this.formTemp)
         this.list = data.list.data
         this.total = data.list.total
         this.listLoading = false
       },
       async getSelectData() {
-        const { data } = await getCommonAllList({ type: 'material_category' })
+        const { data } = await this.api.getCommonAllList({
+          type: 'material_category',
+        })
         this.material_category = data.material_category
       },
     },
   }
 </script>
-<style lang="scss" scoped></style>

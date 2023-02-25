@@ -76,7 +76,6 @@
 
 <script>
   import Edit from '@/subview/components/Edit/AdministratorEdit'
-  import { getAdminList, addAdminSave } from '@/api/basic'
   export default {
     name: 'Administrator',
     components: { Edit },
@@ -144,7 +143,7 @@
         }
       },
       async turnOnOff(row) {
-        const { code } = await addAdminSave(row)
+        const { code } = await this.api.addAdminSave(row)
         if (code != 200) {
           return
         }
@@ -172,7 +171,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getAdminList(this.formTemp)
+        const { data } = await this.api.getAdminList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

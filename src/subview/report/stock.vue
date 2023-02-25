@@ -232,13 +232,6 @@
 </template>
 
 <script>
-  import {
-    getCommonAllList,
-    getStockStatistics,
-    getStockCircular,
-    getStockRank,
-    getStockCircularSonCate,
-  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'GoodsStock',
@@ -506,7 +499,7 @@
         this.goodsForm1.pageSize = data
       },
       async fetchData() {
-        const { data } = await getStockStatistics({
+        const { data } = await this.api.getStockStatistics({
           category_id: this.goodsForm.category,
         })
         this.goodsStaList.forEach((item) => {
@@ -527,13 +520,13 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.goodsForm1))
         }
-        const { data } = await getStockRank(this.formTemp)
+        const { data } = await this.api.getStockRank(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
       },
       async getCircular() {
-        const { data } = await getStockCircular()
+        const { data } = await this.api.getStockCircular()
         data.category_stock_data.forEach((item, index) => {
           this.lengList.push(item.category_name)
           if (index == 0) {
@@ -563,7 +556,7 @@
         })
       },
       async getCircularSonCate(ID) {
-        const { data } = await getStockCircularSonCate({
+        const { data } = await this.api.getStockCircularSonCate({
           category_id: ID,
         })
         data.category_stock_data.forEach((item) => {
@@ -578,7 +571,7 @@
         this.initCharts()
       },
       async getGoodsTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'brand,category',
         })
         this.selectList = data

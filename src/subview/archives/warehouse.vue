@@ -114,11 +114,8 @@
 
 <script>
   import Edit from '@/subview/components/Edit/WareHouseEdit'
-
   import Drawer from '@/subview/components/Drawer/WareHouseDrawer'
-  import { getArchive, delArchive } from '@/api/basic'
   export default {
-    name: 'ArchivesWarehouse',
     components: { Edit, Drawer },
     data() {
       return {
@@ -192,7 +189,7 @@
             '你确定要删除当前仓库吗?</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
-              const { code } = await delArchive({ id: row.id })
+              const { code } = await this.api.delArchive({ id: row.id })
               if (code != 200) {
                 return
               }
@@ -219,7 +216,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getArchive(this.formTemp)
+        const { data } = await this.api.getArchive(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

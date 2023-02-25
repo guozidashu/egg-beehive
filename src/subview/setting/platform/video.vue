@@ -52,7 +52,6 @@
 </template>
 
 <script>
-  import { getConfig, editWechatVideo } from '@/api/basic'
   export default {
     name: 'PlatformVideo',
     data() {
@@ -84,7 +83,7 @@
     },
     methods: {
       async fetchData() {
-        const { data } = await getConfig({ key: 'wechat_video' })
+        const { data } = await this.api.getConfig({ key: 'wechat_video' })
         if (data !== null) {
           this.form = JSON.parse(data)
         }
@@ -92,7 +91,7 @@
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            const { code } = await editWechatVideo(this.form)
+            const { code } = await this.api.editWechatVideo(this.form)
             if (code === 200) {
               this.$message.success('保存成功')
             } else {

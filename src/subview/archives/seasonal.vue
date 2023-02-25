@@ -99,10 +99,7 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/SeasonalEdit'
-
-  import { getSeasonList, delSeasonDel, addSeasonSave } from '@/api/basic'
   export default {
-    name: 'ArchivesSeasonal',
     components: { Edit },
     data() {
       return {
@@ -147,7 +144,7 @@
     },
     methods: {
       async turnOnOff(row) {
-        const { code } = await addSeasonSave(row)
+        const { code } = await this.api.addSeasonSave(row)
         if (code != 200) {
           return
         }
@@ -177,7 +174,7 @@
             '你确定要删除当前季节吗?</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
-              const { code } = await delSeasonDel({ id: row.id })
+              const { code } = await this.api.delSeasonDel({ id: row.id })
               if (code != 200) {
                 return
               }
@@ -204,7 +201,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getSeasonList(this.formTemp)
+        const { data } = await this.api.getSeasonList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
@@ -212,4 +209,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

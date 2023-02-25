@@ -117,7 +117,6 @@
 </template>
 
 <script>
-  import { getPlanDetails } from '@/api/basic'
   export default {
     name: 'ComponentsDrawer',
     props: {
@@ -173,7 +172,7 @@
     },
     methods: {
       async getDetail() {
-        const { data } = await getPlanDetails({
+        const { data } = await this.api.getPlanDetails({
           plan_id: this.plan_id, // 目标id
           designer_id: this.formInline.designer_id, // 设计师id
         })

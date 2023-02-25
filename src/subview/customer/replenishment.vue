@@ -112,9 +112,7 @@
 </template>
 <script>
   import datajosn from '@/assets/assets_josn/datajosn'
-  import { getCustomerApplyList, getCustomerApplyAgree } from '@/api/basic'
   export default {
-    name: 'CustomerApplication',
     mixins: [datajosn],
     data() {
       return {
@@ -163,7 +161,7 @@
         if (row.id) {
           if (type == 1) {
             this.$baseConfirm('你确定要知晓当前项吗', null, async () => {
-              const { code } = await getCustomerApplyAgree({
+              const { code } = await this.api.getCustomerApplyAgree({
                 id: row.id,
               })
               if (code != 200) {
@@ -201,7 +199,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getCustomerApplyList(this.formTemp)
+        const { data } = await this.api.getCustomerApplyList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
@@ -209,4 +207,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

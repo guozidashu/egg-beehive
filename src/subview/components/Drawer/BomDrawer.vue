@@ -352,12 +352,6 @@
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
   import VabUpload from '@/extra/VabUpload'
-
-  import {
-    getCommonAllList,
-    addMaterialSave,
-    getMaterialInfoList,
-  } from '@/api/basic'
   import { mapGetters } from 'vuex'
   export default {
     name: 'ComponentsDrawer',
@@ -423,7 +417,7 @@
         this.$refs['vabUpload'].handleShow()
       },
       async getGoodsTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'material_category,supplier,unit',
         })
         this.selectList = data
@@ -435,14 +429,14 @@
         }
         if (this.form.id == undefined) {
           this.form.id = 0
-          const { code } = await addMaterialSave(this.form)
+          const { code } = await this.api.addMaterialSave(this.form)
           if (code == 200) {
             this.$baseMessage('新增成功', 'success', 'vab-hey-message-success')
             this.form.drawerType = e
             this.$forceUpdate()
           }
         } else {
-          const { code } = await addMaterialSave(this.form)
+          const { code } = await this.api.addMaterialSave(this.form)
           if (code == 200) {
             this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
             this.form.drawerType = e
@@ -464,7 +458,7 @@
       // 列表数据表头切换监听 自定义部分
       async handleClick(tab) {
         if (tab.index != 0) {
-          const { data } = await getMaterialInfoList({
+          const { data } = await this.api.getMaterialInfoList({
             material_id: this.form.id, //物料id
             type: tab.index, //1入库信息 2出库信息 3调整明细 4库存明细
           })
@@ -477,7 +471,7 @@
       upMembers(type) {
         if (type == 1) {
           this.$baseConfirm('你确定要启用当前项吗', null, async () => {
-            // const { code } = await deleteBrand({ id: row.id })
+            // const { code } = await this.api.deleteBrand({ id: row.id })
             // if (code != 200) {
             //   return
             // }

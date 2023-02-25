@@ -155,15 +155,7 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/ColorEdit'
-  import {
-    getColorGroupList,
-    getColorList,
-    delColorDel,
-    delColorGroupDel,
-    addColorSave,
-  } from '@/api/basic'
   export default {
-    name: 'ArchivesColor',
     components: { Edit },
     data() {
       return {
@@ -210,7 +202,7 @@
     },
     methods: {
       async turnOnOff(row) {
-        const { code } = await addColorSave(row)
+        const { code } = await this.api.addColorSave(row)
         if (code != 200) {
           return
         }
@@ -237,7 +229,7 @@
             '你确定要删除当前颜色组吗？</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
-              const { code } = await delColorGroupDel({ id: row.id })
+              const { code } = await this.api.delColorGroupDel({ id: row.id })
               if (code != 200) {
                 return
               }
@@ -254,7 +246,7 @@
             '你确定要删除当前颜色吗？</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
-              const { code } = await delColorDel({ id: row.id })
+              const { code } = await this.api.delColorDel({ id: row.id })
               if (code != 200) {
                 return
               }
@@ -277,7 +269,7 @@
         this.form.pageSize = data
       },
       async fetchData() {
-        const { data } = await getColorGroupList(this.form)
+        const { data } = await this.api.getColorGroupList(this.form)
         let list = [
           {
             id: 0,
@@ -298,7 +290,7 @@
         }
         const {
           data: { data, total },
-        } = await getColorList(this.formTemp)
+        } = await this.api.getColorList(this.formTemp)
         this.list = data
         this.total = total
         this.listLoading = false
@@ -325,4 +317,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

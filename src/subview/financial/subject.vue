@@ -165,7 +165,6 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/SubjectEdit'
-  import { getAccountList, delAccountDel } from '@/api/basic'
   export default {
     name: 'FinancialSubject',
     components: { Edit },
@@ -240,7 +239,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delAccountDel({ id: row.id })
+            const { code } = await this.api.delAccountDel({ id: row.id })
             if (code != 200) {
               return
             }
@@ -260,7 +259,7 @@
       async fetchData(type) {
         if (type == 1) {
           this.form.id = 0
-          const { data } = await getAccountList(this.form)
+          const { data } = await this.api.getAccountList(this.form)
           let list = [
             {
               id: 0,
@@ -280,7 +279,7 @@
           if (this.formTemp == null) {
             this.formTemp = JSON.parse(JSON.stringify(this.form))
           }
-          const { data } = await getAccountList(this.formTemp)
+          const { data } = await this.api.getAccountList(this.formTemp)
           this.list = data.data
           this.total = data.total
         }

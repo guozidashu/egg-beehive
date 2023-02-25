@@ -218,7 +218,6 @@
 </template>
 
 <script>
-  // import { getList } from '@/api/area'
   export default {
     name: 'SystemPay',
     data() {
@@ -285,7 +284,7 @@
       async fetchData() {
         // const {
         //   data: { list },
-        // } = await getList()
+        // } = await this.api.getList()
         // this.areaOptions = list
       },
       jumpWX() {

@@ -150,7 +150,6 @@
 <script>
   import Drawer from '@/subview/components/Drawer/StoresDrawer'
   import { parseTime } from '@/utils'
-  import { getStoreList, editChangeStatus } from '@/api/basic'
   export default {
     name: 'Employees',
     components: { Drawer },
@@ -221,7 +220,7 @@
         this.fetchData()
       },
       async turnOnOff(row) {
-        const { code } = await editChangeStatus({ id: row.id })
+        const { code } = await this.api.editChangeStatus({ id: row.id })
         if (code != 200) {
           return
         }
@@ -233,7 +232,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getStoreList(this.formTemp)
+        const { data } = await this.api.getStoreList(this.formTemp)
         let list = data.data
         list.forEach((item) => {
           if (

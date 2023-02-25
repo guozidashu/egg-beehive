@@ -14,17 +14,14 @@
             <p style="font-weight: 400">
               间隔符（默认没有）长度一位，只能输入- 或者 _
             </p>
+            <p>整手生成的商品编码就为：QYWZ32888HUA000</p>
             <p>
-              <span style="color: red">举例</span>
-              ：如果前缀设置成QY，款号为：WZ231108，颜色编码为HUA，尺码编号为080、090、100、100、110、120
+              散码生成的商品编码就为：QYWZ32888-1HUA080、QYWZ32888-1HUA090、QYWZ32888-1HUA100、QYWZ32888-1HUA110、QYWZ32888-1HUA120
             </p>
-            <p>散码生成的商品编码就为：QYWZ231108HUA080</p>
-            <p>散码生成的商品编码就为：QY-WZ231108-HUA-090</p>
-            <p>散码生成的商品编码就为：QY WZ231108 HUA100</p>
-
-            <p>散码生成的商品编码就为：OYWZ231108HUA110</p>
-            <p>散码生成的商品编码就为：QYWZ231108HUA120</p>
-            <p>整手生成的商品编码就为：QYWZ231108HUA000</p>
+            <p>启用间隔符-的整手商品编码就为：QY-WZ32888-HUA-000</p>
+            <p>
+              启用间隔符-的散码商品编码就为：QY-WZ32888-1-HUA-080、QY-WZ32888-1-HUA-090、QY-WZ32888-1-HUA-100、QY-WZ32888-1-HUA-110、QY-WZ32888-1-HUA-120
+            </p>
           </div>
           <el-form-item label="编码名称:" prop="fakeName">
             <el-input v-model="form.fakeName" disabled style="width: 300px" />
@@ -94,7 +91,6 @@
   </div>
 </template>
 <script>
-  import { getCodeRule, setCodeRule } from '@/api/basic'
   export default {
     data() {
       return {
@@ -102,7 +98,7 @@
         preview: this.code('@@@@@'),
         form: {
           name: '商品条码',
-          fakeName: '商品防伪条码',
+          fakeName: '商品条码',
           code: '',
           prefix: false,
           spacer: false,
@@ -225,7 +221,7 @@
     },
     methods: {
       async getCode() {
-        const { code, data } = await getCodeRule({
+        const { code, data } = await this.api.getCodeRule({
           type: 1,
         })
         if (code == 200) {
@@ -258,7 +254,7 @@
               ogj.name = this.form.name
               ogj.code = temp
             }
-            const { code } = await setCodeRule(ogj)
+            const { code } = await this.api.setCodeRule(ogj)
             if (code == 200) {
               this.$message.success('保存成功')
             } else {

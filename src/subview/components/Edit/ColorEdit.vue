@@ -31,13 +31,6 @@
           style="width: 215px"
         />
       </el-form-item>
-      <!-- <el-form-item
-        v-if="type === 1 && title == '添加颜色'"
-        label="编号"
-        prop="sn"
-      >
-        <el-input v-model="form.sn" style="width: 215px" />
-      </el-form-item> -->
       <el-form-item v-if="type === 1" label="状态" prop="status">
         <el-switch
           v-model="form.status"
@@ -83,7 +76,6 @@
 </template>
 
 <script>
-  import { addColorSave, addColorGroupSave } from '@/api/basic'
   export default {
     name: 'TagsEdit',
     data() {
@@ -144,12 +136,12 @@
           if (valid) {
             if (this.title === '添加') {
               if (this.type === 1) {
-                const { code } = await addColorSave(this.form)
+                const { code } = await this.api.addColorSave(this.form)
                 if (code != 200) {
                   return
                 }
               } else {
-                const { code } = await addColorGroupSave(this.form)
+                const { code } = await this.api.addColorGroupSave(this.form)
                 if (code != 200) {
                   return
                 }
@@ -163,12 +155,12 @@
               this.close()
             } else {
               if (this.type === 1) {
-                const { code } = await addColorSave(this.form)
+                const { code } = await this.api.addColorSave(this.form)
                 if (code != 200) {
                   return
                 }
               } else {
-                const { code } = await addColorGroupSave(this.form)
+                const { code } = await this.api.addColorGroupSave(this.form)
                 if (code != 200) {
                   return
                 }

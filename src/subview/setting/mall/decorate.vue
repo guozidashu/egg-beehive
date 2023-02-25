@@ -58,11 +58,6 @@
 </template>
 <script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script>
-  import {
-    getCommonAllList,
-    getTemplateAssemblyInfo,
-    editTemplateAssemblyLayout,
-  } from '@/api/basic'
   import Draggable from 'vuedraggable'
   import EditForm from '@/subview/components/TtemplateEdit/index'
   import Banner from '@/subview/components/TtemplateView/Banner'
@@ -192,7 +187,7 @@
     },
     methods: {
       async init(item) {
-        const { data } = await getTemplateAssemblyInfo({
+        const { data } = await this.api.getTemplateAssemblyInfo({
           id: item,
         })
         if (data.length == 0) {
@@ -211,7 +206,7 @@
         this.view = arr
       },
       async getTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'div_assembly',
         })
         let arr = []
@@ -318,7 +313,7 @@
         })
         temp.div_template_id = this.itemId
         temp.content = arr
-        const { data } = await editTemplateAssemblyLayout(temp)
+        const { data } = await this.api.editTemplateAssemblyLayout(temp)
 
         // this.$message.success(
         //   '数据提交成功，请按F12打开控制台查看待提交数据集合！'

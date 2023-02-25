@@ -267,15 +267,6 @@
   </div>
 </template>
 <script>
-  import {
-    getFinanceList,
-    getExpensesList,
-    getexpensesSonList,
-    getBusinessIncomeList,
-    getTodayTurnoverList,
-    getTodayExpenditureList,
-    getTodayCollectionList,
-  } from '@/api/basic'
   import MembersChart from '@/subview/components/Chart/MembersChart'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
@@ -702,7 +693,7 @@
       },
       // 费用单父级获取
       async getExpenses() {
-        const { data } = await getExpensesList(this.goodsForm)
+        const { data } = await this.api.getExpensesList(this.goodsForm)
         if (data.length == 0) {
           this.expenseShow = false
           return
@@ -724,7 +715,7 @@
       },
       // 费用单子级获取
       async getExpensesSon(ID) {
-        const { data } = await getexpensesSonList({
+        const { data } = await this.api.getexpensesSonList({
           id: ID,
           time: this.goodsForm.time,
         })
@@ -738,7 +729,7 @@
       },
       // 业务收入
       async getBusinessIncome() {
-        const { data } = await getBusinessIncomeList(this.goodsForm)
+        const { data } = await this.api.getBusinessIncomeList(this.goodsForm)
         data.forEach((item) => {
           item.value = item.total
         })
@@ -746,7 +737,7 @@
       },
       // 营业额
       async getTodayTurnover() {
-        const { data } = await getTodayTurnoverList({
+        const { data } = await this.api.getTodayTurnoverList({
           time: this.goodsForm.time,
           type: this.timeType,
         })
@@ -761,7 +752,7 @@
       },
       // 头部数据
       async getHeadList() {
-        const { data } = await getFinanceList(this.goodsForm)
+        const { data } = await this.api.getFinanceList(this.goodsForm)
         this.headList[0].value = data.sale_goods_income
         this.headList[1].value = data.sale_goods_cost
         this.headList[2].value = data.stock_cost
@@ -778,7 +769,7 @@
         }
       },
       async getTodayExpenditure() {
-        const { data } = await getTodayExpenditureList(this.goodsForm)
+        const { data } = await this.api.getTodayExpenditureList(this.goodsForm)
         let arr = []
         data.list.forEach((item) => {
           for (let i in item) {
@@ -810,7 +801,7 @@
         this.$forceUpdate()
       },
       async getTodayCollection() {
-        const { data } = await getTodayCollectionList(this.goodsForm)
+        const { data } = await this.api.getTodayCollectionList(this.goodsForm)
         let arr = []
         data.list.forEach((item) => {
           for (let i in item) {

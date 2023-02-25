@@ -91,9 +91,7 @@
 </template>
 
 <script>
-  import { getRoleInfo, addRoleSave } from '@/api/basic'
   export default {
-    name: 'Dashboard',
     props: {
       drawerId: {
         type: Number,
@@ -138,7 +136,7 @@
     methods: {
       async fetchData() {
         this.listLoading = true
-        const { data } = await getRoleInfo({ id: this.id })
+        const { data } = await this.api.getRoleInfo({ id: this.id })
         const arr = []
         const fn = (data) => {
           data.forEach((item) => {
@@ -280,7 +278,7 @@
             list.push(key)
           }
         }
-        const { code } = await addRoleSave({ id: this.id, auth: list })
+        const { code } = await this.api.addRoleSave({ id: this.id, auth: list })
         if (code != 200) {
           return
         }

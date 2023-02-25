@@ -48,10 +48,6 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/MallClassifiedEdit'
-  import {
-    getShopGoodsCategoryTree,
-    editBatchDisplayCateGory,
-  } from '@/api/basic'
   export default {
     name: 'EmployeeValue',
     components: { Edit },
@@ -112,7 +108,9 @@
             this.selectRowsId.forEach((item) => {
               this.editForm.ids.push(item.id)
             })
-            const { code } = await editBatchDisplayCateGory(this.editForm)
+            const { code } = await this.api.editBatchDisplayCateGory(
+              this.editForm
+            )
             if (code == 200) {
               this.$message({
                 type: 'success',
@@ -140,7 +138,9 @@
             this.selectRowsId.forEach((item) => {
               this.editForm.ids.push(item.id)
             })
-            const { code } = await editBatchDisplayCateGory(this.editForm)
+            const { code } = await this.api.editBatchDisplayCateGory(
+              this.editForm
+            )
             if (code == 200) {
               this.$message({
                 type: 'success',
@@ -177,7 +177,7 @@
 
       async fetchData() {
         this.listLoading = true
-        const { data } = await getShopGoodsCategoryTree(this.form)
+        const { data } = await this.api.getShopGoodsCategoryTree(this.form)
         this.list = data
         this.listLoading = false
       },

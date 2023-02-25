@@ -38,9 +38,7 @@
 </template>
 
 <script>
-  import { editCorporateAccountSavee } from '@/api/basic'
   export default {
-    name: 'LevelDeit',
     data() {
       return {
         selectList: [],
@@ -80,7 +78,9 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await editCorporateAccountSavee(this.form)
+              const { code } = await this.api.editCorporateAccountSavee(
+                this.form
+              )
               if (code != 200) {
                 return
               }
@@ -92,7 +92,9 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await editCorporateAccountSavee(this.form)
+              const { code } = await this.api.editCorporateAccountSavee(
+                this.form
+              )
               if (code != 200) {
                 return
               }

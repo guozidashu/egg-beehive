@@ -546,17 +546,8 @@ d
 <script>
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
-
   import { mapGetters } from 'vuex'
-  import {
-    editSupplierDetail,
-    getCommonAllList,
-    editSupplierSave,
-    getSupplierEditDetail,
-  } from '@/api/basic'
-
   export default {
-    name: 'ComponentsDrawer',
     props: {
       drawerInof: {
         type: Object,
@@ -670,7 +661,7 @@ d
         await this.openSideBar()
       },
       async getSelectData() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'supplier_type,craft_type,produce_type,supplier_tag,supplier_grade',
         })
         this.selectData = data
@@ -688,10 +679,12 @@ d
         }
         if (this.form.id == undefined) {
           this.form.id = 0
-          const { code } = await editSupplierSave(this.form)
+          const { code } = await this.api.editSupplierSave(this.form)
           if (code == 200) {
             this.$baseMessage('新增成功', 'success', 'vab-hey-message-success')
-            const { code } = await getSupplierEditDetail({ id: this.form.id })
+            const { code } = await this.api.getSupplierEditDetail({
+              id: this.form.id,
+            })
             if (code == 200) {
               this.$emit('fetch-data', 1)
             }
@@ -703,10 +696,12 @@ d
           if (this.form.produce_type != undefined) {
             this.form.produce_type = this.form.produce_type.join(',')
           }
-          const { code } = await editSupplierSave(this.form)
+          const { code } = await this.api.editSupplierSave(this.form)
           if (code == 200) {
             this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
-            const { data } = await getSupplierEditDetail({ id: this.form.id })
+            const { data } = await this.api.getSupplierEditDetail({
+              id: this.form.id,
+            })
             this.form.drawerType = data[0]
             this.form.drawerType = e
             this.search_type = '0'
@@ -745,7 +740,7 @@ d
         if (tab.name == 0) {
           return
         }
-        const { data } = await editSupplierDetail({
+        const { data } = await this.api.editSupplierDetail({
           search_type: tab.name, //搜索条件 1订单记录 2入库信息 3退货记录 4付款记录 5对账单记录
           id: this.drawerInof.id, //物料采购订单id
           page: 1,

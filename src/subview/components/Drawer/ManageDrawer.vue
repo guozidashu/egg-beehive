@@ -657,13 +657,6 @@
 <script>
   import datajosn from '@/assets/assets_josn/datajosn'
   import { mapGetters } from 'vuex'
-  import {
-    getCommonAllList,
-    editCustomerSave,
-    getCustomerInfoList,
-    giteCustomerDetail,
-    getCustomerExportBill,
-  } from '@/api/basic'
   export default {
     name: 'ComponentsDrawer',
     mixins: [datajosn],
@@ -777,7 +770,7 @@
     },
     methods: {
       async getDetail() {
-        const { data } = await giteCustomerDetail({ id: this.form.id })
+        const { data } = await this.api.giteCustomerDetail({ id: this.form.id })
         let type = this.form.drawerType
         this.form = JSON.parse(JSON.stringify(data[0]))
         this.form.drawerType = type
@@ -798,7 +791,7 @@
           temp.start_date = this.formBill.time[0]
           temp.end_date = this.formBill.time[1]
         }
-        const { data, code } = await getCustomerExportBill(temp)
+        const { data, code } = await this.api.getCustomerExportBill(temp)
         this.dialogVisibleBill = false
         if (code == 200) {
           window.open(data.url)
@@ -828,13 +821,13 @@
         }
         if (this.form.id == undefined) {
           this.form.id = 0
-          const { code } = await editCustomerSave(this.form)
+          const { code } = await this.api.editCustomerSave(this.form)
           if (code == 200) {
             this.$baseMessage('新增成功', 'success', 'vab-hey-message-success')
             this.$emit('fetch-data', 1)
           }
         } else {
-          const { code } = await editCustomerSave(this.form)
+          const { code } = await this.api.editCustomerSave(this.form)
           if (code == 200) {
             this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
             this.form.drawerType = e
@@ -843,7 +836,7 @@
         }
       },
       async getSelectData() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'customer_grade,customer_type,customer_source,customer_tag,customer_service',
         })
         data.customer_tag.forEach((item) => {
@@ -865,7 +858,7 @@
         if (tab.name == 0) {
           return
         }
-        const { data } = await getCustomerInfoList({
+        const { data } = await this.api.getCustomerInfoList({
           type: tab.name, //搜索条件 1订单记录 2入库信息 3退货记录 4付款记录 5对账单记录
           // id: this.drawerInof.id, //物料采购订单id
           id: this.form.id,

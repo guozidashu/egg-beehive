@@ -34,7 +34,6 @@
 </template>
 
 <script>
-  import { addSeasonSave } from '@/api/basic'
   export default {
     name: 'BrandEdit',
     data() {
@@ -70,7 +69,7 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await addSeasonSave(this.form)
+              const { code } = await this.api.addSeasonSave(this.form)
               if (code != 200) {
                 return
               }
@@ -82,7 +81,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await addSeasonSave(this.form)
+              const { code } = await this.api.addSeasonSave(this.form)
               if (code != 200) {
                 return
               }

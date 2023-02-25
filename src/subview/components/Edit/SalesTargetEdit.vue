@@ -184,7 +184,6 @@
 </template>
 
 <script>
-  import { editSaveSaleTarget, editDetailsSaleTarget } from '@/api/basic'
   export default {
     name: 'BandEdit',
     data() {
@@ -242,7 +241,7 @@
     created() {},
     methods: {
       async fetchData() {
-        const { data } = await editDetailsSaleTarget({
+        const { data } = await this.api.editDetailsSaleTarget({
           year: this.year,
         })
         if (data.length != 0) {
@@ -377,7 +376,7 @@
           ],
           total: this.form.money,
         }
-        const { code } = await editSaveSaleTarget(temp)
+        const { code } = await this.api.editSaveSaleTarget(temp)
         if (code != 200) {
           return
         }

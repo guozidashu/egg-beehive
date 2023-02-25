@@ -157,11 +157,6 @@
 <script>
   import Edit from '@/subview/components/Edit/EmployeesEdit'
   // import Drawer from '@/subview/components/Drawer/EmployeesDrawer'
-  import {
-    getEmployeeList,
-    getCommonAllList,
-    delEmployeeSync,
-  } from '@/api/basic'
   export default {
     name: 'Employees',
     components: { Edit },
@@ -215,7 +210,9 @@
     },
     methods: {
       async getConfigState() {
-        const { data } = await getCommonAllList({ type: 'role,department' })
+        const { data } = await this.api.getCommonAllList({
+          type: 'role,department',
+        })
         this.selectData = data
       },
       async handleEdit(row) {
@@ -231,7 +228,7 @@
       },
       async handleTb() {
         this.listLoading = true
-        const { code } = await delEmployeeSync()
+        const { code } = await this.api.delEmployeeSync()
         if (code != 200) {
           return
         }
@@ -269,7 +266,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getEmployeeList(this.formTemp)
+        const { data } = await this.api.getEmployeeList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

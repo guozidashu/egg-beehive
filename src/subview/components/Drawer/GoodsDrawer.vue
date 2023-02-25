@@ -752,19 +752,8 @@
   import { mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
   import VabUpload from '@/extra/VabUpload'
-
-  import {
-    getWarehouseList,
-    getGradeList,
-    getWarehousePositionList,
-    getGoodTotalDetails,
-    getGoodBasicsDetails,
-    getGoodOrderDetails,
-    editGoodSave,
-  } from '@/api/basic'
   import { mapGetters } from 'vuex'
   export default {
-    name: 'ComponentsDrawer',
     components: { VabUpload },
     props: {
       drawerInof: {
@@ -959,12 +948,16 @@
     },
     methods: {
       async getGoodsAllDetail() {
-        const { data } = await getGoodTotalDetails({ good_id: this.form.id })
+        const { data } = await this.api.getGoodTotalDetails({
+          good_id: this.form.id,
+        })
         this.goodsAllNum = data
       },
       async getGoodsDetail() {
         let temp = this.form.drawerType
-        const { data } = await getGoodBasicsDetails({ good_id: this.form.id })
+        const { data } = await this.api.getGoodBasicsDetails({
+          good_id: this.form.id,
+        })
         this.goodsDetails = JSON.parse(JSON.stringify(data))
         this.form = JSON.parse(JSON.stringify(data))
         this.form.category = data.category_id
@@ -979,11 +972,13 @@
         this.selectProvinceFun(data.warehouse_id)
       },
       async selectProvinceFun(e) {
-        const { data } = await getWarehousePositionList({ warehouse_id: e })
+        const { data } = await this.api.getWarehousePositionList({
+          warehouse_id: e,
+        })
         this.WarehousePositionList = data.list
       },
       async initSelect() {
-        const { data } = await getWarehouseList()
+        const { data } = await this.api.getWarehouseList()
         this.WarehouseList = data.list
       },
       async changeTypeBtn(e) {
@@ -1032,7 +1027,7 @@
         if (this.form.id == undefined) {
           // this.form.id = 0
           obj1.id = 0
-          const { code } = await editGoodSave(obj1)
+          const { code } = await this.api.editGoodSave(obj1)
           if (code == 200) {
             this.form.drawerType = e
             this.$baseMessage('新增成功', 'success', 'vab-hey-message-success')
@@ -1040,7 +1035,7 @@
             this.$emit('handle-close')
           }
         } else {
-          const { code } = await editGoodSave(obj1)
+          const { code } = await this.api.editGoodSave(obj1)
           if (code == 200) {
             this.form.drawerType = e
             this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
@@ -1072,7 +1067,7 @@
         if (tab.name == 0) {
           return
         }
-        const { data } = await getGoodOrderDetails({
+        const { data } = await this.api.getGoodOrderDetails({
           type: tab.name, //搜索条件 1订单记录 2入库信息 3退货记录 4付款记录 5对账单记录
           good_id: this.drawerInof.id, //物料采购订单id
           page: 1,
@@ -1096,7 +1091,7 @@
         } else {
           this.form.lock_price = 0
         }
-        const { data } = await getGradeList()
+        const { data } = await this.api.getGradeList()
         data.data.forEach((item) => {
           let temp = this.form.price * (item.discount / 10)
           let temp1 = this.form.price * (item.discount_single / 10)

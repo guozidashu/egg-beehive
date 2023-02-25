@@ -276,7 +276,6 @@
 </template>
 
 <script>
-  import { getConfig, editWeChatOfficialAccounts } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'PlatformWxgong',
@@ -334,7 +333,9 @@
     },
     methods: {
       async fetchData() {
-        const { data } = await getConfig({ key: 'wechat_official_accounts' })
+        const { data } = await this.api.getConfig({
+          key: 'wechat_official_accounts',
+        })
 
         if (data !== null) {
           let temp = JSON.parse(data)
@@ -357,7 +358,7 @@
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            const { code } = await editWeChatOfficialAccounts({
+            const { code } = await this.api.editWeChatOfficialAccounts({
               id: this.form.id, //应用id
               secret: this.form.secret, //应用secret
               name: this.form.name, //公众号名称

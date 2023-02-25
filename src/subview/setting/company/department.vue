@@ -146,11 +146,6 @@
 </template>
 
 <script>
-  import {
-    getEmployeePosition,
-    getEmployeeRoleList,
-    editEmployeeRoleSave,
-  } from '@/api/basic'
   export default {
     name: 'User',
     data() {
@@ -195,7 +190,7 @@
       async subit() {
         let temp = this.$refs.tree.getCheckedKeys()
         let str = temp.join(',')
-        const { code } = await editEmployeeRoleSave({
+        const { code } = await this.api.editEmployeeRoleSave({
           role: str,
           id: this.roleId,
         })
@@ -275,7 +270,7 @@
         this.form = this.$options.data().form
       },
       async fetchData() {
-        const { data } = await getEmployeePosition(this.form)
+        const { data } = await this.api.getEmployeePosition(this.form)
         data.data.forEach((item) => {
           item.cartSta = false
           item.btnIconStatus = false
@@ -283,7 +278,7 @@
         this.cartList = data.data
       },
       async getRoleList() {
-        const { data } = await getEmployeeRoleList(this.form)
+        const { data } = await this.api.getEmployeeRoleList(this.form)
         data.forEach((item) => {
           item.label = item.name
           item.children.forEach((item) => {

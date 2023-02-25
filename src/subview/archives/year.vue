@@ -100,10 +100,7 @@
 
 <script>
   import Edit from '@/subview/components/Edit/YearEdit'
-
-  import { getYearList, addYearSave, delYearDel } from '@/api/basic'
   export default {
-    name: 'ArchivesYear',
     components: { Edit },
     data() {
       return {
@@ -148,7 +145,7 @@
     },
     methods: {
       async turnOnOff(row) {
-        const { code } = await addYearSave(row)
+        const { code } = await this.api.addYearSave(row)
         if (code != 200) {
           return
         }
@@ -178,7 +175,7 @@
             '你确定要删除当前年份吗?</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
-              const { code } = await delYearDel({ id: row.id })
+              const { code } = await this.api.delYearDel({ id: row.id })
               if (code != 200) {
                 return
               }
@@ -205,7 +202,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getYearList(this.formTemp)
+        const { data } = await this.api.getYearList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
@@ -213,4 +210,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

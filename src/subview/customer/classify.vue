@@ -1,25 +1,5 @@
 <template>
   <div style="background-color: #f6f8f9">
-    <!-- <div
-      style="padding-top: 1px; margin-bottom: 20px; background-color: #ffffff"
-    >
-      <QYForm
-        :form="form"
-        :form-type="formType"
-        @changeSearch="handleQuery"
-        @resetForm="resetForm"
-      >
-        <template #Form>
-          <el-form-item label="分类名称" prop="region">
-            <el-input
-              v-model="form.name"
-              placeholder="请输入分类名称"
-              size="small"
-            />
-          </el-form-item>
-        </template>
-      </QYForm>
-    </div> -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -73,10 +53,7 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/ClassifyEdit'
-
-  import { getCustomer, delCustomer } from '@/api/basic'
   export default {
-    name: 'CustomerClassify',
     components: { Edit },
     data() {
       return {
@@ -124,7 +101,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delCustomer({ id: row.id })
+            const { code } = await this.api.delCustomer({ id: row.id })
             if (code != 200) {
               return
             }
@@ -143,7 +120,7 @@
         this.listLoading = true
         const {
           data: { data, total },
-        } = await getCustomer(this.form)
+        } = await this.api.getCustomer(this.form)
         this.list = data
         this.total = total
         this.listLoading = false
@@ -151,4 +128,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

@@ -51,7 +51,6 @@
 </template>
 
 <script>
-  import { editEmployeeSave, getCommonAllList } from '@/api/basic'
   export default {
     name: 'EmployeesEdit',
     data() {
@@ -93,7 +92,7 @@
         this.getTypeList()
       },
       async getTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'role,department',
         })
         this.selectList = data
@@ -110,7 +109,7 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await editEmployeeSave(this.form)
+              const { code } = await this.api.editEmployeeSave(this.form)
               if (code != 200) {
                 return
               }
@@ -122,7 +121,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await editEmployeeSave({
+              const { code } = await this.api.editEmployeeSave({
                 id: this.form.id,
                 department_id: this.form.department_id,
                 name: this.form.name,

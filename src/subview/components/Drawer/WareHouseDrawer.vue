@@ -91,13 +91,7 @@
 </template>
 
 <script>
-  import {
-    getDepotPositionSaveList,
-    addDepotPositionSave,
-    delDepotPositionSave,
-  } from '@/api/basic'
   export default {
-    name: 'ComponentsDrawer',
     props: {
       drawerId: {
         type: Number,
@@ -159,7 +153,7 @@
         }
       },
       async fetchData() {
-        const { data } = await getDepotPositionSaveList(this.form)
+        const { data } = await this.api.getDepotPositionSaveList(this.form)
         this.list = data.data
       },
       close() {
@@ -170,7 +164,9 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await addDepotPositionSave(this.formEdit)
+              const { code } = await this.api.addDepotPositionSave(
+                this.formEdit
+              )
               if (code != 200) {
                 return
               }
@@ -182,7 +178,9 @@
               this.close()
               this.fetchData()
             } else {
-              const { code } = await addDepotPositionSave(this.formEdit)
+              const { code } = await this.api.addDepotPositionSave(
+                this.formEdit
+              )
               if (code != 200) {
                 return
               }
@@ -203,7 +201,9 @@
             '你确定要删除当前库位吗?</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
-              const { code } = await delDepotPositionSave({ id: row.id })
+              const { code } = await this.api.delDepotPositionSave({
+                id: row.id,
+              })
               if (code != 200) {
                 return
               }

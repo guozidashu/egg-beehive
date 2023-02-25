@@ -52,7 +52,6 @@
 </template>
 
 <script>
-  import { getConfig, editQuickly } from '@/api/basic'
   export default {
     name: 'PlatformPinduoduoktt',
     data() {
@@ -84,7 +83,7 @@
     },
     methods: {
       async fetchData() {
-        const { data } = await getConfig({ key: 'quickly' })
+        const { data } = await this.api.getConfig({ key: 'quickly' })
         if (data !== null) {
           this.form = JSON.parse(data)
         }
@@ -92,7 +91,7 @@
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            const { code } = await editQuickly(this.form)
+            const { code } = await this.api.editQuickly(this.form)
             if (code === 200) {
               this.$message.success('保存成功')
             } else {

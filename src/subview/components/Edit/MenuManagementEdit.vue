@@ -91,7 +91,6 @@
 </template>
 
 <script>
-  import { editMenuSave, editButtonSave, delMenuDel } from '@/api/basic'
   export default {
     name: 'MenuManagementEdit',
     data() {
@@ -145,7 +144,9 @@
       },
       async deleteRole(index) {
         this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-          const { msg } = await delMenuDel({ id: this.form.guard[index].id })
+          const { msg } = await this.api.delMenuDel({
+            id: this.form.guard[index].id,
+          })
           this.$baseMessage(msg, 'success', 'vab-hey-message-success')
           this.form.guard.splice(index, 1)
           this.$emit('fetch-data')
@@ -163,7 +164,7 @@
         if (this.type == 1) {
           this.$refs['form'].validate(async (valid) => {
             if (valid) {
-              const { msg } = await editMenuSave(this.form)
+              const { msg } = await this.api.editMenuSave(this.form)
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
               this.close()
               this.$emit('fetch-data')
@@ -173,7 +174,7 @@
           this.form.guard.forEach((item) => {
             item.pid = this.form.id
           })
-          const { msg } = await editButtonSave(this.form.guard)
+          const { msg } = await this.api.editButtonSave(this.form.guard)
           this.$baseMessage(msg, 'success', 'vab-hey-message-success')
           this.close()
           this.$emit('fetch-data')

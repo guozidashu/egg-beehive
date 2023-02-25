@@ -74,15 +74,8 @@
 </template>
 
 <script>
-  import {
-    editBillSave,
-    getCommonAllList,
-    getDefaultCorporateAccount,
-    getFinanceCategory,
-  } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   export default {
-    name: 'LevelDeit',
     components: {
       VabUpload,
     },
@@ -124,14 +117,14 @@
         this.$refs['vabUpload'].handleShow()
       },
       async getTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'corporate_account',
         })
         this.selectList = data
         this.getDefault()
       },
       async getFinance() {
-        const { data } = await getFinanceCategory()
+        const { data } = await this.api.getFinanceCategory()
         data.forEach((item) => {
           item.value = item.type
           item.label = item.type_text
@@ -145,7 +138,7 @@
         this.options = data
       },
       async getDefault() {
-        const { data } = await getDefaultCorporateAccount()
+        const { data } = await this.api.getDefaultCorporateAccount()
         this.form.corporate_account_id = data.id
       },
       async showEdit(row) {
@@ -170,7 +163,7 @@
           if (valid) {
             this.form.category_id = this.form.category_id[1]
             if (this.title === '添加') {
-              const { code } = await editBillSave(this.form)
+              const { code } = await this.api.editBillSave(this.form)
               if (code != 200) {
                 return
               }
@@ -182,7 +175,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await editBillSave(this.form)
+              const { code } = await this.api.editBillSave(this.form)
               if (code != 200) {
                 return
               }

@@ -216,12 +216,6 @@
   </div>
 </template>
 <script>
-  import {
-    getBaseConfigDetail,
-    editBaseConfigSave,
-    getRegisterDealDetail,
-    editRegisterDealSave,
-  } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   import SmallProgram from '@/subview/components/Form/SmallProgram.vue'
   import PayProgram from '@/subview/components/Form/PayProgram.vue'
@@ -472,21 +466,21 @@
         this.$refs['vabUpload'].handleShow()
       },
       async fetchData() {
-        const { data } = await getBaseConfigDetail()
+        const { data } = await this.api.getBaseConfigDetail()
         this.form = JSON.parse(data)
         this.form.customer_service_type = Number(
           this.form.customer_service_type
         )
       },
       async fetchData1() {
-        const { data } = await getRegisterDealDetail()
+        const { data } = await this.api.getRegisterDealDetail()
         this.form1 = JSON.parse(data)
         this.form1.register_status = Number(this.form1.register_status)
       },
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            const { code } = await editBaseConfigSave(this.form)
+            const { code } = await this.api.editBaseConfigSave(this.form)
             if (code === 200) {
               this.$message.success('保存成功')
             } else {
@@ -500,7 +494,7 @@
       submitForm1(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            const { code } = await editRegisterDealSave(this.form1)
+            const { code } = await this.api.editRegisterDealSave(this.form1)
             if (code === 200) {
               this.$message.success('保存成功')
             } else {

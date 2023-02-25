@@ -140,7 +140,6 @@
   import VabChart from '@/extra/VabChart'
 
   import datajosn from '@/assets/assets_josn/datajosn'
-  import { getOrderCountList, getOrderCountDetail } from '@/api/basic'
   export default {
     name: 'GoodsStatistical',
     components: { VabChart },
@@ -245,7 +244,7 @@
     methods: {
       async tableData() {
         this.listLoading = true
-        const { data } = await getOrderCountDetail({
+        const { data } = await this.api.getOrderCountDetail({
           time: this.goodsForm1.date,
           pageSize: 20,
         })
@@ -254,7 +253,7 @@
         this.listLoading = false
       },
       async fetchData() {
-        const { data } = await getOrderCountList({
+        const { data } = await this.api.getOrderCountList({
           time: this.goodsForm.date,
         })
         this.goodsStaList.forEach((item) => {

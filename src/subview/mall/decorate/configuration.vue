@@ -253,7 +253,6 @@
 </template>
 
 <script>
-  import { getAdminList } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'DecorateTheme',
@@ -354,7 +353,7 @@
 
       async fetchData() {
         this.listLoading = true
-        const { data } = await getAdminList(this.form)
+        const { data } = await this.api.getAdminList(this.form)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

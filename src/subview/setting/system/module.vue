@@ -337,19 +337,6 @@
 </template>
 
 <script>
-  import {
-    getConfig,
-    getErpInfo,
-    editErpConfig,
-    getAgentErpInfo,
-    editAgentErpConfig,
-    getDesignConfigInfo,
-    editDesignConfig,
-    getWeComeConfigInfo,
-    editWeComeConfig,
-    editProduceConfig,
-    editScrmConfig,
-  } from '@/api/basic'
   export default {
     name: 'SystemModule',
     data() {
@@ -679,34 +666,34 @@
       },
       async fetchData() {
         if (this.activeName == 'ERP配置') {
-          const { data } = await getErpInfo()
+          const { data } = await this.api.getErpInfo()
           if (data !== null) {
             this.form1 = data
             this.showIf = this.form1.inventory_type
           }
         } else if (this.activeName == '代开发应用配置') {
-          const { data } = await getAgentErpInfo()
+          const { data } = await this.api.getAgentErpInfo()
           if (data !== null) {
             this.form2 = data
           }
         } else if (this.activeName == '研发配置') {
-          const { data } = await getDesignConfigInfo()
+          const { data } = await this.api.getDesignConfigInfo()
           if (data !== null) {
             this.form3 = data
           }
         } else if (this.activeName == '企业微信配置') {
-          const { data } = await getWeComeConfigInfo()
+          const { data } = await this.api.getWeComeConfigInfo()
           if (data !== null) {
             this.form4 = data
           }
         } else if (this.activeName == '生产配置') {
-          const { data } = await getConfig({ key: 'produce' })
+          const { data } = await this.api.getConfig({ key: 'produce' })
           if (data !== null) {
             let temp = JSON.parse(data)
             this.form5 = temp
           }
         } else if (this.activeName == 'SCRM配置') {
-          const { data } = await getConfig({ key: 'scrm' })
+          const { data } = await this.api.getConfig({ key: 'scrm' })
           if (data !== null) {
             let temp = JSON.parse(data)
             this.form6 = temp
@@ -718,42 +705,42 @@
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
             if (formName == 'form1') {
-              const { code } = await editErpConfig(this.form1)
+              const { code } = await this.api.editErpConfig(this.form1)
               if (code === 200) {
                 this.$message.success('保存成功')
               } else {
                 this.$message.error('保存失败')
               }
             } else if (formName == 'form2') {
-              const { code } = await editAgentErpConfig(this.form2)
+              const { code } = await this.api.editAgentErpConfig(this.form2)
               if (code === 200) {
                 this.$message.success('保存成功')
               } else {
                 this.$message.error('保存失败')
               }
             } else if (formName == 'form3') {
-              const { code } = await editDesignConfig(this.form3)
+              const { code } = await this.api.editDesignConfig(this.form3)
               if (code === 200) {
                 this.$message.success('保存成功')
               } else {
                 this.$message.error('保存失败')
               }
             } else if (formName == 'form4') {
-              const { code } = await editWeComeConfig(this.form4)
+              const { code } = await this.api.editWeComeConfig(this.form4)
               if (code === 200) {
                 this.$message.success('保存成功')
               } else {
                 this.$message.error('保存失败')
               }
             } else if (formName == 'form5') {
-              const { code } = await editProduceConfig(this.form5)
+              const { code } = await this.api.editProduceConfig(this.form5)
               if (code === 200) {
                 this.$message.success('保存成功')
               } else {
                 this.$message.error('保存失败')
               }
             } else if (formName == 'form6') {
-              const { code } = await editScrmConfig(this.form6)
+              const { code } = await this.api.editScrmConfig(this.form6)
               if (code === 200) {
                 this.$message.success('保存成功')
               } else {

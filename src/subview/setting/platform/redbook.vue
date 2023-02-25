@@ -52,7 +52,6 @@
 </template>
 
 <script>
-  import { getConfig, editLittleRedBook } from '@/api/basic'
   export default {
     name: 'PlatformRedbook',
     data() {
@@ -84,7 +83,7 @@
     },
     methods: {
       async fetchData() {
-        const { data } = await getConfig({ key: 'little_red_book' })
+        const { data } = await this.api.getConfig({ key: 'little_red_book' })
         if (data !== null) {
           this.form = JSON.parse(data)
         }
@@ -92,7 +91,7 @@
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            const { code } = await editLittleRedBook(this.form)
+            const { code } = await this.api.editLittleRedBook(this.form)
             if (code === 200) {
               this.$message.success('保存成功')
             } else {

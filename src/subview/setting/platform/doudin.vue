@@ -52,7 +52,6 @@
 </template>
 
 <script>
-  import { getConfig, editTiktokShop } from '@/api/basic'
   export default {
     name: 'PlatformDoudin',
     data() {
@@ -82,7 +81,7 @@
     },
     methods: {
       async fetchData() {
-        const { data } = await getConfig({ key: 'tiktok_shop' })
+        const { data } = await this.api.getConfig({ key: 'tiktok_shop' })
         if (data !== null) {
           this.form = JSON.parse(data)
         }
@@ -90,7 +89,7 @@
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            const { code } = await editTiktokShop(this.form)
+            const { code } = await this.api.editTiktokShop(this.form)
             if (code === 200) {
               this.$message.success('保存成功')
             } else {

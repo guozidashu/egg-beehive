@@ -468,7 +468,9 @@
           this.$message.error('请输入商品编码')
           return
         }
-        const { data } = await getPrintSn({ keywords: this.form.keywords })
+        const { data } = await this.api.getPrintSn({
+          keywords: this.form.keywords,
+        })
         this.CommoditySn = data
       },
       async handlePrintList() {
@@ -477,12 +479,12 @@
         this.goodsInof = null
         this.sizeList = []
         this.colorList = []
-        const { data } = await getPrintList({ sn: this.form.sn })
+        const { data } = await this.api.getPrintList({ sn: this.form.sn })
         this.colorList = data.color
         this.sizeList = data.size
       },
       async handleGoodBarcode() {
-        const { data } = await getGoodBarcode({
+        const { data } = await this.api.getGoodBarcode({
           sn: this.form.sn, //商品编码
           colorid: this.form.colorid, //颜色id
           sizeid: this.form.sizeid, //尺码id
@@ -495,7 +497,7 @@
           return
         }
         this.listLoading = true
-        const { data } = await getStockPrint(this.form1)
+        const { data } = await this.api.getStockPrint(this.form1)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

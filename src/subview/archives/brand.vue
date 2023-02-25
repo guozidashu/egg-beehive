@@ -90,10 +90,7 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/BrandEdit'
-
-  import { getBrandList, delBrandDel, addBrandSave } from '@/api/basic'
   export default {
-    name: 'ArchivesBrand',
     components: { Edit },
     data() {
       return {
@@ -139,7 +136,7 @@
         this.form = this.$options.data().form
       },
       async turnOnOff(row) {
-        const { code } = await addBrandSave(row)
+        const { code } = await this.api.addBrandSave(row)
         if (code != 200) {
           return
         }
@@ -152,7 +149,7 @@
             '你确定要删除当前品牌吗?</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
-              const { code } = await delBrandDel({ id: row.id })
+              const { code } = await this.api.delBrandDel({ id: row.id })
               if (code != 200) {
                 return
               }
@@ -174,7 +171,7 @@
       },
       async fetchData() {
         this.listLoading = true
-        const { data } = await getBrandList(this.form)
+        const { data } = await this.api.getBrandList(this.form)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
@@ -182,4 +179,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

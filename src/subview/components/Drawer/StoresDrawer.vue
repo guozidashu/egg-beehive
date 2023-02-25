@@ -165,10 +165,7 @@
 
 <script>
   import VabUpload from '@/extra/VabUpload'
-
-  import { editStoreSave } from '@/api/basic'
   export default {
-    name: 'EmployeesDrawer',
     components: { VabUpload },
     props: {
       form: {
@@ -269,14 +266,14 @@
               delete this.formDrawer.province
               delete this.formDrawer.city
               delete this.formDrawer.district
-              const { code } = await editStoreSave(this.formDrawer)
+              const { code } = await this.api.editStoreSave(this.formDrawer)
               if (code === 200) {
                 this.$message.success('新增成功')
               } else {
                 this.$message.error('新增失败')
               }
             } else {
-              const { code } = await editStoreSave(this.formDrawer)
+              const { code } = await this.api.editStoreSave(this.formDrawer)
               if (code === 200) {
                 this.$message.success('编辑成功')
               } else {

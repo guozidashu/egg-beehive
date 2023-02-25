@@ -121,7 +121,6 @@
 </template>
 
 <script>
-  import { addCorpTag, getTagGroupList, editCorpTag } from '@/api/basic'
   export default {
     name: 'TagsEdit',
     data() {
@@ -187,7 +186,7 @@
         this.getSelectList()
       },
       async getSelectList() {
-        const { data } = await getTagGroupList()
+        const { data } = await this.api.getTagGroupList()
         this.selectList = data
       },
       close() {
@@ -215,7 +214,7 @@
             //   return
             // }
             if (this.title === '添加分类' || this.title === '添加标签') {
-              const { code } = await addCorpTag(this.form)
+              const { code } = await this.api.addCorpTag(this.form)
               if (code != 200) {
                 return
               }
@@ -227,7 +226,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await editCorpTag({
+              const { code } = await this.api.editCorpTag({
                 id: this.form.id,
                 name: this.form.name,
                 order: this.form.order,

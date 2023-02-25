@@ -83,7 +83,6 @@
 
               <el-button
                 v-has-permi="['btn:CustomerTags:synchronization']"
-                :loading="addCopySta"
                 type="primary"
                 @click="addCopy()"
               >
@@ -146,18 +145,10 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/TagsEdit'
-  import {
-    getTagGroupList,
-    getTagList,
-    delCorpTag,
-    addCorpTagSync,
-  } from '@/api/basic'
   export default {
-    name: 'CustomerTags',
     components: { Edit },
     data() {
       return {
-        addCopySta: false,
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -211,22 +202,18 @@
           }
         }
       },
-      handleQuery() {
-        this.form.page = 1
-      },
+      // 同步企业微信
       addCopy() {
         this.$baseConfirm('你确定要同步吗？', null, async () => {
-          this.addCopySta = true
           this.$baseMessage(
             '同步中请勿刷新或关闭页面',
             'error',
             'vab-hey-message-error'
           )
-          const { code } = await addCorpTagSync()
+          const { code } = await this.api.addCorpTagSync()
           if (code != 200) {
             return
           }
-          this.addCopySta = false
           this.$baseMessage('同步成功', 'success', 'vab-hey-message-success')
           this.fetchData()
         })
@@ -234,7 +221,7 @@
       handleDelete(row, type) {
         if (type === 1) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delCorpTag({ tag_id: [row.tag_id] })
+            const { code } = await this.api.delCorpTag({ tag_id: [row.tag_id] })
             if (code != 200) {
               return
             }
@@ -243,7 +230,9 @@
           })
         } else {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { code } = await delCorpTag({ group_id: [row.group_id] })
+            const { code } = await this.api.delCorpTag({
+              group_id: [row.group_id],
+            })
             if (code != 200) {
               return
             }
@@ -261,7 +250,7 @@
         this.form.pageSize = data
       },
       async fetchData() {
-        const { data } = await getTagGroupList()
+        const { data } = await this.api.getTagGroupList()
         data.forEach((item, index) => {
           item.btnIconStatus = false
           item.id = index + 1
@@ -278,7 +267,7 @@
         }
         const {
           data: { data, total },
-        } = await getTagList(this.formTemp)
+        } = await this.api.getTagList(this.formTemp)
         this.list = data
         this.total = total
         this.listLoading = false
@@ -305,4 +294,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

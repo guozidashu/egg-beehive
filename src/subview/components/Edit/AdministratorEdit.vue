@@ -47,9 +47,7 @@
 </template>
 
 <script>
-  import { addAdminSave, getRoleList } from '@/api/basic'
   export default {
-    name: 'BrandEdit',
     data() {
       return {
         typeData: [],
@@ -100,7 +98,7 @@
           if (valid) {
             if (this.title === '添加') {
               this.form.id = 0
-              const { code } = await addAdminSave(this.form)
+              const { code } = await this.api.addAdminSave(this.form)
               if (code != 200) {
                 return
               }
@@ -112,7 +110,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await addAdminSave(this.form)
+              const { code } = await this.api.addAdminSave(this.form)
               if (code != 200) {
                 return
               }

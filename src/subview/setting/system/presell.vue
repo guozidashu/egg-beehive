@@ -11,7 +11,6 @@
   </div>
 </template>
 <script>
-  import { setPresellCancelMins } from '@/api/basic'
   export default {
     data() {
       return {
@@ -33,7 +32,7 @@
       onSubmit() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
-            const { code } = await setPresellCancelMins(this.form)
+            const { code } = await this.api.setPresellCancelMins(this.form)
             if (code == 200) {
               this.$message.success('保存成功')
             } else {

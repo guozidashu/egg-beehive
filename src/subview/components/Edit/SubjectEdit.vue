@@ -45,7 +45,6 @@
 </template>
 
 <script>
-  import { editAccountSave, getAccountList } from '@/api/basic'
   export default {
     name: 'TagsEdit',
     data() {
@@ -92,7 +91,7 @@
         this.getSelectList()
       },
       async getSelectList() {
-        const { data } = await getAccountList({
+        const { data } = await this.api.getAccountList({
           page: 1,
           pageSize: 10,
           id: 0, // 父级id （取父级时传0）
@@ -113,7 +112,7 @@
               if (this.type == 2) {
                 this.form.pid = 0
               }
-              const { code } = await editAccountSave(this.form)
+              const { code } = await this.api.editAccountSave(this.form)
               if (code != 200) {
                 return
               }
@@ -125,7 +124,7 @@
               this.$emit('fetch-data', 1)
               this.close()
             } else {
-              const { code } = await editAccountSave(this.form)
+              const { code } = await this.api.editAccountSave(this.form)
               if (code != 200) {
                 return
               }

@@ -24,7 +24,6 @@
 </template>
 
 <script>
-  import { editShopCateGoryEdit } from '@/api/basic'
   export default {
     name: 'BandEdit',
     data() {
@@ -54,7 +53,7 @@
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
-            const { code } = await editShopCateGoryEdit(this.form)
+            const { code } = await this.api.editShopCateGoryEdit(this.form)
             if (code != 200) {
               return
             }

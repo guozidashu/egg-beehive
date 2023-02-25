@@ -782,7 +782,6 @@
   </div>
 </template>
 <script>
-  import { getShopConfigInfo, editShopConfig } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   import VabQuill from '@/extra/VabQuill'
   export default {
@@ -1055,7 +1054,7 @@
         this.$refs['vabUpload'].handleShow()
       },
       async fetchData() {
-        const { data } = await getShopConfigInfo()
+        const { data } = await this.api.getShopConfigInfo()
         if (data !== null) {
           this.form = data
           // 数据转化
@@ -1452,7 +1451,7 @@
             }
             this.form.login_mast = arr
             arr = []
-            const { code } = await editShopConfig(this.form)
+            const { code } = await this.api.editShopConfig(this.form)
             if (code === 200) {
               this.$message.success('保存成功')
             } else {

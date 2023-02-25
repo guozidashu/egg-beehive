@@ -103,10 +103,6 @@
 </template>
 
 <script>
-  import {
-    getShopConfigWeChatPayDetail,
-    editShopConfigWeChatPay,
-  } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'DataView',
@@ -166,7 +162,7 @@
     },
     methods: {
       async fetchData() {
-        const { data } = await getShopConfigWeChatPayDetail()
+        const { data } = await this.api.getShopConfigWeChatPayDetail()
 
         if (data !== null) {
           let temp = JSON.parse(data)
@@ -182,7 +178,7 @@
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            const { code } = await editShopConfigWeChatPay({
+            const { code } = await this.api.editShopConfigWeChatPay({
               wxpay_apiclient_cert: this.form1.wxpay_apiclient_cert, //PEM证书
               wxpay_apiclient_key: this.form1.wxpay_apiclient_key, //证书秘钥
               wxpay: this.form1.wxpay, //微支付状态

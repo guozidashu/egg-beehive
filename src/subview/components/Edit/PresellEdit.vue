@@ -88,7 +88,6 @@
 </template>
 
 <script>
-  import { getCommonAllList, editPresellAdd } from '@/api/basic'
   export default {
     name: 'BrandEdit',
     data() {
@@ -253,7 +252,7 @@
         return date.getTime() < new Date(this.form.time[1]).getTime()
       },
       async selectData() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'customer_grade',
         })
         this.selectDataList = data
@@ -292,7 +291,7 @@
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
-            const { code } = await editPresellAdd({
+            const { code } = await this.api.editPresellAdd({
               goods_id: this.form.goods_id, //关联商品表id
               is_edit: this.form.is_edit, //是否是修改预售 1 是 0或者不传 新增预售
               price: this.form.price, //预售价格

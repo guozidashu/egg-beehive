@@ -105,7 +105,6 @@
 
 <script>
   import Drawer from '@/subview/components/Drawer/DistributionDrawer'
-  // import { getStaffList } from '@/api/basic'
   export default {
     name: 'Distribution',
     components: { Drawer },
@@ -193,7 +192,7 @@
         // this.listLoading = true
         // const {
         //   data: { list, total },
-        // } = await getStaffList(this.form)
+        // } = await this.api.getStaffList(this.form)
         // this.list = list
         // this.total = total
         // this.listLoading = false

@@ -315,36 +315,35 @@
 </template>
 
 <script>
-  import {
-    getCommonAllList,
-    getTemplateMenuDetail,
-    getGoodsGroupList,
-    getCategoryMainList,
-    getCategorySonList,
-    getArticleList,
-    getGoodList,
-    getTemplateList,
-    getConfig,
-  } from '@/api/basic'
   export default {
-    name: 'QYSelectLink',
     data() {
       return {
+        // tab 索引
+        tabindex: '0',
+        // tab 数据
+        tabsList: [],
+        // 自定义链接
         link_curl: false,
+        // 自定义电话
         link_tel: false,
+        // 自定义电话链接表单
         formInline: {
           tel: '',
           curl: '',
         },
-        classifyInof: '',
+        //页面展示区分 1：选择链接 2：选择商品 商品分组
+        type: 1,
+        // 选择商品是 选中回传的数据
         selectList: [],
-        type: 1, //页面展示区分
+        // 父组件 选择链接是，选择链接的对象的索引
         index: 0,
-        tabindex: '0',
+        // 选中tab 后 页面展示的数据
         tabsItem: null,
-        tabsList: [],
+        // 页面展示 标题1：选择链接 2：选择商品 商品分组
         title: '选择链接',
+        // 页面是否展示
         dialogFormVisible: false,
+        // 列表 和表单相关数据
         list: [],
         layout: 'total, sizes, prev, pager, next, jumper',
         listLoading: false,
@@ -359,6 +358,7 @@
     },
 
     watch: {
+      // 对 tab 监听 给 this.tabsItem 赋值
       tabindex: {
         async handler(val) {
           let temp = {}
@@ -368,14 +368,14 @@
           if (val == 1 || val == 12) {
             this.tabsItem = this.tabsList.filter((item) => item.id == val)[0]
           } else if (val == 7) {
-            const { data } = await getGoodsGroupList()
+            const { data } = await this.api.getGoodsGroupList()
             data.forEach((item) => {
               item.url = temp.url
               item.pname = temp.name
             })
             this.tabsItem = data
           } else if (val == 21) {
-            const { data } = await getCommonAllList({
+            const { data } = await this.api.getCommonAllList({
               type: 'brand',
             })
             data.brand.forEach((item) => {
@@ -384,7 +384,7 @@
             })
             this.tabsItem = data.brand
           } else if (val == 22) {
-            const { data } = await getCommonAllList({
+            const { data } = await this.api.getCommonAllList({
               type: 'year',
             })
             data.year.forEach((item) => {
@@ -393,7 +393,7 @@
             })
             this.tabsItem = data.year
           } else if (val == 23) {
-            const { data } = await getCommonAllList({
+            const { data } = await this.api.getCommonAllList({
               type: 'season',
             })
             data.season.forEach((item) => {
@@ -402,7 +402,7 @@
             })
             this.tabsItem = data.season
           } else if (val == 8) {
-            const { data } = await getCategoryMainList()
+            const { data } = await this.api.getCategoryMainList()
             data.forEach((item) => {
               item.checked = false
               item.url = temp.url
@@ -428,8 +428,8 @@
         immediate: true,
       },
     },
-    created() {},
     methods: {
+      // 功能 - 功能卡片选择 自定义链接 ，打电话
       changetype(type) {
         if (type == 1) {
           this.link_tel = !this.link_tel
@@ -441,7 +441,9 @@
           this.link_tel = false
         }
       },
+      // 商品分类 父级关闭
       delGoodsClassifyItem(item1) {
+        console.log(11, item1)
         this.tabsItem.forEach((item) => {
           if (item.id == item1.id) {
             item.checked = false
@@ -449,10 +451,11 @@
           }
         })
       },
+      // 商品分类 父级展开
       async getGoodsClassifyItem(item) {
         item.checked = !item.checked
         if (item.checked) {
-          const { data } = await getCategorySonList({ id: item.id })
+          const { data } = await this.api.getCategorySonList({ id: item.id })
           data.data.forEach((item1) => {
             item1.url = item.url
             item1.pname = item.name
@@ -465,22 +468,11 @@
           this.$forceUpdate()
         }
       },
+      // 全部类型提交回传 type 1商品组选择商品 ，2 自定义链接 打电话 ，其他值 选择链接
       Select(item) {
         if (item == 1) {
           this.close()
-          let arr = []
-          this.selectList.forEach((item) => {
-            let obj = item
-            obj.selectName = item.pname + '>' + item.id
-            obj.selectTitle = item.shoptitle
-            obj.selectUrl = item.url + item.id
-            obj.id = item.id
-            obj.img = item.img
-            obj.type = item.type
-            arr.push(obj)
-            obj = null
-          })
-          this.$emit('SelectLink', this.selectList, this.classifyInof)
+          this.$emit('SelectLink', this.selectList)
         } else if (item == 2) {
           let temp = {}
           if (this.formInline.tel != '') {
@@ -541,25 +533,25 @@
           this.$emit('SelectLink', item)
         }
       },
+      // 切换 tab
       async handleClick(tab) {
         this.tabsItem = null
         this.tabindex = tab.name
       },
+      // 选择弹窗打卡 index 父级索引，ids tab数组，type页面展示区分 1：选择链接 2：选择商品 商品分组
       async showEdit(index, ids, type) {
-        this.classifyInof = null
         this.type = null
         this.index = null
         this.tabsList = null
         this.tabsItem = null
         this.tabindex = null
-        const { data } = await getTemplateMenuDetail({ pid: ids })
+        const { data } = await this.api.getTemplateMenuDetail({ pid: ids })
         data.forEach((item) => {
           item.id = item.id.toString()
         })
         this.tabsList = data
         this.tabsItem = data[0]
         this.tabindex = data[0].id
-        this.classifyInof = data[0]
         this.type = type
         this.index = index
         this.dialogFormVisible = true
@@ -584,13 +576,16 @@
         this.form.pageSize = data
         this.fetchData()
       },
+      // 选择商品 时 表格选中数据
       handleSelectionChange(val) {
         this.selectList = val
       },
+      // 商品详情表格 获取时 过滤聚水潭商品
       async getConfigState() {
-        const { data } = await getConfig({ key: 'jst_api_open' })
+        const { data } = await this.api.getConfig({ key: 'jst_api_open' })
         return data
       },
+      // 表格刷新
       async fetchData() {
         this.listLoading = true
         let temp = {}
@@ -598,7 +593,7 @@
           temp = this.tabsList.filter((item) => item.id == this.tabindex)[0]
         }
         if (this.tabindex == 9) {
-          const { data } = await getArticleList(this.form)
+          const { data } = await this.api.getArticleList(this.form)
           data.data.forEach((item) => {
             item.url = temp.url
             item.pname = temp.name
@@ -611,7 +606,7 @@
             this.form.is_shop = 1
             this.form.list_type = 7
           }
-          const { data } = await getGoodList(this.form)
+          const { data } = await this.api.getGoodList(this.form)
           data.data.forEach((item) => {
             item.url = temp.url
             item.pname = temp.name
@@ -619,7 +614,7 @@
           this.list = data.data
           this.total = data.total
         } else if (this.tabindex == 11) {
-          const { data } = await getTemplateList(this.form)
+          const { data } = await this.api.getTemplateList(this.form)
           data.data.forEach((item) => {
             item.url = temp.url
             item.pname = temp.name

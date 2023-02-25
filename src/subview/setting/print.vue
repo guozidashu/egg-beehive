@@ -407,7 +407,7 @@
         // this.listLoading = true
         // const {
         //   data: { list, total },
-        // } = await getWaveList(this.form)
+        // } = await this.api.getWaveList(this.form)
         // this.list = list
         // this.total = total
         // this.listLoading = false

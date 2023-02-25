@@ -174,12 +174,6 @@
 </template>
 
 <script>
-  import {
-    getTemplateList,
-    delTemplateDel,
-    addTemplateSave,
-    getCommonAllList,
-  } from '@/api/basic'
   export default {
     name: 'DecorateTheme',
     data() {
@@ -246,7 +240,7 @@
           })
           return
         } else {
-          const { code } = await addTemplateSave(this.form1)
+          const { code } = await this.api.addTemplateSave(this.form1)
           if (code == 200) {
             this.$message({
               type: 'success',
@@ -262,7 +256,7 @@
         this.form.class_id = null
       },
       async getTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'template_class',
         })
         this.menuList = data.template_class
@@ -316,7 +310,7 @@
           .then(() => {
             let temp = item
             temp.is_default = 1
-            addTemplateSave(temp).then(() => {
+            this.api.addTemplateSave(temp).then(() => {
               this.$message({
                 type: 'success',
                 message: '设置成功!',
@@ -338,7 +332,7 @@
           type: 'warning',
         })
           .then(() => {
-            delTemplateDel({ id: item.id }).then(() => {
+            this.api.delTemplateDel({ id: item.id }).then(() => {
               this.$message({
                 type: 'success',
                 message: '删除成功!',
@@ -368,7 +362,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getTemplateList(this.formTemp)
+        const { data } = await this.api.getTemplateList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

@@ -50,24 +50,6 @@
           <el-table-column type="selection" width="50" />
           <el-table-column label="ID" prop="id" />
           <el-table-column label="工艺名称" prop="name" />
-          <!-- <el-table-column label="状态" prop="status" width="150">
-            <template #default="{ row }">
-              <el-switch
-                v-model="row.status"
-                active-color="#41B584"
-                active-text="开启"
-                :active-value="1"
-                class="switch"
-                inactive-color="#D2D2D2"
-                inactive-text="关闭"
-                :inactive-value="0"
-                style="margin: 0 10px"
-                @change="turnOnOff(row)"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column label="排序" prop="sort" width="80" />
-          <el-table-column label="创建时间" prop="create_time" /> -->
           <el-table-column
             align="center"
             label="操作"
@@ -75,13 +57,6 @@
             width="85"
           >
             <template #default="{ row }">
-              <!-- <el-button
-                v-has-permi="['btn:ArchivesBrand:edit']"
-                type="text"
-                @click="handleEdit(row)"
-              >
-                编辑
-              </el-button> -->
               <el-button
                 v-has-permi="['btn:ArchivesBrand:del']"
                 type="text"
@@ -99,14 +74,7 @@
 </template>
 <script>
   import Edit from '@/subview/components/Edit/ProcessEdit'
-
-  import {
-    getCraftTypeList,
-    delCraftTypeDel,
-    editCraftTypeSave,
-  } from '@/api/basic'
   export default {
-    name: 'ArchivesBrand',
     components: { Edit },
     data() {
       return {
@@ -152,7 +120,7 @@
         this.form = this.$options.data().form
       },
       async turnOnOff(row) {
-        const { code } = await editCraftTypeSave(row)
+        const { code } = await this.api.editCraftTypeSave(row)
         if (code != 200) {
           return
         }
@@ -165,7 +133,7 @@
             '你确定要删除当前工艺吗?</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
-              const { code } = await delCraftTypeDel({ id: row.id })
+              const { code } = await this.api.delCraftTypeDel({ id: row.id })
               if (code != 200) {
                 return
               }
@@ -187,7 +155,7 @@
       },
       async fetchData() {
         this.listLoading = true
-        const { data } = await getCraftTypeList(this.form)
+        const { data } = await this.api.getCraftTypeList(this.form)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
@@ -195,4 +163,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

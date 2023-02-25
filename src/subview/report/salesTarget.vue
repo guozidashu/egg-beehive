@@ -240,15 +240,6 @@
   import TextTags from '@/subview/components/Text/SalesTargeTextTagst'
   import PaymentCollection from '@/subview/components/Chart/PaymentCollection'
   import VabChart from '@/extra/VabChart'
-  import {
-    getlineChartSaleTarget,
-    getYearList,
-    getInformationHeadData,
-    getInformationCustomerSaleRank,
-    getInformationCustomerCollectionRank,
-    getInformationCollectionRatio,
-    getCompleteSaleTarget,
-  } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'Index',
@@ -370,7 +361,7 @@
       },
       async getSaleTarget() {
         this.listLoading = true
-        const { data } = await getCompleteSaleTarget({
+        const { data } = await this.api.getCompleteSaleTarget({
           year: this.year,
         })
         this.sale_data = data
@@ -380,7 +371,7 @@
       },
       async getCollectionRatio() {
         this.listLoading = true
-        const { data } = await getInformationCollectionRatio({
+        const { data } = await this.api.getInformationCollectionRatio({
           year: this.year,
         })
         this.chartData.data[0].value = data.collection
@@ -389,7 +380,7 @@
 
       async getCustomerSaleRank() {
         this.listLoading = true
-        const { data } = await getInformationCustomerSaleRank({
+        const { data } = await this.api.getInformationCustomerSaleRank({
           year: this.year,
         })
         this.goodsList = data
@@ -397,14 +388,14 @@
       },
       async getCustomerCollectionRank() {
         this.listLoading1 = true
-        const { data } = await getInformationCustomerCollectionRank({
+        const { data } = await this.api.getInformationCustomerCollectionRank({
           year: this.year,
         })
         this.goodsList1 = data
         this.listLoading1 = false
       },
       async getHeadDatar() {
-        const { data } = await getInformationHeadData({
+        const { data } = await this.api.getInformationHeadData({
           year: this.year,
         })
         this.textTagList[0].allNum = data[0].sale_total
@@ -427,11 +418,11 @@
           data[3].yesterday_month_collection_total
       },
       async getYear() {
-        const { data } = await getYearList(this.form)
+        const { data } = await this.api.getYearList(this.form)
         this.yearList = data.data
       },
       async getHomeReport() {
-        const { data } = await getlineChartSaleTarget({
+        const { data } = await this.api.getlineChartSaleTarget({
           year: this.year,
         })
         let arr = []

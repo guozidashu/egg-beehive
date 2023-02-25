@@ -61,13 +61,7 @@
 </template>
 
 <script>
-  import {
-    editCategorySave,
-    getCategoryList,
-    getFinanceAccountList,
-  } from '@/api/basic'
   export default {
-    name: 'TagsEdit',
     data() {
       return {
         options: [],
@@ -120,7 +114,7 @@
         this.getTypeList()
       },
       async getSelectList() {
-        const { data } = await getCategoryList({
+        const { data } = await this.api.getCategoryList({
           page: 1,
           pageSize: 10,
           id: 0, // 父级id （取父级时传0）-1 = 所有子分类
@@ -129,7 +123,7 @@
         this.selectList = data.data
       },
       async getTypeList() {
-        const { data } = await getFinanceAccountList()
+        const { data } = await this.api.getFinanceAccountList()
         data.forEach((item) => {
           item.value = item.type
           item.label = item.type_text
@@ -156,7 +150,7 @@
               if (this.type == 2) {
                 this.form.pid = 0
               }
-              const { code } = await editCategorySave(this.form)
+              const { code } = await this.api.editCategorySave(this.form)
               if (code != 200) {
                 return
               }
@@ -168,7 +162,7 @@
               this.$emit('fetch-data', 1)
               this.close()
             } else {
-              const { code } = await editCategorySave(this.form)
+              const { code } = await this.api.editCategorySave(this.form)
               if (code != 200) {
                 return
               }

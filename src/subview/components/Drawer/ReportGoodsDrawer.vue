@@ -104,10 +104,8 @@
 </template>
 
 <script>
-  import { getGoodsDetailAnalysis } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    name: 'ComponentsDrawer',
     mixins: [datajosn],
     props: {
       drawerInof: {
@@ -185,7 +183,7 @@
     methods: {
       async fetchData() {
         this.listLoading = true
-        const { data } = await getGoodsDetailAnalysis(this.formList)
+        const { data } = await this.api.getGoodsDetailAnalysis(this.formList)
         this.cardList.forEach((item) => {
           for (let i in data.list) {
             if (item.name == i) {

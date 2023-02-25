@@ -145,7 +145,6 @@
 <script>
   import { mapGetters } from 'vuex'
   import Drawer from '@/subview/components/Drawer/UserDrawer'
-  import { getRoleList, addRoleGroupSave } from '@/api/basic'
   export default {
     name: 'User',
     components: { Drawer },
@@ -215,7 +214,7 @@
           if (valid) {
             if (this.roleType == 1) {
               this.editform.id = 0
-              addRoleGroupSave(this.editform).then((res) => {
+              this.api.addRoleGroupSave(this.editform).then((res) => {
                 if (res.code == 200) {
                   this.$baseMessage(
                     '保存成功',
@@ -227,7 +226,7 @@
                 }
               })
             } else {
-              addRoleGroupSave(this.editform).then((res) => {
+              this.api.addRoleGroupSave(this.editform).then((res) => {
                 if (res.code == 200) {
                   this.$baseMessage(
                     '保存成功',
@@ -292,7 +291,7 @@
       },
 
       async fetchData() {
-        const { data } = await getRoleList(this.form)
+        const { data } = await this.api.getRoleList(this.form)
         data.forEach((item) => {
           item.cartSta = false
           item.btnIconStatus = false

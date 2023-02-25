@@ -22,7 +22,7 @@
       </el-form-item>
       <el-form-item
         v-if="type === 1 && title == '添加尺码'"
-        label="尺码组名"
+        label="尺码名称"
         prop="name"
       >
         <el-input
@@ -30,13 +30,6 @@
           placeholder="请输入名称"
           style="width: 215px"
         />
-      </el-form-item>
-      <el-form-item
-        v-if="type === 1 && title == '添加尺码'"
-        label="尺码"
-        prop="sn"
-      >
-        <el-input v-model="form.sn" style="width: 215px" />
       </el-form-item>
       <el-form-item v-if="type === 1" label="状态" prop="status">
         <el-switch
@@ -53,12 +46,6 @@
       </el-form-item>
       <el-form-item v-if="type === 1" label="排序" prop="sort">
         <el-input v-model="form.sort" style="width: 215px" />
-      </el-form-item>
-      <el-form-item v-if="type === 1" label="尺码编码" prop="sn">
-        <el-input v-model="form.sn" style="width: 215px" />
-        <div style="font-size: 12px; color: #c0c4cc">
-          尺码编码为3位数字，例如：080、090、110
-        </div>
       </el-form-item>
       <el-form-item
         v-if="type === 1 && title == '添加尺码'"
@@ -81,6 +68,13 @@
           style="width: 215px"
         />
       </el-form-item>
+      <el-form-item v-if="type === 1" label="尺码编码" prop="sn">
+        <el-input v-model="form.sn" style="width: 215px" />
+        <div style="font-size: 12px; color: #c0c4cc">
+          尺码编码为3位数字，散码：080、090、110，整手：000
+        </div>
+      </el-form-item>
+
       <el-form-item v-if="type === 2" label="分类名称" prop="name">
         <el-input
           v-model="form.name"
@@ -97,7 +91,6 @@
 </template>
 
 <script>
-  import { addSizeSave, addSizeGroupSave } from '@/api/basic'
   export default {
     name: 'TagsEdit',
     data() {
@@ -162,12 +155,12 @@
           if (valid) {
             if (this.title === '添加') {
               if (this.type === 1) {
-                const { code } = await addSizeSave(this.form)
+                const { code } = await this.api.addSizeSave(this.form)
                 if (code != 200) {
                   return
                 }
               } else {
-                const { code } = await addSizeGroupSave(this.form)
+                const { code } = await this.api.addSizeGroupSave(this.form)
                 if (code != 200) {
                   return
                 }
@@ -181,12 +174,12 @@
               this.close()
             } else {
               if (this.type === 1) {
-                const { code } = await addSizeSave(this.form)
+                const { code } = await this.api.addSizeSave(this.form)
                 if (code != 200) {
                   return
                 }
               } else {
-                const { code } = await addSizeGroupSave(this.form)
+                const { code } = await this.api.addSizeGroupSave(this.form)
                 if (code != 200) {
                   return
                 }

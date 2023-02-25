@@ -25,7 +25,6 @@
       <div style="margin-right: 20px">
         <el-button
           v-has-permi="['btn:CustomerEnterprise:synchronization']"
-          :loading="addCopyStatus"
           style="margin-top: 20px"
           type="primary"
           @click="handleExternalSyncExternal()"
@@ -55,8 +54,6 @@
       >
         <template #List>
           <el-table-column type="selection" width="55" />
-          <!-- <el-table-column label="ID" prop="external_userid" width="120" /> -->
-
           <el-table-column label="昵称" prop="external_name" width="120" />
           <el-table-column label="头像" prop="avatar" width="120">
             <template #default="{ row }">
@@ -170,14 +167,12 @@
 </template>
 <script>
   import Drawer from '@/subview/components/Drawer/EnterpriseDrawer'
-  import { getExternalList, getExternalSyncExternal } from '@/api/basic'
   export default {
-    name: 'ProjectBandlist',
     components: { Drawer },
     data() {
       return {
-        addCopyStatus: false,
         title: '',
+        // 抽屉相关数据
         drawer: false,
         drawerId: null,
         drawerType: null,
@@ -223,6 +218,7 @@
       this.fetchData()
     },
     methods: {
+      // 同步企业微信
       handleExternalSyncExternal() {
         this.$confirm('是否同步企业微信客户数据？', '提示', {
           confirmButtonText: '确定',
@@ -230,14 +226,12 @@
           type: 'warning',
         })
           .then(() => {
-            this.addCopyStatus = true
             this.$baseMessage(
               '同步中请勿刷新或关闭页面',
               'error',
               'vab-hey-message-error'
             )
-            getExternalSyncExternal().then((res) => {
-              this.addCopyStatus = false
+            this.api.getExternalSyncExternal().then((res) => {
               this.$baseMessage(
                 '同步成功',
                 'success',
@@ -300,7 +294,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getExternalList(this.formTemp)
+        const { data } = await this.api.getExternalList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

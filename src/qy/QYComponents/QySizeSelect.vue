@@ -42,7 +42,6 @@
 </template>
 
 <script>
-  import { getCommonAllList } from '@/api/basic'
   export default {
     name: 'QysizeSelect',
     props: {
@@ -100,7 +99,7 @@
     methods: {
       async Init() {
         //获取基础信息
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'size',
         })
         this.sizeList = data.size

@@ -25,9 +25,7 @@
 </template>
 
 <script>
-  import { editCustomer } from '@/api/basic'
   export default {
-    name: 'BandEdit',
     data() {
       return {
         form: {
@@ -61,7 +59,7 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await editCustomer(this.form)
+              const { code } = await this.api.editCustomer(this.form)
               if (code != 200) {
                 return
               }
@@ -73,7 +71,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await editCustomer(this.form)
+              const { code } = await this.api.editCustomer(this.form)
               if (code != 200) {
                 return
               }

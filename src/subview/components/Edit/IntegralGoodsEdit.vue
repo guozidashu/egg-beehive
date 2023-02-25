@@ -70,7 +70,6 @@
 </template>
 
 <script>
-  import { editIntegralGoodsSave } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'GoodsEdit',
@@ -130,7 +129,7 @@
           if (valid) {
             if (this.title === '添加') {
               this.form.pic = '111'
-              const { code } = await editIntegralGoodsSave(this.form)
+              const { code } = await this.api.editIntegralGoodsSave(this.form)
               if (code != 200) {
                 return
               }
@@ -142,7 +141,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              const { code } = await editIntegralGoodsSave(this.form)
+              const { code } = await this.api.editIntegralGoodsSave(this.form)
               if (code != 200) {
                 return
               }

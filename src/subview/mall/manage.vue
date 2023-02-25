@@ -412,15 +412,6 @@
   import Drawer from '@/subview/components/Drawer/GoodsDrawer'
   import VabUpload from '@/extra/VabUpload'
   import VabQuill from '@/extra/VabQuill'
-  import {
-    getGoodList,
-    getCommonAllList,
-    editChangeIsShop,
-    getShopGoodTabTotal,
-    editSourceMaterialSave,
-    getGoodBasicsDetails,
-    editGoodsDetailEdit,
-  } from '@/api/basic'
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
     name: 'GoodsManage',
@@ -549,7 +540,7 @@
     },
     methods: {
       async handleMaterialSub() {
-        const { code } = await editSourceMaterialSave(this.formDialog)
+        const { code } = await this.api.editSourceMaterialSave(this.formDialog)
         if (code == 200) {
           this.$message.success('操作成功')
           this.dialogVisible = false
@@ -562,7 +553,9 @@
         }
       },
       async handleCommodityDetailsSub() {
-        const { code } = await editGoodsDetailEdit(this.formCommodityDetails)
+        const { code } = await this.api.editGoodsDetailEdit(
+          this.formCommodityDetails
+        )
         if (code == 200) {
           this.$message.success('操作成功')
           this.dialogVisible = false
@@ -611,7 +604,9 @@
         })
       },
       async handleCommodityDetails(row) {
-        const { data } = await getGoodBasicsDetails({ good_id: row.id })
+        const { data } = await this.api.getGoodBasicsDetails({
+          good_id: row.id,
+        })
         this.formCommodityDetails.detail = data.detail
         this.formCommodityDetails.shop_multiplot = data.shop_multiplot
         this.formCommodityDetails.id = data.id
@@ -672,14 +667,14 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await getGoodList(this.formTemp)
+        const { data } = await this.api.getGoodList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false
         this.getTatolData()
       },
       async getTatolData() {
-        const { data } = await getShopGoodTabTotal({
+        const { data } = await this.api.getShopGoodTabTotal({
           category: this.form.category, //款式分类
           brand: this.form.brand, //品牌
           year: this.form.year, //年份
@@ -693,7 +688,7 @@
         this.tatleData = data
       },
       async getGoodsTypeList() {
-        const { data } = await getCommonAllList({
+        const { data } = await this.api.getCommonAllList({
           type: 'brand,year,season,band,category,agegroup,color,size',
         })
         this.selectList = data
@@ -749,7 +744,7 @@
             }
             let ids = this.selectRowsId.map((item) => item.id).join(',')
             this.$baseConfirm('你确定要上架选中项吗', null, async () => {
-              const { msg } = await editChangeIsShop({
+              const { msg } = await this.api.editChangeIsShop({
                 ids: ids,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
@@ -769,7 +764,7 @@
             }
             let ids = this.selectRowsId.map((item) => item.id).join(',')
             this.$baseConfirm('你确定要下架选中项吗', null, async () => {
-              const { msg } = await editChangeIsShop({
+              const { msg } = await this.api.editChangeIsShop({
                 ids: ids,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
@@ -779,7 +774,7 @@
         } else {
           if (type == 3) {
             this.$baseConfirm('你确定要下架改项吗', null, async () => {
-              const { msg } = await editChangeIsShop({
+              const { msg } = await this.api.editChangeIsShop({
                 ids: row.id,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
@@ -787,7 +782,7 @@
             })
           } else if (type == 4) {
             this.$baseConfirm('你确定要上架改项吗', null, async () => {
-              const { msg } = await editChangeIsShop({
+              const { msg } = await this.api.editChangeIsShop({
                 ids: row.id,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')

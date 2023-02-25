@@ -207,7 +207,7 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              // const { code } = await addWave(this.form)
+              // const { code } = await this.api.addWave(this.form)
               // if (code != 200) {
               //   return
               // }
@@ -219,7 +219,7 @@
               this.$emit('fetch-data')
               this.close()
             } else {
-              // const { code } = await updateWave(this.form)
+              // const { code } = await this.api.updateWave(this.form)
               // if (code != 200) {
               //   return
               // }

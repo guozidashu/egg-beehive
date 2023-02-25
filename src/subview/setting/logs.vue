@@ -99,7 +99,6 @@
 </template>
 
 <script>
-  import { getLogList } from '@/api/basic'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'Logs',
@@ -169,7 +168,7 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.queryForm))
         }
-        const { data } = await getLogList(this.formTemp)
+        const { data } = await this.api.getLogList(this.formTemp)
         this.list = data.data
         this.total = data.total
         this.listLoading = false

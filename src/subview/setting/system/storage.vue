@@ -134,13 +134,6 @@
 </template>
 
 <script>
-  import {
-    getConfig,
-    editLocalStore,
-    editALiYunOss,
-    editTencentOss,
-    editQiNiuOss,
-  } from '@/api/basic'
   export default {
     name: 'SystemStorage',
     data() {
@@ -301,13 +294,13 @@
       },
       async fetchData() {
         if (this.activeName == '本地存储') {
-          const { data } = await getConfig({ key: 'local_store' })
+          const { data } = await this.api.getConfig({ key: 'local_store' })
           if (data !== null) {
             let temp = JSON.parse(data)
             this.form.state = Number(temp.state)
           }
         } else if (this.activeName == '阿里云存储') {
-          const { data } = await getConfig({ key: 'aliyun_oss' })
+          const { data } = await this.api.getConfig({ key: 'aliyun_oss' })
           if (data !== null) {
             let temp = JSON.parse(data)
             this.form.access_key_id = temp.access_key_id
@@ -317,7 +310,7 @@
             this.form.photo_reduce = Number(temp.photo_reduce)
           }
         } else if (this.activeName == '腾讯云存储') {
-          const { data } = await getConfig({ key: 'tencent_oss' })
+          const { data } = await this.api.getConfig({ key: 'tencent_oss' })
           if (data !== null) {
             let temp = JSON.parse(data)
             this.form.app_id1 = temp.app_id
@@ -327,7 +320,7 @@
             this.form.bucket1 = temp.bucket
           }
         } else if (this.activeName == '七牛云存储') {
-          const { data } = await getConfig({ key: 'qiniu_oss' })
+          const { data } = await this.api.getConfig({ key: 'qiniu_oss' })
           if (data !== null) {
             let temp = JSON.parse(data)
             this.form.access_key_id2 = temp.access_key_id
@@ -342,7 +335,7 @@
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
             if (this.activeName == '本地存储') {
-              const { code } = await editLocalStore({
+              const { code } = await this.api.editLocalStore({
                 state: this.form.state, //接口是否开启
               })
               if (code === 200) {
@@ -351,7 +344,7 @@
                 this.$message.error('保存失败')
               }
             } else if (this.activeName == '阿里云存储') {
-              const { code } = await editALiYunOss({
+              const { code } = await this.api.editALiYunOss({
                 access_key_id: this.form.access_key_id, //access_key_id
                 access_key_secret: this.form.access_key_secret, //access_key_secret
                 url: this.form.url, //访问链接
@@ -364,7 +357,7 @@
                 this.$message.error('保存失败')
               }
             } else if (this.activeName == '腾讯云存储') {
-              const { code } = await editTencentOss({
+              const { code } = await this.api.editTencentOss({
                 app_id: this.form.app_id1, //app_id
                 secret_id: this.form.secret_id1, //secret_id
                 secret_key: this.form.secret_key1, //secret_key
@@ -377,7 +370,7 @@
                 this.$message.error('保存失败')
               }
             } else if (this.activeName == '七牛云存储') {
-              const { code } = await editQiNiuOss({
+              const { code } = await this.api.editQiNiuOss({
                 access_key_id: this.form.access_key_id2, //access_key_id
                 access_key_secret: this.form.access_key_secret2, //access_key_secret
                 url: this.form.url2, //访问链接

@@ -69,14 +69,8 @@
 </template>
 
 <script>
-  import {
-    editCategorySonSave,
-    editCategoryMainSave,
-    getCategoryMainList,
-  } from '@/api/basic'
   import VabUpload from '@/extra/VabUpload'
   export default {
-    name: 'TagsEdit',
     components: { VabUpload },
     data() {
       return {
@@ -126,7 +120,7 @@
         this.getSelectList()
       },
       async getSelectList() {
-        const { data } = await getCategoryMainList(this.form)
+        const { data } = await this.api.getCategoryMainList(this.form)
         this.selectList = data
       },
       close() {
@@ -139,12 +133,12 @@
           if (valid) {
             if (this.title === '添加') {
               if (this.type === 1) {
-                const { code } = await editCategorySonSave(this.form)
+                const { code } = await this.api.editCategorySonSave(this.form)
                 if (code != 200) {
                   return
                 }
               } else {
-                const { code } = await editCategoryMainSave(this.form)
+                const { code } = await this.api.editCategoryMainSave(this.form)
                 if (code != 200) {
                   return
                 }
@@ -159,12 +153,12 @@
               this.$emit('fetch-data')
             } else {
               if (this.type === 1) {
-                const { code } = await editCategorySonSave(this.form)
+                const { code } = await this.api.editCategorySonSave(this.form)
                 if (code != 200) {
                   return
                 }
               } else {
-                const { code } = await editCategoryMainSave(this.form)
+                const { code } = await this.api.editCategoryMainSave(this.form)
                 if (code != 200) {
                   return
                 }

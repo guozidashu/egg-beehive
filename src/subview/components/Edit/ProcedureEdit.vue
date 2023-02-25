@@ -34,7 +34,6 @@
 </template>
 
 <script>
-  import { editProduceTypeSave } from '@/api/basic'
   export default {
     name: 'BrandEdit',
     data() {
@@ -71,7 +70,7 @@
           if (valid) {
             if (this.title === '添加') {
               this.form.sort = parseInt(this.form.sort)
-              const { code } = await editProduceTypeSave(this.form)
+              const { code } = await this.api.editProduceTypeSave(this.form)
               if (code != 200) {
                 return
               }
@@ -84,7 +83,7 @@
               this.close()
             } else {
               this.form.sort = parseInt(this.form.sort)
-              const { code } = await editProduceTypeSave(this.form)
+              const { code } = await this.api.editProduceTypeSave(this.form)
               if (code != 200) {
                 return
               }

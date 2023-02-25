@@ -272,7 +272,6 @@
 <script>
   import VabChart from '@/extra/VabChart'
   import datajosn from '@/assets/assets_josn/datajosn'
-  import { getTradeBasic, getHotStyleAnalysis, getTradeList } from '@/api/basic'
   export default {
     name: 'FinancialOverview',
     components: {
@@ -491,7 +490,7 @@
         }
       },
       async getCardList() {
-        const { data } = await getTradeList(this.goodsForm)
+        const { data } = await this.api.getTradeList(this.goodsForm)
         this.goodsStaList.forEach((item) => {
           for (let i in data) {
             if (item.name == i) {
@@ -506,7 +505,7 @@
         })
       },
       async fetchData() {
-        const { data } = await getTradeBasic(this.goodsForm)
+        const { data } = await this.api.getTradeBasic(this.goodsForm)
         let arr = []
         data.forEach((item) => {
           for (let i in item) {
@@ -600,7 +599,7 @@
       },
       async getTableList() {
         this.listLoading = true
-        const { data } = await getHotStyleAnalysis(this.goodsForm1)
+        const { data } = await this.api.getHotStyleAnalysis(this.goodsForm1)
         if (data.arrears_type == 0) {
           this.orderList[4].value = 'sale_arrears'
         } else {

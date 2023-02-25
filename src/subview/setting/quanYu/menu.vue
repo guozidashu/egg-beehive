@@ -80,7 +80,6 @@
 
 <script>
   import Edit from '@/subview/components/Edit/MenuManagementEdit'
-  import { getMenuList, delMenuDel } from '@/api/basic'
   export default {
     name: 'MenuManagement',
     components: { Edit },
@@ -98,7 +97,7 @@
     async created() {
       // const {
       //   data: { list },
-      // } = await getTree()
+      // } = await this.api.getTree()
       // this.data = list
       this.fetchData()
     },
@@ -125,7 +124,7 @@
       handleDelete(row) {
         if (row.path) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
-            const { msg } = await delMenuDel({ id: row.id })
+            const { msg } = await this.api.delMenuDel({ id: row.id })
             this.$baseMessage(msg, 'success', 'vab-hey-message-success')
             await this.fetchData()
           })
@@ -133,7 +132,7 @@
       },
       async fetchData(role) {
         this.listLoading = true
-        const { data } = await getMenuList({ role })
+        const { data } = await this.api.getMenuList({ role })
         this.list = data
         this.listLoading = false
       },
