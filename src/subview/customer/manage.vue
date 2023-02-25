@@ -210,9 +210,9 @@
               <el-button type="text" @click="handleDeposit(row.id)">
                 保证金
               </el-button>
-              <el-button type="text" @click="handleIntegral(row.id)">
+              <!-- <el-button type="text" @click="handleIntegral(row.id)">
                 积分
-              </el-button>
+              </el-button> -->
             </template>
           </el-table-column>
         </template>

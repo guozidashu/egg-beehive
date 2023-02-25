@@ -68,11 +68,11 @@
           预售结束日期向后推迟多少天内
         </div>
       </el-form-item>
-      <el-form-item label="订金支付金" prop="payment_ratio">
+      <el-form-item label=" 定金支付比例" prop="payment_ratio">
         <el-input v-model="form.payment_ratio" style="width: 100px" />
         %
       </el-form-item>
-      <el-form-item label="超期违约金" prop="penalty_ratio">
+      <el-form-item label="超期赔付比例" prop="penalty_ratio">
         <el-input v-model="form.penalty_ratio" style="width: 100px" />
         %
         <div style="font-size: 12px; color: #c0c4cc">

@@ -370,10 +370,10 @@
 
       async fetchData() {
         this.listLoading = true
-        this.formEdit.group_id = this.formInline.group_id
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.formEdit))
         }
+        this.formTemp.group_id = this.formInline.group_id
         const { data } = await this.api.getGoodsUnitList(this.formTemp)
         this.list = data.data
         this.total = data.total

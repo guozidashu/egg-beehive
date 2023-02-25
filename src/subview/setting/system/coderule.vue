@@ -14,6 +14,10 @@
             <p style="font-weight: 400">
               间隔符（默认没有）长度一位，只能输入- 或者 _
             </p>
+            <p>
+              <span style="color: red">*举例*</span>
+              ：如果前缀设置为QY，一个款号为WZ32888、颜色编码为HUA、尺码编码为80-90的款
+            </p>
             <p>整手生成的商品编码就为：QYWZ32888HUA000</p>
             <p>
               散码生成的商品编码就为：QYWZ32888-1HUA080、QYWZ32888-1HUA090、QYWZ32888-1HUA100、QYWZ32888-1HUA110、QYWZ32888-1HUA120

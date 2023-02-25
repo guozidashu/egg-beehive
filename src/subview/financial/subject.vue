@@ -258,8 +258,11 @@
       },
       async fetchData(type) {
         if (type == 1) {
-          this.form.id = 0
-          const { data } = await this.api.getAccountList(this.form)
+          if (this.formTemp == null) {
+            this.formTemp = JSON.parse(JSON.stringify(this.form))
+          }
+          this.formTemp.id = 0
+          const { data } = await this.api.getAccountList(this.formTemp)
           let list = [
             {
               id: 0,
@@ -273,11 +276,11 @@
           this.menuList = list
           this.fetchData(2)
         } else {
-          if (this.form.id == 0) {
-            this.form.id = -1
-          }
           if (this.formTemp == null) {
             this.formTemp = JSON.parse(JSON.stringify(this.form))
+          }
+          if (this.formTemp.id == 0) {
+            this.formTemp.id = -1
           }
           const { data } = await this.api.getAccountList(this.formTemp)
           this.list = data.data
@@ -286,7 +289,6 @@
       },
       handleGrouPQuery(id) {
         this.form.id = id
-        this.fetchData(2)
       },
       handleOpen() {},
       handleClose() {},

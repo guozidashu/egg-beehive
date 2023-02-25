@@ -277,12 +277,12 @@
       },
       async fetchData() {
         this.listLoading = true
-        if (this.form.date != null) {
-          this.form.start_time = this.form.date[0]
-          this.form.end_time = this.form.date[1]
-        }
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        if (this.formTemp.date != null) {
+          this.formTemp.start_time = this.formTemp.date[0]
+          this.formTemp.end_time = this.formTemp.date[1]
         }
         const { data } = await this.api.getBillList(this.formTemp)
         this.list = data.data
