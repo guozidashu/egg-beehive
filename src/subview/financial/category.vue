@@ -22,12 +22,9 @@
               v-for="(item, index) in menuList"
               :key="index"
               :index="item.id.toString()"
-              @click="handleGrouPQuery(item.id)"
+              @click="handleGrouPQuery(item.id, index)"
             >
-              <div
-                @mouseenter="mouseOver(index)"
-                @mouseleave="mouseLeave(index)"
-              >
+              <div>
                 <div slot="title">
                   <span>
                     {{ item.name }}
@@ -265,8 +262,12 @@
           this.total = data.total
         }
       },
-      handleGrouPQuery(id) {
+      handleGrouPQuery(id, index) {
         this.form.id = id
+        this.menuList.forEach((item) => {
+          item.btnIconStatus = false
+        })
+        this.menuList[index].btnIconStatus = true
       },
       handleOpen() {},
       handleClose() {},

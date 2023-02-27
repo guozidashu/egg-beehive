@@ -23,22 +23,16 @@
               v-for="(item, index) in menuList"
               :key="index"
               :index="item.id.toString()"
-              @click="handleGrouPQuery(item.id)"
+              @click="handleGrouPQuery(item.id, index)"
             >
-              <div
-                @mouseenter="mouseOver(index)"
-                @mouseleave="mouseLeave(index)"
-              >
+              <div>
                 <div slot="title">
                   <span>
                     {{ item.name }}
                   </span>
                   <el-dropdown style="float: right" trigger="click">
                     <span class="el-dropdown-link">
-                      <i
-                        v-if="item.btnIconStatus && item.id != '0'"
-                        class="el-icon-menu"
-                      ></i>
+                      <i v-if="item.btnIconStatus" class="el-icon-menu"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
                       <el-dropdown-item>
@@ -229,6 +223,8 @@
           item.btnIconStatus = false
         })
         this.menuList = list
+        this.menuList[0].btnIconStatus = true
+
         this.fetchList(data[0].id)
       },
       async fetchList(temp) {
@@ -244,8 +240,12 @@
         this.total = total
         // this.listLoading = false
       },
-      handleGrouPQuery(id) {
+      handleGrouPQuery(id, index) {
         this.form.id = id
+        this.menuList.forEach((item) => {
+          item.btnIconStatus = false
+        })
+        this.menuList[index].btnIconStatus = true
       },
       handleOpen() {},
       handleClose() {},
