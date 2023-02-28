@@ -52,7 +52,8 @@
           授权信息
         </div>
         <div style="padding: 0 10px; margin-top: 10px; font-size: 14px">
-          <div style="padding: 10px 0">授权主体：杭州洛一服饰有限公司</div>
+          <div style="padding: 10px 0">授权主体：湖州发生米服饰有限公司</div>
+          <!-- <div style="padding: 10px 0">授权主体：杭州洛一有限公司</div> -->
           <div style="padding: 10px 0">注册时间：2022年12月31日 16:53:21</div>
           <div style="padding: 10px 0">到期时间：2023年12月31日 16:53:21</div>
         </div>
@@ -362,9 +363,9 @@
           {
             timestamp: '2023-02-27 20:46:03',
             timestamp1: '版本：V2.0.8',
-            content: '【新增】[数据中台] 全渠道数据大屏实时数据分析功能',
-            contentList: [
+            content:
               '【新增】[数据中台] 可设置商城最小单位数量/金额提交订单，根据不同会员等级、设置不同门槛',
+            contentList: [
               '【新增】[数据中台] 退货单列表，商品吊牌条码打印，增加EXCEL导出功能',
               '【优化】[数据中台] 优化商品编码规则，商品内部条码、商品防伪码',
               '【优化】[数据中台] 优化商品预售规则和业务流程，如超时取消、定金是否充许退还、尾款支付天数、定金支付比例，超期必赔服务',

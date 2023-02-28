@@ -75,7 +75,7 @@
     },
     methods: {
       getSelectList() {
-        getRoleList().then((res) => {
+        this.api.getRoleList().then((res) => {
           this.typeData = res.data
         })
       },
