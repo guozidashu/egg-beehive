@@ -97,7 +97,6 @@
       return {
         type: null,
         form: {
-          //id: 1, // 菜单id 编辑时传
           pid: null, // 父级id
           path: null, // 路径
           name: null, // 名称
@@ -156,8 +155,16 @@
         this.form.guard.push({ guard: '', title: '', sort: 0 })
       },
       close() {
-        this.$refs['form'].resetFields()
-        this.form = this.$options.data().form
+        this.form = {
+          pid: null, // 父级id
+          path: null, // 路径
+          name: null, // 名称
+          component: null, // 路由
+          title: null, // 标题
+          icon: null, // 图标
+          isState: 1, // 是否有vue文件路径
+          type: 'menu', // 类型
+        }
         this.dialogFormVisible = false
       },
       async save() {

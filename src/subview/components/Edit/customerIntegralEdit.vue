@@ -2,27 +2,37 @@
   <el-dialog
     :title="title"
     :visible.sync="dialogFormVisible"
-    width="500px"
+    width="700px"
     @close="close"
   >
-    <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item v-if="title == '添加'" label="波段名称" prop="name">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="排序" prop="sort">
-        <el-input v-model="form.sort" />
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-radio-group v-model="form.status">
-          <el-radio :label="1">启用</el-radio>
-          <el-radio :label="0">禁用</el-radio>
-        </el-radio-group>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <el-button @click="close">取 消</el-button>
-      <el-button type="primary" @click="save">确 定</el-button>
-    </template>
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        font-size: 16px;
+      "
+    >
+      <div>小C</div>
+      <div>总积分： 10</div>
+    </div>
+    <QYList
+      :list="list"
+      :list-type="listType"
+      :state="listLoading"
+      style="height: 500px"
+      :total="total"
+      @changePage="changeBtnPage"
+      @changePageSize="changeBtnPageSize"
+    >
+      <template #List>
+        <el-table-column label="积分ID" prop="id" />
+        <el-table-column label="积分" prop="num" />
+        <el-table-column label="积分类型" prop="type" />
+        <el-table-column label="积分来源" prop="laiyuan" />
+        <el-table-column label="创建时间" prop="time" width="200px" />
+      </template>
+    </QYList>
   </el-dialog>
 </template>
 
@@ -30,65 +40,58 @@
   export default {
     data() {
       return {
-        form: {
-          sort: null, //排序
-          status: 1, //1启用 0 禁用
-          name: '', //名称
-        },
-        rules: {
-          name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
-          sort: [{ required: true, trigger: 'blur', message: '请输入排序' }],
-        },
         title: '',
         dialogFormVisible: false,
+        listType: 1,
+        list: [],
+        listLoading: false,
+        total: 0,
+        form: {
+          name: '',
+          page: 1,
+          pageSize: 10,
+        },
       }
     },
-    created() {},
+    created() {
+      this.fetchData()
+    },
     methods: {
       showEdit(row) {
         if (!row) {
           this.title = '积分管理'
         } else {
           this.title = '积分管理'
-          this.form = Object.assign({}, row)
         }
         this.dialogFormVisible = true
       },
       close() {
-        this.$refs['form'].resetFields()
-        this.form = this.$options.data().form
         this.dialogFormVisible = false
       },
       save() {
-        this.$refs['form'].validate(async (valid) => {
-          if (valid) {
-            if (this.title === '添加') {
-              const { code } = await this.api.editBandSave(this.form)
-              if (code != 200) {
-                return
-              }
-              this.$baseMessage(
-                '新增成功',
-                'success',
-                'vab-hey-message-success'
-              )
-              this.$emit('fetch-data')
-              this.close()
-            } else {
-              const { code } = await this.api.editBandSave(this.form)
-              if (code != 200) {
-                return
-              }
-              this.$baseMessage(
-                '修改成功',
-                'success',
-                'vab-hey-message-success'
-              )
-              this.$emit('fetch-data')
-              this.close()
-            }
-          }
-        })
+        this.dialogFormVisible = false
+      },
+      async fetchData() {
+        this.listLoading = true
+        const { data } = await this.api.getGradeList(this.form)
+        let arr = [
+          {
+            id: 1,
+            num: 10,
+            type: '签到',
+            laiyuan: '线上商城',
+            time: '2020-12-12 12:12:12',
+          },
+        ]
+        this.list = arr
+        this.total = arr.length
+        this.listLoading = false
+      },
+      changeBtnPage(data) {
+        this.form.page = data
+      },
+      changeBtnPageSize(data) {
+        this.form.pageSize = data
       },
     },
   }

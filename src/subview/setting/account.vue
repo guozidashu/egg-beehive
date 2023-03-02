@@ -52,8 +52,8 @@
           授权信息
         </div>
         <div style="padding: 0 10px; margin-top: 10px; font-size: 14px">
-          <div style="padding: 10px 0">授权主体：湖州发生米服饰有限公司</div>
-          <!-- <div style="padding: 10px 0">授权主体：杭州洛一有限公司</div> -->
+          <!-- <div style="padding: 10px 0">授权主体：湖州发生米服饰有限公司</div> -->
+          <div style="padding: 10px 0">授权主体：杭州洛一有限公司</div>
           <div style="padding: 10px 0">注册时间：2022年12月31日 16:53:21</div>
           <div style="padding: 10px 0">到期时间：2023年12月31日 16:53:21</div>
         </div>

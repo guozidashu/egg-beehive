@@ -9,22 +9,22 @@
               内部商品编码的组成规则规则：商品编码（款号）+ 颜色编码 + 尺码编码
             </p>
             <p style="font-weight: 400">
-              前缀（默认没有）长度两位，只能输入数组和字母
+              前缀（默认没有）长度两位，只能输入数字和字母
             </p>
             <p style="font-weight: 400">
               间隔符（默认没有）长度一位，只能输入- 或者 _
             </p>
             <p>
               <span style="color: red">*举例*</span>
-              ：如果前缀设置为QY，一个款号为WZ32888、颜色编码为HUA、尺码编码为80-90的款
+              ：如果前缀设置为QY，一个款号为WZ32888、颜色编码为HUA、尺码编码为80-120的款
             </p>
             <p>整手生成的商品编码就为：QYWZ32888HUA000</p>
             <p>
-              散码生成的商品编码就为：QYWZ32888-1HUA080、QYWZ32888-1HUA090、QYWZ32888-1HUA100、QYWZ32888-1HUA110、QYWZ32888-1HUA120
+              散码生成的商品编码就为：QYWZ32888HUA080、QYWZ32888HUA090、QYWZ32888HUA100、QYWZ32888HUA110、QYWZ32888HUA120
             </p>
             <p>启用间隔符-的整手商品编码就为：QY-WZ32888-HUA-000</p>
             <p>
-              启用间隔符-的散码商品编码就为：QY-WZ32888-1-HUA-080、QY-WZ32888-1-HUA-090、QY-WZ32888-1-HUA-100、QY-WZ32888-1-HUA-110、QY-WZ32888-1-HUA-120
+              启用间隔符-的散码商品编码就为：QY-WZ32888-HUA-080、QY-WZ32888-HUA-090、QY-WZ32888-HUA-100、QY-WZ32888-HUA-110、QY-WZ32888-HUA-120
             </p>
           </div>
           <el-form-item label="编码名称:" prop="fakeName">
@@ -249,11 +249,11 @@
               temp1 = '+' + this.form.spacerValue
             }
             let ogj = {}
-            if (this.activeName == '防伪编码') {
+            if (this.activeName == '商品编码') {
               ogj.type = 2
               ogj.name = this.form.fakeName
               ogj.code = temp1
-            } else if (this.activeName == '商品编码') {
+            } else if (this.activeName == '防伪编码') {
               ogj.type = 1
               ogj.name = this.form.name
               ogj.code = temp

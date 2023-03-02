@@ -185,7 +185,7 @@
               <el-tag v-else>￥{{ row.balance | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="注册时间" prop="create_time" />
+          <el-table-column label="注册时间" prop="create_time" width="200" />
           <el-table-column
             align="center"
             fixed="right"
@@ -378,7 +378,7 @@
 
 <script>
   import Edit from '@/subview/components/Edit/ManageEdit'
-  import IntegralEdit from '@/subview/components/Edit/customerIntegralEdit'
+  import IntegralEdit from '@/subview/components/Edit/CustomerIntegralEdit'
   import Drawer from '@/subview/components/Drawer/ManageDrawer'
   import VabUpload from '@/extra/VabUpload'
   import datajosn from '@/assets/assets_josn/datajosn'

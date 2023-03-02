@@ -207,7 +207,7 @@
               <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="预售状态" prop="status" width="120">
+          <el-table-column label="预售状态" prop="status" width="120">
             <template #default="{ row }">
               <div
                 v-if="row.goods_persell.length == 0"
@@ -230,7 +230,7 @@
                 />
               </div>
             </template>
-          </el-table-column> -->
+          </el-table-column>
           <el-table-column label="状态" prop="status" width="120">
             <template #default="{ row }">
               <div v-if="row.status == 1" style="margin-bottom: 10px">
@@ -307,13 +307,13 @@
               >
                 设置推荐
               </el-button>
-              <!-- <el-button
+              <el-button
                 v-has-permi="['btn:GoodsManage:presell']"
                 type="text"
                 @click="handlePresell(row)"
               >
                 设置预售
-              </el-button> -->
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -392,7 +392,7 @@
       url="/upload"
       @submitUpload="getSon"
     />
-    <edit ref="edit" @fetch-data="fetchData" />
+    <edit ref="edit" :drawer-sta="drawerSta" @fetch-data="fetchData" />
   </div>
 </template>
 
@@ -406,6 +406,8 @@
     mixins: [publicjosn],
     data() {
       return {
+        // 预售
+        drawerSta: false,
         // 弹窗相关
         title: '',
         drawer: false,
@@ -499,6 +501,11 @@
       },
       // 预售设置
       handlePresell(row) {
+        if (row.goods_persell.length == 0) {
+          this.drawerSta = false
+        } else {
+          this.drawerSta = true
+        }
         this.$refs['edit'].showEdit(row)
       },
       // 导出商品条形码

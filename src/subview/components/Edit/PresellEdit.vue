@@ -90,8 +90,15 @@
 <script>
   export default {
     name: 'BrandEdit',
+    props: {
+      drawerSta: {
+        type: Boolean,
+        default: false,
+      },
+    },
     data() {
       return {
+        disabledDateState: false,
         defaultTime: '00:00:00',
         defaultValue: new Date(),
         Forbidden: true,
@@ -239,8 +246,12 @@
     watch: {
       'form.time'(val) {
         if (val) {
-          this.form.estimated_delivery_date = val[1]
+          if (!this.drawerSta) {
+            this.form.estimated_delivery_date = val[1]
+          }
           this.Forbidden = false
+        } else {
+          this.Forbidden = true
         }
       },
     },
@@ -249,7 +260,9 @@
     },
     methods: {
       disabledDate(date) {
-        return date.getTime() < new Date(this.form.time[1]).getTime()
+        if (!this.disabledDateState) {
+          return date.getTime() < new Date(this.form.time[1]).getTime()
+        }
       },
       async selectData() {
         const { data } = await this.api.getCommonAllList({
@@ -284,6 +297,7 @@
         this.dialogFormVisible = true
       },
       close() {
+        this.disabledDateState = true
         this.$refs['form'].resetFields()
         this.form = this.$options.data().form
         this.dialogFormVisible = false

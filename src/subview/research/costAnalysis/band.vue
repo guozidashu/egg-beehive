@@ -135,7 +135,6 @@
     },
     created() {
       this.getTypeList()
-      this.fetchData()
     },
     methods: {
       handleQuery() {
