@@ -1024,6 +1024,9 @@
             this.cardList[this.cardListChecked - 1].title
           this.chartList.series[1].data = this.dataAllList.jst
           this.chartList.series[2].data = this.dataAllList.erp
+          this.chartList.series[0].type = 'line'
+          this.chartList.series[1].type = 'line'
+          this.chartList.series[2].type = 'line'
           this.$forceUpdate()
         }
       },

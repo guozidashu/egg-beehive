@@ -285,6 +285,16 @@
                   <el-radio :label="2">聚水潭发货</el-radio>
                 </el-radio-group>
               </el-form-item>
+              <el-form-item
+                class="item"
+                label="是否允许线上订货："
+                style="width: 100%"
+              >
+                <el-radio-group v-model="form.is_online_order">
+                  <el-radio :label="1">允许</el-radio>
+                  <el-radio :label="0">禁止</el-radio>
+                </el-radio-group>
+              </el-form-item>
               <el-form-item class="item" label="客户状态：">
                 <el-switch
                   v-model="form.status"

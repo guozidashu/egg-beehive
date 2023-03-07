@@ -124,7 +124,28 @@
             activeName == '紫日ERP'
           "
         >
-          <el-form-item label="聚水潭接口是否开启：">
+          <el-form-item
+            v-if="activeName == '伯俊BOS'"
+            label="伯俊BOS接口是否开启："
+          >
+            <el-radio-group v-model="form.api_open1">
+              <el-radio :label="1">开启</el-radio>
+              <el-radio :label="0">关闭</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item
+            v-if="activeName == '百胜ERP'"
+            label="百胜ERP接口是否开启："
+          >
+            <el-radio-group v-model="form.api_open1">
+              <el-radio :label="1">开启</el-radio>
+              <el-radio :label="0">关闭</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item
+            v-if="activeName == '紫日ERP'"
+            label="紫日ERP接口是否开启："
+          >
             <el-radio-group v-model="form.api_open1">
               <el-radio :label="1">开启</el-radio>
               <el-radio :label="0">关闭</el-radio>

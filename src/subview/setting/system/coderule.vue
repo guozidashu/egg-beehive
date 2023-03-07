@@ -219,14 +219,21 @@
         },
         deep: true,
       },
+      activeName: {
+        handler: function (newval) {
+          if (newval == '商品编码') this.getCode(2)
+          else this.getCode(1)
+        },
+        deep: true,
+      },
     },
     created() {
-      this.getCode()
+      this.getCode(2)
     },
     methods: {
-      async getCode() {
+      async getCode(type) {
         const { code, data } = await this.api.getCodeRule({
-          type: 1,
+          type: type,
         })
         if (code == 200) {
           this.form.name = data.name

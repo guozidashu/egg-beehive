@@ -636,6 +636,7 @@
           this.drawerInof.drawerType = type
           this.drawerInof.order_belong = 1
           this.drawerInof.status = 1
+          this.drawerInof.is_online_order = 0
         } else {
           this.drawerInof = JSON.parse(JSON.stringify(row))
           this.drawerInof.drawerType = type

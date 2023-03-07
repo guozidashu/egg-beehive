@@ -146,7 +146,7 @@
           legend: {
             data: ['销售件数', '发货件数'],
           },
-          color: ['#1890FF', '#55DF7E'],
+          color: ['#48B1FF', '#3ED6E5'],
           xAxis: {
             type: 'category',
             boundaryGap: false,
@@ -162,21 +162,61 @@
             {
               name: '销售件数',
               type: 'line',
-              areaStyle: {},
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#3ED6E5',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
               smooth: true,
               data: [],
               itemStyle: {
-                color: '#1890FF',
+                color: '#48B1FF',
               },
             },
             {
               name: '发货件数',
               type: 'line',
-              areaStyle: {},
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#3ED6E5',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
               smooth: true,
               data: [],
               itemStyle: {
-                color: '#55DF7E',
+                color: '#3ED6E5',
               },
             },
           ],
