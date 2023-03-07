@@ -663,8 +663,8 @@
                 goods_id: ids,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.api.this.fetchData()
-              await this.api.this.getTatolData()
+              await this.fetchData()
+              await this.getTatolData()
             }
           )
         } else {
@@ -693,7 +693,7 @@
                 status: type,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.api.this.fetchData()
+              await this.fetchData()
             })
           } else if (type == 0) {
             let temp = false
@@ -714,7 +714,7 @@
                 status: type,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.api.this.fetchData()
+              await this.fetchData()
             })
           }
         } else {
@@ -725,7 +725,7 @@
                 status: 2,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.api.this.fetchData()
+              await this.fetchData()
             })
           } else if (type == 4) {
             this.$baseConfirm('你确定要在售改项吗', null, async () => {
@@ -734,7 +734,7 @@
                 status: 1,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.api.this.fetchData()
+              await this.fetchData()
             })
           } else if (type == 5) {
             this.$baseConfirm('你确定要设置该项为推荐吗？', null, async () => {
@@ -742,7 +742,7 @@
                 id: row.id,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.api.this.fetchData()
+              await this.fetchData()
             })
           } else if (type == 6) {
             this.$baseConfirm('你确定要取消该项为推荐吗', null, async () => {
@@ -750,7 +750,7 @@
                 id: row.id,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
-              await this.api.this.fetchData()
+              await this.fetchData()
             })
           } else {
             this.$baseMessage('未选中任何行', 'error', 'vab-hey-message-error')

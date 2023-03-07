@@ -73,7 +73,11 @@
           <el-form-item label="编码名称:" prop="name">
             <el-input v-model="form.name" disabled style="width: 300px" />
           </el-form-item>
-          <el-form-item label="编码字符:" prop="code">
+          <el-form-item
+            v-if="activeName == '防伪编码'"
+            label="编码字符:"
+            prop="code"
+          >
             <el-input
               v-model="form.code"
               maxlength="10"
@@ -236,9 +240,32 @@
           type: type,
         })
         if (code == 200) {
-          this.form.name = data.name
-          this.form.code = data.code.substring(5)
-          this.preview = data.code
+          if (data.type == 1) {
+            this.form.name = data.name
+            this.form.code = data.code.substring(5)
+            this.preview = data.code
+          } else {
+            this.form.name = data.name
+            this.form.code = data.code.substring(5)
+            this.preview = data.code
+            if (data.code == '') {
+              this.form.prefix = false
+              this.form.spacer = false
+            } else if (data.code.startsWith('+')) {
+              this.form.prefix = false
+              this.form.spacer = true
+              this.form.spacerValue = data.code.substring(1, 2)
+            } else if (data.code.endsWith('+')) {
+              this.form.prefix = true
+              this.form.spacer = false
+              this.form.prefixValue = data.code.substring(0, 2)
+            } else {
+              this.form.prefix = true
+              this.form.spacer = true
+              this.form.prefixValue = data.code.substring(0, 2)
+              this.form.spacerValue = data.code.substring(3, 4)
+            }
+          }
         }
       },
       onSubmit() {
@@ -249,7 +276,7 @@
             if (this.form.prefix && this.form.spacer) {
               temp1 = this.form.prefixValue + '+' + this.form.spacerValue
             } else if (!this.form.prefix && !this.form.spacer) {
-              temp1 = null
+              temp1 = ''
             } else if (this.form.prefix && !this.form.spacer) {
               temp1 = this.form.prefixValue + '+'
             } else if (!this.form.prefix && this.form.spacer) {

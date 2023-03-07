@@ -482,7 +482,7 @@
         handler: async function (newval) {
           if (newval != undefined) {
             this.form.id = newval
-            await this.api.this.selectData()
+            await this.selectData()
             this.handleDetail(this.list[0], 1)
           }
         },
