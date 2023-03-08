@@ -677,6 +677,9 @@
           if (type == 1) {
             let temp = false
             this.selectRowsId.forEach((item) => {
+              if (temp) {
+                return
+              }
               if (item.status == 1) {
                 this.$message.error('所选数据中有已在售的商品')
                 temp = true
@@ -690,7 +693,7 @@
             this.$baseConfirm('你确定要在售选中项吗', null, async () => {
               const { msg } = await this.api.editGoodBatchLower({
                 good_ids: ids,
-                status: type,
+                status: 1,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
               await this.fetchData()
@@ -698,6 +701,9 @@
           } else if (type == 0) {
             let temp = false
             this.selectRowsId.forEach((item) => {
+              if (temp) {
+                return
+              }
               if (item.status == 0) {
                 this.$message.error('所选数据中有已停售的商品')
                 temp = true
@@ -711,7 +717,7 @@
             this.$baseConfirm('你确定要停售选中项吗', null, async () => {
               const { msg } = await this.api.editGoodBatchLower({
                 good_ids: ids,
-                status: type,
+                status: 2,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
               await this.fetchData()
