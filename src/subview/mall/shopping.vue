@@ -21,6 +21,12 @@
       :rules="rules"
     >
       <div>
+        <el-form-item label="小程序头像和昵称" prop="avatar_name">
+          <el-radio-group v-model="form.avatar_name">
+            <el-radio :label="1">暂不设置</el-radio>
+            <el-radio :label="2">强制设置</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="商家名称" prop="name">
           <el-input v-model="form.name" style="width: 215px" />
         </el-form-item>
@@ -37,6 +43,15 @@
           </span>
           <div v-if="form.logo" style="margin-top: 20px">
             <img :src="form.logo" style="width: 100px; height: 100px" />
+          </div>
+        </el-form-item>
+        <el-form-item label="商家底部图片：" prop="bottom_logo">
+          <el-button type="primary" @click="handleShow(3)">图片上传</el-button>
+          <span style="margin-left: 20px; color: #999999">
+            建议尺寸：25×25像素
+          </span>
+          <div v-if="form.bottom_logo" style="margin-top: 20px">
+            <img :src="form.bottom_logo" style="width: 25px; height: 25px" />
           </div>
         </el-form-item>
         <el-form-item label="商家简介" prop="desc">
@@ -62,13 +77,6 @@
           <el-input v-model="form.wechat_service_corpid" style="width: 215px" />
         </el-form-item>
         <div style="display: flex">
-          <!-- <el-form-item label="微信小程序客服">
-            <el-radio-group v-model="form.customer_service_type">
-              <el-radio :label="0">客服链接</el-radio>
-              <el-radio :label="1">小程序客服</el-radio>
-              <el-radio :label="2">微信客服</el-radio>
-            </el-radio-group>
-          </el-form-item> -->
           <el-form-item label="客服系统链接" prop="customer_service_url">
             <el-input
               v-model="form.customer_service_url"
@@ -196,7 +204,7 @@
     <SmallProgram v-if="activeName == '小程序绑定'" />
     <PayProgram v-if="activeName == '支付设置'" />
     <vab-upload
-      v-if="uploadType == 1"
+      v-if="uploadType == 1 || uploadType == 3"
       ref="vabUpload"
       :limit="1"
       name="file"
@@ -273,6 +281,8 @@
         //   readOnly: false,
         // },
         form: {
+          bottom_logo: 'https://new.shopvvv.cn/static/imgsrc/logo.jpg', //商家底部图片
+          avatar_name: 2,
           name: '商城系统', //商家名称
           shopid: 'quanyudemo', //唯一标识
           domain: 'demo.quanyu123.com', //api域名
@@ -292,6 +302,13 @@
           screen_notice_content: null, //截图提醒文本
         },
         rules: {
+          avatar_name: [
+            {
+              required: true,
+              message: '请选择是否开启截图提醒',
+              trigger: 'blur',
+            },
+          ],
           name: [
             { required: true, message: '请输入商家名称', trigger: 'blur' },
             {
@@ -402,6 +419,9 @@
               trigger: 'blur',
             },
           ],
+          bottom_logo: [
+            { required: true, message: '请上传商家底部图片', trigger: 'blur' },
+          ],
         },
         form1: {
           register_status: '0', //0不开启 1开启
@@ -458,6 +478,8 @@
               }
             })
           }
+        } else if (this.uploadType == 3) {
+          this.form.bottom_logo = data[0]
         }
         this.$forceUpdate()
       },

@@ -83,6 +83,31 @@ export function editChangePassword(data) {
 
 // 下边是业务数据接口
 // 首页模块接口
+// 首页 - 预售分析
+// 预售分析 - 头部数据
+export function getHomePagePresellHeadData(data) {
+  return request({
+    url: '/homePage/presellHeadData',
+    method: 'post',
+    data,
+  })
+}
+// 预售分析 - 折线图
+export function getHomePagePresellLineChart(data) {
+  return request({
+    url: '/homePage/presellLineChart',
+    method: 'post',
+    data,
+  })
+}
+// 预售分析 - 排行
+export function getHomePagePresellHotGoodsRank(data) {
+  return request({
+    url: '/homePage/presellHotGoodsRank',
+    method: 'post',
+    data,
+  })
+}
 // 首页-聚水潭
 // 首页-聚水潭 库存预警
 export function getInformationStockWarning(data) {

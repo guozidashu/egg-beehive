@@ -727,7 +727,7 @@
           if (type == 3) {
             this.$baseConfirm('你确定要停售改项吗', null, async () => {
               const { msg } = await this.api.editGoodBatchLower({
-                good_ids: row.id,
+                good_ids: [row.id],
                 status: 2,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')
@@ -736,7 +736,7 @@
           } else if (type == 4) {
             this.$baseConfirm('你确定要在售改项吗', null, async () => {
               const { msg } = await this.api.editGoodBatchLower({
-                good_ids: row.id,
+                good_ids: [row.id],
                 status: 1,
               })
               this.$baseMessage(msg, 'success', 'vab-hey-message-success')

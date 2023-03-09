@@ -62,6 +62,15 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'presaleanalysis',
+        name: 'Presaleanalysis',
+        component: () => import('@/subview/index/presaleanalysis'),
+        meta: {
+          title: '大数据预售分析',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {
