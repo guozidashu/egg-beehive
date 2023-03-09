@@ -454,6 +454,7 @@
           legend: {
             data: ['销售目标', '销售金额', '回款金额'],
           },
+          color: ['#48B1FF', '#3ED6E5', '#FFDC60'],
           grid: {
             left: '3%',
             right: '4%',
@@ -480,32 +481,92 @@
             {
               name: '销售目标',
               type: 'line',
-              areaStyle: {},
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#48B1FF',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
+              itemStyle: {
+                color: '#48B1FF',
+              },
               smooth: true,
               data: this.dataAllList.sale_target,
-              itemStyle: {
-                color: '#1890FF',
-              },
             },
             {
               name: '销售金额',
               type: 'line',
-              areaStyle: {},
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#3ED6E5',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
+              itemStyle: {
+                color: '#3ED6E5',
+              },
               smooth: true,
               data: this.dataAllList.sale_total,
-              itemStyle: {
-                color: '#55DF7E',
-              },
             },
             {
               name: '回款金额',
               type: 'line',
-              areaStyle: {},
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#FFDC60',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
+              itemStyle: {
+                color: '#FFDC60',
+              },
               smooth: true,
               data: this.dataAllList.collection_total,
-              itemStyle: {
-                color: 'red',
-              },
             },
           ],
         }

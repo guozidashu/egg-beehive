@@ -173,7 +173,7 @@
                   colorStops: [
                     {
                       offset: 0,
-                      color: '#3ED6E5',
+                      color: '#48B1FF',
                     },
                     {
                       offset: 1,

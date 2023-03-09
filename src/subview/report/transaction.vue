@@ -535,6 +535,7 @@
           legend: {
             data: ['营业额', '交易毛利金额', '会员保证金', '收银金额'],
           },
+          color: ['#48B1FF', '#3ED6E5', '#FFDC60', '#FF6C87'],
           grid: {
             left: '3%',
             right: '4%',
@@ -560,39 +561,123 @@
           series: [
             {
               name: '营业额',
-              type: 'bar',
+              type: 'line',
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#48B1FF',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
+              itemStyle: {
+                color: '#48B1FF',
+              },
               smooth: true,
               data: this.dataAllList.turnover,
-              itemStyle: {
-                color: '#FFC833',
-              },
             },
             {
               name: '交易毛利金额',
-              type: 'bar',
+              type: 'line',
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#3ED6E5',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
+              itemStyle: {
+                color: '#3ED6E5',
+              },
               smooth: true,
               data: this.dataAllList.gross_profit_amount,
-              itemStyle: {
-                color: '#FF6C87',
-              },
             },
             {
               name: '会员保证金',
-              type: 'bar',
+              type: 'line',
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#FFDC60',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
+              itemStyle: {
+                color: '#FFDC60',
+              },
               smooth: true,
               data: this.dataAllList.earnest_price,
-              itemStyle: {
-                color: '#55DF7E',
-              },
             },
             {
               name: '收银金额',
-              type: 'bar',
+              type: 'line',
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#FF6C87',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
+              itemStyle: {
+                color: '#FF6C87',
+              },
               smooth: true,
               data: this.dataAllList.cashier_price,
-              itemStyle: {
-                color: '#3BDFDF',
-              },
             },
           ],
         }

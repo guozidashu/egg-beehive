@@ -525,6 +525,7 @@
             legend: {
               data: ['销售数量', '销售金额', '退货数量', '退货金额'],
             },
+            color: ['#48B1FF', '#3ED6E5', '#FFDC60', '#FF6C87'],
             grid: {
               left: '3%',
               right: '4%',
@@ -555,40 +556,124 @@
               {
                 name: '销售数量',
                 type: 'line',
-                areaStyle: {},
+                areaStyle: {
+                  opacity: 0.2,
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: '#48B1FF',
+                      },
+                      {
+                        offset: 1,
+                        color: '#fff',
+                      },
+                    ],
+                    global: false,
+                  },
+                },
+                itemStyle: {
+                  color: '#48B1FF',
+                },
                 smooth: true,
                 data: this.dataAllList.sale_num,
                 yAxisIndex: 1,
-                itemStyle: {
-                  color: '#FFC833',
-                },
               },
               {
                 name: '销售金额',
-                type: 'bar',
+                type: 'line',
+                smooth: true,
                 data: this.dataAllList.sale_total,
+                areaStyle: {
+                  opacity: 0.2,
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: '#3ED6E5',
+                      },
+                      {
+                        offset: 1,
+                        color: '#fff',
+                      },
+                    ],
+                    global: false,
+                  },
+                },
                 itemStyle: {
-                  color: '#FF6C87',
+                  color: '#3ED6E5',
                 },
               },
               {
                 name: '退货数量',
                 type: 'line',
-                areaStyle: {},
+                areaStyle: {
+                  opacity: 0.2,
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: '#FFDC60',
+                      },
+                      {
+                        offset: 1,
+                        color: '#fff',
+                      },
+                    ],
+                    global: false,
+                  },
+                },
+                itemStyle: {
+                  color: '#FFDC60',
+                },
                 smooth: true,
                 yAxisIndex: 1,
                 data: this.dataAllList.return_num,
-                itemStyle: {
-                  color: '#55DF7E',
-                },
               },
               {
                 name: '退货金额',
-                type: 'bar',
-                data: this.dataAllList.return_total,
-                itemStyle: {
-                  color: '#1890FF',
+                type: 'line',
+                smooth: true,
+                areaStyle: {
+                  opacity: 0.2,
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: '#FF6C87',
+                      },
+                      {
+                        offset: 1,
+                        color: '#fff',
+                      },
+                    ],
+                    global: false,
+                  },
                 },
+                itemStyle: {
+                  color: '#FF6C87',
+                },
+                data: this.dataAllList.return_total,
               },
             ],
           }

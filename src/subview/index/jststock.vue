@@ -670,7 +670,27 @@
             {
               name: '',
               type: 'line',
-              areaStyle: {},
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#1890FF',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
               smooth: true,
               data: [],
               itemStyle: {
@@ -680,9 +700,29 @@
             {
               name: '聚水潭',
               type: 'line',
-              areaStyle: {},
               smooth: true,
               data: [],
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#FFC833',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
               itemStyle: {
                 color: '#FFC833',
               },
@@ -690,7 +730,27 @@
             {
               name: '自主渠道',
               type: 'line',
-              areaStyle: {},
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#3BDFDF',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
               smooth: true,
               data: [],
               itemStyle: {

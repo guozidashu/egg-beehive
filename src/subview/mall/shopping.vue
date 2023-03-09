@@ -123,6 +123,12 @@
             type="textarea"
           />
         </el-form-item>
+        <el-form-item label="库存查询功能" prop="look_stock">
+          <el-radio-group v-model="form.look_stock">
+            <el-radio :label="0">关闭</el-radio>
+            <el-radio :label="1">开启</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <!-- <div style="display: flex">
           <el-form-item label="主色调" prop="main_color">
             <el-input v-model="form.main_color" style="width: 215px" />
@@ -281,6 +287,7 @@
         //   readOnly: false,
         // },
         form: {
+          look_stock: 0,
           bottom_logo: 'https://new.shopvvv.cn/static/imgsrc/logo.jpg', //商家底部图片
           avatar_name: 2,
           name: '商城系统', //商家名称
@@ -302,10 +309,17 @@
           screen_notice_content: null, //截图提醒文本
         },
         rules: {
+          look_stock: [
+            {
+              required: true,
+              message: '请选择是否开启库存查询',
+              trigger: 'blur',
+            },
+          ],
           avatar_name: [
             {
               required: true,
-              message: '请选择是否开启截图提醒',
+              message: '请选择是否强制设置头像昵称',
               trigger: 'blur',
             },
           ],

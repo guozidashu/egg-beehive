@@ -378,7 +378,7 @@
           legend: {
             data: ['供应商付款', '财务支出', '商品退还', '保证金退还'],
           },
-          color: ['#1890FF', '#55DF7E', '#FBD437', '#F2637B'],
+          color: ['#48B1FF', '#3ED6E5', '#FFDC60', '#FF6C87'],
           xAxis: {
             type: 'category',
             boundaryGap: false,
@@ -394,42 +394,122 @@
             {
               name: '供应商付款',
               type: 'line',
-              areaStyle: {},
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#48B1FF',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
+              itemStyle: {
+                color: '#48B1FF',
+              },
               smooth: true,
               data: [],
-              itemStyle: {
-                color: '#1890FF',
-              },
             },
             {
               name: '财务支出',
               type: 'line',
-              areaStyle: {},
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#3ED6E5',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
+              itemStyle: {
+                color: '#3ED6E5',
+              },
               smooth: true,
               data: [],
-              itemStyle: {
-                color: '#55DF7E',
-              },
             },
             {
               name: '商品退还',
               type: 'line',
-              areaStyle: {},
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#FFDC60',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
+              itemStyle: {
+                color: '#FFDC60',
+              },
               smooth: true,
               data: [],
-              itemStyle: {
-                color: '#FBD437',
-              },
             },
             {
               name: '保证金退还',
               type: 'line',
-              areaStyle: {},
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#FF6C87',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
+              itemStyle: {
+                color: '#FF6C87',
+              },
               smooth: true,
               data: [],
-              itemStyle: {
-                color: '#F2637B',
-              },
             },
           ],
         },
@@ -441,7 +521,7 @@
           legend: {
             data: ['收银金额', '保证金收入', '财务收入'],
           },
-          color: ['#1890FF', '#55DF7E', '#FBD437'],
+          color: ['#48B1FF', '#3ED6E5', '#FFDC60'],
           xAxis: {
             type: 'category',
             boundaryGap: false,
@@ -457,32 +537,92 @@
             {
               name: '收银金额',
               type: 'line',
-              areaStyle: {},
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#48B1FF',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
+              itemStyle: {
+                color: '#48B1FF',
+              },
               smooth: true,
               data: [],
-              itemStyle: {
-                color: '#1890FF',
-              },
             },
             {
               name: '保证金收入',
               type: 'line',
-              areaStyle: {},
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#3ED6E5',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
+              itemStyle: {
+                color: '#3ED6E5',
+              },
               smooth: true,
               data: [],
-              itemStyle: {
-                color: '#55DF7E',
-              },
             },
             {
               name: '财务收入',
               type: 'line',
-              areaStyle: {},
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#FFDC60',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
+              itemStyle: {
+                color: '#FFDC60',
+              },
               smooth: true,
               data: [],
-              itemStyle: {
-                color: '#FBD437',
-              },
             },
           ],
         },
