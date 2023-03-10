@@ -27,6 +27,13 @@
             <el-radio :label="2">强制设置</el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item label="强制登录" prop="forced_login">
+          <el-radio-group v-model="form.forced_login">
+            <el-radio :label="1">开启</el-radio>
+            <el-radio :label="0">关闭</el-radio>
+          </el-radio-group>
+          <div style="color: #999999">开启后进入系统必须先登录</div>
+        </el-form-item>
         <el-form-item label="商家名称" prop="name">
           <el-input v-model="form.name" style="width: 215px" />
         </el-form-item>
@@ -290,6 +297,7 @@
           look_stock: 0,
           bottom_logo: 'https://new.shopvvv.cn/static/imgsrc/logo.jpg', //商家底部图片
           avatar_name: 2,
+          forced_login: 1,
           name: '商城系统', //商家名称
           shopid: 'quanyudemo', //唯一标识
           domain: 'demo.quanyu123.com', //api域名
@@ -313,6 +321,13 @@
             {
               required: true,
               message: '请选择是否开启库存查询',
+              trigger: 'blur',
+            },
+          ],
+          forced_login: [
+            {
+              required: true,
+              message: '请选择是否强制登录',
               trigger: 'blur',
             },
           ],
