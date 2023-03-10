@@ -445,7 +445,7 @@
         temp.div_template_id = this.itemId
         temp.content = arr
         temp.name = '模板名称'
-        temp.is_default = this.is_default
+        temp.is_default = this.is_default == undefined ? 0 : this.is_default
         temp.status = 1
         temp.img = ''
         temp.class_id = this.$route.query.lx

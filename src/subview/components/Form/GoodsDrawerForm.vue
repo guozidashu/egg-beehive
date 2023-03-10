@@ -48,6 +48,8 @@
               </span>
             </div>
             <div>库位名称：{{ goodsDetails.position_name }}</div>
+            <div>起售数量：{{ goodsDetails.from_sale }}</div>
+            <div>每人限购：{{ goodsDetails.restricted_sale }}</div>
           </div>
         </div>
         <div class="conten-warp">
@@ -327,6 +329,28 @@
                     :value="item.id"
                   />
                 </el-select>
+              </el-form-item>
+              <el-form-item
+                class="item"
+                label="起售数量："
+                style="font-size: 12px"
+              >
+                <el-input
+                  v-model="form.from_sale"
+                  placeholder="请输入起售数量"
+                  style="width: 215px"
+                />
+              </el-form-item>
+              <el-form-item
+                class="item"
+                label="每人限购："
+                style="font-size: 12px"
+              >
+                <el-input
+                  v-model="form.restricted_sale"
+                  placeholder="请输入每人限购数量"
+                  style="width: 215px"
+                />
               </el-form-item>
             </div>
           </div>
