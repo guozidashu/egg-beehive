@@ -1916,6 +1916,14 @@ export function getGoodsGroupDetail(data) {
     data,
   })
 }
+// 商品分组 - 移除商品
+export function delGroupGoods(data) {
+  return request({
+    url: '/goods/delGroupGoods',
+    method: 'post',
+    data,
+  })
+}
 // 商城 - 商品分类
 // 商品分类 - 编辑
 export function editShopCateGoryEdit(data) {

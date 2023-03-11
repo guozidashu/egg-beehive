@@ -81,6 +81,9 @@
               >
                 新增商品到分组
               </el-button>
+              <el-button size="small" type="primary" @click="handleDel()">
+                移除商品
+              </el-button>
             </el-form-item>
             <!-- <el-form-item label="款式名称：" style="float: right">
               <el-input
@@ -97,6 +100,7 @@
             :total="total"
             @changePage="changeBtnPage"
             @changePageSize="changeBtnPageSize"
+            @selectRows="handleSelectionChange"
           >
             <template #List>
               <el-table-column type="selection" />
@@ -150,6 +154,7 @@
     components: { Edit },
     data() {
       return {
+        selectRowsId: [],
         form: {
           id: 0,
           page: 1,
@@ -176,6 +181,27 @@
       this.fetchData()
     },
     methods: {
+      handleSelectionChange(val) {
+        this.selectRowsId = val
+      },
+      handleDel() {
+        if (this.selectRowsId.length > 0) {
+          this.$baseConfirm('你确定要移除当前项吗', null, async () => {
+            const { code } = await this.api.delGroupGoods({
+              goods_id: this.selectRowsId.map((item) => item.goods_id),
+              group_id: this.form.id,
+            })
+            if (code != 200) {
+              return
+            } else {
+              this.$baseMessage('移除成功', 'success')
+            }
+            this.fetchData()
+          })
+        } else {
+          this.$baseMessage('请选择要移除的商品', 'warning')
+        }
+      },
       async handleEdit(row, type) {
         if (row === 'add') {
           this.$refs['edit'].showEdit(row, type)
