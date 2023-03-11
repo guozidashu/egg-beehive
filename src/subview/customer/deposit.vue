@@ -52,7 +52,7 @@
           <el-table-column
             align="center"
             label="客户保证金"
-            prop="margin_money"
+            prop="earnest_money"
             show-overflow-tooltip
           />
           <el-table-column
