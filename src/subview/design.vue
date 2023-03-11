@@ -125,6 +125,7 @@
     // },
     data() {
       return {
+        itemNmae: '',
         itemId: 0,
         is_default: 0,
         testsrn: '',
@@ -222,6 +223,7 @@
     created() {
       this.itemId = this.$route.query.id
       this.is_default = this.$route.query.is_default
+      this.itemNmae = this.$route.query.name
       this.getTypeList()
     },
     methods: {
@@ -444,7 +446,7 @@
         })
         temp.div_template_id = this.itemId
         temp.content = arr
-        temp.name = '模板名称'
+        temp.name = this.itemNmae
         temp.is_default = this.is_default == undefined ? 0 : this.is_default
         temp.status = 1
         temp.img = ''

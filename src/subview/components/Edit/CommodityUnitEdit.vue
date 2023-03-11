@@ -109,6 +109,12 @@
                 />
               </el-select>
             </el-form-item>
+            <el-form-item label="状态:">
+              <el-select v-model="formEdit.is_shop">
+                <el-option label="下架" value="2" />
+                <el-option label="上架" value="1" />
+              </el-select>
+            </el-form-item>
             <el-form-item label="商品搜索:">
               <el-input
                 v-model="formEdit.name"
@@ -174,6 +180,12 @@
               <el-table-column label="季节" prop="season_name" />
               <el-table-column label="品牌" prop="brand_name" />
               <el-table-column label="年份" prop="year_name" />
+              <el-table-column label="尺码类型" prop="type">
+                <template #default="{ row }">
+                  <span v-if="row.type == 0">整手</span>
+                  <span v-else>散码</span>
+                </template>
+              </el-table-column>
               <el-table-column label="状态" prop="status" width="150">
                 <template #default="{ row }">
                   <el-tag v-if="row.is_shop == 1">上架</el-tag>
@@ -215,6 +227,7 @@
           year: null,
           season: null,
           band: null,
+          is_shop: null,
         },
         formType: 4,
         listType: 1,

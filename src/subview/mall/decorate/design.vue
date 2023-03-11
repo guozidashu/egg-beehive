@@ -136,8 +136,8 @@
       </el-form>
     </el-card>
     <el-dialog :title="title" :visible.sync="dialogFormVisible" width="500px">
-      <el-form :model="form1">
-        <el-form-item v-if="title == '选择模板类型'" label="模板类型">
+      <el-form ref="form1" :model="form1" :rules="rules1">
+        <el-form-item v-if="title == '选择模板类型'" label="模板类型" prop="lx">
           <el-select
             v-model="form1.lx"
             placeholder="请选择模板类型"
@@ -151,8 +151,11 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="title == '编辑模板'" label="模板名称">
+        <el-form-item label="模板名称" prop="name">
           <el-input v-model="form1.name" style="width: 215px" />
+          <div style="margin-left: 100`px; font-size: 12px; color: #c0c4cc">
+            示例：2023春季（以波段命名）
+          </div>
         </el-form-item>
         <el-form-item v-if="title == '预览'">
           <el-image :src="imgInof" />
@@ -198,6 +201,13 @@
         total: 0,
         form1: {
           lx: '',
+          name: '',
+        },
+        rules1: {
+          lx: [{ required: true, message: '请选择模板类型', trigger: 'blur' }],
+          name: [
+            { required: true, message: '请输入模板名称', trigger: 'blur' },
+          ],
         },
       }
     },
@@ -267,15 +277,15 @@
         this.dialogFormVisible = false
       },
       dia_subit() {
-        if (this.form1.lx == '') {
-          this.$message({
-            type: 'error',
-            message: '请选择模板类型',
-          })
-          return
-        }
-        this.dialogFormVisible = false
-        window.open(`#/design?id=0&lx=${this.form1.lx}`, '_blank')
+        this.$refs['form1'].validate(async (valid) => {
+          if (valid) {
+            this.dialogFormVisible = false
+            window.open(
+              `#/design?id=0&lx=${this.form1.lx}&name=${this.form1.name}`,
+              '_blank'
+            )
+          }
+        })
       },
       handleEdit(item, type) {
         if (item == 0) {
@@ -288,7 +298,7 @@
         } else {
           if (type == 0) {
             window.open(
-              `#/design?id=${item.id}&lx=${item.class_id}&is_default=${item.is_default}`,
+              `#/design?id=${item.id}&lx=${item.class_id}&is_default=${item.is_default}&name=${item.name}`,
               '_blank'
             )
           } else if (type == 1) {
