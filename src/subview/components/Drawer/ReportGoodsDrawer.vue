@@ -68,6 +68,18 @@
         <el-table-column label="客户名称" prop="name" />
         <el-table-column label="拿货件数" prop="num" width="100" />
         <el-table-column
+          v-if="form.goods_type == 2"
+          label="颜色"
+          prop="num"
+          width="100"
+        />
+        <el-table-column
+          v-if="form.goods_type == 2"
+          label="尺码"
+          prop="num"
+          width="100"
+        />
+        <el-table-column
           align="right"
           label="拿货金额"
           prop="total"

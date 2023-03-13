@@ -106,6 +106,20 @@
               <el-option label="散码" :value="1" />
             </el-select>
           </el-form-item>
+          <el-form-item label="季节:" prop="season">
+            <el-select
+              v-model="goodsForm1.season"
+              placeholder="请选择季节"
+              style="width: 150px"
+            >
+              <el-option
+                v-for="(item, index) in selectList.season"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
           <el-form-item label="品牌:" prop="brand">
             <el-select
               v-model="goodsForm1.brand"
@@ -135,18 +149,29 @@
               unlink-panels
               value-format="yyyy-MM-dd HH:mm:ss"
             />
-            <el-button
-              size="small"
-              style="margin-left: 10px"
-              type="primary"
-              @click="resetForm1()"
-            >
-              重置
-            </el-button>
           </el-form-item>
+          <el-radio-group
+            v-model="goodsForm1.goods_type"
+            style="margin-right: 10px"
+          >
+            <el-radio-button :label="1">按款号</el-radio-button>
+            <el-radio-button :label="2">按规格</el-radio-button>
+          </el-radio-group>
+          <el-button size="small" type="primary" @click="resetForm1()">
+            重置
+          </el-button>
         </el-form-item>
       </el-form>
-      <QYList :list="goosList" :list-type="listType" :state="listLoading">
+      <QYList
+        :list="goosList"
+        :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
+        :state="listLoading"
+        :total="total"
+        @changePage="changeBtnPage"
+        @changePageSize="changeBtnPageSize"
+      >
         <template #List>
           <el-table-column align="center" label="排行" type="index" width="50">
             <template slot-scope="scope">
@@ -178,7 +203,17 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column label="商品名称" prop="name" />
+          <el-table-column
+            v-if="goodsForm1.goods_type == 2"
+            label="商品名称"
+            prop="name"
+          />
+          <el-table-column
+            v-if="goodsForm1.goods_type == 2"
+            label="颜色"
+            prop="name"
+          />
+          <el-table-column label="尺码" prop="name" />
           <el-table-column label="商品款号" prop="sn" width="100" />
           <el-table-column
             align="right"
@@ -263,24 +298,31 @@
     mixins: [datajosn],
     data() {
       return {
+        time1: '按款号',
         drawerInof: {},
         drawer: false,
         title: '单品分析',
         filename: '商品数据分析',
         listLoading: false,
-        listType: 2,
+        listType: 1,
         goosList: [],
         goodsForm: {
           type: null,
           brand: null,
           time: this.getPastTime(30),
         },
+        total: 0,
+        formTemp: null,
+        page: 1,
+        pageSize: 10,
         goodsForm1: {
           page: 1,
           pageSize: 20,
           type: -1,
+          goods_type: 1,
           brand: null,
           order: null,
+          season: null,
           time: this.getPastTime(30),
         },
         selectList: [],
@@ -419,8 +461,21 @@
         deep: true,
       },
       goodsForm1: {
-        handler: function () {
+        handler: function (newVal) {
+          this.formTemp = JSON.parse(JSON.stringify(newVal))
+          if (this.pageState) {
+            this.formTemp.page = newVal.page
+            this.formTemp.pageSize = newVal.pageSize
+            this.page = newVal.page
+            this.pageSize = newVal.pageSize
+          } else {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 10
+            this.page = 1
+            this.pageSize = 10
+          }
           this.getTableList()
+          this.pageState = false
         },
         deep: true,
       },
@@ -433,10 +488,12 @@
     methods: {
       handleDetail(row) {
         this.drawerInof = JSON.parse(JSON.stringify(row))
+        this.drawerInof.goods_type = this.goodsForm1.goods_type
         this.drawer = true
       },
       resetForm() {
         this.goodsForm = {
+          season: null,
           type: null,
           brand: null,
           time: this.getPastTime(30),
@@ -448,18 +505,31 @@
           pageSize: 20,
           type: null,
           brand: null,
+          goods_type: 1,
+          season: null,
           time: this.getPastTime(30),
         }
       },
+      changeBtnPage(data) {
+        this.pageState = true
+        this.goodsForm1.page = data
+      },
+      changeBtnPageSize(data) {
+        this.pageState = true
+        this.goodsForm1.pageSize = data
+      },
       async getTypeList() {
         const { data } = await this.api.getCommonAllList({
-          type: 'brand',
+          type: 'brand,season',
         })
         this.selectList = data
       },
       async getTableList() {
         this.listLoading = true
-        let temp = JSON.parse(JSON.stringify(this.goodsForm1))
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.goodsForm1))
+        }
+        let temp = JSON.parse(JSON.stringify(this.formTemp))
         if (temp.type != 0 && temp.type != 1 && temp.type != -1) {
           temp.order = temp.type
           temp.type = null
@@ -471,6 +541,7 @@
         }
         const { data } = await this.api.getGoodsRank(temp)
         this.goosList = data.data
+        this.total = data.total
         this.listLoading = false
       },
       async fetchData() {

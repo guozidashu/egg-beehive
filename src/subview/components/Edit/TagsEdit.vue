@@ -15,7 +15,11 @@
           />
         </el-form-item>
         <el-form-item label="排序" prop="order">
-          <el-input v-model="form.order" style="width: 215px" />
+          <el-input
+            v-model="form.order"
+            style="width: 215px"
+            @input="form.order = $numFormatInput(form.order)"
+          />
         </el-form-item>
         <div v-for="(item, index) in form.tag" :key="index">
           <el-form-item label="标签名称" prop="group_name">
@@ -82,7 +86,11 @@
           <el-input v-model="form.name" style="width: 215px" />
         </el-form-item>
         <el-form-item label="排序">
-          <el-input v-model="form.order" style="width: 215px" />
+          <el-input
+            v-model="form.order"
+            style="width: 215px"
+            @input="form.order = $numFormatInput(form.order)"
+          />
         </el-form-item>
       </div>
       <!-- <el-form-item v-if="type === 1" label="标签分类" prop="name">
@@ -110,7 +118,7 @@
         />
       </el-form-item>
       <el-form-item v-if="type === 2" label="排序" prop="sort">
-        <el-input v-model="form.sort" style="width: 215px" />
+        <el-input v-model="form.sort" @input="form.sort= $numFormatInput(form.sort)" style="width: 215px" />
       </el-form-item> -->
     </el-form>
     <template #footer>

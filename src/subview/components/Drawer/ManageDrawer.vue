@@ -276,7 +276,7 @@
               <el-form-item class="item" label="汇款方式：" style="width: 100%">
                 <el-radio-group v-model="form.remit_role">
                   <el-radio :label="0">仅上线付款</el-radio>
-                  <el-radio :label="1">运行线下付款</el-radio>
+                  <el-radio :label="1">允许线下付款</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item class="item" label="发货方式：" style="width: 100%">
@@ -541,6 +541,11 @@
           ],
           mobile: [
             { required: true, message: '请输入手机号', trigger: 'blur' },
+            {
+              pattern: /^1[3456789]\d{9}$/,
+              message: '请输入正确的手机号码',
+              trigger: 'blur',
+            },
           ],
           level: [
             { required: true, message: '请选择客户等级', trigger: 'blur' },

@@ -54,6 +54,9 @@
           <el-input
             v-if="typeof scope.row[index] === 'object'"
             v-model="scope.row[index].value"
+            @input="
+              scope.row[index].value = $numFormatInput(scope.row[index].value)
+            "
           />
           <span v-else>{{ scope.row[index] }}</span>
         </template>

@@ -31,7 +31,11 @@
         />
       </el-form-item>
       <el-form-item v-if="type === 2" label="排序" prop="sort">
-        <el-input v-model="form.sort" style="width: 215px" />
+        <el-input
+          v-model="form.sort"
+          style="width: 215px"
+          @input="form.sort = $numFormatInput(form.sort)"
+        />
       </el-form-item>
       <el-form-item label="上传">
         <div style="display: flex">

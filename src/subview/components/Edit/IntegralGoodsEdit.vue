@@ -16,10 +16,16 @@
         <el-input v-model="form.stock" />
       </el-form-item>
       <el-form-item label="实际价格" prop="actual_price">
-        <el-input v-model="form.actual_price" />
+        <el-input
+          v-model="form.actual_price"
+          @input="form.actual_price = $moneyFormatInput(form.actual_price)"
+        />
       </el-form-item>
       <el-form-item label="排序" prop="sort">
-        <el-input v-model="form.sort" />
+        <el-input
+          v-model="form.sort"
+          @input="form.sort = $numFormatInput(form.sort)"
+        />
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-switch
@@ -85,14 +91,32 @@
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
           integral: [
+            { required: true, trigger: 'blur', message: '请输入兑换积分' },
             {
-              required: true,
+              validator: (rule, value, callback) => {
+                if (!/^[1-9]\d*$/.test(value)) {
+                  callback(new Error('请输入大于0的整数'))
+                } else {
+                  callback()
+                }
+              },
               trigger: 'blur',
-              message: '请输入兑换所需要积分',
             },
           ],
           stock: [{ required: true, trigger: 'blur', message: '请输入库存' }],
-          sort: [{ required: true, trigger: 'blur', message: '请输入排序' }],
+          sort: [
+            { required: true, trigger: 'blur', message: '请输入排序' },
+            {
+              validator: (rule, value, callback) => {
+                if (!/^[1-9]\d*$/.test(value)) {
+                  callback(new Error('请输入大于0的整数'))
+                } else {
+                  callback()
+                }
+              },
+              trigger: 'blur',
+            },
+          ],
           actual_price: [
             { required: true, trigger: 'blur', message: '请输入实际价格' },
           ],

@@ -10,7 +10,10 @@
         <el-input v-model="form.name" />
       </el-form-item>
       <el-form-item label="排序" prop="sort">
-        <el-input v-model="form.sort" />
+        <el-input
+          v-model="form.sort"
+          @input="form.sort = $numFormatInput(form.sort)"
+        />
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-radio-group v-model="form.status">

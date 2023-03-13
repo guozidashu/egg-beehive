@@ -23,7 +23,7 @@
         />
       </el-form-item>
       <el-form-item label="排序" prop="sort">
-        <el-input v-model="form.sort" style="width: 215px" />
+        <el-input v-model="form.sort" @input="form.sort= $numFormatInput(form.sort)" style="width: 215px" />
       </el-form-item> -->
     </el-form>
     <template #footer>

@@ -40,6 +40,7 @@
           v-model="form.amount"
           placeholder="请输入金额"
           style="width: 220px"
+          @input="form.amount = $moneyFormatInput(form.amount)"
         />
       </el-form-item>
       <el-form-item label="报销凭证:" prop="voucher_image">

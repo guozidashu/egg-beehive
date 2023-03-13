@@ -104,7 +104,7 @@
       :current-page="pageNo"
       :layout="layout"
       :page-size="pageSize"
-      :page-sizes="[10, 20, 30, 40]"
+      :page-sizes="[10, 20, 30, 40, 100]"
       :total="total"
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"

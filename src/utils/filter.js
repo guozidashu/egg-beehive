@@ -22,8 +22,34 @@ export function permissionFiltering(path, role) {
   })
   return temp
 }
-
-// 人民币过滤器
+// 输入框正整数格式化
+export function numFormatInput(value) {
+  let temp = value
+  // 清除数字以外的字符
+  temp = temp.replace(/[^\d]/g, '')
+  // 必须是大于等于0整数
+  temp = temp.replace(/^0/g, '')
+  if (temp == '') {
+    temp = 0
+  }
+  return temp
+}
+// 输入框金额格式化 正值
+export function moneyFormatInput(value) {
+  let temp = value
+  temp = temp.replace(/[^\d.]/g, '') //清除“数字”和“.”以外的字符
+  temp = temp.replace(/^\./g, '') //验证第一个字符是数字而不是.
+  temp = temp.replace(/\.{2,}/g, '.') //只保留第一个. 清除多余的.
+  temp = temp.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.') //去掉特殊符号￥
+  if (temp.indexOf('.') > 0) {
+    temp = temp.substring(0, temp.indexOf('.') + 3)
+  }
+  if (temp == '') {
+    temp = 0
+  }
+  return temp
+}
+// 人民币过滤器文本显示
 Vue.filter('moneyFormat', (value) => {
   // 金额分割符
   const separator = ','

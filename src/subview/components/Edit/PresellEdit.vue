@@ -45,6 +45,7 @@
           v-model="form.price"
           placeholder="请输入预售价格"
           style="width: 215px"
+          @input="form.price = $moneyFormatInput(form.price)"
         />
       </el-form-item>
 
@@ -60,20 +61,30 @@
       <el-form-item label="尾款支付天数" prop="final_payment_day">
         <el-input
           v-model="form.final_payment_day"
-          onkeyup="value=value.replace(/[^\d]+/g,'')"
           placeholder="请输入尾款支付天数"
           style="width: 215px"
+          @input="
+            form.final_payment_day = $numFormatInput(form.final_payment_day)
+          "
         />
         <div style="font-size: 12px; color: #c0c4cc">
           预售结束日期向后推迟多少天内
         </div>
       </el-form-item>
       <el-form-item label=" 定金支付比例" prop="payment_ratio">
-        <el-input v-model="form.payment_ratio" style="width: 100px" />
+        <el-input
+          v-model="form.payment_ratio"
+          style="width: 100px"
+          @input="form.payment_ratio = $moneyFormatInput(form.payment_ratio)"
+        />
         %
       </el-form-item>
       <el-form-item label="超期赔付比例" prop="penalty_ratio">
-        <el-input v-model="form.penalty_ratio" style="width: 100px" />
+        <el-input
+          v-model="form.penalty_ratio"
+          style="width: 100px"
+          @input="form.penalty_ratio = $moneyFormatInput(form.penalty_ratio)"
+        />
         %
         <div style="font-size: 12px; color: #c0c4cc">
           每超过发货日期1天24小时，就算一次

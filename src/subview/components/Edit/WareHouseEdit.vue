@@ -24,7 +24,11 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="排序" prop="sort">
-        <el-input v-model="form.sort" style="width: 215px" />
+        <el-input
+          v-model="form.sort"
+          style="width: 215px"
+          @input="form.sort = $numFormatInput(form.sort)"
+        />
       </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input v-model="form.remark" style="width: 215px" />

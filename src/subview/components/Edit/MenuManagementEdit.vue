@@ -52,7 +52,10 @@
           <el-input v-model="form.type" />
         </el-form-item>
         <el-form-item label="排序" prop="sort">
-          <el-input v-model="form.sort" />
+          <el-input
+            v-model="form.sort"
+            @input="form.sort = $numFormatInput(form.sort)"
+          />
         </el-form-item>
       </div>
       <div v-if="type == 2">

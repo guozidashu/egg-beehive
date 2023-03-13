@@ -339,6 +339,7 @@
                   v-model="form.from_sale"
                   placeholder="请输入起售数量"
                   style="width: 215px"
+                  @input="form.from_sale = $moneyFormatInput(form.from_sale)"
                 />
               </el-form-item>
               <el-form-item
@@ -350,6 +351,11 @@
                   v-model="form.restricted_sale"
                   placeholder="请输入每人限购数量"
                   style="width: 215px"
+                  @input="
+                    form.restricted_sale = $moneyFormatInput(
+                      form.restricted_sale
+                    )
+                  "
                 />
               </el-form-item>
             </div>
@@ -360,16 +366,35 @@
             <div class="conten-title">价格信息</div>
             <div class="conten-list-com">
               <el-form-item class="item" label="采购价：" prop="purchase_price">
-                <el-input v-model="form.purchase_price" style="width: 215px" />
+                <el-input
+                  v-model="form.purchase_price"
+                  style="width: 215px"
+                  @input="
+                    form.purchase_price = $moneyFormatInput(form.purchase_price)
+                  "
+                />
               </el-form-item>
               <el-form-item class="item" label="成本价：" prop="cost_price">
-                <el-input v-model="form.cost_price" style="width: 215px" />
+                <el-input
+                  v-model="form.cost_price"
+                  style="width: 215px"
+                  @input="form.cost_price = $moneyFormatInput(form.cost_price)"
+                />
               </el-form-item>
               <el-form-item class="item" label="吊牌价：" prop="sale_price">
-                <el-input v-model="form.sale_price" style="width: 215px" />
+                <el-input
+                  v-model="form.sale_price"
+                  style="width: 215px"
+                  @input="form.sale_price = $moneyFormatInput(form.sale_price)"
+                />
               </el-form-item>
               <el-form-item class="item" label="销售价：" prop="price">
-                <el-input v-model="form.price" clearable style="width: 215px">
+                <el-input
+                  v-model="form.price"
+                  clearable
+                  style="width: 215px"
+                  @input="form.price = $moneyFormatInput(form.price)"
+                >
                   <el-button slot="append" @click="changeType()">
                     固定价
                   </el-button>
@@ -398,7 +423,10 @@
                       show-overflow-tooltip
                     >
                       <template #default="{ row }">
-                        <el-input v-model="row.price" />
+                        <el-input
+                          v-model="row.price"
+                          @input="row.price = $moneyFormatInput(row.price)"
+                        />
                       </template>
                     </el-table-column>
                     <el-table-column
@@ -412,7 +440,10 @@
                       show-overflow-tooltip
                     >
                       <template #default="{ row }">
-                        <el-input v-model="row.price1" />
+                        <el-input
+                          v-model="row.price1"
+                          @input="row.price1 = $moneyFormatInput(row.price1)"
+                        />
                       </template>
                     </el-table-column>
                   </template>
@@ -452,10 +483,13 @@
               <el-form-item class="item" label="库存预警：">
                 <el-input
                   v-model="form.goods_stock_warning"
-                  min="0"
                   placeholder="商品现货库存小于多少时预警"
                   style="width: 215px"
-                  type="number"
+                  @input="
+                    form.goods_stock_warning = $numFormatInput(
+                      form.goods_stock_warning
+                    )
+                  "
                 />
               </el-form-item>
             </div>

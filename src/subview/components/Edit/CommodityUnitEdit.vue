@@ -16,7 +16,11 @@
           />
         </el-form-item>
         <el-form-item label="排序" prop="sort">
-          <el-input v-model="form.sort" style="width: 215px" />
+          <el-input
+            v-model="form.sort"
+            style="width: 215px"
+            @input="form.sort = $numFormatInput(form.sort)"
+          />
         </el-form-item>
         <el-form-item label="状态">
           <el-switch
@@ -115,10 +119,10 @@
                 <el-option label="上架" value="1" />
               </el-select>
             </el-form-item>
-            <el-form-item label="商品搜索:">
+            <el-form-item label="商品款号:">
               <el-input
-                v-model="formEdit.name"
-                placeholder="请输入商品名称"
+                v-model="formEdit.sn"
+                placeholder="请输入商品款号"
                 style="width: 215px"
               />
             </el-form-item>
@@ -228,6 +232,7 @@
           season: null,
           band: null,
           is_shop: null,
+          sn: null,
         },
         formType: 4,
         listType: 1,

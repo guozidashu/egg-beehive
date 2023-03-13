@@ -266,7 +266,9 @@ d
                   v-model="form.initial_amount"
                   placeholder="请输入期初欠款"
                   style="width: 215px"
-                  type="number"
+                  @input="
+                    form.initial_amount = $moneyFormatInput(form.initial_amount)
+                  "
                 />
               </el-form-item>
               <el-form-item class="item" label="备注：" style="width: 100%">
@@ -390,7 +392,14 @@ d
           contact_name: [
             { required: true, message: '请输入联系人', trigger: 'blur' },
           ],
-          tel: [{ required: true, message: '请输入联系电话', trigger: 'blur' }],
+          tel: [
+            { required: true, message: '请输入联系电话', trigger: 'blur' },
+            {
+              pattern: /^1[3456789]\d{9}$/,
+              message: '请输入正确的手机号码',
+              trigger: 'blur',
+            },
+          ],
           type: [
             { required: true, message: '请选择供应商类型', trigger: 'blur' },
           ],

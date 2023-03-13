@@ -207,7 +207,11 @@
               >
                 详情
               </el-button>
-              <el-button type="text" @click="handleDeposit(row.id)">
+              <el-button
+                v-has-permi="['btn:CustomerManage:deposit']"
+                type="text"
+                @click="handleDeposit(row.id)"
+              >
                 保证金
               </el-button>
               <!-- <el-button type="text" @click="handleIntegral(row.id)">
@@ -316,6 +320,9 @@
             v-model="DepositEditForm.money"
             placeholder="请输入保证金额度"
             style="width: 215px"
+            @input="
+              DepositEditForm.money = $moneyFormatInput(DepositEditForm.money)
+            "
           />
         </el-form-item>
         <el-form-item label="转账证明">
@@ -537,15 +544,14 @@
       },
       // 新增客户保证金 确认
       DepositEditSave() {
-        this.dialogVisibleEdit = false
-        this.$confirm('确认新增保证金吗？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        })
-          .then(() => {
-            this.$refs['DepositEdit'].validate(async (valid) => {
-              if (valid) {
+        this.$refs['DepositEdit'].validate((valid) => {
+          if (valid) {
+            this.$confirm('确认新增保证金吗？', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning',
+            })
+              .then(async () => {
                 const { code } = await this.api.addCustomerEarnest(
                   this.DepositEditForm
                 )
@@ -554,15 +560,15 @@
                   this.dialogVisibleEdit = false
                   this.handleDeposit(this.DepositEditForm.customer_id)
                 }
-              }
-            })
-          })
-          .catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消新增',
-            })
-          })
+              })
+              .catch(() => {
+                this.$message({
+                  type: 'info',
+                  message: '已取消新增',
+                })
+              })
+          }
+        })
       },
       // 新增客户保证金 打开
       handleDepositEdit() {
@@ -634,7 +640,8 @@
         if (row == 'add') {
           this.drawerInof = {}
           this.drawerInof.drawerType = type
-          this.drawerInof.order_belong = 1
+          this.drawerInof.remit_role = 1
+          this.drawerInof.order_belong = 2
           this.drawerInof.status = 1
           this.drawerInof.is_online_order = 0
         } else {
