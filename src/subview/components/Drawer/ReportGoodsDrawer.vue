@@ -74,10 +74,9 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="ID" prop="id" width="50" />
         <el-table-column label="客户名称" prop="name" />
         <el-table-column label="拿货件数" prop="num" width="100" />
-        <!-- <el-table-column
+        <el-table-column
           v-if="form.goods_type == 2"
           label="颜色"
           prop="num"
@@ -88,7 +87,7 @@
           label="尺码"
           prop="num"
           width="100"
-        /> -->
+        />
         <el-table-column
           align="right"
           label="拿货金额"
@@ -170,11 +169,22 @@
       drawerInof: {
         handler: function (newVal) {
           this.form = JSON.parse(JSON.stringify(newVal))
-          this.formList.goods_id = newVal.id
-          this.formList.time = this.getPastTime(30)
+          if (newVal.goods_type == 2) {
+            this.formList = {
+              time: this.getPastTime(30),
+              stock_id: newVal.stock_id,
+            }
+          } else {
+            this.formList = {
+              time: this.getPastTime(30),
+              goods_id: newVal.id,
+            }
+          }
           this.fetchData()
         },
         deep: true,
+        // 初次监听
+        immediate: true,
       },
       'formList.time': {
         handler: function () {
@@ -187,21 +197,41 @@
     methods: {
       async fetchData() {
         this.listLoading = true
-        const { data } = await this.api.getGoodsDetailAnalysis(this.formList)
-        this.cardList.forEach((item) => {
-          for (let i in data.list) {
-            if (item.name == i) {
-              if (data.list[i] == null) {
-                data.list[i] = 0
-                item.value = data.list[i]
-              } else {
-                item.value = data.list[i]
+        if (this.form.goods_type == 2) {
+          const { data } = await this.api.getGoodsDetailSpecificationAnalysis(
+            this.formList
+          )
+          this.cardList.forEach((item) => {
+            for (let i in data.list) {
+              if (item.name == i) {
+                if (data.list[i] == null) {
+                  data.list[i] = 0
+                  item.value = data.list[i]
+                } else {
+                  item.value = data.list[i]
+                }
               }
             }
-          }
-        })
-        this.list = data.customers
-        this.listLoading = false
+          })
+          this.list = data.customers
+          this.listLoading = false
+        } else {
+          const { data } = await this.api.getGoodsDetailAnalysis(this.formList)
+          this.cardList.forEach((item) => {
+            for (let i in data.list) {
+              if (item.name == i) {
+                if (data.list[i] == null) {
+                  data.list[i] = 0
+                  item.value = data.list[i]
+                } else {
+                  item.value = data.list[i]
+                }
+              }
+            }
+          })
+          this.list = data.customers
+          this.listLoading = false
+        }
       },
     },
   }

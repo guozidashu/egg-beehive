@@ -487,8 +487,8 @@
     },
     methods: {
       handleDetail(row) {
+        row.goods_type = this.goodsForm1.goods_type
         this.drawerInof = JSON.parse(JSON.stringify(row))
-        this.drawerInof.goods_type = this.goodsForm1.goods_type
         this.drawer = true
       },
       resetForm() {

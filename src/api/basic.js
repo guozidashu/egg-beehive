@@ -1127,6 +1127,14 @@ export function getGoodsDetailAnalysis(data) {
     data,
   })
 }
+// 商品分析 单品规格分析
+export function getGoodsDetailSpecificationAnalysis(data) {
+  return request({
+    url: '/information/goodsSpecAnalysis',
+    method: 'post',
+    data,
+  })
+}
 //数据- 客户分析
 //客户分析- 图表
 export function getCustomerReportForms(data) {
