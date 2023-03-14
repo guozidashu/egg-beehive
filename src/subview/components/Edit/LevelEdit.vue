@@ -98,8 +98,8 @@
       </el-form-item>
       <el-form-item label="能否散批" prop="single_buy">
         <el-radio-group v-model="form.single_buy">
-          <el-radio :label="1">关闭</el-radio>
-          <el-radio :label="0">开启</el-radio>
+          <el-radio :label="0">关闭</el-radio>
+          <el-radio :label="1">开启</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="保证金额">

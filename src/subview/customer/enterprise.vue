@@ -20,6 +20,16 @@
           <el-form-item label="名称" prop="region">
             <el-input v-model="form.name" size="small" />
           </el-form-item>
+          <el-form-item label="所属员工">
+            <el-select v-model="form.employee_id" style="width: 200px">
+              <el-option
+                v-for="(item, index) in selectDataList"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
         </template>
       </QYForm>
       <div style="margin-right: 20px">
@@ -171,6 +181,7 @@
     components: { Drawer },
     data() {
       return {
+        selectDataList: [],
         title: '',
         // 抽屉相关数据
         drawer: false,
@@ -184,6 +195,7 @@
           name: '',
           page: 1,
           pageSize: 10,
+          employee_id: null,
         },
         formType: 4,
         listType: 1,
@@ -215,9 +227,22 @@
       },
     },
     created() {
+      this.selectData()
       this.fetchData()
     },
     methods: {
+      // 获取下拉框数据
+      async selectData() {
+        const { data } = await this.api.getEmployeeList({
+          name: '',
+          page: -1,
+          pageSize: 10,
+          department_id: '', //部门id
+          role: null, //岗位id
+          status: 1, // 状态 1=在职 0=停职 默认传1
+        })
+        this.selectDataList = data
+      },
       // 同步企业微信
       handleExternalSyncExternal() {
         this.$confirm('是否同步企业微信客户数据？', '提示', {

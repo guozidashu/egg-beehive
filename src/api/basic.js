@@ -845,6 +845,14 @@ export function getCustomerEarnestList(data) {
     data,
   })
 }
+// 客户管理 - 客户合同编辑
+export function getCustomerAgreement(data) {
+  return request({
+    url: '/customer/agreement',
+    method: 'post',
+    data,
+  })
+}
 // 客户 - 客户等级
 // 客户等级 - 列表
 export function getGradeList(data) {

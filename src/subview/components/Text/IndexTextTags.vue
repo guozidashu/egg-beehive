@@ -3,10 +3,10 @@
     <el-col
       v-for="(item, index) in list"
       :key="index"
-      :lg="6"
+      :lg="divLength"
       :md="12"
       :sm="24"
-      :xl="6"
+      :xl="divLength"
       :xs="24"
     >
       <el-card class="access" shadow="hover" style="border-radius: 5px">
@@ -153,6 +153,10 @@
       list: {
         type: Array,
         default: () => [],
+      },
+      divLength: {
+        type: Number,
+        default: 6,
       },
     },
     data() {

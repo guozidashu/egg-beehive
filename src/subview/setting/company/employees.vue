@@ -97,6 +97,7 @@
             </template>
           </el-table-column>
           <el-table-column label="员工姓名" prop="name" show-overflow-tooltip />
+          <el-table-column label="员工user_id" prop="userid" width="300" />
           <el-table-column
             label="部门"
             prop="department_name"

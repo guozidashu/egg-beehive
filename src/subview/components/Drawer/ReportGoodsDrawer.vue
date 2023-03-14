@@ -17,11 +17,21 @@
         <div>{{ form.sn }}</div>
       </div>
       <div style="position: absolute; right: 0; padding-top: 10px">
-        <el-radio-group v-model="time">
-          <el-radio-button label="昨天" />
-          <el-radio-button label="七天" />
-          <el-radio-button label="30天" />
-        </el-radio-group>
+        <span style="margin-right: 10px">时间筛选：</span>
+        <el-date-picker
+          v-model="formList.time"
+          align="right"
+          :clearable="false"
+          :default-time="['00:00:00', '23:59:59']"
+          end-placeholder="结束日期"
+          format="yyyy-MM-dd"
+          :picker-options="pickerOptions"
+          range-separator="至"
+          start-placeholder="开始日期"
+          type="daterange"
+          unlink-panels
+          value-format="yyyy-MM-dd HH:mm:ss"
+        />
       </div>
     </div>
     <el-row :gutter="20">
@@ -67,7 +77,7 @@
         <el-table-column label="ID" prop="id" width="50" />
         <el-table-column label="客户名称" prop="name" />
         <el-table-column label="拿货件数" prop="num" width="100" />
-        <el-table-column
+        <!-- <el-table-column
           v-if="form.goods_type == 2"
           label="颜色"
           prop="num"
@@ -78,7 +88,7 @@
           label="尺码"
           prop="num"
           width="100"
-        />
+        /> -->
         <el-table-column
           align="right"
           label="拿货金额"
@@ -161,25 +171,16 @@
         handler: function (newVal) {
           this.form = JSON.parse(JSON.stringify(newVal))
           this.formList.goods_id = newVal.id
-          this.time = '昨天'
+          this.formList.time = this.getPastTime(30)
           this.fetchData()
         },
         deep: true,
-        immediate: true,
       },
-      time: {
-        handler: function (newVal) {
-          if (newVal == '昨天') {
-            this.formList.time = this.getYesterdayTime()
-          } else if (newVal == '七天') {
-            this.formList.time = this.getWeenTime()
-          } else if (newVal == '30天') {
-            this.formList.time = this.getPastTime(30)
-          }
+      'formList.time': {
+        handler: function () {
           this.fetchData()
         },
         deep: true,
-        immediate: true,
       },
     },
     created() {},

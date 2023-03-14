@@ -191,7 +191,7 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column label="商品图片" prop="image" width="75">
+          <el-table-column label="商品图片" prop="image" width="90">
             <template #default="{ row }">
               <el-tooltip placement="top">
                 <el-image
@@ -203,17 +203,17 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column
-            v-if="goodsForm1.goods_type == 2"
-            label="商品名称"
-            prop="name"
-          />
+          <el-table-column label="商品名称" prop="name" />
           <el-table-column
             v-if="goodsForm1.goods_type == 2"
             label="颜色"
-            prop="name"
+            prop="color_name"
           />
-          <el-table-column label="尺码" prop="name" />
+          <el-table-column
+            v-if="goodsForm1.goods_type == 2"
+            label="尺码"
+            prop="size_name"
+          />
           <el-table-column label="商品款号" prop="sn" width="100" />
           <el-table-column
             align="right"

@@ -545,6 +545,15 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'reportDeposit',
+        name: 'ReportDeposit',
+        component: () => import('@/subview/report/deposit'),
+        meta: {
+          title: '保证金统计',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {

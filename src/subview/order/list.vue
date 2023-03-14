@@ -108,7 +108,29 @@
         <template #List>
           <el-table-column type="selection" />
           <el-table-column label="批次号" prop="id" width="80" />
-          <el-table-column label="订单号" prop="sn" width="180" />
+          <el-table-column label="订单号" prop="sn" width="180">
+            <template #default="{ row }">
+              <div
+                v-if="row.is_void == 1"
+                style="
+                  display: flex;
+                  align-items: center; /*纵轴 */
+                  justify-content: center; /*主轴 */
+                  width: 100%;
+                  height: 100px;
+                  background-image: url('https://oss.business.quanyu123.com//8b2d13e1410e81375f7535150af192f2.jpg');
+                  background-repeat: no-repeat;
+                  -moz-background-size: 100% 100%;
+                  background-size: 100% 100%;
+                "
+              >
+                {{ row.sn }}
+              </div>
+              <div v-else>
+                {{ row.sn }}
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column
             align="right"
             label="总金额"

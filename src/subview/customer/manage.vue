@@ -151,7 +151,44 @@
               </el-tag>
             </template>
           </el-table-column>
-
+          <el-table-column align="right" label="合同" width="150">
+            <template #default="{ row }">
+              <el-upload
+                v-if="row.agreement == null"
+                :action="getAction()"
+                class="upload-demo"
+                :headers="headers"
+                :limit="1"
+                :on-success="handleChange"
+                :show-file-list="false"
+              >
+                <el-tag type="danger" @click="handleChangeupload(row.id)">
+                  上传合同
+                </el-tag>
+              </el-upload>
+              <el-tooltip v-else placement="top">
+                <div slot="content" style="display: flex">
+                  <el-tag
+                    style="margin-right: 10px"
+                    @click="handleViewupload(row.agreement)"
+                  >
+                    查看
+                  </el-tag>
+                  <el-upload
+                    :action="getAction()"
+                    class="upload-demo"
+                    :headers="headers"
+                    :limit="1"
+                    :on-success="handleChange"
+                    :show-file-list="false"
+                  >
+                    <el-tag @click="handleChangeupload(row.id)">上传</el-tag>
+                  </el-upload>
+                </div>
+                <el-tag>已有合同</el-tag>
+              </el-tooltip>
+            </template>
+          </el-table-column>
           <el-table-column
             align="right"
             label="成交额"
@@ -384,6 +421,8 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+  import { baseURL } from '@/config'
   import Edit from '@/subview/components/Edit/ManageEdit'
   import IntegralEdit from '@/subview/components/Edit/CustomerIntegralEdit'
   import Drawer from '@/subview/components/Drawer/ManageDrawer'
@@ -401,6 +440,8 @@
         }
       }
       return {
+        up_customer_id: null,
+        headers: {},
         // 新增客户保证金相关
         imgNum: 5, // 上传图片数量
         // 新增保证金表单
@@ -455,6 +496,11 @@
         total: 0,
       }
     },
+    computed: {
+      ...mapGetters({
+        token: 'user/token',
+      }),
+    },
     watch: {
       form: {
         handler: function (newVal) {
@@ -506,9 +552,35 @@
       },
     },
     created() {
+      this.headers['Authorization'] = `${this.token}`
+      this.selectData()
       this.fetchData()
     },
     methods: {
+      getAction() {
+        return baseURL + '/common/uploadPic'
+      },
+      handleViewupload(url) {
+        window.open(url)
+      },
+      handleChangeupload(id) {
+        this.up_customer_id = id
+      },
+      // 合同上传
+      async handleChange(res) {
+        if (res.code == 200) {
+          const { code } = await this.api.getCustomerAgreement({
+            customer_id: this.up_customer_id,
+            agreement: res.data.file_url,
+          })
+          if (code == 200) {
+            this.$message.success('上传成功')
+            this.fetchData()
+          } else {
+            this.$message.error('上传失败')
+          }
+        }
+      },
       // 客户积分
       handleIntegral(row) {
         this.$refs['IntegralEdit'].showEdit(row)
@@ -613,18 +685,7 @@
       // 获取下拉框数据
       async selectData() {
         const { data } = await this.api.getCommonAllList({
-          type: 'customer_grade,customer_type,customer_source,customer_tag',
-        })
-        data.customer_tag.forEach((item) => {
-          item.value = item.id
-          item.label = item.name
-          if (item.child.length > 0) {
-            item.child.forEach((item1) => {
-              item1.value = item1.id
-              item1.label = item1.name
-            })
-            item.children = item.child
-          }
+          type: 'customer_grade,customer_type,',
         })
         this.selectDataList = data
       },
