@@ -79,13 +79,13 @@
         <el-table-column
           v-if="form.goods_type == 2"
           label="颜色"
-          prop="num"
+          prop="colorname"
           width="100"
         />
         <el-table-column
           v-if="form.goods_type == 2"
           label="尺码"
-          prop="num"
+          prop="sizename"
           width="100"
         />
         <el-table-column

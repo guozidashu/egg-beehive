@@ -83,73 +83,79 @@
       />
     </div>
     <div style="padding: 20px; background-color: white; border-radius: 5px">
+      <div style="margin: 0 0 20px 0; font-size: 16px">爆款分析</div>
       <el-form
         ref="form"
         :inline="true"
         label-width="80px"
         :model="goodsForm1"
-        style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">爆款分析</span>
-        <el-form-item style="margin-right: 0">
-          <el-form-item label="统计类型:" prop="type">
-            <el-select
-              v-model="goodsForm1.type"
-              size="small"
-              style="width: 150px"
-            >
-              <el-option label="本期销量" :value="-1" />
-              <el-option label="本期销售额" value="sum_total" />
-              <el-option label="上架时间" value="g.upper_time" />
-              <el-option label="整手" :value="0" />
-              <el-option label="散码" :value="1" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="季节:" prop="season">
-            <el-select
-              v-model="goodsForm1.season"
-              placeholder="请选择季节"
-              style="width: 150px"
-            >
-              <el-option
-                v-for="(item, index) in selectList.season"
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="品牌:" prop="brand">
-            <el-select
-              v-model="goodsForm1.brand"
-              placeholder="请选择品牌"
-              style="width: 150px"
-            >
-              <el-option
-                v-for="(item, index) in selectList.brand"
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="时间筛选:" prop="time">
-            <el-date-picker
-              v-model="goodsForm1.time"
-              align="right"
-              :clearable="false"
-              :default-time="['00:00:00', '23:59:59']"
-              end-placeholder="结束日期"
-              format="yyyy-MM-dd"
-              :picker-options="pickerOptions"
-              range-separator="至"
-              start-placeholder="开始日期"
-              type="daterange"
-              unlink-panels
-              value-format="yyyy-MM-dd HH:mm:ss"
+        <el-form-item label="统计类型:" prop="type">
+          <el-select
+            v-model="goodsForm1.type"
+            size="small"
+            style="width: 150px"
+          >
+            <el-option label="本期销量" :value="-1" />
+            <el-option label="本期销售额" value="sum_total" />
+            <el-option label="上架时间" value="g.upper_time" />
+            <el-option label="整手" :value="0" />
+            <el-option label="散码" :value="1" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="季节:" prop="season">
+          <el-select
+            v-model="goodsForm1.season"
+            placeholder="请选择季节"
+            style="width: 150px"
+          >
+            <el-option
+              v-for="(item, index) in selectList.season"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
             />
-          </el-form-item>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="品牌:" prop="brand">
+          <el-select
+            v-model="goodsForm1.brand"
+            placeholder="请选择品牌"
+            style="width: 150px"
+          >
+            <el-option
+              v-for="(item, index) in selectList.brand"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="商品搜索:">
+          <el-input
+            v-model="goodsForm1.sn"
+            placeholder="请输入商品款号"
+            style="width: 215px"
+          />
+        </el-form-item>
+        <el-form-item label="时间筛选:" prop="time">
+          <el-date-picker
+            v-model="goodsForm1.time"
+            align="right"
+            :clearable="false"
+            :default-time="['00:00:00', '23:59:59']"
+            end-placeholder="结束日期"
+            format="yyyy-MM-dd"
+            :picker-options="pickerOptions"
+            range-separator="至"
+            start-placeholder="开始日期"
+            type="daterange"
+            unlink-panels
+            value-format="yyyy-MM-dd HH:mm:ss"
+          />
+        </el-form-item>
+        <el-form-item>
           <el-radio-group
             v-model="goodsForm1.goods_type"
             style="margin-right: 10px"
@@ -317,10 +323,11 @@
         pageSize: 10,
         goodsForm1: {
           page: 1,
-          pageSize: 20,
+          pageSize: 10,
           type: -1,
           goods_type: 1,
           brand: null,
+          sn: null,
           order: null,
           season: null,
           time: this.getPastTime(30),
@@ -502,10 +509,11 @@
       resetForm1() {
         this.goodsForm1 = {
           page: 1,
-          pageSize: 20,
+          pageSize: 10,
           type: null,
           brand: null,
           goods_type: 1,
+          sn: null,
           season: null,
           time: this.getPastTime(30),
         }
