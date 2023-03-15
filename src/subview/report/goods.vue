@@ -495,6 +495,7 @@
     methods: {
       handleDetail(row) {
         row.goods_type = this.goodsForm1.goods_type
+        row.goods_time = this.goodsForm1.time
         this.drawerInof = JSON.parse(JSON.stringify(row))
         this.drawer = true
       },

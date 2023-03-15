@@ -19,7 +19,7 @@
             class="input-with-select"
             placeholder="请输入金额"
             style="width: 215px"
-            @input="handlerChange"
+            @input="form.money = $moneyFormatInput(form.money)"
           >
             <el-button slot="append" @click="Allocation">分配</el-button>
           </el-input>
@@ -88,90 +88,91 @@
             :disabled="true"
             placeholder="请输入金额"
             style="width: 215px"
+            @input="form.money = $moneyFormatInput(form.money)"
           />
         </el-form-item>
         <el-form-item label="一月" prop="one" style="width: 50%">
           <el-input
             v-model="form.one"
             style="width: 215px"
-            @input="handlerChange"
+            @input="form.one = $moneyFormatInput(form.one)"
           />
         </el-form-item>
         <el-form-item label="二月" prop="two" style="width: 50%">
           <el-input
             v-model="form.two"
             style="width: 215px"
-            @input="handlerChange"
+            @input="form.two = $moneyFormatInput(form.two)"
           />
         </el-form-item>
         <el-form-item label="三月" prop="three" style="width: 50%">
           <el-input
             v-model="form.three"
             style="width: 215px"
-            @input="handlerChange"
+            @input="form.three = $moneyFormatInput(form.three)"
           />
         </el-form-item>
         <el-form-item label="四月" prop="four" style="width: 50%">
           <el-input
             v-model="form.four"
             style="width: 215px"
-            @input="handlerChange"
+            @input="form.four = $moneyFormatInput(form.four)"
           />
         </el-form-item>
         <el-form-item label="五月" prop="five" style="width: 50%">
           <el-input
             v-model="form.five"
             style="width: 215px"
-            @input="handlerChange"
+            @input="form.five = $moneyFormatInput(form.five)"
           />
         </el-form-item>
         <el-form-item label="六月" prop="six" style="width: 50%">
           <el-input
             v-model="form.six"
             style="width: 215px"
-            @input="handlerChange"
+            @input="form.six = $moneyFormatInput(form.six)"
           />
         </el-form-item>
         <el-form-item label="七月" prop="seven" style="width: 50%">
           <el-input
             v-model="form.seven"
             style="width: 215px"
-            @input="handlerChange"
+            @input="form.seven = $moneyFormatInput(form.seven)"
           />
         </el-form-item>
         <el-form-item label="八月" prop="eight" style="width: 50%">
           <el-input
             v-model="form.eight"
             style="width: 215px"
-            @input="handlerChange"
+            @input="form.eight = $moneyFormatInput(form.eight)"
           />
         </el-form-item>
         <el-form-item label="九月" prop="nine" style="width: 50%">
           <el-input
             v-model="form.nine"
             style="width: 215px"
-            @input="handlerChange"
+            @input="form.nine = $moneyFormatInput(form.nine)"
           />
         </el-form-item>
         <el-form-item label="十月" prop="ten" style="width: 50%">
           <el-input
             v-model="form.ten"
             style="width: 215px"
-            @input="handlerChange"
+            @input="form.ten = $moneyFormatInput(form.ten)"
           />
         </el-form-item>
         <el-form-item label="十一月" prop="eleven" style="width: 50%">
           <el-input
             v-model="form.eleven"
             style="width: 215px"
-            @input="handlerChange"
+            @input="form.eleven = $moneyFormatInput(form.eleven)"
           />
         </el-form-item>
         <el-form-item label="十二月" prop="twelve" style="width: 50%">
           <el-input
             v-model="form.twelve"
             style="width: 215px"
-            @input="handlerChange"
+            @input="form.twelve = $moneyFormatInput(form.twelve)"
           />
         </el-form-item>
       </div>
@@ -293,15 +294,7 @@
           twelve: 0,
         }
       },
-      handlerChange(e) {
-        if (!/^[1-9]\d*(\.\d{1,2})?$/.test(e)) {
-          this.$baseMessage(
-            '金额必须是数字且大于0',
-            'error',
-            'vab-hey-message-error'
-          )
-        }
-      },
+
       showEdit(row) {
         this.year = row
         this.title = row + '年销售目标设置'

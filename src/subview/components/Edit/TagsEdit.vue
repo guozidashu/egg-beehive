@@ -25,8 +25,12 @@
           <el-form-item label="标签名称" prop="group_name">
             <el-input v-model="item.name" style="width: 215px" />
           </el-form-item>
-          <el-form-item label="标签排序" prop="order">
-            <el-input v-model="item.order" style="width: 215px" />
+          <el-form-item label="标签排序">
+            <el-input
+              v-model="item.order"
+              style="width: 215px"
+              @input="item.order = $numFormatInput(item.order)"
+            />
             <i
               v-if="index == 0"
               class="el-icon-plus"
@@ -63,7 +67,7 @@
           :prop="form.tag[0].name"
           :rules="{
             required: true,
-            message: '域名不能为空',
+            message: '名称不能为空',
             trigger: 'blur',
           }"
         >
@@ -74,11 +78,15 @@
           :prop="form.tag[0].order"
           :rules="{
             required: true,
-            message: '域名不能为空',
+            message: '排序不能为空',
             trigger: 'blur',
           }"
         >
-          <el-input v-model="form.tag[0].order" style="width: 215px" />
+          <el-input
+            v-model="form.tag[0].order"
+            style="width: 215px"
+            @input="form.tag[0].order = $numFormatInput(form.tag[0].order)"
+          />
         </el-form-item>
       </div>
       <div v-if="title == '编辑标签' || title == '编辑分类'">

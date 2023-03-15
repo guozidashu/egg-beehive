@@ -171,12 +171,12 @@
           this.form = JSON.parse(JSON.stringify(newVal))
           if (newVal.goods_type == 2) {
             this.formList = {
-              time: this.getPastTime(30),
+              time: newVal.goods_time,
               stock_id: newVal.stock_id,
             }
           } else {
             this.formList = {
-              time: this.getPastTime(30),
+              time: newVal.goods_time,
               goods_id: newVal.id,
             }
           }

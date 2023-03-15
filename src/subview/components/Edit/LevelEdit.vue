@@ -67,6 +67,7 @@
           v-model="form.discount"
           placeholder="例：如果想要3.5折，请输入3.5 如果没有折扣，请输入10"
           style="width: 415px"
+          @input="form.discount = $moneyFormatInput(form.discount)"
         />
       </el-form-item>
       <el-form-item label="散码折扣" prop="discount_single">
@@ -74,6 +75,9 @@
           v-model="form.discount_single"
           placeholder="例：如果想要4.5折，请输入4.5 如果没有折扣，请输入10"
           style="width: 415px"
+          @input="
+            form.discount_single = $moneyFormatInput(form.discount_single)
+          "
         />
       </el-form-item>
       <el-form-item label="下单件数" prop="full_num">
@@ -81,6 +85,7 @@
           v-model="form.full_num"
           placeholder="请输入下单件数"
           style="width: 415px"
+          @input="form.full_num = $numFormatInput(form.full_num)"
         />
         <div style="font-size: 12px; color: #c0c4cc">
           默认值为空，小程序提交订单不受限制；设置数值后，提交订单数量小于等于该数值则不可提交订单
@@ -91,6 +96,7 @@
           v-model="form.full_amount"
           placeholder="请输入下单金额"
           style="width: 415px"
+          @input="form.full_amount = $moneyFormatInput(form.full_amount)"
         />
         <div style="font-size: 12px; color: #c0c4cc">
           默认值为空，小程序提交订单不受限制；设置数值后，提交订单金额小于等于该数值则不可提交订单
@@ -107,6 +113,7 @@
           v-model="form.earnest_money"
           placeholder="请输入保证金额"
           style="width: 415px"
+          @input="form.earnest_money = $moneyFormatInput(form.earnest_money)"
         />
       </el-form-item>
       <el-form-item label="等级说明" prop="remark">
@@ -177,9 +184,35 @@
           ],
           discount: [
             { required: true, message: '请输入整手折扣', trigger: 'blur' },
+            {
+              validator: (rule, value, callback) => {
+                if (value && !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(value)) {
+                  callback(new Error('请输入0.01-10之间的数字'))
+                } else {
+                  if (value > 10 || value < 0.01) {
+                    callback(new Error('请输入0.01-10之间的数字'))
+                  } else {
+                    callback()
+                  }
+                }
+              },
+            },
           ],
           discount_single: [
             { required: true, message: '请输入散码折扣', trigger: 'blur' },
+            {
+              validator: (rule, value, callback) => {
+                if (value && !/^[0-9]+([.]{1}[0-9]{1,2})?$/.test(value)) {
+                  callback(new Error('请输入0.01-10之间的数字'))
+                } else {
+                  if (value > 10 || value < 0.01) {
+                    callback(new Error('请输入0.01-10之间的数字'))
+                  } else {
+                    callback()
+                  }
+                }
+              },
+            },
           ],
           full_num: [
             { required: true, message: '请输入满足数量', trigger: 'blur' },

@@ -73,7 +73,11 @@
           <el-input v-model="formEdit.name" style="width: 215px" />
         </el-form-item>
         <el-form-item label="库位排序" prop="sort">
-          <el-input v-model="formEdit.sort" style="width: 215px" />
+          <el-input
+            v-model="formEdit.sort"
+            style="width: 215px"
+            @input="formEdit.sort = $moneyFormatInput(formEdit.sort)"
+          />
         </el-form-item>
         <el-form-item label="是否默认" prop="isdefault">
           <el-radio-group v-model="formEdit.isdefault">

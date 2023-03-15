@@ -153,8 +153,11 @@
               <el-form-item class="item" label="物料单价：">
                 <el-input
                   v-model="form.material_price"
-                  placeholder="请输入门幅"
+                  placeholder="请输入物料单价"
                   style="width: 215px"
+                  @input="
+                    form.material_price = $moneyFormatInput(form.material_price)
+                  "
                 />
               </el-form-item>
               <el-form-item class="item" label="门幅：">
@@ -263,7 +266,13 @@
                   <el-input v-model="item.spec_name" style="width: 215px" />
                 </el-form-item>
                 <el-form-item label="规格单价：" style="width: 50%">
-                  <el-input v-model="item.spec_price" style="width: 215px" />
+                  <el-input
+                    v-model="item.spec_price"
+                    style="width: 215px"
+                    @input="
+                      item.spec_price = $moneyFormatInput(item.spec_price)
+                    "
+                  />
                   <i
                     v-if="index == 0"
                     class="el-icon-plus"

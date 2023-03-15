@@ -29,9 +29,6 @@ export function numFormatInput(value) {
   temp = temp.replace(/[^\d]/g, '')
   // 必须是大于等于0整数
   temp = temp.replace(/^0/g, '')
-  if (temp == '') {
-    temp = 0
-  }
   return temp
 }
 // 输入框金额格式化 正值
@@ -43,9 +40,6 @@ export function moneyFormatInput(value) {
   temp = temp.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.') //去掉特殊符号￥
   if (temp.indexOf('.') > 0) {
     temp = temp.substring(0, temp.indexOf('.') + 3)
-  }
-  if (temp == '') {
-    temp = 0
   }
   return temp
 }

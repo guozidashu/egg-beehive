@@ -37,6 +37,7 @@
           v-model="form.sort"
           placeholder="请输入排序："
           style="width: 215px"
+          @input="form.sort = $numFormatInput(form.sort)"
         />
       </el-form-item>
       <el-form-item label="收支名称：" prop="name">
