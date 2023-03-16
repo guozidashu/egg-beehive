@@ -308,6 +308,15 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'goodsSpecification',
+        name: 'GoodsSpecification',
+        component: () => import('@/subview/goods/specification'),
+        meta: {
+          title: '商品规格',
+          icon: 'file-list-line',
+        },
+      },
     ],
   },
   {

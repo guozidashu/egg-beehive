@@ -524,6 +524,23 @@ export function getMaterialMaterialDetail(data) {
   })
 }
 // 商品模块接口
+// 商品 - 商品规格
+// 商品规格列表
+export function getGoodsSkuList(data) {
+  return request({
+    url: '/goods/goodsSkuList',
+    method: 'post',
+    data,
+  })
+}
+// 商品规格隐藏显示状态
+export function getGoodsSkuShow(data) {
+  return request({
+    url: '/goods/goodsSkuShow',
+    method: 'post',
+    data,
+  })
+}
 // 商品 - 商品管理
 // 商品管理列表
 export function getGoodList(data) {
