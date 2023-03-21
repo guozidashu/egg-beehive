@@ -90,6 +90,7 @@
       changeBtnPage(data) {
         this.form.page = data
       },
+
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
