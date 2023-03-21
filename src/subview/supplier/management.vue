@@ -58,11 +58,15 @@
           <el-table-column label="ID" prop="id" sortable width="80" />
           <el-table-column label="供应商名称" prop="name" width="150" />
           <el-table-column label="供应商类别" prop="type_name" width="150" />
-          <el-table-column label="供应商类型" prop="craft_name">
+          <el-table-column label="特殊工艺" width="150">
             <template #default="{ row }">
               <span v-for="item in row.craft_name" :key="item">
                 {{ item }}
               </span>
+            </template>
+          </el-table-column>
+          <el-table-column label="代工范围" width="150">
+            <template #default="{ row }">
               <span v-for="item in row.produce_name" :key="item">
                 {{ item }}
               </span>

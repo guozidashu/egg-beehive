@@ -136,6 +136,12 @@
             <el-radio :label="1">开启</el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item label="是否开启在生产" prop="forced_production">
+          <el-radio-group v-model="form.forced_production">
+            <el-radio :label="0">关闭</el-radio>
+            <el-radio :label="1">开启</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <!-- <div style="display: flex">
           <el-form-item label="主色调" prop="main_color">
             <el-input v-model="form.main_color" style="width: 215px" />
@@ -294,6 +300,7 @@
         //   readOnly: false,
         // },
         form: {
+          forced_production: 0,
           look_stock: 0,
           bottom_logo: 'https://new.shopvvv.cn/static/imgsrc/logo.jpg', //商家底部图片
           avatar_name: 2,
@@ -317,6 +324,13 @@
           screen_notice_content: null, //截图提醒文本
         },
         rules: {
+          forced_production: [
+            {
+              required: true,
+              message: '请选择是否开启在生产',
+              trigger: 'blur',
+            },
+          ],
           look_stock: [
             {
               required: true,

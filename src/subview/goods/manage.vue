@@ -636,6 +636,7 @@
           this.drawerInof.is_jushuitan = 0
           this.drawerInof.cost_price = 0
           this.drawerInof.sale_price = 0
+          this.drawerInof.manage_price = 0
           this.drawerInof.price = 0
           this.drawerInof.status = 3
           this.drawerInof.lockSta = false

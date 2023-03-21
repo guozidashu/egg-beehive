@@ -52,6 +52,13 @@
                 <el-radio :label="1">允许</el-radio>
               </el-radio-group>
             </el-form-item>
+            <el-form-item label="是否开启强制入库">
+              <el-radio-group v-model="form1.forced_warehouse">
+                <el-radio :label="0">关闭</el-radio>
+                <el-radio :label="1">开启</el-radio>
+              </el-radio-group>
+            </el-form-item>
+
             <el-form-item label="公司地址" prop="company_address">
               <el-input v-model="form1.company_address" />
             </el-form-item>
@@ -344,6 +351,7 @@
         activeName: 'ERP配置',
         showIf: false,
         form1: {
+          forced_warehouse: 0,
           shopid: null, //关联商城标识符
           inventory_type: 1, //0开单扣库存1发货扣库存
           arrears_type: 1, //0开单扣款1发货扣款

@@ -130,6 +130,9 @@
           purchase_price: [
             { required: true, message: '请输入采购价', trigger: 'blur' },
           ],
+          manage_price: [
+            { required: true, message: '请输入管理费', trigger: 'blur' },
+          ],
           cost_price: [
             { required: true, message: '请输入成本价', trigger: 'blur' },
           ],

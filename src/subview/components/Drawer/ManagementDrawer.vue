@@ -108,14 +108,16 @@ d
           <div class="conten-title">供应商概况</div>
           <div class="conten-list-row">
             <div>供应商类别：{{ form.type_name }}</div>
+            <div v-if="form.oem_type == 1">代工方式：FOB模式</div>
+            <div v-if="form.oem_type == 2">代工方式：CMT模式</div>
             <div>
-              工艺类型：
+              特殊工艺：
               <span v-for="item in form.craft_name" :key="item">
                 {{ item }}
               </span>
             </div>
             <div>
-              工序类型：
+              代工范围：
               <span v-for="item in form.produce_name" :key="item">
                 {{ item }}
               </span>
@@ -212,11 +214,21 @@ d
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item class="item" label="工艺类型：">
+              <el-form-item class="item" label="代工方式：">
+                <el-select
+                  v-model="form.oem_type"
+                  placeholder="请选择代工方式："
+                  style="width: 215px"
+                >
+                  <el-option label="FOB模式" :value="1" />
+                  <el-option label="CMT模式" :value="2" />
+                </el-select>
+              </el-form-item>
+              <el-form-item class="item" label="特殊工艺：">
                 <el-select
                   v-model="form.craft_type"
                   multiple
-                  placeholder="请选择工艺类型："
+                  placeholder="请选择特殊工艺："
                   style="width: 215px"
                 >
                   <el-option
@@ -227,11 +239,11 @@ d
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item class="item" label="工序类型：">
+              <el-form-item class="item" label="代工范围：">
                 <el-select
                   v-model="form.produce_type"
                   multiple
-                  placeholder="请选择工序类型："
+                  placeholder="请选择代工范围："
                   style="width: 215px"
                 >
                   <el-option

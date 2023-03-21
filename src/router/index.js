@@ -224,15 +224,7 @@ export const asyncRoutes = [
           icon: 'file-list-line',
         },
       },
-      {
-        path: 'supplierManagement',
-        name: 'SupplierManagement',
-        component: () => import('@/subview/supplier/management'),
-        meta: {
-          title: '供应商管理',
-          icon: 'user-search-line',
-        },
-      },
+
       {
         path: 'supplierProductStatistical',
         name: 'SupplierProductStatistical',
@@ -257,6 +249,51 @@ export const asyncRoutes = [
         component: () => import('@/subview/supplier/analysis'),
         meta: {
           title: '供应商分析',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'supplierManagement',
+        name: 'SupplierManagement',
+        component: () => import('@/subview/supplier/management'),
+        meta: {
+          title: '供应商管理',
+          icon: 'user-search-line',
+        },
+      },
+      {
+        path: 'supplierCutbedsheet',
+        name: 'SupplierCutbedsheet',
+        component: () => import('@/subview/supplier/cutbedsheet'),
+        meta: {
+          title: '裁床单列表',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'supplierWarehousereceipt',
+        name: 'SupplierWarehousereceipt',
+        component: () => import('@/subview/supplier/warehousereceipt'),
+        meta: {
+          title: '入库单列表',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'supplierSupplyanalysis',
+        name: 'SupplierSupplyanalysis',
+        component: () => import('@/subview/supplier/supplyanalysis'),
+        meta: {
+          title: '供应链分析',
+          icon: 'archive-line',
+        },
+      },
+      {
+        path: 'supplierSchedule',
+        name: 'SupplierSchedule',
+        component: () => import('@/subview/supplier/schedule'),
+        meta: {
+          title: '生产排期表',
           icon: 'archive-line',
         },
       },

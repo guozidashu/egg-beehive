@@ -381,6 +381,15 @@
                   @input="form.cost_price = $moneyFormatInput(form.cost_price)"
                 />
               </el-form-item>
+              <el-form-item class="item" label="管理费：" prop="manage_price">
+                <el-input
+                  v-model="form.manage_price"
+                  style="width: 215px"
+                  @input="
+                    form.manage_price = $moneyFormatInput(form.manage_price)
+                  "
+                />
+              </el-form-item>
               <el-form-item class="item" label="吊牌价：" prop="sale_price">
                 <el-input
                   v-model="form.sale_price"

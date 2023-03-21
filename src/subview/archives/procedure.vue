@@ -15,10 +15,10 @@
         @resetForm="resetForm"
       >
         <template #Form>
-          <el-form-item label="工序名称" prop="region">
+          <el-form-item label="工艺工序" prop="region">
             <el-input
               v-model="form.name"
-              placeholder="请输入工序名称"
+              placeholder="请输入工艺工序"
               size="small"
             />
           </el-form-item>
@@ -34,7 +34,7 @@
             type="primary"
             @click="handleEdit('add')"
           >
-            添加工序
+            添加工艺工序
           </el-button>
         </el-form-item>
       </el-form>
@@ -49,7 +49,7 @@
         <template #List>
           <el-table-column type="selection" width="50" />
           <el-table-column label="ID" prop="id" />
-          <el-table-column label="工序名称" prop="name" />
+          <el-table-column label="工艺工序" prop="name" />
           <el-table-column label="排序" prop="sort" />
           <el-table-column
             align="center"
@@ -131,7 +131,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm(
-            '你确定要删除当前工序吗?</br>删除后将无法恢复，请谨慎操作！',
+            '你确定要删除当前工艺工序吗?</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
               const { code } = await this.api.delProduceTypeDel({ id: row.id })

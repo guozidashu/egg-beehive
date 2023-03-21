@@ -15,10 +15,10 @@
         @resetForm="resetForm"
       >
         <template #Form>
-          <el-form-item label="工艺名称" prop="region">
+          <el-form-item label="特殊工艺" prop="region">
             <el-input
               v-model="form.name"
-              placeholder="请输入工艺名称"
+              placeholder="请输入特殊工艺"
               size="small"
             />
           </el-form-item>
@@ -34,7 +34,7 @@
             type="primary"
             @click="handleEdit('add')"
           >
-            添加工艺
+            添加特殊工艺
           </el-button>
         </el-form-item>
       </el-form>
@@ -49,7 +49,7 @@
         <template #List>
           <el-table-column type="selection" width="50" />
           <el-table-column label="ID" prop="id" />
-          <el-table-column label="工艺名称" prop="name" />
+          <el-table-column label="特殊工艺" prop="name" />
           <el-table-column
             align="center"
             label="操作"
@@ -130,7 +130,7 @@
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm(
-            '你确定要删除当前工艺吗?</br>删除后将无法恢复，请谨慎操作！',
+            '你确定要删除当前特殊工艺吗?</br>删除后将无法恢复，请谨慎操作！',
             null,
             async () => {
               const { code } = await this.api.delCraftTypeDel({ id: row.id })

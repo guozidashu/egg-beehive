@@ -41,6 +41,12 @@
       >
         <span style="margin-top: 10px; font-size: 16px">客户保证金列表</span>
         <el-form-item style="margin-right: 0">
+          <el-form-item label="保证金类型:">
+            <el-select v-model="goodsForm1.type" style="width: 200px">
+              <el-option label="收入" :value="1" />
+              <el-option label="退还" :value="2" />
+            </el-select>
+          </el-form-item>
           <el-form-item label="客户等级:">
             <el-select v-model="goodsForm1.level" style="width: 200px">
               <el-option
@@ -100,66 +106,15 @@
         <template #List>
           <el-table-column type="selection" />
           <el-table-column label="ID" prop="id" width="50" />
-          <el-table-column label="客户编码" prop="sn" width="120" />
-          <el-table-column label="客户名称" prop="name" width="150" />
-          <el-table-column label="手机号" prop="mobile" width="120" />
-          <el-table-column label="客户等级" prop="grade_name" width="120" />
-          <el-table-column label="客户分类" prop="type_name" width="120" />
-          <el-table-column label="发货方式" prop="order_belong" width="120">
-            <template #default="{ row }">
-              <span v-if="row.order_belong == 1">自主发货</span>
-              <span v-else>聚水潭发货</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="right"
-            label="保证金"
-            prop="earnest_money"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-tag v-if="row.earnest_money >= 0">
-                ￥{{ row.earnest_money | moneyFormat }}
-              </el-tag>
-              <el-tag v-else type="danger">
-                -￥{{ row.earnest_money | moneyFormat }}
-              </el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="right"
-            label="成交额"
-            prop="final_count"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-tag>￥{{ row.final_count | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="right"
-            label="累计收银"
-            prop="sum_voucher_money"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-tag>￥{{ row.sum_voucher_money | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="right"
-            label="余额/欠款"
-            prop="delivery_arrears"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-tag v-if="row.balance < 0" type="danger">
-                -￥{{ row.balance | moneyFormat }}
-              </el-tag>
-              <el-tag v-else>￥{{ row.balance | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column label="注册时间" prop="create_time" width="200" />
+          <el-table-column label="头像" prop="sn" width="120" />
+          <el-table-column label="客户名称" prop="name" />
+          <el-table-column label="保证金额度" prop="mobile" />
+          <el-table-column label="支付类型" prop="grade_name" width="120" />
+          <el-table-column label="转账凭证" prop="type_name" width="120" />
+          <el-table-column label="电子合同" prop="order_belong" width="120" />
+          <el-table-column label="操作人" prop="order_belong" />
+          <el-table-column label="备注" prop="order_belong" />
+          <el-table-column label="时间" prop="create_time" width="200" />
         </template>
       </QYList>
     </div>
@@ -196,7 +151,7 @@
         divLength: 8,
         textTagList: [
           {
-            title: '已退保证金',
+            title: '总金额',
             numType: 1,
             today: 0,
             yesterday_total: 0,
@@ -204,7 +159,7 @@
             yesterday_month: 0,
           },
           {
-            title: '新增保证金',
+            title: '新增金额',
             numType: 2,
             today: 0,
             yesterday_total: 0,
@@ -212,7 +167,7 @@
             yesterday_month: 0,
           },
           {
-            title: '现有保证金',
+            title: '退还总金额',
             numType: 1,
             today: 0,
             yesterday_total: 0,
@@ -267,9 +222,9 @@
         chartDataObj: {
           height: '300px',
           legend: {
-            data: ['客户保证金额', '客户保证金人数'],
+            data: ['总金额', '新增金额', '退还总金额'],
           },
-          color: ['#48B1FF', '#3ED6E5'],
+          color: ['#48B1FF', '#3ED6E5', '#FFDC60'],
           xAxis: {
             type: 'category',
             boundaryGap: false,
@@ -283,7 +238,7 @@
           ],
           series: [
             {
-              name: '客户保证金额',
+              name: '总金额',
               type: 'line',
               areaStyle: {
                 opacity: 0.2,
@@ -313,7 +268,7 @@
               },
             },
             {
-              name: '客户保证金人数',
+              name: '新增金额',
               type: 'line',
               areaStyle: {
                 opacity: 0.2,
@@ -342,8 +297,39 @@
                 color: '#3ED6E5',
               },
             },
+            {
+              name: '退还总金额',
+              type: 'line',
+              areaStyle: {
+                opacity: 0.2,
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    {
+                      offset: 0,
+                      color: '#FFDC60',
+                    },
+                    {
+                      offset: 1,
+                      color: '#fff',
+                    },
+                  ],
+                  global: false,
+                },
+              },
+              smooth: true,
+              data: [],
+              itemStyle: {
+                color: '#FFDC60',
+              },
+            },
           ],
         },
+
         // 图表 查询条件
         form: {
           time: this.getPastTime(30),
@@ -461,6 +447,7 @@
         this.chartDataObj.xAxis.data = this.dateList
         this.chartDataObj.series[0].data = this.dataAllList.sale_num
         this.chartDataObj.series[1].data = this.dataAllList.delivery_num
+        this.chartDataObj.series[2].data = this.dataAllList.delivery_num
         this.$forceUpdate()
       },
     },
