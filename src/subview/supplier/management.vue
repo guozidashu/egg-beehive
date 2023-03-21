@@ -11,7 +11,6 @@
       >
         <template #Form>
           <el-form-item label="供应商类别:">
-            <!-- 1外协加工厂2成品采购商3面辅料供应商4其他5自厂 -->
             <el-select v-model="form.type">
               <el-option
                 v-for="item in supplier_type"
@@ -73,24 +72,19 @@
             </template>
           </el-table-column>
           <el-table-column label="联系人" prop="contact_name" width="100" />
-          <el-table-column label="手机号码" prop="tel" width="150" />
-          <el-table-column
-            align="right"
-            label="应付款"
-            prop="arrears"
-            width="150"
-          >
+          <el-table-column label="手机号码" prop="tel" />
+          <el-table-column align="right" label="应付款" prop="arrears">
             <template #default="{ row }">
               <el-tag>￥{{ row.arrears | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" prop="create_time" width="200" />
-          <el-table-column label="状态" prop="status" width="100">
+          <el-table-column label="状态" prop="status">
             <template #default="{ row }">
               <el-tag v-if="row.status == 1">开启</el-tag>
               <el-tag v-else type="danger">关闭</el-tag>
             </template>
           </el-table-column>
+          <el-table-column label="创建时间" prop="create_time" />
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
               <el-button

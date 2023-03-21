@@ -31,15 +31,15 @@
       </el-col>
     </el-row>
     <div style="padding: 20px; background-color: white; border-radius: 5px">
+      <div style="margin-bottom: 20px; font-size: 16px">客户保证金列表</div>
       <el-form
         ref="form"
         :inline="true"
-        label-width="80px"
+        label-width="100px"
         :model="goodsForm1"
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">客户保证金列表</span>
         <el-form-item style="margin-right: 0">
           <el-form-item label="保证金类型:">
             <el-select v-model="goodsForm1.type" style="width: 200px">

@@ -5,7 +5,7 @@
     width="600px"
     @close="close"
   >
-    <el-form ref="form" label-width="120px" :model="form" :rules="rules">
+    <el-form ref="form" label-width="140px" :model="form" :rules="rules">
       <el-form-item label="预售日期" prop="time">
         <el-date-picker
           v-model="form.time"
@@ -40,14 +40,23 @@
           充许选择的客户等级，参与预售抢购
         </div>
       </el-form-item>
-      <el-form-item label="预售价格" prop="price">
-        <el-input
-          v-model="form.price"
-          placeholder="请输入预售价格"
-          style="width: 215px"
-          @input="form.price = $moneyFormatInput(form.price)"
-        />
-      </el-form-item>
+      <div v-for="(item, index) in form.customer_grade_price" :key="index">
+        <el-form-item
+          :label="item.level_name + '预售价格'"
+          prop="customer_grade_price"
+        >
+          <el-input
+            v-model="form.customer_grade_price[index].level_price"
+            placeholder="请输入预售价格"
+            style="width: 215px"
+            @input="
+              form.customer_grade_price[index].level_price = $moneyFormatInput(
+                form.customer_grade_price[index].level_price
+              )
+            "
+          />
+        </el-form-item>
+      </div>
 
       <el-form-item label="定金是否退还" prop="final_type">
         <el-radio-group v-model="form.final_type">
@@ -123,6 +132,7 @@
         },
         selectDataList: {},
         form: {
+          customer_grade_price: [],
           goods_id: null, //关联商品表id
           is_edit: null, //是否是修改预售 1 是 0或者不传 新增预售
           time: null,
@@ -151,34 +161,18 @@
               trigger: 'change',
             },
           ],
+          customer_grade_price: [
+            {
+              required: true,
+              message: '请填写预售价格',
+              trigger: 'change',
+            },
+          ],
           customer_grade: [
             {
               required: true,
               message: '请选择客户等级',
               trigger: 'change',
-            },
-          ],
-          price: [
-            {
-              required: true,
-              message: '请输入预售价格',
-              trigger: 'change',
-            },
-            {
-              validator: (rule, value, callback) => {
-                if (value < 0) {
-                  callback(new Error('预售价格不能为负数'))
-                } else if (value.toString().indexOf('.') > -1) {
-                  if (value.toString().split('.')[1].length > 2) {
-                    callback(new Error('预售价格最多保留两位小数'))
-                  } else {
-                    callback()
-                  }
-                } else {
-                  callback()
-                }
-              },
-              trigger: 'blur',
             },
           ],
           final_type: [
@@ -265,6 +259,35 @@
           this.Forbidden = true
         }
       },
+      'form.customer_grade'(val) {
+        let arr = []
+        if (val == null) {
+          this.form.customer_grade_price = []
+          return
+        }
+        this.selectDataList.customer_grade.forEach((item) => {
+          val.forEach((item1) => {
+            if (item1 == item.id) {
+              let temp = {}
+              temp.level_id = item.id
+              temp.level_price = 0
+              temp.level_name = item.name
+              arr.push(temp)
+            }
+          })
+        })
+        arr.forEach((item) => {
+          let flag = true
+          this.form.customer_grade_price.forEach((item1) => {
+            if (item.level_id == item1.level_id) {
+              flag = false
+            }
+          })
+          if (flag) {
+            this.form.customer_grade_price.push(item)
+          }
+        })
+      },
     },
     created() {
       this.selectData()
@@ -303,6 +326,8 @@
           this.form.penalty_ratio = row.goods_persell.penalty_ratio
           this.form.final_type = row.goods_persell.final_type
           this.form.final_payment_day = row.goods_persell.final_payment_day
+          this.form.customer_grade_price =
+            row.goods_persell.customer_grade_price
         }
         this.title = '预售编辑'
         this.dialogFormVisible = true
@@ -317,9 +342,9 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             const { code } = await this.api.editPresellAdd({
+              customer_grade_price: this.form.customer_grade_price, //客户等级价格
               goods_id: this.form.goods_id, //关联商品表id
               is_edit: this.form.is_edit, //是否是修改预售 1 是 0或者不传 新增预售
-              price: this.form.price, //预售价格
               start_date: this.form.time[0], //预售开始日期
               end_date: this.form.time[1], //预售结束日期
               estimated_delivery_date: this.form.estimated_delivery_date, //预计发货日期
