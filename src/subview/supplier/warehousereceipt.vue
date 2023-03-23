@@ -88,7 +88,9 @@
           </el-button>
         </el-form-item>
         <el-form-item>
-          <el-button size="small" type="primary">批量导出</el-button>
+          <el-button size="small" type="primary" @click="handleDownload()">
+            批量导出
+          </el-button>
         </el-form-item>
       </el-form>
       <QYList
@@ -100,6 +102,7 @@
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
+        @selectRows="selectBtnRows"
       >
         <template #List>
           <el-table-column align="center" type="selection" />
@@ -123,7 +126,6 @@
                   <div
                     style="
                       width: 150px;
-                      margin: 20px 0;
                       overflow: hidden;
                       text-overflow: ellipsis;
                       white-space: nowrap;
@@ -131,7 +133,9 @@
                   >
                     {{ row.goods.name }}
                   </div>
-                  <div>{{ row.goods.sn }}</div>
+                  <div style="margin: 15px 0">{{ row.goods.sn }}</div>
+                  <div v-if="row.goods_num == 1">{{ row.goods_num }}件</div>
+                  <div v-else>等{{ row.goods_num }}件</div>
                 </div>
               </div>
             </template>
@@ -167,6 +171,8 @@
     mixins: [datajosn],
     data() {
       return {
+        // 表格选中数据
+        selectRows: [],
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -213,6 +219,30 @@
       this.getSelectData()
     },
     methods: {
+      selectBtnRows(data) {
+        this.selectRows = data
+      },
+      // 入库单导出
+      async handleDownload() {
+        if (this.selectRows.length == 0) {
+          this.$message.error('请选择要导出的数据')
+          return
+        } else {
+          let temp = this.formTemp
+          temp.ids = []
+          this.selectRows.forEach((item) => {
+            temp.ids.push(item.id)
+          })
+          const { code, data } = await this.api.getInboundExport(temp)
+          if (code != 200) {
+            return
+          } else {
+            window.open(data.url)
+            this.$message.success('导出成功')
+            this.fetchData()
+          }
+        }
+      },
       async getSelectData() {
         const { data } = await this.api.getCommonAllList({
           type: 'supplier_type',

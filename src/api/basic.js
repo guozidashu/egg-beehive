@@ -367,7 +367,8 @@ export function getEmployeeCostAnalysis(data) {
 }
 
 // 供应链模块接口
-// 供应链 - 入库单列表
+// 供应链 - 入库单
+// 入库单 - 列表
 export function getInboundOrder(data) {
   return request({
     url: '/supplier/inboundOrder',
@@ -375,10 +376,27 @@ export function getInboundOrder(data) {
     data,
   })
 }
-// 供应链 - 裁床单列表
+// 入库单 - 导出
+export function getInboundExport(data) {
+  return request({
+    url: '/supplier/inboundExport',
+    method: 'post',
+    data,
+  })
+}
+// 供应链 - 裁床单
+// 裁床单 - 列表
 export function getCuttingOrder(data) {
   return request({
     url: '/supplier/cuttingOrder',
+    method: 'post',
+    data,
+  })
+}
+// 裁床单 - 导出
+export function getCuttingExport(data) {
+  return request({
+    url: '/supplier/cuttingExport',
     method: 'post',
     data,
   })

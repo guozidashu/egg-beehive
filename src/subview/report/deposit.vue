@@ -400,7 +400,6 @@
       //顶部数据
       async getHeadList() {
         const { data } = await this.api.getCustomerEarnestBoard()
-        console.log(1111, data)
         this.textTagList[0].all_customer_total = data.all_customer_total
         this.textTagList[0].sum_add_total = data.sum_add_total
         this.textTagList[0].sum_abate_total = data.sum_abate_total
