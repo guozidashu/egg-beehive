@@ -16,7 +16,7 @@
       >
         <template #Form>
           <el-form-item label="供应商类别:">
-            <el-select v-model="form.type">
+            <el-select v-model="form.supplier_type">
               <el-option
                 v-for="item in supplier_type"
                 :key="item.id"
@@ -25,23 +25,23 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="裁剪状态:">
+          <!-- <el-form-item label="裁剪状态:">
             <el-select v-model="form.type">
               <el-option label="未裁剪" :value="1" />
               <el-option label="部分裁剪" :value="1" />
               <el-option label="全部裁剪" :value="1" />
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="搜索：">
             <el-input
-              v-model="form.name"
+              v-model="form.keywords"
               placeholder="请输入供应商名称/款号/批次"
               size="small"
             />
           </el-form-item>
           <el-form-item label="日期搜索:">
             <el-date-picker
-              v-model="form.order_time"
+              v-model="form.time"
               align="left"
               :clearable="false"
               :default-time="['00:00:00', '23:59:59']"
@@ -84,60 +84,42 @@
         @changePageSize="changeBtnPageSize"
       >
         <template #List>
-          <el-table-column
-            align="center"
-            show-overflow-tooltip
-            type="selection"
-          />
-          <el-table-column
-            align="center"
-            label="批次"
-            prop="id"
-            show-overflow-tooltip
-            sortable
-          />
-          <el-table-column
-            align="center"
-            label="供应商名称"
-            prop="id"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="数量"
-            prop="id"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="金额"
-            prop="id"
-            show-overflow-tooltip
-          />
+          <el-table-column align="center" type="selection" />
+          <el-table-column align="center" label="批次" prop="id" />
+          <el-table-column align="center" label="供应商名称" prop="name" />
+          <el-table-column align="center" label="数量" prop="num" />
+          <el-table-column align="center" label="金额" prop="total" />
           <el-table-column
             align="center"
             label="商品信息"
-            prop="id"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="裁剪进度"
-            prop="id"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="时间"
-            prop="id"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="操作"
-            show-overflow-tooltip
-            width="85"
+            prop="goods"
+            width="300"
           >
+            <template #default="{ row }">
+              <div style="display: flex">
+                <el-image
+                  :src="row.goods.img"
+                  style="width: 100px; height: 100px"
+                />
+                <div style="margin-left: 10px">
+                  <div
+                    style="
+                      width: 150px;
+                      margin: 20px 0;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                    "
+                  >
+                    {{ row.goods.name }}
+                  </div>
+                  <div>{{ row.goods.sn }}</div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="时间" prop="create_time" />
+          <el-table-column align="center" label="操作" width="85">
             <template #default="{ row }">
               <el-button
                 v-has-permi="['btn:SupplierCutbedsheet:view']"
@@ -166,8 +148,9 @@
         page: 1,
         pageSize: 10,
         form: {
-          id: 0,
-          name: '',
+          supplier_type: '',
+          keywords: '',
+          time: [],
           page: 1,
           pageSize: 10,
         },
@@ -242,9 +225,9 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await this.api.getBandList(this.formTemp)
-        this.list = data.data
-        this.total = data.total
+        const { data } = await this.api.getCuttingOrder(this.formTemp)
+        this.list = data.list.data
+        this.total = data.list.total
         this.listLoading = false
       },
     },

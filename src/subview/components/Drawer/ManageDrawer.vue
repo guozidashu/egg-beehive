@@ -318,6 +318,16 @@
                   style="width: 215px"
                 />
               </el-form-item>
+              <el-form-item class="item" label="授信额度：" prop="max_arrears">
+                <el-input
+                  v-model="form.max_arrears"
+                  placeholder="0为不限制"
+                  style="width: 215px"
+                  @input="
+                    form.max_arrears = $moneyFormatInput(form.max_arrears)
+                  "
+                />
+              </el-form-item>
               <el-form-item class="item" label="备注信息：" style="width: 100%">
                 <el-input
                   v-model="form.remark"

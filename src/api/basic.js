@@ -365,7 +365,24 @@ export function getEmployeeCostAnalysis(data) {
     data,
   })
 }
+
 // 供应链模块接口
+// 供应链 - 入库单列表
+export function getInboundOrder(data) {
+  return request({
+    url: '/supplier/inboundOrder',
+    method: 'post',
+    data,
+  })
+}
+// 供应链 - 裁床单列表
+export function getCuttingOrder(data) {
+  return request({
+    url: '/supplier/cuttingOrder',
+    method: 'post',
+    data,
+  })
+}
 // 供应链 - 供应商管理
 // 供应商列表
 export function getSupplierList(data) {
@@ -1336,6 +1353,31 @@ export function getExpensesList(data) {
 export function getexpensesSonList(data) {
   return request({
     url: '/information/expensesSon',
+    method: 'post',
+    data,
+  })
+}
+// 数据-客户保证金
+// 客户保证金 - 卡片数据
+export function getCustomerEarnestBoard(data) {
+  return request({
+    url: '/information/customerEarnestBoard',
+    method: 'post',
+    data,
+  })
+}
+// 客户保证金 - 折线图
+export function getCustomerEarnestReport(data) {
+  return request({
+    url: '/information/customerEarnestReport',
+    method: 'post',
+    data,
+  })
+}
+// 客户保证金 - 列表
+export function getInformationCustomerEarnestList(data) {
+  return request({
+    url: '/information/customerEarnestList',
     method: 'post',
     data,
   })

@@ -259,7 +259,13 @@
           this.Forbidden = true
         }
       },
-      'form.customer_grade'(val) {
+      'form.customer_grade'(val, oVal) {
+        if (val.length < (oVal.length || 0)) {
+          this.form.customer_grade_price =
+            this.form.customer_grade_price.filter((item) => {
+              return val.indexOf(item.level_id) > -1
+            })
+        }
         let arr = []
         if (val == null) {
           this.form.customer_grade_price = []
@@ -287,6 +293,7 @@
             this.form.customer_grade_price.push(item)
           }
         })
+        this.$forceUpdate()
       },
     },
     created() {

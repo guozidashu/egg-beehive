@@ -26,8 +26,8 @@
         </el-col>
       </el-col>
       <el-col :lg="6" :md="6" :sm="6" :xl="6" :xs="6">
-        <QYBranch :list="branSonChList" :style-chart="styleObj" />
-        <QYBranch :list="branSonChList1" :style-chart="styleObj" />
+        <QYBranch :list="earnest_rate_list" :style-chart="styleObj" />
+        <QYBranch :list="level_rate_list" :style-chart="styleObj" />
       </el-col>
     </el-row>
     <div style="padding: 20px; background-color: white; border-radius: 5px">
@@ -42,13 +42,13 @@
       >
         <el-form-item style="margin-right: 0">
           <el-form-item label="保证金类型:">
-            <el-select v-model="goodsForm1.type" style="width: 200px">
+            <el-select v-model="goodsForm1.status" style="width: 200px">
               <el-option label="收入" :value="1" />
               <el-option label="退还" :value="2" />
             </el-select>
           </el-form-item>
           <el-form-item label="客户等级:">
-            <el-select v-model="goodsForm1.level" style="width: 200px">
+            <el-select v-model="goodsForm1.level_id" style="width: 200px">
               <el-option
                 v-for="(item, index) in selectDataList.customer_grade"
                 :key="index"
@@ -106,14 +106,53 @@
         <template #List>
           <el-table-column type="selection" />
           <el-table-column label="ID" prop="id" width="50" />
-          <el-table-column label="头像" prop="sn" width="120" />
+          <el-table-column label="头像" prop="avatar" width="120">
+            <template #default="{ row }">
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="row.avatar"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image :src="row.avatar" style="width: 50px; height: 50px" />
+              </el-tooltip>
+            </template>
+          </el-table-column>
           <el-table-column label="客户名称" prop="name" />
-          <el-table-column label="保证金额度" prop="mobile" />
-          <el-table-column label="支付类型" prop="grade_name" width="120" />
-          <el-table-column label="转账凭证" prop="type_name" width="120" />
-          <el-table-column label="电子合同" prop="order_belong" width="120" />
-          <el-table-column label="操作人" prop="order_belong" />
-          <el-table-column label="备注" prop="order_belong" />
+          <el-table-column label="保证金额度" prop="amount">
+            <template #default="{ row }">
+              <el-tag>￥{{ row.amount | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="支付类型" prop="pay_type" width="120">
+            <template #default="{ row }">
+              <span v-if="row.pay_type == 1">支付宝</span>
+              <span v-else-if="row.pay_type == 2">微信</span>
+              <span v-else-if="row.pay_type == 3">银行卡</span>
+              <span v-else-if="row.pay_type == 4">信用卡</span>
+              <span v-else-if="row.pay_type == 5">现金</span>
+              <span v-else-if="row.pay_type == 6">其他</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="转账凭证" prop="img" width="120">
+            <template #default="{ row }">
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="row.img"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image :src="row.img" style="width: 50px; height: 50px" />
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column label="电子合同" prop="agreement" width="120">
+            <template #default="{ row }">
+              <el-tag @click="handleViewupload(row.agreement)">查看</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作人" prop="username" />
+          <el-table-column label="备注" prop="remark" />
           <el-table-column label="时间" prop="create_time" width="200" />
         </template>
       </QYList>
@@ -121,7 +160,7 @@
   </div>
 </template>
 <script>
-  import TextTags from '@/subview/components/Text/IndexTextTags'
+  import TextTags from '@/subview/components/Text/DepositTextTags'
   import datajosn from '@/assets/assets_josn/datajosn'
   import MembersChart from '@/subview/components/Chart/MembersChart'
   export default {
@@ -138,25 +177,19 @@
         page: 1,
         pageSize: 10,
         goodsForm1: {
-          search_type: 'mobile', //搜索条件 mobile nick_name name account
-          keywords: null, //关键字
-          level: null,
-          type: null,
-          tag: null,
+          status: 1, //1收入 2退还
+          level_id: '', //客户等级
+          type: '', //客户类型
           create_time: [],
           page: 1,
           pageSize: 10,
-          id: null,
         },
         divLength: 8,
         textTagList: [
           {
-            title: '总金额',
-            numType: 1,
-            today: 0,
-            yesterday_total: 0,
-            month: 0,
-            yesterday_month: 0,
+            all_customer_total: 0, //总金额
+            sum_add_total: 0, //总新增金额
+            sum_abate_total: 0, //总退还金额
           },
           {
             title: '新增金额',
@@ -165,6 +198,8 @@
             yesterday_total: 0,
             month: 0,
             yesterday_month: 0,
+            day_rate: 0,
+            month_rate: 0,
           },
           {
             title: '退还总金额',
@@ -173,6 +208,8 @@
             yesterday_total: 0,
             month: 0,
             yesterday_month: 0,
+            day_rate: 0,
+            month_rate: 0,
           },
         ],
         styleObj: {
@@ -182,41 +219,16 @@
           legendy: 0,
           center: ['50%', '50%'],
         },
-        branSonChList: [
-          {
-            value: 10,
-            name: '支付宝',
-          },
-          {
-            value: 10,
-            name: '微信',
-          },
-          {
-            value: 10,
-            name: '银行卡',
-          },
-        ],
-        branSonChList1: [
-          {
-            value: 10,
-            name: '白金',
-          },
-          {
-            value: 10,
-            name: '黄金',
-          },
-          {
-            value: 10,
-            name: '钻石',
-          },
-        ],
+        earnest_rate_list: [],
+        level_rate_list: [],
         time: '30天',
         // 图表 x轴数据
         dateList: [],
         // 图表 series数据
         dataAllList: {
-          sale_num: [],
-          delivery_num: [],
+          all_customer_total: [],
+          today_add_total: [],
+          today_abate_total: [],
         },
         // 图表 配置数据
         chartDataObj: {
@@ -348,8 +360,9 @@
           }
           this.dateList = []
           this.dataAllList = {
-            sale_num: [],
-            delivery_num: [],
+            all_customer_total: [],
+            today_add_total: [],
+            today_abate_total: [],
           }
           this.fetchData()
         },
@@ -376,10 +389,45 @@
       },
     },
     created() {
+      this.getHeadList()
       this.getGoodsTypeList()
       this.fetchData()
     },
     methods: {
+      handleViewupload(url) {
+        window.open(url)
+      },
+      //顶部数据
+      async getHeadList() {
+        const { data } = await this.api.getCustomerEarnestBoard()
+        console.log(1111, data)
+        this.textTagList[0].all_customer_total = data.all_customer_total
+        this.textTagList[0].sum_add_total = data.sum_add_total
+        this.textTagList[0].sum_abate_total = data.sum_abate_total
+
+        this.textTagList[1].today = data.today_add_total
+        this.textTagList[1].yesterday_total = data.yesterday_add_total
+        this.textTagList[1].month = data.month_add_total
+        this.textTagList[1].yesterday_month = data.last_month_add_total
+        this.textTagList[1].day_rate = data.day_add_rate
+        this.textTagList[1].month_rate = data.month_add_rate
+
+        this.textTagList[2].today = data.today_abate_total
+        this.textTagList[2].yesterday_total = data.yesterday_abate_total
+        this.textTagList[2].month = data.month_abate_total
+        this.textTagList[2].yesterday_month = data.last_month_abate_total
+        this.textTagList[2].day_rate = data.day_abate_rate
+        this.textTagList[2].month_rate = data.month_abate_rate
+        data.customer_level_rate.forEach((item) => {
+          item.value = item.earnest_money
+        })
+        this.level_rate_list = data.customer_level_rate
+        data.customer_earnest_rate.forEach((item) => {
+          item.value = item.amount
+          item.name = item.pay_type
+        })
+        this.earnest_rate_list = data.customer_earnest_rate
+      },
       async getGoodsTypeList() {
         const { data } = await this.api.getCommonAllList({
           type: 'customer_grade,customer_type,',
@@ -407,12 +455,15 @@
         this.pageState = true
         this.goodsForm1.pageSize = data
       },
+      // 获取列表数据
       async tableData() {
         this.listLoading = true
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.goodsForm1))
         }
-        const { data } = await this.api.getCustomerList(this.formTemp)
+        const { data } = await this.api.getInformationCustomerEarnestList(
+          this.formTemp
+        )
         this.list = data.data
         this.total = data.total
         this.listLoading = false
@@ -424,7 +475,7 @@
       },
       // 获取图表数据
       async getHomeReport() {
-        const { data } = await this.api.getHomeReportForms(this.form)
+        const { data } = await this.api.getCustomerEarnestReport(this.form)
         let arr = []
         data.forEach((item) => {
           for (let i in item) {
@@ -445,9 +496,9 @@
           }
         })
         this.chartDataObj.xAxis.data = this.dateList
-        this.chartDataObj.series[0].data = this.dataAllList.sale_num
-        this.chartDataObj.series[1].data = this.dataAllList.delivery_num
-        this.chartDataObj.series[2].data = this.dataAllList.delivery_num
+        this.chartDataObj.series[0].data = this.dataAllList.all_customer_total
+        this.chartDataObj.series[1].data = this.dataAllList.today_add_total
+        this.chartDataObj.series[2].data = this.dataAllList.today_abate_total
         this.$forceUpdate()
       },
     },

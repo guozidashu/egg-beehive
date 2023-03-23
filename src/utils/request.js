@@ -15,13 +15,8 @@ import qs from 'qs'
 import router from '@/router'
 import { isArray } from '@/utils/validate'
 import { needErrorLog, addErrorLog } from '@/vab/plugins/errorLog'
-import { refreshToken } from '@/api/refreshToken'
 
 let loadingInstance
-
-let refreshToking = false
-
-let requests = []
 
 // 操作正常Code数组
 const codeVerificationArray = isArray(successCode)
@@ -82,41 +77,6 @@ const requestConf = (config) => {
 }
 
 /**
- * 刷新刷新令牌
- * @param config 过期请求配置
- * @returns {any} 返回结果
- */
-const tryRefreshToken = async (config) => {
-  if (!refreshToking) {
-    refreshToking = true
-    try {
-      const {
-        data: { token },
-      } = await refreshToken()
-      if (token) {
-        store.dispatch('user/setToken', token).then(() => {})
-        // 已经刷新了token，将所有队列中的请求进行重试
-        requests.forEach((cb) => cb(token))
-        requests = []
-        return instance(requestConf(config))
-      }
-    } catch (error) {
-      console.error('refreshToken error =>', error)
-      router.push({ path: '/login', replace: true }).then(() => {})
-    } finally {
-      refreshToking = false
-    }
-  } else {
-    return new Promise((resolve) => {
-      // 将resolve放进队列，用一个函数形式来保存，等token刷新后直接执行
-      requests.push(() => {
-        resolve(instance(requestConf(config)))
-      })
-    })
-  }
-}
-
-/**
  * axios响应拦截器
  * @param config 请求配置
  * @param data response数据
@@ -146,7 +106,12 @@ const handleData = async ({ config, data, status = 0, statusText }) => {
         )
       break
     case 402:
-      return await tryRefreshToken(config)
+      store
+        .dispatch('user/resetAll')
+        .then(() =>
+          router.push({ path: '/login', replace: true }).then(() => {})
+        )
+      break
     case 403:
       router.push({ path: '/403' }).then(() => {})
       break

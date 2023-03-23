@@ -1,0 +1,154 @@
+<template>
+  <div>
+    <el-col
+      v-for="(item, index) in list"
+      :key="index"
+      :lg="divLength"
+      :md="12"
+      :sm="24"
+      :xl="divLength"
+      :xs="24"
+    >
+      <el-card
+        v-if="index != 0"
+        class="access"
+        shadow="hover"
+        style="border-radius: 5px"
+      >
+        <template #header>
+          <div style="display: flex; justify-content: space-between">
+            <div style="margin-top: 5px">
+              <vab-icon icon="line-chart-line" style="color: red" />
+              {{ item.title }}
+            </div>
+            <div>
+              <el-tag type="danger">今日</el-tag>
+            </div>
+          </div>
+        </template>
+        <div>
+          <p
+            style="
+              font-size: 30px;
+              font-weight: 400;
+              color: rgba(0, 0, 0, 0.85);
+            "
+          >
+            <span v-if="item.numType == 1">
+              ￥{{ item.today | moneyFormat }}
+            </span>
+            <span v-else>{{ item.today }}</span>
+          </p>
+          <p style="font-size: 12px">
+            较昨日
+            <span v-if="item.numType == 1">
+              ￥{{ item.yesterday_total | moneyFormat }}
+            </span>
+            <span v-else>{{ item.yesterday_total }}</span>
+            <span v-if="item.day_rate >= 0">增长</span>
+            <span v-else>减少</span>
+            &nbsp;
+            <span v-if="item.day_rate >= 0" style="color: red">
+              {{ item.day_rate }}%
+              <vab-icon icon="arrow-drop-up-fill" />
+            </span>
+            <span v-else style="color: green">
+              {{ item.day_rate }}%
+              <vab-icon icon="arrow-drop-down-fill" />
+            </span>
+          </p>
+          <p style="font-size: 12px">
+            本月
+            <span v-if="item.numType == 1">
+              ￥{{ item.month | moneyFormat }}
+            </span>
+            <span v-else>{{ item.month }}</span>
+          </p>
+          <p style="font-size: 12px">
+            较上月
+            <span v-if="item.numType == 1">
+              ￥{{ item.yesterday_month | moneyFormat }}
+            </span>
+            <span v-else>{{ item.yesterday_month }}</span>
+            <span v-if="item.month_rate >= 0">增长</span>
+            <span v-else>减少</span>
+            &nbsp;
+            <span v-if="item.month_rate >= 0" style="color: red">
+              {{ item.month_rate }}%
+              <vab-icon icon="arrow-drop-up-fill" />
+            </span>
+            <span v-else style="color: green">
+              {{ item.month_rate }}%
+              <vab-icon icon="arrow-drop-down-fill" />
+            </span>
+          </p>
+        </div>
+      </el-card>
+      <el-card v-else class="access" shadow="hover" style="border-radius: 5px">
+        <template #header>
+          <div style="display: flex; justify-content: space-between">
+            <div style="margin-top: 5px">
+              <vab-icon icon="line-chart-line" style="color: red" />
+              保障金汇总
+            </div>
+          </div>
+        </template>
+        <div style="padding-top: 3px">
+          <p
+            style="
+              font-size: 24px;
+              font-weight: 400;
+              color: rgba(0, 0, 0, 0.85);
+            "
+          >
+            <span>总金额</span>
+            &nbsp;
+            <span>￥{{ item.all_customer_total | moneyFormat }}</span>
+          </p>
+          <p
+            style="
+              font-size: 24px;
+              font-weight: 400;
+              color: rgba(0, 0, 0, 0.85);
+            "
+          >
+            <span>总新增金额</span>
+            &nbsp;
+            <span>￥{{ item.sum_add_total | moneyFormat }}</span>
+          </p>
+          <p
+            style="
+              font-size: 24px;
+              font-weight: 400;
+              color: rgba(0, 0, 0, 0.85);
+            "
+          >
+            <span>总退还金额</span>
+            &nbsp;
+            <span>￥{{ item.sum_abate_total | moneyFormat }}</span>
+          </p>
+        </div>
+      </el-card>
+    </el-col>
+  </div>
+</template>
+
+<script>
+  export default {
+    props: {
+      list: {
+        type: Array,
+        default: () => [],
+      },
+      divLength: {
+        type: Number,
+        default: 6,
+      },
+    },
+    data() {
+      return {}
+    },
+    beforeDestroy() {},
+    mounted() {},
+  }
+</script>
