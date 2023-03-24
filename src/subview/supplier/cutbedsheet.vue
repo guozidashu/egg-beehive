@@ -25,6 +25,26 @@
               />
             </el-select>
           </el-form-item>
+          <el-form-item label="品牌:">
+            <el-select v-model="form.brand" placeholder="请选择品牌">
+              <el-option
+                v-for="(item, index) in selectList.brand"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="季节:">
+            <el-select v-model="form.season" placeholder="请选择季节">
+              <el-option
+                v-for="(item, index) in selectList.season"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
           <!-- <el-form-item label="裁剪状态:">
             <el-select v-model="form.type">
               <el-option label="未裁剪" :value="1" />
@@ -131,7 +151,13 @@
               >
                 详情
               </el-button>
-              <el-button type="text" @click="handleDelete(row)">作废</el-button>
+              <el-button
+                v-has-permi="['btn:SupplierCutbedsheet:del']"
+                type="text"
+                @click="handleDelete(row)"
+              >
+                作废
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -148,10 +174,13 @@
     mixins: [datajosn],
     data() {
       return {
+        selectList: [],
         formTemp: null,
         page: 1,
         pageSize: 10,
         form: {
+          brand: '',
+          season: '',
           supplier_type: '',
           keywords: '',
           time: [],
@@ -188,18 +217,33 @@
       },
     },
     created() {
-      this.fetchData()
+      this.getGoodsTypeList()
       this.getSelectData()
+      this.fetchData()
     },
     methods: {
       selectBtnRows(data) {
         this.selectRows = data
       },
+      async getGoodsTypeList() {
+        const { data } = await this.api.getCommonAllList({
+          type: 'season,brand',
+        })
+        this.selectList = data
+      },
       // 裁床单导出
       async handleDownload() {
-        if (this.selectRows.length == 0) {
-          this.$message.error('请选择要导出的数据')
-          return
+        if (this.selectRows == undefined) {
+          let temp = this.formTemp
+          temp.ids = []
+          const { code, data } = await this.api.getCuttingExport(temp)
+          if (code != 200) {
+            return
+          } else {
+            window.open(data.url)
+            this.$message.success('导出成功')
+            this.fetchData()
+          }
         } else {
           let temp = this.formTemp
           temp.ids = []
@@ -229,16 +273,16 @@
         this.form = this.$options.data().form
       },
       handleDelete(row) {
-        if (row.id) {
-          this.$baseConfirm('你确定要作废当前项吗', null, async () => {
-            const { code } = await this.api.delBandDel({ id: row.id })
-            if (code != 200) {
-              return
-            }
-            this.$baseMessage('作废成功', 'success', 'vab-hey-message-success')
-            this.fetchData()
-          })
-        }
+        // if (row.id) {
+        //   this.$baseConfirm('你确定要作废当前项吗', null, async () => {
+        //     const { code } = await this.api.delBandDel({ id: row.id })
+        //     if (code != 200) {
+        //       return
+        //     }
+        //     this.$baseMessage('作废成功', 'success', 'vab-hey-message-success')
+        //     this.fetchData()
+        //   })
+        // }
       },
       changeBtnPage(data) {
         this.pageState = true

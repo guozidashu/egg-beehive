@@ -192,8 +192,8 @@
             sum_abate_total: 0, //总退还金额
           },
           {
-            title: '新增金额',
-            numType: 2,
+            title: '保证金新增',
+            numType: 1,
             today: 0,
             yesterday_total: 0,
             month: 0,
@@ -202,7 +202,7 @@
             month_rate: 0,
           },
           {
-            title: '退还总金额',
+            title: '保证金退还',
             numType: 1,
             today: 0,
             yesterday_total: 0,

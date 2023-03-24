@@ -89,40 +89,26 @@
           <div style="display: flex; justify-content: space-between">
             <div style="margin-top: 5px">
               <vab-icon icon="line-chart-line" style="color: red" />
-              保障金汇总
+              保证金总额
             </div>
           </div>
         </template>
         <div style="padding-top: 3px">
           <p
             style="
-              font-size: 24px;
+              font-size: 30px;
               font-weight: 400;
               color: rgba(0, 0, 0, 0.85);
             "
           >
-            <span>总金额</span>
-            &nbsp;
             <span>￥{{ item.all_customer_total | moneyFormat }}</span>
           </p>
-          <p
-            style="
-              font-size: 24px;
-              font-weight: 400;
-              color: rgba(0, 0, 0, 0.85);
-            "
-          >
+          <p style="margin-bottom: 28px; font-size: 12px">
             <span>总新增金额</span>
             &nbsp;
             <span>￥{{ item.sum_add_total | moneyFormat }}</span>
           </p>
-          <p
-            style="
-              font-size: 24px;
-              font-weight: 400;
-              color: rgba(0, 0, 0, 0.85);
-            "
-          >
+          <p style="margin-bottom: 28px; font-size: 12px">
             <span>总退还金额</span>
             &nbsp;
             <span>￥{{ item.sum_abate_total | moneyFormat }}</span>
