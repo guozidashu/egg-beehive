@@ -157,6 +157,7 @@
       }),
     },
     watch: {
+      // 抽屉数据监听
       drawerInof: {
         handler: function (newVal) {
           this.form = JSON.parse(JSON.stringify(newVal))
@@ -167,10 +168,14 @@
             this.getGoodsAllDetail()
             this.getGoodsDetail()
           }
+          if (newVal.drawerType != 1) {
+            this.initSelect()
+          }
         },
         deep: true,
         immediate: true,
       },
+      // 下拉框数据监听
       selectList: {
         handler: function (newVal) {
           this.selectData = JSON.parse(JSON.stringify(newVal))
@@ -178,6 +183,7 @@
         deep: true,
         immediate: true,
       },
+      // 价格监听
       'form.price': {
         handler: function () {
           this.zhekouList.forEach((item) => {
@@ -187,6 +193,7 @@
         },
         deep: true,
       },
+      // 颜色监听
       'form.colorid': {
         handler: function () {
           if (!this.form.colorid) {
@@ -211,6 +218,7 @@
         },
         deep: true,
       },
+      // 尺码监听
       'form.sizeid': {
         handler: function () {
           if (!this.form.sizeid) {
@@ -240,17 +248,24 @@
         },
         deep: true,
       },
+      // 仓库监听
+      'form.warehouse': {
+        handler: function (newVal) {
+          this.selectProvinceFun(newVal)
+        },
+        deep: true,
+      },
     },
-    created() {
-      this.initSelect()
-    },
+    created() {},
     methods: {
+      // 获取头部详情
       async getGoodsAllDetail() {
         const { data } = await this.api.getGoodTotalDetails({
           good_id: this.form.id,
         })
         this.goodsAllNum = data
       },
+      // 获取基础详情
       async getGoodsDetail() {
         let temp = this.form.drawerType
         const { data } = await this.api.getGoodBasicsDetails({
@@ -269,18 +284,20 @@
         tempForm.drawerType = temp
         this.form = JSON.parse(JSON.stringify(tempForm))
         this.$forceUpdate()
-        this.selectProvinceFun(data.warehouse_id)
       },
+      // 获取库位列表
       async selectProvinceFun(e) {
         const { data } = await this.api.getWarehousePositionList({
           warehouse_id: e,
         })
         this.WarehousePositionList = data.list
       },
+      // 获取仓库
       async initSelect() {
         const { data } = await this.api.getWarehouseList()
         this.WarehouseList = data.list
       },
+      // 新增修改
       async changeTypeBtn(e) {
         if (e != 1) {
           this.form.drawerType = e
@@ -344,13 +361,16 @@
           }
         }
       },
+      // 上传回显
       getSon(data) {
         this.form.img = data[0]
         this.$forceUpdate()
       },
+      // 上传触发
       handleShow() {
         this.$refs['vabUpload'].handleShow()
       },
+      // tab 切换
       async handleClick(tab) {
         this.tabindex = tab.name
         this.listLoading = true
@@ -366,6 +386,7 @@
         this.orderList = data.list
         this.listLoading = false
       },
+      // 固定价
       async changeType() {
         if (!this.form.price) {
           this.$baseMessage(

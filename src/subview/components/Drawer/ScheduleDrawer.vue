@@ -379,8 +379,7 @@
     methods: {
       // 切换tabs 滑动到指定位置
       handleClick(tab, event) {
-        console.log(111, tab, event)
-        this.$el.querySelector(`#${tab.name}`).scrollIntoView({
+        this.$el.querySelector(`#scoll${tab.index}`).scrollIntoView({
           behavior: 'smooth', // 平滑过渡
           block: 'start', // 上边框与视窗顶部平齐。默认值
         })
@@ -389,7 +388,6 @@
       getImgList(data) {
         if (this.uploadType == 1) {
           this.orderForm.CuttingImg = data[0]
-          console.log(this.orderForm.CuttingImg, data)
         } else if (this.uploadType == 2) {
           this.orderForm.TechnologyImg = data[0]
         } else if (this.uploadType == 3) {
@@ -399,7 +397,6 @@
         }
         // 强制更新视图
         this.$forceUpdate()
-        console.log(1111, this.orderForm)
       },
       // 上传
       handleShow(type) {

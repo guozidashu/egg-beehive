@@ -305,7 +305,6 @@
                   v-model="form.warehouse"
                   placeholder="请选择仓库："
                   style="width: 130px"
-                  @change="selectProvinceFun($event)"
                 >
                   <el-option
                     v-for="(item, index) in warehouseList"
