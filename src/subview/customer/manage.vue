@@ -702,6 +702,8 @@
           this.drawerInof = {}
           this.drawerInof.drawerType = type
           this.drawerInof.remit_role = 1
+          // this.drawerInof.change_price = 0
+          this.drawerInof.change_discount = 0
           this.drawerInof.order_belong = 2
           this.drawerInof.status = 1
           this.drawerInof.is_online_order = 0

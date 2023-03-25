@@ -180,7 +180,7 @@
       <el-form
         v-if="form.drawerType == 2 || form.drawerType == 3"
         ref="form"
-        label-width="120px"
+        label-width="140px"
         :model="form"
         :rules="rules"
         style="width: 100%"
@@ -273,6 +273,26 @@
           <div class="conten-warp">
             <div class="conten-title">其它信息</div>
             <div class="conten-list-com">
+              <el-form-item
+                class="item"
+                label="是否允许线上更改折扣："
+                style="width: 100%"
+              >
+                <el-radio-group v-model="form.change_discount">
+                  <el-radio :label="1">允许</el-radio>
+                  <el-radio :label="0">禁止</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <!-- <el-form-item
+                class="item"
+                label="是否显示改价："
+                style="width: 100%"
+              >
+                <el-radio-group v-model="form.change_price">
+                  <el-radio :label="1">允许</el-radio>
+                  <el-radio :label="0">禁止</el-radio>
+                </el-radio-group>
+              </el-form-item> -->
               <el-form-item class="item" label="汇款方式：" style="width: 100%">
                 <el-radio-group v-model="form.remit_role">
                   <el-radio :label="0">仅上线付款</el-radio>

@@ -148,7 +148,13 @@
           </el-table-column>
           <el-table-column label="电子合同" prop="agreement" width="120">
             <template #default="{ row }">
-              <el-tag @click="handleViewupload(row.agreement)">查看</el-tag>
+              <el-tag
+                v-if="row.agreement != null"
+                @click="handleViewupload(row.agreement)"
+              >
+                查看
+              </el-tag>
+              <el-tag v-else type="danger">未上传</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="操作人" prop="username" />
