@@ -119,26 +119,33 @@
         <h4 id="scoll3">标准资料包</h4>
         <!-- 上传  -->
         <div style="display: flex">
-          <div style="width: 25%">
-            <el-button size="small" type="primary" @click="handleShow(1)">
-              上传裁床指示单
-            </el-button>
-            <el-tooltip
-              v-if="orderForm.CuttingImg != undefined"
-              placement="top"
+          <div
+            v-for="(item, index) in divUploadList"
+            :key="index"
+            style="width: 25%"
+          >
+            <el-upload
+              accept=".doc, .docx, .pdf"
+              :action="getAction()"
+              :before-upload="beforeUpload"
+              class="upload-demo"
+              :file-list="divUploadList[index].list"
+              :headers="headers"
+              :limit="2"
+              :on-success="handleChange"
+              :show-file-list="true"
             >
-              <el-image
-                slot="content"
-                :src="orderForm.CuttingImg"
-                style="width: 200px; height: 200px"
-              />
-              <el-image
-                :src="orderForm.CuttingImg"
-                style="width: 100px; height: 100px; margin-top: 20px"
-              />
-            </el-tooltip>
+              <el-button
+                size="small"
+                type="primary"
+                @click="handleShow(item.type)"
+              >
+                {{ item.name }}
+              </el-button>
+            </el-upload>
           </div>
-          <div style="width: 25%">
+          <!-- <div style="width: 25%">
+            
             <el-button size="small" type="primary" @click="handleShow(2)">
               上传生产工艺单
             </el-button>
@@ -194,7 +201,7 @@
                 style="width: 100px; height: 100px; margin-top: 20px"
               />
             </el-tooltip>
-          </div>
+          </div> -->
         </div>
         <h4 id="scoll4">关联信息</h4>
         <el-form-item label="关联款式：">
@@ -279,23 +286,14 @@
         </template>
       </QYList>
     </el-dialog>
-    <!-- 上传 -->
-    <vab-upload
-      ref="vabUpload"
-      :limit="1"
-      name="file"
-      :size="1"
-      url="/upload"
-      @submitUpload="getImgList"
-    />
   </div>
 </template>
 
 <script>
-  import VabUpload from '@/extra/VabUpload'
+  import { mapGetters } from 'vuex'
+  import { baseURL } from '@/config'
   export default {
     name: 'ComponentsDrawer',
-    components: { VabUpload },
     props: {
       drawerInof: {
         type: Object,
@@ -304,6 +302,31 @@
     },
     data() {
       return {
+        // 上传按钮数组
+        divUploadList: [
+          {
+            name: '上传裁床指示单',
+            type: 1,
+            list: [],
+          },
+          {
+            name: '上传生产工艺单',
+            type: 2,
+            list: [],
+          },
+          {
+            name: '上传大货指示单',
+            type: 3,
+            list: [],
+          },
+          {
+            name: '上传后整指示单',
+            type: 4,
+            list: [],
+          },
+        ],
+        // 上传请求头
+        headers: {},
         // 上传类型
         uploadType: 1,
         // 选择商品参数
@@ -348,6 +371,12 @@
         rules: {},
       }
     },
+    computed: {
+      // 上传接口获取token缓存
+      ...mapGetters({
+        token: 'user/token',
+      }),
+    },
     watch: {
       form: {
         handler: function (newVal) {
@@ -375,33 +404,53 @@
         deep: true,
       },
     },
-    created() {},
+    created() {
+      // 上传接口获取token
+      this.headers['Authorization'] = `${this.token}`
+    },
     methods: {
+      // 上传处理显示列表 只能显示最新的一个
+      async handleChange(res, file, fileList) {
+        if (res.code == 200) {
+          if (this.uploadType == 1) {
+            this.divUploadList[this.uploadType - 1].list = fileList.slice(-1)
+          } else if (this.uploadType == 2) {
+            this.divUploadList[this.uploadType - 1].list = fileList.slice(-1)
+          } else if (this.uploadType == 3) {
+            this.divUploadList[this.uploadType - 1].list = fileList.slice(-1)
+          } else if (this.uploadType == 4) {
+            this.divUploadList[this.uploadType - 1].list = fileList.slice(-1)
+          }
+        }
+      },
+      // 上传限制
+      beforeUpload(file) {
+        const fileSuffix = file.name.substring(file.name.lastIndexOf('.') + 1)
+        const whiteList = ['pdf', 'doc', 'docx']
+        if (whiteList.indexOf(fileSuffix) === -1) {
+          this.$message.error('上传文件只能是 pdf、doc、docx格式')
+          return false
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2
+        if (!isLt2M) {
+          this.$message.error('上传文件大小不能超过 2MB')
+          return false
+        }
+      },
+      // 上传获取上传接口路径
+      getAction() {
+        return baseURL + '/common/uploadPic'
+      },
+      // 上传记录上传类型 1.裁床 2.生产 3.大货 4.指示
+      handleShow(type) {
+        this.uploadType = type
+      },
       // 切换tabs 滑动到指定位置
       handleClick(tab, event) {
         this.$el.querySelector(`#scoll${tab.index}`).scrollIntoView({
           behavior: 'smooth', // 平滑过渡
           block: 'start', // 上边框与视窗顶部平齐。默认值
         })
-      },
-      // 上传回显
-      getImgList(data) {
-        if (this.uploadType == 1) {
-          this.orderForm.CuttingImg = data[0]
-        } else if (this.uploadType == 2) {
-          this.orderForm.TechnologyImg = data[0]
-        } else if (this.uploadType == 3) {
-          this.orderForm.IndicationImg = data[0]
-        } else if (this.uploadType == 4) {
-          this.orderForm.FinishingImg = data[0]
-        }
-        // 强制更新视图
-        this.$forceUpdate()
-      },
-      // 上传
-      handleShow(type) {
-        this.uploadType = type
-        this.$refs['vabUpload'].handleShow()
       },
       // 商品列表
       async fetchData(type) {

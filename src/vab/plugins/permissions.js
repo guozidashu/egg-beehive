@@ -21,12 +21,17 @@ VabProgress.configure({
   showSpinner: false,
 })
 router.beforeEach(async (to, from, next) => {
+  // pc 应用登录 判断
+  if (to.path === '/index' && to.fullPath.indexOf('=') != -1) {
+    const index = to.fullPath.indexOf('=')
+    const res = to.fullPath.substring(index + 1, to.fullPath.length)
+    await store.dispatch('user/setToken', res)
+  }
   const { showProgressBar } = store.getters['settings/theme']
   if (showProgressBar) VabProgress.start()
   let hasToken = store.getters['user/token']
 
   if (!loginInterception) hasToken = true
-
   if (hasToken) {
     if (store.getters['routes/routes'].length) {
       // 禁止已登录用户返回登录页

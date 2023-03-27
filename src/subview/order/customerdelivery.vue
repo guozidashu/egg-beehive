@@ -35,6 +35,7 @@
                 slot="prepend"
                 style="width: 100px"
               >
+                <el-option label="批次号" value="id" />
                 <el-option label="手机号" value="mobile" />
                 <el-option label="用户昵称" value="nick_name" />
                 <el-option label="客户名称" value="name" />
