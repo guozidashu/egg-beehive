@@ -251,7 +251,9 @@
       // 仓库监听
       'form.warehouse': {
         handler: function (newVal) {
-          this.selectProvinceFun(newVal)
+          if (this.form.drawerType != 1 && newVal != undefined) {
+            this.selectProvinceFun(newVal)
+          }
         },
         deep: true,
       },

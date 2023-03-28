@@ -9,7 +9,9 @@
         <el-tab-pane label="关联信息" />
       </el-tabs>
     </div>
-
+    <div style="position: absolute; top: 80px; right: 20px; z-index: 99">
+      <el-button size="small" type="primary" @click="subForm()">完成</el-button>
+    </div>
     <div style="position: relative; margin-left: 200px">
       <el-form ref="form" label-width="120px" :model="orderForm" :rules="rules">
         <h4 id="scoll0">基本信息</h4>
@@ -58,11 +60,14 @@
                   <div style="width: 100%">名称：{{ goodsDetails.name }}</div>
                 </div>
                 <div style="margin: 15px 0">
-                  <div style="width: 100%">波段：示例 2023年初秋三</div>
+                  <div style="width: 100%">
+                    波段：{{ goodsDetails.year_name }}
+                    {{ goodsDetails.season_name }} {{ goodsDetails.band_name }}
+                  </div>
                 </div>
                 <div style="margin: 15px 0">
                   <div style="width: 100%">
-                    创建时间：{{ goodsDetails.update_time }}
+                    创建时间：{{ goodsDetails.create_time }}
                   </div>
                 </div>
               </div>
@@ -80,8 +85,8 @@
           :data="tableData"
           style="width: 100%; margin-top: 20px"
         >
-          <el-table-column label="颜色" prop="color" width="180" />
-          <el-table-column label="尺码" prop="size" width="180" />
+          <el-table-column label="颜色" prop="color_name" width="180" />
+          <el-table-column label="尺码" prop="size_name" width="180" />
           <el-table-column label="件数" prop="num">
             <template #default="{ row }">
               <el-input
@@ -349,23 +354,7 @@
         // 选中商品详情
         goodsDetails: null,
         // 选中商品规格
-        tableData: [
-          {
-            color: '红色',
-            size: '90',
-            num: 0,
-          },
-          {
-            color: '黄色',
-            size: '90',
-            num: 0,
-          },
-          {
-            color: '绿色',
-            size: '90',
-            num: 0,
-          },
-        ],
+        tableData: [],
         // 新建订单参数
         orderForm: {},
         rules: {},
@@ -400,6 +389,8 @@
       drawerInof: {
         handler: function () {
           this.goodsDetails = null
+          this.tableData = []
+          this.loading = true
         },
         deep: true,
       },
@@ -409,6 +400,9 @@
       this.headers['Authorization'] = `${this.token}`
     },
     methods: {
+      subForm() {
+        console.log('提交函数')
+      },
       // 上传处理显示列表 只能显示最新的一个
       async handleChange(res, file, fileList) {
         if (res.code == 200) {
@@ -467,8 +461,28 @@
         this.listLoading = false
       },
       // 选择商品
-      chooseGoods(row) {
-        this.goodsDetails = row
+      async chooseGoods(row) {
+        const { data } = await this.api.getGoodBasicsDetails({
+          good_id: row.id,
+        })
+        this.goodsDetails = data
+        const colorNmae = this.goodsDetails.color_name
+        const sizeNmae = this.goodsDetails.size_name
+        const colorId = this.goodsDetails.color_id
+        const sizeId = this.goodsDetails.size_id
+        this.tableData = []
+        for (let i = 0; i < colorNmae.length; i++) {
+          for (let j = 0; j < sizeNmae.length; j++) {
+            this.tableData.push({
+              color_name: colorNmae[i],
+              color_id: colorId[i],
+              size_name: sizeNmae[j],
+              size_id: sizeId[j],
+              num: 0,
+            })
+          }
+        }
+        this.loading = false
         this.dialogVisible = false
       },
       // 打开商品选择
