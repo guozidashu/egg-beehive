@@ -2517,7 +2517,7 @@ export function editTiktokShop(data) {
     data,
   })
 }
-// 小红书保存
+// 小红书
 export function editLittleRedBook(data) {
   return request({
     url: '/admin/littleRedBook',
