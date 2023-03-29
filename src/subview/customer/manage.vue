@@ -251,9 +251,6 @@
               >
                 保证金
               </el-button>
-              <!-- <el-button type="text" @click="handleIntegral(row.id)">
-                积分
-              </el-button> -->
             </template>
           </el-table-column>
         </template>
@@ -408,7 +405,6 @@
         <el-button type="primary" @click="DepositEditSave">确 定</el-button>
       </template>
     </el-dialog>
-    <IntegralEdit ref="IntegralEdit" @fetch-data="fetchData" />
     <vab-upload
       ref="vabUpload"
       :limit="imgNum"
@@ -424,12 +420,11 @@
   import { mapGetters } from 'vuex'
   import { baseURL } from '@/config'
   import Edit from '@/subview/components/Edit/ManageEdit'
-  import IntegralEdit from '@/subview/components/Edit/CustomerIntegralEdit'
   import Drawer from '@/subview/components/Drawer/ManageDrawer'
   import VabUpload from '@/extra/VabUpload'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    components: { Edit, Drawer, VabUpload, IntegralEdit },
+    components: { Edit, Drawer, VabUpload },
     mixins: [datajosn],
     data() {
       const validateUsername = (rule, value, callback) => {
@@ -580,10 +575,6 @@
             this.$message.error('上传失败')
           }
         }
-      },
-      // 客户积分
-      handleIntegral(row) {
-        this.$refs['IntegralEdit'].showEdit(row)
       },
       // 客户导出
       async handleDerive() {

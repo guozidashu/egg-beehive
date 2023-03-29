@@ -17,14 +17,6 @@ export function getWarehousePositionList(data) {
     data,
   })
 }
-//获取设计师
-export function getgetDesignerList(data) {
-  return request({
-    url: '/common/getDesignerList',
-    method: 'post',
-    data,
-  })
-}
 // 下拉框数据获取
 //客户等级：customer_grade
 //客户分类/类型：customer_type，
@@ -430,130 +422,6 @@ export function editSupplierDetail(data) {
 export function editSupplierSave(data) {
   return request({
     url: '/supplier/supplierSave',
-    method: 'post',
-    data,
-  })
-}
-// 供应链 - 供应商分析
-export function getDissectList(data) {
-  return request({
-    url: '/supplier/dissectList',
-    method: 'post',
-    data,
-  })
-}
-// 供应链 - 成品采购订单
-// 成品采购订单列表
-export function getFinishList(data) {
-  return request({
-    url: '/supplier/finishList',
-    method: 'post',
-    data,
-  })
-}
-// 成品采购订单列表tab
-export function getFinishGetCount(data) {
-  return request({
-    url: '/supplier/finishGetCount',
-    method: 'post',
-    data,
-  })
-}
-// 成品采购订单 tab 详情
-export function getFinishDetail(data) {
-  return request({
-    url: '/supplier/finishDetail',
-    method: 'post',
-    data,
-  })
-}
-// 成品采购订单作废
-export function editFinishCancellation(data) {
-  return request({
-    url: '/supplier/finishCancellation',
-    method: 'post',
-    data,
-  })
-}
-// 供应链 -物料采购订单
-//物料采购订单列表
-export function getPurchaseList(data) {
-  return request({
-    url: '/supplier/purchaseList',
-    method: 'post',
-    data,
-  })
-}
-// 物料采购订单列表tab
-export function getpurchaseGetCount(data) {
-  return request({
-    url: '/supplier/purchaseGetCount',
-    method: 'post',
-    data,
-  })
-}
-// 物料采购订单 tab 详情
-export function getPurchaseDetail(data) {
-  return request({
-    url: '/supplier/purchaseDetail',
-    method: 'post',
-    data,
-  })
-}
-// 物料采购订单作废
-export function editPurchaseCancellation(data) {
-  return request({
-    url: '/supplier/purchaseCancellation',
-    method: 'post',
-    data,
-  })
-}
-// 供应链 - 成品采购统计
-// 成品采购统计 - 图表
-export function getFinishCountList(data) {
-  return request({
-    url: '/supplier/finishCountList',
-    method: 'post',
-    data,
-  })
-}
-// 成品采购统计 - 排行
-export function getFinishCountRank(data) {
-  return request({
-    url: '/supplier/finishCountRank',
-    method: 'post',
-    data,
-  })
-}
-// 成品采购统计 - 详情
-export function getFinishGoodDetail(data) {
-  return request({
-    url: '/supplier/finishGoodDetail',
-    method: 'post',
-    data,
-  })
-}
-// 供应链 - 物料采购统计
-// 物料采购统计 - 图表
-export function getMaterialCountListt(data) {
-  return request({
-    url: '/supplier/materialCountList',
-    method: 'post',
-    data,
-  })
-}
-// 物料采购统计 - 排行
-export function getMaterialCountRank(data) {
-  return request({
-    url: '/supplier/materialCountRank',
-    method: 'post',
-    data,
-  })
-}
-// 物料采购统计 - 详情
-export function getMaterialMaterialDetail(data) {
-  return request({
-    url: '/supplier/materialMaterialDetail',
     method: 'post',
     data,
   })
@@ -1188,14 +1056,6 @@ export function getGoodsDetailSpecificationAnalysis(data) {
   })
 }
 //数据- 客户分析
-//客户分析- 图表
-export function getCustomerReportForms(data) {
-  return request({
-    url: '/information/customerReportForms',
-    method: 'post',
-    data,
-  })
-}
 //客户分析- 地图分布
 export function getCustomerArea(data) {
   return request({
@@ -2600,99 +2460,8 @@ export function getLogList(data) {
   })
 }
 
-// 以下接口 注释掉的没有用到或者功能弃用  没有注释的页面路由弃用
-// export function getFinanceReportForms(data) {
-//   return request({
-//     url: '/information/financeReportForms',
-//     method: 'post',
-//     data,
-//   })
-// }
-// export function getFinanceCostCount(data) {
-//   return request({
-//     url: '/information/financeCostCount',
-//     method: 'post',
-//     data,
-//   })
-// }
-// export function getFinanceListd(data) {
-//   return request({
-//     url: '/information/financeList',
-//     method: 'post',
-//     data,
-//   })
-// }
-
-// export function getBoardReportForms(data) {
-//   return request({
-//     url: '/homePage/boardReportForms',
-//     method: 'post',
-//     data,
-//   })
-// }
-// export function getCustomerRanch(data) {
-//   return request({
-//     url: '/homePage/customerRanch',
-//     method: 'post',
-//     data,
-//   })
-// }
-// export function getGoodsRanch(data) {
-//   return request({
-//     url: '/homePage/goodsRanch',
-//     method: 'post',
-//     data,
-//   })
-// }
-// export function getShipmentWarning(data) {
-//   return request({
-//     url: '/homePage/shipmentWarning',
-//     method: 'post',
-//     data,
-//   })
-// }
-// export function getCustomerSource(data) {
-//   return request({
-//     url: '/homePage/customerSource',
-//     method: 'post',
-//     data,
-//   })
-// }
-// export function getHomePageBoard(data) {
-//   return request({
-//     url: '/homePage/board',
-//     method: 'post',
-//     data,
-//   })
-// }
-// export function editPurchaseShipment(data) {
-//   return request({
-//     url: '/supplier/purchaseShipment',
-//     method: 'post',
-//     data,
-//   })
-// }
-// export function editCategorySonStatus(data) {
-//   return request({
-//     url: '/goods/categorySonStatus',
-//     method: 'post',
-//     data,
-//   })
-// }
-// export function getOrderSourceAssay(data) {
-//   return request({
-//     url: '/information/orderSourceAssay',
-//     method: 'post',
-//     data,
-//   })
-// }
-// export function getInformationOrderSaleRank(data) {
-//   return request({
-//     url: '/information/orderSaleRank',
-//     method: 'post',
-//     data,
-//   })
-// }
+// 下方接口，路由几乎不使用
+// 模块设置-scm配置保存
 export function editScrmConfig(data) {
   return request({
     url: '/setting/scrmConfig',
@@ -2700,6 +2469,7 @@ export function editScrmConfig(data) {
     data,
   })
 }
+// 模块设置-生产配置保存
 export function editProduceConfig(data) {
   return request({
     url: '/setting/produceConfig',
@@ -2707,6 +2477,7 @@ export function editProduceConfig(data) {
     data,
   })
 }
+// 账户中心账户信息获取
 export function getAccountDetail(data) {
   return request({
     url: '/admin/accountDetail',
@@ -2714,6 +2485,7 @@ export function getAccountDetail(data) {
     data,
   })
 }
+// 账户中心账户信息保存
 export function editAdminAccountSave(data) {
   return request({
     url: '/admin/accountSave',
@@ -2721,6 +2493,7 @@ export function editAdminAccountSave(data) {
     data,
   })
 }
+// 视频号保存
 export function editWechatVideo(data) {
   return request({
     url: '/admin/wechatVideo',
@@ -2728,7 +2501,7 @@ export function editWechatVideo(data) {
     data,
   })
 }
-
+// 快团团保存
 export function editQuickly(data) {
   return request({
     url: '/admin/quickly',
@@ -2736,7 +2509,7 @@ export function editQuickly(data) {
     data,
   })
 }
-
+// 抖音保存
 export function editTiktokShop(data) {
   return request({
     url: '/admin/tiktokShop',
@@ -2744,94 +2517,10 @@ export function editTiktokShop(data) {
     data,
   })
 }
+// 小红书保存
 export function editLittleRedBook(data) {
   return request({
     url: '/admin/littleRedBook',
-    method: 'post',
-    data,
-  })
-}
-export function getCountList(data) {
-  return request({
-    url: '/customer/countList',
-    method: 'post',
-    data,
-  })
-}
-
-export function editShopConfig(data) {
-  return request({
-    url: '/setting/shopConfig',
-    method: 'post',
-    data,
-  })
-}
-export function getShopConfigInfo(data) {
-  return request({
-    url: '/setting/shopConfigInfo',
-    method: 'post',
-    data,
-  })
-}
-export function editLocalStore(data) {
-  return request({
-    url: '/setting/localStore',
-    method: 'post',
-    data,
-  })
-}
-export function editALiYunOss(data) {
-  return request({
-    url: '/setting/aLiYunOss',
-    method: 'post',
-    data,
-  })
-}
-export function editTencentOss(data) {
-  return request({
-    url: '/setting/tencentOss',
-    method: 'post',
-    data,
-  })
-}
-export function editQiNiuOss(data) {
-  return request({
-    url: '/setting/qiNiuOss',
-    method: 'post',
-    data,
-  })
-}
-export function getOrderCountList(data) {
-  return request({
-    url: '/order/CountList',
-    method: 'post',
-    data,
-  })
-}
-export function getOrderCountDetail(data) {
-  return request({
-    url: '/order/CountDetail',
-    method: 'post',
-    data,
-  })
-}
-export function getGoodStatistics(data) {
-  return request({
-    url: '/goods/goodStatistics',
-    method: 'post',
-    data,
-  })
-}
-export function getGoodLineChart(data) {
-  return request({
-    url: '/goods/goodLineChart',
-    method: 'post',
-    data,
-  })
-}
-export function getGoodRank(data) {
-  return request({
-    url: '/goods/goodRank',
     method: 'post',
     data,
   })

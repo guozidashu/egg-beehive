@@ -7,10 +7,8 @@ import QYAddress from '@/qy/QYComponents/QYAddress'
 import QYKeFu from '@/qy/QYComponents/QYKeFu'
 import QYBranch from '@/qy/QYComponents/QYBranch'
 import QYChinaMap from '@/qy/QYComponents/QYChinaMap'
-import QYFangMap from '@/qy/QYComponents/QYFangMap'
 import QYStroeMap from '@/qy/QYComponents/QYStroeMap'
 import QYTextLabels from '@/qy/QYComponents/QYTextLabels'
-import QYYuanMap from '@/qy/QYComponents/QYYuanMap'
 import QYBranchTooltip from '@/qy/QYComponents/QYBranchTooltip'
 export default {
   install(Vue) {
@@ -23,10 +21,8 @@ export default {
     Vue.component('QYKeFu', QYKeFu)
     Vue.component('QYBranch', QYBranch)
     Vue.component('QYChinaMap', QYChinaMap)
-    Vue.component('QYFangMap', QYFangMap)
     Vue.component('QYStroeMap', QYStroeMap)
     Vue.component('QYTextLabels', QYTextLabels)
-    Vue.component('QYYuanMap', QYYuanMap)
     Vue.component('QYBranchTooltip', QYBranchTooltip)
   },
 }

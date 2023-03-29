@@ -282,24 +282,6 @@ export const asyncRoutes = [
         },
       },
       {
-        path: 'goodsCommodityunit',
-        name: 'GoodsCommodityunit',
-        component: () => import('@/subview/goods/commodityunit'),
-        meta: {
-          title: '商品分组',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'goodsStatistical',
-        name: 'GoodsStatistical',
-        component: () => import('@/subview/goods/statistical'),
-        meta: {
-          title: '商品统计',
-          icon: 'archive-line',
-        },
-      },
-      {
         path: 'goodsSpecification',
         name: 'GoodsSpecification',
         component: () => import('@/subview/goods/specification'),
@@ -327,15 +309,6 @@ export const asyncRoutes = [
         meta: {
           title: '订单列表',
           icon: 'file-list-line',
-        },
-      },
-      {
-        path: 'orderBasis',
-        name: 'OrderBasis',
-        component: () => import('@/subview/order/basis'),
-        meta: {
-          title: '订单统计',
-          icon: 'archive-line',
         },
       },
       {
@@ -438,34 +411,6 @@ export const asyncRoutes = [
         component: () => import('@/subview/customer/enterprise'),
         meta: {
           title: '企微客户列表',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'customerFollow',
-        name: 'CustomerFollow',
-        component: () => import('@/subview/customer/follow'),
-        meta: {
-          title: '客户跟进列表',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'customerDeposit',
-        name: 'CustomerDeposit',
-        component: () => import('@/subview/customer/deposit'),
-        meta: {
-          title: '客户保证金',
-          icon: 'archive-line',
-        },
-      },
-
-      {
-        path: 'customerStatistical',
-        name: 'CustomerStatistical',
-        component: () => import('@/subview/customer/statistical'),
-        meta: {
-          title: '客户统计',
           icon: 'archive-line',
         },
       },
@@ -797,47 +742,11 @@ export const asyncRoutes = [
             },
           },
           {
-            path: 'systemStorage',
-            name: 'SystemStorage',
-            component: () => import('@/subview/setting/system/storage'),
-            meta: {
-              title: '存储配置',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'systemNotice',
-            name: 'SystemNotice',
-            component: () => import('@/subview/setting/system/notice'),
-            meta: {
-              title: '通知配置',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'systemPay',
-            name: 'SystemPay',
-            component: () => import('@/subview/setting/system/pay'),
-            meta: {
-              title: '支付配置',
-              // icon: 'home-2-line',
-            },
-          },
-          {
             path: 'systemInterface',
             name: 'SystemInterface',
             component: () => import('@/subview/setting/system/interface'),
             meta: {
               title: '开放接口',
-              // icon: 'home-2-line',
-            },
-          },
-          {
-            path: 'systemStore',
-            name: 'SystemStore',
-            component: () => import('@/subview/setting/system/store'),
-            meta: {
-              title: '旧商城配置',
               // icon: 'home-2-line',
             },
           },
@@ -907,32 +816,7 @@ export const asyncRoutes = [
               title: '头条小程序',
             },
           },
-          // {
-          //   path: 'platformdoudin',
-          //   name: 'PlatformDoudin',
-          //   component: () => import('@/subview/setting/platform/doudin'),
-          //   meta: {
-          //     title: '抖店接入',
-          //   },
-          // },
-          // {
-          //   path: 'platformredbook',
-          //   name: 'PlatformRedbook',
-          //   component: () => import('@/subview/setting/platform/redbook'),
-          //   meta: {
-          //     title: '小红书',
-          //   },
-          // },
         ],
-      },
-      {
-        path: 'personal',
-        name: 'Personal',
-        component: () => import('@/subview/setting/personal'),
-        meta: {
-          title: '个人中心',
-          icon: 'archive-line',
-        },
       },
       {
         path: 'stores',
@@ -941,24 +825,6 @@ export const asyncRoutes = [
         meta: {
           title: '门店管理',
           icon: 'store-2-line',
-        },
-      },
-      {
-        path: 'distribution',
-        name: 'Distribution',
-        component: () => import('@/subview/setting/distribution'),
-        meta: {
-          title: '配送方式',
-          icon: 'archive-line',
-        },
-      },
-      {
-        path: 'print',
-        name: 'Print',
-        component: () => import('@/subview/setting/print'),
-        meta: {
-          title: '云打印机',
-          icon: 'archive-line',
         },
       },
       {
@@ -978,32 +844,6 @@ export const asyncRoutes = [
           title: 'JST店铺',
           icon: 'chat-settings-line',
         },
-      },
-      {
-        path: 'mall',
-        name: 'Mall',
-        meta: {
-          title: '商城配置',
-          icon: 'archive-line',
-        },
-        children: [
-          {
-            path: 'mallConfiguration',
-            name: 'MallConfiguration',
-            component: () => import('@/subview/setting/mall/configuration'),
-            meta: {
-              title: '基础配置',
-            },
-          },
-          {
-            path: 'mallDesign',
-            name: 'MallDesign',
-            component: () => import('@/subview/setting/mall/design'),
-            meta: {
-              title: '页面装修',
-            },
-          },
-        ],
       },
       {
         path: 'quanYu',
