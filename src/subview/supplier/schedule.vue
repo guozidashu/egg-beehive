@@ -300,16 +300,16 @@
         this.form = this.$options.data().form
       },
       handleDelete(row) {
-        if (row.id) {
-          this.$baseConfirm('你确定要作废当前项吗', null, async () => {
-            const { code } = await this.api.delBandDel({ id: row.id })
-            if (code != 200) {
-              return
-            }
-            this.$baseMessage('作废成功', 'success', 'vab-hey-message-success')
-            this.fetchData()
-          })
-        }
+        // if (row.id) {
+        //   this.$baseConfirm('你确定要作废当前项吗', null, async () => {
+        //     const { code } = await this.api.delBandDel({ id: row.id })
+        //     if (code != 200) {
+        //       return
+        //     }
+        //     this.$baseMessage('作废成功', 'success', 'vab-hey-message-success')
+        //     this.fetchData()
+        //   })
+        // }
       },
       changeBtnPage(data) {
         this.pageState = true

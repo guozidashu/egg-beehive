@@ -79,24 +79,37 @@
           style="width: 100%; height: 200px; margin-top: 20px"
           variant="table"
         />
-        <el-table
-          v-else
-          border
-          :data="tableData"
-          style="width: 100%; margin-top: 20px"
-        >
-          <el-table-column label="颜色" prop="color_name" width="180" />
-          <el-table-column label="尺码" prop="size_name" width="180" />
-          <el-table-column label="件数" prop="num">
-            <template #default="{ row }">
-              <el-input
-                v-model="row.num"
-                placeholder="请输入件数"
-                @input="row.num = $moneyFormatInput(row.num)"
-              />
-            </template>
-          </el-table-column>
-        </el-table>
+        <div v-else style="margin-top: 20px">
+          <el-badge
+            v-for="(item, index) in colorBtnArr"
+            :key="index"
+            class="item"
+            style="margin-right: 30px"
+            :value="item.num"
+          >
+            <el-button size="small">
+              {{ item.color_name }}
+            </el-button>
+          </el-badge>
+          <el-table
+            border
+            :data="tableData"
+            style="width: 100%; margin-top: 20px"
+          >
+            <el-table-column label="颜色" prop="color_name" width="180" />
+            <el-table-column label="尺码" prop="size_name" width="180" />
+            <el-table-column label="件数" prop="num">
+              <template #default="{ row }">
+                <el-input
+                  v-model="row.num"
+                  placeholder="请输入件数"
+                  @input="row.num = $moneyFormatInput(row.num)"
+                />
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+
         <h4 id="scoll1">订单信息</h4>
         <el-form-item label="供应商:">
           <el-select v-model="orderForm.type5">
@@ -351,10 +364,13 @@
         list: [],
         listLoading: false,
         total: 0,
+
         // 选中商品详情
         goodsDetails: null,
         // 选中商品规格
         tableData: [],
+        // 选中商品规格按钮数量
+        colorBtnArr: [],
         // 新建订单参数
         orderForm: {},
         rules: {},
@@ -391,6 +407,30 @@
           this.goodsDetails = null
           this.tableData = []
           this.loading = true
+        },
+        deep: true,
+      },
+      tableData: {
+        handler: function (newVal) {
+          // 根据 color_name 统计 num
+          let colorArr = []
+          let colorObj = {}
+          newVal.forEach((item) => {
+            if (colorObj[item.color_name]) {
+              colorObj[item.color_name].num =
+                Number(colorObj[item.color_name].num) + Number(item.num)
+            } else {
+              colorObj[item.color_name] = {
+                color_name: item.color_name,
+                color_id: item.color_id,
+                num: item.num,
+              }
+            }
+          })
+          for (let key in colorObj) {
+            colorArr.push(colorObj[key])
+          }
+          this.colorBtnArr = colorArr
         },
         deep: true,
       },
@@ -470,10 +510,10 @@
         const sizeNmae = this.goodsDetails.size_name
         const colorId = this.goodsDetails.color_id
         const sizeId = this.goodsDetails.size_id
-        this.tableData = []
+        let arr = []
         for (let i = 0; i < colorNmae.length; i++) {
           for (let j = 0; j < sizeNmae.length; j++) {
-            this.tableData.push({
+            arr.push({
               color_name: colorNmae[i],
               color_id: colorId[i],
               size_name: sizeNmae[j],
@@ -482,6 +522,7 @@
             })
           }
         }
+        this.tableData = arr
         this.loading = false
         this.dialogVisible = false
       },

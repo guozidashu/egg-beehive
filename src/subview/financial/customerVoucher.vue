@@ -17,10 +17,13 @@
         @resetForm="resetForm"
       >
         <template #Form>
-          <el-form-item label="客户名称" prop="region">
+          <el-form-item label="客户名称">
             <el-input v-model="form.name" size="small" />
           </el-form-item>
-          <el-form-item label="日期筛选" prop="region">
+          <el-form-item label="备注">
+            <el-input v-model="form.remark" size="small" />
+          </el-form-item>
+          <el-form-item label="日期筛选">
             <el-date-picker
               v-model="form.date"
               align="right"
@@ -148,6 +151,7 @@
           date: [],
           name: '', // 客户名
           is_void: null, // 是否作废 0=否 1=是
+          remark: '', // 收款类型
         },
         formType: 4,
         listType: 1,
@@ -197,6 +201,7 @@
           end_time: temp[1],
           name: this.form.name,
           is_void: this.form.is_void,
+          remark: this.form.remark,
         })
         if (code == 200) {
           window.open(data.url)

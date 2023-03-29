@@ -60,19 +60,22 @@
             </el-form-item>
 
             <el-form-item label="公司地址" prop="company_address">
-              <el-input v-model="form1.company_address" />
+              <el-input v-model="form1.company_address" style="width: 500px" />
             </el-form-item>
             <el-form-item label="电话" prop="company_tel">
-              <el-input v-model="form1.company_tel" />
+              <el-input v-model="form1.company_tel" style="width: 215px" />
             </el-form-item>
             <el-form-item label="微信" prop="company_wechat">
-              <el-input v-model="form1.company_wechat" />
+              <el-input v-model="form1.company_wechat" style="width: 215px" />
             </el-form-item>
             <el-form-item label="支付宝" prop="company_alipay">
-              <el-input v-model="form1.company_alipay" />
+              <el-input v-model="form1.company_alipay" style="width: 215px" />
             </el-form-item>
             <el-form-item label="银行卡号" prop="company_bank_account">
-              <el-input v-model="form1.company_bank_account" />
+              <el-input
+                v-model="form1.company_bank_account"
+                style="width: 215px"
+              />
             </el-form-item>
             <el-form-item label="打印机类型">
               <el-radio-group v-model="form1.printer_type">
@@ -81,7 +84,7 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item label="库存监控人id" prop="monitor_id">
-              <el-input v-model="form1.monitor_id" />
+              <el-input v-model="form1.monitor_id" style="width: 215px" />
             </el-form-item>
             <el-form-item label="商品列表默认显示">
               <el-radio-group v-model="form1.goods_list_type">
@@ -99,13 +102,36 @@
               label="采购延期预警天数"
               prop="purchase_delay_warning"
             >
-              <el-input v-model="form1.purchase_delay_warning" />
+              <el-input
+                v-model="form1.purchase_delay_warning"
+                style="width: 215px"
+                @input="
+                  form1.purchase_delay_warning = $numFormatInput(
+                    form1.purchase_delay_warning
+                  )
+                "
+              />
+            </el-form-item>
+            <el-form-item label="跟单排期预警天数" prop="warn_day">
+              <el-input
+                v-model="form1.warn_day"
+                style="width: 215px"
+                @input="form1.warn_day = $numFormatInput(form1.warn_day)"
+              />
             </el-form-item>
             <el-form-item
               label="商品现货库存小于多少时预警"
               prop="goods_stock_warning"
             >
-              <el-input v-model="form1.goods_stock_warning" />
+              <el-input
+                v-model="form1.goods_stock_warning"
+                style="width: 215px"
+                @input="
+                  form1.goods_stock_warning = $numFormatInput(
+                    form1.goods_stock_warning
+                  )
+                "
+              />
             </el-form-item>
             <el-form-item>
               <el-button
@@ -132,7 +158,7 @@
             :rules="rules4"
           >
             <el-form-item label="客户企业微信id" prop="corpid">
-              <el-input v-model="form4.corpid" />
+              <el-input v-model="form4.corpid" style="width: 215px" />
             </el-form-item>
             <el-form-item>
               <el-button
@@ -162,7 +188,7 @@
               <el-input v-model="form2.name" />
             </el-form-item> -->
             <el-form-item label="代开发应用id" prop="agent_id">
-              <el-input v-model="form2.agent_id" />
+              <el-input v-model="form2.agent_id" style="width: 215px" />
             </el-form-item>
             <el-form-item label="永久密钥" prop="secret">
               <el-input v-model="form2.secret" />
@@ -225,7 +251,7 @@
               <el-input v-model="form3.name" />
             </el-form-item> -->
             <el-form-item label="代开发应用id" prop="agent_id">
-              <el-input v-model="form3.agent_id" />
+              <el-input v-model="form3.agent_id" style="width: 215px" />
             </el-form-item>
             <el-form-item label="永久密钥" prop="secret">
               <el-input v-model="form3.secret" />
@@ -366,6 +392,7 @@
           goods_list_type: 1, //商品列表默认显示1整手 2散码
           show_type: 1, //单据显示1自己 2全部
           purchase_delay_warning: null, //采购延期预警天数，延期几天开始预警
+          warn_day: null, //跟单排期预警天数
           goods_stock_warning: null, //商品现货库存小于多少时预警
         },
         rules1: {
@@ -422,6 +449,13 @@
             {
               required: true,
               message: '请输入采购延期预警天数，延期几天开始预警',
+              trigger: 'blur',
+            },
+          ],
+          warn_day: [
+            {
+              required: true,
+              message: '请输入跟单排期预警天数',
               trigger: 'blur',
             },
           ],

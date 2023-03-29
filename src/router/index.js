@@ -207,52 +207,6 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'supplierProduct',
-        name: 'SupplierProduct',
-        component: () => import('@/subview/supplier/product'),
-        meta: {
-          title: '成品采购订单',
-          icon: 'file-list-line',
-        },
-      },
-      {
-        path: 'supplierMaterial',
-        name: 'SupplierMaterial',
-        component: () => import('@/subview/supplier/material'),
-        meta: {
-          title: '物料采购订单',
-          icon: 'file-list-line',
-        },
-      },
-
-      {
-        path: 'supplierProductStatistical',
-        name: 'SupplierProductStatistical',
-        component: () => import('@/subview/supplier/productstatistical'),
-        meta: {
-          title: '成品采购统计',
-          icon: 'bar-chart-box-line',
-        },
-      },
-      {
-        path: 'supplierMaterialStatistical',
-        name: 'SupplierMaterialStatistical',
-        component: () => import('@/subview/supplier/materialstatistical'),
-        meta: {
-          title: '物料采购统计',
-          icon: 'bar-chart-box-line',
-        },
-      },
-      {
-        path: 'supplierAnalysis',
-        name: 'SupplierAnalysis',
-        component: () => import('@/subview/supplier/analysis'),
-        meta: {
-          title: '供应商分析',
-          icon: 'archive-line',
-        },
-      },
-      {
         path: 'supplierManagement',
         name: 'SupplierManagement',
         component: () => import('@/subview/supplier/management'),
@@ -774,6 +728,15 @@ export const asyncRoutes = [
         component: () => import('@/subview/archives/procedure'),
         meta: {
           title: '工序管理',
+          icon: 'file-settings-line',
+        },
+      },
+      {
+        path: 'archivesNode',
+        name: 'ArchivesNode',
+        component: () => import('@/subview/archives/node'),
+        meta: {
+          title: '节点管理',
           icon: 'file-settings-line',
         },
       },

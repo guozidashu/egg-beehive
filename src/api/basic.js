@@ -1827,6 +1827,31 @@ export function delProduceTypeDel(data) {
     data,
   })
 }
+// 档案 - 节点管理
+// 节点管理 - 节点列表
+export function getNodeList(data) {
+  return request({
+    url: '/archive/nodeList',
+    method: 'post',
+    data,
+  })
+}
+// 节点管理 - 编辑
+export function editNodeSave(data) {
+  return request({
+    url: '/archive/nodeSave',
+    method: 'post',
+    data,
+  })
+}
+// 节点管理 - 删除
+export function delNode(data) {
+  return request({
+    url: '/archive/nodeDel',
+    method: 'post',
+    data,
+  })
+}
 // 档案 - 物料管理
 // 物料管理 - 详情tab
 export function getMaterialInfoList(data) {

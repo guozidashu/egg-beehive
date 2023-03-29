@@ -28,7 +28,7 @@ export function numFormatInput(value) {
   // 清除数字以外的字符
   temp = temp.replace(/[^\d]/g, '')
   // 必须是大于等于0整数
-  temp = temp.replace(/^0/g, '')
+  // temp = temp.replace(/^0/g, '')
   return temp
 }
 // 输入框金额格式化 正值
