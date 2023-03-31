@@ -6,14 +6,26 @@
         <el-tab-pane label="订单信息" />
         <el-tab-pane label="生产协同节点" />
         <el-tab-pane label="标准资料包" />
-        <el-tab-pane label="关联信息" />
       </el-tabs>
     </div>
-    <div style="position: absolute; top: 80px; right: 20px; z-index: 99">
+    <div
+      style="
+        position: absolute;
+        top: 80px;
+        right: 20px;
+        z-index: 99;
+        background-color: white;
+      "
+    >
       <el-button size="small" type="primary" @click="subForm()">完成</el-button>
     </div>
     <div style="position: relative; margin-left: 200px">
-      <el-form ref="form" label-width="120px" :model="orderForm" :rules="rules">
+      <el-form
+        ref="form"
+        label-width="120px"
+        :model="subFormData"
+        :rules="rules"
+      >
         <h4 id="scoll0">基本信息</h4>
         <div style="display: flex">
           <div style="margin-right: 20px">
@@ -111,36 +123,87 @@
         </div>
 
         <h4 id="scoll1">订单信息</h4>
-        <el-form-item label="供应商:">
-          <el-select v-model="orderForm.type5">
-            <el-option label="供应商1" :value="1" />
-            <el-option label="供应商2" :value="2" />
+        <el-form-item label="供应商:" prop="supplier_id">
+          <el-select v-model="subFormData.supplier_id">
+            <el-option
+              v-for="(item, index) in selectLists.supplier"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
-        <el-form-item label="优先度:">
-          <el-radio-group v-model="orderForm.radio">
+        <el-form-item label="制单人:" prop="uid">
+          <el-select v-model="subFormData.uid" filterable placeholder="可搜索">
+            <el-option
+              v-for="(item, index) in selectLists.employee"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="优先度:" prop="priority">
+          <el-radio-group v-model="subFormData.priority">
             <el-radio :label="1">正常</el-radio>
             <el-radio :label="2">紧急</el-radio>
             <el-radio :label="3">加急</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="订单类型:">
-          <el-radio-group v-model="orderForm.radio1">
-            <el-radio :label="1">期货</el-radio>
-            <el-radio :label="2">首单</el-radio>
-            <el-radio :label="3">补单</el-radio>
-            <el-radio :label="4">预售</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <h4 id="scoll2">生产协同节点</h4>
-        <div>暂时不做</div>
+        <div style="display: flex; justify-content: space-between">
+          <h4 id="scoll2">生产协同节点(长按拖动排序)</h4>
+          <div style="margin-top: 20px">
+            <el-button size="small" type="primary" @click="addNode()">
+              添加节点
+            </el-button>
+          </div>
+        </div>
+        <div>
+          <vuedraggable
+            v-model="ProductionNodeList"
+            animation="300"
+            :disabled="disabled"
+            filter=".forbid"
+            :move="onMove"
+          >
+            <div
+              v-for="(item, index) in ProductionNodeList"
+              :key="index"
+              class="item"
+              :class="
+                index == 0 || index == ProductionNodeList.length - 1
+                  ? 'item forbid'
+                  : 'item'
+              "
+              length="ProductionNodeList.length"
+              style="display: flex; margin-bottom: 20px"
+            >
+              <div style="width: 60px; margin-top: 5px; margin-right: 20px">
+                <el-tag>
+                  {{ item.name }}
+                </el-tag>
+              </div>
+
+              <el-date-picker
+                v-model="item.completion_time"
+                placeholder="选择日期时间"
+                type="datetime"
+              />
+              <div v-if="item.type == 3" style="margin-left: 20px">
+                <el-button size="small" type="primary" @click="delNode(index)">
+                  删除
+                </el-button>
+              </div>
+            </div>
+          </vuedraggable>
+        </div>
         <h4 id="scoll3">标准资料包</h4>
         <!-- 上传  -->
         <div style="display: flex">
           <div
             v-for="(item, index) in divUploadList"
             :key="index"
-            style="width: 25%"
+            style="width: 25%; padding: 10px"
           >
             <el-upload
               accept=".doc, .docx, .pdf"
@@ -162,74 +225,7 @@
               </el-button>
             </el-upload>
           </div>
-          <!-- <div style="width: 25%">
-            
-            <el-button size="small" type="primary" @click="handleShow(2)">
-              上传生产工艺单
-            </el-button>
-            <el-tooltip
-              v-if="orderForm.TechnologyImg != undefined"
-              placement="top"
-            >
-              <el-image
-                slot="content"
-                :src="orderForm.TechnologyImg"
-                style="width: 200px; height: 200px"
-              />
-              <el-image
-                :src="orderForm.TechnologyImg"
-                style="width: 100px; height: 100px; margin-top: 20px"
-              />
-            </el-tooltip>
-          </div>
-          <div style="width: 25%">
-            <el-button size="small" type="primary" @click="handleShow(3)">
-              上传大货指示单
-            </el-button>
-            <el-tooltip
-              v-if="orderForm.IndicationImg != undefined"
-              placement="top"
-            >
-              <el-image
-                slot="content"
-                :src="orderForm.IndicationImg"
-                style="width: 200px; height: 200px"
-              />
-              <el-image
-                :src="orderForm.IndicationImg"
-                style="width: 100px; height: 100px; margin-top: 20px"
-              />
-            </el-tooltip>
-          </div>
-          <div style="width: 25%">
-            <el-button size="small" type="primary" @click="handleShow(4)">
-              上传后整指示单
-            </el-button>
-            <el-tooltip
-              v-if="orderForm.FinishingImg != undefined"
-              placement="top"
-            >
-              <el-image
-                slot="content"
-                :src="orderForm.FinishingImg"
-                style="width: 200px; height: 200px"
-              />
-              <el-image
-                :src="orderForm.FinishingImg"
-                style="width: 100px; height: 100px; margin-top: 20px"
-              />
-            </el-tooltip>
-          </div> -->
         </div>
-        <h4 id="scoll4">关联信息</h4>
-        <el-form-item label="关联款式：">
-          <el-input
-            v-model="form.keywords"
-            placeholder="请输入相关款式链接"
-            size="small"
-            style="width: 400px"
-          />
-        </el-form-item>
       </el-form>
     </div>
     <!-- 选择商品弹窗 -->
@@ -304,14 +300,34 @@
         </template>
       </QYList>
     </el-dialog>
+    <!-- 选择节点 -->
+    <el-dialog
+      :append-to-body="true"
+      :before-close="handleGoodsCloseNode"
+      title="选择节点"
+      :visible.sync="dialogVisibleNode"
+      width="500px"
+    >
+      <el-tag
+        v-for="(item, index) in ProductionNodeAddList"
+        :key="index"
+        @click="chooseNode(item.name)"
+      >
+        {{ item.name }}
+      </el-tag>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+  import vuedraggable from 'vuedraggable'
   import { mapGetters } from 'vuex'
   import { baseURL } from '@/config'
   export default {
     name: 'ComponentsDrawer',
+    components: {
+      vuedraggable,
+    },
     props: {
       drawerInof: {
         type: Object,
@@ -320,34 +336,52 @@
     },
     data() {
       return {
+        // 供应商 员工选择器
+        selectLists: {
+          supplier: [],
+          employee: [],
+        },
+        // 提交表单
+        subFormData: {},
+        // 节点拖拽禁用
+        disabled: false,
+        // 选择节点
+        dialogVisibleNode: false,
+        // 选择节点数组
+        ProductionNodeAddList: [],
+        // 添加节点数组
+        ProductionNodeList: [],
         // 上传按钮数组
         divUploadList: [
           {
             name: '上传裁床指示单',
             type: 1,
             list: [],
+            url: '',
           },
           {
             name: '上传生产工艺单',
             type: 2,
             list: [],
+            url: '',
           },
           {
             name: '上传大货指示单',
             type: 3,
             list: [],
+            url: '',
           },
           {
             name: '上传后整指示单',
             type: 4,
             list: [],
+            url: '',
           },
         ],
         // 上传请求头
         headers: {},
         // 上传类型
         uploadType: 1,
-        // 选择商品参数
         // 选择商品弹窗
         dialogVisible: false,
         // 选择商品 列表相关
@@ -364,16 +398,21 @@
         list: [],
         listLoading: false,
         total: 0,
-
         // 选中商品详情
         goodsDetails: null,
         // 选中商品规格
         tableData: [],
         // 选中商品规格按钮数量
         colorBtnArr: [],
-        // 新建订单参数
-        orderForm: {},
-        rules: {},
+        rules: {
+          priority: [
+            { required: true, message: '请选择优先级', trigger: 'blur' },
+          ],
+          supplier_id: [
+            { required: true, message: '请选择供应商', trigger: 'blur' },
+          ],
+          uid: [{ required: true, message: '请选择制单人', trigger: 'blur' }],
+        },
       }
     },
     computed: {
@@ -436,24 +475,158 @@
       },
     },
     created() {
+      this.selectData()
+      this.getTypeList()
+      this.getNodeList()
       // 上传接口获取token
       this.headers['Authorization'] = `${this.token}`
+      console.log(6666, this.selectLists)
     },
     methods: {
-      subForm() {
-        console.log('提交函数')
+      // 获取供应商列表
+      async getTypeList() {
+        const { data } = await this.api.getCommonAllList({
+          type: 'supplier',
+        })
+        this.selectLists.supplier = data.supplier
+      },
+      // 获取制单人下拉框
+      async selectData() {
+        const { data } = await this.api.getEmployeeList({
+          name: '',
+          page: -1,
+          pageSize: 10,
+          department_id: '', //部门id
+          role: null, //岗位id
+          status: 1, // 状态 1=在职 0=停职 默认传1
+        })
+        this.selectLists.employee = data
+      },
+      // 获取节点列表
+      async getNodeList() {
+        const { data } = await this.api.getNodeSystemList()
+        // 对节点列表顺序处理
+        let firstItem = ''
+        let lastItem = ''
+        let arr = []
+        data.list.forEach((item) => {
+          item.completion_time = ''
+          if (item.type == 1) {
+            firstItem = item
+          }
+          if (item.type == 2) {
+            lastItem = item
+          }
+          if (item.type == 3) {
+            arr.push(item)
+          }
+        })
+        arr.unshift(firstItem)
+        arr.push(lastItem)
+        this.ProductionNodeList = JSON.parse(JSON.stringify(arr))
+        this.ProductionNodeAddList = JSON.parse(JSON.stringify(arr))
+      },
+      // 提交表单
+      async subForm() {
+        if (this.goodsDetails == null) {
+          this.$message.error('请先选择商品')
+          return
+        }
+        let allNum = 0
+        this.colorBtnArr.forEach((item) => {
+          allNum += Number(item.num)
+        })
+        if (allNum == 0) {
+          this.$message.error('请输入规格件数')
+          return
+        }
+        this.$refs['form'].validate(async (valid) => {
+          if (valid) {
+            this.subFormData.goods_id = this.goodsDetails.id
+            this.subFormData.spec = this.tableData
+          }
+        })
+        if (
+          this.ProductionNodeList[this.ProductionNodeList.length - 1]
+            .completion_time == ''
+        ) {
+          this.$message.error('请填写成品入库完成时间')
+          return
+        }
+        this.ProductionNodeList.forEach((item) => {
+          if (item.completion_time != '') {
+            item.completion_time =
+              new Date(item.completion_time).getTime() / 1000
+          }
+        })
+        this.subFormData.node = this.ProductionNodeList
+        let arr = []
+        this.divUploadList.forEach((item) => {
+          arr.push(item.url)
+        })
+        this.subFormData.package = arr
+        console.log(this.subFormData)
+        const { code } = await this.api.editDocumentaryOrderSave(
+          this.subFormData
+        )
+        if (code == 200) {
+          this.$message.success('新增成功')
+        }
+      },
+      //禁止拖动到id为1的对象
+      onMove(e) {
+        if (
+          e.relatedContext.element.type == 1 ||
+          e.relatedContext.element.type == 2
+        )
+          return false
+        return true
+      },
+      // 选择节点
+      chooseNode(name) {
+        let flag = false
+        this.ProductionNodeList.forEach((item) => {
+          if (item.name == name) {
+            flag = true
+          }
+        })
+        if (flag) {
+          this.$message({
+            message: '该节点已存在',
+            type: 'warning',
+          })
+          return
+        }
+        this.ProductionNodeList.splice(1, 0, {
+          name: name,
+          time: '',
+          type: 3,
+        })
+        this.dialogVisibleNode = false
+      },
+      // 删除节点
+      delNode(index) {
+        this.ProductionNodeList.splice(index, 1)
+      },
+      // 添加节点
+      addNode() {
+        this.dialogVisibleNode = true
       },
       // 上传处理显示列表 只能显示最新的一个
       async handleChange(res, file, fileList) {
         if (res.code == 200) {
           if (this.uploadType == 1) {
             this.divUploadList[this.uploadType - 1].list = fileList.slice(-1)
+            this.divUploadList[this.uploadType - 1].url = res.data.file_url
           } else if (this.uploadType == 2) {
             this.divUploadList[this.uploadType - 1].list = fileList.slice(-1)
+            this.divUploadList[this.uploadType - 1].url = res.data.file_url
           } else if (this.uploadType == 3) {
             this.divUploadList[this.uploadType - 1].list = fileList.slice(-1)
+            this.divUploadList[this.uploadType - 1].url = res.data.file_url
           } else if (this.uploadType == 4) {
             this.divUploadList[this.uploadType - 1].list = fileList.slice(-1)
+            this.divUploadList[this.uploadType - 1].url = res.data.file_url
           }
         }
       },
@@ -547,6 +720,9 @@
       },
       handleGoodsClose() {
         this.dialogVisible = false
+      },
+      handleGoodsCloseNode() {
+        this.dialogVisibleNode = false
       },
     },
   }

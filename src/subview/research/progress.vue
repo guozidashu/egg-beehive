@@ -82,7 +82,7 @@
             align="center"
             label="创建时间"
             prop="designer_end_time"
-            show-overflow-tooltip
+            width="180"
           >
             <template #default="{ row }">
               {{ row.designer_end_time | formatTime }}

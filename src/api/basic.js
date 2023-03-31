@@ -426,6 +426,55 @@ export function editSupplierSave(data) {
     data,
   })
 }
+// 供应链 - 生产排期
+// 生产排期 - 编辑片排期规则
+export function editDocumentaryOrderSpec(data) {
+  return request({
+    url: '/documentaryOrder/editSpec',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 获取排期详情
+export function getDocumentaryOrderDetail(data) {
+  return request({
+    url: '/documentaryOrder/detail',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 获取排期跟进列表
+export function getDocumentaryOrderFollowList(data) {
+  return request({
+    url: '/documentaryOrder/followList',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 新增编辑
+export function editDocumentaryOrderSave(data) {
+  return request({
+    url: '/documentaryOrder/save',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 获取排期列表
+export function getDocumentaryOrderList(data) {
+  return request({
+    url: '/documentaryOrder/list',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 获取系统节点列表
+export function getNodeSystemList(data) {
+  return request({
+    url: '/documentaryOrder/nodeSystemList',
+    method: 'post',
+    data,
+  })
+}
 // 商品模块接口
 // 商品 - 商品规格
 // 商品规格列表
@@ -445,6 +494,14 @@ export function getGoodsSkuShow(data) {
   })
 }
 // 商品 - 商品管理
+// 商品管理 - 添加颜色
+export function addGoodsColor(data) {
+  return request({
+    url: '/goods/addGoodsColor',
+    method: 'post',
+    data,
+  })
+}
 // 商品管理列表
 export function getGoodList(data) {
   return request({

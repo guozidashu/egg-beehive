@@ -16,7 +16,7 @@
       >
         <template #Form>
           <el-form-item label="订单类型:">
-            <el-select v-model="form.type2">
+            <el-select v-model="form.type">
               <el-option label="期货" :value="1" />
               <el-option label="首单" :value="2" />
               <el-option label="补单" :value="3" />
@@ -34,33 +34,33 @@
             </el-select>
           </el-form-item>
           <el-form-item label="裁剪状态:">
-            <el-select v-model="form.type">
+            <el-select v-model="form.cut_type">
               <el-option label="未裁剪" :value="1" />
               <el-option label="部分裁剪" :value="2" />
               <el-option label="全部裁剪" :value="3" />
             </el-select>
           </el-form-item>
           <el-form-item label="入库状态:">
-            <el-select v-model="form.type3">
+            <el-select v-model="form.entered_type">
               <el-option label="部分入库" :value="1" />
               <el-option label="全部入库" :value="2" />
               <el-option label="未入库" :value="3" />
             </el-select>
           </el-form-item>
-          <el-form-item label="订单状态:">
-            <el-select v-model="form.ordertype">
+          <!-- <el-form-item label="订单状态:">
+            <el-select v-model="form.status">
               <el-option label="全部订单" :value="0" />
               <el-option label="正常订单" :value="1" />
               <el-option label="预警订单" :value="2" />
               <el-option label="超期订单" :value="1" />
               <el-option label="延期订单" :value="2" />
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="优先度:">
-            <el-select v-model="form.type5">
-              <el-option label="紧急" :value="1" />
-              <el-option label="加急" :value="2" />
-              <el-option label="正常" :value="2" />
+            <el-select v-model="form.priority">
+              <el-option label="正常" :value="1" />
+              <el-option label="紧急" :value="2" />
+              <el-option label="加急" :value="3" />
             </el-select>
           </el-form-item>
           <el-form-item label="生产进度:">
@@ -69,19 +69,31 @@
             </el-select>
           </el-form-item>
           <el-form-item label="款式类型:">
-            <el-select v-model="form.type1">
-              <el-option label="整手" :value="1" />
-              <el-option label="散码" :value="2" />
+            <el-select v-model="form.goods_type">
+              <el-option label="整手" :value="0" />
+              <el-option label="散码" :value="1" />
             </el-select>
           </el-form-item>
           <el-form-item label="排序:">
-            <el-select v-model="form.rand">
-              <el-option label="下单日期(从远到近)" :value="1" />
-              <el-option label="下单日期(从近到远)" :value="2" />
-              <el-option label="交货日期(从远到近)" :value="3" />
-              <el-option label="交货日期(从近到远)" :value="4" />
-              <el-option label="进度完工率(从远到近)" :value="5" />
-              <el-option label="进度完工率(从近到远)" :value="6" />
+            <el-select v-model="form.sort">
+              <el-option
+                label="下单日期(从远到近)"
+                value="do.create_time asc"
+              />
+              <el-option
+                label="下单日期(从近到远)"
+                value="do.create_time desc"
+              />
+              <el-option
+                label="交货日期(从远到近)"
+                value="do.expected_date asc"
+              />
+              <el-option
+                label="交货日期(从近到远)"
+                value="do.expected_date desc"
+              />
+              <el-option label="进度完工率(从远到近)" value="do.rate desc" />
+              <el-option label="进度完工率(从近到远)" value="do.rate asc" />
             </el-select>
           </el-form-item>
           <el-form-item label="">
@@ -93,7 +105,23 @@
               <el-option label="订单日期" :value="2" />
             </el-select>
             <el-date-picker
-              v-model="form.time"
+              v-if="form.dateType == 1"
+              v-model="form.expected_date"
+              align="left"
+              :clearable="false"
+              :default-time="['00:00:00', '23:59:59']"
+              end-placeholder="结束日期"
+              format="yyyy-MM-dd"
+              :picker-options="pickerOptions"
+              range-separator="至"
+              start-placeholder="开始日期"
+              type="daterange"
+              unlink-panels
+              value-format="yyyy-MM-dd HH:mm:ss"
+            />
+            <el-date-picker
+              v-if="form.dateType == 2"
+              v-model="form.order_date"
               align="left"
               :clearable="false"
               :default-time="['00:00:00', '23:59:59']"
@@ -110,21 +138,22 @@
           <el-form-item label="搜索：">
             <el-input
               v-model="form.keywords"
-              placeholder="请输入供应商名称/客户名称/款号/批次"
+              placeholder="请输入订单批次号/订单编号/供应商名称/商品名称/商品编号"
               size="small"
-              style="width: 300px"
+              style="width: 400px"
             />
           </el-form-item>
         </template>
       </QYForm>
     </div>
     <el-card shadow="never" style="border: 0; border-radius: 5px">
-      <el-tabs v-model="form.list_type" @tab-click="handleClick">
-        <el-tab-pane :label="'全部商品 (0)'" name="0" />
-        <el-tab-pane :label="'正常订单 (0)'" name="2" />
-        <el-tab-pane :label="'预警订单 (0)'" name="3" />
-        <el-tab-pane :label="'超期订单 (0)'" name="7" />
-        <el-tab-pane :label="'延期订单（异常） (0)'" name="8" />
+      <el-tabs v-model="form.status" @tab-click="handleClick">
+        <el-tab-pane
+          v-for="(item, index) in tabList"
+          :key="index"
+          :label="item.label + '(' + item.Number + ')'"
+          :name="item.value"
+        />
       </el-tabs>
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -148,8 +177,33 @@
       >
         <template #List>
           <el-table-column align="center" type="selection" />
-          <el-table-column align="center" label="生产批次" prop="id" />
-          <el-table-column align="center" label="供应商名称" prop="name" />
+          <el-table-column align="center" label="生产批次" prop="order_id" />
+          <el-table-column align="center" label="订单编号" prop="order_sn" />
+          <el-table-column
+            align="center"
+            label="供应商名称"
+            prop="supplier_name"
+            width="120"
+          />
+          <el-table-column align="center" label="订单总数" prop="order_num" />
+          <el-table-column align="center" label="订单类型" prop="order_type">
+            <template #default="{ row }">
+              <el-tag v-if="row.order_type == 1">期货</el-tag>
+              <el-tag v-if="row.order_type == 2" type="success">首单</el-tag>
+              <el-tag v-if="row.order_type == 3" type="warning">补单</el-tag>
+              <el-tag v-if="row.order_type == 4" type="danger">预售</el-tag>
+            </template>
+          </el-table-column>
+
+          <el-table-column align="center" label="优先度" prop="order_priority">
+            <template #default="{ row }">
+              <el-tag v-if="row.order_priority == 1">正常</el-tag>
+              <el-tag v-if="row.order_priority == 2" type="warning">
+                紧急
+              </el-tag>
+              <el-tag v-if="row.order_priority == 3" type="danger">加急</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="商品信息"
@@ -159,7 +213,7 @@
             <template #default="{ row }">
               <div style="display: flex">
                 <el-image
-                  :src="row.goods.img"
+                  :src="row.goods_img"
                   style="width: 100px; height: 100px"
                 />
                 <div style="margin-left: 10px">
@@ -171,37 +225,74 @@
                       white-space: nowrap;
                     "
                   >
-                    {{ row.goods.name }}
+                    {{ row.goods_name }}
                   </div>
-                  <div style="margin: 15px 0">{{ row.goods.sn }}</div>
-                  <div v-if="row.goods_num == 1">{{ row.goods_num }}件</div>
-                  <div v-else>等{{ row.goods_num }}件</div>
+                  <div style="margin: 15px 0">{{ row.goods_sn }}</div>
                 </div>
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="订单数量" prop="num" />
-          <el-table-column align="center" label="裁剪数量" prop="num" />
-          <el-table-column align="center" label="实裁比率" prop="num" />
-          <el-table-column align="center" label="入库数量" prop="num" />
-          <el-table-column align="center" label="完工率" prop="num" />
-          <el-table-column align="center" label="下单时间" prop="create_time" />
-          <el-table-column align="center" label="交货时间" prop="create_time" />
-          <el-table-column align="center" label="操作" width="120">
+          <el-table-column
+            align="center"
+            label="代工方式"
+            prop="supplier_oem_type"
+          >
             <template #default="{ row }">
-              <div><el-button type="text">进度跟单</el-button></div>
+              <el-tag v-if="row.supplier_oem_type == 1">FOB</el-tag>
+              <el-tag v-if="row.supplier_oem_type == 2" type="success">
+                CMT
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="波段名称" prop="band_name" />
+          <el-table-column
+            align="center"
+            label="补单次数"
+            prop="supplementary_num"
+          />
+          <el-table-column
+            align="center"
+            label="完成率"
+            prop="completion_rate"
+          />
+          <el-table-column
+            align="center"
+            label="总实裁数量"
+            prop="cut_total"
+            width="120"
+          />
+          <el-table-column
+            align="center"
+            label="总入库数量"
+            prop="entered_total"
+            width="120"
+          />
+          <el-table-column
+            align="center"
+            label="预计交货日期"
+            prop="order_expected_date"
+            width="180"
+          >
+            <template #default="{ row }">
+              {{ row.order_expected_date | formatTime }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" fixed="right" label="操作" width="80">
+            <template #default="{ row }">
               <div style="display: flex">
                 <el-button type="text" @click="handleDelete(row)">
                   作废
                 </el-button>
-                <el-button type="text">裁剪完成</el-button>
+                <el-button type="text" @click="handleDetail(row)">
+                  详情
+                </el-button>
               </div>
             </template>
           </el-table-column>
         </template>
       </QYList>
     </el-card>
-    <edit ref="edit" @fetch-data="fetchData" />
+    <!-- 新增排期 -->
     <el-drawer
       :before-close="handleClose"
       size="50%"
@@ -211,32 +302,83 @@
     >
       <Drawer :drawer-inof="drawerInof" @handle-close="handleClose" />
     </el-drawer>
+    <!-- 排期详情 -->
+    <el-drawer
+      :before-close="handleDetailClose"
+      size="50%"
+      title="排期详情"
+      :visible.sync="drawerDetail"
+      :wrapper-closable="false"
+    >
+      <DetailDrawer
+        :drawer-inof="drawerDetailInof"
+        @handle-close="handleDetailClose"
+      />
+    </el-drawer>
   </div>
 </template>
 <script>
-  import Edit from '@/subview/components/Edit/BandEdit'
   import datajosn from '@/assets/assets_josn/datajosn'
   import Drawer from '@/subview/components/Drawer/ScheduleDrawer'
+  import DetailDrawer from '@/subview/components/Drawer/ScheduleDetailsDrawer'
   export default {
-    components: { Edit, Drawer },
+    components: { Drawer, DetailDrawer },
     mixins: [datajosn],
     data() {
       return {
+        // tab数组
+        tabList: [
+          {
+            label: '全部订单',
+            value: '0',
+            Number: 0,
+          },
+          {
+            label: '正常订单',
+            value: '1',
+            Number: 0,
+          },
+          {
+            label: '预警订单',
+            value: '2',
+            Number: 0,
+          },
+          {
+            label: '超期订单',
+            value: '3',
+            Number: 0,
+          },
+          {
+            label: '完成订单',
+            value: '4',
+            Number: 0,
+          },
+        ],
+        // 排期详情
+        drawerDetailInof: {},
+        drawerDetail: false,
+        // 新增排期
         drawerInof: {},
         drawer: false,
+        // 排期列表相关
         formTemp: null,
         page: 1,
         pageSize: 10,
         form: {
-          list_type: '0',
-          ordertype: 0,
-          dateType: 1,
-          rand: 1,
-          supplier_type: '',
-          keywords: '',
-          time: [],
           page: 1,
           pageSize: 10,
+          status: 0, // 状态 0=全部 1=预警 2=超期 3=已完成
+          keyword: '', // 关键字搜索  订单批次号/订单编号/供应商名称/商品名称/商品编号
+          type: null, //订单类型 1=期货 2=首单 3=补单 4=预售
+          supplier_type: null, //供应商类别
+          cut_type: null, //裁剪状态 1 未裁剪 2部分裁剪 3裁剪完成
+          entered_type: null, //入库状态 1 未入库 2部分入库 3入库完成
+          priority: null, //优先度 1=正常 2=紧急 3=加急
+          goods_type: null, //0整手 1散码
+          dateType: 1, //日期类型 1=下单日期 2=交货日期
+          expected_date: [], //交货日期
+          order_date: [], //订单创建日期
+          sort: null, //下单日期由远到近 do.create_time asc  下单日期由近到远 do.create_time desc 交货日期由远到近 do.expected_date asc  交货日期由近到远 do.expected_date desc
         },
         supplier_type: [],
         formType: 4,
@@ -250,7 +392,6 @@
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
-          // 这里做排序改变日期类型判断 if(newVal.rand)
           if (this.pageState) {
             this.formTemp.page = newVal.page
             this.formTemp.pageSize = newVal.pageSize
@@ -273,19 +414,21 @@
       this.getSelectData()
     },
     methods: {
+      handleDetailClose() {
+        this.drawerDetail = false
+      },
       handleClose() {
         this.drawer = false
       },
+      handleDetail(row) {
+        this.drawerDetailInof = JSON.parse(JSON.stringify(row))
+        this.drawerDetail = true
+      },
       handleAdd() {
-        this.drawerInof = {
-          title: '新增',
-          type: 1,
-          id: '',
-        }
         this.drawer = true
       },
       handleClick(tab) {
-        this.form.list_type = tab.name
+        this.form.status = tab.name
       },
       async getSelectData() {
         const { data } = await this.api.getCommonAllList({
@@ -298,6 +441,8 @@
       },
       resetForm() {
         this.form = this.$options.data().form
+        this.form.status = '0'
+        this.form.dateType = 1
       },
       handleDelete(row) {
         // if (row.id) {
@@ -324,9 +469,16 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await this.api.getCuttingOrder(this.formTemp)
-        this.list = data.list.data
-        this.total = data.list.total
+        const { data } = await this.api.getDocumentaryOrderList(this.formTemp)
+        this.list = data.list
+        this.total = data.list.length
+        data.count.forEach((item) => {
+          this.tabList.forEach((tab) => {
+            if (item.status == tab.value) {
+              tab.Number = item.count
+            }
+          })
+        })
         this.listLoading = false
       },
     },

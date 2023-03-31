@@ -318,6 +318,7 @@
               >
                 设置预售
               </el-button>
+              <el-button type="text" @click="addColor(row)">添加颜色</el-button>
             </template>
           </el-table-column>
         </template>
@@ -397,19 +398,27 @@
       @submitUpload="getSon"
     />
     <edit ref="edit" :drawer-sta="drawerSta" @fetch-data="fetchData" />
+    <ColorEdit
+      ref="ColorEdit"
+      :drawer-sta="drawerColor"
+      @fetch-data="fetchData"
+    />
   </div>
 </template>
 
 <script>
   import Drawer from '@/subview/components/Drawer/GoodsDrawer'
   import Edit from '@/subview/components/Edit/PresellEdit'
+  import ColorEdit from '@/subview/components/Edit/AddColorEdit'
   import VabUpload from '@/extra/VabUpload'
   import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
-    components: { Drawer, VabUpload, Edit },
+    components: { Drawer, VabUpload, Edit, ColorEdit },
     mixins: [publicjosn],
     data() {
       return {
+        // 添加颜色
+        drawerColor: false,
         // 预售
         drawerSta: false,
         // 弹窗相关
@@ -492,6 +501,10 @@
       this.getGoodsTypeList()
     },
     methods: {
+      // 添加颜色
+      addColor(row) {
+        this.$refs['ColorEdit'].showEdit(row)
+      },
       // 预售状态修改
       async turnOnOff(row) {
         const { code } = await this.api.changePresellStatus({

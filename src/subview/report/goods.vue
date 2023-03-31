@@ -260,7 +260,7 @@
           <el-table-column label="销售占比" prop="final_rate" width="120" />
           <el-table-column label="预计售完天数" prop="expect_day" width="120" />
           <el-table-column label="上架天数" prop="upper_day" width="80" />
-          <el-table-column label="上架时间" prop="upper_time" width="150">
+          <el-table-column label="上架时间" prop="upper_time" width="180">
             <template #default="{ row }">
               {{ row.upper_time | formatTime }}
             </template>

@@ -215,7 +215,7 @@
             prop="stock_proportion"
             width="100"
           />
-          <el-table-column label="上架日期" prop="created">
+          <el-table-column label="上架日期" prop="created" width="180">
             <template #default="{ row }">
               {{ row.created | formatTime }}
             </template>

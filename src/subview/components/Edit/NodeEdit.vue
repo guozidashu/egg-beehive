@@ -6,7 +6,7 @@
     @close="close"
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item label="波段名称" prop="name">
+      <el-form-item label="节点名称" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
       <el-form-item label="排序" prop="sort">
@@ -15,7 +15,7 @@
           @input="form.sort = $numFormatInput(form.sort)"
         />
       </el-form-item>
-      <el-form-item
+      <!-- <el-form-item
         v-if="(title == '编辑' && form.type == 3) || title == '添加'"
         label="是否必选"
         prop="mandatory"
@@ -24,7 +24,7 @@
           <el-radio :label="1">是</el-radio>
           <el-radio :label="0">否</el-radio>
         </el-radio-group>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item
         v-if="(title == '编辑' && form.type == 3) || title == '添加'"
         label="是否默认"
@@ -35,13 +35,13 @@
           <el-radio :label="0">否</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item v-if="title == '添加'" label="类型" prop="type">
+      <!-- <el-form-item v-if="title == '添加'" label="类型" prop="type">
         <el-radio-group v-model="form.type">
           <el-radio :label="1">裁床单</el-radio>
           <el-radio :label="2">入库单</el-radio>
           <el-radio :label="3">无操作</el-radio>
         </el-radio-group>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <template #footer>
       <el-button @click="close">取 消</el-button>
@@ -60,7 +60,7 @@
           sort: null, //排序
           mandatory: 0, //是否必选 0否（默认） 1是
           default: 0, //是否默认 0否（默认） 1是
-          type: 1, //类型：类型：1=建裁床单 2=建入库单 3=无操作
+          type: 3, //类型：类型：1=建裁床单 2=建入库单 3=无操作
         },
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
