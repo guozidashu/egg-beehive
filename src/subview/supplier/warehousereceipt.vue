@@ -99,15 +99,6 @@
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
-          <el-button
-            v-has-permi="['btn:SupplierWarehousereceipt:add']"
-            size="small"
-            type="primary"
-          >
-            新增入库单
-          </el-button>
-        </el-form-item>
-        <el-form-item>
           <el-button size="small" type="primary" @click="handleDownload()">
             批量导出
           </el-button>
@@ -166,20 +157,30 @@
             prop="warehouse_name"
           />
           <el-table-column align="center" label="时间" prop="create_time" />
-          <el-table-column align="center" label="操作" width="85">
+          <el-table-column
+            align="center"
+            fixed="right"
+            label="操作"
+            width="100"
+          >
             <template #default="{ row }">
               <el-button
                 v-has-permi="['btn:SupplierWarehousereceipt:view']"
                 type="text"
+                @click="handleDetails(row)"
               >
                 详情
               </el-button>
               <el-button
+                v-if="row.is_void == 0"
                 v-has-permi="['btn:SupplierWarehousereceipt:del']"
                 type="text"
                 @click="handleDelete(row)"
               >
                 作废
+              </el-button>
+              <el-button v-if="row.is_void == 1" disabled type="text">
+                已作废
               </el-button>
             </template>
           </el-table-column>
@@ -187,16 +188,32 @@
       </QYList>
     </el-card>
     <edit ref="edit" @fetch-data="fetchData" />
+    <el-drawer
+      :before-close="handleClose"
+      size="50%"
+      title="裁床单详情"
+      :visible.sync="drawer"
+      :wrapper-closable="false"
+    >
+      <Drawer
+        :drawer-inof="drawerInof"
+        @fetch-data="fetchData"
+        @handle-close="handleClose"
+      />
+    </el-drawer>
   </div>
 </template>
 <script>
   import Edit from '@/subview/components/Edit/BandEdit'
+  import Drawer from '@/subview/components/Drawer/CutbedsheetWarehousereceiptDrawer'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    components: { Edit },
+    components: { Edit, Drawer },
     mixins: [datajosn],
     data() {
       return {
+        drawerInof: {},
+        drawer: false,
         selectList: [],
         // 表格选中数据
         selectRows: [],
@@ -249,6 +266,15 @@
       this.fetchData()
     },
     methods: {
+      handleClose() {
+        this.drawer = false
+      },
+      handleDetails(row) {
+        row.drawerType = 2
+        this.drawerInof = JSON.parse(JSON.stringify(row))
+        console.log(666)
+        this.drawer = true
+      },
       async getGoodsTypeList() {
         const { data } = await this.api.getCommonAllList({
           type: 'season,brand',
@@ -300,16 +326,18 @@
         this.form = this.$options.data().form
       },
       handleDelete(row) {
-        // if (row.id) {
-        //   this.$baseConfirm('你确定要作废当前项吗', null, async () => {
-        //     const { code } = await this.api.delBandDel({ id: row.id })
-        //     if (code != 200) {
-        //       return
-        //     }
-        //     this.$baseMessage('作废成功', 'success', 'vab-hey-message-success')
-        //     this.fetchData()
-        //   })
-        // }
+        if (row.id) {
+          this.$baseConfirm('你确定要作废当前项吗', null, async () => {
+            const { code } = await this.api.editVoidInboundOrder({
+              inbound_order_id: row.id,
+            })
+            if (code != 200) {
+              return
+            }
+            this.$baseMessage('作废成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
+          })
+        }
       },
       changeBtnPage(data) {
         this.pageState = true

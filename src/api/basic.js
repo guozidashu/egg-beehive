@@ -426,7 +426,119 @@ export function editSupplierSave(data) {
     data,
   })
 }
-// 供应链 - 生产排期
+// 供应链 - 生产排期 （里面包含了裁床单和入库单的新增，详情，作废）
+// 生产排期 - 裁床单 详情
+export function getCuttingOrderDetail(data) {
+  return request({
+    url: '/supplier/cuttingOrderDetail',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 入库单 详情
+export function getInboundOrderDetail(data) {
+  return request({
+    url: '/supplier/inboundOrderDetail',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 裁床单 作废
+export function editVoidCuttingOrder(data) {
+  return request({
+    url: '/documentaryOrder/voidCuttingOrder',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 入库单 作废
+export function editVoidInboundOrder(data) {
+  return request({
+    url: '/documentaryOrder/voidInboundOrder',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 作废排期
+export function editDocumentaryOrderVoid(data) {
+  return request({
+    url: '/documentaryOrder/void',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 新建排期跟进列表
+export function editDocumentaryOrderFollowSave(data) {
+  return request({
+    url: '/documentaryOrder/followSave',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 获取排期跟进列表
+export function getDocumentaryOrderFollowList(data) {
+  return request({
+    url: '/documentaryOrder/followList',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 编辑资料包
+export function editPackage(data) {
+  return request({
+    url: '/documentaryOrder/editPackage',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 生成入库单
+export function editCreateInboundOrder(data) {
+  return request({
+    url: '/documentaryOrder/createInboundOrder',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 生成裁床单
+export function editCreateCuttingOrder(data) {
+  return request({
+    url: '/documentaryOrder/createCuttingOrder',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 修改节点状态
+export function editNodeStatus(data) {
+  return request({
+    url: '/documentaryOrder/editNodeStatus',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 查看相关入库单
+export function getInboundOrderList(data) {
+  return request({
+    url: '/documentaryOrder/inboundOrderList',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 查看相关裁床单
+export function getCuttingOrderList(data) {
+  return request({
+    url: '/documentaryOrder/cuttingOrderList',
+    method: 'post',
+    data,
+  })
+}
+// 生产排期 - 编辑排期预计完成时间
+export function editNodeEstimateDate(data) {
+  return request({
+    url: '/documentaryOrder/editNodeEstimateDate',
+    method: 'post',
+    data,
+  })
+}
 // 生产排期 - 编辑片排期规则
 export function editDocumentaryOrderSpec(data) {
   return request({
@@ -439,14 +551,6 @@ export function editDocumentaryOrderSpec(data) {
 export function getDocumentaryOrderDetail(data) {
   return request({
     url: '/documentaryOrder/detail',
-    method: 'post',
-    data,
-  })
-}
-// 生产排期 - 获取排期跟进列表
-export function getDocumentaryOrderFollowList(data) {
-  return request({
-    url: '/documentaryOrder/followList',
     method: 'post',
     data,
   })

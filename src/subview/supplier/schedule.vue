@@ -63,11 +63,11 @@
               <el-option label="加急" :value="3" />
             </el-select>
           </el-form-item>
-          <el-form-item label="生产进度:">
+          <!-- <el-form-item label="生产进度:">
             <el-select v-model="form.type6">
               <el-option label="暂未确认" :value="1" />
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="款式类型:">
             <el-select v-model="form.goods_type">
               <el-option label="整手" :value="0" />
@@ -277,11 +277,23 @@
               {{ row.order_expected_date | formatTime }}
             </template>
           </el-table-column>
-          <el-table-column align="center" fixed="right" label="操作" width="80">
+          <el-table-column
+            align="center"
+            fixed="right"
+            label="操作"
+            width="100"
+          >
             <template #default="{ row }">
               <div style="display: flex">
-                <el-button type="text" @click="handleDelete(row)">
+                <el-button
+                  v-if="row.is_void == 0"
+                  type="text"
+                  @click="handleDelete(row)"
+                >
                   作废
+                </el-button>
+                <el-button v-if="row.is_void == 1" disabled type="text">
+                  已作废
                 </el-button>
                 <el-button type="text" @click="handleDetail(row)">
                   详情
@@ -300,7 +312,11 @@
       :visible.sync="drawer"
       :wrapper-closable="false"
     >
-      <Drawer :drawer-inof="drawerInof" @handle-close="handleClose" />
+      <Drawer
+        :drawer-inof="drawerInof"
+        @fetch-data="fetchData"
+        @handle-close="handleClose"
+      />
     </el-drawer>
     <!-- 排期详情 -->
     <el-drawer
@@ -445,16 +461,18 @@
         this.form.dateType = 1
       },
       handleDelete(row) {
-        // if (row.id) {
-        //   this.$baseConfirm('你确定要作废当前项吗', null, async () => {
-        //     const { code } = await this.api.delBandDel({ id: row.id })
-        //     if (code != 200) {
-        //       return
-        //     }
-        //     this.$baseMessage('作废成功', 'success', 'vab-hey-message-success')
-        //     this.fetchData()
-        //   })
-        // }
+        if (row.order_id) {
+          this.$baseConfirm('你确定要作废当前项吗', null, async () => {
+            const { code } = await this.api.editDocumentaryOrderVoid({
+              order_id: row.order_id,
+            })
+            if (code != 200) {
+              return
+            }
+            this.$baseMessage('作废成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
+          })
+        }
       },
       changeBtnPage(data) {
         this.pageState = true

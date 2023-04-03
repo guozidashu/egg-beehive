@@ -571,6 +571,8 @@
         )
         if (code == 200) {
           this.$message.success('新增成功')
+          this.$emit('fetch-data')
+          this.$emit('handle-close')
         }
       },
       //禁止拖动到id为1的对象
