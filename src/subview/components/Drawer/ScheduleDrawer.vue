@@ -480,7 +480,6 @@
       this.getNodeList()
       // 上传接口获取token
       this.headers['Authorization'] = `${this.token}`
-      console.log(6666, this.selectLists)
     },
     methods: {
       // 获取供应商列表
@@ -565,7 +564,6 @@
           arr.push(item.url)
         })
         this.subFormData.package = arr
-        console.log(this.subFormData)
         const { code } = await this.api.editDocumentaryOrderSave(
           this.subFormData
         )

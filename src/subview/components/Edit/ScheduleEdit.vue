@@ -80,7 +80,7 @@
         type="datetime"
       />
     </div>
-    <!-- 查看裁床单 -->
+    <!-- 查看裁床单，入库单 -->
     <div v-if="editType == 3">
       <div v-if="orderList.length > 0">
         <el-card
@@ -90,7 +90,7 @@
           shadow="hover"
         >
           <div style="margin-bottom: 10px; text-align: right">
-            <el-tag>查看详情</el-tag>
+            <el-tag @click="handleDetail(item.order_id)">查看详情</el-tag>
           </div>
           <div
             style="
@@ -274,7 +274,6 @@
       // 4 修改节点状态（status,1=进行中 2=已完成 3=已跳过) 5 创建单据（status :1=裁床单创建，2入库单创建 title:node_id）
       // 6 新增跟进
       async showEdit(row, order_id, type, status, title) {
-        console.log(row, order_id, type, status, title)
         this.order_id = order_id
         this.editType = type
         if (type == 1 || type == 5) {
@@ -321,6 +320,23 @@
       },
       close() {
         this.dialogFormVisible = false
+      },
+      handleDetail(row) {
+        if (this.title == '裁床单列表') {
+          this.$router.push({
+            path: '/supplier/supplierCutbedsheet',
+            query: {
+              id: row,
+            },
+          })
+        } else if (this.title == '入库单列表') {
+          this.$router.push({
+            path: '/supplier/supplierWarehousereceipt',
+            query: {
+              id: row,
+            },
+          })
+        }
       },
       async save() {
         if (this.editType == 1) {

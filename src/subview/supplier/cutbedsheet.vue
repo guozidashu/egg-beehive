@@ -232,6 +232,19 @@
         },
         deep: true,
       },
+      // 生产排期裁床单详情跳转
+      '$route.query.id': {
+        handler: async function (newval) {
+          if (newval != undefined) {
+            this.form.keywords = newval
+            await this.getGoodsTypeList()
+            await this.getSelectData()
+            this.handleDetails(this.list[0])
+          }
+        },
+        deep: true,
+        immediate: true,
+      },
     },
     created() {
       this.getGoodsTypeList()
@@ -245,7 +258,6 @@
       handleDetails(row) {
         row.drawerType = 1
         this.drawerInof = JSON.parse(JSON.stringify(row))
-        console.log(666)
         this.drawer = true
       },
       selectBtnRows(data) {

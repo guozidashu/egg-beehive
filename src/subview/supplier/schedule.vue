@@ -138,9 +138,9 @@
           <el-form-item label="搜索：">
             <el-input
               v-model="form.keywords"
-              placeholder="请输入订单批次号/订单编号/供应商名称/商品名称/商品编号"
+              placeholder="请输入订单批次号、编号/供应商名称/商品、编号"
               size="small"
-              style="width: 400px"
+              style="width: 350px"
             />
           </el-form-item>
         </template>
@@ -161,9 +161,9 @@
             新增排期
           </el-button>
         </el-form-item>
-        <el-form-item>
+        <!-- <el-form-item>
           <el-button size="small" type="primary">批量导出</el-button>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <QYList
         :list="list"

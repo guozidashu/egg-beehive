@@ -292,6 +292,13 @@
                   label="欠货率"
                   prop="outage_rate"
                 />
+                <el-table-column align="center" label="操作" width="80">
+                  <template #default="{ row }">
+                    <el-button type="text" @click="handleInof(row)">
+                      明细
+                    </el-button>
+                  </template>
+                </el-table-column>
               </template>
             </QYList>
           </div>
@@ -512,12 +519,15 @@
         </template>
       </QYList>
     </div>
+    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 
 <script>
+  import Edit from '@/subview/components/Edit/BoardEidt'
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
+    components: { Edit },
     mixins: [datajosn],
     data() {
       return {
@@ -655,6 +665,9 @@
       this.fetchData()
     },
     methods: {
+      handleInof(row) {
+        this.$refs['edit'].showEdit(row)
+      },
       // 欠货明细表格切换页数
       changeBtnPage(data) {
         this.pageState = true

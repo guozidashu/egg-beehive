@@ -490,7 +490,6 @@
         const { data } = await this.api.getDocumentaryOrderFollowList({
           order_id: row.order_id,
         })
-        console.log(9999, data)
         this.followList = data.list
       },
 
@@ -512,7 +511,6 @@
       // 改变资料包状态  编辑资料包
       async changePackage(type) {
         if (type == 3) {
-          console.log(this.divUploadList)
           let arr = []
           this.divUploadList.forEach((item) => {
             arr.push(item.url)

@@ -191,7 +191,7 @@
     <el-drawer
       :before-close="handleClose"
       size="50%"
-      title="裁床单详情"
+      title="入库单详情"
       :visible.sync="drawer"
       :wrapper-closable="false"
     >
@@ -259,6 +259,19 @@
         },
         deep: true,
       },
+      // 生产排期入库单详情跳转
+      '$route.query.id': {
+        handler: async function (newval) {
+          if (newval != undefined) {
+            this.form.keywords = newval
+            await this.getGoodsTypeList()
+            await this.getSelectData()
+            this.handleDetails(this.list[0])
+          }
+        },
+        deep: true,
+        immediate: true,
+      },
     },
     created() {
       this.getGoodsTypeList()
@@ -272,7 +285,6 @@
       handleDetails(row) {
         row.drawerType = 2
         this.drawerInof = JSON.parse(JSON.stringify(row))
-        console.log(666)
         this.drawer = true
       },
       async getGoodsTypeList() {
