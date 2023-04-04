@@ -151,6 +151,14 @@ export function getInformationJstList(data) {
   })
 }
 // 首页-仓库预警分析
+// 仓库预警分析 - 按商品欠货排行明细
+export function getWarehouseAnalysisRankDetail(data) {
+  return request({
+    url: '/warehouseAnalysis/rankDetail',
+    method: 'post',
+    data,
+  })
+}
 // 仓库预警分析 - 头部卡片
 export function getWarehouseAnalysisHeadData(data) {
   return request({

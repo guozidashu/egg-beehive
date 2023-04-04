@@ -206,7 +206,7 @@ const actions = {
       if (data.list.username) commit('setUsername', data.list.username)
       if (data.list.group_name) commit('setRolename', data.list.group_name)
       // 如不使用avatar头像,可删除以下代码
-      if (data.list.image) commit('setAvatar', data.list.image)
+      if (data.list.avatar) commit('setAvatar', data.list.avatar)
 
       // 如不使用roles权限控制,可删除以下代码
       // if (roles) dispatch('acl/setRole', roles, { root: true })
