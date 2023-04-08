@@ -338,6 +338,15 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'orderPurchasesalestockr',
+        name: 'OrderPurchasesalestockr',
+        component: () => import('@/subview/order/purchasesalestock'),
+        meta: {
+          title: '进销存综合列表',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {

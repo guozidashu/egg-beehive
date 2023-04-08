@@ -33,6 +33,7 @@
     "element-ui": "2.15.6",
     "file-saver": "^2.0.5",
     "js-cookie": "^3.0.1",
+    "js-table2excel": "^1.0.3",
     "jsbarcode": "^3.11.5",
     "jsencrypt": "^3.2.1",
     "jsplumb": "^2.15.6",

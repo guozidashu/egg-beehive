@@ -215,7 +215,6 @@
         </el-row>
       </el-col>
     </el-row>
-    <!-- 商品客户欠货排行 -->
     <div
       style="
         padding: 20px;
@@ -224,139 +223,12 @@
         border-radius: 5px;
       "
     >
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <div>
-            <div style="margin-bottom: 20px; font-size: 16px">
-              按商品欠货排行
-            </div>
-            <QYList
-              :list="goodsDebtList"
-              :list-type="2"
-              :state="goodsDebtListLoading"
-              style="height: 450px; overflow: auto"
-            >
-              <template #List>
-                <el-table-column
-                  align="center"
-                  label="排行"
-                  type="index"
-                  width="50"
-                >
-                  <template slot-scope="scope">
-                    <span
-                      class="index_common"
-                      :class="[
-                        scope.$index + 1 == '1'
-                          ? 'index_one'
-                          : scope.$index + 1 == '2'
-                          ? 'index_two'
-                          : scope.$index + 1 == '3'
-                          ? 'index_three'
-                          : 'index_more',
-                      ]"
-                    >
-                      {{ scope.$index + 1 }}
-                    </span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="商品名称" prop="goods_name" />
-                <el-table-column
-                  align="center"
-                  label="商品图片"
-                  prop="goods_img"
-                >
-                  <template #default="{ row }">
-                    <el-tooltip placement="top">
-                      <el-image
-                        slot="content"
-                        :src="row.goods_img"
-                        style="width: 200px; height: 200px"
-                      />
-                      <el-image
-                        :src="row.goods_img"
-                        style="width: 50px; height: 50px"
-                      />
-                    </el-tooltip>
-                  </template>
-                </el-table-column>
-                <el-table-column label="商品款号" prop="goods_sn" />
-                <el-table-column align="center" label="订货件数" prop="num" />
-                <el-table-column
-                  align="center"
-                  label="欠货件数"
-                  prop="not_delivery_num"
-                />
-                <el-table-column
-                  align="center"
-                  label="欠货率"
-                  prop="outage_rate"
-                />
-                <el-table-column align="center" label="操作" width="80">
-                  <template #default="{ row }">
-                    <el-button type="text" @click="handleInof(row)">
-                      明细
-                    </el-button>
-                  </template>
-                </el-table-column>
-              </template>
-            </QYList>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div>
-            <div style="margin-bottom: 20px; font-size: 16px">
-              按客户欠货排行
-            </div>
-            <QYList
-              :list="customerDebtList"
-              :list-type="2"
-              :state="customerDebListLoading"
-              style="height: 450px; overflow: auto"
-            >
-              <template #List>
-                <el-table-column
-                  align="center"
-                  label="排行"
-                  type="index"
-                  width="50"
-                >
-                  <template slot-scope="scope">
-                    <span
-                      class="index_common"
-                      :class="[
-                        scope.$index + 1 == '1'
-                          ? 'index_one'
-                          : scope.$index + 1 == '2'
-                          ? 'index_two'
-                          : scope.$index + 1 == '3'
-                          ? 'index_three'
-                          : 'index_more',
-                      ]"
-                    >
-                      {{ scope.$index + 1 }}
-                    </span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="客户名称" prop="customer_name" />
-                <el-table-column label="订货件数" prop="num" />
-                <el-table-column label="欠货件数" prop="not_delivery_num" />
-                <el-table-column label="欠货率" prop="outage_rate" />
-              </template>
-            </QYList>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
-    <!-- 欠货订单明细 -->
-    <div
-      style="
-        padding: 20px;
-        margin-top: 20px;
-        background-color: white;
-        border-radius: 5px;
-      "
-    >
+      <div style="margin-bottom: 20px">
+        <el-radio-group v-model="radioButton">
+          <el-radio-button label="1">按款号欠货明细</el-radio-button>
+          <el-radio-button label="2">按客户欠货明细</el-radio-button>
+        </el-radio-group>
+      </div>
       <el-form
         ref="form"
         :inline="true"
@@ -365,50 +237,120 @@
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">欠货订单明细</span>
         <el-form-item style="margin-right: 0">
-          <el-form-item label="统计类型:" prop="type">
-            <el-select v-model="form.type" size="small" style="width: 150px">
-              <el-option
-                v-for="(item, index) in statisticalTypeList"
-                :key="index"
-                :label="item.name"
-                :value="item.value"
+          <div v-if="radioButton == 1">
+            <el-form-item label="品牌" prop="brand_id">
+              <el-select
+                v-model="form.brand_id"
+                placeholder="请选择品牌"
+                style="width: 150px"
+              >
+                <el-option
+                  v-for="(item, index) in selectList.brand"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="款式" prop="category_id">
+              <el-select
+                v-model="form.category_id"
+                placeholder="请选择款式"
+                style="width: 150px"
+              >
+                <el-option
+                  v-for="(item, index) in selectList.category"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="年份" prop="year_id">
+              <el-select
+                v-model="form.year_id"
+                placeholder="请选择年份"
+                style="width: 150px"
+              >
+                <el-option
+                  v-for="(item, index) in selectList.year"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="季节" prop="season_id">
+              <el-select
+                v-model="form.season_id"
+                placeholder="请选择季节"
+                style="width: 150px"
+              >
+                <el-option
+                  v-for="(item, index) in selectList.season"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="波段" prop="band_id">
+              <el-select
+                v-model="form.band_id"
+                placeholder="请选择波段"
+                style="width: 150px"
+              >
+                <el-option
+                  v-for="(item, index) in selectList.band"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="款号" prop="goods_sn">
+              <el-input
+                v-model="form.goods_sn"
+                placeholder="请输入款号"
+                size="small"
               />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="会员等级:" prop="level_id">
-            <el-select
-              v-model="form.level_id"
-              placeholder="请选择会员等级"
-              style="width: 150px"
-            >
-              <el-option
-                v-for="(item, index) in selectList.customer_grade"
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="客户名称" prop="name">
-            <el-input v-model="form.name" size="small" />
-          </el-form-item>
-          <el-form-item label="时间筛选:" prop="create_time">
-            <el-date-picker
-              v-model="form.create_time"
-              align="right"
-              :clearable="false"
-              :default-time="['00:00:00', '23:59:59']"
-              end-placeholder="结束日期"
-              format="yyyy-MM-dd"
-              :picker-options="pickerOptions"
-              range-separator="至"
-              start-placeholder="开始日期"
-              type="daterange"
-              unlink-panels
-              value-format="yyyy-MM-dd HH:mm:ss"
-            />
+            </el-form-item>
+          </div>
+          <div v-if="radioButton == 2">
+            <el-form-item label="会员等级" prop="level_id">
+              <el-select
+                v-model="form.level_id"
+                placeholder="请选择会员等级"
+                style="width: 150px"
+              >
+                <el-option
+                  v-for="(item, index) in selectList.customer_grade"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="客户分类" prop="customer_type">
+              <el-select
+                v-model="form.customer_type"
+                placeholder="请选择客户分类"
+                style="width: 150px"
+              >
+                <el-option
+                  v-for="(item, index) in selectList.customer_type"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="客户名称" prop="name">
+              <el-input v-model="form.name" size="small" />
+            </el-form-item>
+          </div>
+          <el-form-item prop="time">
             <el-button
               size="small"
               style="margin-left: 10px"
@@ -417,10 +359,17 @@
             >
               重置
             </el-button>
+            <el-button size="small" type="primary" @click="handleQuery()">
+              查询
+            </el-button>
+            <el-button size="small" type="primary" @click="handleDownload()">
+              导出
+            </el-button>
           </el-form-item>
         </el-form-item>
       </el-form>
       <QYList
+        v-if="radioButton == 1"
         :list="goodsOwedList"
         :list-type="listType"
         :page-no="page"
@@ -429,9 +378,38 @@
         :total="listTotal"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
+        @expandChange="expandChange"
       >
         <template #List>
-          <el-table-column align="center" label="排行" type="index" width="50">
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <div v-if="props.row.goods_id" style="text-align: center">
+                <div style="display: flex; width: 100%">
+                  <div style="width: 25%; padding: 10px 0">颜色</div>
+                  <div style="width: 25%; padding: 10px 0">尺码</div>
+                  <div style="width: 25%; padding: 10px 0">订货数量</div>
+                  <div style="width: 25%; padding: 10px 0">欠货数量</div>
+                </div>
+                <div
+                  v-for="(item, index) in rowDate"
+                  :key="index"
+                  style="display: flex; width: 100%"
+                >
+                  <div style="width: 25%; padding: 10px 0">
+                    {{ item.color }}
+                  </div>
+                  <div style="width: 25%; padding: 10px 0">{{ item.size }}</div>
+                  <div style="width: 25%; padding: 10px 0">
+                    {{ item.order_num }}
+                  </div>
+                  <div style="width: 25%; padding: 10px 0">
+                    {{ item.not_delivery_num }}
+                  </div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="排行" type="index" width="60">
             <template slot-scope="scope">
               <span
                 class="index_common"
@@ -449,111 +427,183 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column label="批次" prop="id" width="50" />
-          <el-table-column label="客户名称" prop="name" />
-
-          <el-table-column
-            align="center"
-            label="订货件数"
-            prop="num"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="已发货"
-            prop="delivery_num"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="待发货"
-            prop="not_delivery_num"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="现货库存"
-            prop="xh_total"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="生产中库存"
-            prop="zsc_total"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            align="center"
-            label="状态"
-            prop="status_text"
-            show-overflow-tooltip
-          >
+          <el-table-column align="center" label="商品" width="400">
             <template #default="{ row }">
-              <el-tag v-if="row.status_text == '部分发货'">
-                {{ row.status_text }}
-              </el-tag>
-              <el-tag v-else type="danger">
-                {{ row.status_text }}
-              </el-tag>
+              <div style="display: flex">
+                <el-image
+                  :src="row.goods_img"
+                  style="width: 100px; height: 100px"
+                />
+                <div style="width: 280px; margin-left: 10px">
+                  <div
+                    style="
+                      width: 150px;
+                      overflow: hidden;
+                      text-align: left;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                    "
+                  >
+                    {{ row.goods_name }}
+                  </div>
+                  <div style="margin: 15px 0; text-align: left">
+                    {{ row.goods_sn }}
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      width: 100%;
+                      margin: 15px 0;
+                    "
+                  >
+                    <div style="color: red">￥{{ row.sale_price }}</div>
+                    <div>{{ row.create_time | formatTime }}</div>
+                  </div>
+                </div>
+              </div>
             </template>
           </el-table-column>
+          <el-table-column align="center" label="订货数量" prop="num" />
           <el-table-column
             align="center"
-            label="欠货率"
-            prop="outage_rate"
-            show-overflow-tooltip
+            label="欠货数量"
+            prop="not_delivery_num"
           />
-          <el-table-column
-            align="center"
-            label="欠货天数"
-            prop="outage_day"
-            show-overflow-tooltip
-          />
-
-          <el-table-column
-            align="center"
-            label="订单创建时间"
-            prop="ctime"
-            show-overflow-tooltip
-          />
+          <el-table-column align="center" label="欠货率" prop="outage_rate" />
+          <el-table-column align="center" label="库存数" prop="xh_total" />
+          <el-table-column align="center" label="生产中" prop="zsc_total" />
         </template>
       </QYList>
+      <QYList
+        v-if="radioButton == 2"
+        :list="goodsOwedList"
+        :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
+        :state="listLoading"
+        :total="listTotal"
+        @changePage="changeBtnPage"
+        @changePageSize="changeBtnPageSize"
+        @expandChange="expandChange"
+      >
+        <template #List>
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <div v-if="props.row.customer_id" style="text-align: center">
+                <div style="display: flex; width: 100%">
+                  <div style="width: 33%; padding: 10px 0">款号</div>
+                  <div style="width: 33%; padding: 10px 0">订货数量</div>
+                  <div style="width: 33%; padding: 10px 0">欠货数量</div>
+                </div>
+                <div
+                  v-for="(item, index) in rowDate"
+                  :key="index"
+                  style="display: flex; width: 100%"
+                >
+                  <div style="width: 33%; padding: 10px 0">
+                    {{ item.goods_sn }}
+                  </div>
+                  <div style="width: 33%; padding: 10px 0">
+                    {{ item.num }}
+                  </div>
+                  <div style="width: 33%; padding: 10px 0">
+                    {{ item.not_delivery_num }}
+                  </div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="排行" type="index" width="60">
+            <template slot-scope="scope">
+              <span
+                class="index_common"
+                :class="[
+                  scope.$index + 1 == '1'
+                    ? 'index_one'
+                    : scope.$index + 1 == '2'
+                    ? 'index_two'
+                    : scope.$index + 1 == '3'
+                    ? 'index_three'
+                    : 'index_more',
+                ]"
+              >
+                {{ scope.$index + 1 }}
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column label="客户" width="400">
+            <template #default="{ row }">
+              <div style="display: flex">
+                <el-image
+                  :src="row.customer_avatar"
+                  style="width: 100px; height: 100px"
+                />
+                <div style="width: 280px; margin-left: 10px">
+                  <div
+                    style="
+                      width: 150px;
+                      overflow: hidden;
+                      text-align: left;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                    "
+                  >
+                    {{ row.customer_name }}
+                  </div>
+                  <div style="margin: 15px 0; text-align: left">
+                    {{ row.customer_mobile }}
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      width: 100%;
+                      margin: 15px 0;
+                    "
+                  >
+                    <div>
+                      <el-tag>{{ row.level_name }}</el-tag>
+                    </div>
+                    <div>{{ row.customer_type }}</div>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="订货数量" prop="num" />
+          <el-table-column label="欠货数量" prop="not_delivery_num" />
+          <el-table-column label="欠货率" prop="outage_rate" />
+        </template>
+      </QYList>
+      <el-dialog
+        :before-close="handleClose"
+        title="导出"
+        :visible.sync="dialogVisible"
+        width="30%"
+      >
+        <el-radio-group v-model="exportType">
+          <el-radio :label="1">按款号汇总</el-radio>
+          <el-radio :label="2">按颜色汇总</el-radio>
+          <el-radio :label="3">按颜色尺码汇总</el-radio>
+        </el-radio-group>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="handleExport">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
-    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 
 <script>
-  import Edit from '@/subview/components/Edit/BoardEidt'
-  import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    components: { Edit },
-    mixins: [datajosn],
     data() {
       return {
-        // 欠货明细 查询条件 统计类型
-        statisticalTypeList: [
-          {
-            name: '总数量',
-            value: 1,
-          },
-          {
-            name: '已发数量',
-            value: 2,
-          },
-          {
-            name: '现货库存',
-            value: 3,
-          },
-          {
-            name: '生产中库存',
-            value: 4,
-          },
-          {
-            name: '待发数量',
-            value: 5,
-          },
-        ],
+        rowDate: null,
+        exportType: 1,
+        dialogVisible: false,
+        radioButton: '1',
         // 头部卡片 未发货数据
         not_deliver_data: [
           {
@@ -614,25 +664,24 @@
         // 查询条件表单
         form: {
           page: 1,
-          pageSize: 20,
-          name: null,
-          create_time: this.getPastTime(30),
-          level_id: null,
-          type: null, // 统计类型 1=总数量 2=已发数量 3=现货库存 4=生产中库存 5=待发数量 默认订单创建时间
+          pageSize: 10,
+          goods_sn: '', // 商品款号
+          brand_id: '', // 品牌id
+          year_id: '', // 年份id
+          band_id: '', // 波段id
+          season_id: '', // 季节id
+          category_id: '', // 分类id
+          name: '', // 客户名称
+          level_id: '', // 等级id
+          customer_type: '', // 客户分类
         },
         // 欠货明细 下拉框数据
         selectList: [],
         // 欠货明细 表格数据
         listTotal: 0,
         listLoading: false,
-        listType: 1,
+        listType: 8,
         goodsOwedList: [],
-        // 商品欠货 表格数据
-        goodsDebtListLoading: false,
-        goodsDebtList: [],
-        // 客户欠货 表格数据
-        customerDebListLoading: false,
-        customerDebtList: [],
       }
     },
     watch: {
@@ -656,17 +705,25 @@
         },
         deep: true,
       },
+      radioButton: {
+        handler: function () {
+          this.getGoodsOwedTableList()
+        },
+        deep: true,
+      },
     },
     created() {
       this.getTypeList()
       this.getGoodsOwedTableList()
-      this.getGoodsDebTableList()
-      this.getCustomerDebTableList()
       this.fetchData()
     },
     methods: {
-      handleInof(row) {
-        this.$refs['edit'].showEdit(row)
+      handleClose() {
+        this.dialogVisible = false
+      },
+      // 导出
+      async handleExport() {
+        this.$message.success('导出成功')
       },
       // 欠货明细表格切换页数
       changeBtnPage(data) {
@@ -682,17 +739,45 @@
       resetForm() {
         this.form = {
           page: 1,
-          pageSize: 20,
-          name: null,
-          create_time: this.getPastTime(30),
-          level_id: null,
-          type: null, // 统计类型 1=总数量 2=已发数量 3=现货库存 4=生产中库存 5=待发数量 默认订单创建时间
+          pageSize: 10,
+          goods_sn: '', // 商品款号
+          brand_id: '', // 品牌id
+          year_id: '', // 年份id
+          band_id: '', // 波段id
+          season_id: '', // 季节id
+          category_id: '', // 分类id
+          name: '', // 客户名称
+          level_id: '', // 等级id
+          customer_type: '', // 客户分类
+        }
+      },
+      handleQuery() {
+        this.getGoodsOwedTableList()
+      },
+      handleDownload() {
+        console.log('导出')
+        if (this.radioButton == 1) {
+          this.dialogVisible = true
+        }
+      },
+      async expandChange(row) {
+        if (this.radioButton == 1) {
+          const { data } = await this.api.getWarehouseAnalysisRankDetail({
+            goods_id: row.goods_id,
+          })
+          this.rowDate = data
+        } else {
+          const { data } =
+            await this.api.getWarehouseAnalysisRankCustomerDetail({
+              customer_id: row.customer_id,
+            })
+          this.rowDate = data
         }
       },
       // 欠货明细 查询表单 会员等级下拉框
       async getTypeList() {
         const { data } = await this.api.getCommonAllList({
-          type: 'customer_grade',
+          type: 'customer_grade,customer_type,brand,year,season,band,category',
         })
         this.selectList = data
       },
@@ -702,26 +787,22 @@
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
-        const { data } = await this.api.getWarehouseAnalysisList(this.formTemp)
-        this.goodsOwedList = data.data
-        this.listTotal = data.total
-        this.listLoading = false
-      },
-      // 获取商品欠货表格
-      async getGoodsDebTableList() {
-        this.goodsDebtListLoading = true
-        const { data } = await this.api.getWarehouseAnalysisGoodsRank(this.form)
-        this.goodsDebtList = data
-        this.goodsDebtListLoading = false
-      },
-      // 获取客户欠货表格
-      async getCustomerDebTableList() {
-        this.customerDebListLoading = true
-        const { data } = await this.api.getWarehouseAnalysisCustomerRank(
-          this.form
-        )
-        this.customerDebtList = data
-        this.customerDebListLoading = false
+        if (this.radioButton == 1) {
+          const { data } = await this.api.getWarehouseAnalysisSnOutStockAnalyse(
+            this.formTemp
+          )
+          this.goodsOwedList = data.list
+          this.listTotal = data.total
+          this.listLoading = false
+        } else {
+          const { data } =
+            await this.api.getWarehouseAnalysisCustomerOutStockAnalyse(
+              this.formTemp
+            )
+          this.goodsOwedList = data.list
+          this.listTotal = data.total
+          this.listLoading = false
+        }
       },
       // 获取头部数据
       async fetchData() {

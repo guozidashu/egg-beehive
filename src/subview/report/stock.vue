@@ -130,7 +130,7 @@
         @changePageSize="changeBtnPageSize"
       >
         <template #List>
-          <el-table-column align="center" label="排行" type="index" width="50">
+          <el-table-column align="center" label="排行" type="index" width="60">
             <template slot-scope="scope">
               <span
                 v-if="goodsForm1.page == 1"

@@ -98,8 +98,25 @@
         />
       </template>
     </el-table>
+    <el-table
+      v-if="listType === 8"
+      v-loading="state"
+      border
+      :data="list"
+      style="width: 100%"
+      @expand-change="expandChange"
+      @selection-change="setSelectRows"
+    >
+      <slot name="List"></slot>
+      <template #empty>
+        <el-image
+          class="vab-data-empty"
+          :src="require('@/assets/empty_images/data_empty.png')"
+        />
+      </template>
+    </el-table>
     <el-pagination
-      v-if="listType === 1 || listType === 3"
+      v-if="listType === 1 || listType === 3 || listType === 8"
       background
       :current-page="pageNo"
       :layout="layout"
@@ -164,6 +181,9 @@
       },
       setSelectRows(val) {
         this.$emit('selectRows', val)
+      },
+      expandChange(row) {
+        this.$emit('expandChange', row)
       },
     },
   }

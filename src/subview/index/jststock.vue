@@ -217,7 +217,7 @@
                       align="center"
                       label="排行"
                       type="index"
-                      width="50"
+                      width="60"
                     >
                       <template slot-scope="scope">
                         <span
@@ -276,7 +276,7 @@
                   align="center"
                   label="排行"
                   type="index"
-                  width="50"
+                  width="60"
                 >
                   <template slot-scope="scope">
                     <span
@@ -335,7 +335,7 @@
                 align="center"
                 label="排行"
                 type="index"
-                width="50"
+                width="60"
               >
                 <template slot-scope="scope">
                   <span
@@ -425,7 +425,7 @@
                 align="center"
                 label="排行"
                 type="index"
-                width="50"
+                width="60"
               >
                 <template slot-scope="scope">
                   <span

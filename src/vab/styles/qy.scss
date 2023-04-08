@@ -35,9 +35,11 @@
 /* 表格排行 */
 .index_common {
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
+  padding-top: 4px;
   color: #ffffff;
+  text-align: center;
   border-radius: 4em; //图案为圆形
 }
 .index_one {

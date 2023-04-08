@@ -151,6 +151,30 @@ export function getInformationJstList(data) {
   })
 }
 // 首页-仓库预警分析
+// 仓库预警分析 - 按客户欠货排行明细子集
+export function getWarehouseAnalysisRankCustomerDetail(data) {
+  return request({
+    url: '/warehouseAnalysis/rankCustomerDetail',
+    method: 'post',
+    data,
+  })
+}
+// 仓库预警分析 - 按客户欠货排行明细
+export function getWarehouseAnalysisCustomerOutStockAnalyse(data) {
+  return request({
+    url: '/warehouseAnalysis/customerOutStockAnalyse',
+    method: 'post',
+    data,
+  })
+}
+// 仓库预警分析 - 按款号欠货排行明细
+export function getWarehouseAnalysisSnOutStockAnalyse(data) {
+  return request({
+    url: '/warehouseAnalysis/snOutStockAnalyse',
+    method: 'post',
+    data,
+  })
+}
 // 仓库预警分析 - 按商品欠货排行明细
 export function getWarehouseAnalysisRankDetail(data) {
   return request({
@@ -776,6 +800,23 @@ export function getCategoryUpload(data) {
   })
 }
 // 订单模块接口
+// 订单 -进销存列表
+// 进销存列表 -导出
+export function getInventoryExport(data) {
+  return request({
+    url: '/inventory/export',
+    method: 'post',
+    data,
+  })
+}
+// 进销存列表 -列表
+export function getInventoryList(data) {
+  return request({
+    url: '/inventory/List',
+    method: 'post',
+    data,
+  })
+}
 // 订单 -订单列表
 export function getOrderList(data) {
   return request({
