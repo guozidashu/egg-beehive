@@ -447,7 +447,11 @@
     >
       <template #List>
         <el-table-column label="商品名称" prop="name" show-overflow-tooltip />
-        <el-table-column label="商品款号" prop="sn" show-overflow-tooltip />
+        <el-table-column
+          label="商品款号"
+          prop="goods_sn"
+          show-overflow-tooltip
+        />
         <el-table-column label="订货数量" prop="num" width="80" />
         <el-table-column label="欠货数量" prop="owe_goods" width="80" />
       </template>

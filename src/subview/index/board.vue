@@ -464,10 +464,10 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="订货数量" prop="num" />
+          <el-table-column align="center" label="总订货数量" prop="num" />
           <el-table-column
             align="center"
-            label="欠货数量"
+            label="总欠货数量"
             prop="not_delivery_num"
           />
           <el-table-column align="center" label="欠货率" prop="outage_rate" />
@@ -571,8 +571,8 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="订货数量" prop="num" />
-          <el-table-column label="欠货数量" prop="not_delivery_num" />
+          <el-table-column label="总订货数量" prop="num" />
+          <el-table-column label="总欠货数量" prop="not_delivery_num" />
           <el-table-column label="欠货率" prop="outage_rate" />
         </template>
       </QYList>
