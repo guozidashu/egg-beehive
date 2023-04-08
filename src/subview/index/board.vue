@@ -362,9 +362,9 @@
             <el-button size="small" type="primary" @click="handleQuery()">
               查询
             </el-button>
-            <el-button size="small" type="primary" @click="handleDownload()">
+            <!-- <el-button size="small" type="primary" @click="handleDownload()">
               导出
-            </el-button>
+            </el-button> -->
           </el-form-item>
         </el-form-item>
       </el-form>
@@ -707,6 +707,10 @@
       },
       radioButton: {
         handler: function () {
+          this.form.page = 1
+          this.form.pageSize = 10
+          this.page = 1
+          this.pageSize = 10
           this.getGoodsOwedTableList()
         },
         deep: true,
