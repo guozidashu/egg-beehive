@@ -368,113 +368,224 @@
           </el-form-item>
         </el-form-item>
       </el-form>
-      <QYList
+      <el-table
         v-if="radioButton == 1"
-        :list="goodsOwedList"
-        :list-type="listType"
-        :page-no="page"
-        :page-size="pageSize"
-        :state="listLoading"
-        :total="listTotal"
-        @changePage="changeBtnPage"
-        @changePageSize="changeBtnPageSize"
-        @expandChange="expandChange"
+        v-loading="listLoading"
+        border
+        :data="goodsOwedList"
+        style="width: 100%"
+        @expand-change="expandChange"
       >
-        <template #List>
-          <el-table-column type="expand">
-            <template slot-scope="props">
-              <div v-if="props.row.goods_id" style="text-align: center">
-                <div style="display: flex; width: 100%">
-                  <div style="width: 25%; padding: 10px 0">颜色</div>
-                  <div style="width: 25%; padding: 10px 0">尺码</div>
-                  <div style="width: 25%; padding: 10px 0">订货数量</div>
-                  <div style="width: 25%; padding: 10px 0">欠货数量</div>
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <div></div>
+            <div style="text-align: center">
+              <div style="display: flex; width: 100%">
+                <div style="width: 25%; padding: 10px 0">颜色</div>
+                <div style="width: 25%; padding: 10px 0">尺码</div>
+                <div style="width: 25%; padding: 10px 0">订货数量</div>
+                <div style="width: 25%; padding: 10px 0">欠货数量</div>
+              </div>
+              <div
+                v-for="(item, index) in props.row.is_show"
+                :key="index"
+                style="display: flex; width: 100%"
+              >
+                <div style="width: 25%; padding: 10px 0">
+                  {{ item.color }}
+                </div>
+                <div style="width: 25%; padding: 10px 0">{{ item.size }}</div>
+                <div style="width: 25%; padding: 10px 0">
+                  {{ item.order_num }}
+                </div>
+                <div style="width: 25%; padding: 10px 0">
+                  {{ item.not_delivery_num }}
+                </div>
+              </div>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="排行" type="index" width="60">
+          <template slot-scope="scope">
+            <span
+              class="index_common"
+              :class="[
+                scope.$index + 1 == '1'
+                  ? 'index_one'
+                  : scope.$index + 1 == '2'
+                  ? 'index_two'
+                  : scope.$index + 1 == '3'
+                  ? 'index_three'
+                  : 'index_more',
+              ]"
+            >
+              {{ scope.$index + 1 }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="商品" width="400">
+          <template #default="{ row }">
+            <div style="display: flex">
+              <el-image
+                :src="row.goods_img"
+                style="width: 100px; height: 100px"
+              />
+              <div style="width: 280px; margin-left: 10px">
+                <div
+                  style="
+                    width: 150px;
+                    overflow: hidden;
+                    text-align: left;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                  "
+                >
+                  {{ row.goods_name }}
+                </div>
+                <div style="margin: 15px 0; text-align: left">
+                  {{ row.goods_sn }}
                 </div>
                 <div
-                  v-for="(item, index) in rowDate"
-                  :key="index"
-                  style="display: flex; width: 100%"
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                    margin: 15px 0;
+                  "
                 >
-                  <div style="width: 25%; padding: 10px 0">
-                    {{ item.color }}
-                  </div>
-                  <div style="width: 25%; padding: 10px 0">{{ item.size }}</div>
-                  <div style="width: 25%; padding: 10px 0">
-                    {{ item.order_num }}
-                  </div>
-                  <div style="width: 25%; padding: 10px 0">
-                    {{ item.not_delivery_num }}
-                  </div>
+                  <div style="color: red">￥{{ row.sale_price }}</div>
+                  <div>{{ row.create_time | formatTime }}</div>
                 </div>
               </div>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="排行" type="index" width="60">
-            <template slot-scope="scope">
-              <span
-                class="index_common"
-                :class="[
-                  scope.$index + 1 == '1'
-                    ? 'index_one'
-                    : scope.$index + 1 == '2'
-                    ? 'index_two'
-                    : scope.$index + 1 == '3'
-                    ? 'index_three'
-                    : 'index_more',
-                ]"
-              >
-                {{ scope.$index + 1 }}
-              </span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="商品" width="400">
-            <template #default="{ row }">
-              <div style="display: flex">
-                <el-image
-                  :src="row.goods_img"
-                  style="width: 100px; height: 100px"
-                />
-                <div style="width: 280px; margin-left: 10px">
-                  <div
-                    style="
-                      width: 150px;
-                      overflow: hidden;
-                      text-align: left;
-                      text-overflow: ellipsis;
-                      white-space: nowrap;
-                    "
-                  >
-                    {{ row.goods_name }}
-                  </div>
-                  <div style="margin: 15px 0; text-align: left">
-                    {{ row.goods_sn }}
-                  </div>
-                  <div
-                    style="
-                      display: flex;
-                      justify-content: space-between;
-                      width: 100%;
-                      margin: 15px 0;
-                    "
-                  >
-                    <div style="color: red">￥{{ row.sale_price }}</div>
-                    <div>{{ row.create_time | formatTime }}</div>
-                  </div>
-                </div>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="总订货数量" prop="num" />
-          <el-table-column
-            align="center"
-            label="总欠货数量"
-            prop="not_delivery_num"
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="总订货数量" prop="num" />
+        <el-table-column
+          align="center"
+          label="总欠货数量"
+          prop="not_delivery_num"
+        />
+        <el-table-column align="center" label="欠货率" prop="outage_rate" />
+        <el-table-column align="center" label="库存数" prop="xh_total" />
+        <el-table-column align="center" label="生产中" prop="zsc_total" />
+        <template #empty>
+          <el-image
+            class="vab-data-empty"
+            :src="require('@/assets/empty_images/data_empty.png')"
           />
-          <el-table-column align="center" label="欠货率" prop="outage_rate" />
-          <el-table-column align="center" label="库存数" prop="xh_total" />
-          <el-table-column align="center" label="生产中" prop="zsc_total" />
         </template>
-      </QYList>
+      </el-table>
+      <el-table
+        v-if="radioButton == 2"
+        v-loading="listLoading"
+        border
+        :data="goodsOwedList"
+        style="width: 100%"
+        @expand-change="expandChange"
+      >
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <div style="text-align: center">
+              <div style="display: flex; width: 100%">
+                <div style="width: 33%; padding: 10px 0">款号</div>
+                <div style="width: 33%; padding: 10px 0">订货数量</div>
+                <div style="width: 33%; padding: 10px 0">欠货数量</div>
+              </div>
+              <div
+                v-for="(item, index) in props.row.is_show"
+                :key="index"
+                style="display: flex; width: 100%"
+              >
+                <div style="width: 33%; padding: 10px 0">
+                  {{ item.goods_sn }}
+                </div>
+                <div style="width: 33%; padding: 10px 0">
+                  {{ item.num }}
+                </div>
+                <div style="width: 33%; padding: 10px 0">
+                  {{ item.not_delivery_num }}
+                </div>
+              </div>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="排行" type="index" width="60">
+          <template slot-scope="scope">
+            <span
+              class="index_common"
+              :class="[
+                scope.$index + 1 == '1'
+                  ? 'index_one'
+                  : scope.$index + 1 == '2'
+                  ? 'index_two'
+                  : scope.$index + 1 == '3'
+                  ? 'index_three'
+                  : 'index_more',
+              ]"
+            >
+              {{ scope.$index + 1 }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column label="客户" width="400">
+          <template #default="{ row }">
+            <div style="display: flex">
+              <el-image
+                :src="row.customer_avatar"
+                style="width: 100px; height: 100px"
+              />
+              <div style="width: 280px; margin-left: 10px">
+                <div
+                  style="
+                    width: 150px;
+                    overflow: hidden;
+                    text-align: left;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                  "
+                >
+                  {{ row.customer_name }}
+                </div>
+                <div style="margin: 15px 0; text-align: left">
+                  {{ row.customer_mobile }}
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                    margin: 15px 0;
+                  "
+                >
+                  <div>
+                    <el-tag>{{ row.level_name }}</el-tag>
+                  </div>
+                  <div>{{ row.customer_type }}</div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="总订货数量" prop="num" />
+        <el-table-column label="总欠货数量" prop="not_delivery_num" />
+        <el-table-column label="欠货率" prop="outage_rate" />
+        <template #empty>
+          <el-image
+            class="vab-data-empty"
+            :src="require('@/assets/empty_images/data_empty.png')"
+          />
+        </template>
+      </el-table>
+      <el-pagination
+        background
+        :current-page="page"
+        :page-size="pageSize"
+        :page-sizes="[10, 20, 30, 40, 100]"
+        :total="listTotal"
+        @current-change="changeBtnPage"
+        @size-change="changeBtnPageSize"
+      />
       <QYList
         v-if="radioButton == 2"
         :list="goodsOwedList"
@@ -485,96 +596,9 @@
         :total="listTotal"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
-        @expandChange="expandChange"
+        @expand-change="expandChange"
       >
-        <template #List>
-          <el-table-column type="expand">
-            <template slot-scope="props">
-              <div v-if="props.row.customer_id" style="text-align: center">
-                <div style="display: flex; width: 100%">
-                  <div style="width: 33%; padding: 10px 0">款号</div>
-                  <div style="width: 33%; padding: 10px 0">订货数量</div>
-                  <div style="width: 33%; padding: 10px 0">欠货数量</div>
-                </div>
-                <div
-                  v-for="(item, index) in rowDate"
-                  :key="index"
-                  style="display: flex; width: 100%"
-                >
-                  <div style="width: 33%; padding: 10px 0">
-                    {{ item.goods_sn }}
-                  </div>
-                  <div style="width: 33%; padding: 10px 0">
-                    {{ item.num }}
-                  </div>
-                  <div style="width: 33%; padding: 10px 0">
-                    {{ item.not_delivery_num }}
-                  </div>
-                </div>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="排行" type="index" width="60">
-            <template slot-scope="scope">
-              <span
-                class="index_common"
-                :class="[
-                  scope.$index + 1 == '1'
-                    ? 'index_one'
-                    : scope.$index + 1 == '2'
-                    ? 'index_two'
-                    : scope.$index + 1 == '3'
-                    ? 'index_three'
-                    : 'index_more',
-                ]"
-              >
-                {{ scope.$index + 1 }}
-              </span>
-            </template>
-          </el-table-column>
-          <el-table-column label="客户" width="400">
-            <template #default="{ row }">
-              <div style="display: flex">
-                <el-image
-                  :src="row.customer_avatar"
-                  style="width: 100px; height: 100px"
-                />
-                <div style="width: 280px; margin-left: 10px">
-                  <div
-                    style="
-                      width: 150px;
-                      overflow: hidden;
-                      text-align: left;
-                      text-overflow: ellipsis;
-                      white-space: nowrap;
-                    "
-                  >
-                    {{ row.customer_name }}
-                  </div>
-                  <div style="margin: 15px 0; text-align: left">
-                    {{ row.customer_mobile }}
-                  </div>
-                  <div
-                    style="
-                      display: flex;
-                      justify-content: space-between;
-                      width: 100%;
-                      margin: 15px 0;
-                    "
-                  >
-                    <div>
-                      <el-tag>{{ row.level_name }}</el-tag>
-                    </div>
-                    <div>{{ row.customer_type }}</div>
-                  </div>
-                </div>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column label="总订货数量" prop="num" />
-          <el-table-column label="总欠货数量" prop="not_delivery_num" />
-          <el-table-column label="欠货率" prop="outage_rate" />
-        </template>
+        <template #List></template>
       </QYList>
       <el-dialog
         :before-close="handleClose"
@@ -769,13 +793,15 @@
           const { data } = await this.api.getWarehouseAnalysisRankDetail({
             goods_id: row.goods_id,
           })
-          this.rowDate = data
+          row.is_show = data
+          this.$forceUpdate()
         } else {
           const { data } =
             await this.api.getWarehouseAnalysisRankCustomerDetail({
               customer_id: row.customer_id,
             })
-          this.rowDate = data
+          row.is_show = data
+          this.$forceUpdate()
         }
       },
       // 欠货明细 查询表单 会员等级下拉框
