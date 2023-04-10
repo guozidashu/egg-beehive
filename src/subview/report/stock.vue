@@ -21,21 +21,6 @@
         @submit.native.prevent
       >
         <span style="margin-top: 10px; font-size: 16px">库存统计</span>
-        <!-- <el-form-item label="统计类型:">
-          <el-select
-            v-model="goodsForm.category"
-            size="small"
-            style="width: 150px"
-          >
-            <el-option
-              v-for="(item, index) in selectList.category"
-              :key="index"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-         
-        </el-form-item> -->
         <div>
           <span style="font-size: 12px">更新时间：{{ time }}</span>
           <el-button
@@ -133,7 +118,7 @@
           <el-table-column align="center" label="排行" type="index" width="60">
             <template slot-scope="scope">
               <span
-                v-if="goodsForm1.page == 1"
+                v-if="page == 1"
                 class="index_common"
                 :class="[
                   scope.$index + 1 == '1'
@@ -148,7 +133,7 @@
                 {{ scope.$index + 1 }}
               </span>
               <span v-else class="index_more index_common">
-                {{ 10 * (goodsForm1.page - 1) + scope.$index + 1 }}
+                {{ 10 * (page - 1) + scope.$index + 1 }}
               </span>
             </template>
           </el-table-column>
@@ -352,17 +337,6 @@
             content:
               '刷新时间截止时，当前所有生产中的商品成本总金额，统计方式：当前生产中金额=当前生产中数量×固定成本价，此种方法一般适用于前后进价一样的商品，最为简单直接。',
           },
-          // {
-          //   title: '可售库存成本',
-          //   number: 400,
-          //   num: 34.32,
-          //   type: 2,
-          //   typeSta: false,
-          //   name: 'available_price',
-          //   numType: 1,
-          //   content:
-          //     '刷新时间截止时，当前生产中库存成本金额+当前现货库存成本金额',
-          // },
           {
             title: '总库存成本',
             number: 0,

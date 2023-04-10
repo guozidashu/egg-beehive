@@ -362,52 +362,35 @@
             <el-button size="small" type="primary" @click="handleQuery()">
               查询
             </el-button>
-            <!-- <el-button size="small" type="primary" @click="handleDownload()">
+            <el-button size="small" type="primary" @click="handleDownload()">
               导出
-            </el-button> -->
+            </el-button>
           </el-form-item>
         </el-form-item>
       </el-form>
       <el-table
-        v-if="radioButton == 1"
+        v-show="radioButton == 1"
         v-loading="listLoading"
         border
         :data="goodsOwedList"
         style="width: 100%"
         @expand-change="expandChange"
+        @selection-change="setSelectRows"
       >
         <el-table-column type="expand">
           <template slot-scope="props">
-            <div></div>
-            <div style="text-align: center">
-              <div style="display: flex; width: 100%">
-                <div style="width: 25%; padding: 10px 0">颜色</div>
-                <div style="width: 25%; padding: 10px 0">尺码</div>
-                <div style="width: 25%; padding: 10px 0">订货数量</div>
-                <div style="width: 25%; padding: 10px 0">欠货数量</div>
-              </div>
-              <div
-                v-for="(item, index) in props.row.is_show"
-                :key="index"
-                style="display: flex; width: 100%"
-              >
-                <div style="width: 25%; padding: 10px 0">
-                  {{ item.color }}
-                </div>
-                <div style="width: 25%; padding: 10px 0">{{ item.size }}</div>
-                <div style="width: 25%; padding: 10px 0">
-                  {{ item.order_num }}
-                </div>
-                <div style="width: 25%; padding: 10px 0">
-                  {{ item.not_delivery_num }}
-                </div>
-              </div>
-            </div>
+            <el-table :data="props.row.is_show" style="width: 100%">
+              <el-table-column label="颜色" prop="color" />
+              <el-table-column label="尺码" prop="size" />
+              <el-table-column label="订货数量" prop="order_num" />
+              <el-table-column label="欠货数量" prop="not_delivery_num" />
+            </el-table>
           </template>
         </el-table-column>
         <el-table-column align="center" label="排行" type="index" width="60">
           <template slot-scope="scope">
             <span
+              v-if="page == 1"
               class="index_common"
               :class="[
                 scope.$index + 1 == '1'
@@ -421,15 +404,25 @@
             >
               {{ scope.$index + 1 }}
             </span>
+            <span v-else class="index_more index_common">
+              {{ 10 * (page - 1) + scope.$index + 1 }}
+            </span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="商品" width="400">
           <template #default="{ row }">
             <div style="display: flex">
-              <el-image
-                :src="row.goods_img"
-                style="width: 100px; height: 100px"
-              />
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="row.goods_img"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image
+                  :src="row.goods_img"
+                  style="width: 100px; height: 100px"
+                />
+              </el-tooltip>
               <div style="width: 280px; margin-left: 10px">
                 <div
                   style="
@@ -477,42 +470,16 @@
         </template>
       </el-table>
       <el-table
-        v-if="radioButton == 2"
+        v-show="radioButton == 2"
         v-loading="listLoading"
         border
         :data="goodsOwedList"
         style="width: 100%"
-        @expand-change="expandChange"
       >
-        <el-table-column type="expand">
-          <template slot-scope="props">
-            <div style="text-align: center">
-              <div style="display: flex; width: 100%">
-                <div style="width: 33%; padding: 10px 0">款号</div>
-                <div style="width: 33%; padding: 10px 0">订货数量</div>
-                <div style="width: 33%; padding: 10px 0">欠货数量</div>
-              </div>
-              <div
-                v-for="(item, index) in props.row.is_show"
-                :key="index"
-                style="display: flex; width: 100%"
-              >
-                <div style="width: 33%; padding: 10px 0">
-                  {{ item.goods_sn }}
-                </div>
-                <div style="width: 33%; padding: 10px 0">
-                  {{ item.num }}
-                </div>
-                <div style="width: 33%; padding: 10px 0">
-                  {{ item.not_delivery_num }}
-                </div>
-              </div>
-            </div>
-          </template>
-        </el-table-column>
         <el-table-column align="center" label="排行" type="index" width="60">
           <template slot-scope="scope">
             <span
+              v-if="page == 1"
               class="index_common"
               :class="[
                 scope.$index + 1 == '1'
@@ -526,15 +493,25 @@
             >
               {{ scope.$index + 1 }}
             </span>
+            <span v-else class="index_more index_common">
+              {{ 10 * (page - 1) + scope.$index + 1 }}
+            </span>
           </template>
         </el-table-column>
         <el-table-column label="客户" width="400">
           <template #default="{ row }">
             <div style="display: flex">
-              <el-image
-                :src="row.customer_avatar"
-                style="width: 100px; height: 100px"
-              />
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="row.customer_avatar"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image
+                  :src="row.customer_avatar"
+                  style="width: 100px; height: 100px"
+                />
+              </el-tooltip>
               <div style="width: 280px; margin-left: 10px">
                 <div
                   style="
@@ -567,9 +544,18 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="总订货数量" prop="num" />
-        <el-table-column label="总欠货数量" prop="not_delivery_num" />
-        <el-table-column label="欠货率" prop="outage_rate" />
+        <el-table-column align="center" label="总订货数量" prop="num" />
+        <el-table-column
+          align="center"
+          label="总欠货数量"
+          prop="not_delivery_num"
+        />
+        <el-table-column align="center" label="欠货率" prop="outage_rate" />
+        <el-table-column align="center" fixed="right" label="操作" width="80">
+          <template #default="{ row }">
+            <el-button type="text" @click="handleDetail(row)">详情</el-button>
+          </template>
+        </el-table-column>
         <template #empty>
           <el-image
             class="vab-data-empty"
@@ -580,26 +566,13 @@
       <el-pagination
         background
         :current-page="page"
+        layout="total, sizes, prev, pager,next,jumper"
         :page-size="pageSize"
         :page-sizes="[10, 20, 30, 40, 100]"
         :total="listTotal"
         @current-change="changeBtnPage"
         @size-change="changeBtnPageSize"
       />
-      <QYList
-        v-if="radioButton == 2"
-        :list="goodsOwedList"
-        :list-type="listType"
-        :page-no="page"
-        :page-size="pageSize"
-        :state="listLoading"
-        :total="listTotal"
-        @changePage="changeBtnPage"
-        @changePageSize="changeBtnPageSize"
-        @expand-change="expandChange"
-      >
-        <template #List></template>
-      </QYList>
       <el-dialog
         :before-close="handleClose"
         title="导出"
@@ -624,9 +597,15 @@
   export default {
     data() {
       return {
+        // 选中的行
+        // selectRows: [],
+        // 表格每行数据
         rowDate: null,
+        // 导出类型
         exportType: 1,
+        // 导出弹窗
         dialogVisible: false,
+        // 表格类型切换 1:按款号 2:按客户
         radioButton: '1',
         // 头部卡片 未发货数据
         not_deliver_data: [
@@ -731,8 +710,8 @@
       },
       radioButton: {
         handler: function () {
-          this.form.page = 1
-          this.form.pageSize = 10
+          this.formTemp.page = 1
+          this.formTemp.pageSize = 10
           this.page = 1
           this.pageSize = 10
           this.getGoodsOwedTableList()
@@ -749,9 +728,40 @@
       handleClose() {
         this.dialogVisible = false
       },
-      // 导出
+      // 客户欠货详情跳转跳转到客户详情
+      handleDetail(row) {
+        this.$router.push({
+          path: '/customer/customerManage',
+          query: {
+            id: row.customer_id,
+            type: 'board', // 从首页预警跳转
+          },
+        })
+      },
+      // 表格选中数据
+      setSelectRows(val) {
+        this.selectRows = val
+      },
+      // 导出款号欠货明细
       async handleExport() {
-        this.$message.success('导出成功')
+        const { code, data } =
+          await this.api.getWarehouseAnalysisSnOutStockExport({
+            type: this.exportType, // 导出类型 1=按款号 2=按颜色 3=按尺码
+            goods_sn: this.form.goods_sn, // 商品款号
+            brand_id: this.form.brand_id, // 品牌id
+            year_id: this.form.year_id, // 年份id
+            band_id: this.form.band_id, // 波段id
+            season_id: this.form.season_id, // 季节id
+            category_id: this.form.category_id, // 分类id
+          })
+        if (code == 200) {
+          window.open(data.url)
+          this.$message.success('导出成功')
+          this.dialogVisible = false
+          this.getGoodsOwedTableList()
+        } else {
+          this.$message.error('导出失败')
+        }
       },
       // 欠货明细表格切换页数
       changeBtnPage(data) {
@@ -782,10 +792,31 @@
       handleQuery() {
         this.getGoodsOwedTableList()
       },
-      handleDownload() {
-        console.log('导出')
+      // 导出客户欠货明细
+      async handleDownload() {
         if (this.radioButton == 1) {
           this.dialogVisible = true
+          return
+        }
+        // let stock_id = []
+        // if (this.selectRows.length != 0) {
+        //   this.selectRows.forEach((item) => {
+        //     stock_id.push(item.stock_id)
+        //   })
+        // }
+        const { code, data } =
+          await this.api.getWarehouseAnalysisCustomerOutStockExport({
+            name: this.form.name, // 客户名称
+            level_id: this.form.level_id, // 等级id
+            customer_type: this.form.customer_type, // 客户分类
+          })
+        if (code == 200) {
+          window.open(data.url)
+          this.$message.success('导出成功')
+          this.dialogVisible = false
+          this.getGoodsOwedTableList()
+        } else {
+          this.$message.error('导出失败')
         }
       },
       async expandChange(row) {
@@ -793,13 +824,6 @@
           const { data } = await this.api.getWarehouseAnalysisRankDetail({
             goods_id: row.goods_id,
           })
-          row.is_show = data
-          this.$forceUpdate()
-        } else {
-          const { data } =
-            await this.api.getWarehouseAnalysisRankCustomerDetail({
-              customer_id: row.customer_id,
-            })
           row.is_show = data
           this.$forceUpdate()
         }

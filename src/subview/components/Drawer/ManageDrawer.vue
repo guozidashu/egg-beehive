@@ -365,8 +365,13 @@
       v-if="tabLabel == '订单记录'"
       :list="orderList"
       :list-type="listType"
+      :page-no="page"
+      :page-size="pageSize"
       :state="listLoading"
       style="margin: 20px"
+      :total="total"
+      @changePage="changeBtnPage"
+      @changePageSize="changeBtnPageSize"
     >
       <template #List>
         <el-table-column label="订单编号" prop="sn" show-overflow-tooltip />
@@ -388,8 +393,13 @@
       v-if="tabLabel == '发货记录'"
       :list="orderList"
       :list-type="listType"
+      :page-no="page"
+      :page-size="pageSize"
       :state="listLoading"
       style="margin: 20px"
+      :total="total"
+      @changePage="changeBtnPage"
+      @changePageSize="changeBtnPageSize"
     >
       <template #List>
         <el-table-column label="订单编号" prop="sn" show-overflow-tooltip />
@@ -406,8 +416,13 @@
       v-if="tabLabel == '退货记录'"
       :list="orderList"
       :list-type="listType"
+      :page-no="page"
+      :page-size="pageSize"
       :state="listLoading"
       style="margin: 20px"
+      :total="total"
+      @changePage="changeBtnPage"
+      @changePageSize="changeBtnPageSize"
     >
       <template #List>
         <el-table-column label="订单编号" prop="sn" show-overflow-tooltip />
@@ -424,8 +439,13 @@
       v-if="tabLabel == '收银记录'"
       :list="orderList"
       :list-type="listType"
+      :page-no="page"
+      :page-size="pageSize"
       :state="listLoading"
       style="margin: 20px"
+      :total="total"
+      @changePage="changeBtnPage"
+      @changePageSize="changeBtnPageSize"
     >
       <template #List>
         <el-table-column label="类型" prop="type" width="100" />
@@ -442,8 +462,13 @@
       v-if="tabLabel == '欠货统计'"
       :list="orderList"
       :list-type="listType"
+      :page-no="page"
+      :page-size="pageSize"
       :state="listLoading"
       style="margin: 20px"
+      :total="total"
+      @changePage="changeBtnPage"
+      @changePageSize="changeBtnPageSize"
     >
       <template #List>
         <el-table-column label="商品名称" prop="name" show-overflow-tooltip />
@@ -587,8 +612,11 @@
             { required: true, message: '请选择客户类型', trigger: 'blur' },
           ],
         },
+        page: 1,
+        pageSize: 10,
+        total: 0,
         listLoading: false,
-        listType: 2,
+        listType: 1,
         formDrawer: {
           state: 0,
           state1: 0,
@@ -650,9 +678,27 @@
           if (newVal.drawerType != 3) {
             this.getDetail()
           }
+          // 预警跳转判断
+          if (newVal.pathType == 'board') {
+            this.activeName = '8'
+            this.tabLabel = '欠货统计'
+            this.getInfoList(this.activeName)
+          }
         },
         deep: true,
         immediate: true,
+      },
+      page: {
+        handler: function () {
+          this.getInfoList(this.activeName)
+        },
+        deep: true,
+      },
+      pageSize: {
+        handler: function () {
+          this.getInfoList(this.activeName)
+        },
+        deep: true,
       },
     },
     created() {
@@ -742,17 +788,31 @@
         })
         this.selectData = data
       },
+      changeBtnPage(data) {
+        this.pageState = true
+        this.page = data
+      },
+      changeBtnPageSize(data) {
+        this.pageSize = data
+      },
       async handleClick(tab) {
+        this.page = 1
+        this.pageSize = 10
         this.listLoading = true
         this.tabLabel = tab.label
         if (tab.name == 0) {
           return
         }
+        this.getInfoList(tab.name)
+      },
+      async getInfoList(name) {
         const { data } = await this.api.getCustomerInfoList({
-          type: tab.name, //搜索条件 1订单记录 2入库信息 3退货记录 4付款记录 5对账单记录
-          // id: this.drawerInof.id, //物料采购订单id
+          type: name, //搜索条件 1订单记录 2入库信息 3退货记录 4付款记录 5对账单记录
           id: this.form.id,
+          page: this.page,
+          pageSize: this.pageSize,
         })
+        this.total = data.total
         this.orderList = data.data
         this.listLoading = false
       },

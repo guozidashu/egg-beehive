@@ -151,6 +151,22 @@ export function getInformationJstList(data) {
   })
 }
 // 首页-仓库预警分析
+// 仓库预警分析 - 按款号欠货排行明细导出
+export function getWarehouseAnalysisSnOutStockExport(data) {
+  return request({
+    url: '/warehouseAnalysis/snOutStockExport',
+    method: 'post',
+    data,
+  })
+}
+// 仓库预警分析 - 按客户欠货排行明细导出
+export function getWarehouseAnalysisCustomerOutStockExport(data) {
+  return request({
+    url: '/warehouseAnalysis/customerOutStockExport',
+    method: 'post',
+    data,
+  })
+}
 // 仓库预警分析 - 按客户欠货排行明细子集
 export function getWarehouseAnalysisRankCustomerDetail(data) {
   return request({

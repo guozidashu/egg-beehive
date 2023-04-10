@@ -565,6 +565,7 @@
           path: '/customer/customerManage',
           query: {
             id: row.id,
+            type: 'reportCustomer', // 从客户报表进入
           },
         })
       },

@@ -124,34 +124,84 @@
       >
         <template #List>
           <el-table-column type="selection" />
-          <el-table-column label="ID" prop="id" width="50" />
-          <el-table-column label="客户编码" prop="sn" width="120" />
-          <el-table-column label="客户名称" prop="name" width="150" />
-          <el-table-column label="手机号" prop="mobile" width="120" />
-          <el-table-column label="客户等级" prop="grade_name" width="120" />
-          <el-table-column label="客户分类" prop="type_name" width="120" />
-          <el-table-column label="发货方式" prop="order_belong" width="120">
+          <el-table-column align="center" label="ID" prop="id" width="50" />
+          <el-table-column label="客户信息" width="400">
+            <template #default="{ row }">
+              <div style="display: flex">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.avatar"
+                    style="width: 200px; height: 200px"
+                  />
+                  <el-image
+                    :src="row.avatar"
+                    style="width: 120px; height: 120px"
+                  />
+                </el-tooltip>
+                <div style="width: 280px; margin-left: 10px">
+                  <div
+                    style="
+                      width: 150px;
+                      overflow: hidden;
+                      text-align: left;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                    "
+                  >
+                    {{ row.name }}
+                  </div>
+                  <div style="margin: 10px 0; text-align: left">
+                    {{ row.mobile }}
+                  </div>
+                  <div style="width: 100%; margin: 10px 0">
+                    <el-tag type="success">
+                      {{ row.grade_name }}
+                    </el-tag>
+                    &nbsp; &nbsp;
+                    <el-tag type="warning">{{ row.type_name }}</el-tag>
+                  </div>
+                  <div style="margin: 10px 0 0 0; text-align: left">
+                    {{ row.create_time }}
+                  </div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="发货方式" prop="order_belong">
             <template #default="{ row }">
               <span v-if="row.order_belong == 1">自主发货</span>
               <span v-else>聚水潭发货</span>
             </template>
           </el-table-column>
-          <el-table-column
-            align="right"
-            label="保证金"
-            prop="earnest_money"
-            width="150"
-          >
+          <el-table-column align="center" label="拿货件数" prop="num_total" />
+          <el-table-column align="center" label="拿货金额" prop="final_count">
             <template #default="{ row }">
-              <el-tag v-if="row.earnest_money >= 0">
-                ￥{{ row.earnest_money | moneyFormat }}
-              </el-tag>
-              <el-tag v-else type="danger">
-                -￥{{ row.earnest_money | moneyFormat }}
-              </el-tag>
+              <el-tag>￥{{ row.final_count | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column align="right" label="合同" width="150">
+          <el-table-column
+            align="center"
+            label="累计收银"
+            prop="sum_voucher_money"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.sum_voucher_money | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
+            align="center"
+            label="余额/欠款"
+            prop="delivery_arrears"
+          >
+            <template #default="{ row }">
+              <el-tag v-if="row.balance < 0" type="danger">
+                -￥{{ row.balance | moneyFormat }}
+              </el-tag>
+              <el-tag v-else>￥{{ row.balance | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="合同">
             <template #default="{ row }">
               <el-upload
                 v-if="row.agreement == null"
@@ -189,40 +239,16 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column
-            align="right"
-            label="成交额"
-            prop="final_count"
-            width="150"
-          >
+          <el-table-column align="center" label="保证金" prop="earnest_money">
             <template #default="{ row }">
-              <el-tag>￥{{ row.final_count | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="right"
-            label="累计收银"
-            prop="sum_voucher_money"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-tag>￥{{ row.sum_voucher_money | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="right"
-            label="余额/欠款"
-            prop="delivery_arrears"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-tag v-if="row.balance < 0" type="danger">
-                -￥{{ row.balance | moneyFormat }}
+              <el-tag v-if="row.earnest_money >= 0">
+                ￥{{ row.earnest_money | moneyFormat }}
               </el-tag>
-              <el-tag v-else>￥{{ row.balance | moneyFormat }}</el-tag>
+              <el-tag v-else type="danger">
+                -￥{{ row.earnest_money | moneyFormat }}
+              </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="注册时间" prop="create_time" width="200" />
           <el-table-column
             align="center"
             fixed="right"
@@ -526,12 +552,12 @@
         deep: true,
       },
       // 客户分析跳转
-      '$route.query.id': {
+      '$route.query': {
         handler: async function (newval) {
-          if (newval != undefined) {
-            this.form.id = newval
+          if (newval.id != undefined) {
+            this.form.id = newval.id
             await this.selectData()
-            this.handleDetail(this.list[0], 1)
+            this.handleDetail(this.list[0], 1, newval.type)
           }
         },
         deep: true,
@@ -681,7 +707,7 @@
         this.selectDataList = data
       },
       // 客户详情新增编辑
-      handleDetail(row, type) {
+      handleDetail(row, type, path) {
         if (type === 1) {
           this.title = '客户详情'
         } else if (type === 2) {
@@ -701,6 +727,7 @@
         } else {
           this.drawerInof = JSON.parse(JSON.stringify(row))
           this.drawerInof.drawerType = type
+          this.drawerInof.pathType = path
         }
         this.drawer = true
       },
