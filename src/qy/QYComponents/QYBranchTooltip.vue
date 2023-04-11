@@ -10,21 +10,24 @@
 </template>
 
 <script>
+  // 报表客户分析饼图
   import VabChart from '@/extra/VabChart'
-
   export default {
     components: {
       VabChart,
     },
     props: {
+      // 标题
       title: {
         type: String,
         default: '',
       },
+      // 数据
       list: {
         type: Array,
         default: () => [],
       },
+      // 样式
       styleChart: {
         type: Object,
         default: () => {},

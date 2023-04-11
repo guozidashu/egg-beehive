@@ -2,6 +2,7 @@
   <div style="background-color: #f6f8f9">
     <el-row :gutter="20">
       <el-col :lg="6" :md="8" :sm="24" :xl="4" :xs="24">
+        <!-- 父级标签 -->
         <el-card
           shadow="never"
           style="
@@ -68,6 +69,7 @@
         </el-card>
       </el-col>
       <el-col :lg="18" :md="16" :sm="24" :xl="20" :xs="24">
+        <!-- 子级标签 -->
         <el-card shadow="never" style="border: 0; border-radius: 5px">
           <el-form ref="form" :inline="true" @submit.native.prevent>
             <el-form-item>
@@ -143,6 +145,7 @@
     components: { Edit },
     data() {
       return {
+        // 页数，条数，表单查询条件 ，父级数据，表单组件和列表组件的类型，子级列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -161,6 +164,7 @@
       }
     },
     watch: {
+      // 表单监听
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -185,6 +189,7 @@
       this.fetchData()
     },
     methods: {
+      // 新增编辑弹窗
       async handleEdit(row, type) {
         if (row === 'add') {
           this.$refs['edit'].showEdit(row, type, this.form.group_id)
@@ -212,6 +217,7 @@
           this.fetchData()
         })
       },
+      // 删除
       handleDelete(row, type) {
         if (type === 1) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
@@ -235,14 +241,17 @@
           })
         }
       },
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
+      // 获取标签组列表
       async fetchData() {
         const { data } = await this.api.getTagGroupList()
         data.forEach((item, index) => {
@@ -255,6 +264,7 @@
         this.menuList[0].btnIconStatus = true
         this.fetchList()
       },
+      // 获取标签列表
       async fetchList() {
         this.listLoading = true
         if (this.formTemp == null) {
@@ -267,6 +277,7 @@
         this.total = total
         this.listLoading = false
       },
+      // 切换标签组
       handleGrouPQuery(id, index) {
         this.form.group_id = id
         this.menuList.forEach((item) => {
@@ -276,20 +287,6 @@
       },
       handleOpen() {},
       handleClose() {},
-      mouseOver(index) {
-        if (this.menuList[index].btnIconStatus == false) {
-          this.menuList[index].btnIconStatus = true
-        } else {
-          this.menuList[index].btnIconStatus = false
-        }
-      },
-      mouseLeave(index) {
-        if (this.menuList[index].btnIconStatus == false) {
-          this.menuList[index].btnIconStatus = true
-        } else {
-          this.menuList[index].btnIconStatus = false
-        }
-      },
     },
   }
 </script>

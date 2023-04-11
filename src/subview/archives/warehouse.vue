@@ -8,6 +8,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -46,6 +47,7 @@
           </el-button>
         </el-form-item>
       </el-form>
+      <!-- 列表 -->
       <QYList
         :list="list"
         :list-type="listType"
@@ -105,7 +107,9 @@
         </template>
       </QYList>
     </el-card>
+    <!-- 新增编辑弹窗 -->
     <edit ref="edit" @fetch-data="fetchData" />
+    <!-- 详情抽屉 -->
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
       <Drawer :drawer-id="drawerId" />
     </el-drawer>
@@ -119,8 +123,10 @@
     components: { Edit, Drawer },
     data() {
       return {
+        // 抽屉相关
         drawer: false,
         drawerId: 0,
+        // 页数，条数，表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -138,6 +144,7 @@
       }
     },
     watch: {
+      // 表单监听
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -162,10 +169,12 @@
       this.fetchData()
     },
     methods: {
+      // 详情抽屉打开
       handleDetail(id) {
         this.drawerId = id
         this.drawer = true
       },
+      // 新增编辑弹窗打开
       handleEdit(row) {
         if (row === 'add') {
           this.$refs['edit'].showEdit()
@@ -177,12 +186,15 @@
           }
         }
       },
+      // 查询表单
       handleQuery() {
         this.fetchData()
       },
+      // 重置表单
       resetForm() {
         this.form = this.$options.data().form
       },
+      // 删除操作
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm(
@@ -203,14 +215,17 @@
           )
         }
       },
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
@@ -224,13 +239,3 @@
     },
   }
 </script>
-<style lang="scss" scoped>
-  .link-container {
-    padding: 0 !important;
-    background: white;
-  }
-  .table-pos {
-    position: relative;
-    top: -20px;
-  }
-</style>

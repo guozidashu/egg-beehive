@@ -54,6 +54,7 @@
   </div>
 </template>
 <script>
+  //  省市区josn数据
   import city from '@/assets/assets_josn/address.json'
   export default {
     name: 'City',
@@ -83,16 +84,13 @@
           this.selectProvince = newVal[0]
           this.selectCity = newVal[1]
           this.selectArea = newVal[2]
-          // this.selectProvinceFun(this.selectProvince)
-          // this.selectCityFun(this.selectCity)
-          // this.selectAreaFun(this.selectArea)
         },
         deep: true,
         immediate: true,
       },
     },
     methods: {
-      // 省份 市 县联动
+      // 省份 市 县联动 选择省份
       selectProvinceFun(event) {
         if (event) {
           city.forEach((item) => {
@@ -113,6 +111,7 @@
           this.selectArea
         )
       },
+      // 省份 市 县联动 选择市
       selectCityFun(event) {
         if (event) {
           this.areaList = this.cityList.filter(function (item) {
@@ -129,6 +128,7 @@
           this.selectArea
         )
       },
+      // 省份 市 县联动 选择县
       selectAreaFun() {
         this.$emit(
           'getLawyerListInfo',

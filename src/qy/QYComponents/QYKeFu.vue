@@ -97,6 +97,7 @@
   </div>
 </template>
 <script>
+  // 客服组件现阶段纯静态页面，后期会根据业务需求进行优化
   export default {
     name: 'KeFu',
     data() {

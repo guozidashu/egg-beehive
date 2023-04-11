@@ -10,6 +10,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -58,6 +59,7 @@
         </el-button>
       </div>
     </div>
+    <!-- 列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <QYList
         :list="list"
@@ -136,12 +138,14 @@
 </template>
 
 <script>
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'FinancialCustomerVoucher',
     mixins: [datajosn],
     data() {
       return {
+        // 页数，条数，表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -155,17 +159,13 @@
         },
         formType: 4,
         listType: 1,
-        list: [
-          {
-            id: 1,
-            name: '测试科目',
-          },
-        ],
+        list: [],
         listLoading: false,
         total: 0,
       }
     },
     watch: {
+      // 监听表单数据变化，变化后重新请求数据
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -190,6 +190,7 @@
       this.fetchData()
     },
     methods: {
+      // 导出
       async handleExport() {
         let temp = ['', '']
         if (this.form.date.length != 0) {
@@ -211,20 +212,25 @@
           this.$message.error('导出失败')
         }
       },
+      // 重置
       resetForm() {
         this.form = this.$options.data().form
       },
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 页数改变
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 条数改变
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
+      // 列表数据
       async fetchData() {
         this.listLoading = true
 
@@ -243,4 +249,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

@@ -57,6 +57,7 @@
     components: { Edit },
     data() {
       return {
+        // 表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         form: {
           name: '',
           page: 1,
@@ -70,6 +71,7 @@
       }
     },
     watch: {
+      // 监听表单数据变化，变化后重新获取列表数据
       form: {
         handler: function () {
           this.fetchData()
@@ -81,6 +83,7 @@
       this.fetchData()
     },
     methods: {
+      // 新增编辑表单
       async handleEdit(row) {
         if (row === 'add') {
           this.$refs['edit'].showEdit()
@@ -92,12 +95,15 @@
           }
         }
       },
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 重置
       resetForm() {
         this.form = this.$options.data().form
       },
+      // 删除
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
@@ -110,12 +116,15 @@
           })
         }
       },
+      // 分页
       changeBtnPage(data) {
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         const {

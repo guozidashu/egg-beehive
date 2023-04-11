@@ -82,6 +82,7 @@
 </template>
 
 <script>
+  // 卡片列表数据
   export default {
     props: {
       list: {

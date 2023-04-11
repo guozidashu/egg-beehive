@@ -8,6 +8,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -63,6 +64,7 @@
           </el-button>
         </el-form-item>
       </el-form>
+      <!-- 列表 -->
       <QYList
         :list="list"
         :list-type="listType"
@@ -169,6 +171,7 @@
 
 <script>
   import Edit from '@/subview/components/Edit/BillListEdit'
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'FinancialBillList',
@@ -176,6 +179,7 @@
     mixins: [datajosn],
     data() {
       return {
+        // 下拉框数据,页数，条数，表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         selectList: [],
         formTemp: null,
         page: 1,
@@ -189,17 +193,13 @@
         },
         formType: 4,
         listType: 1,
-        list: [
-          {
-            id: 1,
-            name: '测试科目',
-          },
-        ],
+        list: [],
         listLoading: false,
         total: 0,
       }
     },
     watch: {
+      // 监听表单数据变化
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -225,6 +225,7 @@
       this.fetchData()
     },
     methods: {
+      // 获取下拉框数据
       async getCategory() {
         const { data } = await this.api.getCategoryList({
           page: 1,
@@ -235,7 +236,7 @@
         })
         this.selectList = data
       },
-
+      // 新增编辑弹窗
       async handleEdit(row) {
         if (row === 'add') {
           this.$refs['edit'].showEdit()
@@ -247,7 +248,7 @@
           }
         }
       },
-
+      // 作废
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要作废当前项吗', null, async () => {
@@ -260,21 +261,25 @@
           })
         }
       },
-
+      // 重置
       resetForm() {
         this.form = this.$options.data().form
       },
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
@@ -292,4 +297,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

@@ -8,6 +8,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -38,6 +39,7 @@
           </el-button>
         </el-form-item>
       </el-form>
+      <!-- 列表 -->
       <QYList
         :list="list"
         :list-type="listType"
@@ -57,18 +59,6 @@
             <template #default="{ row }">
               <el-tag v-if="row.status == 1">开启</el-tag>
               <el-tag v-else type="danger">关闭</el-tag>
-              <!-- <el-switch
-                v-model="row.status"
-                active-color="#41B584"
-                active-text="开启"
-                :active-value="1"
-                class="switch"
-                inactive-color="#D2D2D2"
-                inactive-text="关闭"
-                :inactive-value="0"
-                style="margin: 0 10px"
-                @change="turnOnOff(row)"
-              /> -->
             </template>
           </el-table-column>
           <el-table-column label="排序" prop="sort" width="80" />
@@ -94,6 +84,7 @@
         </template>
       </QYList>
     </el-card>
+    <!-- 新增编辑弹窗 -->
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
@@ -104,6 +95,7 @@
     components: { Edit },
     data() {
       return {
+        // 页数，条数，表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -120,6 +112,7 @@
       }
     },
     watch: {
+      // 表单监听
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -144,14 +137,7 @@
       this.fetchData()
     },
     methods: {
-      async turnOnOff(row) {
-        const { code } = await this.api.addYearSave(row)
-        if (code != 200) {
-          return
-        }
-        this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
-        this.fetchData()
-      },
+      // 新增编辑弹窗
       handleEdit(row) {
         if (row === 'add') {
           this.$refs['edit'].showEdit()
@@ -163,12 +149,15 @@
           }
         }
       },
+      // 查询表单
       handleQuery() {
         this.fetchData()
       },
+      // 重置表单
       resetForm() {
         this.form = this.$options.data().form
       },
+      // 删除操作
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm(
@@ -189,14 +178,17 @@
           )
         }
       },
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {

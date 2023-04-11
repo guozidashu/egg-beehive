@@ -10,21 +10,24 @@
 </template>
 
 <script>
+  // 饼图封装
   import VabChart from '@/extra/VabChart'
-
   export default {
     components: {
       VabChart,
     },
     props: {
+      // 标题
       title: {
         type: String,
         default: '',
       },
+      // 数据
       list: {
         type: Array,
         default: () => [],
       },
+      // 样式
       styleChart: {
         type: Object,
         default: () => {},
@@ -73,6 +76,7 @@
       }
     },
     watch: {
+      // 数据实时监听刷新图表
       list: {
         handler: function (newval) {
           this.option.series[0].data = newval

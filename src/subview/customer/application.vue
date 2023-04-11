@@ -8,6 +8,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -50,6 +51,7 @@
         </template>
       </QYForm>
     </div>
+    <!-- 列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <QYList
         :list="list"
@@ -156,11 +158,13 @@
   </div>
 </template>
 <script>
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     mixins: [datajosn],
     data() {
       return {
+        // 页数，条数，表单查询条件 ，下拉框数据，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -179,6 +183,7 @@
       }
     },
     watch: {
+      // 表单监听
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -204,6 +209,7 @@
       this.fetchData()
     },
     methods: {
+      // 审核拒绝操作
       handleEdit(row, type) {
         if (row.id) {
           if (type == 1) {
@@ -249,27 +255,30 @@
           }
         }
       },
+      // 获取下拉框数据
       async getTypeList() {
         const { data } = await this.api.getGradeList()
         this.selectList = data.data
       },
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 重置
       resetForm() {
         this.form = this.$options.data().form
       },
-
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
-
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
-
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {

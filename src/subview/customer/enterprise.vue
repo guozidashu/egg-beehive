@@ -10,6 +10,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件 和操作按钮-->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -50,6 +51,7 @@
         </el-button>
       </div>
     </div>
+    <!-- 列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <QYList
         :list="list"
@@ -158,6 +160,7 @@
         </template>
       </QYList>
     </el-card>
+    <!-- 客户跟进记录和添加客户标签抽屉 -->
     <el-drawer
       :before-close="handleClose"
       size="50%"
@@ -181,13 +184,15 @@
     components: { Drawer },
     data() {
       return {
+        // 下拉框数据
         selectDataList: [],
+        // 抽屉相关数据 1.抽屉标题 2.抽屉是否显示 3.抽屉id 4.抽屉类型 5.抽屉id列表
         title: '',
-        // 抽屉相关数据
         drawer: false,
         drawerId: null,
         drawerType: null,
         drawerIdList: [],
+        // 页数，条数，表单查询条件 ，下拉框数据，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数，列表选中的数据
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -206,6 +211,7 @@
       }
     },
     watch: {
+      // 表单监听
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -267,9 +273,7 @@
           })
           .catch(() => {})
       },
-      async handleEdit(row, type) {
-        this.$refs['edit'].showEdit(row, type)
-      },
+      // 抽屉显示 1.客户跟进记录 2.添加客户标签 3.批量添加客户标签
       handleDetail(row, type) {
         if (type == 3) {
           if (this.tagList.length) {
@@ -291,29 +295,33 @@
           this.drawerType = type
         }
       },
+      // 列表选中
       handleSelectionChange(val) {
         this.tagList = val
       },
+      // 抽屉关闭
       handleClose() {
         this.drawer = false
       },
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 重置
       resetForm() {
         this.form = this.$options.data().form
       },
-
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
-
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
-
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
@@ -327,4 +335,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

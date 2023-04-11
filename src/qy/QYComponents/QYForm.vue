@@ -113,14 +113,12 @@
   export default {
     name: 'QYForm',
     props: {
+      // 表单数据
       form: {
         type: Object,
         default: () => {},
       },
-      typeData: {
-        type: Array,
-        default: () => [],
-      },
+      // 表单类型 1：查询重置合并展开表单 2：新增查询表单 3：查询表单 4：查询重置表单
       formType: {
         type: Number,
         default: 0,
@@ -134,6 +132,7 @@
     },
     created() {},
     methods: {
+      // 表单展开收起
       handleFold() {
         this.fold = !this.fold
         this.handleHeight()
@@ -143,19 +142,22 @@
         if (this.fold) this.height = this.$baseTableHeight(2) - 47
         else this.height = this.$baseTableHeight(3) - 30
       },
+      // 查询
       handleQuery() {
         this.$emit('changeSearch', this.form)
       },
+      // 新增
       handleEdit() {
         this.$emit('addDate', 1)
       },
+      // 删除
       handleDelete() {
         this.$emit('deleteDate', 1)
       },
+      // 重置
       resetForm() {
         this.$emit('resetForm')
       },
     },
   }
 </script>
-<style lang="scss" scoped></style>

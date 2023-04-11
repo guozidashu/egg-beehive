@@ -202,11 +202,17 @@
                     <el-tag v-if="row.type == 0">整手</el-tag>
                     <el-tag v-else-if="row.type == 1">散码</el-tag>
                     &nbsp; &nbsp;
-                    <el-tag type="warning">{{ row.year_name }}</el-tag>
+                    <el-tag v-if="row.year_name != null" type="warning">
+                      {{ row.year_name }}
+                    </el-tag>
                     &nbsp; &nbsp;
-                    <el-tag type="danger">{{ row.season_name }}</el-tag>
+                    <el-tag v-if="row.season_name != null" type="danger">
+                      {{ row.season_name }}
+                    </el-tag>
                     &nbsp; &nbsp;
-                    <el-tag type="success">{{ row.band_name }}</el-tag>
+                    <el-tag v-if="row.band_name != null" type="success">
+                      {{ row.band_name }}
+                    </el-tag>
                   </div>
                 </div>
               </div>

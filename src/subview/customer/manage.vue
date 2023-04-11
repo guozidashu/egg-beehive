@@ -8,6 +8,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -95,6 +96,7 @@
         </template>
       </QYForm>
     </div>
+    <!-- 列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -282,7 +284,7 @@
         </template>
       </QYList>
     </el-card>
-    <edit ref="edit" @fetch-data="fetchData" />
+    <!-- 新增编辑详情抽屉 -->
     <el-drawer
       :before-close="handleClose"
       size="50%"
@@ -292,6 +294,7 @@
     >
       <Drawer :drawer-inof="drawerInof" @fetch-data="fetchData" />
     </el-drawer>
+    <!-- 保证金列表弹窗 -->
     <el-dialog
       :before-close="handleClose1"
       title="客户保证金"
@@ -353,6 +356,7 @@
         </template>
       </QYList>
     </el-dialog>
+    <!-- 新增保证金弹窗 -->
     <el-dialog
       :before-close="handleCloseEdit1"
       title="新增客户保证金"
@@ -431,6 +435,7 @@
         <el-button type="primary" @click="DepositEditSave">确 定</el-button>
       </template>
     </el-dialog>
+    <!--  图片上传 -->
     <vab-upload
       ref="vabUpload"
       :limit="imgNum"
@@ -444,15 +449,18 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  // 获取接口路径配置
   import { baseURL } from '@/config'
-  import Edit from '@/subview/components/Edit/ManageEdit'
   import Drawer from '@/subview/components/Drawer/ManageDrawer'
+  // 上传图片
   import VabUpload from '@/extra/VabUpload'
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    components: { Edit, Drawer, VabUpload },
+    components: { Drawer, VabUpload },
     mixins: [datajosn],
     data() {
+      // 新增保证金金额验证
       const validateUsername = (rule, value, callback) => {
         if (!/^[1-9]\d*(\.\d{1,2})?$/.test(value)) {
           callback(new Error('金额必须是数字且大于0'))
@@ -461,11 +469,11 @@
         }
       }
       return {
+        // 合同上传参数 ，上传客户id ,上传合同请求头
         up_customer_id: null,
         headers: {},
-        // 新增客户保证金相关
-        imgNum: 5, // 上传图片数量
-        // 新增保证金表单
+        // 新增客户保证金相关，上传图片数量，新增保证金表单，新增保证金表单验证，新增保证金弹窗隐藏显示
+        imgNum: 5,
         DepositEditForm: {
           customer_id: null,
           money: null,
@@ -473,7 +481,6 @@
           remark: '',
           imgList: [],
         },
-        // 新增保证金表单验证
         DepositEditRules: {
           money: [
             { required: true, validator: validateUsername, trigger: 'blur' },
@@ -484,17 +491,16 @@
           ],
         },
         dialogVisibleEdit: false,
-        // 客户保证金列表相关
+        // 客户保证金列表相关 保证金列表，保证金列表类型，保证金列表加载，保证金列表弹窗隐藏显示
         depositList: [],
         depositListType: 2,
         depositListLoading: false,
         dialogVisible: false,
-        // 抽屉相关
+        // 抽屉相关 ，标题 ，抽屉隐藏显示，抽屉数据
         title: '',
         drawer: false,
         drawerInof: {},
-        // 表格 表单相关
-        // 下拉框数据
+        // 表格 表单相关 ，下拉框数据，页数，条数，表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         selectDataList: [],
         formTemp: null,
         page: 1,
@@ -517,12 +523,14 @@
         total: 0,
       }
     },
+    // 合同上传获取token
     computed: {
       ...mapGetters({
         token: 'user/token',
       }),
     },
     watch: {
+      // 表单监听
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -578,12 +586,15 @@
       this.fetchData()
     },
     methods: {
+      // 合同上传 上传地址
       getAction() {
         return baseURL + '/common/uploadPic'
       },
+      // 合同上传 查看
       handleViewupload(url) {
         window.open(url)
       },
+      // 合同上传 更新上传客户id
       handleChangeupload(id) {
         this.up_customer_id = id
       },
@@ -731,28 +742,36 @@
         }
         this.drawer = true
       },
+      // 保证金列表弹窗关闭
       handleClose1() {
         this.dialogVisible = false
       },
+      // 保证金新增弹窗关闭
       handleCloseEdit1() {
         this.dialogVisibleEdit = false
       },
+      // 重置
       resetForm() {
         this.form = this.$options.data().form
       },
+      // 新增编辑详情抽屉关闭
       handleClose() {
         this.drawer = false
       },
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 查询表单 折叠
       changeBtnSta(data) {
         this.form.fold = data
       },
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data

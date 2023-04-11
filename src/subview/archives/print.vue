@@ -1,6 +1,7 @@
 <template>
   <div style="background-color: #f6f8f9">
     <div style="padding: 20px; background-color: white; border-radius: 5px">
+      <!-- 打印tab切换以及文本说明 -->
       <el-tabs v-model="activeName">
         <el-tab-pane label="打印吊牌条码" name="打印吊牌条码" />
         <el-tab-pane label="导入打印吊牌条码" name="导入打印吊牌条码" />
@@ -18,6 +19,7 @@
           ②点击导入商品，导入明细进行打印
         </p>
       </div>
+      <!-- 打印吊牌条码 -->
       <div
         v-if="activeName === '打印吊牌条码'"
         style="display: flex; margin-top: 20px"
@@ -209,6 +211,7 @@
           <img id="barcode" />
         </div>
       </div>
+      <!-- 导入打印吊牌条码 -->
       <div v-else style="margin-top: 20px">
         <el-form ref="form" label-position="right" :model="form">
           <el-form-item label="成品采购单：">
@@ -285,50 +288,54 @@
   import JsBarcode from 'jsbarcode' // 商品条码生成插件
   import { mapState, mapActions } from 'vuex'
   import VabPrint from '@/extra/VabPrint'
-  import {
-    getPrintSn,
-    getPrintList,
-    getGoodBarcode,
-    getStockPrint,
-  } from '@/api/basic'
   export default {
     name: 'ArchivesPrint',
     data() {
       return {
-        printer: {}, //打印机信息
-        printerList: [],
-        barcodeSrc: '',
+        // tab切换
         activeName: '打印吊牌条码',
+        // 打印吊牌条码 - 表单
         form: {
-          keywords: '',
-          sizeid: null,
-          colorid: null,
-          printType: 2,
-          printerType: null,
-          printerWidth: '',
-          printerHeight: '',
-          num: 1,
+          keywords: '', // 搜索关键字
+          sizeid: null, // 尺码id
+          colorid: null, // 颜色id
+          printType: 2, // 打印类型
+          printerType: null, // 打印机类型
+          printerWidth: '', // 打印机宽度
+          printerHeight: '', // 打印机高度
+          num: 1, // 打印数量
         },
+        // 打印吊牌条码  - 获取的打印机类型下拉框
+        printerList: [],
+        // 打印吊牌条码 - 商品信息
         goodsInof: null,
+        // 打印吊牌条码  - 尺码
         sizeNanme: '',
+        // 打印吊牌条码  - 颜色
         colorNanme: '',
-        form1: { order_sn: '', page: 1, pageSize: 20 },
-
+        //  打印吊牌条码  - 商品编码下拉框
         CommoditySn: [],
+        //  打印吊牌条码  - 尺码列表
         colorList: [],
+        //  打印吊牌条码  - 颜色列表
         sizeList: [],
-
+        // 导入打印吊牌条码 - 表单
+        form1: { order_sn: '', page: 1, pageSize: 20 },
+        // 导入打印吊牌条码 - 选中的商品列表
         selectRows: [],
+        // 导入打印吊牌条码 - 列表组件类型，列表，列表加载状态，总条数
         listType: 1,
         list: [],
         listLoading: false,
         total: 0,
       }
     },
+    // 浏览器打印参数缓存获取
     computed: mapState({
       userInof: (state) => state.user,
     }),
     watch: {
+      // 浏览器打印参数缓存获取后给表单赋值
       userInof: {
         handler: function (val) {
           this.form.printerType = val.printer.printerType
@@ -338,12 +345,14 @@
         deep: true,
         immediate: true,
       },
+      // 监听商品编码下拉框
       'form.sn': {
         handler: function () {
           this.handlePrintList()
         },
         deep: true,
       },
+      // 监听打印吊牌条码表单
       form: {
         handler: function (newvlaue) {
           if (
@@ -373,6 +382,7 @@
         },
         deep: true,
       },
+      // 监听打印吊牌条码商品信息
       goodsInof: {
         handler: function (newvlaue) {
           if (this.form.printType == 2 && newvlaue != null) {
@@ -381,6 +391,7 @@
         },
         deep: true,
       },
+      // 监听导入打印吊牌条码表单
       form1: {
         handler: function () {
           this.handleStockPrint()
@@ -400,22 +411,14 @@
         }
         this.printerList = Name
         console.log('获取到可用的打印机及其id', Name)
-        // let i = 0
-        // 循环执行btnClickPrint 间隔1秒 批量
-        // const int = setInterval(() => {
-        //   i = i + 1
-        //   this.btnClickPrint()
-        //   // 当i=3时，停止循环
-        //   if (i === 3) {
-        //     clearInterval(int)
-        //   }
-        // }, 1000)
       }, 2000)
     },
     methods: {
+      // 设置打印机缓存
       ...mapActions({
         setPrinter: 'user/setPrinter',
       }),
+      // 打印吊牌条码 - 商品编码生成
       setJsBarcode() {
         JsBarcode('#barcode', this.goodsInof.barcode, {
           format: 'CODE128',
@@ -463,6 +466,7 @@
           LODOP.PRINT() // 打印
         }
       },
+      // 打印吊牌条码 - 关键字搜索 获取渲染 CommoditySn编码列表
       async handlePrintSn() {
         if (this.form.keywords == '') {
           this.$message.error('请输入商品编码')
@@ -473,6 +477,7 @@
         })
         this.CommoditySn = data
       },
+      // 打印吊牌条码 - 根据编码获取颜色尺码列表
       async handlePrintList() {
         this.form.sizeid = null
         this.form.colorid = null
@@ -483,6 +488,7 @@
         this.colorList = data.color
         this.sizeList = data.size
       },
+      // 打印吊牌条码 - 根据编码颜色尺码获取商品信息
       async handleGoodBarcode() {
         const { data } = await this.api.getGoodBarcode({
           sn: this.form.sn, //商品编码
@@ -491,6 +497,7 @@
         })
         this.goodsInof = data
       },
+      // 导入打印吊牌条码 - 根据订单号获取列表
       async handleStockPrint() {
         if (this.form1.order_sn == '') {
           this.$message.error('请输入订单号')
@@ -502,6 +509,7 @@
         this.total = data.total
         this.listLoading = false
       },
+      // 导入打印吊牌条码 - 批量打印
       ...mapActions({
         openSideBar: 'settings/openSideBar',
         foldSideBar: 'settings/foldSideBar',
@@ -517,14 +525,15 @@
         await this.openSideBar()
       },
 
-      changeBtnPage(data) {
-        this.form1.page = data
-      },
-
+      // 列表选中数据
       selectBtnRows(data) {
         this.selectRows = data
       },
-
+      // 分页
+      changeBtnPage(data) {
+        this.form1.page = data
+      },
+      // 分页条数
       changeBtnPageSize(data) {
         this.form1.pageSize = data
       },

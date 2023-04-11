@@ -2,6 +2,7 @@
   <div style="background-color: #f6f8f9">
     <el-row :gutter="20">
       <el-col :lg="6" :md="8" :sm="24" :xl="4" :xs="24">
+        <!-- 父级分类 -->
         <el-card
           shadow="never"
           style="
@@ -64,6 +65,7 @@
         </el-card>
       </el-col>
       <el-col :lg="18" :md="16" :sm="24" :xl="20" :xs="24">
+        <!-- 子级分类 -->
         <el-card shadow="never" style="border: 0; border-radius: 5px">
           <el-form ref="form" :inline="true" @submit.native.prevent>
             <el-form-item>
@@ -155,6 +157,7 @@
     components: { Edit },
     data() {
       return {
+        // 页数，条数，表单查询条件 ，父级列表，表单组件和列表组件的类型，子级列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -173,6 +176,7 @@
       }
     },
     watch: {
+      // 监听表单变化，变化时重新请求数据
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -197,6 +201,7 @@
       this.fetchData(1)
     },
     methods: {
+      // 新增编辑弹窗
       async handleEdit(row, type) {
         if (row === 'add') {
           this.$refs['edit'].showEdit(row, type)
@@ -208,9 +213,11 @@
           }
         }
       },
+      // 查询
       handleQuery() {
         this.fetchData(2)
       },
+      // 删除
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
@@ -223,14 +230,17 @@
           })
         }
       },
+      // 页数改变
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 条数改变
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
+      // 获取数据
       async fetchData(type) {
         if (type == 1) {
           if (this.formTemp == null) {
@@ -262,6 +272,7 @@
           this.total = data.total
         }
       },
+      // 点击父级
       handleGrouPQuery(id, index) {
         this.form.id = id
         this.menuList.forEach((item) => {
@@ -271,21 +282,6 @@
       },
       handleOpen() {},
       handleClose() {},
-      mouseOver(index) {
-        if (this.menuList[index].btnIconStatus == false) {
-          this.menuList[index].btnIconStatus = true
-        } else {
-          this.menuList[index].btnIconStatus = false
-        }
-      },
-      mouseLeave(index) {
-        if (this.menuList[index].btnIconStatus == false) {
-          this.menuList[index].btnIconStatus = true
-        } else {
-          this.menuList[index].btnIconStatus = false
-        }
-      },
     },
   }
 </script>
-<style lang="scss" scoped></style>

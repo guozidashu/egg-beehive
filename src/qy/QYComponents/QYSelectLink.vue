@@ -315,6 +315,7 @@
 </template>
 
 <script>
+  // 商城页面设计 选择链接组件 现阶段完全根据id定死页面
   export default {
     data() {
       return {

@@ -11,6 +11,7 @@
             border-radius: 5px;
           "
         >
+          <!-- 颜色父级 -->
           <el-menu
             class="el-menu-vertical-demo"
             default-active="0"
@@ -96,6 +97,7 @@
               </el-input>
             </el-form-item>
           </el-form>
+          <!-- 颜色子级 -->
           <QYList
             :list="list"
             :list-type="listType"
@@ -148,6 +150,7 @@
         </el-card>
       </el-col>
     </el-row>
+    <!-- 新增编辑弹窗 -->
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
@@ -157,6 +160,7 @@
     components: { Edit },
     data() {
       return {
+        // 页数，条数，表单查询条件 ，父级列表数据，表单组件和列表组件的类型，子级列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -175,6 +179,7 @@
       }
     },
     watch: {
+      // 表单监听
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -199,14 +204,7 @@
       this.fetchData()
     },
     methods: {
-      async turnOnOff(row) {
-        const { code } = await this.api.addColorSave(row)
-        if (code != 200) {
-          return
-        }
-        this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
-        this.fetchData()
-      },
+      // 父级子级新增编辑弹窗
       async handleEdit(row, type) {
         if (row === 'add') {
           this.$refs['edit'].showEdit(row, type, this.menuList)
@@ -218,9 +216,11 @@
           }
         }
       },
+      // 表单查询
       handleQuery() {
         this.fetchData()
       },
+      // 父级子级删除操作
       handleDelete(row, type) {
         if (row.id && type === 2) {
           this.$baseConfirm(
@@ -258,14 +258,17 @@
           )
         }
       },
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
+      // 获取父级列表
       async fetchData() {
         const { data } = await this.api.getColorGroupList(this.form)
         let list = [
@@ -281,6 +284,7 @@
         this.menuList = list
         this.fetchList()
       },
+      // 获取子级列表
       async fetchList() {
         this.listLoading = true
         if (this.formTemp == null) {
@@ -293,6 +297,7 @@
         this.total = total
         this.listLoading = false
       },
+      // 父级点击事件
       handleGrouPQuery(id, index) {
         this.form.pid = id
         this.menuList.forEach((item) => {
@@ -302,20 +307,6 @@
       },
       handleOpen() {},
       handleClose() {},
-      mouseOver(index) {
-        if (this.menuList[index].btnIconStatus == false) {
-          this.menuList[index].btnIconStatus = true
-        } else {
-          this.menuList[index].btnIconStatus = false
-        }
-      },
-      mouseLeave(index) {
-        if (this.menuList[index].btnIconStatus == false) {
-          this.menuList[index].btnIconStatus = true
-        } else {
-          this.menuList[index].btnIconStatus = false
-        }
-      },
     },
   }
 </script>

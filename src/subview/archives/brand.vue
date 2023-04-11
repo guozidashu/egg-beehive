@@ -8,6 +8,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -38,6 +39,7 @@
           </el-button>
         </el-form-item>
       </el-form>
+      <!-- 列表 -->
       <QYList
         :list="list"
         :list-type="listType"
@@ -85,6 +87,7 @@
         </template>
       </QYList>
     </el-card>
+    <!-- 新增编辑弹窗 -->
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
@@ -94,6 +97,7 @@
     components: { Edit },
     data() {
       return {
+        // 表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         form: {
           name: '',
           page: 1,
@@ -107,6 +111,7 @@
       }
     },
     watch: {
+      // 表单监听
       form: {
         handler: function () {
           this.fetchData()
@@ -118,6 +123,7 @@
       this.fetchData()
     },
     methods: {
+      // 新增编辑弹窗
       async handleEdit(row) {
         if (row === 'add') {
           this.$refs['edit'].showEdit()
@@ -129,20 +135,15 @@
           }
         }
       },
+      // 查询表单
       handleQuery() {
         this.fetchData()
       },
+      // 重置表单
       resetForm() {
         this.form = this.$options.data().form
       },
-      async turnOnOff(row) {
-        const { code } = await this.api.addBrandSave(row)
-        if (code != 200) {
-          return
-        }
-        this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
-        this.fetchData()
-      },
+      // 删除操作
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm(
@@ -163,12 +164,15 @@
           )
         }
       },
+      // 分页
       changeBtnPage(data) {
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         const { data } = await this.api.getBrandList(this.form)

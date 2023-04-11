@@ -116,7 +116,7 @@
       </template>
     </el-table>
     <el-pagination
-      v-if="listType === 1 || listType === 3 || listType === 8"
+      v-if="listType === 1 || listType === 8"
       background
       :current-page="pageNo"
       :layout="layout"
@@ -133,34 +133,43 @@
   export default {
     name: 'ComponentsList',
     props: {
+      // 数据
       list: {
         type: Array,
         default: () => [],
       },
+      // 加载状态
       state: {
         type: Boolean,
         default: true,
       },
+      // 总条数
       total: {
         type: Number,
         default: 0,
       },
+      // 列表类型
+      // 1.选中分页列表 2.选中列表  4.固定高度选中列表 5.自定义高度选中列表 6.树形（category_id）选中列表 7.树形（id）选中列表 8.展开行选中分页列表
       listType: {
         type: Number,
         default: 0,
       },
+      // 选中行
       tableRowselect: {
         type: String,
         default: '',
       },
+      // 列表高度
       listHeight: {
         type: Number,
         default: 0,
       },
+      // 当前页
       pageNo: {
         type: Number,
         default: 1,
       },
+      // 每页条数
       pageSize: {
         type: Number,
         default: 10,
@@ -173,15 +182,19 @@
     },
     created() {},
     methods: {
+      // 分页
       handleSizeChange(val) {
         this.$emit('changePageSize', val)
       },
+      // 分页条数
       handleCurrentChange(val) {
         this.$emit('changePage', val)
       },
+      // 选中行
       setSelectRows(val) {
         this.$emit('selectRows', val)
       },
+      // 展开行
       expandChange(row) {
         this.$emit('expandChange', row)
       },

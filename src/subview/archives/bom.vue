@@ -8,6 +8,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -55,6 +56,7 @@
           </el-button>
         </el-form-item>
       </el-form>
+      <!-- 列表 -->
       <QYList
         :list="list"
         :list-type="listType"
@@ -129,6 +131,7 @@
         </template>
       </QYList>
     </el-card>
+    <!-- 新增编辑详情抽屉 -->
     <el-drawer
       :before-close="handleClose"
       size="50%"
@@ -150,6 +153,7 @@
         title: '',
         drawer: false,
         drawerInof: {},
+        // 页数，条数，表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -170,6 +174,7 @@
       }
     },
     watch: {
+      // 表单监听
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -195,6 +200,7 @@
       this.getSelectData()
     },
     methods: {
+      // 详情，编辑，添加 抽屉打开赋值和判断
       async handleDetail(row, type) {
         if (type === 1) {
           this.title = '物料详情'
@@ -228,16 +234,20 @@
         }
         this.drawer = true
       },
+      // 抽屉关闭
       handleClose() {
         this.drawerInof = {}
         this.drawer = false
       },
+      // 表单查询
       handleQuery() {
         this.fetchData()
       },
+      // 重置表单
       resetForm() {
         this.form = this.$options.data().form
       },
+      // 删除操作
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm(
@@ -260,15 +270,17 @@
           )
         }
       },
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
-
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
@@ -279,6 +291,7 @@
         this.total = data.list.total
         this.listLoading = false
       },
+      // 获取下拉框数据
       async getSelectData() {
         const { data } = await this.api.getCommonAllList({
           type: 'material_category',
