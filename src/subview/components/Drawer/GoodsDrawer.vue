@@ -101,7 +101,7 @@
             },
           ],
           shoptitle: [
-            { required: true, message: '请输入商品标题', trigger: 'blur' },
+            { required: true, message: '请输入商城标题', trigger: 'blur' },
             {
               min: 1,
               max: 20,
@@ -130,9 +130,9 @@
           purchase_price: [
             { required: true, message: '请输入采购价', trigger: 'blur' },
           ],
-          manage_price: [
-            { required: true, message: '请输入管理费', trigger: 'blur' },
-          ],
+          // manage_price: [
+          //   { required: true, message: '请输入管理费', trigger: 'blur' },
+          // ],
           cost_price: [
             { required: true, message: '请输入成本价', trigger: 'blur' },
           ],
@@ -375,6 +375,7 @@
       // tab 切换
       async handleClick(tab) {
         this.tabindex = tab.name
+        this.activeName = tab.name
         this.listLoading = true
         if (tab.name == 0) {
           return

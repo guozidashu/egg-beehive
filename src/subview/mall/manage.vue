@@ -71,6 +71,12 @@
               />
             </el-select>
           </el-form-item>
+          <el-form-item label="预售状态:">
+            <el-select v-model="form.presell">
+              <el-option label="未预售" value="0" />
+              <el-option label="预售中" value="1" />
+            </el-select>
+          </el-form-item>
           <el-form-item label="商品搜索:">
             <el-input
               v-model="form.name"
@@ -134,7 +140,6 @@
       >
         <template #List>
           <el-table-column type="selection" />
-          <el-table-column align="center" label="商品Id" prop="id" width="80" />
           <el-table-column label="商品信息" width="400">
             <template #default="{ row }">
               <div style="display: flex">
@@ -168,8 +173,9 @@
                     {{ row.name }}
                   </div>
                   <div style="display: flex; width: 100%; margin: 15px 0 0 0">
-                    <el-tag v-if="row.type == 0">整手</el-tag>
-                    <el-tag v-else-if="row.type == 1">散码</el-tag>
+                    <el-tag v-if="row.cate_name != null">
+                      {{ row.cate_name }}
+                    </el-tag>
                     &nbsp; &nbsp;
                     <el-tag v-if="row.year_name != null" type="warning">
                       {{ row.year_name }}
@@ -205,6 +211,30 @@
               <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
+          <el-table-column align="center" label="预售状态" prop="status">
+            <template #default="{ row }">
+              <div
+                v-if="row.goods_persell.length == 0"
+                style="margin-bottom: 10px"
+              >
+                <el-tag>没有设置预售</el-tag>
+              </div>
+              <div v-else style="margin-bottom: 10px">
+                <el-switch
+                  v-model="row.goods_persell.status"
+                  active-color="#41B584"
+                  active-text="开启"
+                  :active-value="1"
+                  class="switch"
+                  inactive-color="#D2D2D2"
+                  inactive-text="关闭"
+                  :inactive-value="0"
+                  style="margin: 0 10px; text-align: left"
+                  @change="turnOnOff(row)"
+                />
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column align="center" label="状态" prop="status">
             <template #default="{ row }">
               <div v-if="row.is_shop == 1" style="margin-bottom: 10px">
@@ -219,7 +249,7 @@
             align="center"
             fixed="right"
             label="操作"
-            width="150"
+            width="100"
           >
             <template #default="{ row }">
               <el-button
@@ -229,32 +259,59 @@
               >
                 查看
               </el-button>
-              <el-button
-                v-if="row.is_shop == 1"
-                v-has-permi="['btn:MallManage:shelves']"
-                type="text"
-                @click="handleEdit(3, row)"
-              >
-                下架商品
-              </el-button>
-              <el-button
-                v-else
-                v-has-permi="['btn:MallManage:upshelves']"
-                type="text"
-                @click="handleEdit(4, row)"
-              >
-                上架商品
-              </el-button>
-              <el-button
-                v-has-permi="['btn:MallManage:upload']"
-                type="text"
-                @click="handleMaterial(row)"
-              >
-                素材上传
-              </el-button>
-              <el-button type="text" @click="handleCommodityDetails(row)">
-                商品详情
-              </el-button>
+              &nbsp;
+              <el-dropdown>
+                <el-button class="el-dropdown-link" type="text">
+                  <span>更多</span>
+                  <vab-icon
+                    class="vab-dropdown-active"
+                    icon="arrow-up-s-line"
+                  />
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item>
+                    <el-button
+                      v-if="row.is_shop == 1"
+                      v-has-permi="['btn:MallManage:shelves']"
+                      type="text"
+                      @click="handleEdit(3, row)"
+                    >
+                      下架商品
+                    </el-button>
+                    <el-button
+                      v-else
+                      v-has-permi="['btn:MallManage:upshelves']"
+                      type="text"
+                      @click="handleEdit(4, row)"
+                    >
+                      上架商品
+                    </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button
+                      v-has-permi="['btn:MallManage:upload']"
+                      type="text"
+                      @click="handleMaterial(row)"
+                    >
+                      素材上传
+                    </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button type="text" @click="handleCommodityDetails(row)">
+                      商品详情
+                    </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button
+                      v-has-permi="['btn:MallManage:presell']"
+                      type="text"
+                      @click="handlePresell(row)"
+                    >
+                      设置预售
+                    </el-button>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </template>
           </el-table-column>
         </template>
@@ -426,6 +483,7 @@
       url="/upload"
       @submitUpload="getSon2"
     />
+    <edit ref="edit" :drawer-sta="drawerSta" @fetch-data="fetchData" />
   </div>
 </template>
 
@@ -434,9 +492,10 @@
   import VabUpload from '@/extra/VabUpload'
   import VabQuill from '@/extra/VabQuill'
   import publicjosn from '@/assets/assets_josn/publicjosn'
+  import Edit from '@/subview/components/Edit/PresellEdit'
   export default {
     name: 'GoodsManage',
-    components: { Drawer, VabUpload, VabQuill },
+    components: { Drawer, VabUpload, VabQuill, Edit },
     mixins: [publicjosn],
     data() {
       return {
@@ -517,6 +576,7 @@
           band: '', //波段
           name: '', //商品名称
           status: 1, //0停售 1在售
+          presell: '',
         },
         listType: 1,
         formType: 4,
@@ -525,6 +585,8 @@
         selectRowsId: [],
         listLoading: false,
         total: 0,
+        // 预售 弹窗
+        drawerSta: false,
       }
     },
     watch: {
@@ -560,6 +622,26 @@
       this.fetchData()
     },
     methods: {
+      // 预售状态修改
+      async turnOnOff(row) {
+        const { code } = await this.api.changePresellStatus({
+          goods_id: row.id,
+        })
+        if (code != 200) {
+          return
+        }
+        this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
+        this.fetchData()
+      },
+      // 预售设置弹窗
+      handlePresell(row) {
+        if (row.goods_persell.length == 0) {
+          this.drawerSta = false
+        } else {
+          this.drawerSta = true
+        }
+        this.$refs['edit'].showEdit(row)
+      },
       async handleMaterialSub() {
         const { code } = await this.api.editSourceMaterialSave(this.formDialog)
         if (code == 200) {
@@ -705,6 +787,7 @@
           name: this.form.name, //商品名称
           shop_type: this.form.shop_type, // 列表类型 0下架 1上架 2售空 全部
           status: this.form.status, //0停售 1在售
+          presell: this.form.presell,
         })
         this.tatleData = data
       },

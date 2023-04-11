@@ -145,8 +145,12 @@
       }
     },
     watch: {
-      activeName(val) {
-        this.activeNameTemp = val
+      activeName: {
+        handler: function (val) {
+          this.activeNameTemp = val
+        },
+        deep: true,
+        immediate: true,
       },
     },
     methods: {

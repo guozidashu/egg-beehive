@@ -79,12 +79,6 @@
               <el-option label="推荐中" value="1" />
             </el-select>
           </el-form-item>
-          <el-form-item label="预售状态:">
-            <el-select v-model="form.presell">
-              <el-option label="未预售" value="0" />
-              <el-option label="预售中" value="1" />
-            </el-select>
-          </el-form-item>
           <el-form-item label="尺码类型:">
             <el-select v-model="form.type">
               <el-option label="整手" value="0" />
@@ -169,7 +163,16 @@
       >
         <template #List>
           <el-table-column type="selection" />
-          <el-table-column align="center" label="商品Id" prop="id" width="80" />
+          <el-table-column align="center" label="类型" width="80">
+            <template #default="{ row }">
+              <el-tag v-if="row.type == 0" effect="dark" type="success">
+                整手
+              </el-tag>
+              <el-tag v-else-if="row.type == 1" effect="dark" type="danger">
+                散码
+              </el-tag>
+            </template>
+          </el-table-column>
           <el-table-column label="商品信息" width="400">
             <template #default="{ row }">
               <div style="display: flex">
@@ -185,7 +188,26 @@
                   />
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
-                  <div style="display: flex; justify-content: space-between">
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+
+                      text-align: left;
+                    "
+                  >
+                    <div style="font-size: 16px; font-weight: 600">
+                      {{ row.sn }}
+                    </div>
+                    <div>{{ row.upper_time | formatTime }}</div>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 15px 0;
+                    "
+                  >
                     <div
                       style="
                         width: 150px;
@@ -195,16 +217,15 @@
                         white-space: nowrap;
                       "
                     >
-                      {{ row.sn }} &nbsp; &nbsp;
+                      {{ row.name }}
                     </div>
                     <el-tag>￥{{ row.price | moneyFormat }}</el-tag>
                   </div>
-                  <div style="margin: 15px 0; text-align: left">
-                    {{ row.name }}
-                  </div>
+
                   <div style="display: flex; width: 100%; margin: 15px 0 0 0">
-                    <el-tag v-if="row.type == 0">整手</el-tag>
-                    <el-tag v-else-if="row.type == 1">散码</el-tag>
+                    <el-tag v-if="row.cate_name != null">
+                      {{ row.cate_name }}
+                    </el-tag>
                     &nbsp; &nbsp;
                     <el-tag v-if="row.year_name != null" type="warning">
                       {{ row.year_name }}
@@ -223,7 +244,7 @@
             </template>
           </el-table-column>
           <el-table-column align="center" label="销量" prop="xl_num" />
-          <el-table-column align="center" label="库存" prop="xh_num" />
+          <el-table-column align="center" label="自有仓" prop="xh_num" />
           <el-table-column
             align="center"
             label="聚水潭可用库存"
@@ -234,35 +255,8 @@
             label="聚水潭占用库存"
             prop="jst_occupy_num"
           />
-          <el-table-column align="center" label="吊牌价" prop="sale_price">
-            <template #default="{ row }">
-              <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="预售状态" prop="status">
-            <template #default="{ row }">
-              <div
-                v-if="row.goods_persell.length == 0"
-                style="margin-bottom: 10px"
-              >
-                <el-tag>没有设置预售</el-tag>
-              </div>
-              <div v-else style="margin-bottom: 10px">
-                <el-switch
-                  v-model="row.goods_persell.status"
-                  active-color="#41B584"
-                  active-text="开启"
-                  :active-value="1"
-                  class="switch"
-                  inactive-color="#D2D2D2"
-                  inactive-text="关闭"
-                  :inactive-value="0"
-                  style="margin: 0 10px; text-align: left"
-                  @change="turnOnOff(row)"
-                />
-              </div>
-            </template>
-          </el-table-column>
+          <el-table-column align="center" label="生产中" prop="zsc_num" />
+
           <el-table-column align="center" label="状态" prop="status">
             <template #default="{ row }">
               <div v-if="row.status == 1" style="margin-bottom: 10px">
@@ -304,42 +298,55 @@
               >
                 编辑
               </el-button>
-              <el-button
-                v-if="row.status == 2 || row.status == 3"
-                type="text"
-                @click="handleEdit(4, row)"
-              >
-                在售
-              </el-button>
-              <el-button
-                v-if="row.status == 1"
-                type="text"
-                @click="handleEdit(3, row)"
-              >
-                停售
-              </el-button>
-              <el-button
-                v-if="row.recommend == 1"
-                type="text"
-                @click="handleEdit(5, row)"
-              >
-                取消推荐
-              </el-button>
-              <el-button
-                v-if="row.recommend == 0"
-                type="text"
-                @click="handleEdit(6, row)"
-              >
-                设置推荐
-              </el-button>
-              <el-button
-                v-has-permi="['btn:GoodsManage:presell']"
-                type="text"
-                @click="handlePresell(row)"
-              >
-                设置预售
-              </el-button>
-              <el-button type="text" @click="addColor(row)">添加颜色</el-button>
+              &nbsp;
+              <el-dropdown>
+                <el-button class="el-dropdown-link" type="text">
+                  <span>更多</span>
+                  <vab-icon
+                    class="vab-dropdown-active"
+                    icon="arrow-up-s-line"
+                  />
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item>
+                    <el-button
+                      v-if="row.status == 2 || row.status == 3"
+                      type="text"
+                      @click="handleEdit(4, row)"
+                    >
+                      在售
+                    </el-button>
+                    <el-button
+                      v-if="row.status == 1"
+                      type="text"
+                      @click="handleEdit(3, row)"
+                    >
+                      停售
+                    </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button type="text" @click="addColor(row)">
+                      添加颜色
+                    </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button
+                      v-if="row.recommend == 1"
+                      type="text"
+                      @click="handleEdit(5, row)"
+                    >
+                      取消推荐
+                    </el-button>
+                    <el-button
+                      v-if="row.recommend == 0"
+                      type="text"
+                      @click="handleEdit(6, row)"
+                    >
+                      设置推荐
+                    </el-button>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </template>
           </el-table-column>
         </template>
@@ -360,7 +367,7 @@
         @handle-close="handleClose"
       />
     </el-drawer>
-    <edit ref="edit" :drawer-sta="drawerSta" @fetch-data="fetchData" />
+
     <!-- 添加颜色弹窗 -->
     <ColorEdit
       ref="ColorEdit"
@@ -372,16 +379,14 @@
 
 <script>
   import Drawer from '@/subview/components/Drawer/GoodsDrawer'
-  import Edit from '@/subview/components/Edit/PresellEdit'
   import ColorEdit from '@/subview/components/Edit/AddColorEdit'
   export default {
-    components: { Drawer, Edit, ColorEdit },
+    components: { Drawer, ColorEdit },
     data() {
       return {
         // 添加颜色 弹窗
         drawerColor: false,
-        // 预售 弹窗
-        drawerSta: false,
+
         // 抽屉相关 标题，是否显示，数据
         title: '',
         drawer: false,
@@ -406,7 +411,7 @@
         form: {
           page: 1,
           pageSize: 10,
-          list_type: 0, // 列表类型 0=全部 1=仓库中 2=已售完 3=库存预警 4=待确认 5=自营商城 6=第三方平台
+          list_type: '0', // 列表类型 0=全部 1=仓库中 2=已售完 3=库存预警 4=待确认 5=自营商城 6=第三方平台
           category: '',
           brand: '',
           year: '',
@@ -415,8 +420,7 @@
           band: '',
           name: '',
           recommend: '',
-          presell: '',
-          status: '', //状态 1 在售 2 售罄 3 待上市
+          status: '1', //状态 1 在售 2 售罄 3 待上市
         },
         listType: 1,
         formType: 4,
@@ -450,32 +454,15 @@
     },
     created() {
       this.getGoodsTypeList()
+      this.fetchData()
+      this.getTatolData()
     },
     methods: {
       // 添加颜色弹窗
       addColor(row) {
         this.$refs['ColorEdit'].showEdit(row)
       },
-      // 预售状态修改
-      async turnOnOff(row) {
-        const { code } = await this.api.changePresellStatus({
-          goods_id: row.id,
-        })
-        if (code != 200) {
-          return
-        }
-        this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
-        this.fetchData()
-      },
-      // 预售设置弹窗
-      handlePresell(row) {
-        if (row.goods_persell.length == 0) {
-          this.drawerSta = false
-        } else {
-          this.drawerSta = true
-        }
-        this.$refs['edit'].showEdit(row)
-      },
+
       // 导出商品条形码
       async handleExportBarcode() {
         if (this.formTemp == null) {
@@ -587,7 +574,20 @@
       },
       // 重置表单
       resetForm() {
-        this.form = this.$options.data().form
+        this.form = {
+          page: 1,
+          pageSize: 10,
+          list_type: '0', // 列表类型 0=全部 1=仓库中 2=已售完 3=库存预警 4=待确认 5=自营商城 6=第三方平台
+          category: '',
+          brand: '',
+          year: '',
+          season: '',
+          type: '', //尺码类型 0整手  1散码
+          band: '',
+          name: '',
+          recommend: '',
+          status: '1', //状态 1 在售 2 售罄 3 待上市
+        }
       },
       // 列表选中数据
       handleSelectionChange(val) {

@@ -7,7 +7,7 @@
           <div class="conten-list-row">
             <div>商品款号：{{ goodsDetails.sn }}</div>
             <div>商品名称： {{ goodsDetails.name }}</div>
-            <div>商品标题： {{ goodsDetails.shoptitle }}</div>
+            <div>商城标题： {{ goodsDetails.shoptitle }}</div>
             <div>商品分类：{{ goodsDetails.category_name }}</div>
             <div>商品品牌： {{ goodsDetails.brand_name }}</div>
             <div>年份：{{ goodsDetails.year_name }}</div>
@@ -49,7 +49,7 @@
             </div>
             <div>库位名称：{{ goodsDetails.position_name }}</div>
             <div>起售数量：{{ goodsDetails.from_sale }}</div>
-            <div>每人限购：{{ goodsDetails.restricted_sale }}</div>
+            <div>每单限购：{{ goodsDetails.restricted_sale }}</div>
           </div>
         </div>
         <div class="conten-warp">
@@ -75,6 +75,11 @@
               上架商城：
               <span v-if="goodsDetails.is_shop == 1">上架</span>
               <span v-if="goodsDetails.is_shop == 2">下架</span>
+            </div>
+            <div>
+              置顶商品：
+              <span v-if="goodsDetails.is_top == 1">关闭</span>
+              <span v-if="goodsDetails.is_top == 2">开启</span>
             </div>
             <div>设计师： {{ goodsDetails.designer_name }}</div>
             <div>设计师编号： {{ goodsDetails.order_sn }}</div>
@@ -144,10 +149,10 @@
                   style="width: 215px"
                 />
               </el-form-item>
-              <el-form-item class="item" label="商品标题：" prop="shoptitle">
+              <el-form-item class="item" label="商城标题：" prop="shoptitle">
                 <el-input
                   v-model="form.shoptitle"
-                  placeholder="请输入商品标题"
+                  placeholder="请输入批次商城显示的商品名称"
                   style="width: 215px"
                 />
               </el-form-item>
@@ -343,12 +348,12 @@
               </el-form-item>
               <el-form-item
                 class="item"
-                label="每人限购："
+                label="每单限购："
                 style="font-size: 12px"
               >
                 <el-input
                   v-model="form.restricted_sale"
-                  placeholder="请输入每人限购数量"
+                  placeholder="请输入每单限购数量"
                   style="width: 215px"
                   @input="
                     form.restricted_sale = $moneyFormatInput(
@@ -380,7 +385,7 @@
                   @input="form.cost_price = $moneyFormatInput(form.cost_price)"
                 />
               </el-form-item>
-              <el-form-item class="item" label="管理费：" prop="manage_price">
+              <el-form-item class="item" label="管理费：">
                 <el-input
                   v-model="form.manage_price"
                   style="width: 215px"
@@ -488,10 +493,18 @@
                   <el-radio :label="0">关闭</el-radio>
                 </el-radio-group>
               </el-form-item>
-              <el-form-item class="item" label="库存预警：">
+              <el-form-item label="置顶商品：" style="width: 100%">
+                <el-radio-group v-model="form.is_top">
+                  <el-radio :label="2">是否置顶商品</el-radio>
+                </el-radio-group>
+                <div style="font-size: 12px; color: gray">
+                  将当前商品在商品列表里置顶
+                </div>
+              </el-form-item>
+              <el-form-item label="库存预警：" style="width: 100%">
                 <el-input
                   v-model="form.goods_stock_warning"
-                  placeholder="商品现货库存小于多少时预警"
+                  placeholder="设置预警值x件时提醒我"
                   style="width: 215px"
                   @input="
                     form.goods_stock_warning = $numFormatInput(
@@ -499,6 +512,9 @@
                     )
                   "
                 />
+                <div style="font-size: 12px; color: gray">
+                  当商品库存小于等于预警值时，系统将发送通知消息提醒我补库存
+                </div>
               </el-form-item>
             </div>
           </div>

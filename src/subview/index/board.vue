@@ -384,6 +384,9 @@
               <el-table-column label="尺码" prop="size" />
               <el-table-column label="订货数量" prop="order_num" />
               <el-table-column label="欠货数量" prop="not_delivery_num" />
+              <el-table-column label="欠货率" prop="outage_rate" />
+              <el-table-column label="库存数" prop="xh_num" />
+              <el-table-column label="生产中" prop="zsc_num" />
             </el-table>
           </template>
         </el-table-column>
@@ -426,6 +429,16 @@
               <div style="width: 280px; margin-left: 10px">
                 <div
                   style="
+                    margin: 10px 0;
+                    font-size: 16px;
+                    font-weight: 600;
+                    text-align: left;
+                  "
+                >
+                  {{ row.goods_sn }}
+                </div>
+                <div
+                  style="
                     width: 150px;
                     overflow: hidden;
                     text-align: left;
@@ -435,15 +448,12 @@
                 >
                   {{ row.goods_name }}
                 </div>
-                <div style="margin: 15px 0; text-align: left">
-                  {{ row.goods_sn }}
-                </div>
                 <div
                   style="
                     display: flex;
                     justify-content: space-between;
                     width: 100%;
-                    margin: 15px 0;
+                    margin: 10px 0;
                   "
                 >
                   <div style="color: red">￥{{ row.sale_price }}</div>
@@ -730,13 +740,17 @@
       },
       // 客户欠货详情跳转跳转到客户详情
       handleDetail(row) {
-        this.$router.push({
-          path: '/customer/customerManage',
-          query: {
-            id: row.customer_id,
-            type: 'board', // 从首页预警跳转
-          },
-        })
+        window.open(
+          `#/customer/customerManage?id=${row.customer_id}&type=board`,
+          '_blank'
+        )
+        // this.$router.push({
+        //   path: '/customer/customerManage',
+        //   query: {
+        //     id: row.customer_id,
+        //     type: 'board', // 从首页预警跳转
+        //   },
+        // })
       },
       // 表格选中数据
       setSelectRows(val) {
