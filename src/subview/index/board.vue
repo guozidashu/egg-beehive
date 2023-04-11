@@ -229,6 +229,7 @@
           <el-radio-button label="2">按客户欠货明细</el-radio-button>
         </el-radio-group>
       </div>
+      <!-- 查询条件 -->
       <el-form
         ref="form"
         :inline="true"
@@ -368,6 +369,7 @@
           </el-form-item>
         </el-form-item>
       </el-form>
+      <!-- 款号表格 -->
       <el-table
         v-show="radioButton == 1"
         v-loading="listLoading"
@@ -375,7 +377,6 @@
         :data="goodsOwedList"
         style="width: 100%"
         @expand-change="expandChange"
-        @selection-change="setSelectRows"
       >
         <el-table-column type="expand">
           <template slot-scope="props">
@@ -479,6 +480,7 @@
           />
         </template>
       </el-table>
+      <!-- 客户表格 -->
       <el-table
         v-show="radioButton == 2"
         v-loading="listLoading"
@@ -573,6 +575,7 @@
           />
         </template>
       </el-table>
+      <!-- 分页 -->
       <el-pagination
         background
         :current-page="page"
@@ -583,6 +586,7 @@
         @current-change="changeBtnPage"
         @size-change="changeBtnPageSize"
       />
+      <!-- 款号导出 -->
       <el-dialog
         :before-close="handleClose"
         title="导出"
@@ -607,13 +611,9 @@
   export default {
     data() {
       return {
-        // 选中的行
-        // selectRows: [],
-        // 表格每行数据
-        rowDate: null,
-        // 导出类型
+        // 按款号 导出类型
         exportType: 1,
-        // 导出弹窗
+        // 按款号 导出弹窗
         dialogVisible: false,
         // 表格类型切换 1:按款号 2:按客户
         radioButton: '1',
@@ -670,7 +670,7 @@
             bgColor: '#D8EFE5',
           },
         ],
-        // 查询，分页表格处理相关参数
+        // 查询，分页表格处理相关参数，页数，条数，表单查询条件 ，列表数据，列表加载状态，列表总数，列表组件的类型，筛选条件
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -688,13 +688,11 @@
           level_id: '', // 等级id
           customer_type: '', // 客户分类
         },
-        // 欠货明细 下拉框数据
-        selectList: [],
-        // 欠货明细 表格数据
+        goodsOwedList: [],
         listTotal: 0,
         listLoading: false,
         listType: 8,
-        goodsOwedList: [],
+        selectList: [],
       }
     },
     watch: {
@@ -718,6 +716,7 @@
         },
         deep: true,
       },
+      // tabs 切换 监听 款号和客户
       radioButton: {
         handler: function () {
           this.formTemp.page = 1
@@ -735,26 +734,16 @@
       this.fetchData()
     },
     methods: {
+      // 款号导出弹窗关闭
       handleClose() {
         this.dialogVisible = false
       },
-      // 客户欠货详情跳转跳转到客户详情
+      // 客户欠货详情跳转跳转到客户详情 新链接打开
       handleDetail(row) {
         window.open(
           `#/customer/customerManage?id=${row.customer_id}&type=board`,
           '_blank'
         )
-        // this.$router.push({
-        //   path: '/customer/customerManage',
-        //   query: {
-        //     id: row.customer_id,
-        //     type: 'board', // 从首页预警跳转
-        //   },
-        // })
-      },
-      // 表格选中数据
-      setSelectRows(val) {
-        this.selectRows = val
       },
       // 导出款号欠货明细
       async handleExport() {
@@ -803,6 +792,7 @@
           customer_type: '', // 客户分类
         }
       },
+      // 款号欠货明细查询
       handleQuery() {
         this.getGoodsOwedTableList()
       },
@@ -812,12 +802,6 @@
           this.dialogVisible = true
           return
         }
-        // let stock_id = []
-        // if (this.selectRows.length != 0) {
-        //   this.selectRows.forEach((item) => {
-        //     stock_id.push(item.stock_id)
-        //   })
-        // }
         const { code, data } =
           await this.api.getWarehouseAnalysisCustomerOutStockExport({
             name: this.form.name, // 客户名称
@@ -833,6 +817,7 @@
           this.$message.error('导出失败')
         }
       },
+      // 款号欠货明细表格展开
       async expandChange(row) {
         if (this.radioButton == 1) {
           const { data } = await this.api.getWarehouseAnalysisRankDetail({

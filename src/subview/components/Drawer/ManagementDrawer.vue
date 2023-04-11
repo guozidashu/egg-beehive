@@ -516,67 +516,81 @@ d
         this.form.district = selectArea
       },
       async changeTypeBtn(e) {
-        if (e == 2) {
-          this.form.drawerType = e
-          this.$forceUpdate()
-          return
-        }
-        if (this.form.id == undefined) {
-          this.form.id = 0
-          const { code } = await this.api.editSupplierSave(this.form)
-          if (code == 200) {
-            this.$baseMessage('新增成功', 'success', 'vab-hey-message-success')
-            const { code } = await this.api.getSupplierEditDetail({
-              id: this.form.id,
-            })
-            if (code == 200) {
-              this.$emit('fetch-data', 1)
+        this.$refs['form'].validate(async (valid) => {
+          if (valid) {
+            if (e == 2) {
+              this.form.drawerType = e
+              this.$forceUpdate()
+              return
             }
-          }
-        } else {
-          if (this.form.craft_type != undefined) {
-            this.form.craft_type = this.form.craft_type.join(',')
-          }
-          if (this.form.produce_type != undefined) {
-            this.form.produce_type = this.form.produce_type.join(',')
-          }
-          const { code } = await this.api.editSupplierSave(this.form)
-          if (code == 200) {
-            this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
-            const { data } = await this.api.getSupplierEditDetail({
-              id: this.form.id,
-            })
-            this.form.drawerType = data[0]
-            this.form.drawerType = e
-            this.search_type = '0'
-            this.form.address1 = [
-              this.form.province,
-              this.form.city,
-              this.form.district,
-            ]
-            if (this.form.produce_type != undefined) {
-              if (this.form.produce_type.indexOf(',') != -1) {
-                this.form.produce_type = this.form.produce_type.split(',')
-                this.form.produce_type = this.form.produce_type.map((item) => {
-                  return Number(item)
+            if (this.form.id == undefined) {
+              this.form.id = 0
+              const { code } = await this.api.editSupplierSave(this.form)
+              if (code == 200) {
+                this.$baseMessage(
+                  '新增成功',
+                  'success',
+                  'vab-hey-message-success'
+                )
+                const { code } = await this.api.getSupplierEditDetail({
+                  id: this.form.id,
                 })
-              } else {
-                this.form.produce_type = [Number(this.form.produce_type)]
+                if (code == 200) {
+                  this.$emit('fetch-data', 1)
+                }
+              }
+            } else {
+              if (this.form.craft_type != undefined) {
+                this.form.craft_type = this.form.craft_type.join(',')
+              }
+              if (this.form.produce_type != undefined) {
+                this.form.produce_type = this.form.produce_type.join(',')
+              }
+              const { code } = await this.api.editSupplierSave(this.form)
+              if (code == 200) {
+                this.$baseMessage(
+                  '修改成功',
+                  'success',
+                  'vab-hey-message-success'
+                )
+                const { data } = await this.api.getSupplierEditDetail({
+                  id: this.form.id,
+                })
+                this.form.drawerType = data[0]
+                this.form.drawerType = e
+                this.search_type = '0'
+                this.form.address1 = [
+                  this.form.province,
+                  this.form.city,
+                  this.form.district,
+                ]
+                if (this.form.produce_type != undefined) {
+                  if (this.form.produce_type.indexOf(',') != -1) {
+                    this.form.produce_type = this.form.produce_type.split(',')
+                    this.form.produce_type = this.form.produce_type.map(
+                      (item) => {
+                        return Number(item)
+                      }
+                    )
+                  } else {
+                    this.form.produce_type = [Number(this.form.produce_type)]
+                  }
+                }
+                if (this.form.produce_type != undefined) {
+                  if (this.form.craft_type.indexOf(',') != -1) {
+                    this.form.craft_type = this.form.craft_type.split(',')
+                    this.form.craft_type = this.form.craft_type.map((item) => {
+                      return Number(item)
+                    })
+                  } else {
+                    this.form.craft_type = [Number(this.form.craft_type)]
+                  }
+                }
+                this.$emit('fetch-data')
               }
             }
-            if (this.form.produce_type != undefined) {
-              if (this.form.craft_type.indexOf(',') != -1) {
-                this.form.craft_type = this.form.craft_type.split(',')
-                this.form.craft_type = this.form.craft_type.map((item) => {
-                  return Number(item)
-                })
-              } else {
-                this.form.craft_type = [Number(this.form.craft_type)]
-              }
-            }
-            this.$emit('fetch-data')
           }
-        }
+        })
       },
       async handleClick(tab) {
         this.listLoading = true

@@ -8,6 +8,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件 -->
       <el-form
         ref="form"
         :inline="true"
@@ -82,8 +83,10 @@
               </div>
             </div>
           </div>
+          <!-- 折线图数据 -->
           <MembersChart :data="chartDataObj" style="background-color: white" />
         </el-col>
+        <!-- 右侧排行数据 -->
         <el-col :span="6">
           <div
             style="
@@ -154,6 +157,7 @@
   </div>
 </template>
 <script>
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   import MembersChart from '@/subview/components/Chart/MembersChart'
   export default {
@@ -163,9 +167,11 @@
     mixins: [datajosn],
     data() {
       return {
+        // 时间条件
         goodsForm: {
           time: '30天',
         },
+        // 折线图查询按钮
         BtnList: [
           {
             name: '新品预热',
@@ -180,6 +186,7 @@
             checked: false,
           },
         ],
+        // 折线图顶部卡片数据
         cardList: [
           {
             name: '商品款数',
@@ -210,6 +217,7 @@
             percentType: 2,
           },
         ],
+        // 商品排行数据
         goodsList: [],
         // 图表 x轴数据
         dateList: [],
@@ -395,6 +403,7 @@
         },
         deep: true,
       },
+      // 监听btn类型变化
       'form.type': {
         handler: function () {
           this.dateList = []
@@ -413,6 +422,7 @@
       this.fetchData()
     },
     methods: {
+      // btn 按钮点击事件
       BtnClick(index) {
         this.BtnList.forEach((item) => {
           item.checked = false
@@ -420,18 +430,20 @@
         this.BtnList[index].checked = true
         this.form.type = index + 1
       },
+      // 页面刷新获取数据
       fetchData() {
         this.getHeadData()
         this.getHomeReport()
         this.getList()
       },
+      // 获取列表数据
       async getList() {
         const { data } = await this.api.getHomePagePresellHotGoodsRank({
           time: this.form.time,
         })
         this.goodsList = data
       },
-      // 获取图表数据
+      // 获取卡片数据
       async getHeadData() {
         const { data } = await this.api.getHomePagePresellHeadData(this.form)
         this.cardList.forEach((item, index) => {
@@ -457,6 +469,7 @@
           })
         })
       },
+      // 获取图表数据
       async getHomeReport() {
         const { data } = await this.api.getHomePagePresellLineChart(this.form)
         let arr = []

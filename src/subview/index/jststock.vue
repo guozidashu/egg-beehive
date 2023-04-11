@@ -8,7 +8,7 @@
         border-radius: 5px;
       "
     >
-      <!-- 顶部布局 -->
+      <!-- 顶部卡片和折线图 -->
       <el-form
         ref="form"
         :inline="true"
@@ -504,6 +504,7 @@
 </template>
 <script>
   import MembersChart from '@/subview/components/Chart/MembersChart'
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     components: {
@@ -818,7 +819,7 @@
           legendy: 350,
           center: ['50%', '50%'],
         },
-        // 爆款分析
+        // 爆款分析 查询条件，列表数据，加载状态，总数
         goodsAnalysisForm: {
           page: 1,
           pageSize: 10,
@@ -826,7 +827,7 @@
         goodsAnalysisList: [],
         goodslistLoading: false,
         goodsAnalysisTotal: 0,
-        // 库存预警分析
+        // 库存预警分析 查询条件，列表数据，加载状态，总数
         stockAnalysisForm: {
           page: 1,
           pageSize: 10,

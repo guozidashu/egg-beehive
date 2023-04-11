@@ -162,13 +162,13 @@
         @selectRows="handleSelectionChange"
       >
         <template #List>
-          <el-table-column type="selection" />
+          <el-table-column align="center" type="selection" width="40" />
           <el-table-column align="center" label="类型" width="80">
             <template #default="{ row }">
-              <el-tag v-if="row.type == 0" effect="dark" type="success">
+              <el-tag v-if="row.type == 0" effect="plain" type="success">
                 整手
               </el-tag>
-              <el-tag v-else-if="row.type == 1" effect="dark" type="danger">
+              <el-tag v-else-if="row.type == 1" effect="plain" type="danger">
                 散码
               </el-tag>
             </template>
@@ -184,28 +184,19 @@
                   />
                   <el-image
                     :src="row.img"
-                    style="width: 100px; height: 100px"
+                    style="width: 105px; height: 105px"
                   />
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
-                  <div
-                    style="
-                      display: flex;
-                      justify-content: space-between;
-
-                      text-align: left;
-                    "
-                  >
-                    <div style="font-size: 16px; font-weight: 600">
-                      {{ row.sn }}
-                    </div>
-                    <div>{{ row.upper_time | formatTime }}</div>
+                  <div style="font-size: 14px; font-weight: 600">
+                    {{ row.sn }}
                   </div>
+
                   <div
                     style="
                       display: flex;
                       justify-content: space-between;
-                      margin: 15px 0;
+                      margin: 5px 0 0 0;
                     "
                   >
                     <div
@@ -219,28 +210,35 @@
                     >
                       {{ row.name }}
                     </div>
-                    <el-tag>￥{{ row.price | moneyFormat }}</el-tag>
                   </div>
 
-                  <div style="display: flex; width: 100%; margin: 15px 0 0 0">
-                    <el-tag v-if="row.cate_name != null">
+                  <div style="display: flex; width: 100%; margin: 5px 0">
+                    <el-tag v-if="row.cate_name != null" type="info">
                       {{ row.cate_name }}
                     </el-tag>
-                    &nbsp; &nbsp;
-                    <el-tag v-if="row.year_name != null" type="warning">
+                    &nbsp;
+                    <el-tag v-if="row.year_name != null" type="info">
                       {{ row.year_name }}
                     </el-tag>
-                    &nbsp; &nbsp;
-                    <el-tag v-if="row.season_name != null" type="danger">
+                    &nbsp;
+                    <el-tag v-if="row.season_name != null" type="info">
                       {{ row.season_name }}
                     </el-tag>
-                    &nbsp; &nbsp;
-                    <el-tag v-if="row.band_name != null" type="success">
+                    &nbsp;
+                    <el-tag v-if="row.band_name != null" type="info">
                       {{ row.band_name }}
                     </el-tag>
                   </div>
+                  <div style="margin: 5px 0 0 0">
+                    {{ row.upper_time | formatTime }}
+                  </div>
                 </div>
               </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="销售价" prop="price">
+            <template #default="{ row }">
+              <el-tag>￥{{ row.price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column align="center" label="销量" prop="xl_num" />
@@ -256,7 +254,6 @@
             prop="jst_occupy_num"
           />
           <el-table-column align="center" label="生产中" prop="zsc_num" />
-
           <el-table-column align="center" label="状态" prop="status">
             <template #default="{ row }">
               <div v-if="row.status == 1" style="margin-bottom: 10px">
@@ -267,6 +264,13 @@
               </div>
               <div v-else-if="row.status == 3" style="margin-bottom: 10px">
                 <el-tag type="warning">待上市</el-tag>
+              </div>
+
+              <div v-if="row.is_shop == 1" style="margin-bottom: 10px">
+                <el-tag type="danger">未置顶</el-tag>
+              </div>
+              <div v-else-if="row.is_shop == 2" style="margin-bottom: 10px">
+                <el-tag>置顶</el-tag>
               </div>
               <div v-if="row.recommend == 0">
                 <el-tag type="danger">已取消推荐</el-tag>

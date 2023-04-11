@@ -1,17 +1,10 @@
 <template>
   <div class="components-drawer">
-    <!-- 头部数据 -->
-    <HeaderText
-      :active-name="activeName"
-      :form="form"
-      :goods-all-num="goodsAllNum"
-      :goods-details="goodsDetails"
-      @changeTypeBtn="changeTypeBtn"
-      @handleClick="handleClick"
-    />
-    <!-- 商品信息 和 商品编辑 表单-->
+    <!-- 头部数据 商品信息 和 商品编辑 表单-->
     <Form
+      :active-name="activeName"
       :form-temp="form"
+      :goods-all-num="goodsAllNum"
       :goods-details="goodsDetails"
       :list-loading="listLoading"
       :list-type="listType"
@@ -23,6 +16,8 @@
       :warehouse-position-list="WarehousePositionList"
       :zhekou-list="zhekouList"
       @changeType="changeType"
+      @changeTypeBtn="changeTypeBtn"
+      @handleClick="handleClick"
       @handleShow="handleShow"
     />
     <!-- tab 出去首页 表格 -->
@@ -46,11 +41,10 @@
 <script>
   import VabUpload from '@/extra/VabUpload'
   import List from '@/subview/components/List/GoodsDrawerList'
-  import HeaderText from '@/subview/components/Text/GoodsDrawerText'
   import Form from '@/subview/components/Form/GoodsDrawerForm'
   import { mapGetters } from 'vuex'
   export default {
-    components: { VabUpload, List, HeaderText, Form },
+    components: { VabUpload, List, Form },
     props: {
       drawerInof: {
         type: Object,
@@ -301,6 +295,11 @@
       },
       // 新增修改
       async changeTypeBtn(e) {
+        // this.$refs['form'].validate(async (valid) => {
+        //   if (valid) {
+        //     console.log()
+        //             }
+        // })
         if (e != 1) {
           this.form.drawerType = e
           this.$forceUpdate()

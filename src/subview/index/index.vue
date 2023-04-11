@@ -1,6 +1,7 @@
 <template>
   <div class="index-container">
     <el-row :gutter="20">
+      <!-- 顶部卡片和折线图 -->
       <el-col :span="20" style="padding: 0">
         <TextTags :list="textTagList" />
         <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24">
@@ -23,6 +24,7 @@
           </el-card>
         </el-col>
       </el-col>
+      <!-- 右侧饼图卡片 -->
       <el-col :span="4">
         <el-card shadow="hover" style="border-radius: 5px">
           <template #header>
@@ -41,6 +43,7 @@
           />
         </el-card>
       </el-col>
+      <!-- 会员卡片 -->
       <el-col :span="8">
         <el-card shadow="hover" style="border-radius: 5px">
           <template #header>
@@ -59,6 +62,7 @@
           </div>
         </el-card>
       </el-col>
+      <!-- 订单卡片 -->
       <el-col :span="16">
         <MemberList :data="orderList" title="最新订单" />
       </el-col>
@@ -70,6 +74,7 @@
   import MembersChart from '@/subview/components/Chart/MembersChart'
   import MemberList from '@/subview/components/List/MemberList'
   import UserChart from '@/subview/components/Chart/UserChart'
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     components: {
@@ -97,8 +102,9 @@
           },
           spot_stock: 0,
         },
-        // 7 30 90
+        // 折线图 时间
         time: '30天',
+        // 顶部卡片数据
         textTagList: [
           {
             title: '销售金额',
