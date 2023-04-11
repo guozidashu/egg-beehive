@@ -8,6 +8,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -101,6 +102,7 @@
       </QYForm>
     </div>
     <el-card shadow="never" style="border: 0; border-radius: 5px">
+      <!-- tab 选项卡 -->
       <el-tabs v-model="form.list_type" @tab-click="handleClick">
         <el-tab-pane
           :label="'全部商品 (' + tatleData.all_order + ')'"
@@ -120,6 +122,7 @@
           name="8"
         />
       </el-tabs>
+      <!-- 操作按钮 -->
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
           <el-button
@@ -152,6 +155,7 @@
           </el-button>
         </el-form-item>
       </el-form>
+      <!-- 表格 -->
       <QYList
         :list="list"
         :list-type="listType"
@@ -341,6 +345,7 @@
         </template>
       </QYList>
     </el-card>
+    <!-- 详情编辑新增抽屉 -->
     <el-drawer
       :before-close="handleClose"
       size="50%"
@@ -355,66 +360,8 @@
         @handle-close="handleClose"
       />
     </el-drawer>
-    <el-dialog
-      :append-to-body="true"
-      :before-close="handleMaterialClose"
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="50%"
-    >
-      <el-form ref="formDialog" label-width="80px" :model="formDialog">
-        <el-form-item label="文案文本：">
-          <el-input
-            v-model="formDialog.copywriting"
-            :autosize="{ minRows: 2, maxRows: 4 }"
-            style="white-space: pre-line"
-            type="textarea"
-          />
-        </el-form-item>
-        <el-form-item class="item" label="文案图片：">
-          <div
-            v-if="formDialog.source_material.length > 0"
-            style="display: flex"
-          >
-            <div
-              v-for="(item, index) in formDialog.source_material"
-              :key="index"
-              style="display: flex; margin: 10px"
-            >
-              <el-tooltip placement="top">
-                <el-image
-                  slot="content"
-                  :src="item"
-                  style="width: 200px; height: 200px"
-                />
-                <el-image :src="item" style="width: 50px; height: 50px" />
-              </el-tooltip>
-              <i
-                class="el-icon-close"
-                style="position: relative; top: -12px; left: -8px"
-                @click="handleRemove(index)"
-              ></i>
-            </div>
-          </div>
-          <el-button size="small" type="primary" @click="handleShow()">
-            上传
-          </el-button>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleMaterialSub">确 定</el-button>
-      </span>
-    </el-dialog>
-    <vab-upload
-      ref="vabUpload"
-      :limit="1"
-      name="file"
-      :size="2"
-      url="/upload"
-      @submitUpload="getSon"
-    />
     <edit ref="edit" :drawer-sta="drawerSta" @fetch-data="fetchData" />
+    <!-- 添加颜色弹窗 -->
     <ColorEdit
       ref="ColorEdit"
       :drawer-sta="drawerColor"
@@ -427,37 +374,23 @@
   import Drawer from '@/subview/components/Drawer/GoodsDrawer'
   import Edit from '@/subview/components/Edit/PresellEdit'
   import ColorEdit from '@/subview/components/Edit/AddColorEdit'
-  import VabUpload from '@/extra/VabUpload'
-  import publicjosn from '@/assets/assets_josn/publicjosn'
   export default {
-    components: { Drawer, VabUpload, Edit, ColorEdit },
-    mixins: [publicjosn],
+    components: { Drawer, Edit, ColorEdit },
     data() {
       return {
-        // 添加颜色
+        // 添加颜色 弹窗
         drawerColor: false,
-        // 预售
+        // 预售 弹窗
         drawerSta: false,
-        // 弹窗相关
+        // 抽屉相关 标题，是否显示，数据
         title: '',
         drawer: false,
         drawerInof: {},
-        // 商品文案相关
-        dialogVisible: false,
-        formDialog: {
-          goods_id: null,
-          source_material: [],
-          copywriting: '',
-        },
         // 表格 tab 数据
         tatleData: {
           all_order: null, // 全部
-          repository: null, // 仓库中
           sole_out: null, // 已售完
           stock_alert: null, // 预警
-          confirmed: null, // 待确认
-          self_operated: null, // 自营
-          third_platform: null, // 第三方
           jushuitan_not_sync: null, // 聚水潭未同步
           jushuitan_sync: null, // 聚水潭已同步
         },
@@ -465,7 +398,7 @@
         selectList: [],
         // 表格选中 ids
         selectRowsId: [],
-        // 表格相关数据
+        // 表格相关数据 页数，条数，表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         pageState: false,
         formTemp: null,
         page: 1,
@@ -493,6 +426,7 @@
       }
     },
     watch: {
+      // 监听表单数据变化
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -518,7 +452,7 @@
       this.getGoodsTypeList()
     },
     methods: {
-      // 添加颜色
+      // 添加颜色弹窗
       addColor(row) {
         this.$refs['ColorEdit'].showEdit(row)
       },
@@ -533,7 +467,7 @@
         this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
         this.fetchData()
       },
-      // 预售设置
+      // 预售设置弹窗
       handlePresell(row) {
         if (row.goods_persell.length == 0) {
           this.drawerSta = false
@@ -572,52 +506,22 @@
           this.$message.error('导出失败')
         }
       },
-      // 商品文案保存
-      async handleMaterialSub() {
-        const { code } = await this.api.editSourceMaterialSave(this.formDialog)
-        if (code == 200) {
-          this.$message.success('操作成功')
-          this.dialogVisible = false
-          this.formDialog = {
-            goods_id: null,
-            source_material: [],
-            copywriting: '',
-          }
-          this.fetchData()
-        }
-      },
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
-      // 商品文章 图片删除
-      handleRemove(index) {
-        this.formDialog.source_material.splice(index, 1)
-      },
-      // 商品文章 图片上传数据回传
-      getSon(data) {
-        this.formDialog.source_material = data
-      },
-      // 商品文章弹框关闭
-      handleMaterialClose() {
-        this.dialogVisible = false
-        this.formDialog = {
-          goods_id: null,
-          source_material: [],
-          copywriting: '',
-        }
-      },
-      handleShow() {
-        this.$refs['vabUpload'].handleShow()
-      },
+      // 查询
       handleQuery() {
         this.fetchData()
         this.getTatolData()
       },
+      // tab 切换
       handleClick(tab) {
         this.form.list_type = tab.name
       },
@@ -649,7 +553,7 @@
         })
         this.selectList = data
       },
-      // 商品详情编辑新增
+      // 商品详情编辑新增抽屉
       handleDetail(row, type) {
         if (type === 1) {
           this.title = '商品详情'
@@ -677,12 +581,15 @@
         }
         this.drawer = true
       },
+      // 商品详情编辑新增抽屉关闭
       handleClose() {
         this.drawer = false
       },
+      // 重置表单
       resetForm() {
         this.form = this.$options.data().form
       },
+      // 列表选中数据
       handleSelectionChange(val) {
         this.selectRowsId = val
       },

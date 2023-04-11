@@ -70,6 +70,7 @@
   export default {
     data() {
       return {
+        // 页数，条数，表单查询条件 ，父级列表，表单组件和列表组件的类型，子级列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -86,6 +87,7 @@
       }
     },
     watch: {
+      // 监听表单变化
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -123,20 +125,25 @@
         this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
         this.fetchData()
       },
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 重置
       resetForm() {
         this.form = this.$options.data().form
       },
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
+      // 获取列表
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
@@ -150,4 +157,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

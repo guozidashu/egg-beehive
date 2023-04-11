@@ -134,57 +134,78 @@
       >
         <template #List>
           <el-table-column type="selection" />
-          <el-table-column label="商品Id" prop="id" width="80" />
-          <el-table-column label="款号" prop="sn" width="100" />
-          <el-table-column label="商品图" prop="img" width="80">
+          <el-table-column align="center" label="商品Id" prop="id" width="80" />
+          <el-table-column label="商品信息" width="400">
             <template #default="{ row }">
-              <el-tooltip placement="top">
-                <el-image
-                  slot="content"
-                  :src="row.img"
-                  style="width: 200px; height: 200px"
-                />
-                <el-image :src="row.img" style="width: 50px; height: 50px" />
-              </el-tooltip>
+              <div style="display: flex">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.img"
+                    style="width: 200px; height: 200px"
+                  />
+                  <el-image
+                    :src="row.img"
+                    style="width: 100px; height: 100px"
+                  />
+                </el-tooltip>
+                <div style="width: 280px; margin-left: 10px">
+                  <div style="display: flex; justify-content: space-between">
+                    <div
+                      style="
+                        width: 150px;
+                        overflow: hidden;
+                        text-align: left;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      "
+                    >
+                      {{ row.sn }} &nbsp; &nbsp;
+                    </div>
+                    <el-tag>￥{{ row.price | moneyFormat }}</el-tag>
+                  </div>
+                  <div style="margin: 15px 0; text-align: left">
+                    {{ row.name }}
+                  </div>
+                  <div style="display: flex; width: 100%; margin: 15px 0 0 0">
+                    <el-tag v-if="row.type == 0">整手</el-tag>
+                    <el-tag v-else-if="row.type == 1">散码</el-tag>
+                    &nbsp; &nbsp;
+                    <el-tag v-if="row.year_name != null" type="warning">
+                      {{ row.year_name }}
+                    </el-tag>
+                    &nbsp; &nbsp;
+                    <el-tag v-if="row.season_name != null" type="danger">
+                      {{ row.season_name }}
+                    </el-tag>
+                    &nbsp; &nbsp;
+                    <el-tag v-if="row.band_name != null" type="success">
+                      {{ row.band_name }}
+                    </el-tag>
+                  </div>
+                </div>
+              </div>
             </template>
           </el-table-column>
-          <el-table-column label="商品名称" prop="name" width="180" />
-          <el-table-column label="商品标题" prop="shoptitle" />
-          <el-table-column label="款号类别" prop="type" width="80">
-            <template #default="{ row }">
-              <span v-if="row.type == 0">整手</span>
-              <span v-else-if="row.type == 1">散码</span>
-            </template>
-          </el-table-column>
+
+          <el-table-column align="center" label="销量" prop="xl_num" />
+          <el-table-column align="center" label="库存" prop="xh_num" />
           <el-table-column
-            align="right"
-            label="销售价"
-            prop="price"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-tag>￥{{ row.price | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
+            align="center"
+            label="聚水潭库存"
+            prop="jst_xh_num"
+          />
           <el-table-column
-            align="right"
-            label="吊牌价"
-            prop="sale_price"
-            width="150"
-          >
+            align="center"
+            label="聚水潭占用库存"
+            prop="jst_occupy_num"
+          />
+          <el-table-column align="center" label="吊牌价" prop="sale_price">
             <template #default="{ row }">
               <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="销量" prop="xl_num" width="120" />
-          <el-table-column label="库存" prop="xh_num" width="100" />
-          <el-table-column label="聚水潭库存" prop="jst_xh_num" width="100" />
-          <el-table-column
-            label="聚水潭占用库存"
-            prop="jst_occupy_num"
-            width="100"
-          />
-          <el-table-column label="状态" prop="status" width="80">
+          <el-table-column align="center" label="状态" prop="status">
             <template #default="{ row }">
               <div v-if="row.is_shop == 1" style="margin-bottom: 10px">
                 <el-tag>上架</el-tag>

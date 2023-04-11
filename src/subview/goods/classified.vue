@@ -2,6 +2,7 @@
   <div style="background-color: #f6f8f9">
     <el-row :gutter="20">
       <el-col :lg="6" :md="8" :sm="24" :xl="4" :xs="24">
+        <!-- 父级分类 -->
         <el-card
           shadow="never"
           style="
@@ -64,6 +65,7 @@
         </el-card>
       </el-col>
       <el-col :lg="18" :md="16" :sm="24" :xl="20" :xs="24">
+        <!-- 子级分类 -->
         <el-card shadow="never" style="border: 0; border-radius: 5px">
           <el-form ref="form" :inline="true" @submit.native.prevent>
             <el-form-item>
@@ -150,6 +152,7 @@
         </el-card>
       </el-col>
     </el-row>
+    <!-- 新增编辑弹窗 -->
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
@@ -159,6 +162,7 @@
     components: { Edit },
     data() {
       return {
+        // 页数，条数，表单查询条件 ，父级列表，表单组件和列表组件的类型，子级列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -177,6 +181,7 @@
       }
     },
     watch: {
+      // 监听表单变化
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -211,6 +216,7 @@
           this.$baseMessage('同步成功', 'success')
         })
       },
+      // 新增编辑弹窗
       async handleEdit(row, type) {
         if (row === 'add') {
           this.$refs['edit'].showEdit(row, type)
@@ -222,9 +228,11 @@
           }
         }
       },
+      // 查询
       handleQuery() {
         this.form.page = 1
       },
+      // 删除
       handleDelete(row, type) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
@@ -245,15 +253,17 @@
           })
         }
       },
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
-      // 商品分类 父级 子级
+      // 获取父级列表
       async fetchData() {
         const { data } = await this.api.getCategoryMainList(this.form)
         let list = [
@@ -269,6 +279,7 @@
         this.menuList = list
         this.fetchList()
       },
+      // 获取子级列表
       async fetchList() {
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))
@@ -279,7 +290,7 @@
         this.list = data
         this.total = total
       },
-
+      // 点击父级列表
       handleGrouPQuery(id, index) {
         this.form.id = id
         this.menuList.forEach((item) => {
@@ -289,21 +300,6 @@
       },
       handleOpen() {},
       handleClose() {},
-      // 鼠标移入移出
-      mouseOver(index) {
-        if (this.menuList[index].btnIconStatus == false) {
-          this.menuList[index].btnIconStatus = true
-        } else {
-          this.menuList[index].btnIconStatus = false
-        }
-      },
-      mouseLeave(index) {
-        if (this.menuList[index].btnIconStatus == false) {
-          this.menuList[index].btnIconStatus = true
-        } else {
-          this.menuList[index].btnIconStatus = false
-        }
-      },
     },
   }
 </script>
