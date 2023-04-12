@@ -5,7 +5,7 @@
         <div>
           <el-row :gutter="20">
             <el-col :span="12" style="display: flex">
-              <img
+              <el-image
                 :src="form.avatar"
                 style="width: 80px; height: 80px; margin: 0 10px 10px 0"
               />
@@ -16,7 +16,7 @@
                 <div style="margin: 10px 0">
                   <el-tag type="success">{{ form.grade_name }}</el-tag>
                 </div>
-                <div>最后一次消费时间: {{ form.last_use_time }}</div>
+                <div>最近消费: {{ form.last_use_time }}</div>
               </div>
             </el-col>
 
@@ -375,19 +375,21 @@
       @changePageSize="changeBtnPageSize"
     >
       <template #List>
-        <el-table-column label="订单编号" prop="sn" show-overflow-tooltip />
+        <el-table-column align="center" label="批次号" prop="id" width="80" />
+        <el-table-column align="center" label="商品数量" prop="num" />
+        <el-table-column align="center" label="订单金额" prop="total" />
         <el-table-column
-          label="订单日期"
-          prop="create_time"
+          align="center"
+          label="订单来源"
+          prop="online"
           show-overflow-tooltip
-        />
-        <el-table-column label="数量" prop="num" width="80" />
-        <el-table-column label="金额" prop="total" width="100" />
-        <el-table-column
-          label="订单状态"
-          prop="order_status"
-          show-overflow-tooltip
-        />
+        >
+          <template #default="{ row }">
+            <span v-if="row.online == 1">线上订单</span>
+            <span v-if="row.online == 0">线下订单</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="创建日期" prop="create_time" />
       </template>
     </QYList>
     <QYList
@@ -403,14 +405,21 @@
       @changePageSize="changeBtnPageSize"
     >
       <template #List>
-        <el-table-column label="订单编号" prop="sn" show-overflow-tooltip />
+        <el-table-column align="center" label="批次号" prop="id" width="80" />
+        <el-table-column align="center" label="发货数量" prop="num" />
+        <el-table-column align="center" label="发货金额" prop="total" />
         <el-table-column
-          label="订单日期"
-          prop="add_date"
+          align="center"
+          label="订单来源"
+          prop="online"
           show-overflow-tooltip
-        />
-        <el-table-column label="发货数量" prop="num" width="80" />
-        <el-table-column label="发货金额" prop="total" width="100" />
+        >
+          <template #default="{ row }">
+            <span v-if="row.online == 1">线上订单</span>
+            <span v-if="row.online == 0">线下订单</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="发货时间" prop="add_date" />
       </template>
     </QYList>
     <QYList
@@ -426,14 +435,17 @@
       @changePageSize="changeBtnPageSize"
     >
       <template #List>
-        <el-table-column label="订单编号" prop="sn" show-overflow-tooltip />
-        <el-table-column
-          label="订单日期"
-          prop="add_date"
-          show-overflow-tooltip
-        />
-        <el-table-column label="退货数量" prop="num" width="80" />
-        <el-table-column label="退货金额" prop="total" width="100" />
+        <el-table-column align="center" label="批次号" prop="id" width="80" />
+
+        <el-table-column align="center" label="退货数量" prop="num" />
+        <el-table-column align="center" label="退货金额" prop="total" />
+        <el-table-column align="center" label="订单来源" show-overflow-tooltip>
+          <template #default="{ row }">
+            <span v-if="row.jst_external_id == null">erp订单</span>
+            <span v-else>聚水潭订单</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="退货日期" prop="add_date" />
       </template>
     </QYList>
     <QYList
@@ -449,14 +461,11 @@
       @changePageSize="changeBtnPageSize"
     >
       <template #List>
-        <el-table-column label="类型" prop="type" width="100" />
-        <el-table-column label="收款金额" prop="total" width="120" />
-        <el-table-column label="优惠金额" prop="discount" width="80" />
-        <el-table-column
-          label="创建时间"
-          prop="create_time"
-          show-overflow-tooltip
-        />
+        <el-table-column align="center" label="类型" prop="type" />
+        <el-table-column align="center" label="收款金额" prop="total" />
+        <el-table-column align="center" label="优惠金额" prop="discount" />
+        <el-table-column align="center" label="操作人" prop="name" />
+        <el-table-column align="center" label="创建时间" prop="create_time" />
       </template>
     </QYList>
     <QYList
@@ -472,14 +481,16 @@
       @changePageSize="changeBtnPageSize"
     >
       <template #List>
-        <el-table-column label="商品名称" prop="name" show-overflow-tooltip />
-        <el-table-column
-          label="商品款号"
-          prop="goods_sn"
-          show-overflow-tooltip
-        />
-        <el-table-column label="订货数量" prop="num" width="80" />
-        <el-table-column label="欠货数量" prop="owe_goods" width="80" />
+        <el-table-column align="center" label="商品款号" prop="goods_sn" />
+        <el-table-column align="center" label="商品名称" prop="name" />
+        <el-table-column align="center" label="类型" prop="type">
+          <template #default="{ row }">
+            <span v-if="row.type == 0">整首</span>
+            <span v-if="row.type == 1">散码</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="订货数量" prop="num" />
+        <el-table-column align="center" label="欠货数量" prop="owe_goods" />
       </template>
     </QYList>
     <el-dialog

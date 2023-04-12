@@ -182,6 +182,7 @@
           <el-table-column align="center" label="排行" type="index" width="60">
             <template slot-scope="scope">
               <span
+                v-if="page == 1"
                 class="index_common"
                 :class="[
                   scope.$index + 1 == '1'
@@ -194,6 +195,9 @@
                 ]"
               >
                 {{ scope.$index + 1 }}
+              </span>
+              <span v-else class="index_more index_common">
+                {{ 10 * (page - 1) + scope.$index + 1 }}
               </span>
             </template>
           </el-table-column>

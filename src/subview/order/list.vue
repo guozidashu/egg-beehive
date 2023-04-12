@@ -97,13 +97,13 @@
         </el-tabs>
         <el-form class="demo-form-inline" :inline="true" :model="form">
           <el-form-item label="排序">
-            <el-select v-model="form.region">
+            <el-select v-model="form.region" style="width: 150px">
               <el-option label="按下单时间" value="1" />
             </el-select>
           </el-form-item>
           <el-radio-group v-model="form.order_sort">
             <el-radio-button :label="1">正序</el-radio-button>
-            <el-radio-button :label="2">到序</el-radio-button>
+            <el-radio-button :label="2">倒序</el-radio-button>
           </el-radio-group>
         </el-form>
       </div>

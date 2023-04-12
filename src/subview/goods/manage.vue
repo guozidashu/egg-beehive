@@ -117,38 +117,58 @@
         />
       </el-tabs>
       <!-- 操作按钮 -->
-      <el-form ref="form" :inline="true" @submit.native.prevent>
-        <el-form-item>
-          <el-button
-            v-has-permi="['btn:GoodsManage:add']"
-            size="small"
-            type="primary"
-            @click="handleDetail('add', 3)"
-          >
-            添加商品
-          </el-button>
-          <el-button size="small" type="primary" @click="handleEdit(0)">
-            批量停售
-          </el-button>
-          <el-button size="small" type="primary" @click="handleEdit(1)">
-            批量在售
-          </el-button>
-          <el-button
-            v-has-permi="['btn:GoodsManage:synchronization']"
-            size="small"
-            type="primary"
-            @click="handleEditJST()"
-          >
-            批量同步聚水潭
-          </el-button>
-          <el-button size="small" type="primary" @click="handleDerive()">
-            批量导出
-          </el-button>
-          <el-button size="small" type="primary" @click="handleExportBarcode()">
-            批量导出条形码
-          </el-button>
-        </el-form-item>
-      </el-form>
+      <div style="display: flex; justify-content: space-between">
+        <el-form ref="form" :inline="true" @submit.native.prevent>
+          <el-form-item>
+            <el-button
+              v-has-permi="['btn:GoodsManage:add']"
+              size="small"
+              type="primary"
+              @click="handleDetail('add', 3)"
+            >
+              添加商品
+            </el-button>
+            <el-button size="small" type="primary" @click="handleEdit(0)">
+              批量停售
+            </el-button>
+            <el-button size="small" type="primary" @click="handleEdit(1)">
+              批量在售
+            </el-button>
+            <el-button
+              v-has-permi="['btn:GoodsManage:synchronization']"
+              size="small"
+              type="primary"
+              @click="handleEditJST()"
+            >
+              批量同步聚水潭
+            </el-button>
+            <el-button size="small" type="primary" @click="handleDerive()">
+              批量导出
+            </el-button>
+            <el-button
+              size="small"
+              type="primary"
+              @click="handleExportBarcode()"
+            >
+              批量导出条形码
+            </el-button>
+          </el-form-item>
+        </el-form>
+        <el-form class="demo-form-inline" :inline="true" :model="form">
+          <el-form-item label="排序">
+            <el-select v-model="form.sort_field" style="width: 150px">
+              <el-option label="按创建时间" value="create_time" />
+              <el-option label="按上架时间" value="upper_time" />
+              <el-option label="按商品款号" value="sn" />
+            </el-select>
+          </el-form-item>
+          <el-radio-group v-model="form.sort_type">
+            <el-radio-button label="asc">正序</el-radio-button>
+            <el-radio-button label="desc">倒序</el-radio-button>
+          </el-radio-group>
+        </el-form>
+      </div>
+
       <!-- 表格 -->
       <QYList
         :list="list"
@@ -413,6 +433,8 @@
         page: 1,
         pageSize: 10,
         form: {
+          sort_field: 'upper_time',
+          sort_type: 'desc',
           page: 1,
           pageSize: 10,
           list_type: '0', // 列表类型 0=全部 1=仓库中 2=已售完 3=库存预警 4=待确认 5=自营商城 6=第三方平台
@@ -579,6 +601,8 @@
       // 重置表单
       resetForm() {
         this.form = {
+          sort_field: 'upper_time',
+          sort_type: 'desc',
           page: 1,
           pageSize: 10,
           list_type: '0', // 列表类型 0=全部 1=仓库中 2=已售完 3=库存预警 4=待确认 5=自营商城 6=第三方平台

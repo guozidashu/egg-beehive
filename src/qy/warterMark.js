@@ -1,3 +1,4 @@
+// 全局水印
 const watermark = {}
 
 const setWatermark = (str) => {
