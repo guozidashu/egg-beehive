@@ -24,8 +24,13 @@
     <List
       :list="orderList"
       :list-type="listType"
+      :page="page"
+      :page-size="pageSize"
       :state="listLoading"
       :tabindex="tabindex"
+      :total="orderTotal"
+      @changePage="changeBtnPage"
+      @changePageSize="changeBtnPageSize"
     />
     <!-- 上传图片 -->
     <vab-upload
@@ -137,12 +142,15 @@
         },
         selectData: JSON.parse(JSON.stringify(this.selectList)),
         listLoading: false,
-        listType: 2,
+        listType: 1,
         ids: undefined,
         WarehouseList: [],
         WarehousePositionList: [],
         zhekouList: [],
         orderList: [],
+        orderTotal: 0,
+        page: 1,
+        pageSize: 10,
       }
     },
     computed: {
@@ -251,9 +259,27 @@
         },
         deep: true,
       },
+      page: {
+        handler: function (newVal) {
+          this.changeBtnPageList()
+        },
+        deep: true,
+      },
+      pageSize: {
+        handler: function (newVal) {
+          this.changeBtnPageList()
+        },
+        deep: true,
+      },
     },
     created() {},
     methods: {
+      changeBtnPage(data) {
+        this.page = data
+      },
+      changeBtnPageSize(data) {
+        this.pageSize = data
+      },
       // 获取头部详情
       async getGoodsAllDetail() {
         const { data } = await this.api.getGoodTotalDetails({
@@ -383,9 +409,21 @@
           type: tab.name, //搜索条件 1订单记录 2入库信息 3退货记录 4付款记录 5对账单记录
           good_id: this.drawerInof.id, //物料采购订单id
           page: 1,
-          pageSize: 5,
+          pageSize: 10,
         })
-        this.orderList = data.list
+        this.orderList = data.data
+        this.orderTotal = data.total
+        this.listLoading = false
+      },
+      async changeBtnPageList() {
+        const { data } = await this.api.getGoodOrderDetails({
+          type: this.activeName, //搜索条件 1订单记录 2入库信息 3退货记录 4付款记录 5对账单记录
+          good_id: this.drawerInof.id, //物料采购订单id
+          page: this.page,
+          pageSize: this.pageSize,
+        })
+        this.orderList = data.data
+        this.orderTotal = data.total
         this.listLoading = false
       },
       // 固定价

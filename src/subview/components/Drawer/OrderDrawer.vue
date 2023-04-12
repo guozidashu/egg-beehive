@@ -1,32 +1,95 @@
 <template>
   <div class="components-drawer">
-    <div style="padding: 30px 35px 25px 20px">
-      <div>
-        <div style="margin-bottom: 20px; font-size: 18px; font-weight: 600">
-          销售单
+    <div style="padding: 30px 35px 0 20px">
+      <div style="display: flex; justify-content: space-between">
+        <div style="display: flex">
+          <img
+            src="https://oss.business.quanyu123.com//6d6029f75045122a57a893cb044e5e63.png"
+            style="width: 50px; height: 50px; margin: 0 10px 10px 0"
+          />
+          <div>
+            <div style="margin-top: 4px; font-size: 16px; font-weight: 600">
+              销售单
+            </div>
+            <div style="margin: 10px 0">订单编号：{{ form.sn }}</div>
+          </div>
         </div>
-        <el-row>
-          <el-col :span="12" style="display: flex">
-            <span style="margin: 10px 0 0 0">
-              订单合计
-              <span style="color: red">{{ form.style_num }}</span>
-              款 共计
-              <span style="color: red">*{{ form.sum_num }}</span>
-              已发货
-              <span style="color: red">*{{ form.delivery_num }}</span>
-              件
-            </span>
-          </el-col>
-          <el-col :span="12">
-            <vab-icon
-              icon="align-center"
-              style="float: right; margin: 6px 0 0 0"
-            />
-          </el-col>
-        </el-row>
+        <div>
+          <el-button
+            size="small"
+            style="float: right; margin-right: 10px"
+            type="primary"
+          >
+            打印发货单
+          </el-button>
+        </div>
       </div>
+      <div style="display: flex; margin: 20px 0 20px 0">
+        <span style="font-size: 16px">
+          合计
+          <span style="color: red">{{ form.style_num }}</span>
+          款 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;共计
+          <span style="color: red">{{ form.sum_num }}</span>
+          件 &nbsp; 已发货
+          <span style="color: red">{{ form.delivery_num }}</span>
+          件
+        </span>
+      </div>
+      <!-- <div
+        style="
+          display: flex;
+          width: 100%;
+          margin: 20px 0 20px 0;
+          text-align: center;
+        "
+      >
+        <div style="width: 25%">
+          <div style="margin-bottom: 5px">订单状态</div>
+          <div style="display: flex; margin-bottom: 5px; text-align: center">
+            <span v-for="(item, index) in form.order_status" :key="index">
+              <span
+                v-if="item == '已付款' || item == '发货完成'"
+                style="margin-right: 10px"
+              >
+                {{ item }}
+              </span>
+              <span
+                v-if="item == '部分付款' || item == '部分发货'"
+                style="margin-right: 10px"
+              >
+                {{ item }}
+              </span>
+              <span
+                v-if="item == '未付款' || item == '未发货'"
+                style="margin-right: 10px"
+              >
+                {{ item }}
+              </span>
+            </span>
+            <span v-if="form.is_void == 1">已作废</span>
+          </div>
+        </div>
+        <div style="width: 25%">
+          <div style="margin-bottom: 5px">商品款数</div>
+          <div style="margin-bottom: 5px">{{ form.style_num }}</div>
+        </div>
+        <div style="width: 25%">
+          <div style="margin-bottom: 5px">商品件数</div>
+          <div style="margin-bottom: 5px">{{ form.sum_num }}</div>
+        </div>
+        <div style="width: 25%">
+          <div style="margin-bottom: 5px">已发货件数</div>
+          <div style="margin-bottom: 5px">{{ form.delivery_num }}</div>
+        </div>
+      </div> -->
     </div>
-    <el-tabs v-model="search_type" class="drawer-tab" @tab-click="handleClick">
+    <el-tabs
+      v-model="search_type"
+      class="drawer-tab"
+      style="margin-top: 10px; margin-left: -5px"
+      type="card"
+      @tab-click="handleClick"
+    >
       <el-tab-pane label="订单信息" name="0">
         <div class="conten-warp">
           <div class="conten-title">用户信息</div>
@@ -36,7 +99,7 @@
             <div>
               <span>绑定电话： {{ form.mobile }}</span>
             </div>
-            <div>
+            <!-- <div>
               <span v-if="form.sale_arrears < 0">
                 销售累计欠款：
                 <span style="color: red">
@@ -57,7 +120,7 @@
               <span v-else>
                 发货累计余款：￥{{ form.delivery_arrears | moneyFormat }}
               </span>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="conten-warp">
@@ -69,7 +132,6 @@
             <div>已收金额： ￥{{ form.received_amount | moneyFormat }}</div>
             <div>收款优惠： ￥{{ form.discount_cash | moneyFormat }}</div>
             <div>创建时间： {{ form.create_time }}</div>
-            <div>开单日期： {{ form.add_date }}</div>
             <div>备注信息： {{ form.remark }}</div>
           </div>
         </div>
@@ -121,7 +183,7 @@
               </div>
               <QYList
                 :list="item.goods_spec"
-                :list-type="listType"
+                :list-type="2"
                 :state="listLoading"
                 style="height: 200px; overflow: auto"
               >
@@ -162,20 +224,33 @@
             </el-card>
           </el-col>
         </el-row>
+        <el-pagination
+          background
+          :current-page="page"
+          layout="total, sizes, prev, pager, next, jumper"
+          :page-size="pageSize"
+          :page-sizes="[4, 8, 12, 16, 20]"
+          :total="orderTotal"
+          @current-change="changeBtnPage"
+          @size-change="changeBtnPageSize"
+        />
       </el-tab-pane>
       <el-tab-pane label=" 操作记录" name="2">
-        <QYList :list="orderList" :list-type="listType" :state="listLoading">
+        <QYList
+          :list="orderList"
+          :list-type="listType"
+          :page="page"
+          :page-size="pageSize"
+          :state="listLoading"
+          :total="orderTotal"
+          @changePage="changeBtnPage"
+          @changePageSize="changeBtnPageSize"
+        >
           <template #List>
             <el-table-column
               align="center"
-              label="操作"
+              label="动作"
               prop="remark"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              align="center"
-              label="操作人"
-              prop="name"
               show-overflow-tooltip
             />
             <el-table-column
@@ -188,6 +263,12 @@
                 ￥{{ row.new_amount | moneyFormat }}
               </template>
             </el-table-column>
+            <el-table-column
+              align="center"
+              label="操作人"
+              prop="name"
+              show-overflow-tooltip
+            />
             <el-table-column
               align="center"
               label="操作时间"
@@ -209,19 +290,22 @@
         </QYList>
       </el-tab-pane>
       <el-tab-pane label="发货记录" name="3">
-        <QYList :list="orderList" :list-type="listType" :state="listLoading">
+        <QYList
+          :list="orderList"
+          :list-type="listType"
+          :page="page"
+          :page-size="pageSize"
+          :state="listLoading"
+          :total="orderTotal"
+          @changePage="changeBtnPage"
+          @changePageSize="changeBtnPageSize"
+        >
           <template #List>
             <el-table-column
               align="center"
               label="发货批次"
               prop="id"
               width="80"
-            />
-            <el-table-column
-              align="center"
-              label="订单号"
-              prop="sn"
-              show-overflow-tooltip
             />
             <el-table-column
               align="center"
@@ -239,24 +323,24 @@
                 ￥{{ row.total | moneyFormat }}
               </template>
             </el-table-column>
+
+            <el-table-column
+              align="center"
+              label="订单类型"
+              show-overflow-tooltip
+            >
+              <template #default="{ row }">
+                <span v-if="row.online == 1">线上订单</span>
+                <span v-if="row.online == 0">线下订单</span>
+              </template>
+            </el-table-column>
             <el-table-column
               align="center"
               label="发货时间"
               prop="ctime"
               show-overflow-tooltip
             />
-            <el-table-column
-              align="center"
-              label="备注"
-              prop="remark"
-              show-overflow-tooltip
-            >
-              <template #default="{ row }">
-                <span v-if="row.remark == '' || row.remark == null">无</span>
-                <span v-else>{{ row.remark }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column fixed="right" label="操作" width="50">
+            <!-- <el-table-column fixed="right" label="操作" width="50">
               <template #default="{ row }">
                 <el-button
                   v-has-permi="['btn:OrderList:view']"
@@ -266,7 +350,7 @@
                   详情
                 </el-button>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </template>
         </QYList>
       </el-tab-pane>
@@ -278,7 +362,11 @@
       :visible.sync="dialogVisible"
       width="40%"
     >
-      <el-row :gutter="20" style="height: 500px; overflow: auto">
+      <el-row
+        v-if="DetailList.length > 0"
+        :gutter="20"
+        style="height: 500px; overflow: auto"
+      >
         <el-col v-for="(item, index) in DetailList" :key="index" :span="12">
           <el-card class="box-card" shadow="hover">
             <div style="display: flex; margin-bottom: 20px">
@@ -358,6 +446,17 @@
           </el-card>
         </el-col>
       </el-row>
+      <div
+        v-else
+        style="
+          margin-top: 50px;
+          font-size: 18px;
+          font-weight: 600;
+          text-align: center;
+        "
+      >
+        暂无数据
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -383,8 +482,11 @@
         search_type: '0',
         form: Object.assign({}, this.drawerInof),
         listLoading: false,
-        listType: 2,
+        listType: 1,
         orderList: [],
+        page: 1,
+        pageSize: 10,
+        orderTotal: 0,
       }
     },
     computed: {
@@ -395,6 +497,7 @@
     watch: {
       drawerInof: {
         handler: function (newVal) {
+          this.search_type = '0'
           this.form = Object.assign({}, newVal)
         },
         deep: true,
@@ -403,8 +506,21 @@
       search_type: {
         handler: function (newVal) {
           if (newVal != 0) {
+            console.log('search_type', newVal)
             this.orderDetail()
           }
+        },
+        deep: true,
+      },
+      page: {
+        handler: function (newVal) {
+          this.changeBtnPageList()
+        },
+        deep: true,
+      },
+      pageSize: {
+        handler: function (newVal) {
+          this.changeBtnPageList()
         },
         deep: true,
       },
@@ -433,13 +549,38 @@
       },
       async orderDetail() {
         this.listLoading = true
+
+        if (this.search_type == 1) {
+          if (this.page == 1 && this.pageSize == 4) {
+            this.changeBtnPageList()
+          } else {
+            this.page = 1
+            this.pageSize = 4
+          }
+        } else {
+          if (this.page == 1 && this.pageSize == 10) {
+            this.changeBtnPageList()
+          } else {
+            this.page = 1
+            this.pageSize = 10
+          }
+        }
+      },
+      changeBtnPage(data) {
+        this.page = data
+      },
+      changeBtnPageSize(data) {
+        this.pageSize = data
+      },
+      async changeBtnPageList() {
         const { data } = await this.api.getOrderDetail({
           search_type: this.search_type,
           id: this.form.id,
-          page: 1,
-          pageSize: 20,
+          page: this.page,
+          pageSize: this.pageSize,
         })
         this.orderList = data.data
+        this.orderTotal = data.total
         this.listLoading = false
       },
       handleClick(tab) {
@@ -447,9 +588,6 @@
       },
       PrintBtn() {
         this.$emit('drawerPrint', 'multipleTable')
-      },
-      EditBtn() {
-        this.$emit('drawerhandleEdit', this.form)
       },
     },
   }

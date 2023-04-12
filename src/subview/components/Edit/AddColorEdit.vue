@@ -2,7 +2,7 @@
   <el-dialog
     title="添加颜色"
     :visible.sync="dialogFormVisible"
-    width="500px"
+    width="50%"
     @close="close"
   >
     <div v-for="(item, index) in colorList" :key="index">

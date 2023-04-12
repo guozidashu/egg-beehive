@@ -841,6 +841,14 @@ export function getOrderList(data) {
     data,
   })
 }
+// 订单 -订单列表 -备注
+export function setOrderRemark(data) {
+  return request({
+    url: '/order/setRemark',
+    method: 'post',
+    data,
+  })
+}
 // 订单 -订单列表tab
 export function getOrderCount(data) {
   return request({

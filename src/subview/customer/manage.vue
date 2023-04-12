@@ -98,21 +98,35 @@
     </div>
     <!-- 列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
-      <el-form ref="form" :inline="true" @submit.native.prevent>
-        <el-form-item>
-          <el-button
-            v-has-permi="['btn:CustomerManage:add']"
-            size="small"
-            type="primary"
-            @click="handleDetail('add', 3)"
-          >
-            添加客户
-          </el-button>
-          <el-button size="small" type="primary" @click="handleDerive()">
-            批量导出
-          </el-button>
-        </el-form-item>
-      </el-form>
+      <div style="display: flex; justify-content: space-between">
+        <el-form ref="form" :inline="true" @submit.native.prevent>
+          <el-form-item>
+            <el-button
+              v-has-permi="['btn:CustomerManage:add']"
+              size="small"
+              type="primary"
+              @click="handleDetail('add', 3)"
+            >
+              添加客户
+            </el-button>
+            <el-button size="small" type="primary" @click="handleDerive()">
+              批量导出
+            </el-button>
+          </el-form-item>
+        </el-form>
+        <el-form class="demo-form-inline" :inline="true" :model="form">
+          <el-form-item label="排序">
+            <el-select v-model="form.region">
+              <el-option label="按加入时间" value="1" />
+            </el-select>
+          </el-form-item>
+          <el-radio-group v-model="form.order_sort">
+            <el-radio-button :label="1">正序</el-radio-button>
+            <el-radio-button :label="2">到序</el-radio-button>
+          </el-radio-group>
+        </el-form>
+      </div>
+
       <QYList
         ref="multipleTable"
         :list="list"
@@ -138,7 +152,7 @@
                   />
                   <el-image
                     :src="row.avatar"
-                    style="width: 120px; height: 120px"
+                    style="width: 105px; height: 105px"
                   />
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
@@ -146,6 +160,7 @@
                     style="
                       width: 150px;
                       overflow: hidden;
+                      font-weight: 600;
                       text-align: left;
                       text-overflow: ellipsis;
                       white-space: nowrap;
@@ -153,29 +168,24 @@
                   >
                     {{ row.name }}
                   </div>
-                  <div style="margin: 10px 0; text-align: left">
+                  <div style="margin: 5px 0 0 0; text-align: left">
                     {{ row.mobile }}
                   </div>
-                  <div style="width: 100%; margin: 10px 0">
-                    <el-tag type="success">
+                  <div style="width: 100%; margin: 5px 0 0 0">
+                    <el-tag type="info">
                       {{ row.grade_name }}
                     </el-tag>
                     &nbsp; &nbsp;
-                    <el-tag type="warning">{{ row.type_name }}</el-tag>
+                    <el-tag type="info">{{ row.type_name }}</el-tag>
                   </div>
-                  <div style="margin: 10px 0 0 0; text-align: left">
+                  <div style="margin: 5px 0 0 0; text-align: left">
                     {{ row.create_time }}
                   </div>
                 </div>
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="发货方式" prop="order_belong">
-            <template #default="{ row }">
-              <span v-if="row.order_belong == 1">自主发货</span>
-              <span v-else>聚水潭发货</span>
-            </template>
-          </el-table-column>
+          <el-table-column align="center" label="拿货次数" prop="count_order" />
           <el-table-column align="center" label="拿货件数" prop="num_total" />
           <el-table-column align="center" label="拿货金额" prop="final_count">
             <template #default="{ row }">
@@ -255,7 +265,7 @@
             align="center"
             fixed="right"
             label="操作"
-            width="120"
+            width="150"
           >
             <template #default="{ row }">
               <el-button
@@ -272,13 +282,33 @@
               >
                 详情
               </el-button>
-              <el-button
-                v-has-permi="['btn:CustomerManage:deposit']"
-                type="text"
-                @click="handleDeposit(row.id)"
-              >
-                保证金
-              </el-button>
+              &nbsp;
+              <el-dropdown>
+                <el-button class="el-dropdown-link" type="text">
+                  <span>更多</span>
+                  <vab-icon
+                    class="vab-dropdown-active"
+                    icon="arrow-up-s-line"
+                  />
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item>
+                    <el-button
+                      v-has-permi="['btn:CustomerManage:deposit']"
+                      type="text"
+                      @click="handleDeposit(row.id)"
+                    >
+                      保证金
+                    </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button type="text">等级</el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button type="text">授信额度</el-button>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </template>
           </el-table-column>
         </template>
@@ -515,6 +545,8 @@
           page: 1,
           pageSize: 10,
           id: null,
+          order_sort: 2,
+          region: '1',
         },
         listType: 1,
         formType: 1,

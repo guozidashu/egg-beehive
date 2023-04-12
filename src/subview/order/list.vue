@@ -80,20 +80,34 @@
     </div>
 
     <el-card shadow="never" style="border: 0; border-radius: 5px">
-      <el-tabs v-model="form.order_source" @tab-click="handleClick">
-        <el-tab-pane
-          :label="'所有订单(' + orderCountData.all_order + ')'"
-          name="0"
-        />
-        <el-tab-pane
-          :label="'线下开单 (' + orderCountData.erp_count + ')'"
-          name="1"
-        />
-        <el-tab-pane
-          :label="'线上订单 (' + orderCountData.shop_count + ')'"
-          name="2"
-        />
-      </el-tabs>
+      <div style="display: flex; justify-content: space-between">
+        <el-tabs v-model="form.order_source" @tab-click="handleClick">
+          <el-tab-pane
+            :label="'所有订单(' + orderCountData.all_order + ')'"
+            name="0"
+          />
+          <el-tab-pane
+            :label="'线下开单 (' + orderCountData.erp_count + ')'"
+            name="1"
+          />
+          <el-tab-pane
+            :label="'线上订单 (' + orderCountData.shop_count + ')'"
+            name="2"
+          />
+        </el-tabs>
+        <el-form class="demo-form-inline" :inline="true" :model="form">
+          <el-form-item label="排序">
+            <el-select v-model="form.region">
+              <el-option label="按下单时间" value="1" />
+            </el-select>
+          </el-form-item>
+          <el-radio-group v-model="form.order_sort">
+            <el-radio-button :label="1">正序</el-radio-button>
+            <el-radio-button :label="2">到序</el-radio-button>
+          </el-radio-group>
+        </el-form>
+      </div>
+
       <QYList
         ref="multipleTable"
         :list="list"
@@ -106,42 +120,93 @@
         @changePageSize="changeBtnPageSize"
       >
         <template #List>
-          <el-table-column type="selection" />
-          <el-table-column label="批次号" prop="id" width="80" />
-          <el-table-column label="订单号" prop="sn" width="180">
+          <el-table-column align="center" type="selection" width="50" />
+          <el-table-column label="商品信息" width="400">
             <template #default="{ row }">
-              <div
-                v-if="row.is_void == 1"
-                style="
-                  display: flex;
-                  align-items: center; /*纵轴 */
-                  justify-content: center; /*主轴 */
-                  width: 100%;
-                  height: 100px;
-                  background-image: url('https://oss.business.quanyu123.com//8b2d13e1410e81375f7535150af192f2.jpg');
-                  background-repeat: no-repeat;
-                  -moz-background-size: 100% 100%;
-                  background-size: 100% 100%;
-                "
-              >
-                {{ row.sn }}
-              </div>
-              <div v-else>
-                {{ row.sn }}
+              <div style="display: flex">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.info.img"
+                    style="width: 200px; height: 200px"
+                  />
+                  <el-image
+                    :src="row.info.img"
+                    style="width: 105px; height: 105px"
+                  />
+                </el-tooltip>
+                <div style="width: 280px; margin-left: 10px">
+                  <div style="font-size: 14px; font-weight: 600">
+                    <div v-if="row.sum_num == null">{{ row.info.name }}0件</div>
+                    <div v-if="row.sum_num == 1">{{ row.info.name }}1件</div>
+                    <div v-else>
+                      {{ row.info.name }}...等{{ row.sum_num }}件
+                    </div>
+                  </div>
+                  <div style="margin: 5px 0">
+                    批次号:{{ row.id }} | {{ row.sn }}
+                  </div>
+                  <div>
+                    订单来源:
+                    <span v-if="row.order_type == 0">线下开单</span>
+                    <span v-if="row.order_type == 1">线上订单</span>
+                  </div>
+                  <div style="margin: 5px 0 0 0">订单时间:{{ row.ctime }}</div>
+                </div>
               </div>
             </template>
           </el-table-column>
-          <el-table-column
-            align="right"
-            label="总金额"
-            prop="final_amount"
-            width="150"
-          >
+          <el-table-column align="center" label="订单金额">
             <template #default="{ row }">
               <el-tag>￥{{ row.final_amount | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="订单状态" prop="order_status" width="120">
+          <el-table-column align="center" label="订单件数">
+            <template #default="{ row }">
+              <p v-if="row.sum_num == null">0</p>
+              <p v-else>{{ row.sum_num }}</p>
+            </template>
+          </el-table-column>
+          <el-table-column
+            align="center"
+            label="已发货件数"
+            prop="delivery_num"
+          />
+          <el-table-column label="客户名称" width="200">
+            <template #default="{ row }">
+              <div style="display: flex">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.avatar"
+                    style="width: 200px; height: 200px"
+                  />
+                  <el-image
+                    :src="row.avatar"
+                    style="width: 50px; height: 50px; margin-top: 20px"
+                  />
+                </el-tooltip>
+                <div style="margin-top: 20px; margin-left: 10px">
+                  <div style="font-size: 14px; font-weight: 600">
+                    {{ row.name }}
+                  </div>
+                  <div>{{ row.mobile }}</div>
+                  <!-- <div style="margin: 5px 0">
+                    <el-tag type="success">{{ row.level_name }}</el-tag>
+                  </div> -->
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="收货人" prop="consignee" />
+          <el-table-column align="center" label="发货方式" prop="is_jushuitan">
+            <template #default="{ row }">
+              <span v-if="row.is_jushuitan == 0">线下发货</span>
+              <span v-if="row.is_jushuitan == 1">聚水潭</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="支付类型" prop="pay_type" />
+          <el-table-column align="center" label="订单状态">
             <template #default="{ row }">
               <div v-for="(item, index) in row.order_status" :key="index">
                 <el-tag
@@ -165,57 +230,21 @@
                   {{ item }}
                 </el-tag>
               </div>
-            </template>
-          </el-table-column>
-          <el-table-column label="客户名称" prop="name" width="120" />
-          <el-table-column label="商品信息" prop="info">
-            <template #default="{ row }">
-              <div style="display: flex">
-                <el-tooltip placement="top">
-                  <el-image
-                    slot="content"
-                    :src="row.info.img"
-                    style="width: 200px; height: 200px"
-                  />
-                  <el-image
-                    :src="row.info.img"
-                    style="
-                      width: 30px;
-                      height: 30px;
-                      margin-top: 10px;
-                      margin-right: 10px;
-                    "
-                  />
-                </el-tooltip>
-                <div v-if="row.sum_num == null" style="margin-top: 15px">
-                  {{ row.info.name }}0件
-                </div>
-                <div v-if="row.sum_num == 1" style="margin-top: 15px">
-                  {{ row.info.name }}1件
-                </div>
-                <div v-else style="margin-top: 15px">
-                  {{ row.info.name }}...等{{ row.sum_num }}件
-                </div>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column label="总数量" width="80">
-            <template #default="{ row }">
-              <p v-if="row.sum_num == null">0</p>
-              <p v-else>{{ row.sum_num }}</p>
-            </template>
-          </el-table-column>
-          <el-table-column label="已发数量" prop="delivery_num" width="80" />
-          <el-table-column label="订单来源" prop="order_type" width="120">
-            <template #default="{ row }">
-              <el-tag v-if="row.order_type == 0">线下开单</el-tag>
-              <el-tag v-if="row.order_type == 1" type="warning">
-                线上订单
+              <el-tag
+                v-if="row.is_void == 1"
+                style="margin-bottom: 10px"
+                type="danger"
+              >
+                已作废
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="订单日期" prop="ctime" sortable width="200" />
-          <el-table-column fixed="right" label="操作" width="100">
+          <el-table-column
+            align="center"
+            fixed="right"
+            label="操作"
+            width="100"
+          >
             <template #default="{ row }">
               <el-button
                 v-has-permi="['btn:OrderList:view']"
@@ -224,13 +253,34 @@
               >
                 详情
               </el-button>
+              &nbsp;
+
+              <el-dropdown>
+                <el-button class="el-dropdown-link" type="text">
+                  <span>更多</span>
+                  <vab-icon
+                    class="vab-dropdown-active"
+                    icon="arrow-up-s-line"
+                  />
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item>
+                    <el-button type="text" @click="handleEdit(row)">
+                      订单备注
+                    </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button type="text">打印发货单</el-button>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </template>
           </el-table-column>
         </template>
       </QYList>
     </el-card>
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
-      <Drawer :drawer-inof="drawerInof" @drawerhandleEdit="handleEdit" />
+      <Drawer :drawer-inof="drawerInof" />
     </el-drawer>
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
@@ -257,6 +307,8 @@
         page: 1,
         pageSize: 10,
         form: {
+          order_sort: 2,
+          region: '1',
           fold: true,
           order_time: [],
           pay_type: '', //付款状态 0全部 1未付款 2部分付款 3已付款
@@ -356,14 +408,8 @@
         this.drawer = true
       },
       async handleEdit(row) {
-        if (row === 'add') {
-          this.$refs['edit'].showEdit()
-        } else {
-          if (row.id) {
-            this.$refs['edit'].showEdit(row)
-          } else {
-            this.$refs['edit'].showEdit()
-          }
+        if (row.id) {
+          this.$refs['edit'].showEdit(row)
         }
       },
     },

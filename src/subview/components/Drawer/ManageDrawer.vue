@@ -7,16 +7,17 @@
             <el-col :span="12" style="display: flex">
               <img
                 :src="form.avatar"
-                style="
-                  width: 50px;
-                  height: 50px;
-                  margin: 0 10px 10px 0;
-                  border-radius: 50%;
-                "
+                style="width: 80px; height: 80px; margin: 0 10px 10px 0"
               />
-              <span style="margin: 15px 0 0 0">
-                {{ form.name }}|{{ form.grade_name }}
-              </span>
+              <div>
+                <div style="font-size: 14px; font-weight: 600">
+                  {{ form.name }}
+                </div>
+                <div style="margin: 10px 0">
+                  <el-tag type="success">{{ form.grade_name }}</el-tag>
+                </div>
+                <div>最后一次消费时间: {{ form.last_use_time }}</div>
+              </div>
             </el-col>
 
             <el-col :span="12">
@@ -53,7 +54,7 @@
             </el-col>
           </el-row>
         </div>
-        <div style="display: flex">
+        <!-- <div style="display: flex">
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">余额/欠款</span>
             <span v-if="form.balance < 0">
@@ -85,7 +86,7 @@
             <span style="margin-bottom: 12px">最后一次消费时间</span>
             <span>{{ form.last_use_time }}</span>
           </div>
-        </div>
+        </div> -->
       </div>
       <el-tabs
         v-model="activeName"
