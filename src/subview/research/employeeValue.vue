@@ -8,6 +8,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -44,6 +45,7 @@
         </template>
       </QYForm>
     </div>
+    <!-- 列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <QYList
         :list="list"
@@ -98,6 +100,7 @@
     mixins: [datajosn],
     data() {
       return {
+        // 页数，条数，表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         page: 1,
         pageSize: 10,
         form: {
@@ -115,6 +118,7 @@
       }
     },
     watch: {
+      // 监听表单变化
       form: {
         handler: function (newVal) {
           if (this.pageState) {
@@ -135,43 +139,32 @@
       this.fetchData()
     },
     methods: {
-      handleDelete(row) {
-        if (row.id) {
-          this.$baseConfirm('你确定要核销当前项吗', null, async () => {
-            const { code } = await this.api.editIntegralOrderVerification({
-              id: row.id,
-            })
-            if (code != 200) {
-              return
-            }
-            this.$baseMessage('核销成功', 'success', 'vab-hey-message-success')
-            this.fetchData()
-          })
-        }
-      },
+      // 下拉框
       async getTypeList() {
         const { data } = await this.api.getCommonAllList({
           type: 'role',
         })
         this.selectList = data
       },
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 重置
       resetForm() {
         this.form = this.$options.data().form
       },
-
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
-
+      //  每页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
-
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         const { data } = await this.api.getEmployeeCostAnalysis({

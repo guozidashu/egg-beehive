@@ -33,11 +33,6 @@
           </el-menu>
           <div style="width: 20%; margin: 0 10px">
             <div v-if="showId == 0">
-              <!-- <el-carousel v-if="img_list.length > 0" :interval="interval">
-              <el-carousel-item v-for="(item, index) in img_list" :key="index">
-                <el-image :src="item" style="height: 100%" />
-              </el-carousel-item>
-            </el-carousel> -->
               <el-image
                 v-if="inof.img != null"
                 :src="inof.img"
@@ -113,11 +108,6 @@
                     style="width: 100px; height: 100px"
                     @click="uploadImage(inof)"
                   />
-                  <!-- <i
-                    class="el-icon-error"
-                    style="position: absolute; top: 0; right: 0"
-                    @click="delImg(index)"
-                  ></i> -->
                 </div>
                 <div style="padding: 20px 0 0 0">
                   <el-form-item label="图片名称">
@@ -142,72 +132,6 @@
                   </el-form-item>
                 </div>
               </div>
-              <!-- <div
-                v-if="inof_list.length > 0"
-                style="display: flex; flex-wrap: wrap"
-              >
-                <div
-                  v-for="(item, index) in inof_list"
-                  :key="index"
-                  style="
-                    display: flex;
-                    width: 42%;
-                    padding-bottom: 10px;
-                    margin: 15px;
-                    border: 1px dashed #dbdbdb;
-                  "
-                >
-                  <div style="position: relative; margin: 10px">
-                    <i
-                      v-if="item.img == null"
-                      class="el-icon-plus"
-                      style="margin-top: 20px; font-size: 80px"
-                      @click="uploadImage(index)"
-                    ></i>
-                    <el-image
-                      v-else
-                      :src="item.img"
-                      style="width: 100px; height: 100px"
-                    />
-                    <i
-                      class="el-icon-error"
-                      style="position: absolute; top: 0; right: 0"
-                      @click="delImg(index)"
-                    ></i>
-                  </div>
-                  <div style="padding: 20px 0 0 0">
-                    <el-form-item label="图片名称">
-                      <el-input
-                        v-model="item.name"
-                        placeholder="请输入图片名称"
-                        style="width: 215px"
-                      />
-                    </el-form-item>
-                    <el-form-item>
-                      <div
-                        v-if="item.selectName != null"
-                        @click="SelectLink(index)"
-                      >
-                        {{ item.selectName }}
-                      </div>
-                      <el-button
-                        v-else
-                        size="small"
-                        type="primary"
-                        @click="SelectLink(index)"
-                      >
-                        选择链接
-                      </el-button>
-                    </el-form-item>
-                  </div>
-                </div>
-              </div> -->
-
-              <!-- <el-form-item v-if="inof_list.length < 5">
-                <el-button size="small" type="primary" @click="addImg()">
-                  添加图片
-                </el-button>
-              </el-form-item> -->
             </el-form>
             <el-form
               v-if="showId == 1"
@@ -227,9 +151,6 @@
               >
                 个人中心设置
               </div>
-              <!-- <div style="margin: 10px; font-size: 12px; color: #999">
-                建议尺寸：750 * 1334px，拖拽图片可调整图片顺序哦，最多添加五张
-              </div> -->
               <el-radio-group v-model="activeName" style="margin: 20px 0">
                 <el-radio-button label="默认模板1" />
                 <el-radio-button label="自定义模板2" />
@@ -328,15 +249,11 @@
       getSelectLink(data) {
         this.inof.url = data.selectUrl
         this.inof.selectName = data.selectName
-        // this.inof_list[data.index].url = data.selectUrl
-        // this.inof_list[data.index].selectName = data.selectName
       },
       uploadImage() {
-        // this.imageIndex = index
         this.$refs['vabUpload'].handleShow()
       },
       getSon(data) {
-        // this.inof_list[this.imageIndex].img = data[0]
         this.inof.img = data[0]
       },
       addImg() {
@@ -366,4 +283,3 @@
     },
   }
 </script>
-<style lang="scss"></style>

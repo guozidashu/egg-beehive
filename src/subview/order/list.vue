@@ -1,5 +1,6 @@
 <template>
   <div style="background-color: #f6f8f9">
+    <!-- 查询条件 -->
     <div
       style="
         padding-top: 1px;
@@ -78,24 +79,45 @@
         </template>
       </QYForm>
     </div>
-
+    <!-- tabs/操作按钮/列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
+      <el-tabs v-model="form.order_source" @tab-click="handleClick">
+        <el-tab-pane
+          :label="'所有订单(' + orderCountData.all_order + ')'"
+          name="0"
+        />
+        <el-tab-pane
+          :label="'线下开单 (' + orderCountData.erp_count + ')'"
+          name="1"
+        />
+        <el-tab-pane
+          :label="'线上订单 (' + orderCountData.shop_count + ')'"
+          name="2"
+        />
+      </el-tabs>
       <div style="display: flex; justify-content: space-between">
-        <el-tabs v-model="form.order_source" @tab-click="handleClick">
-          <el-tab-pane
-            :label="'所有订单(' + orderCountData.all_order + ')'"
-            name="0"
-          />
-          <el-tab-pane
-            :label="'线下开单 (' + orderCountData.erp_count + ')'"
-            name="1"
-          />
-          <el-tab-pane
-            :label="'线上订单 (' + orderCountData.shop_count + ')'"
-            name="2"
-          />
-        </el-tabs>
         <el-form class="demo-form-inline" :inline="true" :model="form">
+          <el-button :disabled="printSelect" size="small" type="primary">
+            打印配货单
+          </el-button>
+          <el-select
+            v-model="form.region1"
+            style="width: 150px; margin: 0 10px"
+          >
+            <el-option label="导出订单" value="1" />
+          </el-select>
+          <el-button size="small" type="primary">订单核销</el-button>
+          <el-select
+            v-model="form.region2"
+            style="width: 150px; margin: 0 10px"
+          >
+            <el-option label="不展示聚水潭第三方订单" value="1" />
+          </el-select>
+        </el-form>
+        <el-form class="demo-form-inline" :inline="true" :model="form">
+          <el-form-item>
+            <el-checkbox v-model="form.checked">不显示已作废订单</el-checkbox>
+          </el-form-item>
           <el-form-item label="排序">
             <el-select v-model="form.region" style="width: 150px">
               <el-option label="按下单时间" value="1" />
@@ -118,10 +140,11 @@
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
+        @selectRows="handleSelectionChange"
       >
         <template #List>
           <el-table-column align="center" type="selection" width="50" />
-          <el-table-column label="商品信息" width="400">
+          <el-table-column label="订单信息" width="400">
             <template #default="{ row }">
               <div style="display: flex">
                 <el-tooltip placement="top">
@@ -132,24 +155,25 @@
                   />
                   <el-image
                     :src="row.info.img"
-                    style="width: 105px; height: 105px"
+                    style="width: 80px; height: 80px"
                   />
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
                   <div style="font-size: 14px; font-weight: 600">
+                    批次号:{{ row.id }} |
+                    <el-tag v-if="row.order_type == 0" type="warning">
+                      线下开单
+                    </el-tag>
+                    <el-tag v-if="row.order_type == 1" type="success">
+                      小程序订货商城
+                    </el-tag>
+                  </div>
+                  <div style="margin: 5px 0">
                     <div v-if="row.sum_num == null">{{ row.info.name }}0件</div>
                     <div v-if="row.sum_num == 1">{{ row.info.name }}1件</div>
                     <div v-else>
                       {{ row.info.name }}...等{{ row.sum_num }}件
                     </div>
-                  </div>
-                  <div style="margin: 5px 0">
-                    批次号:{{ row.id }} | {{ row.sn }}
-                  </div>
-                  <div>
-                    订单来源:
-                    <span v-if="row.order_type == 0">线下开单</span>
-                    <span v-if="row.order_type == 1">线上订单</span>
                   </div>
                   <div style="margin: 5px 0 0 0">订单时间:{{ row.ctime }}</div>
                 </div>
@@ -183,10 +207,10 @@
                   />
                   <el-image
                     :src="row.avatar"
-                    style="width: 50px; height: 50px; margin-top: 20px"
+                    style="width: 50px; height: 50px"
                   />
                 </el-tooltip>
-                <div style="margin-top: 20px; margin-left: 10px">
+                <div style="margin-left: 10px">
                   <div style="font-size: 14px; font-weight: 600">
                     {{ row.name }}
                   </div>
@@ -279,9 +303,11 @@
         </template>
       </QYList>
     </el-card>
+    <!-- 详情抽屉 -->
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
       <Drawer :drawer-inof="drawerInof" />
     </el-drawer>
+    <!-- 备注编辑 -->
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
@@ -289,24 +315,33 @@
 <script>
   import Edit from '@/subview/components/Edit/OrderEdit'
   import Drawer from '@/subview/components/Drawer/OrderDrawer'
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     components: { Drawer, Edit },
     mixins: [datajosn],
     data() {
       return {
+        // 打印配货单按钮状态
+        printSelect: true,
+        // 列表选中数据
+        selectRowsId: [],
+        // 抽屉数据,状态
         drawerInof: {},
         drawer: false,
-        // 表格 tab 数据
+        //  tabs 数据
         orderCountData: {
           erp_count: null,
           shop_count: null,
           all_order: null,
         },
+        // 页数，条数，表单查询条件 ，表单组件和列表组件的类型,列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
         form: {
+          region1: '1',
+          region2: '1',
           order_sort: 2,
           region: '1',
           fold: true,
@@ -328,6 +363,7 @@
       }
     },
     watch: {
+      // 监听表单数据变化，重新请求列表数据
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -348,33 +384,51 @@
         },
         deep: true,
       },
+      // 监听列表选中数据，改变打印配货单按钮状态
+      selectRowsId: {
+        handler: function (newVal) {
+          if (newVal.length > 0) {
+            this.printSelect = false
+          } else {
+            this.printSelect = true
+          }
+        },
+        deep: true,
+      },
     },
     created() {
       this.fetchData()
       this.orderCount()
     },
     methods: {
-      changeBtnSta(data) {
-        this.form.fold = data
+      // 列表选中数据
+      handleSelectionChange(val) {
+        this.selectRowsId = val
       },
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // tabs 点击
       handleClick(tab) {
         this.order_source = tab.name
         this.form.page = 1
       },
+      // 重置
       resetForm() {
         this.form = this.$options.data().form
       },
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
@@ -398,6 +452,7 @@
         const { data } = await this.api.getOrderCount(this.formTemp)
         this.orderCountData = data
       },
+      // 详情抽屉
       handleDetail(row) {
         let order_status1 = ''
         row.order_status.forEach((item) => {
@@ -407,6 +462,7 @@
         this.drawerInof = JSON.parse(JSON.stringify(row))
         this.drawer = true
       },
+      // 备注编辑
       async handleEdit(row) {
         if (row.id) {
           this.$refs['edit'].showEdit(row)

@@ -10,6 +10,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件/操作按钮 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -58,6 +59,7 @@
       </div>
     </div>
     <el-card shadow="never" style="border: 0; border-radius: 5px">
+      <!-- 列表 -->
       <QYList
         :list="list"
         :list-type="listType"
@@ -111,6 +113,7 @@
   </div>
 </template>
 <script>
+  // 表格导出插件
   import table2excel from 'js-table2excel'
   export default {
     data() {
@@ -119,6 +122,7 @@
         selectRows: [],
         // 下拉框数据
         selectList: [],
+        // 页数，条数，表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -137,6 +141,7 @@
       }
     },
     watch: {
+      // 监听表单变化
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -162,9 +167,11 @@
       this.fetchData()
     },
     methods: {
+      // 列表选中
       selectBtnRows(data) {
         this.selectRows = data
       },
+      // 获取下拉框数据
       async getGoodsTypeList() {
         const { data } = await this.api.getCommonAllList({
           type: 'brand,season',
@@ -255,9 +262,11 @@
           this.$message.error('导出失败')
         }
       },
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 重置
       resetForm() {
         this.form = {
           page: 1,
@@ -267,14 +276,17 @@
           season_id: '', //季节
         }
       },
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 每页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {

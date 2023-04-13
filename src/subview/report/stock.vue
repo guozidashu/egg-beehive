@@ -20,6 +20,7 @@
         "
         @submit.native.prevent
       >
+        <!-- 查询条件 -->
         <span style="margin-top: 10px; font-size: 16px">库存统计</span>
         <div>
           <span style="font-size: 12px">更新时间：{{ time }}</span>
@@ -33,6 +34,7 @@
           </el-button>
         </div>
       </el-form>
+      <!-- 卡片、饼图 -->
       <QYTextLabels
         ref="multipleTable"
         :list="goodsStaList"
@@ -49,12 +51,8 @@
         <div id="chartmain" style="width: 400px; height: 400px"></div>
         <QYBranch :list="branSonChList" :style-chart="styleObj" />
       </div>
-      <!-- <vab-chart
-        :init-options="initOptions"
-        :option="option"
-        style="width: 100%; height: 400px"
-      /> -->
     </div>
+    <!-- 查询条件/列表 -->
     <div style="padding: 20px; background-color: white; border-radius: 5px">
       <el-form
         ref="form"
@@ -205,11 +203,6 @@
               {{ row.created | formatTime }}
             </template>
           </el-table-column>
-          <!-- <el-table-column align="center" label="操作" width="85">
-            <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">查看</el-button>
-            </template>
-          </el-table-column> -->
         </template>
       </QYList>
     </div>
@@ -217,21 +210,21 @@
 </template>
 
 <script>
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'GoodsStock',
     mixins: [datajosn],
     data() {
       return {
+        // 卡片饼图查询条件
         time: this.getNowTime(),
+        // 列表加载状态、列表组件的类型、下拉框数据、列表总数、列表数据、表单数据、页数、条数
         listLoading: false,
         listType: 1,
         selectList: [],
         total: 0,
         list: [],
-        goodsForm: {
-          category: '',
-        },
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -241,6 +234,7 @@
           category: '', //款式分类
           brand: '', //品牌
         },
+        // 卡片宽度，卡片数据
         widthStyle: '20%',
         goodsStaList: [
           {
@@ -349,6 +343,7 @@
               '刷新时间截止时，当前生产中库存成本金额+当前现货库存成本金额',
           },
         ],
+        // 年份饼图 样式 数据
         styleObj: {
           width: '400px',
           height: '400px',
@@ -356,20 +351,18 @@
           legendy: 350,
           center: ['50%', '50%'],
         },
+        branSonChList: [],
+        // 款式联调数据
+        // 款式饼图子级 legend数据 ，数据
         lengSonList: [],
+        branchList2: [],
+        // 款式饼图父级 legend数据 ，数据
         lengList: [],
         branchList: [],
-        branSonChList: [],
-        branchList2: [],
       }
     },
     watch: {
-      goodsForm: {
-        handler: function () {
-          this.fetchData()
-        },
-        deep: true,
-      },
+      // 列表查询条件监听
       goodsForm1: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -398,6 +391,7 @@
     },
     mounted() {},
     methods: {
+      // 款式联调饼图初始化
       initCharts() {
         let option = {
           tooltip: {
@@ -444,6 +438,7 @@
           }
         })
       },
+      // 卡片 ，饼图重置
       resetForm() {
         this.time = this.getNowTime()
         this.lengSonList = []
@@ -454,6 +449,7 @@
         this.fetchData()
         this.getCircular()
       },
+      // 列表重置
       resetForm1() {
         this.goodsForm1 = {
           page: 1,
@@ -462,20 +458,19 @@
           brand: '', //品牌
         }
       },
-
-      handleDetail() {},
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.goodsForm1.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.goodsForm1.pageSize = data
       },
+      // 获取卡片数据
       async fetchData() {
-        const { data } = await this.api.getStockStatistics({
-          category_id: this.goodsForm.category,
-        })
+        const { data } = await this.api.getStockStatistics()
         this.goodsStaList.forEach((item) => {
           for (let i in data) {
             if (item.name == i) {
@@ -489,6 +484,7 @@
           }
         })
       },
+      // 获取列表数据
       async tableData() {
         this.listLoading = true
         if (this.formTemp == null) {
@@ -499,6 +495,7 @@
         this.total = data.total
         this.listLoading = false
       },
+      // 获取年份饼图，获取款式父级，并默认获取第一个款式的子级
       async getCircular() {
         const { data } = await this.api.getStockCircular()
         data.category_stock_data.forEach((item, index) => {
@@ -529,6 +526,7 @@
           })
         })
       },
+      // 获取款式子级
       async getCircularSonCate(ID) {
         const { data } = await this.api.getStockCircularSonCate({
           category_id: ID,
@@ -544,33 +542,16 @@
         })
         this.initCharts()
       },
+      // 获取下拉框数据
       async getGoodsTypeList() {
         const { data } = await this.api.getCommonAllList({
           type: 'brand,category',
         })
         this.selectList = data
       },
-
-      handleDownload() {
-        import('@/utils/excel').then((excel) => {
-          const tHeader = ['名称', '数量', '较昨日数量']
-          const filterVal = ['title', 'num', 'number']
-          const list = this.goodsStaList
-          const data = this.formatJson(filterVal, list)
-          excel.export_json_to_excel({
-            header: tHeader,
-            data,
-            filename: this.filename,
-          })
-        })
-      },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map((v) => filterVal.map((j) => v[j]))
-      },
     },
   }
 </script>
-
 <style lang="scss" scoped>
   .workbench-container {
     padding: 0 !important;

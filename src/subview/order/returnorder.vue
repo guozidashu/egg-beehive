@@ -10,6 +10,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件/操作按钮 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -70,6 +71,7 @@
         </el-button>
       </div>
     </div>
+    <!-- tabs/列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <el-tabs v-model="form.order_source" @tab-click="handleClick">
         <el-tab-pane :label="'所有退货单（' + count_data.all + '）'" name="0" />
@@ -142,14 +144,12 @@
         </template>
       </QYList>
     </el-card>
-    <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 <script>
-  import Edit from '@/subview/components/Edit/BandEdit'
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    components: { Edit },
     mixins: [datajosn],
     data() {
       return {
@@ -161,6 +161,7 @@
         },
         // tab 页签
         order_source: '0',
+        // 页数，条数，表单查询条件 ，表单组件和列表组件的类型,列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -181,6 +182,7 @@
       }
     },
     watch: {
+      // 监听表单变化
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -217,9 +219,11 @@
           this.$message.error('导出失败')
         }
       },
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 重置
       resetForm() {
         this.form = {
           search_type: 'id', //搜索条件 sn订单号 goods_sn商品款号 id批次号
@@ -231,17 +235,21 @@
           customer_name: '',
         }
       },
+      // tab 点击
       handleClick(tab) {
         this.order_source = tab.name
       },
+      // 页数改变
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 条数改变
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {

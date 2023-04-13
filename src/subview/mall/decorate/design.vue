@@ -13,6 +13,7 @@
           </el-button>
         </el-form-item>
         <div style="display: flex">
+          <!-- 父级 -->
           <el-menu
             class="el-menu-vertical-demo"
             default-active="1"
@@ -31,14 +32,9 @@
               </div>
             </el-menu-item>
           </el-menu>
-          <!-- <div style="width: 20%; margin: 0 10px">
-            <el-image
-              src="https://img.quanyu.link/FkL2qE-LQsk722tfQeTsA-Px-zec"
-              style="height: 100%"
-            />
-          </div> -->
           <div style="width: 85%; padding: 20px">
             <div style="margin-bottom: 20px">
+              <!-- 查询条件 -->
               <el-form class="demo-form-inline" :inline="true" :model="form">
                 <el-form-item label="模板名称">
                   <el-input v-model="form.name" placeholder="请输入模板名称" />
@@ -62,7 +58,7 @@
                 </el-form-item>
               </el-form>
             </div>
-
+            <!-- 列表 -->
             <QYList
               :list="list"
               :list-type="listType"
@@ -112,13 +108,6 @@
                     >
                       删除
                     </el-button>
-                    <!-- <el-button
-                      v-has-permi="['btn:DecorateDesign:view']"
-                      type="text"
-                      @click="handleEdit(row, 3)"
-                    >
-                      预览
-                    </el-button> -->
                     <el-button
                       v-if="row.is_default != 1"
                       v-has-permi="['btn:DecorateDesign:default']"
@@ -135,6 +124,7 @@
         </div>
       </el-form>
     </el-card>
+    <!-- 新增编辑模板弹窗 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible" width="500px">
       <el-form ref="form1" :model="form1" :rules="rules1">
         <el-form-item v-if="title == '选择模板类型'" label="模板类型" prop="lx">
@@ -157,9 +147,6 @@
             示例：2023春季（以波段命名）
           </div>
         </el-form-item>
-        <el-form-item v-if="title == '预览'">
-          <el-image :src="imgInof" />
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dia_close">取 消</el-button>
@@ -181,11 +168,15 @@
     name: 'DecorateTheme',
     data() {
       return {
-        imgInof: 'https://img.quanyu.link/FmXf_fKJAUIXbIj7UHf8adcXMNZu',
+        // 弹窗标题
         title: '',
+        // 模板类型下拉框数据
         template_class: [],
+        // 弹窗状态
         dialogFormVisible: false,
+        // 父级菜单
         menuList: [],
+        // 页数，条数，表单查询条件 ，列表组件的类型,列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -199,10 +190,12 @@
         list: [],
         listLoading: false,
         total: 0,
+        // 弹窗表单数据
         form1: {
           lx: '',
           name: '',
         },
+        // 弹窗表单验证规则
         rules1: {
           lx: [{ required: true, message: '请选择模板类型', trigger: 'blur' }],
           name: [
@@ -212,6 +205,7 @@
       }
     },
     watch: {
+      // 监听表单数据变化
       form: {
         handler(newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -237,11 +231,13 @@
       this.fetchData()
     },
     methods: {
+      // 点击父级菜单
       handleGrouPQuery(item) {
         this.form.page = 1
         this.form.class_id = item.id
         this.fetchData()
       },
+      // 编辑保存
       async subit() {
         if (this.form1.name == '') {
           this.$message({
@@ -261,10 +257,12 @@
           }
         }
       },
+      // 重置
       rest() {
         this.form.name = ''
         this.form.class_id = null
       },
+      // 获取下拉框数据，父级菜单数据
       async getTypeList() {
         const { data } = await this.api.getCommonAllList({
           type: 'template_class',
@@ -273,9 +271,11 @@
         this.form.class_id = data.template_class[0].id
         this.template_class = data.template_class
       },
+      // 弹窗关闭
       dia_close() {
         this.dialogFormVisible = false
       },
+      // 弹窗新增跳转
       dia_subit() {
         this.$refs['form1'].validate(async (valid) => {
           if (valid) {
@@ -287,6 +287,7 @@
           }
         })
       },
+      // 新增编辑弹窗判断显示
       handleEdit(item, type) {
         if (item == 0) {
           this.title = '选择模板类型'
@@ -311,6 +312,7 @@
           }
         }
       },
+      // 设置默认
       setDefault(item) {
         this.$confirm('确定设置为默认模板吗?', '提示', {
           confirmButtonText: '确定',
@@ -335,6 +337,7 @@
             })
           })
       },
+      // 删除
       delTemplateDelBtn(item) {
         this.$confirm('此操作将永久删除该模板, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -359,14 +362,17 @@
       },
       handleOpen() {},
       handleClose() {},
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
+      // 获取列表
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
@@ -380,4 +386,3 @@
     },
   }
 </script>
-<style lang="scss"></style>

@@ -9,6 +9,7 @@
             border-radius: 5px;
           "
         >
+          <!-- 查询条件 -->
           <el-form
             ref="form"
             :inline="true"
@@ -51,6 +52,7 @@
               </el-button>
             </el-form-item>
           </el-form>
+          <!-- 卡片折线图 -->
           <QYTextLabels
             ref="multipleTable"
             :list="goodsStaList"
@@ -64,213 +66,13 @@
           />
         </div>
       </el-col>
-      <!-- <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24">
-        <div
-          style="
-            padding: 20px;
-            margin-top: 20px;
-            background-color: white;
-            border-radius: 5px;
-          "
-        >
-          <el-form
-            ref="form"
-            :inline="true"
-            label-width="80px"
-            :model="goodsForm1"
-            style="display: flex; justify-content: space-between"
-            @submit.native.prevent
-          >
-            <span style="margin-top: 10px; font-size: 16px">交易排行</span>
-            <el-form-item style="margin-right: 0">
-              <el-form-item label="统计类型:" prop="type">
-                <el-select
-                  v-model="goodsForm1.order"
-                  size="small"
-                  style="width: 150px"
-                >
-                  <el-option
-                    v-for="(item, index) in orderList"
-                    :key="index"
-                    :label="item.name"
-                    :value="item.value"
-                  />
-                </el-select>
-              </el-form-item>
-              <el-form-item label="时间筛选:" prop="time">
-                <el-date-picker
-                  v-model="goodsForm1.time"
-                  align="right"
-                  :clearable="false"
-                  :default-time="['00:00:00', '23:59:59']"
-                  end-placeholder="结束日期"
-                  format="yyyy-MM-dd"
-                  :picker-options="pickerOptions"
-                  range-separator="至"
-                  start-placeholder="开始日期"
-                  type="daterange"
-                  unlink-panels
-                  value-format="yyyy-MM-dd HH:mm:ss"
-                />
-                <el-button
-                  size="small"
-                  style="margin-left: 10px"
-                  type="primary"
-                  @click="resetForm1()"
-                >
-                  重置
-                </el-button>
-              </el-form-item>
-            </el-form-item>
-          </el-form>
-          <QYList
-            :list="goosList"
-            :list-type="listType"
-            :state="listLoading"
-            :total="listTotal"
-            @changePage="changeBtnPage"
-            @changePageSize="changeBtnPageSize"
-          >
-            <template #List>
-              <el-table-column
-                align="center"
-                label="排行"
-                type="index"
-                width="60"
-              >
-                <template slot-scope="scope">
-                  <span
-                    class="index_common"
-                    :class="[
-                      scope.$index + 1 == '1'
-                        ? 'index_one'
-                        : scope.$index + 1 == '2'
-                        ? 'index_two'
-                        : scope.$index + 1 == '3'
-                        ? 'index_three'
-                        : 'index_more',
-                    ]"
-                  >
-                    {{ scope.$index + 1 }}
-                  </span>
-                </template>
-              </el-table-column>
-              <el-table-column
-                align="center"
-                label="营业额"
-                prop="sum_final_amount"
-                show-overflow-tooltip
-              >
-                <template #default="{ row }">
-                  <el-tag>￥{{ row.sum_final_amount | moneyFormat }}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column
-                align="center"
-                label="交易毛利金额"
-                prop="sum_final_amount"
-                show-overflow-tooltip
-              >
-                <template #default="{ row }">
-                  <el-tag>￥{{ row.sum_final_amount | moneyFormat }}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column
-                align="center"
-                label="商品支付金额"
-                prop="cost_price"
-                show-overflow-tooltip
-              >
-                <template #default="{ row }">
-                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column
-                align="center"
-                label="会员保证金"
-                prop="cost_price"
-                show-overflow-tooltip
-              >
-                <template #default="{ row }">
-                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column
-                align="center"
-                label="收银金额"
-                prop="cost_price"
-                show-overflow-tooltip
-              >
-                <template #default="{ row }">
-                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column
-                align="center"
-                label="支出金额"
-                prop="cost_price"
-                show-overflow-tooltip
-              >
-                <template #default="{ row }">
-                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column
-                align="center"
-                label="商品退款金额"
-                prop="cost_price"
-                show-overflow-tooltip
-              >
-                <template #default="{ row }">
-                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column
-                align="center"
-                label="实际营收"
-                prop="cost_price"
-                show-overflow-tooltip
-              >
-                <template #default="{ row }">
-                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column
-                align="center"
-                label="销售成本"
-                prop="cost_price"
-                show-overflow-tooltip
-              >
-                <template #default="{ row }">
-                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column
-                align="center"
-                label="销售毛利"
-                prop="cost_price"
-                show-overflow-tooltip
-              >
-                <template #default="{ row }">
-                  <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column
-                align="center"
-                label="订单日期"
-                prop="last_order_time"
-                show-overflow-tooltip
-              />
-            </template>
-          </QYList>
-        </div>
-      </el-col> -->
     </el-row>
   </div>
 </template>
 
 <script>
   import VabChart from '@/extra/VabChart'
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'FinancialOverview',
@@ -280,47 +82,11 @@
     mixins: [datajosn],
     data() {
       return {
-        listLoading: false,
-        listType: 1,
-        listTotal: 0,
-        goosList: [],
-        orderList: [
-          {
-            name: '营业额',
-            value: 'count_order',
-          },
-          {
-            name: '交易毛利金额',
-            value: 'sum_num',
-          },
-          {
-            name: '会员保证金',
-            value: 'sum_final_amount',
-          },
-          {
-            name: '收银金额',
-            value: 'gross_profit',
-          },
-          {
-            name: '实际营收',
-            value: 'sale_arrears',
-          },
-          {
-            name: '销售毛利',
-            value: 'sale_arrears',
-          },
-        ],
-        goodsForm1: {
-          page: 1,
-          pageSize: 20,
-          brand: null,
-          order: 'sum_num',
-          time: this.getPastTime(30),
-        },
-        filename: '交易数据分析',
+        // 卡片折线图查询条件
         goodsForm: {
           time: this.getPastTime(30),
         },
+        // 折线图数据 y轴 x轴 配置
         dateList: [],
         dataAllList: {
           cashier_price: [],
@@ -328,6 +94,11 @@
           turnover: [],
           gross_profit_amount: [],
         },
+        initOptions: {
+          renderer: 'svg',
+        },
+        option: {},
+        // 卡片 宽度 数据
         textwidth: '20%',
         goodsStaList: [
           {
@@ -433,13 +204,10 @@
             content: '在选定条件下，销售单实际应收金额-商品成本金额',
           },
         ],
-        initOptions: {
-          renderer: 'svg',
-        },
-        option: {},
       }
     },
     watch: {
+      // 监听卡片，折线图数据查询条件
       goodsForm: {
         handler: function () {
           this.branchList = []
@@ -455,40 +223,19 @@
         },
         deep: true,
       },
-      goodsForm1: {
-        handler: function () {
-          this.getTableList()
-        },
-        deep: true,
-      },
     },
     created() {
       this.fetchData()
       this.getCardList()
-      // this.getTableList()
     },
     methods: {
-      changeBtnPage(data) {
-        this.goodsForm1.page = data
-      },
-
-      changeBtnPageSize(data) {
-        this.goodsForm1.pageSize = data
-      },
-      resetForm1() {
-        this.goodsForm1 = {
-          page: 1,
-          pageSize: 20,
-          order: null,
-          brand: null,
-          time: this.getPastTime(30),
-        }
-      },
+      // 重置
       resetForm() {
         this.goodsForm = {
           time: this.getPastTime(30),
         }
       },
+      // 获取卡片数据
       async getCardList() {
         const { data } = await this.api.getTradeList(this.goodsForm)
         this.goodsStaList.forEach((item) => {
@@ -504,6 +251,7 @@
           }
         })
       },
+      // 获取折线图数据
       async fetchData() {
         const { data } = await this.api.getTradeBasic(this.goodsForm)
         let arr = []
@@ -682,35 +430,6 @@
           ],
         }
       },
-      async getTableList() {
-        this.listLoading = true
-        const { data } = await this.api.getHotStyleAnalysis(this.goodsForm1)
-        if (data.arrears_type == 0) {
-          this.orderList[4].value = 'sale_arrears'
-        } else {
-          this.orderList[4].value = 'delivery_arrears'
-        }
-        this.goosList = data.list.data
-        this.listTotal = data.list.total
-        this.listLoading = false
-      },
-
-      // handleDownload() {
-      //   import('@/utils/excel').then((excel) => {
-      //     const tHeader = ['名称', '数量']
-      //     const filterVal = ['title', 'num']
-      //     const list = this.goodsStaList
-      //     const data = this.formatJson(filterVal, list)
-      //     excel.export_json_to_excel({
-      //       header: tHeader,
-      //       data,
-      //       filename: this.filename,
-      //     })
-      //   })
-      // },
-      // formatJson(filterVal, jsonData) {
-      //   return jsonData.map((v) => filterVal.map((j) => v[j]))
-      // },
     },
   }
 </script>

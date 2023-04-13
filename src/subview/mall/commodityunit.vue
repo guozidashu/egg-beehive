@@ -1,11 +1,12 @@
 <template>
   <div style="background-color: #f6f8f9">
     <el-row :gutter="20">
+      <!-- 父级列表 -->
       <el-col :lg="6" :md="8" :sm="24" :xl="4" :xs="24">
         <el-card
           shadow="never"
           style="
-            height: calc(97vh);
+            min-height: calc(73vh);
             overflow: auto;
             border: 0;
             border-radius: 5px;
@@ -61,6 +62,7 @@
           </el-menu>
         </el-card>
       </el-col>
+      <!-- 子级列表和操作按钮 -->
       <el-col :lg="18" :md="16" :sm="24" :xl="20" :xs="24">
         <el-card shadow="never" style="border: 0; border-radius: 5px">
           <el-form ref="form" :inline="true" @submit.native.prevent>
@@ -85,13 +87,6 @@
                 移除商品
               </el-button>
             </el-form-item>
-            <!-- <el-form-item label="款式名称：" style="float: right">
-              <el-input
-                v-model="form.name"
-                clearable
-                placeholder="请输入款式名称"
-              />
-            </el-form-item> -->
           </el-form>
           <QYList
             :list="list"
@@ -154,6 +149,7 @@
     components: { Edit },
     data() {
       return {
+        // 选中数据，页数，条数，表单查询条件 ，父级数据，表单组件和列表组件的类型，子级列表数据，列表加载状态，列表总数
         selectRowsId: [],
         form: {
           id: 0,
@@ -170,6 +166,7 @@
       }
     },
     watch: {
+      // 监听表单数据变化，变化时重新请求列表数据
       form: {
         handler: function (val) {
           this.fetchList(val.id)
@@ -181,9 +178,11 @@
       this.fetchData()
     },
     methods: {
+      // 列表选中
       handleSelectionChange(val) {
         this.selectRowsId = val
       },
+      // 移除商品
       handleDel() {
         if (this.selectRowsId.length > 0) {
           this.$baseConfirm('你确定要移除当前项吗', null, async () => {
@@ -202,6 +201,7 @@
           this.$baseMessage('请选择要移除的商品', 'warning')
         }
       },
+      // 新增编辑父级，添加商品到分组
       async handleEdit(row, type) {
         if (row === 'add') {
           this.$refs['edit'].showEdit(row, type)
@@ -213,9 +213,11 @@
           }
         }
       },
+      // 查询
       handleQuery() {
         this.form.page = 1
       },
+      // 删除分组
       handleDelete(row, type) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
@@ -236,12 +238,15 @@
           })
         }
       },
+      // 分页
       changeBtnPage(data) {
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
+      // 父级列表
       async fetchData() {
         const { data } = await this.api.getGoodsGroupList(this.form)
         let list = data
@@ -253,6 +258,7 @@
 
         this.fetchList(data[0].id)
       },
+      // 子级列表
       async fetchList(temp) {
         this.form.id = temp
         const {
@@ -266,6 +272,7 @@
         this.total = total
         // this.listLoading = false
       },
+      // 父级点击
       handleGrouPQuery(id, index) {
         this.form.id = id
         this.menuList.forEach((item) => {
@@ -275,21 +282,6 @@
       },
       handleOpen() {},
       handleClose() {},
-      mouseOver(index) {
-        if (this.menuList[index].btnIconStatus == false) {
-          this.menuList[index].btnIconStatus = true
-        } else {
-          this.menuList[index].btnIconStatus = false
-        }
-      },
-      mouseLeave(index) {
-        if (this.menuList[index].btnIconStatus == false) {
-          this.menuList[index].btnIconStatus = true
-        } else {
-          this.menuList[index].btnIconStatus = false
-        }
-      },
     },
   }
 </script>
-<style lang="scss" scoped></style>

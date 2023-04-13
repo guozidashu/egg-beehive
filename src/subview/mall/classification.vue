@@ -53,16 +53,16 @@
     components: { Edit },
     data() {
       return {
-        form: {
-          page: 1,
-          pageSize: 10,
-        },
         editForm: {
           status: 0, //0批量隐藏 1批量显示
           ids: [], //批量操作id
         },
+        // 页数，条数，表单查询条件 ，选中数据，表单组件和列表组件的类型，列表数据，列表加载状态
+        form: {
+          page: 1,
+          pageSize: 10,
+        },
         selectRowsId: [],
-        selectList: [],
         formType: 4,
         listType: 7,
         list: [],
@@ -70,6 +70,7 @@
       }
     },
     watch: {
+      // 监听表单变化，如果表单变化则重新获取数据
       form: {
         handler: function () {
           this.fetchData()
@@ -81,6 +82,7 @@
       this.fetchData()
     },
     methods: {
+      // 批量操作
       async handleBatch(type) {
         if (this.selectRowsId.length === 0) {
           this.$message({
@@ -152,9 +154,11 @@
           }
         }
       },
+      // 选中数据
       handleSelectionChange(val) {
         this.selectRowsId = val
       },
+      // 编辑
       handleEdit(row, type) {
         if (row === 'add') {
           this.$refs['edit'].showEdit(row, type)
@@ -166,15 +170,15 @@
           }
         }
       },
-
+      // 分页
       changeBtnPage(data) {
         this.form.page = data
       },
-
+      // 分页条数
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
-
+      // 获取数据
       async fetchData() {
         this.listLoading = true
         const { data } = await this.api.getShopGoodsCategoryTree(this.form)
@@ -184,4 +188,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

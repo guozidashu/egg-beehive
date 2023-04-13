@@ -2,9 +2,6 @@
   <div style="padding: 20px; border-radius: 5px">
     <div style="font-weight: 600">商城配置</div>
     <el-divider style="margin-bottom: 0" />
-    <!-- <div class="textCss" style="margin-bottom: 25px">
-      <p style="font-weight: 600">使用说明</p>
-    </div> -->
     <el-radio-group v-model="activeName" style="margin-bottom: 20px">
       <el-radio-button label="基础配置" />
       <el-radio-button label="注册协议" />
@@ -142,30 +139,6 @@
             <el-radio :label="1">开启</el-radio>
           </el-radio-group>
         </el-form-item>
-        <!-- <div style="display: flex">
-          <el-form-item label="主色调" prop="main_color">
-            <el-input v-model="form.main_color" style="width: 215px" />
-          </el-form-item>
-          <el-color-picker
-            v-model="form.main_color"
-            style="margin-left: 20px"
-          />
-          <span style="padding-top: 5px; margin-left: 20px; color: #999999">
-            商城主色调，如：#FD4A46
-          </span>
-        </div>
-        <div style="display: flex">
-          <el-form-item label="辅色调" prop="assist_color">
-            <el-input v-model="form.assist_color" style="width: 215px" />
-          </el-form-item>
-          <el-color-picker
-            v-model="form.assist_color"
-            style="margin-left: 20px"
-          />
-          <span style="padding-top: 5px; margin-left: 20px; color: #999999">
-            商城辅色调，如：#7E71F6
-          </span>
-        </div> -->
         <el-form-item>
           <el-button
             v-has-permi="['btn:Mallhopping:save']"
@@ -200,14 +173,6 @@
         <el-form-item label="文章ID" prop="article_id">
           <el-input v-model="form1.article_id" style="width: 215px" />
         </el-form-item>
-        <!-- <el-form-item class="vab-quill-content" label="内容" prop="content">
-          <vab-quill
-            ref="vab-quill"
-            v-model="form1.register_content"
-            :min-height="400"
-            :options="options"
-          />
-        </el-form-item> -->
         <el-form-item>
           <el-button
             v-has-permi="['btn:Mallhopping:save']"
@@ -231,74 +196,26 @@
       url="/upload"
       @submitUpload="getSon"
     />
-    <!-- <vab-upload
-      v-if="uploadType == 2"
-      ref="vabUpload"
-      :limit="50"
-      name="file"
-      :size="2"
-      url="/upload"
-      @submitUpload="getSon"
-    /> -->
   </div>
 </template>
 <script>
   import VabUpload from '@/extra/VabUpload'
   import SmallProgram from '@/subview/components/Form/SmallProgram.vue'
   import PayProgram from '@/subview/components/Form/PayProgram.vue'
-  // import VabQuill from '@/extra/VabQuill'
   export default {
     name: 'SystemStore',
     components: {
       VabUpload,
       SmallProgram,
       PayProgram,
-      // VabQuill,
     },
     data() {
       return {
+        // 上传类型
         uploadType: 1,
+        // tabs切换
         activeName: '基础配置',
-        // options: {
-        //   theme: 'snow',
-        //   bounds: document.body,
-        //   debug: 'warn',
-        //   modules: {
-        //     toolbar: {
-        //       container: [
-        //         ['bold', 'italic', 'underline', 'strike'],
-        //         [{ header: [1, 2, 3, 4, 5, 6, false] }],
-        //         [{ size: ['small', false, 'large', 'huge'] }],
-        //         [{ color: [] }, { background: [] }],
-        //         ['blockquote', 'code-block'],
-        //         [{ list: 'ordered' }, { list: 'bullet' }],
-        //         [{ script: 'sub' }, { script: 'super' }],
-        //         [{ indent: '-1' }, { indent: '+1' }],
-        //         [{ align: [] }],
-        //         [{ direction: 'rtl' }],
-        //         [{ font: [] }],
-        //         ['clean'],
-        //         ['link', 'image'],
-        //       ],
-        //       handlers: {
-        //         image: () => {
-        //           this.$baseConfirm(
-        //             '点击上传图片',
-        //             '上传图片',
-        //             () => {
-        //               this.handleShow(2)
-        //             },
-        //             () => {},
-        //             '上传',
-        //             '取消'
-        //           )
-        //         },
-        //       },
-        //     },
-        //   },
-        //   placeholder: '内容...',
-        //   readOnly: false,
-        // },
+        // 基础配置表单
         form: {
           forced_production: 0,
           look_stock: 0,
@@ -318,11 +235,10 @@
           customer_service_url: '', //客服系统链接
           wechat_service_url: '', //微信客服url
           wechat_service_corpid: '', //微信客服企业id
-          // main_color: '#FD4A46', //主色调
-          // assist_color: '#7E71F6', //辅色调
           screen_notice_state: null, //是否开启截图提醒 1开启 2关闭
           screen_notice_content: null, //截图提醒文本
         },
+        // 基础配置验证规则
         rules: {
           forced_production: [
             {
@@ -466,11 +382,13 @@
             { required: true, message: '请上传商家底部图片', trigger: 'blur' },
           ],
         },
+        // 注册协议表单
         form1: {
           register_status: '0', //0不开启 1开启
           register_name: '测试', //注册协议名称
           article_id: null, //注册协议内容
         },
+        // 注册协议验证规则
         rules1: {
           register_status: [
             {
@@ -495,6 +413,7 @@
       }
     },
     watch: {
+      // tabs 切换
       activeName: {
         handler: function (val) {
           if (val == '基础配置') {
@@ -510,6 +429,7 @@
       this.fetchData()
     },
     methods: {
+      // 上传回调
       getSon(data) {
         if (this.uploadType == 1) {
           this.form.logo = data[0]
@@ -526,10 +446,12 @@
         }
         this.$forceUpdate()
       },
+      // 上传显示
       handleShow(type) {
         this.uploadType = type
         this.$refs['vabUpload'].handleShow()
       },
+      // 基础配置获取数据
       async fetchData() {
         const { data } = await this.api.getBaseConfigDetail()
         this.form = JSON.parse(data)
@@ -537,11 +459,13 @@
           this.form.customer_service_type
         )
       },
+      // 注册协议获取数据
       async fetchData1() {
         const { data } = await this.api.getRegisterDealDetail()
         this.form1 = JSON.parse(data)
         this.form1.register_status = Number(this.form1.register_status)
       },
+      // 基础配置保存
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
@@ -556,6 +480,7 @@
           }
         })
       },
+      // 注册协议保存
       submitForm1(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {

@@ -12,7 +12,7 @@
       style="height: 347px"
     >
       <template #List>
-        <el-table-column label="批次" prop="id" width="50" />
+        <el-table-column label="批次" prop="id" width="80" />
         <el-table-column label="订单来源" prop="online">
           <template #default="{ row }">
             <el-tag v-if="row.online == 1">线上</el-tag>

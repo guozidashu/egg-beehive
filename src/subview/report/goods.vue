@@ -8,6 +8,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 卡片，折线图查询条件 -->
       <el-form
         ref="form"
         :inline="true"
@@ -59,87 +60,35 @@
               unlink-panels
               value-format="yyyy-MM-dd HH:mm:ss"
             />
-            <!-- <el-button
-              size="small"
-              style="margin: 0 0 0 10px"
-              type="primary"
-              @click="handleDownload"
-            >
-              导出
-            </el-button> -->
             <el-button size="small" type="primary" @click="resetForm()">
               重置
             </el-button>
           </el-form-item>
         </el-form-item>
       </el-form>
+      <!-- 卡片 -->
       <div style="display: flex; flex-wrap: wrap; margin: 0 0 10px 0">
         <QYTextLabels ref="multipleTable" :list="goodsStaList" />
       </div>
+      <!-- 折线图 -->
       <vab-chart
         :init-options="initOptions"
         :option="option"
         style="width: 100%; height: 400px"
       />
     </div>
+    <!-- 爆款分析查询条件、列表 -->
     <div style="padding: 20px; background-color: white; border-radius: 5px">
       <div style="margin: 0 0 20px 0; font-size: 16px">爆款分析</div>
-      <el-form
-        ref="form"
-        :inline="true"
-        label-width="80px"
-        :model="goodsForm1"
-        @submit.native.prevent
-      >
-        <el-form-item label="统计类型:" prop="type">
-          <el-select
-            v-model="goodsForm1.type"
-            size="small"
-            style="width: 150px"
-          >
-            <el-option label="本期销量" :value="-1" />
-            <el-option label="本期销售额" value="sum_total" />
-            <el-option label="上架时间" value="g.upper_time" />
-            <el-option label="整手" :value="0" />
-            <el-option label="散码" :value="1" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="季节:" prop="season">
-          <el-select
-            v-model="goodsForm1.season"
-            placeholder="请选择季节"
-            style="width: 150px"
-          >
-            <el-option
-              v-for="(item, index) in selectList.season"
-              :key="index"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="品牌:" prop="brand">
-          <el-select
-            v-model="goodsForm1.brand"
-            placeholder="请选择品牌"
-            style="width: 150px"
-          >
-            <el-option
-              v-for="(item, index) in selectList.brand"
-              :key="index"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="商品搜索:">
-          <el-input
-            v-model="goodsForm1.sn"
-            placeholder="请输入商品款号"
-            style="width: 215px"
-          />
-        </el-form-item>
-        <el-form-item label="时间筛选:" prop="time">
+      <el-form ref="form" label-width="80px" :model="goodsForm1">
+        <el-form-item label="统计时间">
+          <el-radio-group v-model="time">
+            <el-radio-button label="今日" />
+            <el-radio-button label="昨日" />
+            <el-radio-button label="近7天" />
+            <el-radio-button label="近15天" />
+            <el-radio-button label="近30天" />
+          </el-radio-group>
           <el-date-picker
             v-model="goodsForm1.time"
             align="right"
@@ -150,24 +99,149 @@
             :picker-options="pickerOptions"
             range-separator="至"
             start-placeholder="开始日期"
+            style="margin-left: 10px"
             type="daterange"
             unlink-panels
             value-format="yyyy-MM-dd HH:mm:ss"
           />
         </el-form-item>
-        <el-form-item>
-          <el-radio-group
-            v-model="goodsForm1.goods_type"
-            style="margin-right: 10px"
-          >
-            <el-radio-button :label="1">按款号</el-radio-button>
-            <el-radio-button :label="2">按规格</el-radio-button>
-          </el-radio-group>
-          <el-button size="small" type="primary" @click="resetForm1()">
-            重置
-          </el-button>
+        <el-form-item label="商品特征">
+          <QYPopover
+            v-model="goodsForm1.brand"
+            :list="selectList.brand"
+            :name="'品牌'"
+          />
+          <QYPopover
+            v-model="goodsForm1.year"
+            :list="selectList.year"
+            :name="'年份'"
+          />
+          <QYPopover
+            v-model="goodsForm1.season"
+            :list="selectList.season"
+            :name="'季节'"
+          />
+          <QYPopover
+            v-model="goodsForm1.band"
+            :list="selectList.band"
+            :name="'上市波段'"
+          />
+          <QYPopover
+            v-model="goodsForm1.category"
+            :list="selectList.category"
+            :name="'商品款式'"
+          />
+          <QYPopover
+            v-model="goodsForm1.season"
+            :list="selectList.season"
+            :name="'商品分类'"
+          />
+        </el-form-item>
+        <el-form-item label="更多筛选">
+          <div style="display: flex; justify-content: space-between">
+            <div style="display: flex">
+              <QYPopover
+                v-model="goodsForm1.season"
+                :list="selectList.season"
+                :name="'尺码类型'"
+              />
+              <QYPopover
+                v-model="goodsForm1.season"
+                :list="selectList.season"
+                :name="'适用性别'"
+              />
+              <QYPopover
+                v-model="goodsForm1.season"
+                :list="selectList.season"
+                :name="'适用年龄段'"
+              />
+              <QYPopover
+                v-model="goodsForm1.season"
+                :list="selectList.season"
+                :name="'价格带'"
+              />
+              <QYPopover
+                v-model="goodsForm1.season"
+                :list="selectList.season"
+                :name="'推荐商品'"
+              />
+              <QYPopover
+                v-model="goodsForm1.season"
+                :list="selectList.season"
+                :name="'商品状态'"
+              />
+            </div>
+            <div style="display: flex">
+              <div>
+                合并同款
+                <el-popover placement="right" trigger="hover">
+                  <div style="font-size: 12px">1111</div>
+                  <vab-icon
+                    slot="reference"
+                    icon="question-line"
+                    style="position: relative; top: -2px; font-size: 14px"
+                  />
+                </el-popover>
+              </div>
+              <el-switch
+                v-model="goodsForm1.value"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                style="margin-top: 5px; margin-left: 10px"
+              />
+            </div>
+          </div>
+        </el-form-item>
+        <el-form-item label="查询操作">
+          <div style="display: flex; justify-content: space-between">
+            <div style="display: flex">
+              <el-select
+                v-model="goodsForm1.order"
+                size="small"
+                style="width: 150px"
+              >
+                <el-option label="按销量" :value="1" />
+                <el-option label="按销售额" :value="2" />
+                <el-option label="按动销客户数" :value="3" />
+                <el-option label="按商品毛利" :value="4" />
+                <el-option label="按上架时间" :value="5" />
+              </el-select>
+              <el-radio-group
+                v-model="goodsForm1.sort_type"
+                style="width: 120px; margin-left: 10px"
+              >
+                <el-radio-button label="asc">正序</el-radio-button>
+                <el-radio-button label="desc">倒序</el-radio-button>
+              </el-radio-group>
+              <el-checkbox v-model="goodsForm1.checked">减去退货数</el-checkbox>
+              <el-input
+                v-model="goodsForm1.input2"
+                placeholder="按商品款号搜索"
+                prefix-icon="el-icon-search"
+                style="width: 150px; margin-left: 10px"
+              />
+            </div>
+            <div style="display: flex">
+              <el-radio-group v-model="goodsForm1.sort_type" style="width: 200">
+                <el-radio-button label="asc">按款号</el-radio-button>
+                <el-radio-button label="desc">按规格</el-radio-button>
+              </el-radio-group>
+              <el-button size="small" style="margin-left: 10px" type="primary">
+                重置
+              </el-button>
+            </div>
+          </div>
         </el-form-item>
       </el-form>
+    </div>
+    <div
+      style="
+        padding: 20px;
+        margin: 20px 0;
+        background-color: white;
+        border-radius: 5px;
+      "
+    >
       <QYList
         :list="goosList"
         :list-type="listType"
@@ -201,106 +275,118 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column label="商品图片" prop="image" width="90">
+          <el-table-column label="商品信息" width="400">
             <template #default="{ row }">
-              <el-tooltip placement="top">
-                <el-image
-                  slot="content"
-                  :src="row.img"
-                  style="width: 200px; height: 200px"
-                />
-                <el-image :src="row.img" />
-              </el-tooltip>
+              <div style="display: flex">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.img"
+                    style="width: 200px; height: 200px"
+                  />
+                  <el-image :src="row.img" style="width: 80px; height: 80px" />
+                </el-tooltip>
+                <div style="width: 280px; margin-left: 10px">
+                  <div style="display: flex; justify-content: space-between">
+                    <div
+                      style="
+                        width: 150px;
+                        overflow: hidden;
+                        font-size: 14px;
+                        font-weight: 600;
+                        text-align: left;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      "
+                    >
+                      {{ row.sn }}
+                    </div>
+                    <el-tag>整手</el-tag>
+                  </div>
+                  <div style="margin: 5px 0 0 0">
+                    {{ row.name }} &nbsp;
+                    <span>
+                      {{ row.color_name }}
+                    </span>
+                    &nbsp;
+                    <span>
+                      {{ row.size_name }}
+                    </span>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 5px 0 0 0;
+                    "
+                  >
+                    <div>
+                      <span style="color: red">
+                        ￥{{ row.price | moneyFormat }}
+                      </span>
+                      ￥{{ row.sale_price | moneyFormat }}
+                    </div>
+                    <div>
+                      {{ row.upper_time | formatTime }}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </template>
           </el-table-column>
-          <el-table-column label="商品名称" prop="name" />
-          <el-table-column
-            v-if="goodsForm1.goods_type == 2"
-            label="颜色"
-            prop="color_name"
-          />
-          <el-table-column
-            v-if="goodsForm1.goods_type == 2"
-            label="尺码"
-            prop="size_name"
-          />
-          <el-table-column label="商品款号" prop="sn" width="100" />
-          <el-table-column
-            align="right"
-            label="吊牌价"
-            prop="sale_price"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="right"
-            label="销售价"
-            prop="price"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-tag>￥{{ row.price | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="right"
-            label="本期销售额"
-            prop="sum_total"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-tag>￥{{ row.sum_total | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column label="本期销量" prop="sum_num" width="120">
-            <template #default="{ row }">
-              <span v-if="row.sum_num == null">0</span>
-              <span v-else>{{ row.sum_num }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="销售占比" prop="final_rate" width="120" />
-          <el-table-column label="预计售完天数" prop="expect_day" width="120" />
-          <el-table-column label="上架天数" prop="upper_day" width="80" />
-          <el-table-column label="上架时间" prop="upper_time" width="180">
-            <template #default="{ row }">
-              {{ row.upper_time | formatTime }}
-            </template>
-          </el-table-column>
-          <!-- <el-table-column label="毛利率(%)" prop="profit">
-            <template #default="{ row }">{{ row.profit * 100 }}%</template>
-          </el-table-column> -->
+          <el-table-column align="center" label="动销客户数" prop="sn" />
+          <el-table-column align="center" label="本期销量" prop="sum_num" />
+          <el-table-column align="center" label="本期销售额" prop="sum_total" />
+          <el-table-column align="center" label="实际销售额" prop="sum_num" />
+          <el-table-column align="center" label="实际销量" prop="sum_total" />
+          <el-table-column align="center" label="成本金额" prop="sum_total" />
+          <el-table-column align="center" label="商品毛利" prop="sum_total" />
           <el-table-column
             align="center"
             fixed="right"
             label="操作"
-            width="100"
+            width="150"
           >
             <template #default="{ row }">
               <el-button type="text" @click="handleDetail(row)">
                 单品分析
               </el-button>
+              &nbsp;
+              <el-dropdown>
+                <el-button class="el-dropdown-link" type="text">
+                  <span>更多</span>
+                  <vab-icon
+                    class="vab-dropdown-active"
+                    icon="arrow-up-s-line"
+                  />
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item>
+                    <el-button v-if="row.sn" type="text">测试</el-button>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </template>
           </el-table-column>
         </template>
       </QYList>
-      <el-drawer
-        :before-close="handleClose"
-        size="50%"
-        :title="title"
-        :visible.sync="drawer"
-      >
-        <Drawer :drawer-inof="drawerInof" />
-      </el-drawer>
     </div>
+    <!-- 单品分析抽屉 -->
+    <el-drawer
+      :before-close="handleClose"
+      size="50%"
+      :title="title"
+      :visible.sync="drawer"
+    >
+      <Drawer :drawer-inof="drawerInof" />
+    </el-drawer>
   </div>
 </template>
 
 <script>
   import Drawer from '@/subview/components/Drawer/ReportGoodsDrawer'
   import VabChart from '@/extra/VabChart'
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'GoodsStatistical',
@@ -308,19 +394,17 @@
     mixins: [datajosn],
     data() {
       return {
+        time: '近7天',
+        // 表格类型 按款号/按规格
         time1: '按款号',
+        // 单品分析抽屉 数据、状态、标题
         drawerInof: {},
         drawer: false,
         title: '单品分析',
-        filename: '商品数据分析',
+        // 列表加载状态、列表组件的类型、列表数据、列表总数、表单查询条件、页数、条数
         listLoading: false,
         listType: 1,
         goosList: [],
-        goodsForm: {
-          type: null,
-          brand: null,
-          time: this.getPastTime(30),
-        },
         total: 0,
         formTemp: null,
         page: 1,
@@ -336,14 +420,24 @@
           season: null,
           time: this.getPastTime(30),
         },
+        // 下拉框数据
         selectList: [],
+        // 卡片、折线图 查询条件
+        goodsForm: {
+          type: null,
+          brand: null,
+          time: this.getPastTime(30),
+        },
+        // 折线图 日期轴
         dateList: [],
+        // 折线图 数据
         dataAllList: {
           sale_num: [],
           sale_total: [],
           return_num: [],
           return_total: [],
         },
+        // 卡片数据
         goodsStaList: [
           {
             title: '今日上新',
@@ -449,6 +543,7 @@
             content: '在选定条件下，所有成功提交订单的销售金额 - 退货金额',
           },
         ],
+        // 折线图 图表配置
         initOptions: {
           renderer: 'svg',
         },
@@ -456,6 +551,7 @@
       }
     },
     watch: {
+      // 监听折线图,卡片查询条件
       goodsForm: {
         handler: function () {
           this.tableData = []
@@ -471,6 +567,7 @@
         },
         deep: true,
       },
+      // 监听表格查询条件
       goodsForm1: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -490,6 +587,24 @@
         },
         deep: true,
       },
+      // 监听时间切换
+      time: {
+        handler: function (newVal) {
+          // 按钮时间切换
+          if (newVal == '今日') {
+            this.goodsForm1.time = this.getTodayTime()
+          } else if (newVal == '昨日') {
+            this.goodsForm1.time = this.getYesterdayTime()
+          } else if (newVal == '近7天') {
+            this.goodsForm1.time = this.getWeenTime()
+          } else if (newVal == '近15天') {
+            this.goodsForm1.time = this.getPastTime(15)
+          } else if (newVal == '近30天') {
+            this.goodsForm1.time = this.getPastTime(30)
+          }
+        },
+        deep: true,
+      },
     },
     created() {
       this.getTypeList()
@@ -497,12 +612,14 @@
       this.getTableList()
     },
     methods: {
+      // 单品分析
       handleDetail(row) {
         row.goods_type = this.goodsForm1.goods_type
         row.goods_time = this.goodsForm1.time
         this.drawerInof = JSON.parse(JSON.stringify(row))
         this.drawer = true
       },
+      // 折线图卡片 查询条件重置
       resetForm() {
         this.goodsForm = {
           season: null,
@@ -511,6 +628,7 @@
           time: this.getPastTime(30),
         }
       },
+      // 表格 查询条件重置
       resetForm1() {
         this.goodsForm1 = {
           page: 1,
@@ -523,20 +641,24 @@
           time: this.getPastTime(30),
         }
       },
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.goodsForm1.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.goodsForm1.pageSize = data
       },
+      // 获取下拉框数据
       async getTypeList() {
         const { data } = await this.api.getCommonAllList({
-          type: 'brand,season',
+          type: 'brand,season,year,band,category,agegroup',
         })
         this.selectList = data
       },
+      // 获取列表数据
       async getTableList() {
         this.listLoading = true
         if (this.formTemp == null) {
@@ -557,6 +679,7 @@
         this.total = data.total
         this.listLoading = false
       },
+      //获取 卡片、折线图数据
       async fetchData() {
         const { data } = await this.api.getGoodsList(this.goodsForm)
         this.goodsStaList.forEach((item) => {
@@ -763,25 +886,9 @@
           }
         })
       },
-
-      handleDownload() {
-        import('@/utils/excel').then((excel) => {
-          const tHeader = ['名称', '数量']
-          const filterVal = ['title', 'num']
-          const list = this.goodsStaList
-          const data = this.formatJson(filterVal, list)
-          excel.export_json_to_excel({
-            header: tHeader,
-            data,
-            filename: this.filename,
-          })
-        })
-      },
+      // 抽屉关闭
       handleClose() {
         this.drawer = false
-      },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map((v) => filterVal.map((j) => v[j]))
       },
     },
   }

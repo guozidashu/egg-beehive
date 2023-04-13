@@ -10,6 +10,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件/操作按钮 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -80,6 +81,7 @@
         </el-button>
       </div>
     </div>
+    <!-- 列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <QYList
         :list="list"
@@ -143,7 +145,7 @@
         </template>
       </QYList>
     </el-card>
-    <edit ref="edit" @fetch-data="fetchData" />
+    <!-- 导出类型弹窗 -->
     <el-dialog
       :before-close="handleClose"
       title="导出"
@@ -162,18 +164,17 @@
   </div>
 </template>
 <script>
-  import Edit from '@/subview/components/Edit/BandEdit'
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    components: { Edit },
     mixins: [datajosn],
     data() {
       return {
-        // 导出数据
+        // 导出弹窗状态, 导出Ids , 导出类型
         dialogVisible: false,
         ids: [],
         radio: 2,
-        // 列表表单数据
+        // 页数，条数，表单查询条件 ，表单组件和列表组件的类型，选中数据,列表数据，列表加载状态，列表总数
         page: 1,
         pageSize: 10,
         form: {
@@ -185,14 +186,15 @@
           order_time: this.getPastTime(30),
         },
         formType: 4,
-        selectRows: [],
         listType: 1,
+        selectRows: [],
         list: [],
         listLoading: false,
         total: 0,
       }
     },
     watch: {
+      // 监听表单变化
       form: {
         handler: function (newVal) {
           if (this.pageState) {
@@ -212,6 +214,7 @@
       this.fetchData()
     },
     methods: {
+      // 导出弹窗关闭
       handleClose() {
         this.dialogVisible = false
       },
@@ -235,7 +238,7 @@
           this.$message.error('导出失败')
         }
       },
-      // 导出选择数据
+      // 导出判断数据，导出全部，导出选中，导出单条
       handleDownload(type, row) {
         let temp = []
         if (type == 1) {
@@ -255,13 +258,11 @@
         this.ids = temp
         this.dialogVisible = true
       },
-      handleDerive() {
-        this.fetchData()
-      },
-
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 重置
       resetForm() {
         this.form = {
           sn: '',
@@ -272,17 +273,21 @@
           order_time: this.getPastTime(30),
         }
       },
+      // 页数改变
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 选中数据
       selectBtnRows(data) {
         this.selectRows = data
       },
+      // 条数改变
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
+      // 获取数据
       async fetchData() {
         this.listLoading = true
         const { data } = await this.api.getCustomerDeliveryOrderList({

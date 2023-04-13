@@ -10,6 +10,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 顶部查询条件 -->
       <el-form
         ref="form"
         :inline="true"
@@ -27,16 +28,6 @@
           <div style="font-size: 16px">客户分析</div>
         </el-form-item>
         <el-form-item>
-          <!-- <el-form-item label="客户渠道:">
-            <el-select v-model="goodsForm.source">
-              <el-option
-                v-for="item in selectList.customer_source"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item> -->
           <el-form-item
             label="时间筛选:"
             style="margin-right: 0; font-size: 12px"
@@ -55,14 +46,6 @@
               unlink-panels
               value-format="yyyy-MM-dd HH:mm:ss"
             />
-            <!-- <el-button
-              size="small"
-              style="margin-left: 10px"
-              type="primary"
-              @click="handleDownload"
-            >
-              导出
-            </el-button> -->
             <el-button
               size="small"
               style="margin-left: 10px"
@@ -75,10 +58,11 @@
         </el-form-item>
       </el-form>
     </div>
-
+    <!-- 顶部卡片 -->
     <el-row :gutter="20" style="padding: 0 10px 0 10px">
       <TextTags :list="textTagList" />
     </el-row>
+    <!-- 地图 / rfm ,等级 饼图 -->
     <el-row :gutter="20" style="padding: 0 10px 0 10px">
       <el-col :span="10" style="padding-left: 0">
         <div style="padding: 20px; background-color: white; border-radius: 5px">
@@ -109,6 +93,7 @@
         </div>
       </el-col>
     </el-row>
+    <!-- 客户销售查询条件/排行列表 -->
     <el-row :gutter="20" style="padding: 0 10px 0 10px">
       <div
         style="
@@ -224,18 +209,66 @@
                 </span>
               </template>
             </el-table-column>
+            <el-table-column label="客户信息" width="280">
+              <template #default="{ row }">
+                <div style="display: flex">
+                  <el-tooltip placement="top">
+                    <el-image
+                      slot="content"
+                      :src="row.avatar"
+                      style="width: 200px; height: 200px"
+                    />
+                    <el-image
+                      :src="row.avatar"
+                      style="width: 105px; height: 105px"
+                    />
+                  </el-tooltip>
+                  <div style="margin-left: 10px">
+                    <div
+                      style="
+                        width: 150px;
+                        overflow: hidden;
+                        font-weight: 600;
+                        text-align: left;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      "
+                    >
+                      {{ row.customer_name }}
+                    </div>
+                    <div style="margin: 5px 0 0 0; text-align: left">
+                      {{ row.mobile }}
+                    </div>
+                    <div style="width: 100%; margin: 5px 0 0 0">
+                      <el-tag type="info">
+                        {{ row.level_name }}
+                      </el-tag>
+
+                      <el-tag type="info">{{ row.type_name }}</el-tag>
+                    </div>
+                    <div style="margin: 5px 0 0 0; text-align: left">
+                      {{ row.create_time }}
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column
-              label="客户名称"
-              prop="customer_name"
-              width="150"
+              align="center"
+              label="订单数"
+              prop="count_order"
+              width="80"
             />
-            <el-table-column label="订单数" prop="count_order" width="100" />
-            <el-table-column label="拿货件数" prop="sum_num" width="100" />
             <el-table-column
-              align="right"
+              align="center"
+              label="拿货件数"
+              prop="sum_num"
+              width="80"
+            />
+            <el-table-column
+              align="center"
               label="拿货金额"
               prop="sum_final_amount"
-              width="150"
             >
               <template #default="{ row }">
                 <el-tag>￥{{ row.sum_final_amount | moneyFormat }}</el-tag>
@@ -243,10 +276,9 @@
             </el-table-column>
             <el-table-column
               v-if="$permissionFiltering('ReportCustomer', 'cost')"
-              align="right"
+              align="center"
               label="商品成本价"
               prop="cost_price"
-              width="150"
             >
               <template #default="{ row }">
                 <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
@@ -254,10 +286,9 @@
             </el-table-column>
             <el-table-column
               v-if="$permissionFiltering('ReportCustomer', 'profit')"
-              align="right"
+              align="center"
               label="预计毛利润"
               prop="gross_profit"
-              width="100"
             >
               <template #default="{ row }">
                 <el-tag>￥{{ row.gross_profit | moneyFormat }}</el-tag>
@@ -265,10 +296,9 @@
             </el-table-column>
             <el-table-column
               v-if="$permissionFiltering('ReportCustomer', 'payment')"
-              align="right"
+              align="center"
               label="客户回款"
               prop="voucher_amount"
-              width="150"
             >
               <template #default="{ row }">
                 <el-tag>￥{{ row.voucher_amount | moneyFormat }}</el-tag>
@@ -276,9 +306,8 @@
             </el-table-column>
             <el-table-column
               v-if="$permissionFiltering('ReportCustomer', 'arrears')"
-              align="right"
+              align="center"
               label="期末余额/欠款"
-              width="150"
             >
               <template #default="{ row }">
                 <div v-if="(orderList[4].value = 'sale_arrears')">
@@ -307,12 +336,21 @@
               </template>
             </el-table-column>
             <el-table-column
+              align="center"
               label="最近拿货天数"
               prop="last_order_day"
-              width="120"
             />
-            <el-table-column label="销售占比" prop="final_rate" width="120" />
-            <el-table-column label="最近拿货时间" prop="last_order_time" />
+            <el-table-column
+              align="center"
+              label="销售占比"
+              prop="final_rate"
+            />
+            <el-table-column
+              align="center"
+              label="最近拿货时间"
+              prop="last_order_time"
+              width="180"
+            />
             <el-table-column
               align="center"
               fixed="right"
@@ -334,7 +372,9 @@
 
 <script>
   import TextTags from '@/subview/components/Text/TextTags'
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
+  // 地图数据混入
   import mapjson from '@/assets/assets_josn/mapjson'
   export default {
     name: 'CustomerStatistical',
@@ -342,6 +382,7 @@
     mixins: [datajosn, mapjson],
     data() {
       return {
+        // 销售列表 统计类型下拉框
         orderList: [
           {
             name: '订单数',
@@ -364,6 +405,7 @@
             value: 'sale_arrears',
           },
         ],
+        // 销售列表 查询表单
         goodsForm1: {
           page: 1,
           pageSize: 20,
@@ -372,14 +414,18 @@
           order: 'sum_num',
           time: this.getPastTime(30),
         },
+        // 销售列表 加载状态，列表类型，列表数据
         listLoading: false,
         listType: 2,
         goosList: [],
+        // 顶部卡片，地图,饼图 查询条件
         goodsForm: {
           // source: null,
           time: this.getPastTime(30),
         },
+        // 品牌，等级下拉框数据
         selectList: [],
+        // 顶部卡片列表
         textTagList: [
           {
             title: '新增客户数',
@@ -417,7 +463,7 @@
             content: '在选定条件下，期末余额有欠款的客户数量合计',
           },
         ],
-        goodsStaList: [],
+        // 地图数据，标题，悬停数据
         mapTitle: '客户区域分布',
         mapType: {
           trigger: 'item',
@@ -432,6 +478,7 @@
             return res
           },
         },
+        // 饼图数据，rfm客户数据列表，标题，饼图样式
         branchList1: [
           {
             name: '活跃客户',
@@ -483,6 +530,7 @@
             },
           },
         },
+        // 饼图数据，客户等级数据列表，标题，饼图样式
         branchList: [],
         branchTitle: '客户等级分析',
         styleObj: {
@@ -495,6 +543,7 @@
       }
     },
     watch: {
+      // 监听 顶部卡片，地图,饼图 查询条件
       goodsForm: {
         handler: function () {
           this.branchList = []
@@ -535,6 +584,7 @@
         },
         deep: true,
       },
+      // 监听 客户分析表格 查询条件
       goodsForm1: {
         handler: function () {
           this.getTableList()
@@ -548,6 +598,7 @@
       this.getTableList()
     },
     methods: {
+      // 列表导出
       async handleDerive() {
         const { code, data } = await this.api.getHotStyleAnalysisExport(
           this.goodsForm1
@@ -560,6 +611,7 @@
           this.$message.error('导出失败')
         }
       },
+      // 列表详情跳转客户
       handleDetail(row) {
         this.$router.push({
           path: '/customer/customerManage',
@@ -569,6 +621,7 @@
           },
         })
       },
+      // 重置列表表单数据
       resetForm1() {
         this.goodsForm1 = {
           page: 1,
@@ -579,18 +632,21 @@
           time: this.getPastTime(30),
         }
       },
+      // 重置顶部卡片，地图,饼图 查询条件
       resetForm() {
         this.goodsForm = {
           // source: null,
           time: this.getPastTime(30),
         }
       },
+      // 获取下拉框数据
       async getTypeList() {
         const { data } = await this.api.getCommonAllList({
           type: 'customer_source,brand,customer_grade',
         })
         this.selectList = data
       },
+      // 获取 卡片，地图，饼图数据
       async fetchData() {
         const { data } = await this.api.getInformationCustomerList(
           this.goodsForm
@@ -666,6 +722,7 @@
           })
         })
       },
+      // 获取列表数据
       async getTableList() {
         this.listLoading = true
         const { data } = await this.api.getHotStyleAnalysis(this.goodsForm1)
@@ -677,25 +734,6 @@
         this.goosList = data.list.data
         this.listLoading = false
       },
-
-      handleDownload() {
-        import('@/utils/excel').then((excel) => {
-          const tHeader = ['名称', '数量', '较昨日数量']
-          const filterVal = ['title', 'num', 'number']
-          const list = this.goodsStaList
-          const data = this.formatJson(filterVal, list)
-          excel.export_json_to_excel({
-            header: tHeader,
-            data,
-            filename: this.filename,
-          })
-        })
-      },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map((v) => filterVal.map((j) => v[j]))
-      },
     },
   }
 </script>
-
-<style lang="scss" scoped></style>

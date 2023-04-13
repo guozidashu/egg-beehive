@@ -1,7 +1,9 @@
 <template>
   <div class="index-container">
     <el-row :gutter="20">
+      <!-- 卡片数据 -->
       <TextTags :list="textTagList" />
+      <!-- 销售目标 百分比-->
       <el-col :lg="24" :md="24" :sm="24" :xl="24" :xs="24">
         <div
           style="
@@ -68,6 +70,7 @@
         </div>
       </el-col>
       <el-col :lg="4" :md="4" :sm="4" :xl="4" :xs="4">
+        <!-- 年度销售目标 -->
         <el-card
           shadow="hover"
           style="
@@ -83,6 +86,7 @@
             ￥ {{ sale_data.target_total | moneyFormat }}
           </p>
         </el-card>
+        <!-- 目标完成率 -->
         <el-card
           shadow="hover"
           style="
@@ -96,6 +100,7 @@
           <p>目标完成率</p>
           <p style="font-size: 20px">{{ sale_data.completion_rate }}</p>
         </el-card>
+        <!-- 月均销售目标 -->
         <el-card
           shadow="hover"
           style="
@@ -113,6 +118,7 @@
         </el-card>
       </el-col>
       <el-col :lg="20" :md="20" :sm="20" :xl="20" :xs="20">
+        <!-- 折线图 -->
         <el-card shadow="hover" style="border-radius: 5px">
           <vab-chart
             :init-options="initOptions"
@@ -121,6 +127,7 @@
           />
         </el-card>
       </el-col>
+      <!-- 客户销售排名 -->
       <el-col :span="10">
         <el-card
           class="authorization"
@@ -170,6 +177,7 @@
           </div>
         </el-card>
       </el-col>
+      <!-- 客户回款排行 -->
       <el-col :span="10">
         <el-card
           class="authorization"
@@ -227,10 +235,12 @@
           </div>
         </el-card>
       </el-col>
+      <!-- 回款饼图 -->
       <el-col :span="4">
         <PaymentCollection :data="chartData" style="width: 100%" />
       </el-col>
     </el-row>
+    <!-- 设置销售目标弹窗 -->
     <edit ref="edit" />
   </div>
 </template>
@@ -240,6 +250,7 @@
   import TextTags from '@/subview/components/Text/SalesTargeTextTagst'
   import PaymentCollection from '@/subview/components/Chart/PaymentCollection'
   import VabChart from '@/extra/VabChart'
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'Index',
@@ -252,9 +263,11 @@
     mixins: [datajosn],
     data() {
       return {
+        // 销售目标 百分比 参数 当前年份 年份下拉框状态 年份下拉框
         year: new Date().getFullYear(),
         yearState: false,
         yearList: [],
+        // 卡片数据
         textTagList: [
           {
             title: '总销售额',
@@ -293,10 +306,13 @@
             dayName: '日均回款',
           },
         ],
+        // 客户销售排名 列表 数据加载状态
         goodsList: [],
         listLoading: false,
+        // 客户回款排行 列表 数据加载状态
         goodsList1: [],
         listLoading1: false,
+        // 回款饼图数据
         chartData: {
           title: '回款率',
           data: [
@@ -304,12 +320,14 @@
             { value: 0, name: '应收' },
           ],
         },
+        // 年度销售目标 月均销售目标 目标完成率 数据
         sale_data: {
           target_total: 0, // 销售目标
           month_target_total: 0, // y月均销售目标
           completion_rate: '0%', // 完成率
           completion_rate1: 0, // 完成率
         },
+        // 折线图 y轴 数据 配置
         dateList: [],
         dataAllList: {
           sale_target: [],
@@ -323,6 +341,7 @@
       }
     },
     watch: {
+      // 年份监听
       year: {
         handler: function () {
           this.dateList = []
@@ -353,12 +372,15 @@
       this.getSaleTarget()
     },
     methods: {
+      // 销售目标弹窗
       addYearSale() {
         this.$refs['edit'].showEdit(this.year)
       },
+      // 年份下拉框状态修改
       changeYear() {
         this.yearState = true
       },
+      // 年度销售目标 月均销售目标 目标完成率 数据获取
       async getSaleTarget() {
         this.listLoading = true
         const { data } = await this.api.getCompleteSaleTarget({
@@ -369,6 +391,7 @@
           data.completion_rate.replace('%', '')
         )
       },
+      // 饼图数据获取
       async getCollectionRatio() {
         this.listLoading = true
         const { data } = await this.api.getInformationCollectionRatio({
@@ -377,7 +400,7 @@
         this.chartData.data[0].value = data.collection
         this.chartData.data[1].value = data.receivable
       },
-
+      // 客户销售排名数据获取
       async getCustomerSaleRank() {
         this.listLoading = true
         const { data } = await this.api.getInformationCustomerSaleRank({
@@ -386,6 +409,7 @@
         this.goodsList = data
         this.listLoading = false
       },
+      // 客户回款排行数据获取
       async getCustomerCollectionRank() {
         this.listLoading1 = true
         const { data } = await this.api.getInformationCustomerCollectionRank({
@@ -394,6 +418,7 @@
         this.goodsList1 = data
         this.listLoading1 = false
       },
+      // 卡片数据获取
       async getHeadDatar() {
         const { data } = await this.api.getInformationHeadData({
           year: this.year,
@@ -417,10 +442,12 @@
         this.textTagList[3].yesterday_month =
           data[3].yesterday_month_collection_total
       },
+      // 年份下拉框数据获取
       async getYear() {
         const { data } = await this.api.getYearList(this.form)
         this.yearList = data.data
       },
+      // 折线图数据获取
       async getHomeReport() {
         const { data } = await this.api.getlineChartSaleTarget({
           year: this.year,

@@ -109,26 +109,42 @@
         />
       </el-tabs>
       <!-- 操作按钮 -->
-      <el-form ref="form" :inline="true" @submit.native.prevent>
-        <el-form-item>
-          <el-button
-            v-has-permi="['btn:MallManage:shelves']"
-            size="small"
-            type="primary"
-            @click="handleEdit(0)"
-          >
-            批量下架
-          </el-button>
-          <el-button
-            v-has-permi="['btn:MallManage:upshelves']"
-            size="small"
-            type="primary"
-            @click="handleEdit(1)"
-          >
-            批量上架
-          </el-button>
-        </el-form-item>
-      </el-form>
+      <div style="display: flex; justify-content: space-between">
+        <el-form ref="form" :inline="true" @submit.native.prevent>
+          <el-form-item>
+            <el-button
+              v-has-permi="['btn:MallManage:shelves']"
+              size="small"
+              type="primary"
+              @click="handleEdit(0)"
+            >
+              批量下架
+            </el-button>
+            <el-button
+              v-has-permi="['btn:MallManage:upshelves']"
+              size="small"
+              type="primary"
+              @click="handleEdit(1)"
+            >
+              批量上架
+            </el-button>
+          </el-form-item>
+        </el-form>
+        <el-form class="demo-form-inline" :inline="true" :model="form">
+          <el-form-item label="排序">
+            <el-select v-model="form.sort_field" style="width: 150px">
+              <el-option label="按创建时间" value="create_time" />
+              <el-option label="按上架时间" value="upper_time" />
+              <el-option label="按商品款号" value="sn" />
+            </el-select>
+          </el-form-item>
+          <el-radio-group v-model="form.sort_type">
+            <el-radio-button label="asc">正序</el-radio-button>
+            <el-radio-button label="desc">倒序</el-radio-button>
+          </el-radio-group>
+        </el-form>
+      </div>
+
       <!-- 表格组件使用 -->
       <QYList
         :list="list"
@@ -595,6 +611,8 @@
         page: 1,
         pageSize: 10,
         form: {
+          sort_field: 'upper_time',
+          sort_type: 'desc',
           page: 1,
           pageSize: 10,
           shop_type: '3', // 列表类型 0下架 1上架 2售空 全部
@@ -832,6 +850,8 @@
           shop_type: this.form.shop_type, // 列表类型 0下架 1上架 2售空 全部
           status: this.form.status, //0停售 1在售
           presell: this.form.presell,
+          sort_field: this.form.sort_field,
+          sort_type: this.form.sort_type,
         })
         this.tatleData = data
       },

@@ -8,6 +8,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -34,6 +35,7 @@
         </template>
       </QYForm>
     </div>
+    <!-- 列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <QYList :list="list" :list-type="listType" :state="listLoading">
         <template #List>
@@ -67,11 +69,13 @@
   </div>
 </template>
 <script>
+  // 日期组件和方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     mixins: [datajosn],
     data() {
       return {
+        // 下拉框数据 查询条件 表单类型，列表类型，列表数据，列表加载状态，列表总数
         selectList: [],
         form: {
           date: ['', ''],
@@ -83,6 +87,7 @@
       }
     },
     watch: {
+      // 监听查询条件
       form: {
         handler: function () {
           this.fetchData()
@@ -95,18 +100,22 @@
       this.fetchData()
     },
     methods: {
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 重置
       resetForm() {
         this.form = this.$options.data().form
       },
+      // 获取下拉框数据
       async getTypeList() {
         const { data } = await this.api.getCommonAllList({
           type: 'brand,year,season',
         })
         this.selectList = data
       },
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         const { data } = await this.api.getPositionCostAnalysis({

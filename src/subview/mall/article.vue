@@ -89,6 +89,7 @@
     components: { Edit },
     data() {
       return {
+        // 页数，条数，表单查询条件 ，表单组件和列表组件的类型，选中数据,列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -99,15 +100,15 @@
           pageSize: 10,
         },
         formType: 4,
-
-        selectRows: [],
         listType: 1,
+        selectRows: [],
         list: [],
         listLoading: false,
         total: 0,
       }
     },
     watch: {
+      // 监听表单变化
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -132,6 +133,7 @@
       this.fetchData()
     },
     methods: {
+      // 新增编辑
       async handleEdit(row) {
         if (row === 'add') {
           this.$refs['edit'].showEdit()
@@ -143,14 +145,15 @@
           }
         }
       },
-
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 重置
       resetForm() {
         this.form = this.$options.data().form
       },
-
+      // 删除
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
@@ -163,21 +166,21 @@
           })
         }
       },
-
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
-
+      // 选中数据
       selectBtnRows(data) {
         this.selectRows = data
       },
-
+      // 每页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
-
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
@@ -191,4 +194,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

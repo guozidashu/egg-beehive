@@ -60,7 +60,8 @@ d
       </div>
       <el-tabs
         v-model="activeName"
-        style="padding: 0 25px"
+        style="padding: 0 20px"
+        type="card"
         @tab-click="handleClick"
       >
         <el-tab-pane label="供应商信息" name="0" />

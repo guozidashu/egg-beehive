@@ -18,7 +18,7 @@
       </div>
       <el-tabs
         v-model="activeNameTemp"
-        style="padding: 0 25px; margin-top: 10px; margin-left: -5px"
+        style="margin-top: 10px; margin-left: 20px"
         type="card"
         @tab-click="handleClick"
       >

@@ -2,9 +2,11 @@
   <div style="padding: 20px">
     <el-row :gutter="20">
       <el-col :span="18" style="padding: 0">
+        <!-- 卡片 -->
         <el-col :span="24" style="padding: 0px">
           <TextTags :div-length="divLength" :list="textTagList" />
         </el-col>
+        <!-- 折线图 -->
         <el-col :span="24">
           <el-card shadow="hover" style="border-radius: 5px">
             <template #header>
@@ -25,11 +27,13 @@
           </el-card>
         </el-col>
       </el-col>
+      <!-- 饼图 -->
       <el-col :lg="6" :md="6" :sm="6" :xl="6" :xs="6">
         <QYBranch :list="earnest_rate_list" :style-chart="styleObj" />
         <QYBranch :list="level_rate_list" :style-chart="styleObj" />
       </el-col>
     </el-row>
+    <!-- 查询条件 表格 -->
     <div style="padding: 20px; background-color: white; border-radius: 5px">
       <div style="margin-bottom: 20px; font-size: 16px">客户保证金列表</div>
       <el-form
@@ -167,6 +171,7 @@
 </template>
 <script>
   import TextTags from '@/subview/components/Text/DepositTextTags'
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   import MembersChart from '@/subview/components/Chart/MembersChart'
   export default {
@@ -174,6 +179,7 @@
     mixins: [datajosn],
     data() {
       return {
+        // 列表加载状态,列表组件的类型,下拉框数据，列表总数，列表数据，表单数据，页数，条数
         listLoading: false,
         listType: 1,
         selectDataList: [],
@@ -190,6 +196,7 @@
           page: 1,
           pageSize: 10,
         },
+        // 卡片组件长度，数据
         divLength: 8,
         textTagList: [
           {
@@ -218,6 +225,7 @@
             month_rate: 0,
           },
         ],
+        // 饼图样式
         styleObj: {
           width: '100%',
           height: '350px',
@@ -225,18 +233,21 @@
           legendy: 0,
           center: ['50%', '50%'],
         },
+        // 饼图收款类型数据
         earnest_rate_list: [],
+        // 饼图客户等级数据
         level_rate_list: [],
+        // 卡片，折线图，饼图 时间筛选
         time: '30天',
-        // 图表 x轴数据
+        // 折线图图表 x轴数据
         dateList: [],
-        // 图表 series数据
+        // 折线图图表 series数据
         dataAllList: {
           all_customer_total: [],
           today_add_total: [],
           today_abate_total: [],
         },
-        // 图表 配置数据
+        // 折线图图表 配置数据
         chartDataObj: {
           height: '300px',
           legend: {
@@ -347,7 +358,6 @@
             },
           ],
         },
-
         // 图表 查询条件
         form: {
           time: this.getPastTime(30),
@@ -355,6 +365,7 @@
       }
     },
     watch: {
+      // 监听时间筛选
       time: {
         handler: function (newval) {
           if (newval == '30天') {
@@ -374,6 +385,7 @@
         },
         deep: true,
       },
+      // 表格查询条件监听
       goodsForm1: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -400,6 +412,7 @@
       this.fetchData()
     },
     methods: {
+      // 合同查看
       handleViewupload(url) {
         window.open(url)
       },
@@ -433,12 +446,14 @@
         })
         this.earnest_rate_list = data.customer_earnest_rate
       },
+      // 下拉款数据获取
       async getGoodsTypeList() {
         const { data } = await this.api.getCommonAllList({
           type: 'customer_grade,customer_type,',
         })
         this.selectDataList = data
       },
+      // 重置列表查询条件
       resetForm1() {
         this.goodsForm1 = {
           search_type: 'mobile', //搜索条件 mobile nick_name name account
@@ -452,10 +467,12 @@
           id: null,
         }
       },
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.goodsForm1.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.goodsForm1.pageSize = data

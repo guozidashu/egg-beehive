@@ -8,6 +8,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -61,6 +62,7 @@
         </template>
       </QYForm>
     </div>
+    <!-- 列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <QYList
         :list="list"
@@ -117,6 +119,7 @@
         </template>
       </QYList>
     </el-card>
+    <!-- 详情抽屉 -->
     <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
       <Drawer :drawer-inof="drawerInof" :drawer-inof-id="drawerInofId" />
     </el-drawer>
@@ -128,13 +131,13 @@
     components: { Drawer },
     data() {
       return {
-        // 抽屉参数
+        // 抽屉参数 状态 数据 id
         drawer: false,
         drawerInof: [],
         drawerInofId: '',
         // 查询表单下拉框
         selectList: [],
-        // 查询表单和表格分页冲突解决
+        // 页数，条数，表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -156,6 +159,7 @@
       }
     },
     watch: {
+      // 监听表单变化
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -181,30 +185,37 @@
       this.fetchData()
     },
     methods: {
+      // 详情
       async handleDetail(row) {
         this.drawerInofId = row.plan_id
         this.drawer = true
       },
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 重置
       resetForm() {
         this.form = this.$options.data().form
       },
+      // 获取下拉框数据
       async getTypeList() {
         const { data } = await this.api.getCommonAllList({
           type: 'brand,year,season,band',
         })
         this.selectList = data
       },
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
+      // 列表数据
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {

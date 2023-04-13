@@ -1,5 +1,6 @@
 <template>
   <div style="background-color: #f6f8f9">
+    <!-- 顶部卡片 -->
     <div style="display: flex">
       <div
         v-for="(item, index) in headList"
@@ -32,6 +33,7 @@
       </div>
     </div>
     <div style="margin: 20px 0; background-color: white; border-radius: 5px">
+      <!-- 查询条件 -->
       <el-form
         ref="form"
         :inline="true"
@@ -81,6 +83,7 @@
         </el-form-item>
       </el-form>
     </div>
+    <!-- 今日营业额 、今日收款项、今日支出项-->
     <el-row :gutter="20">
       <el-col :span="8">
         <el-card class="box-card" shadow="hover" style="border-radius: 5px">
@@ -155,6 +158,7 @@
         </el-card>
       </el-col>
     </el-row>
+    <!-- 经营利润，销售毛利，费用支出，业务收入-->
     <el-row :gutter="20">
       <el-col :span="6">
         <el-card
@@ -268,6 +272,7 @@
 </template>
 <script>
   import MembersChart from '@/subview/components/Chart/MembersChart'
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'ArchivesArticle',
@@ -908,6 +913,7 @@
           time: this.getTodayTime(),
         }
       },
+      // 今日支出项数据获取
       async getTodayExpenditure() {
         const { data } = await this.api.getTodayExpenditureList(this.goodsForm)
         let arr = []
@@ -940,6 +946,7 @@
           this.dataAllList.return_earnest_total
         this.$forceUpdate()
       },
+      // 今日收款项数据获取
       async getTodayCollection() {
         const { data } = await this.api.getTodayCollectionList(this.goodsForm)
         let arr = []
@@ -965,4 +972,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

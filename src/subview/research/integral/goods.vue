@@ -8,6 +8,7 @@
         border-radius: 5px;
       "
     >
+      <!-- 查询条件 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -21,6 +22,7 @@
         </template>
       </QYForm>
     </div>
+    <!-- 操作按钮 列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <el-form ref="form" :inline="true" @submit.native.prevent>
         <el-form-item>
@@ -86,6 +88,7 @@
         </el-col>
       </el-row>
     </el-card>
+    <!-- 商品添加弹窗 -->
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
@@ -95,6 +98,7 @@
     components: { Edit },
     data() {
       return {
+        // 查询表单，表单类型，列表数据
         form: {
           id: 0,
           name: '',
@@ -102,7 +106,6 @@
           pageSize: 100,
         },
         formType: 4,
-        selectRows: [],
         list: [],
       }
     },
@@ -118,6 +121,7 @@
       this.fetchData()
     },
     methods: {
+      // 新增编辑弹窗
       async handleEdit(row) {
         if (row === 'add') {
           this.$refs['edit'].showEdit()
@@ -129,13 +133,15 @@
           }
         }
       },
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 重置
       resetForm() {
         this.form = this.$options.data().form
       },
-
+      // 删除
       handleDelete(row) {
         if (row.id) {
           this.$baseConfirm('你确定要删除当前项吗', null, async () => {
@@ -148,19 +154,15 @@
           })
         }
       },
-
+      // 分页
       changeBtnPage(data) {
         this.form.page = data
       },
-
-      selectBtnRows(data) {
-        this.selectRows = data
-      },
-
+      // 分页条数
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
-
+      // 获取列表数据
       async fetchData() {
         const { data } = await this.api.getIntegralGoodsList(this.form)
         this.list = data.data

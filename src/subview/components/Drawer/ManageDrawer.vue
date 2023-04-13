@@ -1,58 +1,56 @@
 <template>
   <div class="components-drawer">
     <div v-if="form.drawerType != 3">
-      <div style="padding: 0 25px">
-        <div>
-          <el-row :gutter="20">
-            <el-col :span="12" style="display: flex">
-              <el-image
-                :src="form.avatar"
-                style="width: 80px; height: 80px; margin: 0 10px 10px 0"
-              />
-              <div>
-                <div style="font-size: 14px; font-weight: 600">
-                  {{ form.name }}
-                </div>
-                <div style="margin: 10px 0">
-                  <el-tag type="success">{{ form.grade_name }}</el-tag>
-                </div>
-                <div>最近消费: {{ form.last_use_time }}</div>
+      <div style="padding: 0 20px">
+        <div style="display: flex; justify-content: space-between">
+          <div style="display: flex">
+            <el-image
+              :src="form.avatar"
+              style="width: 80px; height: 80px; margin: 0 10px 10px 0"
+            />
+            <div>
+              <div style="font-size: 14px; font-weight: 600">
+                {{ form.name }}
               </div>
-            </el-col>
+              <div style="margin: 10px 0">
+                <el-tag type="success">{{ form.grade_name }}</el-tag>
+              </div>
+              <div>最近消费: {{ form.last_use_time }}</div>
+            </div>
+          </div>
 
-            <el-col :span="12">
-              <vab-icon
-                icon="align-center"
-                style="float: right; margin: 6px 0 0 0"
-              />
-              <el-button
-                v-if="form.drawerType == 1"
-                size="small"
-                style="float: right; margin-right: 10px"
-                type="primary"
-                @click="changeTypeBtn(2)"
-              >
-                编辑
-              </el-button>
-              <el-button
-                v-if="form.drawerType == 2"
-                size="small"
-                style="float: right; margin-right: 10px"
-                type="primary"
-                @click="changeTypeBtn(1)"
-              >
-                完成
-              </el-button>
-              <el-button
-                size="small"
-                style="float: right; margin-right: 10px"
-                type="primary"
-                @click="getBillList()"
-              >
-                对账单
-              </el-button>
-            </el-col>
-          </el-row>
+          <div>
+            <vab-icon
+              icon="align-center"
+              style="float: right; margin: 6px 0 0 0"
+            />
+            <el-button
+              v-if="form.drawerType == 1"
+              size="small"
+              style="float: right; margin-right: 10px"
+              type="primary"
+              @click="changeTypeBtn(2)"
+            >
+              编辑
+            </el-button>
+            <el-button
+              v-if="form.drawerType == 2"
+              size="small"
+              style="float: right; margin-right: 10px"
+              type="primary"
+              @click="changeTypeBtn(1)"
+            >
+              完成
+            </el-button>
+            <el-button
+              size="small"
+              style="float: right; margin-right: 10px"
+              type="primary"
+              @click="getBillList()"
+            >
+              对账单
+            </el-button>
+          </div>
         </div>
         <!-- <div style="display: flex">
           <div style="display: flex; flex: 1; flex-direction: column">
@@ -90,7 +88,8 @@
       </div>
       <el-tabs
         v-model="activeName"
-        style="padding: 0 25px"
+        style="margin-top: 10px; margin-left: 20px"
+        type="card"
         @tab-click="handleClick"
       >
         <el-tab-pane label="客户信息" name="0" />
