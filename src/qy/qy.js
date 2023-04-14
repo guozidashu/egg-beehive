@@ -11,6 +11,8 @@ import QYStroeMap from '@/qy/QYComponents/QYStroeMap'
 import QYTextLabels from '@/qy/QYComponents/QYTextLabels'
 import QYBranchTooltip from '@/qy/QYComponents/QYBranchTooltip'
 import QYPopover from '@/qy/QYComponents/QYPopover'
+import QYPopoverPrice from '@/qy/QYComponents/QYPopoverPrice'
+
 export default {
   install(Vue) {
     Vue.component('QyColorSelect', QyColorSelect)
@@ -26,5 +28,6 @@ export default {
     Vue.component('QYTextLabels', QYTextLabels)
     Vue.component('QYBranchTooltip', QYBranchTooltip)
     Vue.component('QYPopover', QYPopover)
+    Vue.component('QYPopoverPrice', QYPopoverPrice)
   },
 }

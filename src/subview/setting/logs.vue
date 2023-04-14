@@ -99,6 +99,7 @@
 </template>
 
 <script>
+  // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'Logs',

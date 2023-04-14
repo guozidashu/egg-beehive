@@ -103,73 +103,153 @@
           border-radius: 5px;
         "
       >
-        <el-form
-          ref="form"
-          :inline="true"
-          label-width="80px"
-          :model="goodsForm1"
-          style="display: flex; justify-content: space-between"
-          @submit.native.prevent
-        >
-          <span style="margin-top: 10px; font-size: 16px">客户销售排行</span>
-          <el-form-item style="margin-right: 0">
-            <el-form-item label="统计类型:" prop="type">
+        <div style="margin: 0 0 20px 0; font-size: 16px">客户销售排行</div>
+        <el-form ref="form" label-width="80px" :model="goodsForm1">
+          <el-form-item label="统计时间">
+            <el-radio-group v-model="time">
+              <el-radio-button label="昨日" />
+              <el-radio-button label="近3天" />
+              <el-radio-button label="近7天" />
+              <el-radio-button label="近15天" />
+              <el-radio-button label="近30天" />
+            </el-radio-group>
+            <el-date-picker
+              v-model="goodsForm1.time"
+              align="right"
+              :clearable="false"
+              :default-time="['00:00:00', '23:59:59']"
+              end-placeholder="结束日期"
+              format="yyyy-MM-dd"
+              :picker-options="pickerOptions"
+              range-separator="至"
+              start-placeholder="开始日期"
+              style="margin-left: 10px"
+              type="daterange"
+              unlink-panels
+              value-format="yyyy-MM-dd HH:mm:ss"
+            />
+          </el-form-item>
+          <el-form-item label="客户等级">
+            <el-radio-group v-model="goodsForm1.level" size="mini">
+              <el-radio-button
+                v-for="(item, index) in selectList.customer_grade"
+                :key="index"
+                :label="item.id"
+              >
+                {{ item.name }}
+              </el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="客户分类">
+            <el-radio-group v-model="goodsForm1.customer_type" size="mini">
+              <el-radio-button
+                v-for="(item, index) in selectList.customer_type"
+                :key="index"
+                :label="item.id"
+              >
+                {{ item.name }}
+              </el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="更多筛选">
+            <div style="display: flex">
+              <QYPopover
+                v-model="goodsForm1.customer_source"
+                :list="selectList.customer_source"
+                :name="'客户来源'"
+              />
+              <QYPopover
+                v-model="goodsForm1.employee"
+                :list="employeeList"
+                :name="'服务人员'"
+              />
+              <QYPopoverPrice
+                v-model="goodsForm1.price"
+                :list="selectList.price"
+                :name="'销售额区间'"
+              />
+              <QYPopover
+                v-model="goodsForm1.channel"
+                :list="selectList.channel"
+                :name="'销售渠道'"
+              />
+              <el-checkbox
+                v-model="goodsForm1.is_return"
+                style="margin: 0 10px"
+              >
+                不看终止合作的
+              </el-checkbox>
+              <div>
+                | &nbsp; 指标说明
+                <el-popover placement="right" trigger="hover">
+                  <div style="font-size: 12px">测试</div>
+                  <vab-icon
+                    slot="reference"
+                    icon="question-line"
+                    style="position: relative; top: -2px; font-size: 14px"
+                  />
+                </el-popover>
+              </div>
+            </div>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div
+        style="
+          padding: 20px;
+          margin: 20px 0;
+          background-color: white;
+          border-radius: 5px;
+        "
+      >
+        <el-form ref="form" label-width="80px" :model="goodsForm1">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 20px;
+            "
+          >
+            <div style="display: flex">
               <el-select
                 v-model="goodsForm1.order"
                 size="small"
                 style="width: 150px"
               >
-                <el-option
-                  v-for="(item, index) in orderList"
-                  :key="index"
-                  :label="item.name"
-                  :value="item.value"
-                />
+                <el-option label="按拿货金额" value="1" />
+                <el-option label="按拿货次数" value="2" />
+                <el-option label="按拿货件数" value="3" />
+                <el-option label="按商品成本" value="4" />
+                <el-option label="按预计毛利额" value="5" />
+                <el-option label="按客户回款" value="6" />
+                <el-option label="按期末余额" value="7" />
+                <el-option label="按期末欠款" value="8" />
+                <el-option label="按动销商品数" value="9" />
+                <el-option label="按动销售额占比" value="10" />
               </el-select>
-            </el-form-item>
-            <el-form-item label="品牌:" prop="brand">
-              <el-select
-                v-model="goodsForm1.brand"
-                placeholder="请选择品牌"
-                style="width: 150px"
+              <el-radio-group
+                v-model="goodsForm1.sort"
+                style="width: 120px; margin-left: 10px"
               >
-                <el-option
-                  v-for="(item, index) in selectList.brand"
-                  :key="index"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="客户等级:" prop="level">
-              <el-select
-                v-model="goodsForm1.level"
-                placeholder="请选择客户等级"
-                style="width: 150px"
-              >
-                <el-option
-                  v-for="(item, index) in selectList.customer_grade"
-                  :key="index"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="时间筛选:" prop="time">
-              <el-date-picker
-                v-model="goodsForm1.time"
-                align="right"
-                :clearable="false"
-                :default-time="['00:00:00', '23:59:59']"
-                end-placeholder="结束日期"
-                format="yyyy-MM-dd"
-                :picker-options="pickerOptions"
-                range-separator="至"
-                start-placeholder="开始日期"
-                type="daterange"
-                unlink-panels
-                value-format="yyyy-MM-dd HH:mm:ss"
+                <el-radio-button label="asc">正序</el-radio-button>
+                <el-radio-button label="desc">倒序</el-radio-button>
+              </el-radio-group>
+            </div>
+            <div style="display: flex">
+              <el-input
+                v-model="goodsForm1.name"
+                placeholder="按客户名称搜索"
+                prefix-icon="el-icon-search"
+                style="width: 150px; margin-right: 10px"
               />
+              <el-button
+                size="small"
+                style="margin-left: 10px"
+                type="primary"
+                @click="handleDerive()"
+              >
+                导出
+              </el-button>
               <el-button
                 size="small"
                 style="margin-left: 10px"
@@ -178,11 +258,8 @@
               >
                 重置
               </el-button>
-              <el-button size="small" type="primary" @click="handleDerive()">
-                导出
-              </el-button>
-            </el-form-item>
-          </el-form-item>
+            </div>
+          </div>
         </el-form>
         <QYList :list="goosList" :list-type="listType" :state="listLoading">
           <template #List>
@@ -255,16 +332,10 @@
             </el-table-column>
             <el-table-column
               align="center"
-              label="订单数"
-              prop="count_order"
-              width="80"
+              label="拿货次数"
+              prop="customer_name"
             />
-            <el-table-column
-              align="center"
-              label="拿货件数"
-              prop="sum_num"
-              width="80"
-            />
+            <el-table-column align="center" label="拿货件数" prop="sum_num" />
             <el-table-column
               align="center"
               label="拿货金额"
@@ -277,21 +348,21 @@
             <el-table-column
               v-if="$permissionFiltering('ReportCustomer', 'cost')"
               align="center"
-              label="商品成本价"
-              prop="cost_price"
+              label="商品成本"
+              prop="customer_name"
             >
               <template #default="{ row }">
-                <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
+                <el-tag>￥{{ row.customer_name | moneyFormat }}</el-tag>
               </template>
             </el-table-column>
             <el-table-column
               v-if="$permissionFiltering('ReportCustomer', 'profit')"
               align="center"
-              label="预计毛利润"
-              prop="gross_profit"
+              label="预计毛利额"
+              prop="customer_name"
             >
               <template #default="{ row }">
-                <el-tag>￥{{ row.gross_profit | moneyFormat }}</el-tag>
+                <el-tag>￥{{ row.customer_name | moneyFormat }}</el-tag>
               </template>
             </el-table-column>
             <el-table-column
@@ -326,29 +397,22 @@
                     -￥{{ row.delivery_arrears | moneyFormat }}
                   </el-tag>
                 </div>
-
-                <!-- <el-tag v-if="(orderList[4].value = 'sale_arrears')">
-                  ￥{{ row.sale_arrears | moneyFormat }}
-                </el-tag>
-                <el-tag v-if="(orderList[4].value = 'delivery_arrears')">
-                  ￥{{ row.delivery_arrears | moneyFormat }}
-                </el-tag> -->
               </template>
             </el-table-column>
             <el-table-column
               align="center"
-              label="最近拿货天数"
-              prop="last_order_day"
+              label="动销商品数"
+              prop="customer_name"
             />
             <el-table-column
               align="center"
-              label="销售占比"
-              prop="final_rate"
+              label="销售额占比"
+              prop="customer_name"
             />
             <el-table-column
               align="center"
-              label="最近拿货时间"
-              prop="last_order_time"
+              label="最近一次消费时间"
+              prop="customer_name"
               width="180"
             />
             <el-table-column
@@ -359,7 +423,10 @@
             >
               <template #default="{ row }">
                 <el-button type="text" @click="handleDetail(row)">
-                  详情
+                  客户分析
+                </el-button>
+                <el-button type="text" @click="handleDetail(row)">
+                  监控客户
                 </el-button>
               </template>
             </el-table-column>
@@ -382,6 +449,7 @@
     mixins: [datajosn, mapjson],
     data() {
       return {
+        time: '近30天',
         // 销售列表 统计类型下拉框
         orderList: [
           {
@@ -410,8 +478,13 @@
           page: 1,
           pageSize: 20,
           brand: null,
-          level: null,
-          order: 'sum_num',
+          level: -1,
+          customer_source: null,
+          employee: null,
+          price: null,
+          channel: null,
+          customer_type: -1,
+          order: '1',
           time: this.getPastTime(30),
         },
         // 销售列表 加载状态，列表类型，列表数据
@@ -423,7 +496,9 @@
           // source: null,
           time: this.getPastTime(30),
         },
-        // 品牌，等级下拉框数据
+        // 员工下拉框
+        employeeList: [],
+        // 等级下拉框数据
         selectList: [],
         // 顶部卡片列表
         textTagList: [
@@ -591,13 +666,44 @@
         },
         deep: true,
       },
+      // 监听时间切换
+      time: {
+        handler: function (newVal) {
+          // 按钮时间切换
+          if (newVal == '昨日') {
+            this.goodsForm1.time = this.getYesterdayTime()
+          } else if (newVal == '近3天') {
+            this.goodsForm1.time = this.getPastTime(3)
+          } else if (newVal == '近7天') {
+            this.goodsForm1.time = this.getWeenTime()
+          } else if (newVal == '近15天') {
+            this.goodsForm1.time = this.getPastTime(15)
+          } else if (newVal == '近30天') {
+            this.goodsForm1.time = this.getPastTime(30)
+          }
+        },
+        deep: true,
+      },
     },
     created() {
       this.getTypeList()
+      this.selectData()
       this.fetchData()
       this.getTableList()
     },
     methods: {
+      // 获取服务人员下拉框数据
+      async selectData() {
+        const { data } = await this.api.getEmployeeList({
+          name: '',
+          page: -1,
+          pageSize: 10,
+          department_id: '', //部门id
+          role: null, //岗位id
+          status: 1, // 状态 1=在职 0=停职 默认传1
+        })
+        this.employeeList = data
+      },
       // 列表导出
       async handleDerive() {
         const { code, data } = await this.api.getHotStyleAnalysisExport(
@@ -642,9 +748,53 @@
       // 获取下拉框数据
       async getTypeList() {
         const { data } = await this.api.getCommonAllList({
-          type: 'customer_source,brand,customer_grade',
+          type: 'customer_source,customer_grade,customer_type',
         })
+        data.customer_type.unshift({ id: -1, name: '全部' })
+        data.customer_grade.unshift({ id: -1, name: '全部' })
         this.selectList = data
+        this.selectList.channel = [
+          {
+            name: '小程序订货商城',
+            id: 1,
+          },
+          {
+            name: '线下开单',
+            id: 2,
+          },
+        ]
+        this.selectList.price = [
+          {
+            name: '不限',
+            start: 0,
+            end: 0,
+          },
+          {
+            name: '10000',
+            start: 0,
+            end: 10000,
+          },
+          {
+            name: '￥10000-100000',
+            start: 10000,
+            end: 100000,
+          },
+          {
+            name: '￥100000-1000000',
+            start: 100000,
+            end: 1000000,
+          },
+          {
+            name: '￥1000000-10000000',
+            start: 1000000,
+            end: 10000000,
+          },
+          {
+            name: '￥10000000以上',
+            start: 10000000,
+            end: 0,
+          },
+        ]
       },
       // 获取 卡片，地图，饼图数据
       async fetchData() {

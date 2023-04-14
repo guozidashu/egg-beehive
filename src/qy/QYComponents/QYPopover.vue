@@ -12,16 +12,16 @@
       </el-tag>
     </div>
     <el-button style="color: #606266" type="text" slot="reference">
-      {{ name }}
-      <i
-        class="el-icon-caret-bottom el-icon--right"
-        style="margin-left: -5px"
-      ></i>
+      <span v-if="value != null" style="color: #1890ff">{{ selName }}</span>
+      <span v-else>{{ name }}</span>
+
+      <i v-if="value != null" class="el-icon-caret-top el-icon--right"></i>
+      <i v-else class="el-icon-caret-bottom el-icon--right"></i>
     </el-button>
   </el-popover>
 </template>
-
 <script>
+  // 下拉框选择组件，商品分析
   export default {
     name: 'QyColorSelect',
     props: {
@@ -40,7 +40,9 @@
     },
 
     data() {
-      return {}
+      return {
+        selName: '',
+      }
     },
     computed: {},
     watch: {
@@ -64,6 +66,7 @@
     methods: {
       // 选中
       selectColor(item) {
+        this.selName = item.name
         this.$emit('input', item.id)
       },
     },

@@ -173,17 +173,17 @@
           })
         }
       },
-
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
-
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
-
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {

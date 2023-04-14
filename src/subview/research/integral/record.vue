@@ -1,6 +1,7 @@
 <template>
   <div style="background-color: #f6f8f9">
     <el-card shadow="never" style="border: 0; border-radius: 5px">
+      <!-- 查询条件 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -65,13 +66,12 @@
   export default {
     data() {
       return {
+        // 页数，条数，表单查询条件 选中数据 列表类型 列表数据 列表加载状态 总条数
         form: {
           page: 1,
           pageSize: 10,
         },
         formType: 4,
-
-        selectRows: [],
         listType: 1,
         list: [],
         listLoading: false,
@@ -90,21 +90,23 @@
       this.fetchData()
     },
     methods: {
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 重置
       resetForm() {
         this.form = this.$options.data().form
       },
-
+      // 分页
       changeBtnPage(data) {
         this.form.page = data
       },
-
+      // 条数
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
-
+      // 获取列表
       async fetchData() {
         this.listLoading = true
         const { data } = await this.api.getEmployeeIntegralList(this.form)

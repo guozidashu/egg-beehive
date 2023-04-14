@@ -1,6 +1,7 @@
 <template>
   <div>
     <div style="padding: 20px 0 0 20px; border-radius: 5px">
+      <!-- 查询条件 -->
       <el-form
         ref="form"
         :inline="true"
@@ -37,7 +38,7 @@
         </el-form-item>
       </el-form>
     </div>
-
+    <!-- 复合表格 -->
     <el-table
       v-loading="listLoading"
       border
@@ -69,19 +70,20 @@
   export default {
     data() {
       return {
+        // form 为查询条件
         form: {
           type: 'reward',
           category_id: '',
           typeName: '奖励',
         },
-        listLoading: false,
-        parent_category: [],
+        listLoading: false, // 表格加载状态
+        parent_category: [], // 供应商类别
         // originData 为后端原始正常的数据, 此数据按正常表格展示 一行一行的数据
         // 保证数组里每一个对象中的字段顺序, 从上到下 一次对应显示表格中的从左到右
         originData: [], // 属性名对应 transTitle的属性 值对应奖惩的数值
         originTitle: [], // 竖列 标题
         transTitle: [], // 横列 标题
-        transData: [],
+        transData: [], // 列表数据
       }
     },
     watch: {
@@ -109,6 +111,7 @@
       this.getSelectData()
     },
     methods: {
+      // 获取下拉框数据
       async fetchData() {
         this.listLoading = true
         const { data } = await this.api.getIntegralRule(this.form)
@@ -156,6 +159,7 @@
         this.transData = arr1
         this.listLoading = false
       },
+      // 提交
       async handleSub() {
         let arr = []
         this.transData.forEach((item) => {
@@ -174,6 +178,7 @@
         this.$baseMessage('编辑成功', 'success', 'vab-hey-message-success')
         this.fetchData()
       },
+      // 获取下拉框数据
       async getSelectData() {
         const { data } = await this.api.getCommonAllList({
           type: 'parent_category',

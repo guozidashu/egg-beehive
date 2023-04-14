@@ -113,6 +113,10 @@
         default: 1,
         required: true,
       },
+      uploadType: {
+        type: Number,
+        default: 0,
+      },
     },
     data() {
       return {
@@ -146,6 +150,11 @@
     watch: {
       size: {
         handler: function () {},
+        immediate: true,
+        deep: true,
+      },
+      type: {
+        handler: function (val) {},
         immediate: true,
         deep: true,
       },
@@ -189,6 +198,14 @@
         if (response.code === 200) {
           this.imgList.push(response.data.file_url)
           this.$emit('submitUpload', this.imgList)
+          // 微店图片上传处理 根据 uploadType 判断
+          if (this.uploadType == 1) {
+            let fd = new FormData()
+            fd.append('img', file.raw)
+            this.api.addVdianImg(fd).then((res) => {
+              this.$emit('submitUpload', res.data.img)
+            })
+          }
         }
         this.imgNum = this.imgNum + 1
         this.imgSuccessNum = this.imgSuccessNum + 1
@@ -201,7 +218,6 @@
             )
           }, 1000)
         }
-
         setTimeout(() => {
           this.loading = false
           this.show = false

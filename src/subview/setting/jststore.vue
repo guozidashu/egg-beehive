@@ -53,6 +53,7 @@
     name: 'ArchivesBrand',
     data() {
       return {
+        // 页数，条数，表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         form: {
           page: 1,
           pageSize: 10,
@@ -76,6 +77,7 @@
       this.fetchData()
     },
     methods: {
+      // 同步
       async handleEdit() {
         const { data, code } = await this.api.jstShopSync()
         if (code == 200) {
@@ -85,12 +87,15 @@
           this.$message.error('同步失败')
         }
       },
+      // 分页
       changeBtnPage(data) {
         this.form.page = data
       },
+      // 分页条数
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
+      // 获取列表数据
       async fetchData() {
         this.listLoading = true
         const { data } = await this.api.getjstShopList()
@@ -101,4 +106,3 @@
     },
   }
 </script>
-<style lang="scss" scoped></style>

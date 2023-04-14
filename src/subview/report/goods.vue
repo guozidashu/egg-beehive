@@ -131,51 +131,52 @@
             :list="selectList.category"
             :name="'商品款式'"
           />
-          <QYPopover
-            v-model="goodsForm1.season"
-            :list="selectList.season"
-            :name="'商品分类'"
-          />
         </el-form-item>
         <el-form-item label="更多筛选">
           <div style="display: flex; justify-content: space-between">
             <div style="display: flex">
               <QYPopover
-                v-model="goodsForm1.season"
-                :list="selectList.season"
+                v-model="goodsForm1.type"
+                :list="selectList.type"
                 :name="'尺码类型'"
               />
               <QYPopover
-                v-model="goodsForm1.season"
-                :list="selectList.season"
+                v-model="goodsForm1.gender"
+                :list="selectList.gender"
                 :name="'适用性别'"
               />
               <QYPopover
-                v-model="goodsForm1.season"
-                :list="selectList.season"
+                v-model="goodsForm1.agegroup"
+                :list="selectList.agegroup"
                 :name="'适用年龄段'"
               />
-              <QYPopover
-                v-model="goodsForm1.season"
-                :list="selectList.season"
+              <QYPopoverPrice
+                v-model="goodsForm1.price"
+                :list="selectList.price"
                 :name="'价格带'"
+                :type="1"
               />
               <QYPopover
-                v-model="goodsForm1.season"
-                :list="selectList.season"
+                v-model="goodsForm1.recommend"
+                :list="selectList.recommend"
                 :name="'推荐商品'"
               />
               <QYPopover
-                v-model="goodsForm1.season"
-                :list="selectList.season"
+                v-model="goodsForm1.status"
+                :list="selectList.status"
                 :name="'商品状态'"
               />
+              <el-checkbox v-model="goodsForm1.is_return">
+                减去退货数
+              </el-checkbox>
             </div>
             <div style="display: flex">
               <div>
                 合并同款
                 <el-popover placement="right" trigger="hover">
-                  <div style="font-size: 12px">1111</div>
+                  <div style="font-size: 12px">
+                    开启后将合并同个品牌下「货号/款号」相同的整手和散码商品，并展示同款商品合并之后的销售数据和库存数据
+                  </div>
                   <vab-icon
                     slot="reference"
                     icon="question-line"
@@ -192,46 +193,6 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item label="查询操作">
-          <div style="display: flex; justify-content: space-between">
-            <div style="display: flex">
-              <el-select
-                v-model="goodsForm1.order"
-                size="small"
-                style="width: 150px"
-              >
-                <el-option label="按销量" :value="1" />
-                <el-option label="按销售额" :value="2" />
-                <el-option label="按动销客户数" :value="3" />
-                <el-option label="按商品毛利" :value="4" />
-                <el-option label="按上架时间" :value="5" />
-              </el-select>
-              <el-radio-group
-                v-model="goodsForm1.sort_type"
-                style="width: 120px; margin-left: 10px"
-              >
-                <el-radio-button label="asc">正序</el-radio-button>
-                <el-radio-button label="desc">倒序</el-radio-button>
-              </el-radio-group>
-              <el-checkbox v-model="goodsForm1.checked">减去退货数</el-checkbox>
-              <el-input
-                v-model="goodsForm1.input2"
-                placeholder="按商品款号搜索"
-                prefix-icon="el-icon-search"
-                style="width: 150px; margin-left: 10px"
-              />
-            </div>
-            <div style="display: flex">
-              <el-radio-group v-model="goodsForm1.sort_type" style="width: 200">
-                <el-radio-button label="asc">按款号</el-radio-button>
-                <el-radio-button label="desc">按规格</el-radio-button>
-              </el-radio-group>
-              <el-button size="small" style="margin-left: 10px" type="primary">
-                重置
-              </el-button>
-            </div>
-          </div>
-        </el-form-item>
       </el-form>
     </div>
     <div
@@ -242,6 +203,59 @@
         border-radius: 5px;
       "
     >
+      <el-form ref="form" label-width="80px" :model="goodsForm1">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+          "
+        >
+          <div style="display: flex">
+            <el-select
+              v-model="goodsForm1.order"
+              size="small"
+              style="width: 150px"
+            >
+              <el-option label="按销量" value="sum_num" />
+              <el-option label="按销售额" value="sum_total" />
+              <el-option label="按动销客户数" value="count_customer" />
+              <el-option label="按商品毛利" value="sum_profit" />
+              <el-option label="按上架时间" value="g.upper_time" />
+            </el-select>
+            <el-radio-group
+              v-model="goodsForm1.sort"
+              style="width: 120px; margin-left: 10px"
+            >
+              <el-radio-button label="asc">正序</el-radio-button>
+              <el-radio-button label="desc">倒序</el-radio-button>
+            </el-radio-group>
+          </div>
+          <div style="display: flex">
+            <el-input
+              v-model="goodsForm1.sn"
+              placeholder="按商品款号搜索"
+              prefix-icon="el-icon-search"
+              style="width: 150px; margin-right: 10px"
+            />
+            <el-radio-group v-model="goodsForm1.goods_type" style="width: 200">
+              <el-radio-button :label="1">按款号</el-radio-button>
+              <el-radio-button :label="2">按规格</el-radio-button>
+            </el-radio-group>
+            <el-button size="small" style="margin-left: 10px" type="primary">
+              导出
+            </el-button>
+            <el-button
+              size="small"
+              style="margin-left: 10px"
+              type="primary"
+              @click="resetForm1('form')"
+            >
+              重置
+            </el-button>
+          </div>
+        </div>
+      </el-form>
       <QYList
         :list="goosList"
         :list-type="listType"
@@ -301,7 +315,8 @@
                     >
                       {{ row.sn }}
                     </div>
-                    <el-tag>整手</el-tag>
+                    <el-tag v-if="row.type == 0" type="danger">整手</el-tag>
+                    <el-tag v-if="row.type == 1" type="success">散码</el-tag>
                   </div>
                   <div style="margin: 5px 0 0 0">
                     {{ row.name }} &nbsp;
@@ -334,13 +349,21 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="动销客户数" prop="sn" />
+          <el-table-column
+            align="center"
+            label="动销客户数"
+            prop="count_customer"
+          />
           <el-table-column align="center" label="本期销量" prop="sum_num" />
           <el-table-column align="center" label="本期销售额" prop="sum_total" />
-          <el-table-column align="center" label="实际销售额" prop="sum_num" />
-          <el-table-column align="center" label="实际销量" prop="sum_total" />
-          <el-table-column align="center" label="成本金额" prop="sum_total" />
-          <el-table-column align="center" label="商品毛利" prop="sum_total" />
+          <el-table-column
+            align="center"
+            label="平均售价"
+            prop="average_price"
+          />
+          <el-table-column align="center" label="销售占比" prop="final_rate" />
+          <el-table-column align="center" label="成本金额" prop="cost_total" />
+          <el-table-column align="center" label="商品毛利" prop="sum_profit" />
           <el-table-column
             align="center"
             fixed="right"
@@ -362,7 +385,10 @@
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>
-                    <el-button v-if="row.sn" type="text">测试</el-button>
+                    <el-button type="text">合并同款</el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button type="text">监控商品</el-button>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -394,7 +420,7 @@
     mixins: [datajosn],
     data() {
       return {
-        time: '近7天',
+        time: '近30天',
         // 表格类型 按款号/按规格
         time1: '按款号',
         // 单品分析抽屉 数据、状态、标题
@@ -410,15 +436,25 @@
         page: 1,
         pageSize: 10,
         goodsForm1: {
+          time: this.getPastTime(30),
           page: 1,
           pageSize: 10,
-          type: -1,
           goods_type: 1,
+          year: null,
+          type: null,
           brand: null,
+          band: null,
           sn: null,
-          order: null,
+          order: 'sum_num',
           season: null,
-          time: this.getPastTime(30),
+          category: null,
+          gender: null,
+          agegroup: null,
+          recommend: null,
+          price: null,
+          status: null,
+          sort: 'desc',
+          is_return: false,
         },
         // 下拉框数据
         selectList: [],
@@ -631,14 +667,25 @@
       // 表格 查询条件重置
       resetForm1() {
         this.goodsForm1 = {
+          time: this.getPastTime(30),
           page: 1,
           pageSize: 10,
+          goods_type: 1,
+          year: null,
           type: null,
           brand: null,
-          goods_type: 1,
+          band: null,
           sn: null,
+          order: 'sum_num',
           season: null,
-          time: this.getPastTime(30),
+          category: null,
+          gender: null,
+          agegroup: null,
+          recommend: null,
+          price: null,
+          status: null,
+          sort: 'desc',
+          is_return: false,
         }
       },
       // 分页
@@ -654,9 +701,89 @@
       // 获取下拉框数据
       async getTypeList() {
         const { data } = await this.api.getCommonAllList({
-          type: 'brand,season,year,band,category,agegroup',
+          type: 'brand,season,year,band,category,agegroup,size',
         })
         this.selectList = data
+        this.selectList.price = [
+          {
+            name: '不限',
+            start: 0,
+            end: 0,
+          },
+          {
+            name: '￥50以下',
+            start: 0,
+            end: 50,
+          },
+          {
+            name: '￥50-100',
+            start: 50,
+            end: 100,
+          },
+          {
+            name: '￥100-200',
+            start: 100,
+            end: 200,
+          },
+          {
+            name: '￥200-300',
+            start: 200,
+            end: 300,
+          },
+          {
+            name: '￥300元以上',
+            start: 300,
+            end: 0,
+          },
+        ]
+        this.selectList.gender = [
+          {
+            name: '女',
+            id: 1,
+          },
+          {
+            name: '男',
+            id: 2,
+          },
+          {
+            name: '中',
+            id: 3,
+          },
+        ]
+        this.selectList.status = [
+          {
+            name: '停售',
+            id: 2,
+          },
+          {
+            name: '在售',
+            id: 1,
+          },
+          {
+            name: '待上市',
+            id: 3,
+          },
+        ]
+        this.selectList.recommend = [
+          {
+            name: '取消推荐',
+            id: 0,
+          },
+          {
+            name: '推荐中',
+            id: 1,
+          },
+        ]
+        this.selectList.type = [
+          {
+            name: '整手',
+            id: 0,
+          },
+          {
+            name: '散码',
+            id: 1,
+          },
+        ]
       },
       // 获取列表数据
       async getTableList() {
@@ -665,15 +792,6 @@
           this.formTemp = JSON.parse(JSON.stringify(this.goodsForm1))
         }
         let temp = JSON.parse(JSON.stringify(this.formTemp))
-        if (temp.type != 0 && temp.type != 1 && temp.type != -1) {
-          temp.order = temp.type
-          temp.type = null
-        } else if (temp.type == -1) {
-          temp.order = null
-          temp.type = null
-        } else {
-          temp.order = null
-        }
         const { data } = await this.api.getGoodsRank(temp)
         this.goosList = data.data
         this.total = data.total

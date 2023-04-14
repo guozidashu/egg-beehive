@@ -38,6 +38,7 @@
       :limit="1"
       name="file"
       :size="2"
+      :upload-type="1"
       url="/upload"
       @submitUpload="getSon"
     />
@@ -390,7 +391,11 @@
       },
       // 上传回显
       getSon(data) {
-        this.form.img = data[0]
+        if (data instanceof Array) {
+          this.form.img = data[0]
+        } else {
+          this.form.vdian_img = data
+        }
         this.$forceUpdate()
       },
       // 上传触发

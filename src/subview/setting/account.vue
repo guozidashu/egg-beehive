@@ -346,6 +346,7 @@
 </template>
 
 <script>
+  // 静态页面不做处理
   import { mapGetters } from 'vuex'
   export default {
     name: 'Account',

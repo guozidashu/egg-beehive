@@ -12,7 +12,6 @@
         ref="form"
         :inline="true"
         label-width="80px"
-        :model="goodsForm"
         style="
           display: flex;
           justify-content: space-between;

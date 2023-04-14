@@ -100,24 +100,12 @@
           <el-button :disabled="printSelect" size="small" type="primary">
             打印配货单
           </el-button>
-          <el-select
-            v-model="form.region1"
-            style="width: 150px; margin: 0 10px"
-          >
-            <el-option label="导出订单" value="1" />
-          </el-select>
-          <el-button size="small" type="primary">订单核销</el-button>
-          <el-select
-            v-model="form.region2"
-            style="width: 150px; margin: 0 10px"
-          >
-            <el-option label="不展示聚水潭第三方订单" value="1" />
-          </el-select>
+          <el-button size="small" style="margin-right: 10px" type="primary">
+            批量导出
+          </el-button>
+          <el-checkbox v-model="form.checked">不显示已作废订单</el-checkbox>
         </el-form>
         <el-form class="demo-form-inline" :inline="true" :model="form">
-          <el-form-item>
-            <el-checkbox v-model="form.checked">不显示已作废订单</el-checkbox>
-          </el-form-item>
           <el-form-item label="排序">
             <el-select v-model="form.region" style="width: 150px">
               <el-option label="按下单时间" value="1" />

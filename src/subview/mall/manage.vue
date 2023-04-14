@@ -128,6 +128,9 @@
             >
               批量上架
             </el-button>
+            <el-button size="small" type="primary" @click="handleEditWD()">
+              批量同步微店
+            </el-button>
           </el-form-item>
         </el-form>
         <el-form class="demo-form-inline" :inline="true" :model="form">
@@ -272,6 +275,12 @@
               </div>
               <div v-else style="margin-bottom: 10px">
                 <el-tag type="danger">下架</el-tag>
+              </div>
+              <div v-if="row.is_vdian == 1" style="margin-bottom: 10px">
+                <el-tag>同步微店</el-tag>
+              </div>
+              <div v-else style="margin-bottom: 10px">
+                <el-tag type="danger">未同步微店</el-tag>
               </div>
             </template>
           </el-table-column>
@@ -506,6 +515,7 @@
       :limit="imgNum"
       name="file"
       :size="2"
+      :upload-type="1"
       url="/upload"
       @submitUpload="getSon1"
     />
@@ -515,6 +525,7 @@
       :limit="50"
       name="file"
       :size="2"
+      :upload-type="1"
       url="/upload"
       @submitUpload="getSon2"
     />
@@ -533,6 +544,8 @@
     components: { Drawer, VabUpload, VabQuill, Edit },
     data() {
       return {
+        // 编辑详情图片
+        vdian_detail_img: [],
         // 预售 弹窗
         drawerSta: false,
         // 详情抽屉组件 标题，是否显示，数据,下拉框数据
@@ -588,6 +601,8 @@
           detail: '',
           id: null,
           shop_multiplot: [],
+          vdian_multiplot: [],
+          vdian_detail: '',
         },
         // 商品详情弹窗是否显示
         dialogVisible1: false,
@@ -669,6 +684,35 @@
       this.fetchData()
     },
     methods: {
+      // 同步微店
+      handleEditWD() {
+        if (this.selectRowsId.length > 0) {
+          let flag = false
+          this.selectRowsId.forEach((item) => {
+            if (item.is_vdian == 1) {
+              flag = true
+            }
+          })
+          if (!flag) {
+            let ids = this.selectRowsId.map((item) => item.id)
+            this.$baseConfirm(
+              '你确定要将选中商品同步微店吗?',
+              null,
+              async () => {
+                const { msg } = await this.api.vdianAddGoods({
+                  goods_ids: ids,
+                })
+                this.$baseMessage(msg, 'success', 'vab-hey-message-success')
+                await this.fetchData()
+              }
+            )
+          } else {
+            this.$message.error('已同步微店的商品不能重复同步')
+          }
+        } else {
+          this.$message.error('请先选择商品')
+        }
+      },
       // 预售状态修改
       async turnOnOff(row) {
         const { code } = await this.api.changePresellStatus({
@@ -703,11 +747,44 @@
           this.fetchData()
         }
       },
+      changeCharacter() {
+        if (this.formCommodityDetails.detail == undefined) {
+          return '<div>调试中</div>'
+        }
+        let temp = this.formCommodityDetails.detail
+        let arr = []
+        let index = temp.indexOf('src="')
+        while (index != -1) {
+          arr.push(index)
+          index = temp.indexOf('src="', index + 1)
+        }
+        let arr1 = []
+        let index1 = temp.indexOf('.png')
+        while (index1 != -1) {
+          arr1.push(index1)
+          index1 = temp.indexOf('.png', index1 + 1)
+        }
+        // 截取每个图片的地址
+        let arr2 = []
+        for (let i = 0; i < arr.length; i++) {
+          arr2.push(temp.slice(arr[i] + 5, arr1[i] + 4))
+        }
+        let temp1 = this.formCommodityDetails.detail
+        arr2.forEach((item, index) => {
+          temp1 = temp1.replace(item, this.vdian_detail_img[index])
+        })
+        return temp1
+      },
       // 商品详情保存
       async handleCommodityDetailsSub() {
-        const { code } = await this.api.editGoodsDetailEdit(
-          this.formCommodityDetails
-        )
+        const { code } = await this.api.editGoodsDetailEdit({
+          detail: this.formCommodityDetails.detail,
+          id: this.formCommodityDetails.id,
+          shop_multiplot: this.formCommodityDetails.shop_multiplot,
+          vdian_multiplot: this.formCommodityDetails.vdian_multiplot,
+          vdian_detail:
+            '<div class="ql-editor">' + this.changeCharacter() + '</div>',
+        })
         if (code == 200) {
           this.$message.success('操作成功')
           this.dialogVisible = false
@@ -744,22 +821,34 @@
       },
       // 商品详情多图上传成功回调方法
       getSon1(data) {
-        data.forEach((item) => {
-          if (this.formCommodityDetails.shop_multiplot.indexOf(item) == -1) {
-            this.formCommodityDetails.shop_multiplot.push(item)
+        if (data instanceof Array) {
+          data.forEach((item) => {
+            if (this.formCommodityDetails.shop_multiplot.indexOf(item) == -1) {
+              this.formCommodityDetails.shop_multiplot.push(item)
+            }
+          })
+        } else {
+          if (this.formCommodityDetails.vdian_multiplot.indexOf(data) == -1) {
+            this.formCommodityDetails.vdian_multiplot.push(data)
           }
-        })
+        }
       },
       // 商品详情编辑器上传成功回调方法
       getSon2(data) {
-        data.forEach((item) => {
-          if (this.formCommodityDetails.detail == null) {
-            this.formCommodityDetails.detail = ''
+        if (data instanceof Array) {
+          data.forEach((item) => {
+            if (this.formCommodityDetails.detail == null) {
+              this.formCommodityDetails.detail = ''
+            }
+            if (this.formCommodityDetails.detail.indexOf(item) == -1) {
+              this.formCommodityDetails.detail += `<img src="${item}" />`
+            }
+          })
+        } else {
+          if (this.vdian_detail_img.indexOf(data) == -1) {
+            this.vdian_detail_img.push(data)
           }
-          if (this.formCommodityDetails.detail.indexOf(item) == -1) {
-            this.formCommodityDetails.detail += `<img src="${item}" />`
-          }
-        })
+        }
       },
       // 商品详情弹窗显示
       async handleCommodityDetails(row) {
@@ -769,6 +858,7 @@
         this.formCommodityDetails.detail = data.detail
         this.formCommodityDetails.shop_multiplot = data.shop_multiplot
         this.formCommodityDetails.id = data.id
+        this.vdian_detail_img = []
         this.dialogVisible1 = true
       },
       // 素材上传弹窗显示

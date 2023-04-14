@@ -1,6 +1,7 @@
 <template>
   <div style="background-color: #f6f8f9">
     <el-card shadow="never" style="border: 0; border-radius: 5px">
+      <!-- 查询条件 -->
       <QYForm
         :form="form"
         :form-type="formType"
@@ -13,6 +14,7 @@
           </el-form-item>
         </template>
       </QYForm>
+      <!-- 列表 -->
       <QYList
         :list="list"
         :list-type="listType"
@@ -81,6 +83,7 @@
   export default {
     data() {
       return {
+        // 页数，条数，表单查询条件 表单类型 表格类型 表格数据 表格加载状态 总条数
         formTemp: null,
         page: 1,
         pageSize: 10,
@@ -97,6 +100,7 @@
       }
     },
     watch: {
+      // 监听表单变化
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -121,23 +125,25 @@
       this.fetchData()
     },
     methods: {
+      // 查询
       handleQuery() {
         this.fetchData()
       },
+      // 重置
       resetForm() {
         this.form = this.$options.data().form
       },
-
+      // 分页
       changeBtnPage(data) {
         this.pageState = true
         this.form.page = data
       },
-
+      // 分页条数
       changeBtnPageSize(data) {
         this.pageState = true
         this.form.pageSize = data
       },
-
+      // 获取数据
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {

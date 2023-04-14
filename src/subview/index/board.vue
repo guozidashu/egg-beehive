@@ -391,6 +391,18 @@
             </el-table>
           </template>
         </el-table-column>
+        <!-- <el-table-column width="40">
+          <template slot-scope="scope">
+            <el-radio
+              v-model="radio"
+              class="radio"
+              :label="scope.row"
+              @change.native="expandChange(scope.row)"
+            >
+              &nbsp;
+            </el-radio>
+          </template>
+        </el-table-column> -->
         <el-table-column align="center" label="排行" type="index" width="60">
           <template slot-scope="scope">
             <span

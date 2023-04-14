@@ -27,6 +27,11 @@ export function numFormatInput(value) {
   let temp = value
   // 清除数字以外的字符
   temp = temp.replace(/[^\d]/g, '')
+
+  // 一位数可以是 0 多位数不能以 0 开头
+  if (temp.length > 1) {
+    temp = temp.replace(/^0/g, '')
+  }
   // 必须是大于等于0整数
   // temp = temp.replace(/^0/g, '')
   return temp

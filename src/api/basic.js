@@ -17,6 +17,22 @@ export function getWarehousePositionList(data) {
     data,
   })
 }
+// 微店图片上传
+export function addVdianImg(data) {
+  return request({
+    url: '/common/addVdianImg',
+    method: 'post',
+    data,
+  })
+}
+// 微店同步商品
+export function vdianAddGoods(data) {
+  return request({
+    url: '/goods/addGoodsToVdian',
+    method: 'post',
+    data,
+  })
+}
 // 下拉框数据获取
 //客户等级：customer_grade
 //客户分类/类型：customer_type，
