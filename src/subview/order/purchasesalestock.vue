@@ -35,6 +35,16 @@
               />
             </el-select>
           </el-form-item>
+          <el-form-item label="年份:">
+            <el-select v-model="form.year_id" placeholder="请选择年份">
+              <el-option
+                v-for="(item, index) in selectList.year"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
           <el-form-item label="季节:">
             <el-select v-model="form.season_id" placeholder="请选择季节">
               <el-option
@@ -132,6 +142,7 @@
           sn: '', //订单号
           brand_id: '', //品牌
           season_id: '', //季节
+          year_id: '', //年份
         },
         formType: 4,
         listType: 1,
@@ -174,7 +185,7 @@
       // 获取下拉框数据
       async getGoodsTypeList() {
         const { data } = await this.api.getCommonAllList({
-          type: 'brand,season',
+          type: 'brand,season,year',
         })
         this.selectList = data
       },
@@ -236,9 +247,19 @@
             key: 'inbound_num',
           },
           {
+            title: '入库成本',
+            type: 'text',
+            key: 'inbound_cost',
+          },
+          {
             title: '销售数',
             type: 'text',
             key: 'sale_num',
+          },
+          {
+            title: '销售额',
+            type: 'text',
+            key: 'total_price',
           },
           {
             title: '库存数',
@@ -246,9 +267,19 @@
             key: 'stock_num',
           },
           {
+            title: '库存成本',
+            type: 'text',
+            key: 'stock_cost',
+          },
+          {
             title: '吊牌价',
             type: 'text',
             key: 'sale_price',
+          },
+          {
+            title: '成本价',
+            type: 'text',
+            key: 'cost_price',
           },
         ]
         const excelData = data.list
@@ -274,6 +305,7 @@
           sn: '', //订单号
           brand_id: '', //品牌
           season_id: '', //季节
+          year_id: '', //年份
         }
       },
       // 分页

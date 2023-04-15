@@ -372,13 +372,15 @@
       <!-- 款号表格 -->
       <el-table
         v-show="radioButton == 1"
+        ref="expandstable"
         v-loading="listLoading"
         border
         :data="goodsOwedList"
+        :expand-row-keys="expands"
+        :row-key="getRowKeys"
         style="width: 100%"
-        @expand-change="expandChange"
       >
-        <el-table-column type="expand">
+        <el-table-column type="expand" width="1">
           <template slot-scope="props">
             <el-table :data="props.row.is_show" style="width: 100%">
               <el-table-column label="颜色" prop="color" />
@@ -391,38 +393,28 @@
             </el-table>
           </template>
         </el-table-column>
-        <!-- <el-table-column width="40">
-          <template slot-scope="scope">
-            <el-radio
-              v-model="radio"
-              class="radio"
-              :label="scope.row"
-              @change.native="expandChange(scope.row)"
-            >
-              &nbsp;
-            </el-radio>
-          </template>
-        </el-table-column> -->
         <el-table-column align="center" label="排行" type="index" width="60">
           <template slot-scope="scope">
-            <span
-              v-if="page == 1"
-              class="index_common"
-              :class="[
-                scope.$index + 1 == '1'
-                  ? 'index_one'
-                  : scope.$index + 1 == '2'
-                  ? 'index_two'
-                  : scope.$index + 1 == '3'
-                  ? 'index_three'
-                  : 'index_more',
-              ]"
-            >
-              {{ scope.$index + 1 }}
-            </span>
-            <span v-else class="index_more index_common">
-              {{ 10 * (page - 1) + scope.$index + 1 }}
-            </span>
+            <div style="margin-left: -20px">
+              <span
+                v-if="page == 1"
+                class="index_common"
+                :class="[
+                  scope.$index + 1 == '1'
+                    ? 'index_one'
+                    : scope.$index + 1 == '2'
+                    ? 'index_two'
+                    : scope.$index + 1 == '3'
+                    ? 'index_three'
+                    : 'index_more',
+                ]"
+              >
+                {{ scope.$index + 1 }}
+              </span>
+              <span v-else class="index_more index_common">
+                {{ 10 * (page - 1) + scope.$index + 1 }}
+              </span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column align="center" label="商品" width="400">
@@ -485,6 +477,25 @@
         <el-table-column align="center" label="欠货率" prop="outage_rate" />
         <el-table-column align="center" label="库存数" prop="xh_total" />
         <el-table-column align="center" label="生产中" prop="zsc_total" />
+        <el-table-column
+          align="center"
+          fixed="right"
+          label="操作"
+          prop="unit"
+          width="100"
+        >
+          <template slot-scope="scope">
+            <el-button
+              class="fs-16"
+              size="medium"
+              type="text"
+              @click="expandsHandle(scope.row)"
+            >
+              更多
+              <i class="el-icon-arrow-down el-icon--right fs-20"></i>
+            </el-button>
+          </template>
+        </el-table-column>
         <template #empty>
           <el-image
             class="vab-data-empty"
@@ -623,6 +634,13 @@
   export default {
     data() {
       return {
+        //设置row-key只展示一行
+        expands: [], //只展开一行放入当前行id
+        getRowKeys: (row) => {
+          //获取当前行id
+          // console.log(row)
+          return row.goods_id //这里看这一行中需要根据哪个属性值是id
+        },
         // 按款号 导出类型
         exportType: 1,
         // 按款号 导出弹窗
@@ -830,13 +848,13 @@
         }
       },
       // 款号欠货明细表格展开
-      async expandChange(row) {
+      async expandsHandle(row) {
         if (this.radioButton == 1) {
           const { data } = await this.api.getWarehouseAnalysisRankDetail({
             goods_id: row.goods_id,
           })
           row.is_show = data
-          this.$forceUpdate()
+          this.$refs.expandstable.toggleRowExpansion(row)
         }
       },
       // 欠货明细 查询表单 会员等级下拉框

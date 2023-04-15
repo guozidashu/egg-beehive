@@ -19,7 +19,7 @@
       <div style="position: absolute; right: 0; padding-top: 10px">
         <span style="margin-right: 10px">时间筛选：</span>
         <el-date-picker
-          v-model="formList.time"
+          v-model="time"
           align="right"
           :clearable="false"
           :default-time="['00:00:00', '23:59:59']"
@@ -54,7 +54,14 @@
         </el-card>
       </el-col>
     </el-row>
-    <QYList :list="list" :list-type="listType" :state="listLoading">
+    <QYList
+      :list="list"
+      :list-type="listType"
+      :state="listLoading"
+      :total="total"
+      @changePage="changeBtnPage"
+      @changePageSize="changeBtnPageSize"
+    >
       <template #List>
         <el-table-column align="center" label="排行" type="index" width="60">
           <template slot-scope="scope">
@@ -128,13 +135,16 @@
     data() {
       return {
         listLoading: false,
-        listType: 2,
+        listType: 1,
         list: [],
-        time: '',
+        time: [],
         form: JSON.parse(JSON.stringify(this.drawerInof)),
+        total: 0,
         formList: {
           time: this.getYesterdayTime(),
           goods_id: null,
+          page: 1,
+          pageSize: 10,
         },
         cardList: [
           {
@@ -173,28 +183,44 @@
             this.formList = {
               time: newVal.goods_time,
               stock_id: newVal.stock_id,
+              page: 1,
+              pageSize: 10,
             }
           } else {
             this.formList = {
               time: newVal.goods_time,
               goods_id: newVal.id,
+              page: 1,
+              pageSize: 10,
             }
           }
+          this.time = newVal.goods_time
+        },
+        deep: true,
+        // 初次监听
+        immediate: true,
+      },
+      time: {
+        handler: function () {
           this.fetchData()
         },
         deep: true,
         // 初次监听
         immediate: true,
       },
-      'formList.time': {
-        handler: function () {
-          this.fetchData()
-        },
-        deep: true,
-      },
     },
     created() {},
     methods: {
+      // 分页
+      changeBtnPage(data) {
+        this.formList.page = data
+        this.fetchData()
+      },
+      // 分页条数
+      changeBtnPageSize(data) {
+        this.formList.pageSize = data
+        this.fetchData()
+      },
       async fetchData() {
         this.listLoading = true
         if (this.form.goods_type == 2) {
@@ -214,6 +240,7 @@
             }
           })
           this.list = data.customers
+          this.total = data.total
           this.listLoading = false
         } else {
           const { data } = await this.api.getGoodsDetailAnalysis(this.formList)
@@ -230,6 +257,7 @@
             }
           })
           this.list = data.customers
+          this.total = data.total
           this.listLoading = false
         }
       },

@@ -850,6 +850,13 @@ export function getInventoryList(data) {
   })
 }
 // 订单 -订单列表
+export function getOrderListExport(data) {
+  return request({
+    url: '/order/orderListExport',
+    method: 'post',
+    data,
+  })
+}
 export function getOrderList(data) {
   return request({
     url: '/order/List',
@@ -1265,6 +1272,14 @@ export function getStockCircularSonCate(data) {
   })
 }
 //数据 -  商品分析
+// 商品分析 - 类别导出
+export function getGoodsRankExport(data) {
+  return request({
+    url: '/information/goodsRankExport',
+    method: 'post',
+    data,
+  })
+}
 // 商品分析 - 头部卡片
 export function getGoodsList(data) {
   return request({

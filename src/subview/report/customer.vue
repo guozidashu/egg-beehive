@@ -169,8 +169,8 @@
                 :name="'销售额区间'"
               />
               <QYPopover
-                v-model="goodsForm1.channel"
-                :list="selectList.channel"
+                v-model="goodsForm1.online"
+                :list="selectList.online"
                 :name="'销售渠道'"
               />
               <el-checkbox
@@ -216,16 +216,15 @@
                 size="small"
                 style="width: 150px"
               >
-                <el-option label="按拿货金额" value="1" />
-                <el-option label="按拿货次数" value="2" />
-                <el-option label="按拿货件数" value="3" />
-                <el-option label="按商品成本" value="4" />
-                <el-option label="按预计毛利额" value="5" />
-                <el-option label="按客户回款" value="6" />
-                <el-option label="按期末余额" value="7" />
-                <el-option label="按期末欠款" value="8" />
+                <el-option label="按拿货金额" value="sum_final_amount" />
+                <el-option label="按拿货次数" value="sale_count" />
+                <el-option label="按拿货件数" value="sale_num" />
+                <el-option label="按商品成本" value="cost_price" />
+                <el-option label="按预计毛利额" value="gross_profit" />
+                <el-option label="按客户回款" value="voucher_amount" />
+                <el-option label="按期末余额" value="sale_arrears" />
                 <el-option label="按动销商品数" value="9" />
-                <el-option label="按动销售额占比" value="10" />
+                <el-option label="按动销售额占比" value="final_rate" />
               </el-select>
               <el-radio-group
                 v-model="goodsForm1.sort"
@@ -237,7 +236,7 @@
             </div>
             <div style="display: flex">
               <el-input
-                v-model="goodsForm1.name"
+                v-model="goodsForm1.customer_name"
                 placeholder="按客户名称搜索"
                 prefix-icon="el-icon-search"
                 style="width: 150px; margin-right: 10px"
@@ -261,8 +260,19 @@
             </div>
           </div>
         </el-form>
-        <QYList :list="goosList" :list-type="listType" :state="listLoading">
+        <QYList
+          :list="goosList"
+          :list-type="listType"
+          :page-no="page"
+          :page-size="pageSize"
+          :state="listLoading"
+          :total="total"
+          @changePage="changeBtnPage"
+          @changePageSize="changeBtnPageSize"
+          @selectRows="handleSelectionChange"
+        >
           <template #List>
+            <el-table-column align="center" type="selection" width="40" />
             <el-table-column
               align="center"
               label="排行"
@@ -271,6 +281,7 @@
             >
               <template slot-scope="scope">
                 <span
+                  v-if="page == 1"
                   class="index_common"
                   :class="[
                     scope.$index + 1 == '1'
@@ -283,6 +294,9 @@
                   ]"
                 >
                   {{ scope.$index + 1 }}
+                </span>
+                <span v-else class="index_more index_common">
+                  {{ 10 * (page - 1) + scope.$index + 1 }}
                 </span>
               </template>
             </el-table-column>
@@ -333,9 +347,9 @@
             <el-table-column
               align="center"
               label="拿货次数"
-              prop="customer_name"
+              prop="sale_count"
             />
-            <el-table-column align="center" label="拿货件数" prop="sum_num" />
+            <el-table-column align="center" label="拿货件数" prop="sale_num" />
             <el-table-column
               align="center"
               label="拿货金额"
@@ -349,20 +363,20 @@
               v-if="$permissionFiltering('ReportCustomer', 'cost')"
               align="center"
               label="商品成本"
-              prop="customer_name"
+              prop="cost_price"
             >
               <template #default="{ row }">
-                <el-tag>￥{{ row.customer_name | moneyFormat }}</el-tag>
+                <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
               </template>
             </el-table-column>
             <el-table-column
               v-if="$permissionFiltering('ReportCustomer', 'profit')"
               align="center"
               label="预计毛利额"
-              prop="customer_name"
+              prop="gross_profit"
             >
               <template #default="{ row }">
-                <el-tag>￥{{ row.customer_name | moneyFormat }}</el-tag>
+                <el-tag>￥{{ row.gross_profit | moneyFormat }}</el-tag>
               </template>
             </el-table-column>
             <el-table-column
@@ -381,38 +395,30 @@
               label="期末余额/欠款"
             >
               <template #default="{ row }">
-                <div v-if="(orderList[4].value = 'sale_arrears')">
-                  <el-tag v-if="row.sale_arrears >= 0">
-                    ￥{{ row.sale_arrears | moneyFormat }}
-                  </el-tag>
-                  <el-tag v-else type="danger">
-                    -￥{{ row.sale_arrears | moneyFormat }}
-                  </el-tag>
-                </div>
-                <div v-else>
-                  <el-tag v-if="row.delivery_arrears >= 0">
-                    ￥{{ row.delivery_arrears | moneyFormat }}
-                  </el-tag>
-                  <el-tag v-else type="danger">
-                    -￥{{ row.delivery_arrears | moneyFormat }}
-                  </el-tag>
-                </div>
+                <el-tag v-if="row.sale_arrears >= 0">
+                  ￥{{ row.sale_arrears | moneyFormat }}
+                </el-tag>
+                <el-tag v-else type="danger">
+                  -￥{{ row.sale_arrears | moneyFormat }}
+                </el-tag>
               </template>
             </el-table-column>
             <el-table-column
               align="center"
               label="动销商品数"
-              prop="customer_name"
+              prop="goods_style_num"
             />
             <el-table-column
               align="center"
               label="销售额占比"
-              prop="customer_name"
-            />
+              prop="final_rate"
+            >
+              <template #default="{ row }">{{ row.final_rate }}%</template>
+            </el-table-column>
             <el-table-column
               align="center"
               label="最近一次消费时间"
-              prop="customer_name"
+              prop="last_order_time"
               width="180"
             />
             <el-table-column
@@ -425,9 +431,9 @@
                 <el-button type="text" @click="handleDetail(row)">
                   客户分析
                 </el-button>
-                <el-button type="text" @click="handleDetail(row)">
+                <!-- <el-button type="text" @click="handleDetail(row)">
                   监控客户
-                </el-button>
+                </el-button> -->
               </template>
             </el-table-column>
           </template>
@@ -449,47 +455,33 @@
     mixins: [datajosn, mapjson],
     data() {
       return {
+        // 选中的行
+        selectRowsId: [],
         time: '近30天',
-        // 销售列表 统计类型下拉框
-        orderList: [
-          {
-            name: '订单数',
-            value: 'count_order',
-          },
-          {
-            name: '拿货件数',
-            value: 'sum_num',
-          },
-          {
-            name: '拿货金额',
-            value: 'sum_final_amount',
-          },
-          {
-            name: '预计毛利润',
-            value: 'gross_profit',
-          },
-          {
-            name: '期初欠款/余额',
-            value: 'sale_arrears',
-          },
-        ],
-        // 销售列表 查询表单
+        // 列表 查询表单
         goodsForm1: {
+          // price: null,
+          online: null,
+          brand: null, //品牌
+          level: 0, //客户等级
+          customer_type: 0, //客户分类
+          customer_source: null, //客户来源
+          employee: null, //服务人员
+          is_return: true, //不看终止合作
+          customer_name: null, //客户名称搜索
+          order: 'sum_final_amount', //排序 count_order订单数sale_count拿货次数 sale_num拿货件数 sum_final_amount拿货金额 gross_profit毛利润 cost_price 商品成本 gross_profit 毛利额 voucher_amount客户回款 sale_arrears期末余额 final_rate 占比
+          sort: 'desc', //asc正序 desc倒序
           page: 1,
           pageSize: 20,
-          brand: null,
-          level: -1,
-          customer_source: null,
-          employee: null,
-          price: null,
-          channel: null,
-          customer_type: -1,
-          order: '1',
           time: this.getPastTime(30),
         },
-        // 销售列表 加载状态，列表类型，列表数据
+        // 列表条数 ，分页加载状态，列表类型，列表数据
+        total: 0,
+        formTemp: null,
+        page: 1,
+        pageSize: 10,
         listLoading: false,
-        listType: 2,
+        listType: 1,
         goosList: [],
         // 顶部卡片，地图,饼图 查询条件
         goodsForm: {
@@ -661,8 +653,21 @@
       },
       // 监听 客户分析表格 查询条件
       goodsForm1: {
-        handler: function () {
+        handler: function (newVal) {
+          this.formTemp = JSON.parse(JSON.stringify(newVal))
+          if (this.pageState) {
+            this.formTemp.page = newVal.page
+            this.formTemp.pageSize = newVal.pageSize
+            this.page = newVal.page
+            this.pageSize = newVal.pageSize
+          } else {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 10
+            this.page = 1
+            this.pageSize = 10
+          }
           this.getTableList()
+          this.pageState = false
         },
         deep: true,
       },
@@ -692,6 +697,16 @@
       this.getTableList()
     },
     methods: {
+      // 分页
+      changeBtnPage(data) {
+        this.pageState = true
+        this.goodsForm1.page = data
+      },
+      // 分页条数
+      changeBtnPageSize(data) {
+        this.pageState = true
+        this.goodsForm1.pageSize = data
+      },
       // 获取服务人员下拉框数据
       async selectData() {
         const { data } = await this.api.getEmployeeList({
@@ -704,11 +719,16 @@
         })
         this.employeeList = data
       },
+      // 列表选中数据
+      handleSelectionChange(val) {
+        this.selectRowsId = val
+      },
       // 列表导出
       async handleDerive() {
-        const { code, data } = await this.api.getHotStyleAnalysisExport(
-          this.goodsForm1
-        )
+        let temp = JSON.parse(JSON.stringify(this.goodsForm1))
+        let ids = this.selectRowsId.map((item) => item.id)
+        temp.ids = ids
+        const { code, data } = await this.api.getHotStyleAnalysisExport(temp)
         if (code == 200) {
           window.open(data.url)
           this.$message.success('导出成功')
@@ -730,11 +750,19 @@
       // 重置列表表单数据
       resetForm1() {
         this.goodsForm1 = {
+          // price: null,
+          online: null,
+          brand: null, //品牌
+          level: 0, //客户等级
+          customer_type: 0, //客户分类
+          customer_source: null, //客户来源
+          employee: null, //服务人员
+          is_return: true, //不看终止合作
+          customer_name: null, //客户名称搜索
+          order: 'sum_final_amount', //排序 count_order订单数sale_count拿货次数 sale_num拿货件数 sum_final_amount拿货金额 gross_profit毛利润 cost_price 商品成本 gross_profit 毛利额 voucher_amount客户回款 sale_arrears期末余额 final_rate 占比
+          sort: 'desc', //asc正序 desc倒序
           page: 1,
           pageSize: 20,
-          order: null,
-          brand: null,
-          level: null,
           time: this.getPastTime(30),
         }
       },
@@ -750,17 +778,17 @@
         const { data } = await this.api.getCommonAllList({
           type: 'customer_source,customer_grade,customer_type',
         })
-        data.customer_type.unshift({ id: -1, name: '全部' })
-        data.customer_grade.unshift({ id: -1, name: '全部' })
+        data.customer_type.unshift({ id: 0, name: '全部' })
+        data.customer_grade.unshift({ id: 0, name: '全部' })
         this.selectList = data
-        this.selectList.channel = [
+        this.selectList.online = [
           {
             name: '小程序订货商城',
             id: 1,
           },
           {
             name: '线下开单',
-            id: 2,
+            id: 0,
           },
         ]
         this.selectList.price = [
@@ -770,7 +798,7 @@
             end: 0,
           },
           {
-            name: '10000',
+            name: '￥0-10000',
             start: 0,
             end: 10000,
           },
@@ -875,13 +903,13 @@
       // 获取列表数据
       async getTableList() {
         this.listLoading = true
-        const { data } = await this.api.getHotStyleAnalysis(this.goodsForm1)
-        if (data.arrears_type == 0) {
-          this.orderList[4].value = 'sale_arrears'
-        } else {
-          this.orderList[4].value = 'delivery_arrears'
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.goodsForm1))
         }
+        let temp = JSON.parse(JSON.stringify(this.formTemp))
+        const { data } = await this.api.getHotStyleAnalysis(temp)
         this.goosList = data.list.data
+        this.total = data.list.total
         this.listLoading = false
       },
     },

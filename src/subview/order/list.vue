@@ -97,13 +97,18 @@
       </el-tabs>
       <div style="display: flex; justify-content: space-between">
         <el-form class="demo-form-inline" :inline="true" :model="form">
-          <el-button :disabled="printSelect" size="small" type="primary">
+          <!-- <el-button :disabled="printSelect" size="small" type="primary">
             打印配货单
-          </el-button>
-          <el-button size="small" style="margin-right: 10px" type="primary">
+          </el-button> -->
+          <el-button
+            size="small"
+            style="margin-right: 10px"
+            type="primary"
+            @click="handleDerive()"
+          >
             批量导出
           </el-button>
-          <el-checkbox v-model="form.checked">不显示已作废订单</el-checkbox>
+          <el-checkbox v-model="form.is_return">不显示已作废订单</el-checkbox>
         </el-form>
         <el-form class="demo-form-inline" :inline="true" :model="form">
           <el-form-item label="排序">
@@ -281,9 +286,9 @@
                       订单备注
                     </el-button>
                   </el-dropdown-item>
-                  <el-dropdown-item>
-                    <el-button type="text">打印发货单</el-button>
-                  </el-dropdown-item>
+                  <!-- <el-dropdown-item>
+                    <el-button type="text">打印配货单</el-button>
+                  </el-dropdown-item> -->
                 </el-dropdown-menu>
               </el-dropdown>
             </template>
@@ -328,11 +333,9 @@
         page: 1,
         pageSize: 10,
         form: {
-          region1: '1',
-          region2: '1',
+          is_return: false, //不看已经作废
           order_sort: 2,
           region: '1',
-          fold: true,
           order_time: [],
           pay_type: '', //付款状态 0全部 1未付款 2部分付款 3已付款
           order_type: '', //订单状态 0 全部 1待收款 2待发货 3待确认
@@ -389,6 +392,20 @@
       this.orderCount()
     },
     methods: {
+      // 列表导出
+      async handleDerive() {
+        let temp = JSON.parse(JSON.stringify(this.form))
+        let ids = this.selectRowsId.map((item) => item.id)
+        temp.ids = ids
+        const { code, data } = await this.api.getOrderListExport(temp)
+        if (code == 200) {
+          window.open(data.url)
+          this.$message.success('导出成功')
+          this.fetchData()
+        } else {
+          this.$message.error('导出失败')
+        }
+      },
       // 列表选中数据
       handleSelectionChange(val) {
         this.selectRowsId = val

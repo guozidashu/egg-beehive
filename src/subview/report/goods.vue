@@ -170,7 +170,7 @@
                 减去退货数
               </el-checkbox>
             </div>
-            <div style="display: flex">
+            <!-- <div style="display: flex">
               <div>
                 合并同款
                 <el-popover placement="right" trigger="hover">
@@ -190,7 +190,7 @@
                 inactive-color="#ff4949"
                 style="margin-top: 5px; margin-left: 10px"
               />
-            </div>
+            </div> -->
           </div>
         </el-form-item>
       </el-form>
@@ -242,7 +242,12 @@
               <el-radio-button :label="1">按款号</el-radio-button>
               <el-radio-button :label="2">按规格</el-radio-button>
             </el-radio-group>
-            <el-button size="small" style="margin-left: 10px" type="primary">
+            <el-button
+              size="small"
+              style="margin-left: 10px"
+              type="primary"
+              @click="handleDerive()"
+            >
               导出
             </el-button>
             <el-button
@@ -265,8 +270,10 @@
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
+        @selectRows="handleSelectionChange"
       >
         <template #List>
+          <el-table-column align="center" type="selection" width="40" />
           <el-table-column align="center" label="排行" type="index" width="60">
             <template slot-scope="scope">
               <span
@@ -374,7 +381,7 @@
               <el-button type="text" @click="handleDetail(row)">
                 单品分析
               </el-button>
-              &nbsp;
+              <!-- &nbsp;
               <el-dropdown>
                 <el-button class="el-dropdown-link" type="text">
                   <span>更多</span>
@@ -385,13 +392,17 @@
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>
-                    <el-button type="text">合并同款</el-button>
+                    <el-button type="text" @click="handleEdit(row)">
+                      合并同款
+                    </el-button>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <el-button type="text">监控商品</el-button>
+                    <el-button type="text" @click="handleDetailMonitor(row)">
+                      监控商品
+                    </el-button>
                   </el-dropdown-item>
                 </el-dropdown-menu>
-              </el-dropdown>
+              </el-dropdown> -->
             </template>
           </el-table-column>
         </template>
@@ -406,23 +417,42 @@
     >
       <Drawer :drawer-inof="drawerInof" />
     </el-drawer>
+    <!-- 单款合并弹窗 -->
+    <edit ref="edit" @fetch-data="fetchData" />
+    <!-- 监控商品抽屉 -->
+    <el-drawer
+      :before-close="handleCloseMonitor"
+      size="80%"
+      :title="titleMonitor"
+      :visible.sync="drawerMonitor"
+    >
+      <MonitorGoodsDrawer :drawer-inof="drawerInofMonitor" />
+    </el-drawer>
   </div>
 </template>
 
 <script>
+  import Edit from '@/subview/components/Edit/CombinedCommodityAnalysisEdit'
   import Drawer from '@/subview/components/Drawer/ReportGoodsDrawer'
+  import MonitorGoodsDrawer from '@/subview/components/Drawer/MonitorGoodsDrawer'
   import VabChart from '@/extra/VabChart'
   // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'GoodsStatistical',
-    components: { VabChart, Drawer },
+    components: { VabChart, Drawer, Edit, MonitorGoodsDrawer },
     mixins: [datajosn],
     data() {
       return {
+        // 选中的行
+        selectRowsId: [],
         time: '近30天',
         // 表格类型 按款号/按规格
         time1: '按款号',
+        // 监控商品抽屉 数据、状态、标题
+        drawerInofMonitor: {},
+        drawerMonitor: false,
+        titleMonitor: '监控商品',
         // 单品分析抽屉 数据、状态、标题
         drawerInof: {},
         drawer: false,
@@ -648,12 +678,39 @@
       this.getTableList()
     },
     methods: {
+      // 列表选中数据
+      handleSelectionChange(val) {
+        this.selectRowsId = val
+      },
+      // 列表导出
+      async handleDerive() {
+        let temp = JSON.parse(JSON.stringify(this.goodsForm1))
+        let ids = this.selectRowsId.map((item) => item.id)
+        temp.ids = ids
+        const { code, data } = await this.api.getGoodsRankExport(temp)
+        if (code == 200) {
+          window.open(data.url)
+          this.$message.success('导出成功')
+          this.fetchData()
+        } else {
+          this.$message.error('导出失败')
+        }
+      },
+      // 单款合并弹出
+      async handleEdit(row) {
+        this.$refs['edit'].showEdit(row)
+      },
       // 单品分析
       handleDetail(row) {
         row.goods_type = this.goodsForm1.goods_type
         row.goods_time = this.goodsForm1.time
         this.drawerInof = JSON.parse(JSON.stringify(row))
         this.drawer = true
+      },
+      // 监控商品抽屉打开
+      handleDetailMonitor(row) {
+        this.drawerInofMonitor = JSON.parse(JSON.stringify(row))
+        this.drawerMonitor = true
       },
       // 折线图卡片 查询条件重置
       resetForm() {
@@ -758,10 +815,6 @@
           {
             name: '在售',
             id: 1,
-          },
-          {
-            name: '待上市',
-            id: 3,
           },
         ]
         this.selectList.recommend = [
@@ -1004,9 +1057,13 @@
           }
         })
       },
-      // 抽屉关闭
+      // 单品分析抽屉关闭
       handleClose() {
         this.drawer = false
+      },
+      // 监控商品抽屉关闭
+      handleCloseMonitor() {
+        this.drawerMonitor = false
       },
     },
   }
