@@ -78,6 +78,12 @@
               <el-option label="预售中" value="1" />
             </el-select>
           </el-form-item>
+          <el-form-item label="同步微店:">
+            <el-select v-model="form.is_vdian">
+              <el-option label="未同步" :value="0" />
+              <el-option label="已同步" :value="1" />
+            </el-select>
+          </el-form-item>
           <el-form-item label="商品搜索:">
             <el-input
               v-model="form.name"
@@ -544,8 +550,6 @@
     components: { Drawer, VabUpload, VabQuill, Edit },
     data() {
       return {
-        // 编辑详情图片
-        vdian_detail_img: [],
         // 预售 弹窗
         drawerSta: false,
         // 详情抽屉组件 标题，是否显示，数据,下拉框数据
@@ -602,7 +606,6 @@
           id: null,
           shop_multiplot: [],
           vdian_multiplot: [],
-          vdian_detail: '',
         },
         // 商品详情弹窗是否显示
         dialogVisible1: false,
@@ -640,6 +643,7 @@
           name: '', //商品名称
           status: 1, //0停售 1在售
           presell: '',
+          is_vdian: '',
         },
         listType: 1,
         formType: 4,
@@ -669,6 +673,7 @@
           this.pageState = false
         },
         deep: true,
+        // 初次监听
       },
       // 监听商品详情弹窗数据对多图上传数量做监听限制
       formCommodityDetails: {
@@ -747,34 +752,6 @@
           this.fetchData()
         }
       },
-      changeCharacter() {
-        if (this.formCommodityDetails.detail == undefined) {
-          return '<div>调试中</div>'
-        }
-        let temp = this.formCommodityDetails.detail
-        let arr = []
-        let index = temp.indexOf('src="')
-        while (index != -1) {
-          arr.push(index)
-          index = temp.indexOf('src="', index + 1)
-        }
-        let arr1 = []
-        let index1 = temp.indexOf('.png')
-        while (index1 != -1) {
-          arr1.push(index1)
-          index1 = temp.indexOf('.png', index1 + 1)
-        }
-        // 截取每个图片的地址
-        let arr2 = []
-        for (let i = 0; i < arr.length; i++) {
-          arr2.push(temp.slice(arr[i] + 5, arr1[i] + 4))
-        }
-        let temp1 = this.formCommodityDetails.detail
-        arr2.forEach((item, index) => {
-          temp1 = temp1.replace(item, this.vdian_detail_img[index])
-        })
-        return temp1
-      },
       // 商品详情保存
       async handleCommodityDetailsSub() {
         const { code } = await this.api.editGoodsDetailEdit({
@@ -782,8 +759,6 @@
           id: this.formCommodityDetails.id,
           shop_multiplot: this.formCommodityDetails.shop_multiplot,
           vdian_multiplot: this.formCommodityDetails.vdian_multiplot,
-          vdian_detail:
-            '<div class="ql-editor">' + this.changeCharacter() + '</div>',
         })
         if (code == 200) {
           this.$message.success('操作成功')
@@ -844,10 +819,6 @@
               this.formCommodityDetails.detail += `<img src="${item}" />`
             }
           })
-        } else {
-          if (this.vdian_detail_img.indexOf(data) == -1) {
-            this.vdian_detail_img.push(data)
-          }
         }
       },
       // 商品详情弹窗显示
@@ -857,8 +828,8 @@
         })
         this.formCommodityDetails.detail = data.detail
         this.formCommodityDetails.shop_multiplot = data.shop_multiplot
+        this.formCommodityDetails.vdian_multiplot = data.vdian_multiplot
         this.formCommodityDetails.id = data.id
-        this.vdian_detail_img = []
         this.dialogVisible1 = true
       },
       // 素材上传弹窗显示
@@ -942,6 +913,7 @@
           presell: this.form.presell,
           sort_field: this.form.sort_field,
           sort_type: this.form.sort_type,
+          is_vdian: this.form.is_vdian,
         })
         this.tatleData = data
       },

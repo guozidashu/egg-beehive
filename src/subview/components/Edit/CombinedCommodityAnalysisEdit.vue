@@ -171,7 +171,6 @@
         expands: [], //只展开一行放入当前行id
         getRowKeys: (row) => {
           //获取当前行id
-          // console.log(row)
           return row.id //这里看这一行中需要根据哪个属性值是id
         },
         tableData: [
@@ -214,7 +213,6 @@
     methods: {
       /*点击更多展开table*/
       async expandsHandle(row) {
-        console.log(6666, row)
         const { data } = await this.api.getWarehouseAnalysisRankDetail({
           goods_id: 711,
         })

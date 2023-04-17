@@ -77,6 +77,12 @@
               />
             </el-select>
           </el-form-item>
+          <el-form-item v-show="!form.fold" label="状态:">
+            <el-select v-model="form.status">
+              <el-option label="禁用" :value="0" />
+              <el-option label="正常" :value="1" />
+            </el-select>
+          </el-form-item>
           <el-form-item v-show="!form.fold" label="注册时间:">
             <el-date-picker
               v-model="form.create_time"
@@ -156,27 +162,33 @@
                   />
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
-                  <div
-                    style="
-                      width: 150px;
-                      overflow: hidden;
-                      font-weight: 600;
-                      text-align: left;
-                      text-overflow: ellipsis;
-                      white-space: nowrap;
-                    "
-                  >
-                    {{ row.name }}
+                  <div style="display: flex; justify-content: space-between">
+                    <div
+                      style="
+                        width: 150px;
+                        overflow: hidden;
+                        font-weight: 600;
+                        text-align: left;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      "
+                    >
+                      {{ row.name }}
+                    </div>
+                    <el-tag v-if="row.status == 1" type="success">正常</el-tag>
+                    <el-tag v-else type="danger">禁用</el-tag>
                   </div>
                   <div style="margin: 5px 0 0 0; text-align: left">
                     {{ row.mobile }}
                   </div>
                   <div style="width: 100%; margin: 5px 0 0 0">
-                    <el-tag type="info">
+                    <el-tag v-if="row.grade_name != null" type="info">
                       {{ row.grade_name }}
                     </el-tag>
 
-                    <el-tag type="info">{{ row.type_name }}</el-tag>
+                    <el-tag v-if="row.type_name != null" type="info">
+                      {{ row.type_name }}
+                    </el-tag>
                   </div>
                   <div style="margin: 5px 0 0 0; text-align: left">
                     {{ row.create_time }}
@@ -541,6 +553,7 @@
           level: null,
           type: null,
           tag: null,
+          status: null,
           create_time: [],
           page: 1,
           pageSize: 10,

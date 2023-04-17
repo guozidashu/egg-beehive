@@ -97,6 +97,7 @@
         class="el-menu-vertical-demo"
         default-active="1-1"
         style="width: 200px; border-right: 20px solid #f6f8f9"
+        @select="handleSelect"
       >
         <el-submenu index="1">
           <template slot="title">
@@ -117,28 +118,34 @@
           <i class="el-icon-menu"></i>
           <span slot="title">直播分析</span>
         </el-menu-item>
-        <el-menu-item index="3">
+        <el-menu-item index="4">
           <i class="el-icon-menu"></i>
           <span slot="title">作品分析</span>
         </el-menu-item>
-        <el-menu-item index="3">
+        <el-menu-item index="5">
           <i class="el-icon-menu"></i>
           <span slot="title">达人分析</span>
         </el-menu-item>
-        <el-menu-item index="3">
+        <el-menu-item index="6">
           <i class="el-icon-menu"></i>
           <span slot="title">相似款式</span>
         </el-menu-item>
       </el-menu>
-      <div style="width: 100%"><BasicAnalysis /></div>
+      <div style="width: 100%">
+        <BasicAnalysis v-if="menu_select == '1-1'" />
+        <SKUAnalysis v-if="menu_select == '1-2'" />
+        <CustomerAnalysis v-if="menu_select == '5'" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   import BasicAnalysis from '@/subview/components/MonitorGoodscomponents/BasicAnalysis'
+  import SKUAnalysis from '@/subview/components/MonitorGoodscomponents/SKUAnalysis'
+  import CustomerAnalysis from '@/subview/components/MonitorGoodscomponents/CustomerAnalysis'
   export default {
-    components: { BasicAnalysis },
+    components: { BasicAnalysis, SKUAnalysis, CustomerAnalysis },
     props: {
       drawerInof: {
         type: Object,
@@ -147,6 +154,7 @@
     },
     data() {
       return {
+        menu_select: '1-1',
         // 商品数据
         form: {},
         // 选中图片地址
@@ -204,6 +212,10 @@
     },
     created() {},
     methods: {
+      // 菜单切换
+      handleSelect(key) {
+        this.menu_select = key
+      },
       // 获取商品详情
       async getGoodsDetails() {
         const { data } = await this.api.getGoodBasicsDetails({
@@ -212,7 +224,6 @@
         let arr = []
         let obj = {}
         data.shop_multiplot.forEach((item, index) => {
-          console.log(item)
           obj.img = item
           if (index == 0) {
             obj.checked = true
@@ -225,7 +236,6 @@
         let temp = data
         temp.shop_multiplot = arr
         this.img_checked_src = temp.shop_multiplot[0].img
-        console.log(666, this.img_checked_src)
         this.form = temp
       },
       // 点击图片

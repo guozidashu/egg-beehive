@@ -223,7 +223,7 @@
                 <el-option label="按预计毛利额" value="gross_profit" />
                 <el-option label="按客户回款" value="voucher_amount" />
                 <el-option label="按期末余额" value="sale_arrears" />
-                <el-option label="按动销商品数" value="9" />
+                <el-option label="按动销商品数" value="goods_style_num" />
                 <el-option label="按动销售额占比" value="final_rate" />
               </el-select>
               <el-radio-group

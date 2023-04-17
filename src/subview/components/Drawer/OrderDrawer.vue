@@ -506,7 +506,6 @@
       search_type: {
         handler: function (newVal) {
           if (newVal != 0) {
-            console.log('search_type', newVal)
             this.orderDetail()
           }
         },

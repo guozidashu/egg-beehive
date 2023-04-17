@@ -2417,6 +2417,22 @@ export function getErpInfo(data) {
   })
 }
 // 设置 - 系统设置 -开放接口
+// 开放接口 - 获取微店详情
+export function gitVdianInfo(data) {
+  return request({
+    url: '/setting/vdianInfo',
+    method: 'post',
+    data,
+  })
+}
+// 开放接口 - 微店保存
+export function editVdianInfoSave(data) {
+  return request({
+    url: '/setting/VdianInfoSave',
+    method: 'post',
+    data,
+  })
+}
 // 开放接口 - 获取聚水潭详情
 export function gitJuShuiTanInfo(data) {
   return request({

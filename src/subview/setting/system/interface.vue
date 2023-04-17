@@ -7,6 +7,7 @@
         <el-tab-pane label="伯俊BOS" name="伯俊BOS" />
         <el-tab-pane label="百胜ERP" name="百胜ERP" />
         <el-tab-pane label="紫日ERP" name="紫日ERP" />
+        <el-tab-pane label="微店商城版" name="微店商城版" />
       </el-tabs>
       <div
         v-if="activeName == '聚水潭ERP'"
@@ -32,6 +33,11 @@
         v-if="activeName == '紫日ERP'"
         class="textCss"
         v-html="listText[4].text"
+      ></div>
+      <div
+        v-if="activeName == '微店商城版'"
+        class="textCss"
+        v-html="listText[5].text"
       ></div>
       <el-form
         ref="form"
@@ -188,6 +194,61 @@
             <el-input v-model="form.erp_admin" style="width: 40%" />
           </el-form-item>
         </div>
+        <div v-if="activeName == '微店商城版'">
+          <el-form-item label="微店商城版接口是否开启：" prop="vdian_api_open">
+            <el-radio-group v-model="form.vdian_api_open">
+              <el-radio :label="1">开启</el-radio>
+              <el-radio :label="0">关闭</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="应用APP_Key：" prop="vdian_app_key">
+            <el-input
+              v-model="form.vdian_app_key"
+              placeholder="请输入应用APP_Key"
+              style="width: 40%"
+            />
+          </el-form-item>
+          <el-form-item label="应用APP_Secret：" prop="vdian_secret">
+            <el-input
+              v-model="form.vdian_secret"
+              placeholder="请输入应用APP_Secret"
+              style="width: 40%"
+            />
+          </el-form-item>
+          <el-form-item label="Access_token" prop="vdian_access_token">
+            <el-input
+              v-model="form.vdian_access_token"
+              placeholder="请输入Access_token"
+              style="width: 40%"
+            />
+          </el-form-item>
+          <el-form-item
+            label="access_token过期时间："
+            prop="vdian_expiration_period"
+          >
+            <el-input
+              v-model="form.vdian_expiration_period"
+              disabled
+              style="width: 40%"
+            />
+          </el-form-item>
+          <el-form-item label="接口访问地址：">
+            <span style="color: rgb(251, 102, 56)">
+              https://oauth.open.quanyu123.com/QYAPI/Weidian_Oauth/index?id=UID54646852111WX
+              <span
+                style="color: #1890ff"
+                @click="
+                  handleCopyIcon(
+                    'https://oauth.open.quanyu123.com/QYAPI/Weidian_Oauth/index?id=UID54646852111WX',
+                    $event
+                  )
+                "
+              >
+                复制
+              </span>
+            </span>
+          </el-form-item>
+        </div>
         <el-form-item>
           <el-button
             v-has-permi="['btn:SystemInterface:edit']"
@@ -197,55 +258,57 @@
             确认
           </el-button>
         </el-form-item>
-        <div style="font-weight: 600">回调配置</div>
-        <el-divider style="margin-bottom: 0" />
-        <div class="textCss">
-          将以下信息复制到ERP系统中，用于接收ERP订单库存变化信息
+        <div v-if="activeName != '微店商城版'">
+          <div style="font-weight: 600">回调配置</div>
+          <el-divider style="margin-bottom: 0" />
+          <div class="textCss">
+            将以下信息复制到ERP系统中，用于接收ERP订单库存变化信息
+          </div>
+          <el-form-item label="物流同步：">
+            <span style="color: rgb(251, 102, 56)">
+              {{ wangzhi }}
+              <span
+                style="color: #1890ff"
+                @click="handleCopyIcon(wangzhi, $event)"
+              >
+                复制
+              </span>
+            </span>
+          </el-form-item>
+          <el-form-item label="取消订单：">
+            <span style="color: rgb(251, 102, 56)">
+              {{ wangzhi }}
+              <span
+                style="color: #1890ff"
+                @click="handleCopyIcon(wangzhi, $event)"
+              >
+                复制
+              </span>
+            </span>
+          </el-form-item>
+          <el-form-item label="库存同步：">
+            <span style="color: rgb(251, 102, 56)">
+              {{ wangzhi }}
+              <span
+                style="color: #1890ff"
+                @click="handleCopyIcon(wangzhi, $event)"
+              >
+                复制
+              </span>
+            </span>
+          </el-form-item>
+          <el-form-item label="售后收货：">
+            <span style="color: rgb(251, 102, 56)">
+              {{ wangzhi }}
+              <span
+                style="color: #1890ff"
+                @click="handleCopyIcon(wangzhi, $event)"
+              >
+                复制
+              </span>
+            </span>
+          </el-form-item>
         </div>
-        <el-form-item label="物流同步：">
-          <span style="color: rgb(251, 102, 56)">
-            {{ wangzhi }}
-            <span
-              style="color: #1890ff"
-              @click="handleCopyIcon(wangzhi, $event)"
-            >
-              复制
-            </span>
-          </span>
-        </el-form-item>
-        <el-form-item label="取消订单：">
-          <span style="color: rgb(251, 102, 56)">
-            {{ wangzhi }}
-            <span
-              style="color: #1890ff"
-              @click="handleCopyIcon(wangzhi, $event)"
-            >
-              复制
-            </span>
-          </span>
-        </el-form-item>
-        <el-form-item label="库存同步：">
-          <span style="color: rgb(251, 102, 56)">
-            {{ wangzhi }}
-            <span
-              style="color: #1890ff"
-              @click="handleCopyIcon(wangzhi, $event)"
-            >
-              复制
-            </span>
-          </span>
-        </el-form-item>
-        <el-form-item label="售后收货：">
-          <span style="color: rgb(251, 102, 56)">
-            {{ wangzhi }}
-            <span
-              style="color: #1890ff"
-              @click="handleCopyIcon(wangzhi, $event)"
-            >
-              复制
-            </span>
-          </span>
-        </el-form-item>
       </el-form>
     </el-card>
   </div>
@@ -285,8 +348,41 @@
           user_name: null, //数据库用户名
           password: null, //数据库密码
           erp_admin: null, //ERP管理员
+          // 微店相关参数
+          vdian_api_open: 1, //是否开启微店接口
+          vdian_app_key: null, //应用APP_Key
+          vdian_secret: null, //应用APP_Secret
+          vdian_access_token: null, //Access_token
+          vdian_expiration_period: null, //access_token过期时间
         },
         rules: {
+          vdian_api_open: [
+            {
+              required: true,
+              message: '请选择是否开启微店接口',
+              trigger: 'blur',
+            },
+          ],
+          vdian_app_key: [
+            { required: true, message: '请输入应用APP_Key', trigger: 'blur' },
+          ],
+          vdian_secret: [
+            {
+              required: true,
+              message: '请输入应用APP_Secret',
+              trigger: 'blur',
+            },
+          ],
+          vdian_access_token: [
+            { required: true, message: '请输入Access_token', trigger: 'blur' },
+          ],
+          vdian_expiration_period: [
+            {
+              required: true,
+              message: '请输入access_token过期时间',
+              trigger: 'blur',
+            },
+          ],
           jst_auth_url: [
             { required: true, message: '请输入聚水潭authUrl', trigger: 'blur' },
           ],
@@ -387,6 +483,9 @@
           {
             text: '<p>用于对接紫日ERP，实现相互同步会员、积分、优惠券、商品、订单、库存数据等，使用该功能需要先购买紫日ERP。</p> ',
           },
+          {
+            text: '<p>用于对接微店商城版，可实现单个店铺的自用型接入服务，通过开放接口只能获取和修改自己店铺内的商品和订单，多店铺清联系圈域客户经理开通服务型接口,</p> ',
+          },
         ],
       }
     },
@@ -445,22 +544,36 @@
             this.form.password = temp.password
             this.form.erp_admin = temp.erp_admin
           }
+        } else if (tab.label == '微店商城版') {
+          this.fetchData()
         }
       },
       async fetchData() {
-        const { data } = await this.api.gitJuShuiTanInfo()
-        if (data !== null) {
-          let temp = data
-          this.form.jst_api_open = Number(temp.jst_api_open)
-          this.form.jst_version = Number(temp.jst_version)
-          this.form.jst_auth_url = temp.jst_auth_url
-          this.form.jst_base_url = temp.jst_base_url
-          this.form.jst_access_token = temp.jst_access_token
-          this.form.jst_app_key = temp.jst_app_key
-          this.form.jst_app_secret = temp.jst_app_secret
-          this.form.jst_shop_id = temp.jst_shop_id
-          this.form.jst_refresh_token = temp.jst_refresh_token
-          this.form.jst_expiration_period = temp.jst_expiration_period
+        if (this.activeName == '聚水潭ERP') {
+          const { data } = await this.api.gitJuShuiTanInfo()
+          if (data !== null) {
+            let temp = data
+            this.form.jst_api_open = Number(temp.jst_api_open)
+            this.form.jst_version = Number(temp.jst_version)
+            this.form.jst_auth_url = temp.jst_auth_url
+            this.form.jst_base_url = temp.jst_base_url
+            this.form.jst_access_token = temp.jst_access_token
+            this.form.jst_app_key = temp.jst_app_key
+            this.form.jst_app_secret = temp.jst_app_secret
+            this.form.jst_shop_id = temp.jst_shop_id
+            this.form.jst_refresh_token = temp.jst_refresh_token
+            this.form.jst_expiration_period = temp.jst_expiration_period
+          }
+        } else if (this.activeName == '微店商城版') {
+          const { data } = await this.api.gitVdianInfo()
+          if (data !== null) {
+            let temp = data
+            this.form.vdian_api_open = Number(temp.vdian_api_open)
+            this.form.vdian_app_key = temp.vdian_app_key
+            this.form.vdian_secret = temp.vdian_secret
+            this.form.vdian_access_token = temp.vdian_access_token
+            this.form.vdian_expiration_period = temp.vdian_expiration_period
+          }
         }
       },
       submitForm(formName) {
@@ -538,6 +651,19 @@
                 user_name: this.form.user_name, //数据库用户名
                 password: this.form.password, //数据库密码
                 erp_admin: this.form.erp_admin, //ERP管理员
+              })
+              if (code === 200) {
+                this.$message.success('保存成功')
+              } else {
+                this.$message.error('保存失败')
+              }
+            } else if (this.activeName == '微店商城版') {
+              const { code } = await this.api.editVdianInfoSave({
+                vdian_api_open: this.form.vdian_api_open,
+                vdian_app_key: this.form.vdian_app_key,
+                vdian_secret: this.form.vdian_secret,
+                vdian_access_token: this.form.vdian_access_token,
+                vdian_expiration_period: this.form.vdian_expiration_period,
               })
               if (code === 200) {
                 this.$message.success('保存成功')

@@ -381,7 +381,7 @@
               <el-button type="text" @click="handleDetail(row)">
                 单品分析
               </el-button>
-              <!-- &nbsp;
+              &nbsp;
               <el-dropdown>
                 <el-button class="el-dropdown-link" type="text">
                   <span>更多</span>
@@ -402,7 +402,7 @@
                     </el-button>
                   </el-dropdown-item>
                 </el-dropdown-menu>
-              </el-dropdown> -->
+              </el-dropdown>
             </template>
           </el-table-column>
         </template>
