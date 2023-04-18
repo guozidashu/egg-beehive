@@ -10,13 +10,10 @@
         <el-tooltip placement="top">
           <el-image
             slot="content"
-            src="https://img.wechatboss.com/FlXEXc07TF2wSn75Hrh51E_PV5Fp"
+            :src="form.img"
             style="width: 200px; height: 200px"
           />
-          <el-image
-            src="https://img.wechatboss.com/FlXEXc07TF2wSn75Hrh51E_PV5Fp"
-            style="width: 80px; height: 80px"
-          />
+          <el-image :src="form.img" style="width: 80px; height: 80px" />
         </el-tooltip>
         <div style="width: 280px; margin-top: 5px; margin-left: 10px">
           <div
@@ -31,19 +28,17 @@
               white-space: nowrap;
             "
           >
-            棉布背带裤【合并中】
+            {{ form.name }}
           </div>
           <div style="margin: 10px 0 10px 0; color: #a8a9c3">
-            <span>YZ13011</span>
+            <span>{{ form.sn }}</span>
             &nbsp;
-            <span>YZ13011-1</span>
+            <span>{{ form.other_sn }}</span>
           </div>
           <div>
             <span style="color: #a8a9c3">销售价</span>
             &nbsp;
-            <span style="color: red">￥198</span>
-            &nbsp;
-            <span style="color: red">￥398</span>
+            <span style="color: red">￥{{ form.price }}</span>
           </div>
         </div>
       </div>
@@ -52,24 +47,31 @@
           <div style="margin-bottom: 20px; font-size: 14px; font-weight: 600">
             销售件数
           </div>
-          <div style="font-size: 20px; font-weight: 600">100000</div>
+          <div style="font-size: 20px; font-weight: 600">
+            {{ form.all_sum_num }}
+          </div>
         </div>
         <div style="margin-right: 20px">
           <div style="margin-bottom: 20px; font-size: 14px; font-weight: 600">
             销售额
           </div>
-          <div style="font-size: 20px; font-weight: 600">$100000</div>
+          <div style="font-size: 20px; font-weight: 600">
+            ￥{{ form.all_sum_total }}
+          </div>
         </div>
         <div style="margin-right: 20px">
           <div style="margin-bottom: 20px; font-size: 14px; font-weight: 600">
             库存合计
           </div>
-          <div style="font-size: 20px; font-weight: 600">1000000</div>
+          <div style="font-size: 20px; font-weight: 600">
+            {{ form.all_sum_xh }}
+          </div>
         </div>
       </div>
     </div>
     <el-table
       ref="expandstable"
+      v-loading="listLoading"
       :data="tableData"
       :expand-row-keys="expands"
       :row-key="getRowKeys"
@@ -77,12 +79,12 @@
     >
       <el-table-column type="expand" width="1">
         <template slot-scope="props">
-          <el-table :data="props.row.is_show" style="width: 100%">
-            <el-table-column label="颜色" prop="color" />
-            <el-table-column label="尺码" prop="size" />
-            <el-table-column label="销售件数" prop="order_num" />
-            <el-table-column label="现货库存" prop="not_delivery_num" />
-            <el-table-column label="生产中库存" prop="outage_rate" />
+          <el-table :data="props.row.spec_info" style="width: 100%">
+            <el-table-column label="颜色" prop="color_name" />
+            <el-table-column label="尺码" prop="size_name" />
+            <el-table-column label="销售件数" prop="sum_num" />
+            <el-table-column label="现货库存" prop="xh_num" />
+            <el-table-column label="生产中库存" prop="zsc_num" />
           </el-table>
         </template>
       </el-table-column>
@@ -92,13 +94,10 @@
             <el-tooltip placement="top">
               <el-image
                 slot="content"
-                :src="row.goods_img"
+                :src="row.img"
                 style="width: 200px; height: 200px"
               />
-              <el-image
-                :src="row.goods_img"
-                style="width: 80px; height: 80px"
-              />
+              <el-image :src="row.img" style="width: 80px; height: 80px" />
             </el-tooltip>
             <div style="width: 250px; margin-left: 10px">
               <div
@@ -112,10 +111,10 @@
                   white-space: nowrap;
                 "
               >
-                {{ row.goods_name }}
+                {{ row.name }}
               </div>
               <div style="margin: 5px 0 0 0">
-                {{ row.goods_sn }}
+                {{ row.sn }}
               </div>
               <div
                 style="
@@ -126,20 +125,20 @@
               >
                 <div>
                   <span style="color: red">
-                    ￥{{ row.sale_price | moneyFormat }}
+                    ￥{{ row.price | moneyFormat }}
                   </span>
                 </div>
                 <div>
-                  {{ row.create_time | formatTime }}
+                  {{ row.create_time }}
                 </div>
               </div>
             </div>
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="销售件数" prop="zsc_total" />
-      <el-table-column align="center" label="现货库存" prop="zsc_total" />
-      <el-table-column align="center" label="生产中库存" prop="zsc_total" />
+      <el-table-column align="center" label="销售件数" prop="sum_num" />
+      <el-table-column align="center" label="现货库存" prop="sum_xh_num" />
+      <el-table-column align="center" label="生产中库存" prop="sum_zsc_num" />
       <el-table-column
         align="center"
         fixed="right"
@@ -173,6 +172,12 @@
           //获取当前行id
           return row.id //这里看这一行中需要根据哪个属性值是id
         },
+        // 商品信息
+        form: {},
+        // 弹窗状态
+        dialogFormVisible: false,
+        // 商品列表 loading 数据
+        listLoading: false,
         tableData: [
           {
             not_delivery_num: '32',
@@ -205,23 +210,24 @@
             is_show: [],
           },
         ],
-        form: {},
-        dialogFormVisible: false,
       }
     },
     created() {},
     methods: {
       /*点击更多展开table*/
       async expandsHandle(row) {
-        const { data } = await this.api.getWarehouseAnalysisRankDetail({
-          goods_id: 711,
-        })
-        row.is_show = data
         this.$refs.expandstable.toggleRowExpansion(row)
       },
-      showEdit(row) {
-        this.form = Object.assign({}, row)
+      async showEdit(row) {
         this.dialogFormVisible = true
+        this.listLoading = true
+        const { data } = await this.api.getMergeStock({
+          goods_id: row.id, //商品id
+        })
+        this.tableData = data.goods_list
+        this.form = data.all_info
+        console.log(data.goods_list)
+        this.listLoading = false
       },
       close() {
         this.dialogFormVisible = false

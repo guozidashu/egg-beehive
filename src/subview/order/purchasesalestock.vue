@@ -18,13 +18,6 @@
         @resetForm="resetForm"
       >
         <template #Form>
-          <el-form-item label="款号:">
-            <el-input
-              v-model="form.sn"
-              placeholder="请输入款号"
-              style="width: 215px"
-            />
-          </el-form-item>
           <el-form-item label="品牌:">
             <el-select v-model="form.brand_id" placeholder="请选择品牌">
               <el-option
@@ -55,6 +48,13 @@
               />
             </el-select>
           </el-form-item>
+          <el-form-item label="款号:">
+            <el-input
+              v-model="form.sn"
+              placeholder="请输入款号"
+              style="width: 215px"
+            />
+          </el-form-item>
         </template>
       </QYForm>
       <div>
@@ -69,6 +69,61 @@
       </div>
     </div>
     <el-card shadow="never" style="border: 0; border-radius: 5px">
+      <el-tabs v-model="form.order_source">
+        <el-tab-pane :label="'按款号/货号'" name="0" />
+        <el-tab-pane :label="'按颜色尺码'" name="1" />
+      </el-tabs>
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 20px;
+        "
+      >
+        <div style="display: flex">
+          <el-button
+            size="small"
+            style="margin-right: 10px"
+            type="primary"
+            @click="handleDownload(2)"
+          >
+            批量导出
+          </el-button>
+          <div style="display: flex; margin-top: 5px">
+            <el-checkbox v-model="form.is_return">不显示已停售商品</el-checkbox>
+            <el-checkbox v-model="form.is_return1">不统计作废数据</el-checkbox>
+            <div>
+              &nbsp; &nbsp; | &nbsp; 指标说明
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">
+                  实际库存 = 期初数量 + 生产入库 - 生产退货 - 销售发货 +
+                  销售退货 +- 调整
+                </div>
+                <div style="font-size: 12px">
+                  可售库存 = 实际库存 -订单占有数（代发货）
+                </div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </div>
+          </div>
+        </div>
+        <div>
+          排序
+          <el-select v-model="form.region" style="width: 150px; margin: 0 10px">
+            <el-option label="按创建时间" value="1" />
+            <el-option label="按上架时间" value="2" />
+            <el-option label="按商品款号" value="3" />
+          </el-select>
+          <el-radio-group v-model="form.order_sort">
+            <el-radio-button :label="1">正序</el-radio-button>
+            <el-radio-button :label="2">倒序</el-radio-button>
+          </el-radio-group>
+        </div>
+      </div>
       <!-- 列表 -->
       <QYList
         :list="list"
@@ -82,41 +137,88 @@
         @selectRows="selectBtnRows"
       >
         <template #List>
-          <el-table-column align="center" type="selection" />
-          <el-table-column align="center" label="图片" prop="order_id">
+          <el-table-column align="center" type="selection" width="50" />
+          <el-table-column label="商品信息" width="400">
             <template #default="{ row }">
-              <el-tooltip placement="top">
-                <el-image
-                  slot="content"
-                  :src="row.goods_img"
-                  style="width: 200px; height: 200px"
-                />
-                <el-image
-                  :src="row.goods_img"
-                  style="width: 50px; height: 50px"
-                />
-              </el-tooltip>
+              <div style="display: flex">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.goods_img"
+                    style="width: 200px; height: 200px"
+                  />
+                  <el-image
+                    :src="row.goods_img"
+                    style="width: 105px; height: 105px"
+                  />
+                </el-tooltip>
+                <div style="width: 280px; margin-left: 10px">
+                  <div style="font-size: 14px; font-weight: 600">
+                    {{ row.goods_sn }}
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 5px 0 0 0;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 150px;
+                        overflow: hidden;
+                        text-align: left;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      "
+                    >
+                      商品名称
+                    </div>
+                  </div>
+
+                  <div style="display: flex; width: 100%; margin: 5px 0">
+                    <el-tag type="info">商品款式</el-tag>
+                    &nbsp;
+                    <el-tag type="info">年份</el-tag>
+                    &nbsp;
+                    <el-tag v-if="row.season_name != null" type="info">
+                      {{ row.season_name }}
+                    </el-tag>
+                    &nbsp;
+                    <el-tag v-if="row.brand_name != null" type="info">
+                      {{ row.brand_name }}
+                    </el-tag>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 5px 0 0 0;
+                    "
+                  >
+                    上架日期
+                    <el-tag>停在售</el-tag>
+                  </div>
+                </div>
+              </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="款号" prop="goods_sn" />
           <el-table-column align="center" label="颜色" prop="color_name" />
           <el-table-column align="center" label="尺码" prop="size_name" />
-          <el-table-column align="center" label="品牌" prop="brand_name" />
-          <el-table-column align="center" label="季节" prop="season_name" />
+          <el-table-column align="center" label="期初数量" prop="size_name1" />
           <el-table-column align="center" label="裁床数" prop="cutting_num" />
-          <el-table-column align="center" label="入库数" prop="inbound_num" />
-          <el-table-column align="center" label="销售数" prop="sale_num" />
-          <el-table-column align="center" label="库存数" prop="stock_num" />
+          <el-table-column align="center" label="生产入库" prop="size_name1" />
+          <el-table-column align="center" label="生产退货" prop="size_name1" />
+          <el-table-column align="center" label="销售发货" prop="size_name1" />
+          <el-table-column align="center" label="销售退货" prop="size_name1" />
+          <el-table-column align="center" label="调整数量" prop="size_name1" />
+          <el-table-column align="center" label="实际库存" prop="size_name1" />
           <el-table-column
             align="center"
-            label="吊牌价"
-            prop="sale_price"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
+            label="订单占有数"
+            prop="size_name1"
+          />
+          <el-table-column align="center" label="可售库存" prop="size_name1" />
         </template>
       </QYList>
     </el-card>
@@ -143,6 +245,7 @@
           brand_id: '', //品牌
           season_id: '', //季节
           year_id: '', //年份
+          order_source: '0', //款号，规格
         },
         formType: 4,
         listType: 1,

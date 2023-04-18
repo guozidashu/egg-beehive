@@ -170,7 +170,7 @@
                 减去退货数
               </el-checkbox>
             </div>
-            <!-- <div style="display: flex">
+            <div style="display: flex">
               <div>
                 合并同款
                 <el-popover placement="right" trigger="hover">
@@ -185,12 +185,12 @@
                 </el-popover>
               </div>
               <el-switch
-                v-model="goodsForm1.value"
+                v-model="goodsForm1.merge"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
                 style="margin-top: 5px; margin-left: 10px"
               />
-            </div> -->
+            </div>
           </div>
         </el-form-item>
       </el-form>
@@ -221,7 +221,7 @@
               <el-option label="按销售额" value="sum_total" />
               <el-option label="按动销客户数" value="count_customer" />
               <el-option label="按商品毛利" value="sum_profit" />
-              <el-option label="按上架时间" value="g.upper_time" />
+              <el-option label="按上架时间" value="upper_time" />
             </el-select>
             <el-radio-group
               v-model="goodsForm1.sort"
@@ -238,7 +238,11 @@
               prefix-icon="el-icon-search"
               style="width: 150px; margin-right: 10px"
             />
-            <el-radio-group v-model="goodsForm1.goods_type" style="width: 200">
+            <el-radio-group
+              v-if="!goodsForm1.merge"
+              v-model="goodsForm1.goods_type"
+              style="width: 200"
+            >
               <el-radio-button :label="1">按款号</el-radio-button>
               <el-radio-button :label="2">按规格</el-radio-button>
             </el-radio-group>
@@ -305,13 +309,16 @@
                     :src="row.img"
                     style="width: 200px; height: 200px"
                   />
-                  <el-image :src="row.img" style="width: 80px; height: 80px" />
+                  <el-image
+                    :src="row.img"
+                    style="width: 105px; height: 105px"
+                  />
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
                   <div style="display: flex; justify-content: space-between">
                     <div
                       style="
-                        width: 150px;
+                        width: 200px;
                         overflow: hidden;
                         font-size: 14px;
                         font-weight: 600;
@@ -321,19 +328,17 @@
                       "
                     >
                       {{ row.sn }}
+                      <span v-if="goodsForm1.merge">
+                        && {{ row.sn + '-1' }}
+                      </span>
                     </div>
-                    <el-tag v-if="row.type == 0" type="danger">整手</el-tag>
-                    <el-tag v-if="row.type == 1" type="success">散码</el-tag>
-                  </div>
-                  <div style="margin: 5px 0 0 0">
-                    {{ row.name }} &nbsp;
-                    <span>
-                      {{ row.color_name }}
-                    </span>
-                    &nbsp;
-                    <span>
-                      {{ row.size_name }}
-                    </span>
+                    <el-tag v-if="goodsForm1.merge" type="warning">
+                      合并中
+                    </el-tag>
+                    <div v-else>
+                      <el-tag v-if="row.type == 0" type="danger">整手</el-tag>
+                      <el-tag v-if="row.type == 1" type="success">散码</el-tag>
+                    </div>
                   </div>
                   <div
                     style="
@@ -343,14 +348,34 @@
                     "
                   >
                     <div>
+                      {{ row.name }} &nbsp;
+                      <span>
+                        {{ row.color_name }}
+                      </span>
+                      &nbsp;
+                      <span>
+                        {{ row.size_name }}
+                      </span>
+                    </div>
+                    <el-tag type="success">{{ row.upper_day }}天</el-tag>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 5px 0 0 0;
+                    "
+                  >
+                    <div>
+                      成本价：
                       <span style="color: red">
                         ￥{{ row.price | moneyFormat }}
                       </span>
-                      ￥{{ row.sale_price | moneyFormat }}
                     </div>
-                    <div>
-                      {{ row.upper_time | formatTime }}
-                    </div>
+                    <div>售价： ￥{{ row.sale_price | moneyFormat }}</div>
+                  </div>
+                  <div style="margin: 5px 0 0 0">
+                    {{ row.upper_time | formatTime }}
                   </div>
                 </div>
               </div>
@@ -368,7 +393,9 @@
             label="平均售价"
             prop="average_price"
           />
-          <el-table-column align="center" label="销售占比" prop="final_rate" />
+          <el-table-column align="center" label="销售占比" prop="final_rate">
+            <template #default="{ row }">{{ row.final_rate }}%</template>
+          </el-table-column>
           <el-table-column align="center" label="成本金额" prop="cost_total" />
           <el-table-column align="center" label="商品毛利" prop="sum_profit" />
           <el-table-column
@@ -485,6 +512,7 @@
           status: null,
           sort: 'desc',
           is_return: false,
+          merge: false,
         },
         // 下拉框数据
         selectList: [],
@@ -743,6 +771,7 @@
           status: null,
           sort: 'desc',
           is_return: false,
+          merge: false,
         }
       },
       // 分页

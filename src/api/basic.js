@@ -1272,6 +1272,14 @@ export function getStockCircularSonCate(data) {
   })
 }
 //数据 -  商品分析
+// 商品分析 - 单款合并
+export function getMergeStock(data) {
+  return request({
+    url: '/information/mergeStock',
+    method: 'post',
+    data,
+  })
+}
 // 商品分析 - 类别导出
 export function getGoodsRankExport(data) {
   return request({
@@ -2802,6 +2810,16 @@ export function editTiktokShop(data) {
 export function editLittleRedBook(data) {
   return request({
     url: '/admin/littleRedBook',
+    method: 'post',
+    data,
+  })
+}
+// 商品监控
+// 商品概况 - 基础分析
+// 基础分析 - 头部数据
+export function getMonitorGoodsHead(data) {
+  return request({
+    url: '/monitorGoods/head',
     method: 'post',
     data,
   })

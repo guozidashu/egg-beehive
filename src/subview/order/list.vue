@@ -97,9 +97,9 @@
       </el-tabs>
       <div style="display: flex; justify-content: space-between">
         <el-form class="demo-form-inline" :inline="true" :model="form">
-          <!-- <el-button :disabled="printSelect" size="small" type="primary">
+          <el-button :disabled="printSelect" size="small" type="primary">
             打印配货单
-          </el-button> -->
+          </el-button>
           <el-button
             size="small"
             style="margin-right: 10px"
@@ -286,9 +286,12 @@
                       订单备注
                     </el-button>
                   </el-dropdown-item>
-                  <!-- <el-dropdown-item>
+                  <el-dropdown-item>
                     <el-button type="text">打印配货单</el-button>
-                  </el-dropdown-item> -->
+                  </el-dropdown-item>
+                  <el-dropdown-item v-if="row.order_type == 1">
+                    <el-button type="text">订单核销</el-button>
+                  </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </template>

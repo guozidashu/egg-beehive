@@ -18,14 +18,7 @@
         @resetForm="resetForm"
       >
         <template #Form>
-          <el-form-item label="发货搜索:">
-            <el-input
-              v-model="form.sn"
-              placeholder="请输入商品款号"
-              style="width: 215px"
-            />
-          </el-form-item>
-          <el-form-item label="用户搜索:">
+          <el-form-item label="客户搜索:">
             <el-input
               v-model="form.keywords"
               class="input-with-select"
@@ -44,7 +37,7 @@
               </el-select>
             </el-input>
           </el-form-item>
-          <el-form-item label="订单时间:">
+          <el-form-item label="发货时间:">
             <el-date-picker
               v-model="form.order_time"
               align="left"
@@ -60,17 +53,16 @@
               value-format="yyyy-MM-dd HH:mm:ss"
             />
           </el-form-item>
+          <el-form-item label="商品搜索:">
+            <el-input
+              v-model="form.sn"
+              placeholder="请输入商品款号"
+              style="width: 215px"
+            />
+          </el-form-item>
         </template>
       </QYForm>
       <div>
-        <el-button
-          size="small"
-          style="margin-top: 20px; margin-right: 20px"
-          type="primary"
-          @click="handleDownload(2)"
-        >
-          批量导出
-        </el-button>
         <el-button
           size="small"
           style="margin-top: 20px; margin-right: 20px"
@@ -83,6 +75,43 @@
     </div>
     <!-- 列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
+      <el-tabs v-model="form.order_source" @tab-click="handleClick">
+        <el-tab-pane :label="'所有发货单(111)'" name="0" />
+        <el-tab-pane :label="'已签收 (2222)'" name="1" />
+        <el-tab-pane :label="'未签收 (333)'" name="2" />
+      </el-tabs>
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 20px;
+        "
+      >
+        <div>
+          <el-button :disabled="printSelect" size="small" type="primary">
+            打印发货单
+          </el-button>
+          <el-button
+            size="small"
+            style="margin-right: 10px"
+            type="primary"
+            @click="handleDownload(2)"
+          >
+            批量导出
+          </el-button>
+          <el-checkbox v-model="form.is_return">不显示已作废发货单</el-checkbox>
+        </div>
+        <div>
+          排序
+          <el-select v-model="form.region" style="width: 150px; margin: 0 10px">
+            <el-option label="按发货时间" value="1" />
+          </el-select>
+          <el-radio-group v-model="form.order_sort">
+            <el-radio-button :label="1">正序</el-radio-button>
+            <el-radio-button :label="2">倒序</el-radio-button>
+          </el-radio-group>
+        </div>
+      </div>
       <QYList
         :list="list"
         :list-type="listType"
@@ -95,12 +124,43 @@
         @selectRows="selectBtnRows"
       >
         <template #List>
-          <el-table-column align="center" type="selection" />
-          <el-table-column label="批次" prop="id" width="80" />
-          <el-table-column label="客户名称" prop="customer_name" />
-          <el-table-column label="订单编号" prop="sn" />
-          <el-table-column label="订单状态" prop="status_text" width="150" />
-          <el-table-column label="商品信息" prop="info">
+          <el-table-column align="center" type="selection" width="50" />
+          <el-table-column label="发货信息" width="400">
+            <template #default="{ row }">
+              <div style="display: flex">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    src="row.info.img"
+                    style="width: 200px; height: 200px"
+                  />
+                  <el-image
+                    src="row.info.img"
+                    style="width: 80px; height: 80px"
+                  />
+                </el-tooltip>
+                <div style="width: 280px; margin-left: 10px">
+                  <div style="font-size: 14px; font-weight: 600">
+                    批次号:{{ row.id }} |
+                    <el-tag type="warning">{{ row.status_text }}</el-tag>
+                    <el-tag type="success">已签收</el-tag>
+                  </div>
+                  <div style="margin: 5px 0">
+                    {{ row.customer_name }}
+                    <el-tag type="info">黄金会员</el-tag>
+                  </div>
+                  <div style="margin: 5px 0 0 0">发货时间:{{ row.ctime }}</div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="发货金额" prop="final_amount">
+            <template #default="{ row }">
+              <el-tag>￥{{ row.final_amount | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="发货件数" prop="num" />
+          <el-table-column label="商品信息" prop="info" width="250">
             <template #default="{ row }">
               <div style="display: flex">
                 <el-tooltip placement="top">
@@ -128,18 +188,36 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="总数量" prop="num" width="100" />
-          <el-table-column align="right" label="总金额" prop="final_amount">
-            <template #default="{ row }">
-              <el-tag>￥{{ row.final_amount | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column label="订单日期" prop="ctime" />
-          <el-table-column align="center" fixed="right" label="操作" width="80">
+          <el-table-column align="center" label="收件人" prop="cti1me" />
+          <el-table-column align="center" label="发货方式" prop="cti1me" />
+          <el-table-column align="center" label="物流公司" prop="ctim11e" />
+          <el-table-column align="center" label="快递单号" prop="ctime1" />
+          <el-table-column align="center" label="发货备注" prop="ctime1" />
+          <el-table-column
+            align="center"
+            fixed="right"
+            label="操作"
+            width="100"
+          >
             <template #default="{ row }">
               <el-button type="text" @click="handleDownload(3, row)">
                 导出
               </el-button>
+              &nbsp;
+              <el-dropdown>
+                <el-button class="el-dropdown-link" type="text">
+                  <span>更多</span>
+                  <vab-icon
+                    class="vab-dropdown-active"
+                    icon="arrow-up-s-line"
+                  />
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item>
+                    <el-button type="text">打印发货单</el-button>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </template>
           </el-table-column>
         </template>
@@ -170,6 +248,10 @@
     mixins: [datajosn],
     data() {
       return {
+        // 打印按钮是否可用
+        printSelect: true,
+        //tabs选中
+        order_source: '0',
         // 导出弹窗状态, 导出Ids , 导出类型
         dialogVisible: false,
         ids: [],
@@ -206,6 +288,17 @@
           }
           this.fetchData()
           this.pageState = false
+        },
+        deep: true,
+      },
+      // 监听列表选中数据，改变打印配货单按钮状态
+      selectRows: {
+        handler: function (newVal) {
+          if (newVal.length > 0) {
+            this.printSelect = false
+          } else {
+            this.printSelect = true
+          }
         },
         deep: true,
       },
@@ -257,6 +350,11 @@
         }
         this.ids = temp
         this.dialogVisible = true
+      },
+      // tabs 点击
+      handleClick(tab) {
+        this.order_source = tab.name
+        this.form.page = 1
       },
       // 查询
       handleQuery() {
