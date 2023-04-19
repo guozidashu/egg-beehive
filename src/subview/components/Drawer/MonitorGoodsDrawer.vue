@@ -12,7 +12,9 @@
             margin-bottom: 20px;
             border: 1px solid #ececec;
           "
-        />
+        >
+          <div slot="error" class="el-image__error">暂无图片</div>
+        </el-image>
         <div
           v-if="form.shop_multiplot"
           style="display: flex; padding: 0; margin: 0"
@@ -24,7 +26,9 @@
             :src="item.img"
             style="width: 19%; padding: 0; margin-right: 10px"
             @click="clickImg(item.img, index)"
-          />
+          >
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
         </div>
       </div>
       <!-- 文本区和图标区 -->
@@ -33,7 +37,7 @@
         <div style="font-size: 24px; color: red">￥{{ form.price }}</div>
         <div style="margin: 20px 0 20px 0; font-size: 12px">
           <span style="text-decoration: line-through">￥{{ form.price }}</span>
-          /&nbsp; 最低售价&nbsp;￥{{ form.cost_price }}
+          /&nbsp; 最低售价&nbsp;￥{{ form.lowest_price }}
           <el-popover placement="right" trigger="hover">
             <div style="font-size: 12px">测试</div>
             <vab-icon
@@ -132,9 +136,9 @@
         </el-menu-item>
       </el-menu>
       <div style="width: 100%">
-        <BasicAnalysis v-if="menu_select == '1-1'" />
-        <SKUAnalysis v-if="menu_select == '1-2'" />
-        <CustomerAnalysis v-if="menu_select == '5'" />
+        <BasicAnalysis v-if="menu_select == '1-1'" :goods-id="drawerInof.id" />
+        <SKUAnalysis v-if="menu_select == '1-2'" :goods-id="drawerInof.id" />
+        <CustomerAnalysis v-if="menu_select == '5'" :goods-id="drawerInof.id" />
       </div>
     </div>
   </div>
@@ -219,7 +223,7 @@
       // 获取商品详情
       async getGoodsDetails() {
         const { data } = await this.api.getGoodBasicsDetails({
-          good_id: 768,
+          good_id: this.drawerInof.id,
         })
         let arr = []
         let obj = {}

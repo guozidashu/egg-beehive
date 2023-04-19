@@ -7,12 +7,14 @@
       class="grid-button"
       :style="wrapper_style"
     >
-      <img
+      <el-image
         v-for="(item, index) in data.parameters.image_items"
         :key="index"
         :src="item.img"
         :style="item_style"
-      />
+      >
+        <div slot="error" class="el-image__error">暂无图片</div>
+      </el-image>
     </div>
     <div v-else class="image-null"><span class="el-icon-picture"></span></div>
   </div>

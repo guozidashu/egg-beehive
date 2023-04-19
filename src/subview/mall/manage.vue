@@ -176,11 +176,12 @@
                     slot="content"
                     :src="row.img"
                     style="width: 200px; height: 200px"
-                  />
-                  <el-image
-                    :src="row.img"
-                    style="width: 105px; height: 105px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                  <el-image :src="row.img" style="width: 105px; height: 105px">
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
                   <div style="font-size: 14px; font-weight: 600">
@@ -408,8 +409,12 @@
                   slot="content"
                   :src="item"
                   style="width: 200px; height: 200px"
-                />
-                <el-image :src="item" style="width: 50px; height: 50px" />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
+                <el-image :src="item" style="width: 50px; height: 50px">
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
               </el-tooltip>
               <i
                 class="el-icon-close"
@@ -458,7 +463,9 @@
               >
                 x
               </span>
-              <img :src="item" style="width: 100px; height: 100px" />
+              <el-image :src="item" style="width: 100px; height: 100px">
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
             </div>
           </div>
         </el-form-item>
@@ -816,7 +823,7 @@
               this.formCommodityDetails.detail = ''
             }
             if (this.formCommodityDetails.detail.indexOf(item) == -1) {
-              this.formCommodityDetails.detail += `<img src="${item}" />`
+              this.formCommodityDetails.detail += `<el-image src="${item}" />`
             }
           })
         }

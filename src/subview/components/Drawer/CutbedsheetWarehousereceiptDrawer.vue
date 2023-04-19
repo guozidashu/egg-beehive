@@ -63,7 +63,9 @@
       <el-image
         :src="form.goods_list[0].goods_img"
         style="width: 140px; height: 140px"
-      />
+      >
+        <div slot="error" class="el-image__error">暂无图片</div>
+      </el-image>
       <div style="margin-left: 20px">
         <div style="margin-bottom: 10px">
           款号：{{ form.goods_list[0].goods_sn }}

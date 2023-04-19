@@ -79,12 +79,16 @@
                   :preview-src-list="[row.material_pic]"
                   :src="row.material_pic"
                   style="width: 200px; height: 200px"
-                />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
                 <el-image
                   :preview-src-list="[row.material_pic]"
                   :src="row.material_pic"
                   style="width: 100px; height: 100px"
-                />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
               </el-tooltip>
             </template>
           </el-table-column>

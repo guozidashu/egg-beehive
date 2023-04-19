@@ -2,20 +2,36 @@
   <div>
     <el-carousel height="150px" trigger="click">
       <el-carousel-item v-for="item in imgList" :key="item">
-        <el-image :src="item" />
+        <el-image :src="item">
+          <div slot="error" class="el-image__error">暂无图片</div>
+        </el-image>
       </el-carousel-item>
     </el-carousel>
-    <el-image :src="imgAll[0]" style="width: 100%" />
-    <el-image :src="imgAll[1]" style="width: 100%" />
-    <el-image :src="imgAll[2]" style="width: 100%" />
-    <el-image :src="imgAll[3]" style="width: 100%" />
-    <el-image :src="imgAll[4]" style="width: 100%" />
+    <el-image :src="imgAll[0]" style="width: 100%">
+      <div slot="error" class="el-image__error">暂无图片</div>
+    </el-image>
+    <el-image :src="imgAll[1]" style="width: 100%">
+      <div slot="error" class="el-image__error">暂无图片</div>
+    </el-image>
+    <el-image :src="imgAll[2]" style="width: 100%">
+      <div slot="error" class="el-image__error">暂无图片</div>
+    </el-image>
+    <el-image :src="imgAll[3]" style="width: 100%">
+      <div slot="error" class="el-image__error">暂无图片</div>
+    </el-image>
+    <el-image :src="imgAll[4]" style="width: 100%">
+      <div slot="error" class="el-image__error">暂无图片</div>
+    </el-image>
     <el-carousel height="150px" trigger="click">
       <el-carousel-item v-for="item in imgTopList" :key="item">
-        <el-image :src="item" />
+        <el-image :src="item">
+          <div slot="error" class="el-image__error">暂无图片</div>
+        </el-image>
       </el-carousel-item>
     </el-carousel>
-    <el-image :src="imgAll[5]" style="width: 100%" />
+    <el-image :src="imgAll[5]" style="width: 100%">
+      <div slot="error" class="el-image__error">暂无图片</div>
+    </el-image>
   </div>
 </template>
 

@@ -71,10 +71,15 @@
                 <el-option label="批次号" value="id" />
                 <el-option label="订单号" value="sn" />
                 <el-option label="商品款号" value="goods_sn" />
-                <el-option label="客户名称" value="name" />
-                <el-option label="手机号" value="mobile" />
               </el-select>
             </el-input>
+          </el-form-item>
+          <el-form-item label="客户搜索:">
+            <el-input
+              v-model="form.key_value"
+              class="input-with-select"
+              placeholder="请输入客户名称/手机号"
+            />
           </el-form-item>
         </template>
       </QYForm>
@@ -145,11 +150,15 @@
                     slot="content"
                     :src="row.info.img"
                     style="width: 200px; height: 200px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                   <el-image
                     :src="row.info.img"
                     style="width: 80px; height: 80px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
                   <div style="font-size: 14px; font-weight: 600">
@@ -197,11 +206,12 @@
                     slot="content"
                     :src="row.avatar"
                     style="width: 200px; height: 200px"
-                  />
-                  <el-image
-                    :src="row.avatar"
-                    style="width: 50px; height: 50px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                  <el-image :src="row.avatar" style="width: 50px; height: 50px">
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                 </el-tooltip>
                 <div style="margin-left: 10px">
                   <div style="font-size: 14px; font-weight: 600">
@@ -289,8 +299,12 @@
                   <el-dropdown-item>
                     <el-button type="text">打印配货单</el-button>
                   </el-dropdown-item>
-                  <el-dropdown-item v-if="row.order_type == 1">
-                    <el-button type="text">订单核销</el-button>
+                  <el-dropdown-item
+                    v-if="row.order_type == 1 && row.is_confirm == 0"
+                  >
+                    <el-button type="text" @click="OrderCancellation(row)">
+                      订单核销
+                    </el-button>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -348,6 +362,7 @@
           order_source: '0', //0 所有订单 1ERP平台 2私有商城
           page: 1,
           pageSize: 10,
+          key_value: '',
         },
         listType: 1,
         formType: 4,
@@ -395,6 +410,25 @@
       this.orderCount()
     },
     methods: {
+      // 订单核销
+      OrderCancellation(row) {
+        this.$confirm('是否核销订单？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        })
+          .then(() => {
+            this.api.editOrderCancellation({ order_id: row.id }).then((res) => {
+              if (res.code == 200) {
+                this.$message.success('核销成功')
+                this.fetchData()
+              } else {
+                this.$message.error(res.msg)
+              }
+            })
+          })
+          .catch(() => {})
+      },
       // 列表导出
       async handleDerive() {
         let temp = JSON.parse(JSON.stringify(this.form))

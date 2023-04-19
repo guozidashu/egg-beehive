@@ -44,7 +44,9 @@
           :visible.sync="dialogVisible"
         >
           <div>
-            <el-image :src="dialogImageUrl" />
+            <el-image :src="dialogImageUrl">
+              <div slot="error" class="el-image__error">暂无图片</div>
+            </el-image>
           </div>
         </el-dialog>
       </el-upload>

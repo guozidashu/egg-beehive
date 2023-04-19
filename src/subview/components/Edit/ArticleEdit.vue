@@ -114,7 +114,7 @@
         if (data.length > 0) {
           data.forEach((item) => {
             if (this.form.content.indexOf(item) == -1) {
-              this.form.content += `<img src="${item}" />`
+              this.form.content += `<el-image src="${item}" />`
             }
           })
         }

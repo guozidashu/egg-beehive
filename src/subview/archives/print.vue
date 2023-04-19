@@ -75,15 +75,19 @@
             <el-form-item>
               <div style="display: flex">
                 <el-tooltip placement="top">
-                  <img
+                  <el-image
                     slot="content"
                     :src="goodsInof.goods_img"
                     style="width: 200px; height: 200px; margin: 10px"
-                  />
-                  <img
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                  <el-image
                     :src="goodsInof.goods_img"
                     style="width: 80px; height: 80px; margin-right: 20px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                 </el-tooltip>
                 <div>
                   <div>商品名称：{{ goodsInof.goods_name }}</div>
@@ -190,7 +194,11 @@
                 成分含量：
                 <span>棉：99%</span>
               </p>
-              <p><img src="../../assets/1666403831760(1).jpg" /></p>
+              <p>
+                <el-image src="../../assets/1666403831760(1).jpg">
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
+              </p>
               <div style=""></div>
               <h4 style="margin-top: -18px; color: #000; text-align: center">
                 K35GB2442KF
@@ -208,7 +216,9 @@
           </el-card>
         </div>
         <div v-if="form.printType == 2" style="width: 50%">
-          <img id="barcode" />
+          <el-image id="barcode">
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
         </div>
       </div>
       <!-- 导入打印吊牌条码 -->
@@ -249,11 +259,13 @@
               <el-table-column type="selection" width="55" />
               <el-table-column align="center" label="图片" prop="img">
                 <template slot-scope="{ row }">
-                  <img
+                  <el-image
                     alt=""
                     :src="row.img"
                     style="width: 40px; height: 30px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                 </template>
               </el-table-column>
               <el-table-column

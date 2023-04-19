@@ -20,7 +20,9 @@
             fit="fill"
             :src="item.img"
             :style="{ width: '100%', height: data.parameters.height + 'px' }"
-          />
+          >
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
         </el-carousel-item>
       </el-carousel>
       <div v-else class="image-null"><span class="el-icon-picture"></span></div>
@@ -46,7 +48,9 @@
           <el-image
             :src="item.img"
             :style="{ width: '100%', height: data.parameters.height + 'px' }"
-          />
+          >
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
           <div
             :style="{
               backgroundColor: 'black',
@@ -87,7 +91,9 @@
           <el-image
             :src="item.img"
             :style="{ width: '100%', height: data.parameters.height + 'px' }"
-          />
+          >
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
         </el-carousel-item>
       </el-carousel>
       <div v-else class="image-null"><span class="el-icon-picture"></span></div>

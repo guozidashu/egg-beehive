@@ -4,10 +4,12 @@
       <div>
         <el-row :gutter="20">
           <el-col :span="12" style="display: flex">
-            <img
+            <el-image
               :src="form.material_pic"
               style="width: 50px; height: 50px; margin: 0 10px 10px 0"
-            />
+            >
+              <div slot="error" class="el-image__error">暂无图片</div>
+            </el-image>
             <div style="margin-top: -5px">
               <div style="margin: 15px 0 0 0">
                 编号：{{ form.material_code }}
@@ -101,7 +103,12 @@
             <div>单耗：{{ form.loss }}</div>
             <div>
               物料图片：
-              <img :src="form.material_pic" style="width: 20px; height: 20px" />
+              <el-image
+                :src="form.material_pic"
+                style="width: 20px; height: 20px"
+              >
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
             </div>
           </div>
         </div>
@@ -243,11 +250,13 @@
                       上传
                     </el-button>
                   </div>
-                  <img
+                  <el-image
                     v-if="form.material_pic"
                     :src="form.material_pic"
                     style="width: 80px; height: 80px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                 </div>
               </el-form-item>
             </div>

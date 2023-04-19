@@ -7,7 +7,9 @@
             <el-image
               :src="form.avatar"
               style="width: 80px; height: 80px; margin: 0 10px 10px 0"
-            />
+            >
+              <div slot="error" class="el-image__error">暂无图片</div>
+            </el-image>
             <div>
               <div style="font-size: 14px; font-weight: 600">
                 {{ form.name }}

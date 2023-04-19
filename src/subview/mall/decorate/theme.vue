@@ -18,7 +18,9 @@
           </div>
         </el-form-item>
         <el-form-item label="当前风格示例:">
-          <img :src="img" style="width: 800px; height: 454px" />
+          <el-image :src="img" style="width: 800px; height: 454px">
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
         </el-form-item>
         <el-form-item>
           <el-button

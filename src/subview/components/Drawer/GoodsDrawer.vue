@@ -21,6 +21,17 @@
       @handleShow="handleShow"
     />
     <!-- tab 出去首页 表格 -->
+    <div
+      v-if="activeName == 1"
+      style="display: flex; justify-content: space-between; padding: 0 20px"
+    >
+      <div></div>
+      <el-input
+        v-model="searchName"
+        placeholder="请输入客户名称"
+        style="width: 150px"
+      />
+    </div>
     <List
       :list="orderList"
       :list-type="listType"
@@ -66,6 +77,7 @@
         formDialog: {
           copy: '',
         },
+        searchName: '',
         lockSta: false,
         activeName: '0',
         tabindex: '0',
@@ -272,6 +284,13 @@
         },
         deep: true,
       },
+      searchName: {
+        handler: function (newVal) {
+          this.page = 1
+          this.changeBtnPageList()
+        },
+        deep: true,
+      },
     },
     created() {},
     methods: {
@@ -415,6 +434,7 @@
           good_id: this.drawerInof.id, //物料采购订单id
           page: 1,
           pageSize: 10,
+          name: this.searchName,
         })
         this.orderList = data.data
         this.orderTotal = data.total
@@ -426,6 +446,7 @@
           good_id: this.drawerInof.id, //物料采购订单id
           page: this.page,
           pageSize: this.pageSize,
+          name: this.searchName,
         })
         this.orderList = data.data
         this.orderTotal = data.total

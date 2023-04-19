@@ -58,12 +58,16 @@
                   slot="content"
                   :src="row.goods_img"
                   style="width: 200px; height: 200px"
-                />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
                 <div style="display: flex">
                   <el-image
                     :src="row.goods_img"
                     style="width: 50px; height: 50px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                   <div style="margin: 2px 0 0 10px">
                     <div>{{ row.sn }}</div>
                     <div>{{ row.goods_name }}</div>

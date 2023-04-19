@@ -70,7 +70,9 @@
                 <vab-icon icon="barcode-box-line" />
               </template>
             </el-input>
-            <el-image class="code" :src="codeUrl" @click="changeCode" />
+            <el-image class="code" :src="codeUrl" @click="changeCode">
+              <div slot="error" class="el-image__error">暂无图片</div>
+            </el-image>
           </el-form-item>
           <el-button
             class="login-btn"
@@ -89,10 +91,12 @@
             版权所有 © 杭州圈域数字科技有限公司
           </div>
           <div style="text-align: center">
-            <img
+            <el-image
               src="https://oss.business.quanyu123.com//dc1c5a2ba92a8c083360199ed4159439.png"
               style="position: relative; top: 4px"
-            />
+            >
+              <div slot="error" class="el-image__error">暂无图片</div>
+            </el-image>
             <a
               href="https://beian.miit.gov.cn/"
               style="color: whitesmoke"

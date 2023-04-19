@@ -69,8 +69,12 @@
                   :src="row.logo"
                   slot="content"
                   style="width: 250px; height: 250px"
-                />
-                <el-image :src="row.logo" style="width: 100px; height: 100px" />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
+                <el-image :src="row.logo" style="width: 100px; height: 100px">
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
               </el-tooltip>
             </template>
           </el-table-column>

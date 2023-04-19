@@ -14,11 +14,13 @@
               上传
             </el-button>
           </div>
-          <img
+          <el-image
             v-if="formDrawer.logo"
             :src="formDrawer.logo"
             style="width: 80px; height: 80px"
-          />
+          >
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
         </div>
       </el-form-item>
       <el-form-item label="门店名称：" prop="name">
@@ -114,12 +116,14 @@
             </el-button>
           </div>
           <div v-if="formDrawer.pic">
-            <img
+            <el-image
               v-for="(item, index) in formDrawer.pic"
               :key="index"
               :src="item"
               style="width: 80px; height: 80px"
-            />
+            >
+              <div slot="error" class="el-image__error">暂无图片</div>
+            </el-image>
           </div>
         </div>
       </el-form-item>

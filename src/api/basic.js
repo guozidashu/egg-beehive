@@ -849,7 +849,15 @@ export function getInventoryList(data) {
     data,
   })
 }
-// 订单 -订单列表
+// 订单 -订单核销
+export function editOrderCancellation(data) {
+  return request({
+    url: '/order/orderConfirm',
+    method: 'post',
+    data,
+  })
+}
+// 订单 -订单导出
 export function getOrderListExport(data) {
   return request({
     url: '/order/orderListExport',
@@ -857,6 +865,7 @@ export function getOrderListExport(data) {
     data,
   })
 }
+// 订单 -订单列表
 export function getOrderList(data) {
   return request({
     url: '/order/List',
@@ -2359,6 +2368,38 @@ export function editRegisterDealSave(data) {
   })
 }
 // 设置模块接口
+// 设置 - 消息模板-列表
+export function getPushList(data) {
+  return request({
+    url: '/setting/getPushList',
+    method: 'post',
+    data,
+  })
+}
+// 设置 - 消息模板-新增编辑
+export function savePush(data) {
+  return request({
+    url: '/setting/savePush',
+    method: 'post',
+    data,
+  })
+}
+// 设置 - 消息模板-修改状态
+export function updPushStatus(data) {
+  return request({
+    url: '/setting/updPushStatus',
+    method: 'post',
+    data,
+  })
+}
+// 设置 - 消息模板-消息列表
+export function getPushLogList(data) {
+  return request({
+    url: '/setting/pushLogList',
+    method: 'post',
+    data,
+  })
+}
 // 设置 - 系统设置 -模块设置
 // 模块设置 - 企业微信模块编辑
 export function editWeComeConfig(data) {
@@ -2820,6 +2861,62 @@ export function editLittleRedBook(data) {
 export function getMonitorGoodsHead(data) {
   return request({
     url: '/monitorGoods/head',
+    method: 'post',
+    data,
+  })
+}
+// 基础分析 - 最近拿货客户
+export function getMonitorGoodsPickCustomer(data) {
+  return request({
+    url: '/monitorGoods/pickCustomer',
+    method: 'post',
+    data,
+  })
+}
+// 基础分析 - 销售趋势
+export function getMonitorGoodsSaleTrend(data) {
+  return request({
+    url: '/monitorGoods/saleTrend',
+    method: 'post',
+    data,
+  })
+}
+// sku分析 - 基本属性
+export function getMonitorBasicAttributes(data) {
+  return request({
+    url: '/monitorGoods/basicAttributes',
+    method: 'post',
+    data,
+  })
+}
+// sku分析 - SKU趋势
+export function getMonitorSpecTrend(data) {
+  return request({
+    url: '/monitorGoods/specTrend',
+    method: 'post',
+    data,
+  })
+}
+// sku分析 - SKU列表
+export function getMonitorSpecList(data) {
+  return request({
+    url: '/monitorGoods/specList',
+    method: 'post',
+    data,
+  })
+}
+// 达人分析 - 头部数据
+export function getMonitorCooperateCustomerHead(data) {
+  return request({
+    url: '/monitorGoods/cooperateCustomerHead',
+    method: 'post',
+    data,
+  })
+}
+// 达人分析 - 列表数据
+export function getMonitorCooperateCustomerList(data) {
+  return request({
+    url: '/monitorGoods/cooperateCustomerList',
     method: 'post',
     data,
   })

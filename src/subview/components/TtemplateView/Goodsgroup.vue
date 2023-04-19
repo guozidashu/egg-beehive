@@ -36,7 +36,9 @@
                 <span v-else>散码</span>
               </div>
             </div>
-            <img :src="item.img" :style="img_style" />
+            <el-image :src="item.img" :style="img_style">
+              <div slot="error" class="el-image__error">暂无图片</div>
+            </el-image>
             <div style="padding: 10px">
               <div class="line__2" style="font-size: 14px">
                 {{ item.selectTitle }}
@@ -109,10 +111,12 @@
                 散码
               </div>
             </div>
-            <img
+            <el-image
               src="https://img.wechatboss.com/FraFiH4brOQ6U1g4--W9m9rxORSI"
               :style="img_style"
-            />
+            >
+              <div slot="error" class="el-image__error">暂无图片</div>
+            </el-image>
             <div style="padding: 10px">
               <div class="line__2" style="font-size: 14px">
                 商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介

@@ -114,7 +114,9 @@
                 <el-image
                   :src="row.goods.img"
                   style="width: 100px; height: 100px"
-                />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
                 <div style="margin-left: 10px">
                   <div
                     style="

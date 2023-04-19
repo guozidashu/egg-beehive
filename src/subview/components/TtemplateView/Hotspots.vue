@@ -11,7 +11,9 @@
         mode="aspectFit"
         :src="data.parameters.bg_Image"
         style="width: 100%; height: 100%"
-      />
+      >
+        <div slot="error" class="el-image__error">暂无图片</div>
+      </el-image>
       <div
         v-for="(item, index) in data.parameters.hotspots"
         :key="index"

@@ -27,13 +27,17 @@
         <el-button type="primary" @click="handleShow(1)">图片上传</el-button>
       </el-form-item>
       <el-form-item v-if="form.headimg">
-        <img :src="form.headimg" style="width: 80px; height: 80px" />
+        <el-image :src="form.headimg" style="width: 80px; height: 80px">
+          <div slot="error" class="el-image__error">暂无图片</div>
+        </el-image>
       </el-form-item>
       <!-- <el-form-item label="小程序二维码">
         <el-button type="primary" @click="handleShow(2)">图片上传</el-button>
       </el-form-item> 
       <el-form-item v-if="form.qrcode">
-        <img :src="form.qrcode" style="width: 80px; height: 80px" />
+        <el-image :src="form.qrcode" style="width: 80px; height: 80px" >
+        <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
       </el-form-item>-->
     </el-form>
     <!-- <div style="font-weight: 600">配置服务器域名</div>

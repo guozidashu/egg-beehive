@@ -127,7 +127,9 @@
               <el-image
                 :src="item.img"
                 style="width: 100px; height: 100px; margin: 0 10px"
-              />
+              >
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
               <div style="width: 50%; padding: 15px 0">
                 <div
                   style="

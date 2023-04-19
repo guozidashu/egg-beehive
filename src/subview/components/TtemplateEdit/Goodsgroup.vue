@@ -97,7 +97,9 @@
                 "
                 @click="removeImage(dex)"
               ></i>
-              <img :src="item.img" />
+              <el-image :src="item.img">
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
             </div>
             <div style="margin-top: 20px">
               <div>

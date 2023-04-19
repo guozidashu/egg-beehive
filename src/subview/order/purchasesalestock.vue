@@ -62,16 +62,16 @@
           size="small"
           style="margin-top: 20px; margin-right: 20px"
           type="primary"
-          @click="handleDownload()"
+          @click="handleDownload(1)"
         >
           全部导出
         </el-button>
       </div>
     </div>
     <el-card shadow="never" style="border: 0; border-radius: 5px">
-      <el-tabs v-model="form.order_source">
-        <el-tab-pane :label="'按款号/货号'" name="0" />
-        <el-tab-pane :label="'按颜色尺码'" name="1" />
+      <el-tabs v-model="form.type">
+        <el-tab-pane label="按款号/货号" name="1" />
+        <el-tab-pane label="按颜色尺码" name="2" />
       </el-tabs>
       <div
         style="
@@ -91,7 +91,7 @@
           </el-button>
           <div style="display: flex; margin-top: 5px">
             <el-checkbox v-model="form.is_return">不显示已停售商品</el-checkbox>
-            <el-checkbox v-model="form.is_return1">不统计作废数据</el-checkbox>
+            <el-checkbox v-model="form.is_void">不统计作废数据</el-checkbox>
             <div>
               &nbsp; &nbsp; | &nbsp; 指标说明
               <el-popover placement="right" trigger="hover">
@@ -113,14 +113,14 @@
         </div>
         <div>
           排序
-          <el-select v-model="form.region" style="width: 150px; margin: 0 10px">
-            <el-option label="按创建时间" value="1" />
-            <el-option label="按上架时间" value="2" />
-            <el-option label="按商品款号" value="3" />
+          <el-select v-model="form.order" style="width: 150px; margin: 0 10px">
+            <el-option label="按创建时间" value="create_time" />
+            <el-option label="按上架时间" value="upper_time" />
+            <el-option label="按商品款号" value="sn" />
           </el-select>
-          <el-radio-group v-model="form.order_sort">
-            <el-radio-button :label="1">正序</el-radio-button>
-            <el-radio-button :label="2">倒序</el-radio-button>
+          <el-radio-group v-model="form.sort">
+            <el-radio-button label="asc">正序</el-radio-button>
+            <el-radio-button label="desc">倒序</el-radio-button>
           </el-radio-group>
         </div>
       </div>
@@ -146,11 +146,15 @@
                     slot="content"
                     :src="row.goods_img"
                     style="width: 200px; height: 200px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                   <el-image
                     :src="row.goods_img"
                     style="width: 105px; height: 105px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
                   <div style="font-size: 14px; font-weight: 600">
@@ -177,9 +181,9 @@
                   </div>
 
                   <div style="display: flex; width: 100%; margin: 5px 0">
-                    <el-tag type="info">商品款式</el-tag>
+                    <el-tag type="info">{{ row.category_name }}</el-tag>
                     &nbsp;
-                    <el-tag type="info">年份</el-tag>
+                    <el-tag type="info">{{ row.year_name }}</el-tag>
                     &nbsp;
                     <el-tag v-if="row.season_name != null" type="info">
                       {{ row.season_name }}
@@ -196,29 +200,58 @@
                       margin: 5px 0 0 0;
                     "
                   >
-                    上架日期
-                    <el-tag>停在售</el-tag>
+                    {{ row.upper_time }}
+                    <el-tag v-if="row.status == 1">在售</el-tag>
+                    <el-tag v-if="row.status == 2" type="danger">停售</el-tag>
+                    <el-tag v-if="row.status == 3" type="warning">
+                      待上市
+                    </el-tag>
                   </div>
                 </div>
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="颜色" prop="color_name" />
-          <el-table-column align="center" label="尺码" prop="size_name" />
-          <el-table-column align="center" label="期初数量" prop="size_name1" />
-          <el-table-column align="center" label="裁床数" prop="cutting_num" />
-          <el-table-column align="center" label="生产入库" prop="size_name1" />
-          <el-table-column align="center" label="生产退货" prop="size_name1" />
-          <el-table-column align="center" label="销售发货" prop="size_name1" />
-          <el-table-column align="center" label="销售退货" prop="size_name1" />
-          <el-table-column align="center" label="调整数量" prop="size_name1" />
-          <el-table-column align="center" label="实际库存" prop="size_name1" />
+          <el-table-column
+            v-if="form.type == 2"
+            align="center"
+            label="颜色"
+            prop="color_name"
+          />
+          <el-table-column
+            v-if="form.type == 2"
+            align="center"
+            label="尺码"
+            prop="size_name"
+          />
+          <el-table-column align="center" label="裁床数" prop="zsc_num" />
+          <el-table-column
+            align="center"
+            label="生产入库"
+            prop="sum_inbound_num"
+          />
+          <el-table-column align="center" label="生产退货" prop="sum_out_num" />
+          <el-table-column
+            align="center"
+            label="销售发货"
+            prop="sum_delivery_num"
+          />
+          <el-table-column
+            align="center"
+            label="销售退货"
+            prop="sum_return_num"
+          />
+          <el-table-column
+            align="center"
+            label="调整数量"
+            prop="sum_adjust_num_num"
+          />
+          <el-table-column align="center" label="实际库存" prop="real_stock" />
           <el-table-column
             align="center"
             label="订单占有数"
-            prop="size_name1"
+            prop="sum_wait_num"
           />
-          <el-table-column align="center" label="可售库存" prop="size_name1" />
+          <el-table-column align="center" label="可售库存" prop="sale_stock" />
         </template>
       </QYList>
     </el-card>
@@ -245,7 +278,11 @@
           brand_id: '', //品牌
           season_id: '', //季节
           year_id: '', //年份
-          order_source: '0', //款号，规格
+          type: '1', //按照款号 2按照颜色c
+          is_return: false, //
+          is_void: true, //
+          order: 'create_time', //create_time upper_time
+          sort: 'desc', //
         },
         formType: 4,
         listType: 1,
@@ -293,20 +330,116 @@
         this.selectList = data
       },
       // 导出
-      async handleDownload() {
+      async handleDownload(type) {
+        if (type == 2 && this.selectRows.length == 0) {
+          this.$message.error('请选择要导出的规格')
+          return
+        }
         let stock_id = []
         if (this.selectRows.length != 0) {
           this.selectRows.forEach((item) => {
-            stock_id.push(item.stock_id)
+            if (this.form.type == 1) {
+              stock_id.push(item.goods_id)
+            } else {
+              stock_id.push(item.stock_id)
+            }
           })
         }
         const { code, data } = await this.api.getInventoryExport({
           sn: this.form.sn, // 商品款号
           brand_id: this.form.brand_id, //品牌id
           season_id: this.form.season_id, //季节id
-          stock_id: stock_id, // 导出指定规格数据
+          ids: stock_id, // 导出指定规格数据
+          type: this.form.type, //按照款号 2按照颜色c
+          is_return: this.form.is_return, //
+          is_void: this.form.is_void, //
+          order: this.form.order, //create_time upper_time sn
+          sort: this.form.sort, //按照款号 2按照颜色
+          page: this.form.page,
+          pageSize: this.form.pageSize,
         })
-        const column = [
+
+        let columnSn = [
+          {
+            title: '图片',
+            type: 'image',
+            width: 100,
+            height: 100,
+            key: 'goods_img',
+          },
+          {
+            title: '款号',
+            type: 'text',
+            key: 'goods_sn',
+          },
+          {
+            title: '品牌',
+            type: 'text',
+            key: 'brand_name',
+          },
+          {
+            title: '季节',
+            type: 'text',
+            key: 'season_name',
+          },
+
+          {
+            title: '裁床数',
+            type: 'text',
+            key: 'zsc_num',
+          },
+          {
+            title: '生产入库',
+            type: 'text',
+            key: 'sum_inbound_num',
+          },
+          {
+            title: '销售发货',
+            type: 'text',
+            key: 'sum_delivery_num',
+          },
+          {
+            title: '销售退货',
+            type: 'text',
+            key: 'sum_return_num',
+          },
+          {
+            title: '调整数量',
+            type: 'text',
+            key: 'sum_adjust_num_num',
+          },
+          {
+            title: '实际库存',
+            type: 'text',
+            key: 'real_stock',
+          },
+          {
+            title: '订单占有数',
+            type: 'text',
+            key: 'sum_wait_num',
+          },
+          {
+            title: '可售库存',
+            type: 'text',
+            key: 'sale_stock',
+          },
+          {
+            title: '库存成本',
+            type: 'text',
+            key: 'stock_cost',
+          },
+          {
+            title: '吊牌价',
+            type: 'text',
+            key: 'sale_price',
+          },
+          {
+            title: '成本价',
+            type: 'text',
+            key: 'cost_price',
+          },
+        ]
+        let columnSize = [
           {
             title: '图片',
             type: 'image',
@@ -339,35 +472,46 @@
             type: 'text',
             key: 'season_name',
           },
+
           {
             title: '裁床数',
             type: 'text',
-            key: 'cutting_num',
+            key: 'zsc_num',
           },
           {
-            title: '入库数',
+            title: '生产入库',
             type: 'text',
-            key: 'inbound_num',
+            key: 'sum_inbound_num',
           },
           {
-            title: '入库成本',
+            title: '销售发货',
             type: 'text',
-            key: 'inbound_cost',
+            key: 'sum_delivery_num',
           },
           {
-            title: '销售数',
+            title: '销售退货',
             type: 'text',
-            key: 'sale_num',
+            key: 'sum_return_num',
           },
           {
-            title: '销售额',
+            title: '调整数量',
             type: 'text',
-            key: 'total_price',
+            key: 'sum_adjust_num_num',
           },
           {
-            title: '库存数',
+            title: '实际库存',
             type: 'text',
-            key: 'stock_num',
+            key: 'real_stock',
+          },
+          {
+            title: '订单占有数',
+            type: 'text',
+            key: 'sum_wait_num',
+          },
+          {
+            title: '可售库存',
+            type: 'text',
+            key: 'sale_stock',
           },
           {
             title: '库存成本',
@@ -388,7 +532,12 @@
         const excelData = data.list
         const excelName = '进销存表格' //文件名称
         if (code == 200) {
-          table2excel(column, excelData, excelName) //生成Excel表格，自动下载
+          if (this.form.type == 1) {
+            table2excel(columnSn, excelData, excelName) //生成Excel表格，自动下载
+          } else {
+            table2excel(columnSize, excelData, excelName) //生成Excel表格，自动下载
+          }
+
           this.$message.success('导出成功')
           this.dialogVisible = false
           this.fetchData()
@@ -409,6 +558,11 @@
           brand_id: '', //品牌
           season_id: '', //季节
           year_id: '', //年份
+          type: '2', //按照款号 2按照颜色c
+          is_return: false, //
+          is_void: true, //
+          order: 'create_time', //create_time upper_time
+          sort: 'desc', //
         }
       },
       // 分页

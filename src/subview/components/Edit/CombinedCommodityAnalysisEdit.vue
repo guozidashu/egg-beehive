@@ -12,8 +12,12 @@
             slot="content"
             :src="form.img"
             style="width: 200px; height: 200px"
-          />
-          <el-image :src="form.img" style="width: 80px; height: 80px" />
+          >
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
+          <el-image :src="form.img" style="width: 80px; height: 80px">
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
         </el-tooltip>
         <div style="width: 280px; margin-top: 5px; margin-left: 10px">
           <div
@@ -96,8 +100,12 @@
                 slot="content"
                 :src="row.img"
                 style="width: 200px; height: 200px"
-              />
-              <el-image :src="row.img" style="width: 80px; height: 80px" />
+              >
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
+              <el-image :src="row.img" style="width: 80px; height: 80px">
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
             </el-tooltip>
             <div style="width: 250px; margin-left: 10px">
               <div
@@ -226,7 +234,6 @@
         })
         this.tableData = data.goods_list
         this.form = data.all_info
-        console.log(data.goods_list)
         this.listLoading = false
       },
       close() {

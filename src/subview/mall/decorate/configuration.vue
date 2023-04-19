@@ -37,7 +37,9 @@
                 v-if="inof.img != null"
                 :src="inof.img"
                 style="height: 100%"
-              />
+              >
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
               <div v-else style="padding: 40px; text-align: center">
                 暂无照片，请添加~
               </div>
@@ -107,7 +109,9 @@
                     :src="inof.img"
                     style="width: 100px; height: 100px"
                     @click="uploadImage(inof)"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                 </div>
                 <div style="padding: 20px 0 0 0">
                   <el-form-item label="图片名称">

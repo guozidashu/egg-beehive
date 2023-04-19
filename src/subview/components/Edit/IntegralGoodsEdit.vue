@@ -52,11 +52,13 @@
               上传
             </el-button>
           </div>
-          <img
+          <el-image
             v-if="form.pic"
             :src="form.pic"
             style="width: 80px; height: 80px"
-          />
+          >
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
         </div>
       </el-form-item>
     </el-form>

@@ -2,7 +2,9 @@
   <div>
     <el-carousel height="150px" trigger="click">
       <el-carousel-item v-for="item in imgList" :key="item">
-        <el-image :src="item" />
+        <el-image :src="item">
+          <div slot="error" class="el-image__error">暂无图片</div>
+        </el-image>
       </el-carousel-item>
     </el-carousel>
   </div>

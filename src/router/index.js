@@ -914,6 +914,16 @@ export const asyncRoutes = [
           },
         ],
       },
+      // Message template
+      {
+        path: 'messagetemplate',
+        name: 'Messagetemplate',
+        component: () => import('@/subview/setting/messagetemplate'),
+        meta: {
+          title: '消息推送',
+          icon: 'chat-settings-line',
+        },
+      },
     ],
   },
   {

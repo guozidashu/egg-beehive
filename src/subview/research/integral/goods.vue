@@ -64,11 +64,15 @@
                   slot="content"
                   :src="item.pic"
                   style="width: 200px; height: 200px"
-                />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
                 <el-image
                   :src="item.pic"
                   style="width: 50px; height: 50px; margin: 20px 0 0 20px"
-                />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
               </el-tooltip>
               <div>
                 <div style="margin: 5px">积分：{{ item.integral }}</div>

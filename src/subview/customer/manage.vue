@@ -155,11 +155,15 @@
                     slot="content"
                     :src="row.avatar"
                     style="width: 200px; height: 200px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                   <el-image
                     :src="row.avatar"
                     style="width: 105px; height: 105px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
                   <div style="display: flex; justify-content: space-between">
@@ -316,9 +320,9 @@
                   <el-dropdown-item>
                     <el-button type="text">等级</el-button>
                   </el-dropdown-item>
-                  <el-dropdown-item>
+                  <!-- <el-dropdown-item>
                     <el-button type="text">授信额度</el-button>
-                  </el-dropdown-item>
+                  </el-dropdown-item> -->
                 </el-dropdown-menu>
               </el-dropdown>
             </template>
@@ -458,7 +462,9 @@
                 >
                   x
                 </span>
-                <img :src="item" style="width: 100px; height: 100px" />
+                <el-image :src="item" style="width: 100px; height: 100px">
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
               </div>
             </div>
           </div>

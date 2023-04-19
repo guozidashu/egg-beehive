@@ -75,11 +75,11 @@
     </div>
     <!-- 列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
-      <el-tabs v-model="form.order_source" @tab-click="handleClick">
+      <!-- <el-tabs v-model="form.order_source" @tab-click="handleClick">
         <el-tab-pane :label="'所有发货单(111)'" name="0" />
         <el-tab-pane :label="'已签收 (2222)'" name="1" />
         <el-tab-pane :label="'未签收 (333)'" name="2" />
-      </el-tabs>
+      </el-tabs> -->
       <div
         style="
           display: flex;
@@ -106,9 +106,9 @@
           <el-select v-model="form.region" style="width: 150px; margin: 0 10px">
             <el-option label="按发货时间" value="1" />
           </el-select>
-          <el-radio-group v-model="form.order_sort">
-            <el-radio-button :label="1">正序</el-radio-button>
-            <el-radio-button :label="2">倒序</el-radio-button>
+          <el-radio-group v-model="form.sort">
+            <el-radio-button label="asc">正序</el-radio-button>
+            <el-radio-button label="desc">倒序</el-radio-button>
           </el-radio-group>
         </div>
       </div>
@@ -133,11 +133,15 @@
                     slot="content"
                     src="row.info.img"
                     style="width: 200px; height: 200px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                   <el-image
                     src="row.info.img"
                     style="width: 80px; height: 80px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
                   <div style="font-size: 14px; font-weight: 600">
@@ -147,7 +151,7 @@
                   </div>
                   <div style="margin: 5px 0">
                     {{ row.customer_name }}
-                    <el-tag type="info">黄金会员</el-tag>
+                    <el-tag type="info">{{ row.level_name }}</el-tag>
                   </div>
                   <div style="margin: 5px 0 0 0">发货时间:{{ row.ctime }}</div>
                 </div>
@@ -168,7 +172,9 @@
                     slot="content"
                     :src="row.goods_img"
                     style="width: 200px; height: 200px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                   <el-image
                     :src="row.goods_img"
                     style="
@@ -177,7 +183,9 @@
                       margin-top: 10px;
                       margin-right: 10px;
                     "
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                 </el-tooltip>
                 <div v-if="row.style_num == 1" style="margin-top: 15px">
                   {{ row.goods_name }}&nbsp;{{ row.style_num }}件
@@ -188,11 +196,19 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="收件人" prop="cti1me" />
-          <el-table-column align="center" label="发货方式" prop="cti1me" />
-          <el-table-column align="center" label="物流公司" prop="ctim11e" />
-          <el-table-column align="center" label="快递单号" prop="ctime1" />
-          <el-table-column align="center" label="发货备注" prop="ctime1" />
+          <el-table-column align="center" label="收件人" prop="consignee" />
+          <el-table-column align="center" label="发货方式" prop="online" />
+          <el-table-column
+            align="center"
+            label="物流公司"
+            prop="express_company"
+          />
+          <el-table-column
+            align="center"
+            label="快递单号"
+            prop="express_number"
+          />
+          <el-table-column align="center" label="发货备注" prop="remark" />
           <el-table-column
             align="center"
             fixed="right"
@@ -266,6 +282,9 @@
           page: 1,
           pageSize: 10,
           order_time: this.getPastTime(30),
+          is_return: true, //是否显示作废de
+          sort: 'asc', //按照发货时间排序
+          region: '1',
         },
         formType: 4,
         listType: 1,
@@ -321,6 +340,8 @@
           keywords: this.form.keywords,
           type: this.radio,
           ids: this.ids,
+          is_return: this.form.is_return, //是否显示作废de
+          sort: this.form.sort, //按照发货时间排序
         })
         if (code == 200) {
           window.open(data.url)
@@ -369,6 +390,9 @@
           page: 1,
           pageSize: 10,
           order_time: this.getPastTime(30),
+          is_return: true, //是否显示作废de
+          sort: 'asc', //按照发货时间排序
+          region: '1',
         }
       },
       // 页数改变
@@ -394,6 +418,8 @@
           search_type: this.form.search_type, //搜索条件 mobile nick_name name account
           keywords: this.form.keywords, //关键字
           sn: this.form.sn,
+          is_return: this.form.is_return, //是否显示作废de
+          sort: this.form.sort, //按照发货时间排序
           page: this.page,
           pageSize: this.pageSize,
         })

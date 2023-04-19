@@ -61,7 +61,9 @@
             </el-button>
           </el-form-item>
           <el-form-item v-if="form.avatar">
-            <img :src="form.avatar" style="width: 80px; height: 80px" />
+            <el-image :src="form.avatar" style="width: 80px; height: 80px">
+              <div slot="error" class="el-image__error">暂无图片</div>
+            </el-image>
           </el-form-item>
           <el-form-item label="公众号二维码：">
             <el-button type="primary" @click="handleShow(2)">
@@ -69,7 +71,9 @@
             </el-button>
           </el-form-item>
           <el-form-item v-if="form.code">
-            <img :src="form.code" style="width: 80px; height: 80px" />
+            <el-image :src="form.code" style="width: 80px; height: 80px">
+              <div slot="error" class="el-image__error">暂无图片</div>
+            </el-image>
           </el-form-item>
         </el-form>
         <div style="font-weight: 600">设置IP白名单及域名</div>
@@ -231,7 +235,9 @@
               </span>
             </el-form-item>
             <el-form-item v-if="form.pem_sign">
-              <img :src="form.pem_sign" style="width: 80px; height: 80px" />
+              <el-image :src="form.pem_sign" style="width: 80px; height: 80px">
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
             </el-form-item>
             <el-form-item label="证书秘钥：">
               <el-button type="primary" @click="handleShow(4)">上传</el-button>
@@ -244,7 +250,9 @@
               </span>
             </el-form-item>
             <el-form-item v-if="form.sign_key">
-              <img :src="form.sign_key" style="width: 80px; height: 80px" />
+              <el-image :src="form.sign_key" style="width: 80px; height: 80px">
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
             </el-form-item>
           </div>
           <div v-else>

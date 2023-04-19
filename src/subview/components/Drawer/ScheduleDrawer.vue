@@ -63,7 +63,9 @@
               <el-image
                 :src="goodsDetails.img"
                 style="width: 150px; height: 150px"
-              />
+              >
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
               <div style="margin-left: 12px">
                 <div style="margin: 15px 0">
                   <div style="width: 100%">款号：{{ goodsDetails.sn }}</div>
@@ -272,8 +274,12 @@
                   slot="content"
                   :src="row.img"
                   style="width: 200px; height: 200px"
-                />
-                <el-image :src="row.img" style="width: 50px; height: 50px" />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
+                <el-image :src="row.img" style="width: 50px; height: 50px">
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
               </el-tooltip>
             </template>
           </el-table-column>

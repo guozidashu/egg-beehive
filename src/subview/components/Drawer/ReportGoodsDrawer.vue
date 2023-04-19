@@ -11,7 +11,9 @@
       <el-image
         :src="form.img"
         style="width: 50px; height: 50px; border-radius: 5px"
-      />
+      >
+        <div slot="error" class="el-image__error">暂无图片</div>
+      </el-image>
       <div style="margin-left: 10px">
         <div style="margin: 8px 0 8px 0">{{ form.name }}</div>
         <div>{{ form.sn }}</div>

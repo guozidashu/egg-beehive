@@ -23,7 +23,9 @@
       </el-button>
     </div>
     <div style="display: flex">
-      <el-image :src="form.goods_img" style="width: 100px; height: 100px" />
+      <el-image :src="form.goods_img" style="width: 100px; height: 100px">
+        <div slot="error" class="el-image__error">暂无图片</div>
+      </el-image>
       <div style="margin-left: 20px">
         <div style="margin-bottom: 10px">款号：{{ form.goods_sn }}</div>
         <div style="margin-bottom: 10px">名称：{{ form.goods_name }}</div>

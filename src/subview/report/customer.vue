@@ -308,11 +308,15 @@
                       slot="content"
                       :src="row.avatar"
                       style="width: 200px; height: 200px"
-                    />
+                    >
+                      <div slot="error" class="el-image__error">暂无图片</div>
+                    </el-image>
                     <el-image
                       :src="row.avatar"
                       style="width: 105px; height: 105px"
-                    />
+                    >
+                      <div slot="error" class="el-image__error">暂无图片</div>
+                    </el-image>
                   </el-tooltip>
                   <div style="margin-left: 10px">
                     <div

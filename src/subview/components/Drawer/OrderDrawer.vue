@@ -3,10 +3,12 @@
     <div style="padding: 30px 35px 0 20px">
       <div style="display: flex; justify-content: space-between">
         <div style="display: flex">
-          <img
+          <el-image
             src="https://oss.business.quanyu123.com//6d6029f75045122a57a893cb044e5e63.png"
             style="width: 50px; height: 50px; margin: 0 10px 10px 0"
-          />
+          >
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
           <div>
             <div style="margin-top: 4px; font-size: 16px; font-weight: 600">
               销售单
@@ -164,7 +166,9 @@
                     ￥ {{ item.sale_price | moneyFormat }}
                   </div>
                 </div>
-                <el-image :src="item.img" style="width: 80px; height: 80px" />
+                <el-image :src="item.img" style="width: 80px; height: 80px">
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
                 <div style="margin: 6px 0 0 15px">
                   <div style="font-size: 18px; font-weight: 600; color: black">
                     {{ item.sn }}
@@ -370,10 +374,9 @@
         <el-col v-for="(item, index) in DetailList" :key="index" :span="12">
           <el-card class="box-card" shadow="hover">
             <div style="display: flex; margin-bottom: 20px">
-              <el-image
-                :src="item.goods_img"
-                style="width: 80px; height: 80px"
-              />
+              <el-image :src="item.goods_img" style="width: 80px; height: 80px">
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
               <div style="margin: 0 0 0 10px">
                 <div style="margin: 20px 0 0 0">
                   名称：{{ item.goods_name }}

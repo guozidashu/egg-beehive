@@ -360,7 +360,9 @@
               </el-table-column>
               <el-table-column label="款式&名称&图片" prop="sn">
                 <template #default="{ row }">
-                  <el-image :src="row.img" style="width: 50px; height: 50px" />
+                  <el-image :src="row.img" style="width: 50px; height: 50px">
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                   <p style="margin: 5px 0">{{ row.sn }}</p>
                   <p style="margin: 5px 0">{{ row.name }}</p>
                 </template>
@@ -450,7 +452,9 @@
               </el-table-column>
               <el-table-column label="款式&名称&图片" prop="sn">
                 <template #default="{ row }">
-                  <el-image :src="row.img" style="width: 50px; height: 50px" />
+                  <el-image :src="row.img" style="width: 50px; height: 50px">
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                   <p style="margin: 5px 0">{{ row.sn }}</p>
                   <p style="margin: 5px 0">{{ row.name }}</p>
                 </template>

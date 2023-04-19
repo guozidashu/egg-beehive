@@ -19,7 +19,9 @@
               'px',
           }"
         >
-          <img mode="aspectFill" :src="item.img" :style="img_style" />
+          <el-image mode="aspectFill" :src="item.img" :style="img_style">
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
           <div>{{ item.inputTitle }}</div>
         </div>
       </div>

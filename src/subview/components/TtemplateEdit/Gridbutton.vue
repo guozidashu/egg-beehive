@@ -35,7 +35,9 @@
               "
               @click="removeImage(dex)"
             ></i>
-            <img :src="item.img" @click="addImage(dex)" />
+            <el-image :src="item.img" @click="addImage(dex)">
+              <div slot="error" class="el-image__error">暂无图片</div>
+            </el-image>
           </div>
           <div style="margin-top: 5px">
             <el-input v-model="item.inputTitle" placeholder="请输入标题" />

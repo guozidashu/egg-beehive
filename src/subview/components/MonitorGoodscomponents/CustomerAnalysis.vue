@@ -19,7 +19,7 @@
             </el-popover>
           </div>
           <div style="display: flex; margin-top: 50px">
-            <div style="font-size: 32px">16</div>
+            <div style="font-size: 32px">{{ cooperate_customer_num }}</div>
             <div style="margin-top: 15px; margin-left: 10px">位</div>
           </div>
         </el-col>
@@ -27,7 +27,9 @@
           <div style="margin-top: 10px">监控热销客户</div>
           <div style="display: flex; margin-top: 20px">
             <div style="display: flex; width: 33%">
-              <el-image src="row.img" style="width: 80px; height: 80px" />
+              <el-image src="row.img" style="width: 80px; height: 80px">
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
               <div style="margin-left: 10px">
                 <div style="margin: 5px 0 0 0">吉林王平</div>
                 <div style="margin: 10px 0 0 0; color: gray">
@@ -39,7 +41,9 @@
               </div>
             </div>
             <div style="display: flex; width: 33%">
-              <el-image src="row.img" style="width: 80px; height: 80px" />
+              <el-image src="row.img" style="width: 80px; height: 80px">
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
               <div style="margin-left: 10px">
                 <div
                   style="
@@ -60,7 +64,9 @@
               </div>
             </div>
             <div style="display: flex; width: 33%">
-              <el-image src="row.img" style="width: 80px; height: 80px" />
+              <el-image src="row.img" style="width: 80px; height: 80px">
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
               <div style="margin-left: 10px">
                 <div
                   style="
@@ -94,7 +100,7 @@
     >
       <div style="margin-top: 10px">合作客户列表</div>
       <el-date-picker
-        v-model="goodsForm1.time"
+        v-model="time"
         align="right"
         :clearable="false"
         :default-time="['00:00:00', '23:59:59']"
@@ -119,22 +125,20 @@
     >
       <div style="display: flex">
         <QYPopover
-          v-model="goodsForm1.brand"
+          v-model="form.brand"
           :list="selectList.brand"
           :name="'销售渠道'"
         />
         <QYPopover
-          v-model="goodsForm1.year"
+          v-model="form.year"
           :list="selectList.year"
           :name="'带货风格'"
         />
-        <div style="padding: 8px">最新合作</div>
-        <div style="padding: 8px">拿货排行</div>
       </div>
       <div>
         <el-input
-          v-model="goodsForm1.name"
-          placeholder="请输入商品名称/款号"
+          v-model="form.keyword"
+          placeholder="请输入商品款号/客户名称/客户手机号"
           style="width: 215px"
         />
         <el-button
@@ -148,57 +152,74 @@
       </div>
     </div>
     <div style="padding: 0 20px 20px 20px">
-      <QYList
-        :list="goosList"
-        :list-type="listType"
-        :page-no="page"
-        :page-size="pageSize"
-        :state="listLoading"
-        :total="total"
-        @changePage="changeBtnPage"
-        @changePageSize="changeBtnPageSize"
-      >
-        <template #List>
-          <el-table-column label="客户信息" width="400">
-            <template #default="{ row }">
-              <div style="display: flex">
-                <el-tooltip placement="top">
-                  <el-image
-                    slot="content"
-                    :src="row.img"
-                    style="width: 200px; height: 200px"
-                  />
-                  <el-image :src="row.img" style="width: 80px; height: 80px" />
-                </el-tooltip>
-                <div style="width: 280px; margin-left: 10px">
-                  <div style="margin: 10px 0 0 0">杭州测试</div>
-                  <div style="margin: 10px 0 0 0; color: gray">普通会员</div>
+      <el-table v-loading="state" :data="tableData" @sort-change="sortChange">
+        <el-table-column label="客户信息" width="400">
+          <template #default="{ row }">
+            <div style="display: flex">
+              <el-tooltip placement="top">
+                <el-image
+                  slot="content"
+                  :src="row.customer_avatar"
+                  style="width: 200px; height: 200px"
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
+                <el-image
+                  :src="row.customer_avatar"
+                  style="width: 80px; height: 80px"
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
+              </el-tooltip>
+              <div style="width: 280px; margin-left: 10px">
+                <div style="margin: 10px 0 0 0">{{ row.customer_name }}</div>
+                <div style="margin: 10px 0 0 0; color: gray">
+                  {{ row.customer_level_name }}
                 </div>
               </div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            label="拿货次数"
-            prop="count_customer"
-          />
-          <el-table-column align="center" label="拿货件数" prop="sum_num" />
-          <el-table-column align="center" label="拿货金额" prop="sum_total" />
-          <el-table-column align="center" label="加入时间" prop="sum_profit" />
-          <el-table-column
-            align="center"
-            fixed="right"
-            label="操作"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">
-                监控客户
-              </el-button>
-            </template>
-          </el-table-column>
-        </template>
-      </QYList>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="拿货次数"
+          prop="sale_order_num"
+        />
+        <el-table-column
+          align="center"
+          label="拿货件数"
+          prop="sale_num"
+          sortable="true"
+        />
+        <el-table-column
+          align="center"
+          label="拿货金额"
+          prop="sale_order_num"
+        />
+        <el-table-column
+          align="center"
+          label="加入时间"
+          prop="customer_create_time"
+          sortable="true"
+        />
+        <el-table-column align="center" fixed="right" label="操作" width="150">
+          <template #default="{ row }">
+            <el-button type="text" @click="handleDetail(row)">
+              监控客户
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        background
+        :current-page="form.page"
+        :layout="'total, sizes, prev, pager, next, jumper'"
+        :page-size="form.page_size"
+        :page-sizes="[10, 20, 30, 40, 100]"
+        :total="total"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+      />
     </div>
   </div>
 </template>
@@ -208,173 +229,100 @@
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     mixins: [datajosn],
+    props: {
+      goodsId: {
+        type: Number,
+        default: 0,
+      },
+    },
     data() {
       return {
+        // 合作客户数
+        cooperate_customer_num: 0,
         selectList: [],
-        // 列表加载状态、列表组件的类型、列表数据、列表总数、表单查询条件、页数、条数
-        listLoading: false,
-        listType: 1,
-        goosList: [],
-        total: 0,
-        formTemp: null,
-        page: 1,
-        pageSize: 10,
-        goodsForm1: {
-          time: this.getPastTime(30),
+        // 列表查询条件
+        time: this.getPastTime(30),
+        form: {
           page: 1,
-          pageSize: 10,
-          goods_type: 1,
-          year: null,
-          type: null,
-          brand: null,
-          band: null,
-          sn: null,
-          order: 'sum_num',
-          season: null,
-          category: null,
-          gender: null,
-          agegroup: null,
-          recommend: null,
-          price: null,
-          status: null,
-          sort: 'desc',
-          is_return: false,
+          page_size: 20,
+          goods_id: 710, // 商品id
+          start_date: this.getPastTime(30)[0], // 开始日期
+          end_date: this.getPastTime(30)[1], // 结束日期
+          keyword: '', // 关键字搜索
+          sort_field: {
+            key: 'sale_num', // 拿货数量 = sale_num 最新合作 = customer_create_time
+            sort: 'asc',
+          },
         },
+        tableData: [],
+        total: 0,
+        state: false,
       }
     },
     watch: {
-      // 监听表格查询条件
-      goodsForm1: {
-        handler: function (newVal) {
-          this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState) {
-            this.formTemp.page = newVal.page
-            this.formTemp.pageSize = newVal.pageSize
-            this.page = newVal.page
-            this.pageSize = newVal.pageSize
-          } else {
-            this.formTemp.page = 1
-            this.formTemp.pageSize = 10
-            this.page = 1
-            this.pageSize = 10
-          }
-          this.getTableList()
-          this.pageState = false
+      'form.keyword'() {
+        this.form.page = 1
+        this.getList()
+      },
+      time: {
+        handler: function (newval) {
+          this.form.start_date = newval[0]
+          this.form.end_date = newval[1]
+          this.form.page = 1
+          this.getList()
         },
         deep: true,
-        // 初次监听
-        immediate: true,
       },
     },
     created() {
-      this.getTypeList()
-      this.getTableList()
+      this.getHead()
+      this.getList()
     },
     methods: {
-      // 获取下拉框数据
+      // 获取头部数据
+      async getHead() {
+        const { data } = await this.api.getMonitorCooperateCustomerHead({
+          goods_id: this.goodsId, // 商品id
+        })
+        this.cooperate_customer_num = data.cooperate_customer_num
+      },
+      // 获取下拉框数据 假数据
       async getTypeList() {
         const { data } = await this.api.getCommonAllList({
           type: 'brand,season,year,band,category,agegroup,size',
         })
         this.selectList = data
-        this.selectList.price = [
-          {
-            name: '不限',
-            start: 0,
-            end: 0,
-          },
-          {
-            name: '￥50以下',
-            start: 0,
-            end: 50,
-          },
-          {
-            name: '￥50-100',
-            start: 50,
-            end: 100,
-          },
-          {
-            name: '￥100-200',
-            start: 100,
-            end: 200,
-          },
-          {
-            name: '￥200-300',
-            start: 200,
-            end: 300,
-          },
-          {
-            name: '￥300元以上',
-            start: 300,
-            end: 0,
-          },
-        ]
-        this.selectList.gender = [
-          {
-            name: '女',
-            id: 1,
-          },
-          {
-            name: '男',
-            id: 2,
-          },
-          {
-            name: '中',
-            id: 3,
-          },
-        ]
-        this.selectList.status = [
-          {
-            name: '停售',
-            id: 2,
-          },
-          {
-            name: '在售',
-            id: 1,
-          },
-        ]
-        this.selectList.recommend = [
-          {
-            name: '取消推荐',
-            id: 0,
-          },
-          {
-            name: '推荐中',
-            id: 1,
-          },
-        ]
-        this.selectList.type = [
-          {
-            name: '整手',
-            id: 0,
-          },
-          {
-            name: '散码',
-            id: 1,
-          },
-        ]
       },
-      // 分页
-      changeBtnPage(data) {
-        this.pageState = true
-        this.goodsForm1.page = data
+      handleCurrentChange(val) {
+        this.form.page = val
+        this.getList()
       },
-      // 分页条数
-      changeBtnPageSize(data) {
-        this.pageState = true
-        this.goodsForm1.pageSize = data
+      handleSizeChange(val) {
+        this.form.page_size = val
+        this.getList()
+      },
+      // 排序类型
+      sortChange(column) {
+        if (column) {
+          if (column.order === 'ascending') {
+            this.form.sort_field.key = column.prop
+            this.form.sort_field.sort = 'asc'
+          } else if (column.order === 'descending') {
+            this.form.sort_field.key = column.prop
+            this.form.sort_field.sort = 'desc'
+          }
+          this.getList()
+        }
       },
       // 获取列表数据
-      async getTableList() {
-        this.listLoading = true
-        if (this.formTemp == null) {
-          this.formTemp = JSON.parse(JSON.stringify(this.goodsForm1))
-        }
-        let temp = JSON.parse(JSON.stringify(this.formTemp))
-        const { data } = await this.api.getGoodsRank(temp)
-        this.goosList = data.data
+      async getList() {
+        this.state = true
+        const { data } = await this.api.getMonitorCooperateCustomerList(
+          this.form
+        )
         this.total = data.total
-        this.listLoading = false
+        this.tableData = data.list
+        this.state = false
       },
     },
   }

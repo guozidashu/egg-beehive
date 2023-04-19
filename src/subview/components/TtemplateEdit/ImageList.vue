@@ -35,7 +35,9 @@
               "
               @click="removeImage(dex)"
             ></i>
-            <img :src="item.img" @click="addImage(dex)" />
+            <el-image :src="item.img" @click="addImage(dex)">
+              <div slot="error" class="el-image__error">暂无图片</div>
+            </el-image>
           </div>
           <el-button
             v-if="item.title == ''"

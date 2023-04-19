@@ -3,12 +3,14 @@
   <div class="image-content">
     <el-form ref="form" :model="list.parameters" style="margin-top: 20px">
       <h3>组件样式</h3>
-      <img
+      <el-image
         v-if="list.parameters.bg_Image"
         :src="list.parameters.bg_Image"
         style="width: 150px; height: 150px"
         @click="addImage()"
-      />
+      >
+        <div slot="error" class="el-image__error">暂无图片</div>
+      </el-image>
       <el-form-item v-else>
         <el-button
           class="add-image"

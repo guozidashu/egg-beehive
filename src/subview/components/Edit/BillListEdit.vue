@@ -47,7 +47,9 @@
         <el-button type="primary" @click="handleShow()">图片上传</el-button>
       </el-form-item>
       <el-form-item v-if="form.voucher_image">
-        <img :src="form.voucher_image" style="width: 80px; height: 80px" />
+        <el-image :src="form.voucher_image" style="width: 80px; height: 80px">
+          <div slot="error" class="el-image__error">暂无图片</div>
+        </el-image>
       </el-form-item>
       <el-form-item label="备注:">
         <el-input

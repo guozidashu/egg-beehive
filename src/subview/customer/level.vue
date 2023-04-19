@@ -30,7 +30,9 @@
             width="80px"
           >
             <template #default="{ row }">
-              <img :src="row.icon" style="width: 50px; height: 50px" />
+              <el-image :src="row.icon" style="width: 50px; height: 50px">
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
             </template>
           </el-table-column>
           <el-table-column label="等级名称" prop="name" width="150px" />

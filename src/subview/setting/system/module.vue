@@ -58,7 +58,13 @@
                 <el-radio :label="1">开启</el-radio>
               </el-radio-group>
             </el-form-item>
-
+            <el-form-item label="商品退货控制设置">
+              <el-radio-group v-model="form1.return_not_exceed">
+                <el-radio :label="0">关闭</el-radio>
+                <el-radio :label="1">开启</el-radio>
+              </el-radio-group>
+              <div style="color: gray">退货数量不允许超过发货数量</div>
+            </el-form-item>
             <el-form-item label="公司地址" prop="company_address">
               <el-input v-model="form1.company_address" style="width: 500px" />
             </el-form-item>
@@ -377,6 +383,7 @@
         activeName: 'ERP配置',
         showIf: false,
         form1: {
+          return_not_exceed: 0,
           forced_warehouse: 0,
           shopid: null, //关联商城标识符
           inventory_type: 1, //0开单扣库存1发货扣库存

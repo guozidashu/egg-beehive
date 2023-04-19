@@ -26,11 +26,15 @@
                   slot="content"
                   :src="item.avatar"
                   style="width: 200px; height: 200px"
-                />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
                 <el-image
                   :src="item.avatar"
                   style="width: 50px; height: 50px; margin: 10px 0 0 10px"
-                />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
               </el-tooltip>
               <div>
                 <div style="margin: 5px">积分：{{ item.integral }}</div>

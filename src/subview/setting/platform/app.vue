@@ -98,10 +98,12 @@
           </span>
         </el-form-item>
         <el-form-item v-if="form.wxpay_apiclient_cert">
-          <img
+          <el-image
             :src="form.wxpay_apiclient_cert"
             style="width: 80px; height: 80px"
-          />
+          >
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
         </el-form-item>
         <el-form-item label="证书秘钥：">
           <el-button type="primary" @click="handleShow(2)">上传</el-button>
@@ -114,10 +116,12 @@
           </span>
         </el-form-item>
         <el-form-item v-if="form.wxpay_apiclient_key">
-          <img
+          <el-image
             :src="form.wxpay_apiclient_key"
             style="width: 80px; height: 80px"
-          />
+          >
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
         </el-form-item>
       </el-form>
       <div style="font-weight: 600">支付宝支付设置</div>

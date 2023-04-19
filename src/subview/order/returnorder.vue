@@ -65,7 +65,7 @@
           size="small"
           style="margin-top: 20px; margin-right: 20px"
           type="primary"
-          @click="handleDownload()"
+          @click="handleDownload(1)"
         >
           全部导出
         </el-button>
@@ -95,7 +95,12 @@
           <el-button :disabled="printSelect" size="small" type="primary">
             打印退货单
           </el-button>
-          <el-button size="small" style="margin-right: 10px" type="primary">
+          <el-button
+            size="small"
+            style="margin-right: 10px"
+            type="primary"
+            @click="handleDownload(2)"
+          >
             批量导出
           </el-button>
           <el-checkbox v-model="form.is_return">不显示已作废退货单</el-checkbox>
@@ -105,9 +110,9 @@
           <el-select v-model="form.region" style="width: 150px; margin: 0 10px">
             <el-option label="按退货时间" value="1" />
           </el-select>
-          <el-radio-group v-model="form.order_sort">
-            <el-radio-button :label="1">正序</el-radio-button>
-            <el-radio-button :label="2">倒序</el-radio-button>
+          <el-radio-group v-model="form.sort">
+            <el-radio-button label="asc">正序</el-radio-button>
+            <el-radio-button label="desc">倒序</el-radio-button>
           </el-radio-group>
         </div>
       </div>
@@ -130,17 +135,21 @@
                 <el-tooltip placement="top">
                   <el-image
                     slot="content"
-                    src="row.info.img"
+                    :src="row.goods_img"
                     style="width: 200px; height: 200px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                   <el-image
-                    src="row.info.img"
+                    :src="row.goods_img"
                     style="width: 80px; height: 80px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
                   <div style="font-size: 14px; font-weight: 600">
-                    批次号:{{ row.id }} |
+                    批次号:{{ row.order_id }} |
                     <el-tag type="danger">已退货</el-tag>
                   </div>
                   <div style="margin: 5px 0">
@@ -165,7 +174,9 @@
                     slot="content"
                     :src="row.goods_img"
                     style="width: 200px; height: 200px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                   <el-image
                     :src="row.goods_img"
                     style="
@@ -174,7 +185,9 @@
                       margin-top: 10px;
                       margin-right: 10px;
                     "
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                 </el-tooltip>
                 <div style="margin-top: 15px">
                   {{ row.goods_name }}
@@ -182,16 +195,14 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="操作人" prop="ctime1" />
-          <el-table-column align="center" label="处理人" prop="ctime1" />
-          <el-table-column align="center" label="退至仓库" prop="ctime1" />
-          <el-table-column align="center" label="退货原因" prop="ctime1">
+          <el-table-column align="center" label="操作人" prop="action_name" />
+          <el-table-column align="center" label="退至仓库" prop="order_type" />
+          <el-table-column align="center" label="退货原因" prop="remark">
             <template #default="{ row }">
-              <div>
-                <el-tag v-if="row.order_source" type="warning">次品退货</el-tag>
-              </div>
               <div style="margin-top: 5px">
-                <el-tag v-if="row.order_source" type="danger">政策换货</el-tag>
+                <el-tag v-if="row.remark" type="danger">
+                  {{ row.remark }}
+                </el-tag>
               </div>
             </template>
           </el-table-column>
@@ -225,6 +236,22 @@
         </template>
       </QYList>
     </el-card>
+    <!-- 导出类型弹窗 -->
+    <el-dialog
+      :before-close="handleClose"
+      title="导出"
+      :visible.sync="dialogVisible"
+      width="30%"
+    >
+      <el-radio-group v-model="radio">
+        <el-radio :label="2">按颜色</el-radio>
+        <el-radio :label="1">按款号</el-radio>
+      </el-radio-group>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleExport">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -234,6 +261,10 @@
     mixins: [datajosn],
     data() {
       return {
+        ids: [],
+        radio: 2,
+        // 导出类型弹窗
+        dialogVisible: false,
         // 打印按钮是否可用
         printSelect: true,
         // 选中的行
@@ -259,6 +290,9 @@
           order_source: '0', //0 所有订单 1线下退货单 2线上退货单
           customer_name: '',
           is_return: false,
+          sort: 'desc', //退货时间 asc 正序 desc倒序
+          ids: [], //id
+          region: '1',
         },
         formType: 4,
         listType: 1,
@@ -304,9 +338,16 @@
       this.fetchData()
     },
     methods: {
+      // 导出弹窗关闭
+      handleClose() {
+        this.dialogVisible = false
+      },
       // 导出
-      async handleDownload() {
-        const { code, data } = await this.api.getReturnOrderExport(this.form)
+      async handleExport() {
+        let temp = JSON.parse(JSON.stringify(this.form))
+        temp.type = this.radio
+        temp.ids = this.ids
+        const { code, data } = await this.api.getReturnOrderExport(temp)
         if (code == 200) {
           window.open(data.url)
           this.$message.success('导出成功')
@@ -315,6 +356,26 @@
         } else {
           this.$message.error('导出失败')
         }
+      },
+      // 导出判断数据，导出全部，导出选中，导出单条
+      handleDownload(type, row) {
+        let temp = []
+        if (type == 1) {
+          temp = []
+        } else if (type == 2) {
+          if (this.selectRows.length == 0) {
+            this.$message.error('请选择要导出的数据')
+            return
+          } else {
+            this.selectRows.forEach((item) => {
+              temp.push(item.order_id)
+            })
+          }
+        } else if (type == 3) {
+          temp.push(row.order_id)
+        }
+        this.ids = temp
+        this.dialogVisible = true
       },
       // 选中数据
       selectBtnRows(data) {
@@ -330,10 +391,14 @@
           search_type: 'id', //搜索条件 sn订单号 goods_sn商品款号 id批次号
           keywords: '', //关键字
           page: 1,
-          pageSize: 20,
+          pageSize: 10,
           order_time: this.getPastTime(30),
           order_source: '0', //0 所有订单 1线下退货单 2线上退货单
           customer_name: '',
+          is_return: false,
+          sort: 'desc', //退货时间 asc 正序 desc倒序
+          ids: [], //id
+          region: '1',
         }
       },
       // tab 点击

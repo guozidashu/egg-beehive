@@ -18,7 +18,7 @@
           <span style="position: relative; top: -5px; right: 10px">
             关联业务
           </span>
-          <img
+          <el-image
             src="../../assets/quanyu.png"
             style="
               width: 20px;
@@ -27,7 +27,7 @@
               border-radius: 50%;
             "
           />
-          <img
+          <el-image
             src="../../assets/quanyubao.png"
             style="
               width: 20px;
@@ -36,7 +36,7 @@
               border-radius: 50%;
             "
           />
-          <img
+          <el-image
             src="../../assets/shangcheng.png"
             style="width: 20px; height: 20px; border-radius: 50%"
           />
@@ -72,7 +72,7 @@
             "
           >
             <div style="padding: 10px 0; font-size: 14px; font-weight: 600">
-              <img
+              <el-image
                 src="../../assets/quanyu.png"
                 style="width: 20px; height: 20px"
               />
@@ -100,7 +100,7 @@
             "
           >
             <div style="padding: 10px 0; font-size: 14px; font-weight: 600">
-              <img
+              <el-image
                 src="../../assets/shangcheng.png"
                 style="width: 20px; height: 20px"
               />
@@ -128,7 +128,7 @@
             "
           >
             <div style="padding: 10px 0; font-size: 14px; font-weight: 600">
-              <img
+              <el-image
                 src="../../assets/yanfa.png"
                 style="width: 20px; height: 20px"
               />
@@ -156,7 +156,7 @@
             "
           >
             <div style="padding: 10px 0; font-size: 14px; font-weight: 600">
-              <img
+              <el-image
                 src="../../assets/quanyubao.png"
                 style="width: 20px; height: 20px"
               />
@@ -185,10 +185,11 @@
             "
           >
             <div style="padding: 10px 0; font-size: 14px; font-weight: 600">
-              <img
+              <el-image
                 src="../../assets/gendan.png"
                 style="width: 20px; height: 20px"
               />
+
               <span style="position: relative; top: -5px; left: 5px">
                 生产跟单
               </span>
@@ -320,7 +321,7 @@
             />
             微信咨询
           </div>
-          <img
+          <el-image
             src="https://oss.business.quanyu123.com//dee133c54041034454ca94d27b301a2f.png"
             style="width: 200px; height: 200px"
           />

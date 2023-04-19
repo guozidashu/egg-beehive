@@ -49,10 +49,12 @@
           </span>
         </el-form-item>
         <el-form-item v-if="form1.wxpay_apiclient_cert">
-          <img
+          <el-image
             :src="form1.wxpay_apiclient_cert"
             style="width: 80px; height: 80px"
-          />
+          >
+          <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
         </el-form-item>
         <el-form-item label="证书秘钥：">
           <el-button type="primary" @click="handleShow(4)">上传</el-button>
@@ -65,10 +67,12 @@
           </span>
         </el-form-item>
         <el-form-item v-if="form1.wxpay_apiclient_key">
-          <img
+          <el-image
             :src="form1.wxpay_apiclient_key"
             style="width: 80px; height: 80px"
-          />
+          >
+          <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
         </el-form-item>
       </div>
       <div v-else>

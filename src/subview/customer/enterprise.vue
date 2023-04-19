@@ -74,8 +74,12 @@
                   slot="content"
                   :src="row.external_avatar"
                   style="width: 200px; height: 200px"
-                />
-                <el-image :src="row.external_avatar" />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
+                <el-image :src="row.external_avatar">
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
               </el-tooltip>
             </template>
           </el-table-column>

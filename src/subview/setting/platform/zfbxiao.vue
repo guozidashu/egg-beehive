@@ -56,13 +56,17 @@
           <el-button type="primary" @click="handleShow(1)">图片上传</el-button>
         </el-form-item>
         <el-form-item v-if="form.avatar">
-          <img :src="form.avatar" style="width: 80px; height: 80px" />
+          <el-image :src="form.avatar" style="width: 80px; height: 80px">
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
         </el-form-item>
         <el-form-item label="小程序二维码">
           <el-button type="primary" @click="handleShow(2)">图片上传</el-button>
         </el-form-item>
         <el-form-item v-if="form.code">
-          <img :src="form.code" style="width: 80px; height: 80px" />
+          <el-image :src="form.code" style="width: 80px; height: 80px">
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
         </el-form-item>
         <el-form-item label="小程序支付状态">
           <el-switch

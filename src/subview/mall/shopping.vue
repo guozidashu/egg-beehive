@@ -46,7 +46,9 @@
             建议尺寸：200×200像素
           </span>
           <div v-if="form.logo" style="margin-top: 20px">
-            <img :src="form.logo" style="width: 100px; height: 100px" />
+            <el-image :src="form.logo" style="width: 100px; height: 100px">
+              <div slot="error" class="el-image__error">暂无图片</div>
+            </el-image>
           </div>
         </el-form-item>
         <el-form-item label="商家底部图片：" prop="bottom_logo">
@@ -55,7 +57,9 @@
             建议尺寸：25×25像素
           </span>
           <div v-if="form.bottom_logo" style="margin-top: 20px">
-            <img :src="form.bottom_logo" style="width: 25px; height: 25px" />
+            <el-image :src="form.bottom_logo" style="width: 25px; height: 25px">
+              <div slot="error" class="el-image__error">暂无图片</div>
+            </el-image>
           </div>
         </el-form-item>
         <el-form-item label="商家简介" prop="desc">
@@ -437,7 +441,7 @@
           if (data.length > 0) {
             data.forEach((item) => {
               if (this.form1.register_content.indexOf(item) == -1) {
-                this.form1.register_content += `<img src="${item}" />`
+                this.form1.register_content += `<el-image src="${item}" />`
               }
             })
           }

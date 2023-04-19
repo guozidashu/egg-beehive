@@ -3,10 +3,12 @@
     <div v-if="form.drawerType != 3">
       <div style="padding: 0 20px 0 20px">
         <div style="display: flex">
-          <img
+          <el-image
             :src="goodsDetails.img"
             style="width: 80px; height: 80px; margin: 0 10px 10px 0"
-          />
+          >
+            <div slot="error" class="el-image__error">暂无图片</div>
+          </el-image>
           <div>
             <div style="margin-top: 5px; font-size: 14px; font-weight: 600">
               {{ goodsDetails.name }}
@@ -119,7 +121,12 @@
             </div>
             <div>
               商品图片：
-              <img :src="goodsDetails.img" style="width: 20px; height: 20px" />
+              <el-image
+                :src="goodsDetails.img"
+                style="width: 20px; height: 20px"
+              >
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
             </div>
           </div>
         </div>
@@ -362,11 +369,13 @@
                       上传
                     </el-button>
                   </div>
-                  <img
+                  <el-image
                     v-if="form.img"
                     :src="form.img"
                     style="width: 80px; height: 80px"
-                  />
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
                 </div>
               </el-form-item>
             </div>

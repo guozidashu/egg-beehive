@@ -425,11 +425,15 @@
                   slot="content"
                   :src="row.goods_img"
                   style="width: 200px; height: 200px"
-                />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
                 <el-image
                   :src="row.goods_img"
                   style="width: 100px; height: 100px"
-                />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
               </el-tooltip>
               <div style="width: 280px; margin-left: 10px">
                 <div
@@ -541,11 +545,15 @@
                   slot="content"
                   :src="row.customer_avatar"
                   style="width: 200px; height: 200px"
-                />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
                 <el-image
                   :src="row.customer_avatar"
                   style="width: 100px; height: 100px"
-                />
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
               </el-tooltip>
               <div style="width: 280px; margin-left: 10px">
                 <div
@@ -638,7 +646,6 @@
         expands: [], //只展开一行放入当前行id
         getRowKeys: (row) => {
           //获取当前行id
-          // console.log(row)
           return row.goods_id //这里看这一行中需要根据哪个属性值是id
         },
         // 按款号 导出类型
