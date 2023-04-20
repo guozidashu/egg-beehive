@@ -7,11 +7,28 @@
       label-width="100px"
       :model="form"
       size="small"
-      style="margin-top: 18px; clear: both"
+      style="
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 18px;
+        clear: both;
+      "
       @submit.native.prevent
     >
-      <slot name="Form" style="clear: both"></slot>
-      <el-form-item style="float: right; clear: both">
+      <div>
+        <slot name="Form" style="clear: both"></slot>
+      </div>
+      <el-form-item
+        style="
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          float: right;
+          clear: both;
+        "
+      >
         <el-button
           icon="el-icon-search"
           size="small"

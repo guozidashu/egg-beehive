@@ -100,7 +100,7 @@
       <el-menu
         class="el-menu-vertical-demo"
         default-active="1-1"
-        style="width: 200px; border-right: 20px solid #f6f8f9"
+        style="width: 200px"
         @select="handleSelect"
       >
         <el-submenu index="1">
@@ -135,7 +135,7 @@
           <span slot="title">相似款式</span>
         </el-menu-item>
       </el-menu>
-      <div style="width: 100%">
+      <div style="width: 100%; border-left: 20px solid #f6f8f9">
         <BasicAnalysis v-if="menu_select == '1-1'" :goods-id="drawerInof.id" />
         <SKUAnalysis v-if="menu_select == '1-2'" :goods-id="drawerInof.id" />
         <CustomerAnalysis v-if="menu_select == '5'" :goods-id="drawerInof.id" />

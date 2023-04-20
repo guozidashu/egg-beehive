@@ -11,7 +11,11 @@
         {{ item.name }}
       </el-tag>
     </div>
-    <el-button style="color: #606266" type="text" slot="reference">
+    <el-button
+      style="font-size: 14px; color: #606266"
+      type="text"
+      slot="reference"
+    >
       <span v-if="value != null" style="color: #1890ff">{{ selName }}</span>
       <span v-else>{{ name }}</span>
 

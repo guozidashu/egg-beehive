@@ -45,6 +45,17 @@ export const asyncRoutes = [
         },
       },
       {
+        path: 'monitoring',
+        name: 'Monitoring',
+        component: () => import('@/subview/index/monitoring'),
+        meta: {
+          title: '监控中心',
+          noClosable: true,
+          icon: 'archive-line',
+        },
+      },
+
+      {
         path: 'board',
         name: 'Board',
         component: () => import('@/subview/index/board'),
@@ -436,6 +447,15 @@ export const asyncRoutes = [
       breadcrumbHidden: true,
     },
     children: [
+      {
+        path: 'reportDataoverview',
+        name: 'ReportDataoverview',
+        component: () => import('@/subview/report/dataoverview'),
+        meta: {
+          title: '数据概览',
+          icon: 'bar-chart-2-line',
+        },
+      },
       {
         path: 'reportOrder',
         name: 'ReportOrder',

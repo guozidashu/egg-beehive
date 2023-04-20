@@ -530,7 +530,28 @@
           },
         ]
         const excelData = data.list
-        const excelName = '进销存表格' //文件名称
+        const date = new Date()
+        const year = date.getFullYear()
+        const month = date.getMonth() + 1
+        const day = date.getDate()
+        const hour = date.getHours()
+        const minute = date.getMinutes()
+        const second = date.getSeconds()
+        // 拼接年月日时分秒
+        const time =
+          year +
+          '-' +
+          month +
+          '-' +
+          day +
+          ' ' +
+          hour +
+          ':' +
+          minute +
+          ':' +
+          second
+        // 拼接文件名称
+        const excelName = '进销存统计' + time
         if (code == 200) {
           if (this.form.type == 1) {
             table2excel(columnSn, excelData, excelName) //生成Excel表格，自动下载

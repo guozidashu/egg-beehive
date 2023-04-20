@@ -18,7 +18,11 @@
             />
           </el-form-item>
           <el-form-item label="岗位：">
-            <el-select v-model="form.role" placeholder="请选择">
+            <el-select
+              v-model="form.role"
+              placeholder="请选择"
+              style="width: 150px"
+            >
               <el-option
                 v-for="(item, index) in selectData.role"
                 :key="index"
@@ -28,7 +32,11 @@
             </el-select>
           </el-form-item>
           <el-form-item label="部门：">
-            <el-select v-model="form.department_id" placeholder="请选择">
+            <el-select
+              v-model="form.department_id"
+              placeholder="请选择"
+              style="width: 150px"
+            >
               <el-option
                 v-for="(item, index) in selectData.department"
                 :key="index"
@@ -37,10 +45,10 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="状态：">
-            <el-select v-model="form.status">
-              <el-option label="停职" :value="0" />
-              <el-option label="在职" :value="1" />
+          <el-form-item label="账户状态：">
+            <el-select v-model="form.status" style="width: 150px">
+              <el-option label="禁用" :value="0" />
+              <el-option label="启用" :value="1" />
             </el-select>
           </el-form-item>
         </template>
@@ -48,19 +56,6 @@
     </div>
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <el-form ref="form" :inline="true" @submit.native.prevent>
-        <el-form-item>
-          <!-- <el-button size="small" type="primary" @click="handleEdit('add')">
-            添加员工
-          </el-button> -->
-          <!-- <el-button
-            
-            size="small"
-            type="primary"
-            @click="handleDetail('add', 2)"
-          >
-            添加员工
-          </el-button> -->
-        </el-form-item>
         <el-form-item>
           <el-button size="small" type="primary" @click="handleTb">
             同步数据
@@ -79,89 +74,101 @@
         @changePageSize="changeBtnPageSize"
       >
         <template #List>
-          <el-table-column
-            align="center"
-            label="头像"
-            prop="avatar"
-            show-overflow-tooltip
-          >
+          <el-table-column label="员工信息" width="400">
             <template #default="{ row }">
-              <el-tooltip placement="top">
-                <el-image
-                  :src="row.avatar"
-                  slot="content"
-                  style="width: 250px; height: 250px"
-                >
-                  <div slot="error" class="el-image__error">暂无图片</div>
-                </el-image>
-                <el-image :src="row.avatar" style="width: 50px; height: 50px">
-                  <div slot="error" class="el-image__error">暂无图片</div>
-                </el-image>
-              </el-tooltip>
+              <div style="display: flex">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.avatar"
+                    style="width: 200px; height: 200px; border-radius: 50%"
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                  <el-image
+                    :src="row.avatar"
+                    style="width: 105px; height: 105px; border-radius: 50%"
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                </el-tooltip>
+                <div style="width: 280px; margin-left: 10px">
+                  <div style="font-weight: 600; text-align: left">
+                    {{ row.name }}
+                    <i
+                      class="el-icon-check"
+                      style="
+                        color: white;
+                        background-color: #23aaf4;
+                        border-radius: 50%;
+                      "
+                    ></i>
+                  </div>
+                  <div
+                    style="
+                      width: 200px;
+                      margin: 5px 0 0 0;
+                      overflow: hidden;
+                      text-align: left;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                    "
+                  >
+                    userid： {{ row.userid }}
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      flex-wrap: wrap;
+                      width: 100%;
+                      margin: 5px 0 0 0;
+                    "
+                  >
+                    <el-tag
+                      v-for="(item, index) in row.role_name"
+                      :key="index"
+                      style="margin: 5px 5px 0 0"
+                    >
+                      {{ item }}
+                    </el-tag>
+                  </div>
+                </div>
+              </div>
             </template>
           </el-table-column>
-          <el-table-column label="员工姓名" prop="name" show-overflow-tooltip />
-          <el-table-column label="员工user_id" prop="userid" width="300" />
-          <el-table-column
-            label="部门"
-            prop="department_name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            label="岗位"
-            prop="role_name"
-            show-overflow-tooltip
-          />
-          <el-table-column
-            label="erp可见权限"
-            prop="role_name"
-            show-overflow-tooltip
-          >
+          <el-table-column align="center" label="部门" prop="department_name" />
+          <el-table-column align="center" label="erp可见权限" prop="role_name">
             <template #default="{ row }">
               <el-tag v-if="row.erp_available == 1">可见</el-tag>
               <el-tag v-else type="danger">不可见</el-tag>
             </template>
           </el-table-column>
-          <el-table-column
-            label="研发可见编辑"
-            prop="role_name"
-            show-overflow-tooltip
-          >
+          <el-table-column align="center" label="研发可见编辑" prop="role_name">
             <template #default="{ row }">
               <el-tag v-if="row.design_available == 1">可见</el-tag>
               <el-tag v-else type="danger">不可见</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="状态" prop="status" show-overflow-tooltip>
+          <el-table-column align="center" label="账号状态" prop="status">
             <template #default="{ row }">
-              <el-tag v-if="row.status == 1">在职</el-tag>
-              <el-tag v-else type="danger">停职</el-tag>
+              <el-tag v-if="row.status == 1">启用</el-tag>
+              <el-tag v-else type="danger">禁用</el-tag>
             </template>
           </el-table-column>
           <el-table-column align="center" fixed="right" label="操作" width="85">
             <template #default="{ row }">
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-              <!-- <el-button type="text" @click="handleDetail(row, 2)">
-                编辑
-              </el-button>
-              <el-button type="text" @click="handleDetail(row, 1)">
-                详情
-              </el-button> -->
             </template>
           </el-table-column>
         </template>
       </QYList>
     </el-card>
-    <!-- <el-drawer size="50%" :visible.sync="drawer" :with-header="false">
-      <Drawer :drawer-inof="drawerInof" />
-    </el-drawer> -->
     <edit ref="edit" @fetch-data="fetchData" />
   </div>
 </template>
 
 <script>
   import Edit from '@/subview/components/Edit/EmployeesEdit'
-  // import Drawer from '@/subview/components/Drawer/EmployeesDrawer'
   export default {
     name: 'Employees',
     components: { Edit },
@@ -272,6 +279,9 @@
           this.formTemp = JSON.parse(JSON.stringify(this.form))
         }
         const { data } = await this.api.getEmployeeList(this.formTemp)
+        data.data.forEach((item) => {
+          item.role_name = item.role_name.split(',')
+        })
         this.list = data.data
         this.total = data.total
         this.listLoading = false

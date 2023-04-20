@@ -97,13 +97,13 @@
               style="width: 40%"
             />
           </el-form-item>
-          <el-form-item label="公司名称：" prop="jst_shop_id">
+          <!-- <el-form-item label="公司名称：" prop="company_name">
             <el-input
-              v-model="form.jst_shop_id"
+              v-model="form.company_name"
               placeholder="请输入您的公司名称"
               style="width: 40%"
             />
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="公司授权Access_Token：" prop="jst_access_token">
             <el-input
               v-model="form.jst_access_token"
@@ -131,6 +131,25 @@
               placeholder="请输入Access_token过期时间"
               style="width: 40%"
             />
+          </el-form-item>
+          <el-form-item label="商品编辑：" prop="jst_goods_edit">
+            <el-radio-group v-model="form.jst_goods_edit">
+              <el-radio :label="1">自动同步修改内容</el-radio>
+              <el-radio :label="2">不同步修改内容</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="库存计算方式：" prop="jst_stock_type">
+            <el-checkbox-group v-model="form.jst_stock_type">
+              <el-checkbox label="1">包含采购在途</el-checkbox>
+              <el-checkbox label="2">包含进货仓</el-checkbox>
+              <el-checkbox label="3">包含销退仓库存</el-checkbox>
+            </el-checkbox-group>
+            <div style="color: gray">
+              商品库存 = 主仓实际库存 - 订单占有数 + 虚拟库存 + 采购在途
+            </div>
+            <div style="color: red">
+              注：此处设置的库存公式，需要和聚水潭保持一致，若双方库存设置不一致，将会导致库存不统一
+            </div>
           </el-form-item>
           <el-form-item label="服务商应用回调地址：">
             <span style="color: rgb(251, 102, 56)">
@@ -395,12 +414,21 @@
         </div>
         <el-form-item>
           <el-button
+            v-if="activeName == '聚水潭ERP'"
+            type="primary"
+            @click="test"
+          >
+            商家授权
+          </el-button>
+          <el-button
             v-if="
               activeName == '微店商城版' ||
               activeName == '旺店通ERP' ||
-              activeName == '网店管家'
+              activeName == '网店管家' ||
+              activeName == '聚水潭ERP'
             "
             type="primary"
+            @click="test"
           >
             测试是否配置成功
           </el-button>
@@ -565,6 +593,9 @@
           jst_shop_id: null, //聚水潭shop_id
           jst_refresh_token: null, //聚水潭refresh_token
           jst_expiration_period: null, //聚水潭过期时间
+          company_name: null, //公司名称
+          jst_goods_edit: '1', //默认自动同步 1自动 2不自动
+          jst_stock_type: '1', //聚水潭库存计算方式 1包含采购在途 2包含进货仓 3包含撤退仓库存 英文逗号分割
         },
         rules: {
           // 微店验证规则
@@ -624,6 +655,13 @@
               trigger: 'blur',
             },
           ],
+          company_name: [
+            {
+              required: true,
+              message: '请输入公司名称',
+              trigger: 'blur',
+            },
+          ],
           jst_shop_id: [
             {
               required: true,
@@ -636,6 +674,20 @@
               required: true,
               message:
                 '聚水潭开放平台 - 管理应用，找到对应的应用名称，详情，我的授权',
+              trigger: 'blur',
+            },
+          ],
+          jst_goods_edit: [
+            {
+              required: true,
+              message: '请选择默认自动同步',
+              trigger: 'blur',
+            },
+          ],
+          jst_stock_type: [
+            {
+              required: true,
+              message: '请选择聚水潭库存计算方式',
               trigger: 'blur',
             },
           ],
@@ -786,6 +838,9 @@
             this.form.jst_shop_id = temp.jst_shop_id
             this.form.jst_refresh_token = temp.jst_refresh_token
             this.form.jst_expiration_period = temp.jst_expiration_period
+            this.form.company_name = temp.company_name
+            this.form.jst_goods_edit = Number(temp.jst_goods_edit)
+            this.form.jst_stock_type = temp.jst_stock_type.split(',')
           }
         } else if (this.activeName == '微店商城版') {
           const { data } = await this.api.gitVdianInfo()
@@ -814,6 +869,9 @@
                 jst_shop_id: this.form.jst_shop_id, //聚水潭shop_id
                 jst_refresh_token: this.form.jst_refresh_token, //聚水潭refresh_token
                 jst_expiration_period: this.form.jst_expiration_period, //聚水潭过期时间
+                company_name: this.form.company_name,
+                jst_goods_edit: this.form.jst_goods_edit, //聚水潭接口是否开启
+                jst_stock_type: this.form.jst_stock_type.join(','),
               })
               if (code === 200) {
                 this.$message.success('保存成功')
@@ -899,6 +957,42 @@
       },
       handleCopyIcon(wangzhi, event) {
         clip(`${wangzhi}`, event)
+      },
+      test() {
+        this.$confirm('确定要测试吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        })
+          .then(async () => {
+            if (this.activeName == '聚水潭ERP') {
+              const { code } = await this.api.testJstConfig({
+                vdian_app_key: this.form.vdian_app_key,
+                vdian_secret: this.form.vdian_secret,
+              })
+              if (code === 200) {
+                this.$message.success('测试成功')
+              } else {
+                this.$message.error('测试失败')
+              }
+            } else if (this.activeName == '微店商城版') {
+              const { code } = await this.api.testVdianConfig({
+                vdian_app_key: this.form.vdian_app_key,
+                vdian_secret: this.form.vdian_secret,
+              })
+              if (code === 200) {
+                this.$message.success('测试成功')
+              } else {
+                this.$message.error('测试失败')
+              }
+            }
+          })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消测试',
+            })
+          })
       },
     },
   }

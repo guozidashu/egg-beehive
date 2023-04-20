@@ -12,6 +12,7 @@
         ref="form"
         :inline="true"
         label-width="80px"
+        :model="goodsForm"
         style="
           display: flex;
           justify-content: space-between;
@@ -20,18 +21,62 @@
         @submit.native.prevent
       >
         <!-- 查询条件 -->
-        <span style="margin-top: 10px; font-size: 16px">库存统计</span>
-        <div>
-          <span style="font-size: 12px">更新时间：{{ time }}</span>
-          <el-button
-            size="small"
-            style="margin-left: 10px"
-            type="primary"
-            @click="resetForm()"
-          >
-            刷新
-          </el-button>
-        </div>
+        <span style="margin-top: 10px; font-size: 16px">库存概览</span>
+        <el-form-item style="float: right; margin-right: 0; font-size: 12px">
+          <el-form-item label="年份:" prop="year">
+            <el-select
+              v-model="goodsForm.year"
+              placeholder="请选择年份"
+              style="width: 120px"
+            >
+              <el-option
+                v-for="(item, index) in selectList.year"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="季节:" prop="season">
+            <el-select
+              v-model="goodsForm.season"
+              placeholder="请选择季节"
+              style="width: 120px"
+            >
+              <el-option
+                v-for="(item, index) in selectList.season"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="品牌:" prop="brand">
+            <el-select
+              v-model="goodsForm.brand"
+              placeholder="请选择品牌"
+              style="width: 120px"
+            >
+              <el-option
+                v-for="(item, index) in selectList.brand"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="" prop="time">
+            <span style="font-size: 12px">更新时间：{{ time }}</span>
+            <el-button
+              size="small"
+              style="margin-left: 10px"
+              type="primary"
+              @click="resetForm()"
+            >
+              刷新
+            </el-button>
+          </el-form-item>
+        </el-form-item>
       </el-form>
       <!-- 卡片、饼图 -->
       <QYTextLabels
@@ -47,8 +92,24 @@
           padding: 0 200px;
         "
       >
-        <div id="chartmain" style="width: 400px; height: 400px"></div>
-        <QYBranch :list="branSonChList" :style-chart="styleObj" />
+        <div
+          v-if="branchList.length > 0"
+          id="chartmain"
+          style="width: 400px; height: 400px"
+        ></div>
+        <el-image
+          v-else
+          :src="require('@/assets/empty_images/data_empty.png')"
+        />
+        <QYBranch
+          v-if="branSonChList.length > 0"
+          :list="branSonChList"
+          :style-chart="styleObj"
+        />
+        <el-image
+          v-else
+          :src="require('@/assets/empty_images/data_empty.png')"
+        />
       </div>
     </div>
     <!-- 查询条件/列表 -->
@@ -237,6 +298,12 @@
           category: '', //款式分类
           brand: '', //品牌
         },
+        // 卡片、饼图 查询条件
+        goodsForm: {
+          season: null,
+          year: null,
+          brand: null,
+        },
         // 卡片宽度，卡片数据
         widthStyle: '20%',
         goodsStaList: [
@@ -385,6 +452,13 @@
         },
         deep: true,
       },
+      goodsForm: {
+        handler: function (newVal) {
+          this.fetchData()
+          this.getCircular()
+        },
+        deep: true,
+      },
     },
     created() {
       this.getGoodsTypeList()
@@ -444,13 +518,11 @@
       // 卡片 ，饼图重置
       resetForm() {
         this.time = this.getNowTime()
-        this.lengSonList = []
-        this.lengList = []
-        this.branchList = []
-        this.branSonChList = []
-        this.branchList2 = []
-        this.fetchData()
-        this.getCircular()
+        this.goodsForm = {
+          season: null,
+          year: null,
+          brand: null,
+        }
       },
       // 列表重置
       resetForm1() {
@@ -473,7 +545,7 @@
       },
       // 获取卡片数据
       async fetchData() {
-        const { data } = await this.api.getStockStatistics()
+        const { data } = await this.api.getStockStatistics(this.goodsForm)
         this.goodsStaList.forEach((item) => {
           for (let i in data) {
             if (item.name == i) {
@@ -500,11 +572,13 @@
       },
       // 获取年份饼图，获取款式父级，并默认获取第一个款式的子级
       async getCircular() {
-        const { data } = await this.api.getStockCircular()
+        const { data } = await this.api.getStockCircular(this.goodsForm)
+        let branchListTemp = []
+        let lengListTemp = []
         data.category_stock_data.forEach((item, index) => {
           this.lengList.push(item.category_name)
           if (index == 0) {
-            this.branchList.push({
+            branchListTemp.push({
               value: item.category_stock_num,
               name: item.category_name,
               id: item.category_id,
@@ -512,7 +586,7 @@
               state: true,
             })
           } else {
-            this.branchList.push({
+            branchListTemp.push({
               value: item.category_stock_num,
               name: item.category_name,
               id: item.category_id,
@@ -521,34 +595,44 @@
             })
           }
         })
-        this.getCircularSonCate(this.branchList[0].id)
+        this.branchList = branchListTemp
+        this.lengListTemp = lengListTemp
+        if (data.category_stock_data.length != 0) {
+          this.getCircularSonCate(this.branchList[0].id)
+        }
+        let branSonChListTemp = []
         data.year_stock_data.forEach((item) => {
-          this.branSonChList.push({
+          branSonChListTemp.push({
             value: item.year_stock_num,
             name: item.year_name,
           })
         })
+        this.branSonChList = branSonChListTemp
       },
       // 获取款式子级
       async getCircularSonCate(ID) {
         const { data } = await this.api.getStockCircularSonCate({
           category_id: ID,
         })
+        let lengSonListTemp = []
+        let branchList2Temp = []
         data.category_stock_data.forEach((item) => {
-          this.lengSonList.push(item.category_name)
-          this.branchList2.push({
+          lengSonListTemp.push(item.category_name)
+          branchList2Temp.push({
             value: item.category_stock_num,
             name: item.category_name,
             id: item.category_id,
             state: false,
           })
         })
+        this.lengSonList = lengSonListTemp
+        this.branchList2 = branchList2Temp
         this.initCharts()
       },
       // 获取下拉框数据
       async getGoodsTypeList() {
         const { data } = await this.api.getCommonAllList({
-          type: 'brand,category',
+          type: 'brand,year,season',
         })
         this.selectList = data
       },

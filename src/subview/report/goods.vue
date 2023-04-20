@@ -17,17 +17,35 @@
         style="display: flex; justify-content: space-between"
         @submit.native.prevent
       >
-        <span style="margin-top: 10px; font-size: 16px">整体分析</span>
+        <span style="margin-top: 10px; font-size: 16px">商品概览</span>
 
         <el-form-item style="float: right; margin-right: 0; font-size: 12px">
-          <el-form-item label="类型:" prop="type">
+          <el-form-item label="年份:" prop="year">
             <el-select
-              v-model="goodsForm.type"
-              size="small"
+              v-model="goodsForm.year"
+              placeholder="请选择年份"
               style="width: 120px"
             >
-              <el-option label="整手" :value="0" />
-              <el-option label="散码" :value="1" />
+              <el-option
+                v-for="(item, index) in selectList.year"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="季节:" prop="season">
+            <el-select
+              v-model="goodsForm.season"
+              placeholder="请选择季节"
+              style="width: 120px"
+            >
+              <el-option
+                v-for="(item, index) in selectList.season"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
             </el-select>
           </el-form-item>
           <el-form-item label="品牌:" prop="brand">
@@ -60,7 +78,12 @@
               unlink-panels
               value-format="yyyy-MM-dd HH:mm:ss"
             />
-            <el-button size="small" type="primary" @click="resetForm()">
+            <el-button
+              size="small"
+              style="margin-left: 10px"
+              type="primary"
+              @click="resetForm()"
+            >
               重置
             </el-button>
           </el-form-item>
@@ -79,7 +102,7 @@
     </div>
     <!-- 爆款分析查询条件、列表 -->
     <div style="padding: 20px; background-color: white; border-radius: 5px">
-      <div style="margin: 0 0 20px 0; font-size: 16px">爆款分析</div>
+      <div style="margin: 0 0 20px 0; font-size: 16px">商品排行</div>
       <el-form ref="form" label-width="80px" :model="goodsForm1">
         <el-form-item label="统计时间">
           <el-radio-group v-model="time">
@@ -370,10 +393,10 @@
                     <div>
                       成本价：
                       <span style="color: red">
-                        ￥{{ row.price | moneyFormat }}
+                        ￥{{ row.sale_price | moneyFormat }}
                       </span>
                     </div>
-                    <div>售价： ￥{{ row.sale_price | moneyFormat }}</div>
+                    <div>售价： ￥{{ row.price | moneyFormat }}</div>
                   </div>
                   <div style="margin: 5px 0 0 0">
                     {{ row.upper_time | formatTime }}
@@ -403,7 +426,7 @@
             align="center"
             fixed="right"
             label="操作"
-            width="150"
+            width="100"
           >
             <template #default="{ row }">
               <!-- <el-button type="text" @click="handleDetail(row)">
@@ -419,7 +442,7 @@
                   />
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>
+                  <el-dropdown-item v-if="goodsForm1.goods_type == 1">
                     <el-button type="text" @click="handleEdit(row)">
                       合并同款
                     </el-button>
@@ -446,7 +469,11 @@
       <Drawer :drawer-inof="drawerInof" />
     </el-drawer>
     <!-- 单款合并弹窗 -->
-    <edit ref="edit" @fetch-data="fetchData" />
+    <edit
+      ref="edit"
+      :query-condition="queryCondition"
+      @fetch-data="fetchData"
+    />
     <!-- 监控商品抽屉 -->
     <el-drawer
       :before-close="handleCloseMonitor"
@@ -479,6 +506,7 @@
         time1: '按款号',
         // 监控商品抽屉 数据、状态、标题
         drawerInofMonitor: {},
+        queryCondition: {},
         drawerMonitor: false,
         titleMonitor: '监控商品',
         // 单品分析抽屉 数据、状态、标题
@@ -519,7 +547,8 @@
         selectList: [],
         // 卡片、折线图 查询条件
         goodsForm: {
-          type: null,
+          season: null,
+          year: null,
           brand: null,
           time: this.getPastTime(30),
         },
@@ -727,6 +756,7 @@
       },
       // 单款合并弹出
       async handleEdit(row) {
+        this.queryCondition = JSON.parse(JSON.stringify(this.goodsForm1))
         this.$refs['edit'].showEdit(row)
       },
       // 单品分析
@@ -745,7 +775,7 @@
       resetForm() {
         this.goodsForm = {
           season: null,
-          type: null,
+          year: null,
           brand: null,
           time: this.getPastTime(30),
         }

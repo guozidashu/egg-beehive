@@ -2466,6 +2466,14 @@ export function getErpInfo(data) {
   })
 }
 // 设置 - 系统设置 -开放接口
+// 开放接口 - 微店测试是否成功
+export function testVdianConfig(data) {
+  return request({
+    url: '/setting/testVdianConfig',
+    method: 'post',
+    data,
+  })
+}
 // 开放接口 - 获取微店详情
 export function gitVdianInfo(data) {
   return request({
@@ -2478,6 +2486,14 @@ export function gitVdianInfo(data) {
 export function editVdianInfoSave(data) {
   return request({
     url: '/setting/VdianInfoSave',
+    method: 'post',
+    data,
+  })
+}
+// 开放接口 - 获取聚水潭测试是否成功
+export function testJstConfig(data) {
+  return request({
+    url: '/setting/testJstConfig',
     method: 'post',
     data,
   })
