@@ -102,8 +102,11 @@
   export default {
     data() {
       return {
+        // tabs 选中的标签
         activeName: '商品编码',
+        // 预览值
         preview: this.code('@@@@@'),
+        // 表单
         form: {
           name: '商品条码',
           fakeName: '商品条码',
@@ -113,6 +116,7 @@
           prefixValue: 'A0',
           spacerValue: '-',
         },
+        // 表单验证规则
         rules: {
           fakeName: [
             { required: true, trigger: 'blur', message: '请输入防伪编码名称' },
@@ -235,6 +239,7 @@
       this.getCode(2)
     },
     methods: {
+      // 获取code 对数据处理
       async getCode(type) {
         const { code, data } = await this.api.getCodeRule({
           type: type,
@@ -268,6 +273,7 @@
           }
         }
       },
+      // 提交
       onSubmit() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
@@ -303,6 +309,7 @@
           }
         })
       },
+      // 一下均是编码生成 方法
       code(code) {
         // @是随机字符串包括数字和字母大写
         // #是随机数字

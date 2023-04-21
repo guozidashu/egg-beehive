@@ -105,7 +105,7 @@
       >
         <el-submenu index="1">
           <template slot="title">
-            <i class="el-icon-menu"></i>
+            <vab-icon icon="shopping-bag-2-line" style="padding: 0 5px" />
             <span>商品概况</span>
           </template>
           <el-menu-item-group>
@@ -115,23 +115,23 @@
           </el-menu-item-group>
         </el-submenu>
         <el-menu-item index="2">
-          <i class="el-icon-menu"></i>
+          <vab-icon icon="user-4-line" style="padding: 0 5px" />
           <span slot="title">竞争分析</span>
         </el-menu-item>
         <el-menu-item index="3">
-          <i class="el-icon-menu"></i>
+          <vab-icon icon="live-line" style="padding: 0 5px" />
           <span slot="title">直播分析</span>
         </el-menu-item>
         <el-menu-item index="4">
-          <i class="el-icon-menu"></i>
+          <vab-icon icon="file-3-line" style="padding: 0 5px" />
           <span slot="title">作品分析</span>
         </el-menu-item>
         <el-menu-item index="5">
-          <i class="el-icon-menu"></i>
+          <vab-icon icon="shield-user-line" style="padding: 0 5px" />
           <span slot="title">达人分析</span>
         </el-menu-item>
         <el-menu-item index="6">
-          <i class="el-icon-menu"></i>
+          <vab-icon icon="shopping-bag-line" style="padding: 0 5px" />
           <span slot="title">相似款式</span>
         </el-menu-item>
       </el-menu>

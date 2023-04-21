@@ -114,53 +114,162 @@
     </div>
     <!-- 查询条件/列表 -->
     <div style="padding: 20px; background-color: white; border-radius: 5px">
-      <el-form
-        ref="form"
-        :inline="true"
-        label-width="80px"
-        :model="goodsForm1"
-        style="display: flex; justify-content: space-between"
-        @submit.native.prevent
-      >
-        <span style="margin-top: 10px; font-size: 16px">库存排行</span>
-        <el-form-item style="margin-right: 0">
-          <el-form-item label="品牌:">
-            <el-select
-              v-model="goodsForm1.brand"
-              size="small"
-              style="width: 150px"
-            >
-              <el-option
-                v-for="(item, index) in selectList.brand"
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="商品分类:">
-            <el-select
-              v-model="goodsForm1.category"
-              size="small"
-              style="width: 150px"
-            >
-              <el-option
-                v-for="(item, index) in selectList.category"
-                :key="index"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-          <el-button
-            size="small"
-            style="margin-left: 10px"
-            type="primary"
-            @click="resetForm1()"
-          >
-            重置
-          </el-button>
+      <div style="margin: 0 0 20px 0; font-size: 16px">库存排行</div>
+      <el-form ref="form" label-width="80px" :model="goodsForm1">
+        <el-form-item label="商品属性">
+          <QYPopover
+            v-model="goodsForm1.brand"
+            :list="selectList.brand"
+            :name="'品牌'"
+          />
+          <QYPopover
+            v-model="goodsForm1.year"
+            :list="selectList.year"
+            :name="'年份'"
+          />
+          <QYPopover
+            v-model="goodsForm1.season"
+            :list="selectList.season"
+            :name="'季节'"
+          />
+          <QYPopover
+            v-model="goodsForm1.band"
+            :list="selectList.band"
+            :name="'上市波段'"
+          />
+          <QYPopover
+            v-model="goodsForm1.category"
+            :list="selectList.category"
+            :name="'商品款式'"
+          />
         </el-form-item>
+        <el-form-item label="更多筛选">
+          <div style="display: flex; justify-content: space-between">
+            <div style="display: flex">
+              <QYPopover
+                v-model="goodsForm1.type"
+                :list="selectList.type"
+                :name="'尺码类型'"
+              />
+              <QYPopoverPrice
+                v-model="goodsForm1.price"
+                :list="selectList.price"
+                :name="'价格带'"
+                :type="1"
+              />
+              <QYPopover
+                v-model="goodsForm1.recommend"
+                :list="selectList.recommend"
+                :name="'推荐商品'"
+              />
+              <QYPopover
+                v-model="goodsForm1.status"
+                :list="selectList.status"
+                :name="'商品状态'"
+              />
+              <el-checkbox
+                v-model="goodsForm1.is_return"
+                style="margin-left: 5px"
+              >
+                包含生产中库存
+              </el-checkbox>
+              <el-checkbox v-model="goodsForm1.is_return1">
+                不含聚水潭可用库存
+              </el-checkbox>
+              <el-checkbox v-model="goodsForm1.is_return2">
+                仅看聚水潭可用库存
+              </el-checkbox>
+            </div>
+            <div style="display: flex">
+              <div>
+                合并同款
+                <el-popover placement="right" trigger="hover">
+                  <div style="font-size: 12px">
+                    开启后将合并同个品牌下「货号/款号」相同的整手和散码商品，并展示同款商品合并之后的销售数据和库存数据
+                  </div>
+                  <vab-icon
+                    slot="reference"
+                    icon="question-line"
+                    style="position: relative; top: -2px; font-size: 14px"
+                  />
+                </el-popover>
+              </div>
+              <el-switch
+                v-model="goodsForm1.merge"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                style="margin-top: 5px; margin-left: 10px"
+              />
+            </div>
+          </div>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div
+      style="
+        padding: 20px;
+        margin: 20px 0;
+        background-color: white;
+        border-radius: 5px;
+      "
+    >
+      <el-form ref="form" label-width="80px" :model="goodsForm1">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+          "
+        >
+          <div style="display: flex">
+            <el-select
+              v-model="goodsForm1.order"
+              size="small"
+              style="width: 150px"
+            >
+              <el-option label="按总库存排序" value="sum_num" />
+            </el-select>
+            <el-radio-group
+              v-model="goodsForm1.sort"
+              style="width: 120px; margin-left: 10px"
+            >
+              <el-radio-button label="asc">正序</el-radio-button>
+              <el-radio-button label="desc">倒序</el-radio-button>
+            </el-radio-group>
+          </div>
+          <div style="display: flex">
+            <el-input
+              v-model="goodsForm1.sn"
+              placeholder="按商品款号搜索"
+              prefix-icon="el-icon-search"
+              style="width: 150px; margin-right: 10px"
+            />
+            <el-radio-group
+              v-if="!goodsForm1.merge"
+              v-model="goodsForm1.goods_type"
+              style="width: 200"
+            >
+              <el-radio-button :label="1">按款号</el-radio-button>
+              <el-radio-button :label="2">按规格</el-radio-button>
+            </el-radio-group>
+            <el-button
+              size="small"
+              style="margin-left: 10px"
+              type="primary"
+              @click="handleDerive()"
+            >
+              导出
+            </el-button>
+            <el-button
+              size="small"
+              style="margin-left: 10px"
+              type="primary"
+              @click="resetForm1('form')"
+            >
+              重置
+            </el-button>
+          </div>
+        </div>
       </el-form>
       <QYList
         :list="list"
@@ -175,96 +284,126 @@
         <template #List>
           <el-table-column align="center" label="排行" type="index" width="60">
             <template slot-scope="scope">
-              <span
-                v-if="page == 1"
-                class="index_common"
-                :class="[
-                  scope.$index + 1 == '1'
-                    ? 'index_one'
-                    : scope.$index + 1 == '2'
-                    ? 'index_two'
-                    : scope.$index + 1 == '3'
-                    ? 'index_three'
-                    : 'index_more',
-                ]"
-              >
-                {{ scope.$index + 1 }}
-              </span>
-              <span v-else class="index_more index_common">
-                {{ 10 * (page - 1) + scope.$index + 1 }}
-              </span>
+              <QYRanking
+                :index="scope.$index"
+                :page="page"
+                :page-size="pageSize"
+                :type="4"
+              />
             </template>
           </el-table-column>
-          <el-table-column label="商品图片" prop="img" width="200">
+          <el-table-column label="商品信息" width="400">
             <template #default="{ row }">
-              <el-tooltip placement="top">
-                <el-image
-                  slot="content"
-                  :src="row.img"
-                  style="width: 200px; height: 200px"
-                >
-                  <div slot="error" class="el-image__error">暂无图片</div>
-                </el-image>
-                <el-image :src="row.img">
-                  <div slot="error" class="el-image__error">暂无图片</div>
-                </el-image>
-              </el-tooltip>
+              <div style="display: flex">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.img"
+                    style="width: 200px; height: 200px"
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                  <el-image :src="row.img" style="width: 85px; height: 85px">
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                </el-tooltip>
+                <div style="width: 280px; margin-left: 10px">
+                  <div style="display: flex; justify-content: space-between">
+                    <div
+                      style="
+                        width: 200px;
+                        overflow: hidden;
+                        font-size: 14px;
+                        font-weight: 600;
+                        text-align: left;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      "
+                    >
+                      {{ row.sn }}
+                    </div>
+                    <el-tag v-if="row.type == 0" type="danger">整手</el-tag>
+                    <el-tag v-if="row.type == 1" type="success">散码</el-tag>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 10px 0 0 0;
+                    "
+                  >
+                    <div>
+                      {{ row.name }} &nbsp;
+                      <span>
+                        {{ row.color_name }}
+                      </span>
+                      &nbsp;
+                      <span>
+                        {{ row.size_name }}
+                      </span>
+                    </div>
+                    <el-tag type="success">{{ row.upper_day }}天</el-tag>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 10px 0 0 0;
+                    "
+                  >
+                    <div>
+                      <span style="color: red">
+                        ￥{{ row.sale_price | moneyFormat }}
+                      </span>
+                      ￥{{ row.price | moneyFormat }}
+                    </div>
+                    <div>{{ row.upper_time | formatTimeData }} &nbsp; 上架</div>
+                  </div>
+                </div>
+              </div>
             </template>
           </el-table-column>
-          <el-table-column label="商品款号" prop="sn" />
-          <el-table-column label="商品名称" prop="name" />
+          <el-table-column align="center" label="总库存" prop="cycle_days1" />
           <el-table-column
-            align="right"
-            label="吊牌价"
-            prop="sale_price"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="right"
-            label="库存金额"
-            prop="stock_amount"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-tag>￥{{ row.stock_amount | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            v-if="$permissionFiltering('ReportStock', 'cost')"
-            align="right"
-            label="成本价"
-            prop="cost_price"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            v-if="$permissionFiltering('ReportStock', 'costMoney')"
-            align="right"
-            label="库存成本金额"
-            prop="stock_cost"
-            width="150"
-          >
-            <template #default="{ row }">
-              <el-tag>￥{{ row.stock_cost | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column label="周转天数" prop="cycle_days" width="100" />
-          <el-table-column label="库存数" prop="total_stock" width="100" />
-          <el-table-column
-            label=" 库存占比"
-            prop="stock_proportion"
-            width="100"
+            align="center"
+            label="聚水潭可用库存"
+            prop="cycle_days1"
           />
-          <el-table-column label="上架日期" prop="created" width="180">
-            <template #default="{ row }">
-              {{ row.created | formatTime }}
+          <el-table-column
+            align="center"
+            label="生产中库存"
+            prop="cycle_days1"
+          />
+          <el-table-column
+            align="center"
+            label="总库存成本"
+            prop="cycle_days1"
+          />
+          <el-table-column
+            align="center"
+            label="现货库存成本"
+            prop="cycle_days1"
+          />
+          <el-table-column
+            align="center"
+            label="生产中库存成本"
+            prop="cycle_days1"
+          />
+          <el-table-column align="center" label="欠货件数" prop="cycle_days1" />
+          <el-table-column align="center" label="库存占比" prop="cycle_days1" />
+          <el-table-column align="center" prop="cycle_days1">
+            <template slot="header">
+              库存可售天数
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">
+                  库存可售天数 = (实际库存数 - 未发货件数)/ 进30天日均销量
+                </div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
             </template>
           </el-table-column>
         </template>
@@ -291,12 +430,25 @@
         list: [],
         formTemp: null,
         page: 1,
-        pageSize: 10,
+        pageSize: 50,
         goodsForm1: {
           page: 1,
-          pageSize: 10,
-          category: '', //款式分类
-          brand: '', //品牌
+          pageSize: 50,
+          order: 'sum_num',
+          goods_type: 1,
+          sort: 'desc',
+          is_return: false,
+          merge: false,
+          brand: null,
+          year: null,
+          season: null,
+          band: null,
+          category: null,
+          type: null,
+          price: null,
+          recommend: null,
+          status: null,
+          sn: null,
         },
         // 卡片、饼图 查询条件
         goodsForm: {
@@ -443,9 +595,9 @@
             this.pageSize = newVal.pageSize
           } else {
             this.formTemp.page = 1
-            this.formTemp.pageSize = 10
+            this.formTemp.pageSize = 50
             this.page = 1
-            this.pageSize = 10
+            this.pageSize = 50
           }
           this.tableData()
           this.pageState = false
@@ -528,9 +680,7 @@
       resetForm1() {
         this.goodsForm1 = {
           page: 1,
-          pageSize: 10,
-          category: '', //款式分类
-          brand: '', //品牌
+          pageSize: 50,
         }
       },
       // 分页
@@ -632,9 +782,85 @@
       // 获取下拉框数据
       async getGoodsTypeList() {
         const { data } = await this.api.getCommonAllList({
-          type: 'brand,year,season',
+          type: 'brand,season,year,band,category',
         })
         this.selectList = data
+        this.selectList.price = [
+          {
+            name: '不限',
+            start: 0,
+            end: 0,
+          },
+          {
+            name: '￥50以下',
+            start: 0,
+            end: 50,
+          },
+          {
+            name: '￥50-100',
+            start: 50,
+            end: 100,
+          },
+          {
+            name: '￥100-200',
+            start: 100,
+            end: 200,
+          },
+          {
+            name: '￥200-300',
+            start: 200,
+            end: 300,
+          },
+          {
+            name: '￥300元以上',
+            start: 300,
+            end: 0,
+          },
+        ]
+        this.selectList.gender = [
+          {
+            name: '女',
+            id: 1,
+          },
+          {
+            name: '男',
+            id: 2,
+          },
+          {
+            name: '中',
+            id: 3,
+          },
+        ]
+        this.selectList.status = [
+          {
+            name: '停售',
+            id: 2,
+          },
+          {
+            name: '在售',
+            id: 1,
+          },
+        ]
+        this.selectList.recommend = [
+          {
+            name: '取消推荐',
+            id: 0,
+          },
+          {
+            name: '推荐中',
+            id: 1,
+          },
+        ]
+        this.selectList.type = [
+          {
+            name: '整手',
+            id: 0,
+          },
+          {
+            name: '散码',
+            id: 1,
+          },
+        ]
       },
     },
   }

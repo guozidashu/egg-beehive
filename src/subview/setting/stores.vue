@@ -152,6 +152,7 @@
 </template>
 
 <script>
+  // 暂时不处理的页面
   import Drawer from '@/subview/components/Drawer/StoresDrawer'
   import { parseTime } from '@/utils'
   export default {

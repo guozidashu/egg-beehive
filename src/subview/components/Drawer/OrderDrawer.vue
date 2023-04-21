@@ -233,7 +233,7 @@
           :current-page="page"
           layout="total, sizes, prev, pager, next, jumper"
           :page-size="pageSize"
-          :page-sizes="[4, 8, 12, 16, 20]"
+          :page-sizes="[10, 20, 50, 100]"
           :total="orderTotal"
           @current-change="changeBtnPage"
           @size-change="changeBtnPageSize"

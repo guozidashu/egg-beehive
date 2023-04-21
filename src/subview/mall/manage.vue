@@ -184,10 +184,23 @@
                   </el-image>
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
-                  <div style="font-size: 14px; font-weight: 600">
-                    {{ row.sn }}
+                  <div style="display: flex; justify-content: space-between">
+                    <div
+                      style="
+                        width: 200px;
+                        overflow: hidden;
+                        font-size: 14px;
+                        font-weight: 600;
+                        text-align: left;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      "
+                    >
+                      {{ row.sn }}
+                    </div>
+                    <el-tag v-if="row.type == 0" type="danger">整手</el-tag>
+                    <el-tag v-if="row.type == 1" type="success">散码</el-tag>
                   </div>
-
                   <div
                     style="
                       display: flex;
@@ -195,19 +208,18 @@
                       margin: 5px 0 0 0;
                     "
                   >
-                    <div
-                      style="
-                        width: 150px;
-                        overflow: hidden;
-                        text-align: left;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                      "
-                    >
-                      {{ row.name }}
+                    <div>
+                      {{ row.name }} &nbsp;
+                      <span>
+                        {{ row.color_name }}
+                      </span>
+                      &nbsp;
+                      <span>
+                        {{ row.size_name }}
+                      </span>
                     </div>
+                    <el-tag type="success">{{ row.upper_day }}天</el-tag>
                   </div>
-
                   <div style="display: flex; width: 100%; margin: 5px 0">
                     <el-tag v-if="row.cate_name != null" type="info">
                       {{ row.cate_name }}
@@ -225,8 +237,20 @@
                       {{ row.band_name }}
                     </el-tag>
                   </div>
-                  <div style="margin: 5px 0 0 0">
-                    {{ row.upper_time | formatTime }}
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 5px 0 0 0;
+                    "
+                  >
+                    <div>
+                      <span style="color: red">
+                        ￥{{ row.sale_price | moneyFormat }}
+                      </span>
+                      ￥{{ row.price | moneyFormat }}
+                    </div>
+                    <div>{{ row.upper_time | formatTimeData }} &nbsp; 上架</div>
                   </div>
                 </div>
               </div>
@@ -672,9 +696,9 @@
             this.pageSize = newVal.pageSize
           } else {
             this.formTemp.page = 1
-            this.formTemp.pageSize = 10
+            this.formTemp.pageSize = 20
             this.page = 1
-            this.pageSize = 10
+            this.pageSize = 20
           }
           this.fetchData()
           this.pageState = false

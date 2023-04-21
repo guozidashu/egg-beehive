@@ -8,27 +8,27 @@
         @select="handleSelect"
       >
         <el-menu-item index="1">
-          <i class="el-icon-menu"></i>
+          <vab-icon icon="shopping-bag-2-line" style="padding: 0 5px" />
           <span slot="title">商品</span>
         </el-menu-item>
         <el-menu-item index="2">
-          <i class="el-icon-menu"></i>
+          <vab-icon icon="stock-line" style="padding: 0 5px" />
           <span slot="title">库存</span>
         </el-menu-item>
         <el-menu-item index="3">
-          <i class="el-icon-menu"></i>
+          <vab-icon icon="user-3-line" style="padding: 0 5px" />
           <span slot="title">客户</span>
         </el-menu-item>
         <el-menu-item index="4">
-          <i class="el-icon-menu"></i>
+          <vab-icon icon="settings-line" style="padding: 0 5px" />
           <span slot="title">生产</span>
         </el-menu-item>
         <el-menu-item index="5">
-          <i class="el-icon-menu"></i>
+          <vab-icon icon="alarm-warning-line" style="padding: 0 5px" />
           <span slot="title">预警</span>
         </el-menu-item>
         <el-menu-item index="6">
-          <i class="el-icon-menu"></i>
+          <vab-icon icon="time-line" style="padding: 0 5px" />
           <span slot="title">
             实时
             <span
@@ -45,11 +45,11 @@
           </span>
         </el-menu-item>
         <el-menu-item index="7">
-          <i class="el-icon-menu"></i>
+          <vab-icon icon="account-circle-line" style="padding: 0 5px" />
           <span slot="title">我的账户</span>
         </el-menu-item>
         <el-menu-item index="8">
-          <i class="el-icon-menu"></i>
+          <vab-icon icon="user-add-line" style="padding: 0 5px" />
           <span slot="title">我的关注</span>
         </el-menu-item>
       </el-menu>

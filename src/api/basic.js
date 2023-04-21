@@ -2490,6 +2490,15 @@ export function editVdianInfoSave(data) {
     data,
   })
 }
+
+// 开放接口 - 聚水潭商家授权
+export function getJstAuthUrl(data) {
+  return request({
+    url: '/setting/getJstAuthUrl',
+    method: 'post',
+    data,
+  })
+}
 // 开放接口 - 获取聚水潭测试是否成功
 export function testJstConfig(data) {
   return request({

@@ -12,6 +12,7 @@ import QYTextLabels from '@/qy/QYComponents/QYTextLabels'
 import QYBranchTooltip from '@/qy/QYComponents/QYBranchTooltip'
 import QYPopover from '@/qy/QYComponents/QYPopover'
 import QYPopoverPrice from '@/qy/QYComponents/QYPopoverPrice'
+import QYRanking from '@/qy/QYComponents/QYRanking'
 
 export default {
   install(Vue) {
@@ -29,5 +30,6 @@ export default {
     Vue.component('QYBranchTooltip', QYBranchTooltip)
     Vue.component('QYPopover', QYPopover)
     Vue.component('QYPopoverPrice', QYPopoverPrice)
+    Vue.component('QYRanking', QYRanking)
   },
 }

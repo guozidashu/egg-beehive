@@ -148,20 +148,7 @@
                   width="60"
                 >
                   <template slot-scope="scope">
-                    <span
-                      class="index_common"
-                      :class="[
-                        scope.$index + 1 == '1'
-                          ? 'index_one'
-                          : scope.$index + 1 == '2'
-                          ? 'index_two'
-                          : scope.$index + 1 == '3'
-                          ? 'index_three'
-                          : 'index_more',
-                      ]"
-                    >
-                      {{ scope.$index + 1 }}
-                    </span>
+                    <QYRanking :index="scope.$index" :type="6" />
                   </template>
                 </el-table-column>
                 <el-table-column label="客户名称" prop="name" />
@@ -198,20 +185,7 @@
                   width="60"
                 >
                   <template slot-scope="scope">
-                    <span
-                      class="index_common"
-                      :class="[
-                        scope.$index + 1 == '1'
-                          ? 'index_one'
-                          : scope.$index + 1 == '2'
-                          ? 'index_two'
-                          : scope.$index + 1 == '3'
-                          ? 'index_three'
-                          : 'index_more',
-                      ]"
-                    >
-                      {{ scope.$index + 1 }}
-                    </span>
+                    <QYRanking :index="scope.$index" :type="6" />
                   </template>
                 </el-table-column>
                 <el-table-column label="客户名称" prop="name" />

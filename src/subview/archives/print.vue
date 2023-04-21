@@ -332,7 +332,7 @@
         //  打印吊牌条码  - 颜色列表
         sizeList: [],
         // 导入打印吊牌条码 - 表单
-        form1: { order_sn: '', page: 1, pageSize: 20 },
+        form1: { order_sn: '', page: 1, pageSize: 10 },
         // 导入打印吊牌条码 - 选中的商品列表
         selectRows: [],
         // 导入打印吊牌条码 - 列表组件类型，列表，列表加载状态，总条数

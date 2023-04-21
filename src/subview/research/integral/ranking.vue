@@ -28,20 +28,12 @@
         <template #List>
           <el-table-column align="center" label="排行" type="index" width="60">
             <template slot-scope="scope">
-              <span
-                class="index_common"
-                :class="[
-                  scope.$index + 1 == '1'
-                    ? 'index_one'
-                    : scope.$index + 1 == '2'
-                    ? 'index_two'
-                    : scope.$index + 1 == '3'
-                    ? 'index_three'
-                    : 'index_more',
-                ]"
-              >
-                {{ scope.$index + 1 }}
-              </span>
+              <QYRanking
+                :index="scope.$index"
+                :page="page"
+                :page-size="pageSize"
+                :type="1"
+              />
             </template>
           </el-table-column>
           <el-table-column

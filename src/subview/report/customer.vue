@@ -272,7 +272,6 @@
           @selectRows="handleSelectionChange"
         >
           <template #List>
-            <el-table-column align="center" type="selection" width="40" />
             <el-table-column
               align="center"
               label="排行"
@@ -280,24 +279,12 @@
               width="60"
             >
               <template slot-scope="scope">
-                <span
-                  v-if="page == 1"
-                  class="index_common"
-                  :class="[
-                    scope.$index + 1 == '1'
-                      ? 'index_one'
-                      : scope.$index + 1 == '2'
-                      ? 'index_two'
-                      : scope.$index + 1 == '3'
-                      ? 'index_three'
-                      : 'index_more',
-                  ]"
-                >
-                  {{ scope.$index + 1 }}
-                </span>
-                <span v-else class="index_more index_common">
-                  {{ 10 * (page - 1) + scope.$index + 1 }}
-                </span>
+                <QYRanking
+                  :index="scope.$index"
+                  :page="page"
+                  :page-size="pageSize"
+                  :type="1"
+                />
               </template>
             </el-table-column>
             <el-table-column label="客户信息" width="280">
@@ -476,14 +463,14 @@
           order: 'sum_final_amount', //排序 count_order订单数sale_count拿货次数 sale_num拿货件数 sum_final_amount拿货金额 gross_profit毛利润 cost_price 商品成本 gross_profit 毛利额 voucher_amount客户回款 sale_arrears期末余额 final_rate 占比
           sort: 'desc', //asc正序 desc倒序
           page: 1,
-          pageSize: 20,
+          pageSize: 50,
           time: this.getPastTime(30),
         },
         // 列表条数 ，分页加载状态，列表类型，列表数据
         total: 0,
         formTemp: null,
         page: 1,
-        pageSize: 10,
+        pageSize: 50,
         listLoading: false,
         listType: 1,
         goosList: [],
@@ -666,9 +653,9 @@
             this.pageSize = newVal.pageSize
           } else {
             this.formTemp.page = 1
-            this.formTemp.pageSize = 10
+            this.formTemp.pageSize = 50
             this.page = 1
-            this.pageSize = 10
+            this.pageSize = 50
           }
           this.getTableList()
           this.pageState = false
@@ -716,7 +703,7 @@
         const { data } = await this.api.getEmployeeList({
           name: '',
           page: -1,
-          pageSize: 10,
+          pageSize: 50,
           department_id: '', //部门id
           role: null, //岗位id
           status: 1, // 状态 1=在职 0=停职 默认传1
@@ -766,7 +753,7 @@
           order: 'sum_final_amount', //排序 count_order订单数sale_count拿货次数 sale_num拿货件数 sum_final_amount拿货金额 gross_profit毛利润 cost_price 商品成本 gross_profit 毛利额 voucher_amount客户回款 sale_arrears期末余额 final_rate 占比
           sort: 'desc', //asc正序 desc倒序
           page: 1,
-          pageSize: 20,
+          pageSize: 50,
           time: this.getPastTime(30),
         }
       },

@@ -123,6 +123,29 @@
         </el-button>
       </el-form-item>
     </el-form>
+    <el-form
+      v-if="formType === 5"
+      ref="form"
+      :inline="true"
+      label-width="100px"
+      :model="form"
+      size="small"
+      style="margin-top: 18px"
+      @submit.native.prevent
+    >
+      <slot name="Form"></slot>
+      <el-button size="small" type="primary" @click="resetForm('form')">
+        重置
+      </el-button>
+      <el-button
+        icon="el-icon-search"
+        size="small"
+        type="primary"
+        @click="handleQuery"
+      >
+        查询
+      </el-button>
+    </el-form>
   </div>
 </template>
 

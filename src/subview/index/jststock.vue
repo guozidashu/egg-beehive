@@ -220,20 +220,7 @@
                       width="60"
                     >
                       <template slot-scope="scope">
-                        <span
-                          class="index_common"
-                          :class="[
-                            scope.$index + 1 == '1'
-                              ? 'index_one'
-                              : scope.$index + 1 == '2'
-                              ? 'index_two'
-                              : scope.$index + 1 == '3'
-                              ? 'index_three'
-                              : 'index_more',
-                          ]"
-                        >
-                          {{ scope.$index + 1 }}
-                        </span>
+                        <QYRanking :index="scope.$index" :type="3" />
                       </template>
                     </el-table-column>
                     <el-table-column label="平台名称" prop="shop_name" />
@@ -279,20 +266,7 @@
                   width="60"
                 >
                   <template slot-scope="scope">
-                    <span
-                      class="index_common"
-                      :class="[
-                        scope.$index + 1 == '1'
-                          ? 'index_one'
-                          : scope.$index + 1 == '2'
-                          ? 'index_two'
-                          : scope.$index + 1 == '3'
-                          ? 'index_three'
-                          : 'index_more',
-                      ]"
-                    >
-                      {{ scope.$index + 1 }}
-                    </span>
+                    <QYRanking :index="scope.$index" :type="3" />
                   </template>
                 </el-table-column>
                 <el-table-column
@@ -338,24 +312,12 @@
                 width="60"
               >
                 <template slot-scope="scope">
-                  <span
-                    v-if="goodsAnalysisForm.page == 1"
-                    class="index_common"
-                    :class="[
-                      scope.$index + 1 == '1'
-                        ? 'index_one'
-                        : scope.$index + 1 == '2'
-                        ? 'index_two'
-                        : scope.$index + 1 == '3'
-                        ? 'index_three'
-                        : 'index_more',
-                    ]"
-                  >
-                    {{ scope.$index + 1 }}
-                  </span>
-                  <span v-else class="index_more index_common">
-                    {{ 10 * (goodsAnalysisForm.page - 1) + scope.$index + 1 }}
-                  </span>
+                  <QYRanking
+                    :index="scope.$index"
+                    :page="goodsAnalysisForm.page"
+                    :page-size="goodsAnalysisForm.pageSize"
+                    :type="2"
+                  />
                 </template>
               </el-table-column>
               <el-table-column label="款式&名称&图片" prop="sn">
@@ -430,24 +392,12 @@
                 width="60"
               >
                 <template slot-scope="scope">
-                  <span
-                    v-if="stockAnalysisForm.page == 1"
-                    class="index_common"
-                    :class="[
-                      scope.$index + 1 == '1'
-                        ? 'index_one'
-                        : scope.$index + 1 == '2'
-                        ? 'index_two'
-                        : scope.$index + 1 == '3'
-                        ? 'index_three'
-                        : 'index_more',
-                    ]"
-                  >
-                    {{ scope.$index + 1 }}
-                  </span>
-                  <span v-else class="index_more index_common">
-                    {{ 10 * (stockAnalysisForm.page - 1) + scope.$index + 1 }}
-                  </span>
+                  <QYRanking
+                    :index="scope.$index"
+                    :page="stockAnalysisForm.page"
+                    :page-size="stockAnalysisForm.pageSize"
+                    :type="4"
+                  />
                 </template>
               </el-table-column>
               <el-table-column label="款式&名称&图片" prop="sn">

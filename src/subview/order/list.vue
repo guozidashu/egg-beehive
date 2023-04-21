@@ -71,6 +71,7 @@
                 <el-option label="批次号" value="id" />
                 <el-option label="订单号" value="sn" />
                 <el-option label="商品款号" value="goods_sn" />
+                <el-option label="收货人" value="consignee" />
               </el-select>
             </el-input>
           </el-form-item>

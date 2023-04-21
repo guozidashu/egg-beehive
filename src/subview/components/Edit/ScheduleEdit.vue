@@ -297,7 +297,7 @@
             const { data } = await this.api.getCuttingOrderList({
               order_id: order_id,
               page: 1,
-              pagesize: 20,
+              pageSize: 10,
             })
             this.listType = row
             this.orderList = data.list
@@ -306,7 +306,7 @@
             const { data } = await this.api.getInboundOrderList({
               order_id: order_id,
               page: 1,
-              pagesize: 20,
+              pagesize: 10,
             })
             this.listType = row
             this.orderList = data.list

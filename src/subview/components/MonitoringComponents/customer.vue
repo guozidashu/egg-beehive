@@ -160,7 +160,7 @@
         :current-page="form.page"
         :layout="'total, sizes, prev, pager, next, jumper'"
         :page-size="form.page_size"
-        :page-sizes="[10, 20, 30, 40, 100]"
+        :page-sizes="[10, 20, 50, 100]"
         :total="total"
         @current-change="handleCurrentChange"
         @size-change="handleSizeChange"

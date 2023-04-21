@@ -300,27 +300,14 @@
         @selectRows="handleSelectionChange"
       >
         <template #List>
-          <el-table-column align="center" type="selection" width="40" />
           <el-table-column align="center" label="排行" type="index" width="60">
             <template slot-scope="scope">
-              <span
-                v-if="page == 1"
-                class="index_common"
-                :class="[
-                  scope.$index + 1 == '1'
-                    ? 'index_one'
-                    : scope.$index + 1 == '2'
-                    ? 'index_two'
-                    : scope.$index + 1 == '3'
-                    ? 'index_three'
-                    : 'index_more',
-                ]"
-              >
-                {{ scope.$index + 1 }}
-              </span>
-              <span v-else class="index_more index_common">
-                {{ 10 * (page - 1) + scope.$index + 1 }}
-              </span>
+              <QYRanking
+                :index="scope.$index"
+                :page="page"
+                :page-size="pageSize"
+                :type="2"
+              />
             </template>
           </el-table-column>
           <el-table-column label="商品信息" width="400">
@@ -334,7 +321,7 @@
                   >
                     <div slot="error" class="el-image__error">暂无图片</div>
                   </el-image>
-                  <el-image :src="row.img" style="width: 105px; height: 105px">
+                  <el-image :src="row.img" style="width: 85px; height: 85px">
                     <div slot="error" class="el-image__error">暂无图片</div>
                   </el-image>
                 </el-tooltip>
@@ -368,7 +355,7 @@
                     style="
                       display: flex;
                       justify-content: space-between;
-                      margin: 5px 0 0 0;
+                      margin: 10px 0 0 0;
                     "
                   >
                     <div>
@@ -387,19 +374,16 @@
                     style="
                       display: flex;
                       justify-content: space-between;
-                      margin: 5px 0 0 0;
+                      margin: 10px 0 0 0;
                     "
                   >
                     <div>
-                      成本价：
                       <span style="color: red">
                         ￥{{ row.sale_price | moneyFormat }}
                       </span>
+                      ￥{{ row.price | moneyFormat }}
                     </div>
-                    <div>售价： ￥{{ row.price | moneyFormat }}</div>
-                  </div>
-                  <div style="margin: 5px 0 0 0">
-                    {{ row.upper_time | formatTime }}
+                    <div>{{ row.upper_time | formatTimeData }} &nbsp; 上架</div>
                   </div>
                 </div>
               </div>
@@ -429,9 +413,9 @@
             width="100"
           >
             <template #default="{ row }">
-              <!-- <el-button type="text" @click="handleDetail(row)">
+              <el-button type="text" @click="handleDetail(row)">
                 单品分析
-              </el-button> -->
+              </el-button>
               &nbsp;
               <el-dropdown>
                 <el-button class="el-dropdown-link" type="text">
@@ -520,11 +504,11 @@
         total: 0,
         formTemp: null,
         page: 1,
-        pageSize: 10,
+        pageSize: 50,
         goodsForm1: {
           time: this.getPastTime(30),
           page: 1,
-          pageSize: 10,
+          pageSize: 50,
           goods_type: 1,
           year: null,
           type: null,
@@ -702,9 +686,9 @@
             this.pageSize = newVal.pageSize
           } else {
             this.formTemp.page = 1
-            this.formTemp.pageSize = 10
+            this.formTemp.pageSize = 50
             this.page = 1
-            this.pageSize = 10
+            this.pageSize = 50
           }
           this.getTableList()
           this.pageState = false
@@ -785,7 +769,7 @@
         this.goodsForm1 = {
           time: this.getPastTime(30),
           page: 1,
-          pageSize: 10,
+          pageSize: 50,
           goods_type: 1,
           year: null,
           type: null,

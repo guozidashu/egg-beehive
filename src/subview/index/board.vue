@@ -396,24 +396,12 @@
         <el-table-column align="center" label="排行" type="index" width="60">
           <template slot-scope="scope">
             <div style="margin-left: -20px">
-              <span
-                v-if="page == 1"
-                class="index_common"
-                :class="[
-                  scope.$index + 1 == '1'
-                    ? 'index_one'
-                    : scope.$index + 1 == '2'
-                    ? 'index_two'
-                    : scope.$index + 1 == '3'
-                    ? 'index_three'
-                    : 'index_more',
-                ]"
-              >
-                {{ scope.$index + 1 }}
-              </span>
-              <span v-else class="index_more index_common">
-                {{ 10 * (page - 1) + scope.$index + 1 }}
-              </span>
+              <QYRanking
+                :index="scope.$index"
+                :page="page"
+                :page-size="pageSize"
+                :type="2"
+              />
             </div>
           </template>
         </el-table-column>
@@ -517,24 +505,12 @@
       >
         <el-table-column align="center" label="排行" type="index" width="60">
           <template slot-scope="scope">
-            <span
-              v-if="page == 1"
-              class="index_common"
-              :class="[
-                scope.$index + 1 == '1'
-                  ? 'index_one'
-                  : scope.$index + 1 == '2'
-                  ? 'index_two'
-                  : scope.$index + 1 == '3'
-                  ? 'index_three'
-                  : 'index_more',
-              ]"
-            >
-              {{ scope.$index + 1 }}
-            </span>
-            <span v-else class="index_more index_common">
-              {{ 10 * (page - 1) + scope.$index + 1 }}
-            </span>
+            <QYRanking
+              :index="scope.$index"
+              :page="page"
+              :page-size="pageSize"
+              :type="1"
+            />
           </template>
         </el-table-column>
         <el-table-column label="客户" width="400">
@@ -612,7 +588,7 @@
         :current-page="page"
         layout="total, sizes, prev, pager,next,jumper"
         :page-size="pageSize"
-        :page-sizes="[10, 20, 30, 40, 100]"
+        :page-sizes="[10, 20, 50, 100]"
         :total="listTotal"
         @current-change="changeBtnPage"
         @size-change="changeBtnPageSize"

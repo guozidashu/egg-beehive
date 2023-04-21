@@ -106,6 +106,7 @@
     mixins: [datajosn],
     data() {
       return {
+        // 列表数据 加载状态 分页 条数 查询条件
         list: [],
         listLoading: false,
         layout: 'total, sizes, prev, pager, next, jumper',
@@ -123,6 +124,7 @@
       }
     },
     watch: {
+      // 监听查询条件
       queryForm: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
@@ -147,14 +149,17 @@
       this.fetchData()
     },
     methods: {
+      // 分页
       handleSizeChange(val) {
         this.pageState = true
         this.queryForm.pageSize = val
       },
+      // 条数
       handleCurrentChange(val) {
         this.pageState = true
         this.queryForm.page = val
       },
+      // 重置
       queryData() {
         this.queryForm = {
           name: '', //操作名称
@@ -164,6 +169,7 @@
           pageSize: 10,
         }
       },
+      // 获取列表
       async fetchData() {
         this.listLoading = true
         if (this.formTemp == null) {

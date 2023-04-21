@@ -491,8 +491,25 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <div
-            style="padding: 20px; background-color: white; border-radius: 5px"
+            style="
+              position: relative;
+              padding: 20px;
+              background: -webkit-linear-gradient(top, #fff5f3 0%, #fff 10%);
+              background-color: white;
+              border-radius: 5px;
+            "
           >
+            <el-image
+              fit="fill"
+              src="https://oss.business.quanyu123.com//50bcc50006a75081dc3f8f979ee98be7.png"
+              style="
+                position: absolute;
+                top: 15px;
+                left: 70px;
+                width: 40px;
+                height: 25px;
+              "
+            />
             <div
               style="
                 display: flex;
@@ -513,13 +530,15 @@
               "
             >
               <div style="display: flex">
+                <QYRanking
+                  :index="o - 1"
+                  style="margin: 30px 10px 0 0"
+                  :type="8"
+                />
                 <el-image
-                  src="row.img"
-                  style="width: 30px; height: 30px; margin: 30px 10px 0 0"
+                  src="https://img.wechatboss.com/FgSPgakMOZN7FUVKV8HnKlw1-SKe"
+                  style="width: 100px; height: 100px"
                 >
-                  <div slot="error" class="el-image__error">暂无图片</div>
-                </el-image>
-                <el-image src="row.img" style="width: 100px; height: 100px">
                   <div slot="error" class="el-image__error">暂无图片</div>
                 </el-image>
                 <div style="width: 280px; margin-left: 10px">
@@ -574,8 +593,25 @@
         </el-col>
         <el-col :span="12">
           <div
-            style="padding: 20px; background-color: white; border-radius: 5px"
+            style="
+              position: relative;
+              padding: 20px;
+              background: -webkit-linear-gradient(top, #f1f5ff 0%, #fff 10%);
+              background-color: white;
+              border-radius: 5px;
+            "
           >
+            <el-image
+              fit="fill"
+              src="https://oss.business.quanyu123.com//e3f1c56bf92dcc30f9c63c7bb02bb67f.png"
+              style="
+                position: absolute;
+                top: 15px;
+                left: 70px;
+                width: 40px;
+                height: 25px;
+              "
+            />
             <div
               style="
                 display: flex;
@@ -583,7 +619,7 @@
                 padding-bottom: 20px;
               "
             >
-              <div style="font-size: 14px">新品飙升榜</div>
+              <div style="font-size: 14px">商品热销榜</div>
               <div style="font-size: 12px">更多</div>
             </div>
             <div
@@ -596,13 +632,15 @@
               "
             >
               <div style="display: flex">
+                <QYRanking
+                  :index="o - 1"
+                  style="margin: 30px 10px 0 0"
+                  :type="7"
+                />
                 <el-image
-                  src="row.img"
-                  style="width: 30px; height: 30px; margin: 30px 10px 0 0"
+                  src="https://img.wechatboss.com/FgSPgakMOZN7FUVKV8HnKlw1-SKe"
+                  style="width: 100px; height: 100px"
                 >
-                  <div slot="error" class="el-image__error">暂无图片</div>
-                </el-image>
-                <el-image src="row.img" style="width: 100px; height: 100px">
                   <div slot="error" class="el-image__error">暂无图片</div>
                 </el-image>
                 <div style="width: 280px; margin-left: 10px">
@@ -662,8 +700,25 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <div
-            style="padding: 20px; background-color: white; border-radius: 5px"
+            style="
+              position: relative;
+              padding: 20px;
+              background: -webkit-linear-gradient(top, #fff5f3 0%, #fff 10%);
+              background-color: white;
+              border-radius: 5px;
+            "
           >
+            <el-image
+              fit="fill"
+              src="https://oss.business.quanyu123.com//50bcc50006a75081dc3f8f979ee98be7.png"
+              style="
+                position: absolute;
+                top: 15px;
+                left: 70px;
+                width: 40px;
+                height: 25px;
+              "
+            />
             <div
               style="
                 display: flex;
@@ -674,12 +729,137 @@
               <div style="font-size: 14px">客户拿货排行榜</div>
               <div style="font-size: 12px">更多</div>
             </div>
+            <div style="display: flex">
+              <div style="width: 33%; margin-top: 30px; text-align: center">
+                <div style="position: relative">
+                  <el-image
+                    src="https://oss.business.quanyu123.com//7f2f279fe5fbf0d86fb568673ac871b1.png"
+                    style="
+                      position: absolute;
+                      top: 0px;
+                      z-index: 99;
+                      width: 25px;
+                      height: 25px;
+                      transform: rotate(330deg);
+                    "
+                  />
+                  <el-image
+                    src="https://oss.business.quanyu123.com//a6668ea487c0c3fc2c6bdf0b50a79ce2.jpg"
+                    style="
+                      z-index: 1;
+                      width: 60px;
+                      height: 60px;
+                      margin-top: 15px;
+                      border-radius: 50%;
+                    "
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                </div>
+                <div style="padding: 10px; margin-left: 10px">
+                  <div style="font-weight: 600">广州&nbsp;|&nbsp;赖玉珍</div>
+                  <div style="margin: 5px 0; font-size: 14px; color: red">
+                    33.00万元
+                  </div>
+                  <div style="font-size: 12px">拿货次数233</div>
+                </div>
+              </div>
+              <div style="width: 33%; text-align: center">
+                <div style="position: relative">
+                  <el-image
+                    src="https://oss.business.quanyu123.com//053e8de20c3c5c214fff0704750a15d8.png"
+                    style="
+                      position: absolute;
+                      top: 0px;
+                      z-index: 99;
+                      width: 25px;
+                      height: 25px;
+                      transform: rotate(330deg);
+                    "
+                  />
+                  <el-image
+                    src="https://oss.business.quanyu123.com//a6668ea487c0c3fc2c6bdf0b50a79ce2.jpg"
+                    style="
+                      z-index: 1;
+                      width: 60px;
+                      height: 60px;
+                      margin-top: 15px;
+                      border-radius: 50%;
+                    "
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                </div>
+                <div style="padding: 10px; margin-left: 10px">
+                  <div style="font-weight: 600">广州&nbsp;|&nbsp;赖玉珍</div>
+                  <div style="margin: 5px 0; font-size: 14px; color: red">
+                    33.00万元
+                  </div>
+                  <div style="font-size: 12px">拿货次数233</div>
+                </div>
+              </div>
+              <div style="width: 33%; margin-top: 50px; text-align: center">
+                <div style="position: relative">
+                  <el-image
+                    src="https://oss.business.quanyu123.com//ad017a3aac2926e21cc65020087405da.png"
+                    style="
+                      position: absolute;
+                      top: 0px;
+                      z-index: 99;
+                      width: 25px;
+                      height: 25px;
+                      transform: rotate(330deg);
+                    "
+                  />
+                  <el-image
+                    src="https://oss.business.quanyu123.com//a6668ea487c0c3fc2c6bdf0b50a79ce2.jpg"
+                    style="
+                      z-index: 1;
+                      width: 60px;
+                      height: 60px;
+                      margin-top: 15px;
+                      border-radius: 50%;
+                    "
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                </div>
+                <div style="padding: 10px; margin-left: 10px">
+                  <div style="font-weight: 600">广州&nbsp;|&nbsp;赖玉珍</div>
+                  <div style="margin: 5px 0; font-size: 14px; color: red">
+                    33.00万元
+                  </div>
+                  <div style="font-size: 12px">拿货次数233</div>
+                </div>
+              </div>
+            </div>
+            <el-image
+              src=" https://oss.business.quanyu123.com//de6c498a9af2ab4acbe9802116a2ae51.png"
+              style="margin-top: -40px"
+            />
           </div>
         </el-col>
         <el-col :span="12">
           <div
-            style="padding: 20px; background-color: white; border-radius: 5px"
+            style="
+              position: relative;
+              padding: 20px;
+              background: -webkit-linear-gradient(top, #f1f5ff 0%, #fff 10%);
+              background-color: white;
+              border-radius: 5px;
+            "
           >
+            <el-image
+              fit="fill"
+              src="https://oss.business.quanyu123.com//e3f1c56bf92dcc30f9c63c7bb02bb67f.png"
+              style="
+                position: absolute;
+                top: 15px;
+                left: 70px;
+                width: 40px;
+                height: 25px;
+              "
+            />
             <div
               style="
                 display: flex;
@@ -690,6 +870,111 @@
               <div style="font-size: 14px">热销品牌榜</div>
               <div style="font-size: 12px">更多</div>
             </div>
+            <div style="display: flex">
+              <div style="width: 33%; margin-top: 30px; text-align: center">
+                <div style="position: relative">
+                  <el-image
+                    src="https://oss.business.quanyu123.com//7f2f279fe5fbf0d86fb568673ac871b1.png"
+                    style="
+                      position: absolute;
+                      top: 0px;
+                      z-index: 99;
+                      width: 25px;
+                      height: 25px;
+                      transform: rotate(330deg);
+                    "
+                  />
+                  <el-image
+                    src="https://oss.business.quanyu123.com//a6668ea487c0c3fc2c6bdf0b50a79ce2.jpg"
+                    style="
+                      z-index: 1;
+                      width: 60px;
+                      height: 60px;
+                      margin-top: 15px;
+                    "
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                </div>
+                <div style="padding: 10px; margin-left: 10px">
+                  <div style="font-weight: 600">丸纸</div>
+                  <div style="margin: 5px 0; font-size: 14px; color: red">
+                    33.00万元
+                  </div>
+                  <div style="font-size: 12px">在售商品数233</div>
+                </div>
+              </div>
+              <div style="width: 33%; text-align: center">
+                <div style="position: relative">
+                  <el-image
+                    src="https://oss.business.quanyu123.com//053e8de20c3c5c214fff0704750a15d8.png"
+                    style="
+                      position: absolute;
+                      top: 0px;
+                      z-index: 99;
+                      width: 25px;
+                      height: 25px;
+                      transform: rotate(330deg);
+                    "
+                  />
+                  <el-image
+                    src="https://oss.business.quanyu123.com//a6668ea487c0c3fc2c6bdf0b50a79ce2.jpg"
+                    style="
+                      z-index: 1;
+                      width: 60px;
+                      height: 60px;
+                      margin-top: 15px;
+                    "
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                </div>
+                <div style="padding: 10px; margin-left: 10px">
+                  <div style="font-weight: 600">丸纸</div>
+                  <div style="margin: 5px 0; font-size: 14px; color: red">
+                    33.00万元
+                  </div>
+                  <div style="font-size: 12px">在售商品数233</div>
+                </div>
+              </div>
+              <div style="width: 33%; margin-top: 50px; text-align: center">
+                <div style="position: relative">
+                  <el-image
+                    src="https://oss.business.quanyu123.com//ad017a3aac2926e21cc65020087405da.png"
+                    style="
+                      position: absolute;
+                      top: 0px;
+                      z-index: 99;
+                      width: 25px;
+                      height: 25px;
+                      transform: rotate(330deg);
+                    "
+                  />
+                  <el-image
+                    src="https://oss.business.quanyu123.com//a6668ea487c0c3fc2c6bdf0b50a79ce2.jpg"
+                    style="
+                      z-index: 1;
+                      width: 60px;
+                      height: 60px;
+                      margin-top: 15px;
+                    "
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                </div>
+                <div style="padding: 10px; margin-left: 10px">
+                  <div style="font-weight: 600">丸纸</div>
+                  <div style="margin: 5px 0; font-size: 14px; color: red">
+                    33.00万元
+                  </div>
+                  <div style="font-size: 12px">在售商品数233</div>
+                </div>
+              </div>
+            </div>
+            <el-image
+              src=" https://oss.business.quanyu123.com//9015fe8fbf8df3de97c2bcd3a4e53c32.png"
+              style="margin-top: -40px"
+            />
           </div>
         </el-col>
       </el-row>

@@ -108,21 +108,7 @@
               style="display: flex; padding: 20px"
             >
               <div style="padding: 40px 0">
-                <span
-                  class="index_common"
-                  :class="[
-                    index + 1 == '1'
-                      ? 'index_one'
-                      : index + 1 == '2'
-                      ? 'index_two'
-                      : index + 1 == '3'
-                      ? 'index_three'
-                      : 'index_more',
-                  ]"
-                  style="padding-top: 2px; text-align: center"
-                >
-                  {{ index + 1 }}
-                </span>
+                <QYRanking :index="index" :type="5" />
               </div>
               <el-image
                 :src="item.img"

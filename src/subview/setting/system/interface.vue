@@ -10,6 +10,7 @@
         <el-tab-pane label="百胜ERP" name="百胜ERP" />
         <el-tab-pane label="紫日ERP" name="紫日ERP" />
       </el-tabs>
+      <!-- 说明文本区域 -->
       <div
         v-if="activeName == '聚水潭ERP'"
         class="textCss"
@@ -47,6 +48,7 @@
         class="textCss"
         v-html="listText[4].text"
       ></div>
+      <!-- 表单区域和按钮区域，文本区域 -->
       <el-form
         ref="form"
         label-position="right"
@@ -416,7 +418,7 @@
           <el-button
             v-if="activeName == '聚水潭ERP'"
             type="primary"
-            @click="test"
+            @click="getJstAuthUrl"
           >
             商家授权
           </el-button>
@@ -558,9 +560,12 @@
     name: 'SystemStorage',
     data() {
       return {
+        // 假网址
         wangzhi:
           'https://luoyi.business.quanyu123.com/shop/apps/erp321/client/api2/q36dye440r01',
+        // tabs
         activeName: '聚水潭ERP',
+        // 表单数据
         form: {
           api_open: 1, //接口是否开启
           version: 1, //1：ERP专业版（无精细化库存管理）\r\n\r\n2：ERP企业版（有精细化库存管理）
@@ -597,6 +602,7 @@
           jst_goods_edit: '1', //默认自动同步 1自动 2不自动
           jst_stock_type: '1', //聚水潭库存计算方式 1包含采购在途 2包含进货仓 3包含撤退仓库存 英文逗号分割
         },
+        // 表单验证规格
         rules: {
           // 微店验证规则
           vdian_api_open: [
@@ -742,6 +748,7 @@
             { required: true, message: '请输入ERP管理员', trigger: 'blur' },
           ],
         },
+        // 说明文本列表
         listText: [
           {
             text: '<p>用于对接聚水潭ERP，实现相互同步商品、订单、库存数据等，使用该功能需要先购买聚水潭ERP。</p> ',
@@ -768,6 +775,25 @@
       this.fetchData()
     },
     methods: {
+      // erp 商家授权跳转
+      getJstAuthUrl() {
+        this.$confirm('链接15分钟内有效', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        })
+          .then(async () => {
+            const { data } = await this.api.getJstAuthUrl()
+            window.open(data.auth_url, '_blank')
+          })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消测试',
+            })
+          })
+      },
+      // 切换tab获取数据并转换处理数据
       async handleClick(tab) {
         if (tab.label == '聚水潭ERP') {
           this.fetchData()
@@ -823,6 +849,7 @@
           this.fetchData()
         }
       },
+      // 获取数据
       async fetchData() {
         if (this.activeName == '聚水潭ERP') {
           const { data } = await this.api.gitJuShuiTanInfo()
@@ -854,6 +881,7 @@
           }
         }
       },
+      // 保存数据
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
@@ -955,9 +983,11 @@
           }
         })
       },
+      //复制文本
       handleCopyIcon(wangzhi, event) {
         clip(`${wangzhi}`, event)
       },
+      //测试接口按钮
       test() {
         this.$confirm('确定要测试吗？', '提示', {
           confirmButtonText: '确定',

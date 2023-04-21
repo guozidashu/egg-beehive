@@ -22,7 +22,7 @@
     />
     <!-- tab 出去首页 表格 -->
     <div
-      v-if="activeName == 1"
+      v-if="activeName == 1 || activeName == 2 || activeName == 3"
       style="display: flex; justify-content: space-between; padding: 0 20px"
     >
       <div></div>

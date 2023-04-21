@@ -2,8 +2,6 @@
   <div style="background-color: #f6f8f9">
     <div
       style="
-        display: flex;
-        justify-content: space-between;
         padding-top: 1px;
         margin-bottom: 20px;
         background-color: #ffffff;
@@ -48,25 +46,34 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="款号:">
+          <el-form-item label="时间时间:">
+            <el-date-picker
+              v-model="form.order_time"
+              align="left"
+              :clearable="false"
+              :default-time="['00:00:00', '23:59:59']"
+              end-placeholder="结束日期"
+              format="yyyy-MM-dd"
+              :picker-options="pickerOptions"
+              range-separator="至"
+              start-placeholder="开始日期"
+              type="daterange"
+              unlink-panels
+              value-format="yyyy-MM-dd HH:mm:ss"
+            />
+          </el-form-item>
+          <el-form-item label="商品款号:">
             <el-input
               v-model="form.sn"
-              placeholder="请输入款号"
+              placeholder="请输入商品款号"
               style="width: 215px"
             />
           </el-form-item>
+          <el-button size="small" type="primary" @click="handleDownload()">
+            全部导出
+          </el-button>
         </template>
       </QYForm>
-      <div>
-        <el-button
-          size="small"
-          style="margin-top: 20px; margin-right: 20px"
-          type="primary"
-          @click="handleDownload()"
-        >
-          全部导出
-        </el-button>
-      </div>
     </div>
     <el-card shadow="never" style="border: 0; border-radius: 5px">
       <el-tabs v-model="form.order_source">
@@ -91,18 +98,12 @@
             批量导出
           </el-button>
           <div style="display: flex; margin-top: 5px">
-            <el-checkbox v-model="form.is_return">不显示已停售商品</el-checkbox>
+            <el-checkbox v-model="form.is_return">不统计停售商品</el-checkbox>
             <el-checkbox v-model="form.is_return1">不统计作废数据</el-checkbox>
             <div>
               &nbsp; &nbsp; | &nbsp; 指标说明
               <el-popover placement="right" trigger="hover">
-                <div style="font-size: 12px">
-                  实际库存 = 期初数量 + 生产入库 - 生产退货 - 销售发货 +
-                  销售退货 +- 调整
-                </div>
-                <div style="font-size: 12px">
-                  可售库存 = 实际库存 -订单占有数（代发货）
-                </div>
+                <div style="font-size: 12px">测试</div>
                 <vab-icon
                   slot="reference"
                   icon="question-line"
@@ -158,8 +159,9 @@
                   </el-image>
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
-                  <div style="font-size: 14px; font-weight: 600">
-                    {{ row.goods_sn }}
+                  <div style="display: flex; justify-content: space-between">
+                    <div style="font-size: 14px; font-weight: 600">款号</div>
+                    <el-tag>停在售</el-tag>
                   </div>
                   <div
                     style="
@@ -186,13 +188,9 @@
                     &nbsp;
                     <el-tag type="info">年份</el-tag>
                     &nbsp;
-                    <el-tag v-if="row.season_name != null" type="info">
-                      {{ row.season_name }}
-                    </el-tag>
+                    <el-tag type="info">季节</el-tag>
                     &nbsp;
-                    <el-tag v-if="row.brand_name != null" type="info">
-                      {{ row.brand_name }}
-                    </el-tag>
+                    <el-tag type="info">品牌</el-tag>
                   </div>
                   <div
                     style="
@@ -201,53 +199,79 @@
                       margin: 5px 0 0 0;
                     "
                   >
-                    上架日期
-                    <el-tag>停在售</el-tag>
+                    <div>吊牌价</div>
+                    <div>上架日期</div>
                   </div>
                 </div>
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="颜色" prop="color_name" />
-          <el-table-column align="center" label="尺码" prop="size_name" />
-          <el-table-column align="center" label="发货数量" prop="num" />
-          <el-table-column align="right" label="出库金额" prop="total">
-            <template #default="{ row }">
-              <el-tag>￥{{ row.total | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="right"
-            label="平均出库价"
-            prop="discount_price"
-          >
-            <template #default="{ row }">
-              <el-tag>￥{{ row.discount_price | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column align="right" label="平均出库成本" prop="cost_price">
-            <template #default="{ row }">
-              <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="right"
-            label="出库成本金额"
-            prop="issue_cost_amount"
-          >
-            <template #default="{ row }">
-              <el-tag>￥{{ row.issue_cost_amount | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column align="right" label="毛利额" prop="gross_profit">
-            <template #default="{ row }">
-              <el-tag>￥{{ row.gross_profit | moneyFormat }}</el-tag>
-            </template>
-          </el-table-column>
           <el-table-column
             align="center"
-            label="平均折扣"
-            prop="average_discount"
+            label="发货数量(出库)"
+            prop="color_name1"
+          />
+          <el-table-column
+            align="center"
+            label="发货金额(出库)"
+            prop="color_name1"
+          />
+          <el-table-column
+            align="center"
+            label="平均出库价"
+            prop="color_name1"
+          />
+          <el-table-column
+            align="center"
+            label="平均发货折扣"
+            prop="color_name1"
+          />
+          <el-table-column
+            align="center"
+            label="平均出库成本"
+            prop="color_name1"
+          />
+          <el-table-column
+            align="center"
+            label="出库成本金额"
+            prop="color_name1"
+          />
+          <el-table-column
+            align="center"
+            label="退货数量(入库)"
+            prop="color_name1"
+          />
+          <el-table-column
+            align="center"
+            label="退货金额(入库)"
+            prop="color_name1"
+          />
+          <el-table-column
+            align="center"
+            label="平均退货价"
+            prop="color_name1"
+          />
+          <el-table-column
+            align="center"
+            label="平均退货折扣"
+            prop="color_name1"
+          />
+          <el-table-column
+            align="center"
+            label="平均退货成本"
+            prop="color_name1"
+          />
+          <el-table-column
+            align="center"
+            label="退货成本金额"
+            prop="color_name1"
+          />
+          <el-table-column align="center" label="毛利额" prop="color_name1" />
+          <el-table-column align="center" label="平均折扣" prop="color_name1" />
+          <el-table-column
+            align="center"
+            label="上架日期·"
+            prop="color_name1"
           />
         </template>
       </QYList>
@@ -271,15 +295,24 @@
         form: {
           page: 1,
           pageSize: 10,
-          sn: '', //订单号
           brand_id: '', //品牌
-          season_id: '', //季节
           year_id: '', //年份
+          season_id: '', //季节
+          order_time: [],
+          sn: '', //订单号
           order_source: '0', //款号，规格
+          is_return: true, //是否退货
+          is_return1: true, //是否退货
+          region: '1',
+          order_sort: 1,
         },
-        formType: 4,
+        formType: 5,
         listType: 1,
-        list: [],
+        list: [
+          {
+            time: '2020-01-01',
+          },
+        ],
         listLoading: false,
         total: 0,
       }
@@ -435,10 +468,16 @@
         this.form = {
           page: 1,
           pageSize: 10,
-          sn: '', //订单号
           brand_id: '', //品牌
-          season_id: '', //季节
           year_id: '', //年份
+          season_id: '', //季节
+          order_time: [],
+          sn: '', //订单号
+          order_source: '0', //款号，规格
+          is_return: true, //是否退货
+          is_return1: true, //是否退货
+          region: '1',
+          order_sort: 1,
         }
       },
       // 分页
@@ -453,14 +492,14 @@
       },
       // 获取列表数据
       async fetchData() {
-        this.listLoading = true
-        if (this.formTemp == null) {
-          this.formTemp = JSON.parse(JSON.stringify(this.form))
-        }
-        const { data } = await this.api.getInventoryList(this.formTemp)
-        this.list = data.list
-        this.total = data.count
-        this.listLoading = false
+        // this.listLoading = true
+        // if (this.formTemp == null) {
+        //   this.formTemp = JSON.parse(JSON.stringify(this.form))
+        // }
+        // const { data } = await this.api.getInventoryList(this.formTemp)
+        // this.list = data.list
+        // this.total = data.count
+        // this.listLoading = false
       },
     },
   }
