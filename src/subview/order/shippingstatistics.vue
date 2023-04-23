@@ -17,7 +17,7 @@
       >
         <template #Form>
           <el-form-item label="品牌:">
-            <el-select v-model="form.brand_id" placeholder="请选择品牌">
+            <el-select v-model="form.brand" placeholder="请选择品牌">
               <el-option
                 v-for="(item, index) in selectList.brand"
                 :key="index"
@@ -27,7 +27,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="年份:">
-            <el-select v-model="form.year_id" placeholder="请选择年份">
+            <el-select v-model="form.year" placeholder="请选择年份">
               <el-option
                 v-for="(item, index) in selectList.year"
                 :key="index"
@@ -37,7 +37,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="季节:">
-            <el-select v-model="form.season_id" placeholder="请选择季节">
+            <el-select v-model="form.season" placeholder="请选择季节">
               <el-option
                 v-for="(item, index) in selectList.season"
                 :key="index"
@@ -46,9 +46,9 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="时间时间:">
+          <el-form-item label="订单时间:">
             <el-date-picker
-              v-model="form.order_time"
+              v-model="form.time"
               align="left"
               :clearable="false"
               :default-time="['00:00:00', '23:59:59']"
@@ -76,10 +76,10 @@
       </QYForm>
     </div>
     <el-card shadow="never" style="border: 0; border-radius: 5px">
-      <el-tabs v-model="form.order_source">
-        <el-tab-pane :label="'按款号/货号'" name="0" />
-        <el-tab-pane :label="'按颜色'" name="1" />
-        <el-tab-pane :label="'按颜色尺码'" name="2" />
+      <el-tabs v-model="form.type">
+        <el-tab-pane :label="'按款号/货号'" name="1" />
+        <el-tab-pane :label="'按颜色'" name="2" />
+        <el-tab-pane :label="'按颜色尺码'" name="3" />
       </el-tabs>
       <div
         style="
@@ -98,8 +98,10 @@
             批量导出
           </el-button>
           <div style="display: flex; margin-top: 5px">
-            <el-checkbox v-model="form.is_return">不统计停售商品</el-checkbox>
-            <el-checkbox v-model="form.is_return1">不统计作废数据</el-checkbox>
+            <el-checkbox v-model="form.not_stop_goods">
+              不统计停售商品
+            </el-checkbox>
+            <el-checkbox v-model="form.not_is_void">不统计作废数据</el-checkbox>
             <div>
               &nbsp; &nbsp; | &nbsp; 指标说明
               <el-popover placement="right" trigger="hover">
@@ -115,14 +117,14 @@
         </div>
         <div>
           排序
-          <el-select v-model="form.region" style="width: 150px; margin: 0 10px">
-            <el-option label="按创建时间" value="1" />
-            <el-option label="按上架时间" value="2" />
-            <el-option label="按商品款号" value="3" />
+          <el-select v-model="form.order" style="width: 150px; margin: 0 10px">
+            <el-option label="按创建时间" value="create_time" />
+            <el-option label="按上架时间" value="upper_time" />
+            <el-option label="按商品款号" value="sn" />
           </el-select>
-          <el-radio-group v-model="form.order_sort">
-            <el-radio-button :label="1">正序</el-radio-button>
-            <el-radio-button :label="2">倒序</el-radio-button>
+          <el-radio-group v-model="form.sort">
+            <el-radio-button label="asc">正序</el-radio-button>
+            <el-radio-button label="desc">倒序</el-radio-button>
           </el-radio-group>
         </div>
       </div>
@@ -160,37 +162,36 @@
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
                   <div style="display: flex; justify-content: space-between">
-                    <div style="font-size: 14px; font-weight: 600">款号</div>
-                    <el-tag>停在售</el-tag>
+                    <div style="font-size: 14px; font-weight: 600">
+                      {{ row.goods_sn }}
+                      {{ row.color_name }}
+                      {{ row.size_name }}
+                    </div>
+                    <el-tag v-if="row.status == 1" type="success">在售</el-tag>
+                    <el-tag v-if="row.status == 2" type="danger">停售</el-tag>
                   </div>
-                  <div
-                    style="
-                      display: flex;
-                      justify-content: space-between;
-                      margin: 5px 0 0 0;
-                    "
-                  >
+                  <div style="display: flex; margin: 5px 0 0 0">
                     <div
                       style="
-                        width: 150px;
+                        width: 200px;
                         overflow: hidden;
                         text-align: left;
                         text-overflow: ellipsis;
                         white-space: nowrap;
                       "
                     >
-                      商品名称
+                      {{ row.goods_name }}
                     </div>
                   </div>
 
                   <div style="display: flex; width: 100%; margin: 5px 0">
-                    <el-tag type="info">商品款式</el-tag>
+                    <el-tag type="info">{{ row.category_name }}</el-tag>
                     &nbsp;
-                    <el-tag type="info">年份</el-tag>
+                    <el-tag type="info">{{ row.year_name }}</el-tag>
                     &nbsp;
-                    <el-tag type="info">季节</el-tag>
+                    <el-tag type="info">{{ row.season_name }}</el-tag>
                     &nbsp;
-                    <el-tag type="info">品牌</el-tag>
+                    <el-tag type="info">{{ row.brand_name }}</el-tag>
                   </div>
                   <div
                     style="
@@ -199,8 +200,8 @@
                       margin: 5px 0 0 0;
                     "
                   >
-                    <div>吊牌价</div>
-                    <div>上架日期</div>
+                    <div style="color: red">￥{{ row.sale_price }}</div>
+                    <div>{{ row.upper_time | formatTimeData }}</div>
                   </div>
                 </div>
               </div>
@@ -209,79 +210,112 @@
           <el-table-column
             align="center"
             label="发货数量(出库)"
-            prop="color_name1"
+            prop="sum_deliver_num"
           />
           <el-table-column
             align="center"
             label="发货金额(出库)"
-            prop="color_name1"
-          />
+            prop="sum_deliver_total"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.sum_deliver_total | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="平均出库价"
-            prop="color_name1"
-          />
+            prop="avg_deliver_price"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.avg_deliver_price | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="平均发货折扣"
-            prop="color_name1"
+            prop="deliver_rate"
           />
           <el-table-column
             align="center"
             label="平均出库成本"
-            prop="color_name1"
-          />
+            prop="cost_price"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="出库成本金额"
-            prop="color_name1"
-          />
+            prop="deliver_cost_price"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.deliver_cost_price | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="退货数量(入库)"
-            prop="color_name1"
+            prop="sum_return_num"
           />
           <el-table-column
             align="center"
             label="退货金额(入库)"
-            prop="color_name1"
-          />
+            prop="sum_return_total"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.sum_return_total | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="平均退货价"
-            prop="color_name1"
-          />
+            prop="avg_return_price"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.avg_return_price | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="平均退货折扣"
-            prop="color_name1"
+            prop="return_rate"
           />
           <el-table-column
             align="center"
             label="平均退货成本"
-            prop="color_name1"
-          />
+            prop="cost_price"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.cost_price | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="退货成本金额"
-            prop="color_name1"
-          />
-          <el-table-column align="center" label="毛利额" prop="color_name1" />
-          <el-table-column align="center" label="平均折扣" prop="color_name1" />
-          <el-table-column
-            align="center"
-            label="上架日期·"
-            prop="color_name1"
-          />
+            prop="return_cost_price"
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.return_cost_price | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="毛利额" prop="sum_profit">
+            <template #default="{ row }">
+              <el-tag>￥{{ row.sum_profit | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
         </template>
       </QYList>
     </el-card>
   </div>
 </template>
 <script>
+  // 日期组件和日期方法混入
+  import datajosn from '@/assets/assets_josn/datajosn'
   // 表格导出插件
   import table2excel from 'js-table2excel'
   export default {
+    mixins: [datajosn],
     data() {
       return {
         // 选中的行
@@ -295,16 +329,17 @@
         form: {
           page: 1,
           pageSize: 10,
-          brand_id: '', //品牌
-          year_id: '', //年份
-          season_id: '', //季节
-          order_time: [],
           sn: '', //订单号
-          order_source: '0', //款号，规格
-          is_return: true, //是否退货
-          is_return1: true, //是否退货
-          region: '1',
-          order_sort: 1,
+          time: [], //时间
+          ids: [],
+          year: '',
+          season: '',
+          brand: '',
+          type: '1', // 数据格式  1款号 2颜色  3颜色+尺码
+          not_stop_goods: true, //不统计停售商品
+          not_is_void: true, //不统计作废数据
+          order: 'create_time', //排序 create_time创建时间 upper_time上架时间 sn款号
+          sort: 'desc', //
         },
         formType: 5,
         listType: 1,
@@ -360,100 +395,19 @@
         let stock_id = []
         if (this.selectRows.length != 0) {
           this.selectRows.forEach((item) => {
-            stock_id.push(item.stock_id)
+            if (this.form.type == 1) {
+              stock_id.push(item.goods_id)
+            } else {
+              stock_id.push(item.stock_id)
+            }
           })
         }
-        const { code, data } = await this.api.getInventoryExport({
-          sn: this.form.sn, // 商品款号
-          brand_id: this.form.brand_id, //品牌id
-          season_id: this.form.season_id, //季节id
-          stock_id: stock_id, // 导出指定规格数据
-        })
-        const column = [
-          {
-            title: '图片',
-            type: 'image',
-            width: 100,
-            height: 100,
-            key: 'goods_img',
-          },
-          {
-            title: '款号',
-            type: 'text',
-            key: 'goods_sn',
-          },
-          {
-            title: '颜色',
-            type: 'text',
-            key: 'color_name',
-          },
-          {
-            title: '尺码',
-            type: 'text',
-            key: 'size_name',
-          },
-          {
-            title: '品牌',
-            type: 'text',
-            key: 'brand_name',
-          },
-          {
-            title: '季节',
-            type: 'text',
-            key: 'season_name',
-          },
-          {
-            title: '裁床数',
-            type: 'text',
-            key: 'cutting_num',
-          },
-          {
-            title: '入库数',
-            type: 'text',
-            key: 'inbound_num',
-          },
-          {
-            title: '入库成本',
-            type: 'text',
-            key: 'inbound_cost',
-          },
-          {
-            title: '销售数',
-            type: 'text',
-            key: 'sale_num',
-          },
-          {
-            title: '销售额',
-            type: 'text',
-            key: 'total_price',
-          },
-          {
-            title: '库存数',
-            type: 'text',
-            key: 'stock_num',
-          },
-          {
-            title: '库存成本',
-            type: 'text',
-            key: 'stock_cost',
-          },
-          {
-            title: '吊牌价',
-            type: 'text',
-            key: 'sale_price',
-          },
-          {
-            title: '成本价',
-            type: 'text',
-            key: 'cost_price',
-          },
-        ]
-        const excelData = data.list
-        const excelName = '进销存表格' //文件名称
+        let temp = JSON.parse(JSON.stringify(this.formTemp))
+        temp.ids = stock_id
+        const { code, data } = await this.api.getDeliveryStatisticsExport(temp)
         if (code == 200) {
-          table2excel(column, excelData, excelName) //生成Excel表格，自动下载
+          window.open(data.url)
           this.$message.success('导出成功')
-          this.dialogVisible = false
           this.fetchData()
         } else {
           this.$message.error('导出失败')
@@ -468,16 +422,17 @@
         this.form = {
           page: 1,
           pageSize: 10,
-          brand_id: '', //品牌
-          year_id: '', //年份
-          season_id: '', //季节
-          order_time: [],
           sn: '', //订单号
-          order_source: '0', //款号，规格
-          is_return: true, //是否退货
-          is_return1: true, //是否退货
-          region: '1',
-          order_sort: 1,
+          time: [], //时间
+          ids: [],
+          year: '',
+          season: '',
+          brand: '',
+          type: '1', // 数据格式  1款号 2颜色  3颜色+尺码
+          not_stop_goods: true, //不统计停售商品
+          not_is_void: true, //不统计作废数据
+          order: 'create_time', //排序 create_time创建时间 upper_time上架时间 sn款号
+          sort: 'desc', //
         }
       },
       // 分页
@@ -492,14 +447,14 @@
       },
       // 获取列表数据
       async fetchData() {
-        // this.listLoading = true
-        // if (this.formTemp == null) {
-        //   this.formTemp = JSON.parse(JSON.stringify(this.form))
-        // }
-        // const { data } = await this.api.getInventoryList(this.formTemp)
-        // this.list = data.list
-        // this.total = data.count
-        // this.listLoading = false
+        this.listLoading = true
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        const { data } = await this.api.getDeliveryStatisticsList(this.formTemp)
+        this.list = data.data
+        this.total = data.total
+        this.listLoading = false
       },
     },
   }

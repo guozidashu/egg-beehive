@@ -246,9 +246,9 @@
                   >
                     <div>
                       <span style="color: red">
-                        ￥{{ row.sale_price | moneyFormat }}
+                        ￥{{ row.price | moneyFormat }}
                       </span>
-                      ￥{{ row.price | moneyFormat }}
+                      ￥{{ row.cost_price | moneyFormat }}
                     </div>
                     <div>{{ row.upper_time | formatTimeData }} &nbsp; 上架</div>
                   </div>

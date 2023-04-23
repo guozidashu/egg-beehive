@@ -168,16 +168,13 @@
                 :name="'商品状态'"
               />
               <el-checkbox
-                v-model="goodsForm1.is_return"
+                v-model="goodsForm1.not_zsc"
                 style="margin-left: 5px"
               >
-                包含生产中库存
+                不含生产中库存
               </el-checkbox>
-              <el-checkbox v-model="goodsForm1.is_return1">
+              <el-checkbox v-model="goodsForm1.not_jst">
                 不含聚水潭可用库存
-              </el-checkbox>
-              <el-checkbox v-model="goodsForm1.is_return2">
-                仅看聚水潭可用库存
               </el-checkbox>
             </div>
             <div style="display: flex">
@@ -227,7 +224,7 @@
               size="small"
               style="width: 150px"
             >
-              <el-option label="按总库存排序" value="sum_num" />
+              <el-option label="按总库存排序" value="sum_stock_num" />
             </el-select>
             <el-radio-group
               v-model="goodsForm1.sort"
@@ -280,6 +277,7 @@
         :total="total"
         @changePage="changeBtnPage"
         @changePageSize="changeBtnPageSize"
+        @selectRows="handleSelectionChange"
       >
         <template #List>
           <el-table-column align="center" label="排行" type="index" width="60">
@@ -321,9 +319,17 @@
                       "
                     >
                       {{ row.sn }}
+                      <span v-if="goodsForm1.merge">
+                        && {{ row.sn + '-1' }}
+                      </span>
                     </div>
-                    <el-tag v-if="row.type == 0" type="danger">整手</el-tag>
-                    <el-tag v-if="row.type == 1" type="success">散码</el-tag>
+                    <el-tag v-if="goodsForm1.merge" type="warning">
+                      合并中
+                    </el-tag>
+                    <div v-else>
+                      <el-tag v-if="row.type == 0" type="danger">整手</el-tag>
+                      <el-tag v-if="row.type == 1" type="success">散码</el-tag>
+                    </div>
                   </div>
                   <div
                     style="
@@ -353,9 +359,9 @@
                   >
                     <div>
                       <span style="color: red">
-                        ￥{{ row.sale_price | moneyFormat }}
+                        ￥{{ row.price | moneyFormat }}
                       </span>
-                      ￥{{ row.price | moneyFormat }}
+                      ￥{{ row.cost_price | moneyFormat }}
                     </div>
                     <div>{{ row.upper_time | formatTimeData }} &nbsp; 上架</div>
                   </div>
@@ -363,35 +369,40 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="总库存" prop="cycle_days1" />
+          <el-table-column align="center" label="总库存" prop="sum_stock_num" />
+          <el-table-column
+            align="center"
+            label="自主仓库库存"
+            prop="sum_xh_num"
+          />
           <el-table-column
             align="center"
             label="聚水潭可用库存"
-            prop="cycle_days1"
+            prop="sum_jst_num"
           />
           <el-table-column
             align="center"
             label="生产中库存"
-            prop="cycle_days1"
+            prop="sum_zsc_num"
           />
           <el-table-column
             align="center"
             label="总库存成本"
-            prop="cycle_days1"
+            prop="stock_cost_price"
           />
           <el-table-column
             align="center"
-            label="现货库存成本"
-            prop="cycle_days1"
+            label="自主仓库库存成本"
+            prop="xh_stock_cost_price"
           />
           <el-table-column
             align="center"
             label="生产中库存成本"
-            prop="cycle_days1"
+            prop="zsc_stock_cost_price"
           />
-          <el-table-column align="center" label="欠货件数" prop="cycle_days1" />
-          <el-table-column align="center" label="库存占比" prop="cycle_days1" />
-          <el-table-column align="center" prop="cycle_days1">
+          <el-table-column align="center" label="欠货件数" prop="owe_num" />
+          <el-table-column align="center" label="库存占比" prop="stock_rate" />
+          <el-table-column align="center" prop="sale_day">
             <template slot="header">
               库存可售天数
               <el-popover placement="right" trigger="hover">
@@ -406,23 +417,66 @@
               </el-popover>
             </template>
           </el-table-column>
+          <el-table-column
+            align="center"
+            fixed="right"
+            label="操作"
+            width="100"
+          >
+            <template #default="{ row }">
+              <div>
+                <el-button type="text" @click="handleEdit(row)">
+                  合并同款
+                </el-button>
+              </div>
+              <div>
+                <el-button type="text" @click="handleDetailMonitor(row)">
+                  监控商品
+                </el-button>
+              </div>
+            </template>
+          </el-table-column>
         </template>
       </QYList>
+      <!-- 单款合并弹窗 -->
+      <edit
+        ref="edit"
+        :query-condition="queryCondition"
+        @fetch-data="fetchData"
+      />
+      <!-- 监控商品抽屉 -->
+      <el-drawer
+        :before-close="handleCloseMonitor"
+        size="80%"
+        :title="titleMonitor"
+        :visible.sync="drawerMonitor"
+      >
+        <MonitorGoodsDrawer :drawer-inof="drawerInofMonitor" />
+      </el-drawer>
     </div>
   </div>
 </template>
 
 <script>
+  import MonitorGoodsDrawer from '@/subview/components/Drawer/MonitorGoodsDrawer'
+  import Edit from '@/subview/components/Edit/CombinedCommodityAnalysisEdit'
   // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     name: 'GoodsStock',
+    components: { Edit, MonitorGoodsDrawer },
     mixins: [datajosn],
     data() {
       return {
+        // 监控商品抽屉 数据、状态、标题
+        drawerInofMonitor: {},
+        queryCondition: {},
+        drawerMonitor: false,
+        titleMonitor: '监控商品',
         // 卡片饼图查询条件
         time: this.getNowTime(),
         // 列表加载状态、列表组件的类型、下拉框数据、列表总数、列表数据、表单数据、页数、条数
+        selectRowsId: [],
         listLoading: false,
         listType: 1,
         selectList: [],
@@ -434,10 +488,9 @@
         goodsForm1: {
           page: 1,
           pageSize: 50,
-          order: 'sum_num',
+          order: 'sum_stock_num',
           goods_type: 1,
           sort: 'desc',
-          is_return: false,
           merge: false,
           brand: null,
           year: null,
@@ -449,6 +502,9 @@
           recommend: null,
           status: null,
           sn: null,
+          ids: [],
+          not_zsc: false,
+          not_jst: false,
         },
         // 卡片、饼图 查询条件
         goodsForm: {
@@ -620,6 +676,40 @@
     },
     mounted() {},
     methods: {
+      // 列表选中数据
+      handleSelectionChange(val) {
+        this.selectRowsId = val
+      },
+      // 列表导出
+      async handleDerive() {
+        let temp = JSON.parse(JSON.stringify(this.goodsForm1))
+        let ids = this.selectRowsId.map((item) => item.id)
+        temp.ids = ids
+        const { code, data } = await this.api.getstockRankExport(temp)
+        if (code == 200) {
+          window.open(data.url)
+          this.$message.success('导出成功')
+          this.tableData()
+        } else {
+          this.$message.error('导出失败')
+        }
+      },
+      // 监控商品抽屉打开
+      handleDetailMonitor(row) {
+        this.drawerInofMonitor = JSON.parse(JSON.stringify(row))
+        this.drawerMonitor = true
+      },
+      // 监控商品抽屉关闭
+      handleCloseMonitor() {
+        this.drawerMonitor = false
+      },
+      // 单款合并弹出
+      async handleEdit(row) {
+        this.queryCondition = JSON.parse(JSON.stringify(this.goodsForm1))
+        this.queryCondition.goods_id = row.id
+        this.queryCondition.viewType = 'stock'
+        this.$refs['edit'].showEdit(row)
+      },
       // 款式联调饼图初始化
       initCharts() {
         let option = {
@@ -681,6 +771,23 @@
         this.goodsForm1 = {
           page: 1,
           pageSize: 50,
+          order: 'sum_stock_num',
+          goods_type: 1,
+          sort: 'desc',
+          merge: false,
+          brand: null,
+          year: null,
+          season: null,
+          band: null,
+          category: null,
+          type: null,
+          price: null,
+          recommend: null,
+          status: null,
+          sn: null,
+          ids: [],
+          not_zsc: false,
+          not_jst: false,
         }
       },
       // 分页
@@ -714,6 +821,9 @@
         this.listLoading = true
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.goodsForm1))
+        }
+        if (this.formTemp.merge) {
+          this.formTemp.goods_type = 1
         }
         const { data } = await this.api.getStockRank(this.formTemp)
         this.list = data.data

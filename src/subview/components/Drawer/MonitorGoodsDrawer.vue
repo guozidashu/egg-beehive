@@ -89,8 +89,22 @@
               |
             </span>
           </div>
-          <el-tag effect="plain" style="margin-top: 15px; margin-left: 100px">
+          <el-tag
+            v-if="form.monitor_status == 0"
+            effect="plain"
+            style="margin-top: 15px; margin-left: 100px"
+            @click="Monitor(1)"
+          >
             监控商品
+          </el-tag>
+          <el-tag
+            v-if="form.monitor_status == 1"
+            effect="plain"
+            style="margin-top: 15px; margin-left: 100px"
+            type="danger"
+            @click="Monitor(2)"
+          >
+            取消监控
           </el-tag>
         </div>
       </div>
@@ -98,7 +112,7 @@
     <div style="display: flex; border-top: 20px solid #f6f8f9">
       <!-- 菜单 -->
       <el-menu
-        class="el-menu-vertical-demo"
+        class="el-menu-vertical-demo menu_qy"
         default-active="1-1"
         style="width: 200px"
         @select="handleSelect"
@@ -108,7 +122,7 @@
             <vab-icon icon="shopping-bag-2-line" style="padding: 0 5px" />
             <span>商品概况</span>
           </template>
-          <el-menu-item-group>
+          <el-menu-item-group class="menu_group">
             <el-menu-item index="1-1">基础分析</el-menu-item>
             <el-menu-item index="1-2">SKU分析</el-menu-item>
             <el-menu-item index="1-3">属性分析</el-menu-item>
@@ -158,6 +172,43 @@
     },
     data() {
       return {
+        menuList: [
+          {
+            name: '商品概况',
+            type: 1,
+            checked: false,
+            child: [
+              {
+                name: '基础分析',
+                type: 1,
+              },
+              {
+                name: 'SKU分析',
+                type: 1,
+              },
+              {
+                name: '属性分析',
+                type: 1,
+              },
+            ],
+          },
+          {
+            name: '竞争分析',
+            type: 1,
+            checked: false,
+          },
+          {
+            name: '直播分析',
+            type: 1,
+            checked: false,
+          },
+          {
+            name: '作品分析',
+            type: 1,
+            checked: false,
+          },
+        ],
+        type: false,
         menu_select: '1-1',
         // 商品数据
         form: {},
@@ -216,6 +267,67 @@
     },
     created() {},
     methods: {
+      // 监控商品
+      async Monitor(type) {
+        console.log(this.drawerInof.id)
+        if (type == 1) {
+          const { code } = await this.api.editMonitorAdd({
+            look_type: 2, // 监控类型 1=客户 2=商品
+            look_id: this.drawerInof.id, // 客户id或者商品id
+          })
+          if (code == 200) {
+            this.$baseMessage('监控成功', 'success', 'vab-hey-message-success')
+            this.getGoodsDetails()
+          }
+        } else if (type == 2) {
+          const { code } = await this.api.delCancellation({
+            look_type: 2, // 监控类型 1=客户 2=商品
+            look_id: this.drawerInof.id, // 客户id或者商品id
+          })
+          if (code == 200) {
+            this.$baseMessage(
+              '取消监控成功',
+              'success',
+              'vab-hey-message-success'
+            )
+            this.getGoodsDetails()
+          }
+        }
+      },
+      // 鼠标移入
+      handleEnter(item, index) {
+        this.menuList.forEach((item, dex) => {
+          if (dex == index) {
+            if (item.type != 3) {
+              item.type = 2
+            }
+          } else {
+            if (item.type != 3) {
+              item.type = 1
+            }
+          }
+        })
+      },
+      // 鼠标移出
+      handleLeave(item, index) {
+        this.menuList.forEach((item, dex) => {
+          if (item.type != 3) {
+            item.type = 1
+          }
+        })
+      },
+      handleClick(item, index) {
+        console.log(this.menuList[index].child)
+        if (this.menuList[index].child == undefined) {
+          this.menuList.forEach((item, dex) => {
+            if (dex == index) {
+              item.type = 3
+            } else {
+              item.type = 1
+            }
+          })
+        }
+      },
       // 菜单切换
       handleSelect(key) {
         this.menu_select = key
@@ -259,5 +371,35 @@
 <style lang="scss" scoped>
   .img_checked {
     border: 1px solid #465a7c;
+  }
+  .menu_css {
+    padding: 10px;
+    text-align: center;
+  }
+  .menu_active_css {
+    padding: 10px;
+    color: white;
+    text-align: center;
+    background-color: #4582fe;
+    border-radius: 0 50px 50px 0;
+  }
+  .menu_mouseenter_css {
+    padding: 10px;
+    color: #4582fe;
+    text-align: center;
+    background-color: #e8f4ff;
+  }
+  .menu_group .el-menu-item.is-active {
+    padding: 0 0 0 40px !important;
+    color: white !important;
+    background-color: #4582fe !important;
+    border-radius: 0 50px 50px 0 !important;
+  }
+  //一定要添加！important提高优先级
+  .el-menu-item.is-active {
+    padding: 0 0 0 20px !important;
+    color: white !important;
+    background-color: #4582fe !important;
+    border-radius: 0 50px 50px 0 !important;
   }
 </style>

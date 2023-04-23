@@ -15,6 +15,7 @@
       :warehouse-list="WarehouseList"
       :warehouse-position-list="WarehousePositionList"
       :zhekou-list="zhekouList"
+      @Monitor="Monitor"
       @changeType="changeType"
       @changeTypeBtn="changeTypeBtn"
       @handleClick="handleClick"
@@ -420,6 +421,34 @@
       // 上传触发
       handleShow() {
         this.$refs['vabUpload'].handleShow()
+      },
+      // 监控商品
+      async Monitor(id, type) {
+        if (type == 1) {
+          const { code } = await this.api.editMonitorAdd({
+            look_type: 2, // 监控类型 1=客户 2=商品
+            look_id: id, // 客户id或者商品id
+          })
+          if (code == 200) {
+            this.$baseMessage('监控成功', 'success', 'vab-hey-message-success')
+            this.getGoodsAllDetail()
+            this.getGoodsDetail()
+          }
+        } else if (type == 2) {
+          const { code } = await this.api.delCancellation({
+            look_type: 2, // 监控类型 1=客户 2=商品
+            look_id: id, // 客户id或者商品id
+          })
+          if (code == 200) {
+            this.$baseMessage(
+              '取消监控成功',
+              'success',
+              'vab-hey-message-success'
+            )
+            this.getGoodsAllDetail()
+            this.getGoodsDetail()
+          }
+        }
       },
       // tab 切换
       async handleClick(tab) {

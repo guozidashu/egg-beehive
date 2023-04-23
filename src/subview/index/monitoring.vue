@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="display: flex; border-top: 20px solid #f6f8f9">
+    <!-- <div style="display: flex; border-top: 20px solid #f6f8f9">
       <el-menu
         class="el-menu-vertical-demo"
         default-active="1"
@@ -53,20 +53,28 @@
           <span slot="title">我的关注</span>
         </el-menu-item>
       </el-menu>
-      <div style="width: 100%; border-left: 20px solid #f6f8f9">
-        <Goods v-if="menu_select == '1'" />
-        <Inventory v-if="menu_select == '2'" />
-        <Customer v-if="menu_select == '3'" />
-      </div>
+      
+    </div> -->
+    <div style="padding: 20px">
+      <el-tabs v-model="menu_select" type="card">
+        <el-tab-pane label="商品" name="1" />
+        <!-- <el-tab-pane label="库存" name="2" /> -->
+        <el-tab-pane label="客户" name="3" />
+      </el-tabs>
+    </div>
+    <div style="width: 100%">
+      <Goods v-if="menu_select == '1'" />
+      <!-- <Inventory v-if="menu_select == '2'" /> -->
+      <Customer v-if="menu_select == '3'" />
     </div>
   </div>
 </template>
 <script>
   import Goods from '@/subview/components/MonitoringComponents/goods'
-  import Inventory from '@/subview/components/MonitoringComponents/inventory'
+  // import Inventory from '@/subview/components/MonitoringComponents/inventory'
   import Customer from '@/subview/components/MonitoringComponents/customer'
   export default {
-    components: { Goods, Inventory, Customer },
+    components: { Goods, Customer },
     data() {
       return {
         menu_select: '1',

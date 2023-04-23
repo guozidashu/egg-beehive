@@ -320,6 +320,16 @@
                   <el-dropdown-item>
                     <el-button type="text">等级</el-button>
                   </el-dropdown-item>
+                  <el-dropdown-item v-if="row.monitor_status == 0">
+                    <el-button type="text" @click="Monitor(row.id, 1)">
+                      监控客户
+                    </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item v-if="row.monitor_status == 1">
+                    <el-button type="text" @click="Monitor(row.id, 2)">
+                      取消监控
+                    </el-button>
+                  </el-dropdown-item>
                   <!-- <el-dropdown-item>
                     <el-button type="text">授信额度</el-button>
                   </el-dropdown-item> -->
@@ -637,6 +647,32 @@
       this.fetchData()
     },
     methods: {
+      // 监控客户
+      async Monitor(id, type) {
+        if (type == 1) {
+          const { code } = await this.api.editMonitorAdd({
+            look_type: 1, // 监控类型 1=客户 2=商品
+            look_id: id, // 客户id或者商品id
+          })
+          if (code == 200) {
+            this.$baseMessage('监控成功', 'success', 'vab-hey-message-success')
+            this.fetchData()
+          }
+        } else if (type == 2) {
+          const { code } = await this.api.delCancellation({
+            look_type: 1, // 监控类型 1=客户 2=商品
+            look_id: id, // 客户id或者商品id
+          })
+          if (code == 200) {
+            this.$baseMessage(
+              '取消监控成功',
+              'success',
+              'vab-hey-message-success'
+            )
+            this.fetchData()
+          }
+        }
+      },
       // 合同上传 上传地址
       getAction() {
         return baseURL + '/common/uploadPic'

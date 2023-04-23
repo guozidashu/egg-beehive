@@ -4,19 +4,27 @@
     <div style="padding: 20px; border-bottom: 20px solid #f6f8f9">
       <div style="display: flex; justify-content: space-between">
         <div style="font-size: 20px; font-weight: 600">库存概览</div>
-        <div style="">库存监控中心</div>
+        <div style="display: flex">
+          <el-image
+            src="https://oss.business.quanyu123.com//3fccb3d8cb3261a3e71895cd811a5798.png"
+            style="width: 30px; height: 24px"
+          />
+          <div
+            style="
+              right: -20px;
+              padding: 3px 10px 0 10px;
+              font-weight: 600;
+              color: white;
+              background: -webkit-linear-gradient(left, #748fd1, #b5c1e5);
+            "
+          >
+            库存监控中心
+          </div>
+        </div>
       </div>
-      <div style="margin: 20px 0">
-        我监控的商品 &nbsp; 12 &nbsp; 团队监控的商品 &nbsp; 61/100&nbsp;
-        <el-button type="text">分组管理</el-button>
-      </div>
+      <div style="margin: 20px 0">我监控的商品</div>
       <div style="display: flex; justify-content: space-between">
         <div>
-          <QYPopover
-            v-model="form.brand1"
-            :list="selectList.brand1"
-            :name="'我的监控'"
-          />
           <QYPopover
             v-model="form.category"
             :list="selectList.category"

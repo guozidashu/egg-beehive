@@ -1248,6 +1248,21 @@ export function getInformationOrderList(data) {
   })
 }
 // 数据 - 库存统计
+// 库存统计 - 单款合并
+export function getGoodsMergeStock(data) {
+  return request({
+    url: '/goods/mergeStock',
+    method: 'post',
+    data,
+  })
+}
+export function getstockRankExport(data) {
+  return request({
+    url: '/goods/stockRankExport',
+    method: 'post',
+    data,
+  })
+}
 // 库存统计 - 头部卡片
 export function getStockStatistics(data) {
   return request({
@@ -1694,6 +1709,31 @@ export function delCorporateAccountDel(data) {
   })
 }
 // 档案模块接口
+// 档案-轮播管理
+// 轮播管理 - 删除
+export function delBannerDel(data) {
+  return request({
+    url: '/admin/bannerDel',
+    method: 'post',
+    data,
+  })
+}
+// 轮播管理 - 新增编辑
+export function addBannerSave(data) {
+  return request({
+    url: '/admin/bannerSave',
+    method: 'post',
+    data,
+  })
+}
+// 轮播管理 - 列表
+export function getBannerList(data) {
+  return request({
+    url: '/admin/bannerList',
+    method: 'post',
+    data,
+  })
+}
 // 档案-品牌管理
 // 品牌管理 - 删除
 export function delBrandDel(data) {
@@ -2942,6 +2982,42 @@ export function getMonitorCooperateCustomerHead(data) {
 export function getMonitorCooperateCustomerList(data) {
   return request({
     url: '/monitorGoods/cooperateCustomerList',
+    method: 'post',
+    data,
+  })
+}
+// 监控
+// 添加客户商品监控
+export function editMonitorAdd(data) {
+  return request({
+    url: '/monitor/add',
+    method: 'post',
+    data,
+  })
+}
+// 取消客户商品监控
+export function delCancellation(data) {
+  return request({
+    url: '/monitor/cancellation',
+    method: 'post',
+    data,
+  })
+}
+// 获取监控商品列表
+
+export function getMonitorGoodsList(data) {
+  return request({
+    url: '/monitorGoods/list',
+    method: 'post',
+    data,
+  })
+}
+
+// 获取监控商品列表
+
+export function getMonitorCustomerList(data) {
+  return request({
+    url: '/monitorCustomer/list',
     method: 'post',
     data,
   })

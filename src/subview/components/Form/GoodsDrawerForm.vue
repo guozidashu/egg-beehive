@@ -46,11 +46,23 @@
       >
         <div style="font-size: 12px">收藏商品，有价值的进行补偿</div>
         <el-tag
+          v-if="goodsDetails.monitor_status == 0"
           slot="reference"
           effect="plain"
           style="margin-top: 5px; margin-right: 5px"
+          @click="Monitor(1)"
         >
           监控商品
+        </el-tag>
+        <el-tag
+          v-if="goodsDetails.monitor_status == 1"
+          slot="reference"
+          effect="plain"
+          style="margin-top: 5px; margin-right: 5px"
+          type="danger"
+          @click="Monitor(2)"
+        >
+          取消监控
         </el-tag>
       </el-popover>
       <el-button
@@ -723,6 +735,9 @@
       },
       handleClick(tab) {
         this.$emit('handleClick', tab)
+      },
+      Monitor(type) {
+        this.$emit('Monitor', this.goodsDetails.id, type)
       },
     },
   }

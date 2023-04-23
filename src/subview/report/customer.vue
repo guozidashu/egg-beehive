@@ -339,8 +339,14 @@
               align="center"
               label="拿货次数"
               prop="sale_count"
+              width="80"
             />
-            <el-table-column align="center" label="拿货件数" prop="sale_num" />
+            <el-table-column
+              align="center"
+              label="拿货件数"
+              prop="sale_num"
+              width="100"
+            />
             <el-table-column
               align="center"
               label="拿货金额"
@@ -398,11 +404,13 @@
               align="center"
               label="动销商品数"
               prop="goods_style_num"
+              width="100"
             />
             <el-table-column
               align="center"
               label="销售额占比"
               prop="final_rate"
+              width="100"
             >
               <template #default="{ row }">{{ row.final_rate }}%</template>
             </el-table-column>
@@ -422,9 +430,28 @@
                 <el-button type="text" @click="handleDetail(row)">
                   客户分析
                 </el-button>
-                <!-- <el-button type="text" @click="handleDetail(row)">
-                  监控客户
-                </el-button> -->
+                &nbsp;
+                <el-dropdown>
+                  <el-button class="el-dropdown-link" type="text">
+                    <span>更多</span>
+                    <vab-icon
+                      class="vab-dropdown-active"
+                      icon="arrow-up-s-line"
+                    />
+                  </el-button>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item v-if="row.monitor_status == 0">
+                      <el-button type="text" @click="Monitor(row.id, 1)">
+                        监控客户
+                      </el-button>
+                    </el-dropdown-item>
+                    <el-dropdown-item v-if="row.monitor_status == 1">
+                      <el-button type="text" @click="Monitor(row.id, 2)">
+                        取消监控
+                      </el-button>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
               </template>
             </el-table-column>
           </template>
@@ -688,6 +715,32 @@
       this.getTableList()
     },
     methods: {
+      // 监控客户
+      async Monitor(id, type) {
+        if (type == 1) {
+          const { code } = await this.api.editMonitorAdd({
+            look_type: 1, // 监控类型 1=客户 2=商品
+            look_id: id, // 客户id或者商品id
+          })
+          if (code == 200) {
+            this.$baseMessage('监控成功', 'success', 'vab-hey-message-success')
+            this.getTableList()
+          }
+        } else if (type == 2) {
+          const { code } = await this.api.delCancellation({
+            look_type: 1, // 监控类型 1=客户 2=商品
+            look_id: id, // 客户id或者商品id
+          })
+          if (code == 200) {
+            this.$baseMessage(
+              '取消监控成功',
+              'success',
+              'vab-hey-message-success'
+            )
+            this.getTableList()
+          }
+        }
+      },
       // 分页
       changeBtnPage(data) {
         this.pageState = true
@@ -823,11 +876,10 @@
         this.textTagList[0].num = data.add_customer
         this.textTagList[0].allNum = data.all_customer
         this.textTagList[0].oldNum = data.previous_period
-        this.textTagList[0].number =
-          (
-            (data.add_customer - data.previous_period) /
-            data.previous_period
-          ).toFixed(2) * 100
+        this.textTagList[0].number = (
+          ((data.add_customer - data.previous_period) / data.previous_period) *
+          100
+        ).toFixed(2)
         this.textTagList[1].num = data.sale_customer
         this.textTagList[1].number = data.sale_customer_proportion
         this.textTagList[1].allNum = data.all_customer

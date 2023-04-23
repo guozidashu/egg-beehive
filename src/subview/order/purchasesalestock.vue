@@ -551,7 +551,7 @@
           ':' +
           second
         // 拼接文件名称
-        const excelName = '进销存统计' + time
+        const excelName = '进销存统计-' + time
         if (code == 200) {
           if (this.form.type == 1) {
             table2excel(columnSn, excelData, excelName) //生成Excel表格，自动下载

@@ -379,9 +379,9 @@
                   >
                     <div>
                       <span style="color: red">
-                        ￥{{ row.sale_price | moneyFormat }}
+                        ￥{{ row.price | moneyFormat }}
                       </span>
-                      ￥{{ row.price | moneyFormat }}
+                      ￥{{ row.cost_price | moneyFormat }}
                     </div>
                     <div>{{ row.upper_time | formatTimeData }} &nbsp; 上架</div>
                   </div>
@@ -395,17 +395,29 @@
             prop="count_customer"
           />
           <el-table-column align="center" label="本期销量" prop="sum_num" />
-          <el-table-column align="center" label="本期销售额" prop="sum_total" />
-          <el-table-column
-            align="center"
-            label="平均售价"
-            prop="average_price"
-          />
+          <el-table-column align="center" label="本期销售额" prop="sum_total">
+            <template #default="{ row }">
+              <el-tag>￥{{ row.sum_total | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="平均售价" prop="average_price">
+            <template #default="{ row }">
+              <el-tag>￥{{ row.average_price | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column align="center" label="销售占比" prop="final_rate">
             <template #default="{ row }">{{ row.final_rate }}%</template>
           </el-table-column>
-          <el-table-column align="center" label="成本金额" prop="cost_total" />
-          <el-table-column align="center" label="商品毛利" prop="sum_profit" />
+          <el-table-column align="center" label="成本金额" prop="cost_total">
+            <template #default="{ row }">
+              <el-tag>￥{{ row.cost_total | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="商品毛利" prop="sum_profit">
+            <template #default="{ row }">
+              <el-tag>￥{{ row.sum_profit | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             fixed="right"
@@ -659,6 +671,17 @@
       }
     },
     watch: {
+      '$route.query': {
+        handler: async function (newval) {
+          if (newval.id) {
+            console.log(111110211, newval)
+            this.goodsForm1.id = newval.id
+            console.log(1111, this.goosList)
+          }
+        },
+        deep: true,
+        immediate: true,
+      },
       // 监听折线图,卡片查询条件
       goodsForm: {
         handler: function () {
@@ -741,6 +764,8 @@
       // 单款合并弹出
       async handleEdit(row) {
         this.queryCondition = JSON.parse(JSON.stringify(this.goodsForm1))
+        this.queryCondition.goods_id = row.id
+        this.queryCondition.viewType = 'goods'
         this.$refs['edit'].showEdit(row)
       },
       // 单品分析
@@ -753,6 +778,7 @@
       // 监控商品抽屉打开
       handleDetailMonitor(row) {
         this.drawerInofMonitor = JSON.parse(JSON.stringify(row))
+        console.log('111=111', this.drawerInofMonitor, row)
         this.drawerMonitor = true
       },
       // 折线图卡片 查询条件重置
@@ -889,7 +915,14 @@
           this.formTemp = JSON.parse(JSON.stringify(this.goodsForm1))
         }
         let temp = JSON.parse(JSON.stringify(this.formTemp))
+        if (this.formTemp.merge) {
+          this.formTemp.goods_type = 1
+        }
+        console.log('temp', temp)
         const { data } = await this.api.getGoodsRank(temp)
+        if (temp.id) {
+          this.handleDetailMonitor(data.data[0])
+        }
         this.goosList = data.data
         this.total = data.total
         this.listLoading = false

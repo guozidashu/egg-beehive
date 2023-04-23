@@ -616,6 +616,15 @@ export const asyncRoutes = [
         },
       },
       {
+        path: 'archivesBanner',
+        name: 'ArchivesBanner',
+        component: () => import('@/subview/archives/banner'),
+        meta: {
+          title: '轮播管理',
+          icon: 'file-settings-line',
+        },
+      },
+      {
         path: 'archivesYear',
         name: 'ArchivesYear',
         component: () => import('@/subview/archives/year'),
@@ -805,14 +814,14 @@ export const asyncRoutes = [
               title: '微信小程序',
             },
           },
-          // {
-          //   path: 'platformvideo',
-          //   name: 'PlatformVideo',
-          //   component: () => import('@/subview/setting/platform/video'),
-          //   meta: {
-          //     title: '视频号矩阵',
-          //   },
-          // },
+          {
+            path: 'platformvideo',
+            name: 'PlatformVideo',
+            component: () => import('@/subview/setting/platform/video'),
+            meta: {
+              title: '视频号矩阵',
+            },
+          },
           {
             path: 'platformzfbxiao',
             name: 'PlatformZfbxiao',

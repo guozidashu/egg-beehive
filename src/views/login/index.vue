@@ -5,87 +5,162 @@
         <div style="color: transparent; opacity: 0">占位符</div>
       </el-col>
       <el-col :lg="9" :md="12" :sm="24" :xl="9" :xs="24">
-        <el-form
-          ref="form"
-          class="login-form"
-          label-position="left"
-          :model="form"
-          :rules="rules"
-        >
+        <div class="login-form">
           <div class="title">hello !</div>
           <div class="title-tips">
             {{ appName }}数字中台 · 好生意随时掌握 · Manage Account
           </div>
-          <el-form-item prop="username" style="margin-top: 40px">
-            <el-input
-              v-model.trim="form.username"
-              v-focus
-              :placeholder="translateTitle('请输入用户名')"
-              tabindex="1"
-              type="text"
+          <el-button-group>
+            <el-button
+              :plain="!loginType"
+              type="primary"
+              @click="loginType = !loginType"
             >
-              <template #prefix>
-                <vab-icon icon="user-line" />
-              </template>
-            </el-input>
-          </el-form-item>
-          <el-form-item prop="password">
-            <el-input
-              :key="passwordType"
-              ref="password"
-              v-model.trim="form.password"
-              :placeholder="translateTitle('请输入密码')"
-              tabindex="2"
-              :type="passwordType"
-              @keyup.enter.native="handleLogin"
+              账号登录
+            </el-button>
+            <el-button
+              :plain="loginType"
+              type="primary"
+              @click="loginType = !loginType"
             >
-              <template #prefix>
-                <vab-icon icon="lock-line" />
-              </template>
-              <template v-if="passwordType === 'password'" #suffix>
-                <vab-icon
-                  class="show-password"
-                  icon="eye-off-line"
-                  @click="handlePassword"
-                />
-              </template>
-              <template v-else #suffix>
-                <vab-icon
-                  class="show-password"
-                  icon="eye-line"
-                  @click="handlePassword"
-                />
-              </template>
-            </el-input>
-          </el-form-item>
-          <!-- 验证码验证逻辑需自行开发，如不需要验证码功能建议注释 -->
-          <el-form-item prop="verify">
-            <el-input
-              v-model.trim="form.verify"
-              :placeholder="translateTitle('验证码') + previewText"
-              tabindex="3"
-              type="text"
-            >
-              <template #prefix>
-                <vab-icon icon="barcode-box-line" />
-              </template>
-            </el-input>
-            <el-image class="code" :src="codeUrl" @click="changeCode">
-              <div slot="error" class="el-image__error">暂无图片</div>
-            </el-image>
-          </el-form-item>
-          <el-button
-            class="login-btn"
-            :loading="loading"
-            type="primary"
-            @click="handleLogin()"
+              手机号登录
+            </el-button>
+          </el-button-group>
+          <el-form
+            v-if="loginType"
+            key="Account"
+            ref="form"
+            label-position="left"
+            :model="form"
+            :rules="rules"
           >
-            {{ translateTitle('登录') }}
-          </el-button>
-          <!-- <router-link to="/register">
-            <div style="margin-top: 20px">{{ translateTitle('注册') }}</div>
-          </router-link> -->
-        </el-form>
+            <el-form-item prop="username">
+              <el-input
+                v-model.trim="form.username"
+                v-focus
+                :placeholder="translateTitle('请输入用户名')"
+                tabindex="1"
+                type="text"
+              >
+                <template #prefix>
+                  <vab-icon icon="user-line" />
+                </template>
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+              <el-input
+                :key="passwordType"
+                ref="password"
+                v-model.trim="form.password"
+                :placeholder="translateTitle('请输入密码')"
+                tabindex="2"
+                :type="passwordType"
+                @keyup.enter.native="handleLogin"
+              >
+                <template #prefix>
+                  <vab-icon icon="lock-line" />
+                </template>
+                <template v-if="passwordType === 'password'" #suffix>
+                  <vab-icon
+                    class="show-password"
+                    icon="eye-off-line"
+                    @click="handlePassword"
+                  />
+                </template>
+                <template v-else #suffix>
+                  <vab-icon
+                    class="show-password"
+                    icon="eye-line"
+                    @click="handlePassword"
+                  />
+                </template>
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="verify">
+              <el-input
+                v-model.trim="form.verify"
+                :placeholder="translateTitle('验证码') + previewText"
+                tabindex="3"
+                type="text"
+              >
+                <template #prefix>
+                  <vab-icon icon="barcode-box-line" />
+                </template>
+              </el-input>
+              <el-image class="code" :src="codeUrl" @click="changeCode">
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
+            </el-form-item>
+            <div></div>
+            <el-button
+              class="login-btn"
+              :loading="loading"
+              type="primary"
+              @click="handleLogin()"
+            >
+              {{ translateTitle('登录') }}
+            </el-button>
+          </el-form>
+          <el-form
+            v-else
+            key="Phone"
+            ref="form_phone"
+            label-position="left"
+            :model="form_phone"
+            :rules="rules_phone"
+          >
+            <el-form-item prop="verify">
+              <el-input
+                v-model="form_phone.verify"
+                placeholder="请输入图片验证码"
+                tabindex="3"
+                type="text"
+              >
+                <template #prefix>
+                  <vab-icon icon="barcode-box-line" />
+                </template>
+              </el-input>
+              <el-image class="code" :src="codeUrl" @click="changeCode">
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
+            </el-form-item>
+            <el-form-item prop="phone">
+              <el-input
+                v-model="form_phone.phone"
+                placeholder="请输入手机号"
+                @input="form_phone.phone = $numFormatInput(form_phone.phone)"
+              />
+            </el-form-item>
+            <el-form-item prop="code">
+              <el-input v-model="form_phone.code" placeholder="请输入验证码">
+                <el-button
+                  v-if="sending"
+                  slot="append"
+                  style="
+                    position: relative;
+                    right: -3px;
+                    padding: 18px;
+                    background-color: #1890ff;
+                  "
+                  @click="getCode"
+                >
+                  获取验证码
+                </el-button>
+                <el-button v-else slot="append" :disabled="disabled">
+                  {{ second }}秒后获取
+                </el-button>
+              </el-input>
+            </el-form-item>
+            <el-button
+              class="login-btn"
+              :loading="loading"
+              type="primary"
+              @click="handleLoginPhone()"
+            >
+              {{ translateTitle('登录') }}
+            </el-button>
+          </el-form>
+        </div>
         <div style="font-size: 12px; color: whitesmoke">
           <div style="margin-bottom: 10px; text-align: center">
             版权所有 © 杭州圈域数字科技有限公司
@@ -144,7 +219,44 @@
         else callback()
       }
       return {
+        sending: true, //是否发送验证码
+        disabled: false, //是否禁发验证码
+        second: 59, //倒计时间
+        loginType: true,
         appName: GlobalConfig.appName,
+        form_phone: {
+          phone: '',
+          verify: '',
+          code: '',
+        },
+        rules_phone: {
+          phone: [
+            {
+              required: true,
+              trigger: 'blur',
+              message: '手机号不能空',
+            },
+            {
+              pattern: /^1[3456789]\d{9}$/,
+              trigger: 'blur',
+              message: '手机号格式不正确',
+            },
+          ],
+          verify: [
+            {
+              required: true,
+              trigger: 'blur',
+              message: '验证码不能空',
+            },
+          ],
+          code: [
+            {
+              required: true,
+              trigger: 'blur',
+              message: '短信验证码不能空',
+            },
+          ],
+        },
         form: {
           username: '',
           password: '',
@@ -243,6 +355,48 @@
               this.loading = false
             }
         })
+      },
+      handleLoginPhone() {
+        this.$refs.form_phone.validate(async (valid) => {
+          if (valid)
+            try {
+              this.loading = true
+              await this.login(this.form).catch(() => {})
+              await this.$router.push(this.handleRoute())
+              this.$event.$emit('watermark', true)
+            } finally {
+              this.loading = false
+            }
+        })
+      },
+      getCode() {
+        if (this.form_phone.verify == '') {
+          this.$message.error('请输入验证码')
+          return
+        }
+        if (this.form_phone.phone == '') {
+          this.$message.error('请输入手机号')
+          return
+        }
+        if (!/^1[3456789]\d{9}$/.test(this.form_phone.phone)) {
+          this.$message.error('手机号格式不正确')
+          return
+        }
+        this.sending = false
+        this.disabled = true
+        this.timeDown()
+      },
+      //倒计时
+      timeDown() {
+        let result = setInterval(() => {
+          --this.second
+          if (this.second < 0) {
+            clearInterval(result)
+            this.sending = true
+            this.disabled = false
+            this.second = 59
+          }
+        }, 1000)
       },
       changeCode() {
         this.getVerifyImg()

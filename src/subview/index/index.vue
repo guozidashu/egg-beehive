@@ -4,7 +4,7 @@
     <el-row :gutter="20">
       <el-col :span="18">
         <div style="background-color: white; border-radius: 5px">
-          <el-carousel height="225px" trigger="click">
+          <el-carousel height="270px" trigger="click">
             <el-carousel-item
               v-for="item in 4"
               :key="item"
@@ -21,7 +21,7 @@
       <el-col :span="6">
         <div style="background-color: white; border-radius: 5px">
           <div
-            style="display: flex; justify-content: space-between; padding: 10px"
+            style="display: flex; justify-content: space-between; padding: 20px"
           >
             <div style="position: relative; display: flex">
               <el-image
@@ -42,7 +42,13 @@
               </el-button>
             </div>
           </div>
-          <div style="display: flex; padding: 10px 20px; text-align: center">
+          <div
+            style="
+              display: flex;
+              padding: 10px 20px 20px 20px;
+              text-align: center;
+            "
+          >
             <div style="width: 33%; background-color: #fafafa">
               <div class="plug_icon">
                 <div style="margin-left: 20px; background-color: #ffffff">
@@ -65,7 +71,9 @@
               </div>
             </div>
           </div>
-          <div style="display: flex; padding: 0 20px; text-align: center">
+          <div
+            style="display: flex; padding: 0 20px 20px 20px; text-align: center"
+          >
             <div
               style="position: relative; width: 33%; background-color: #f7f8fa"
             >
@@ -314,85 +322,13 @@
               <div style="padding: 20px 0 0 20px">那个客户回款慢</div>
             </div>
           </div>
-        </el-col>
-        <el-col :span="6">
           <div
-            style="padding: 20px; background-color: white; border-radius: 5px"
-          >
-            <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                padding-bottom: 20px;
-              "
-            >
-              <div style="font-size: 14px">爆款分析</div>
-              <div style="font-size: 12px">更多</div>
-            </div>
-            <div style="display: flex; margin-top: 20px">
-              <el-image
-                src="https://img.wechatboss.com/FgSPgakMOZN7FUVKV8HnKlw1-SKe"
-                style="width: 60px; height: 60px"
-              >
-                <div slot="error" class="el-image__error">暂无图片</div>
-              </el-image>
-              <el-card
-                class="box-card"
-                shadow="never"
-                style="width: 80%; margin-bottom: 0; margin-left: 10px"
-              >
-                <div
-                  style="
-                    margin-bottom: 10px;
-                    overflow: hidden;
-                    font-weight: 600;
-                    text-align: left;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                  "
-                >
-                  向阳花两穿法式连衣裙女童田园风裙向阳花两穿法式连衣裙女童田园风裙向阳花两穿法式连衣裙女童田园风裙
-                </div>
-                <div style="font-size: 12px">销量:2982件2023-03-30上架28天</div>
-              </el-card>
-            </div>
-            <div style="display: flex; margin-top: 20px">
-              <el-image
-                src="https://img.wechatboss.com/FgSPgakMOZN7FUVKV8HnKlw1-SKe"
-                style="width: 60px; height: 60px"
-              >
-                <div slot="error" class="el-image__error">暂无图片</div>
-              </el-image>
-              <el-card
-                class="box-card"
-                shadow="never"
-                style="width: 80%; margin-bottom: 0; margin-left: 10px"
-              >
-                <div
-                  style="
-                    margin-bottom: 10px;
-                    overflow: hidden;
-                    font-weight: 600;
-                    text-align: left;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                  "
-                >
-                  向阳花两穿法式连衣裙女童田园风裙向阳花两穿法式连衣裙女童田园风裙向阳花两穿法式连衣裙女童田园风裙
-                </div>
-                <div style="font-size: 12px">销量:2982件2023-03-30上架28天</div>
-              </el-card>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
-    <!-- 监控推荐和更新公告 -->
-    <div style="margin-top: 20px; background-color: #f6f8f9">
-      <el-row :gutter="20">
-        <el-col :span="18">
-          <div
-            style="padding: 20px; background-color: white; border-radius: 5px"
+            style="
+              padding: 20px;
+              margin-top: 20px;
+              background-color: white;
+              border-radius: 5px;
+            "
           >
             <div style="display: flex; justify-content: space-between">
               <div style="font-size: 14px">推荐监控</div>
@@ -424,6 +360,65 @@
               </div>
             </div>
           </div>
+        </el-col>
+        <el-col :span="6">
+          <div
+            style="
+              padding: 20px 20px 30px 20px;
+              background-color: white;
+              border-radius: 5px;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                padding-bottom: 20px;
+              "
+            >
+              <div style="font-size: 14px">监控分析</div>
+              <div style="font-size: 12px">更多</div>
+            </div>
+            <div
+              v-for="o in 5"
+              :key="o"
+              style="display: flex; margin-top: 20px"
+            >
+              <el-image
+                src="https://img.wechatboss.com/FgSPgakMOZN7FUVKV8HnKlw1-SKe"
+                style="width: 60px; height: 60px"
+              >
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
+              <el-card
+                class="box-card"
+                shadow="never"
+                style="width: 80%; margin-bottom: 0; margin-left: 10px"
+              >
+                <div
+                  style="
+                    margin-bottom: 10px;
+                    overflow: hidden;
+                    font-weight: 600;
+                    text-align: left;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                  "
+                >
+                  向阳花两穿法式连衣裙女童田园风裙向阳花两穿法式连衣裙女童田园风裙向阳花两穿法式连衣裙女童田园风裙
+                </div>
+                <div style="font-size: 12px">销量:2982件2023-03-30上架28天</div>
+              </el-card>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+    <!-- 监控推荐和更新公告 -->
+    <!-- <div style="margin-top: 20px; background-color: #f6f8f9">
+      <el-row :gutter="20">
+        <el-col :span="18">
+        
         </el-col>
         <el-col :span="6">
           <div
@@ -485,7 +480,7 @@
           </div>
         </el-col>
       </el-row>
-    </div>
+    </div> -->
     <!--热销、飙升 -->
     <div style="margin-top: 20px; background-color: #f6f8f9">
       <el-row :gutter="20">

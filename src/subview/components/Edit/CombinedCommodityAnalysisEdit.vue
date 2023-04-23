@@ -224,7 +224,6 @@
             is_show: [],
           },
         ],
-        id: '',
         query: JSON.parse(JSON.stringify(this.queryCondition)),
       }
     },
@@ -232,7 +231,11 @@
       queryCondition: {
         handler: function (newVal) {
           this.query = JSON.parse(JSON.stringify(newVal))
-          this.getList()
+          if (this.query.viewType == 'goods') {
+            this.getGoodsList()
+          } else {
+            this.getStockList()
+          }
         },
         deep: true,
       },
@@ -245,33 +248,20 @@
       },
       async showEdit(row) {
         this.dialogFormVisible = true
-        this.id = row.id
       },
       close() {
         this.dialogFormVisible = false
       },
-      async getList() {
+      async getGoodsList() {
         this.listLoading = true
-        const { data } = await this.api.getMergeStock({
-          goods_id: this.id, //商品id
-          goods_type: this.query.goods_type,
-          time: this.query.time,
-          year: this.query.year,
-          type: this.query.type,
-          brand: this.query.brand,
-          band: this.query.band,
-          sn: this.query.sn,
-          order: this.query.order,
-          season: this.query.season,
-          category: this.query.category,
-          gender: this.query.gender,
-          agegroup: this.query.agegroup,
-          recommend: this.query.recommend,
-          price: this.query.price,
-          status: this.query.status,
-          sort: this.query.sort,
-          is_return: this.query.is_return,
-        })
+        const { data } = await this.api.getMergeStock(this.query)
+        this.tableData = data.goods_list
+        this.form = data.all_info
+        this.listLoading = false
+      },
+      async getStockList() {
+        this.listLoading = true
+        const { data } = await this.api.getGoodsMergeStock(this.query)
         this.tableData = data.goods_list
         this.form = data.all_info
         this.listLoading = false

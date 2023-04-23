@@ -34,14 +34,45 @@
       width="500px"
       @close="close"
     >
-      <el-form ref="form" label-width="80px" :model="form" :rules="rules">
+      <el-form ref="form" label-width="100px" :model="form" :rules="rules">
+        <el-form-item label="验证码" prop="verify" style="position: relative">
+          <el-input
+            v-model="form.verify"
+            placeholder="请输入图片验证码"
+            tabindex="3"
+            type="text"
+          >
+            <template slot="append">
+              <el-image :src="codeUrl" style="width: 100px" @click="changeCode">
+                <div slot="error" class="el-image__error">暂无图片</div>
+              </el-image>
+            </template>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="手机号" prop="phone">
+          <el-input
+            v-model="form.phone"
+            placeholder="请输入手机号"
+            @input="form.phone = $numFormatInput(form.phone)"
+          />
+        </el-form-item>
+        <el-form-item label="短信验证码" prop="code">
+          <el-input v-model="form.code" placeholder="请输入验证码">
+            <el-button v-if="sending" slot="append" @click="getCode">
+              获取验证码
+            </el-button>
+            <el-button v-else slot="append" :disabled="disabled">
+              {{ second }}秒后获取
+            </el-button>
+          </el-input>
+        </el-form-item>
         <el-form-item label="账户" prop="account">
           <el-input v-model="form.account" disabled />
         </el-form-item>
         <!-- <el-form-item label="密码" prop="password">
           <el-input v-model="form.password" />
         </el-form-item> -->
-        <el-form-item label="密码" prop="password">
+        <el-form-item label="新密码" prop="password">
           <el-input
             :key="passwordType"
             ref="password"
@@ -111,11 +142,15 @@
   import { translateTitle } from '@/utils/i18n'
   import { mapActions, mapGetters } from 'vuex'
   import { toLoginRoute } from '@/utils/routes'
-
+  import { getVerify } from '@/api/user'
   export default {
     name: 'VabAvatar',
     data() {
       return {
+        codeUrl: '',
+        sending: true, //是否发送验证码
+        disabled: false, //是否禁发验证码
+        second: 59, //倒计时间
         active: false,
         changePasswordVisible: false,
         passwordType: 'password',
@@ -124,6 +159,9 @@
           account: this.username,
           password: '',
           password1: '',
+          phone: '',
+          verify: '',
+          code: '',
         },
         rules: {
           account: [{ required: true, message: '请输入账户', trigger: 'blur' }],
@@ -132,6 +170,32 @@
           ],
           password1: [
             { required: true, message: '请输入确认密码', trigger: 'blur' },
+          ],
+          phone: [
+            {
+              required: true,
+              trigger: 'blur',
+              message: '手机号不能空',
+            },
+            {
+              pattern: /^1[3456789]\d{9}$/,
+              trigger: 'blur',
+              message: '手机号格式不正确',
+            },
+          ],
+          verify: [
+            {
+              required: true,
+              trigger: 'blur',
+              message: '验证码不能空',
+            },
+          ],
+          code: [
+            {
+              required: true,
+              trigger: 'blur',
+              message: '短信验证码不能空',
+            },
           ],
         },
         title: '',
@@ -157,6 +221,43 @@
       ...mapActions({
         _logout: 'user/logout',
       }),
+      //倒计时
+      timeDown() {
+        let result = setInterval(() => {
+          --this.second
+          if (this.second < 0) {
+            clearInterval(result)
+            this.sending = true
+            this.disabled = false
+            this.second = 59
+          }
+        }, 1000)
+      },
+      getVerifyImg() {
+        getVerify().then((res) => {
+          this.codeUrl = window.URL.createObjectURL(res)
+        })
+      },
+      changeCode() {
+        this.getVerifyImg()
+      },
+      getCode() {
+        if (this.form.verify == '') {
+          this.$message.error('请输入验证码')
+          return
+        }
+        if (this.form.phone == '') {
+          this.$message.error('请输入手机号')
+          return
+        }
+        if (!/^1[3456789]\d{9}$/.test(this.form.phone)) {
+          this.$message.error('手机号格式不正确')
+          return
+        }
+        this.sending = false
+        this.disabled = true
+        this.timeDown()
+      },
       handleCommand(command) {
         switch (command) {
           case 'logout':
@@ -193,6 +294,7 @@
         this.$router.push('/setting/personal')
       },
       changePassword() {
+        this.getVerifyImg()
         this.changePasswordVisible = true
       },
       close() {

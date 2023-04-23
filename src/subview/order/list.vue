@@ -434,6 +434,10 @@
       async handleDerive() {
         let temp = JSON.parse(JSON.stringify(this.form))
         let ids = this.selectRowsId.map((item) => item.id)
+        if (ids.length == 0) {
+          this.$message.error('请选择要导出的数据')
+          return
+        }
         temp.ids = ids
         const { code, data } = await this.api.getOrderListExport(temp)
         if (code == 200) {
