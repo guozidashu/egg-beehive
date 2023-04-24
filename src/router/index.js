@@ -758,7 +758,6 @@ export const asyncRoutes = [
             component: () => import('@/subview/setting/system/coderule'),
             meta: {
               title: '编码规则',
-              // icon: 'home-2-line',
             },
           },
           {
@@ -767,7 +766,6 @@ export const asyncRoutes = [
             component: () => import('@/subview/setting/system/presell'),
             meta: {
               title: '预售设置',
-              // icon: 'home-2-line',
             },
           },
           {
@@ -776,7 +774,6 @@ export const asyncRoutes = [
             component: () => import('@/subview/setting/system/module'),
             meta: {
               title: '模块配置',
-              // icon: 'home-2-line',
             },
           },
           {
@@ -785,7 +782,14 @@ export const asyncRoutes = [
             component: () => import('@/subview/setting/system/interface'),
             meta: {
               title: '开放接口',
-              // icon: 'home-2-line',
+            },
+          },
+          {
+            path: 'systemMessage',
+            name: 'SystemMessage',
+            component: () => import('@/subview/setting/system/message'),
+            meta: {
+              title: '短信设置',
             },
           },
         ],

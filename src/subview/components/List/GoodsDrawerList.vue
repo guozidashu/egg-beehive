@@ -210,7 +210,118 @@
         />
       </template>
     </QYList>
-    <QYList
+    <div v-if="tabindex == '6'">
+      <el-table
+        ref="expandstable"
+        v-loading="state"
+        border
+        :data="list"
+        :expand-row-keys="expands"
+        :row-key="getRowKeys"
+        style="width: 100%"
+      >
+        <el-table-column type="expand" width="1">
+          <template slot-scope="props">
+            <el-table :data="props.row.detail" style="width: 100%">
+              <el-table-column label="颜色" prop="color_name" />
+              <el-table-column label="尺码" prop="size_name" />
+              <el-table-column
+                align="center"
+                label="调整变动后"
+                prop="tnum"
+                show-overflow-tooltip
+              />
+              <el-table-column
+                align="center"
+                label="变动前"
+                prop="fnum"
+                show-overflow-tooltip
+              />
+              <el-table-column
+                align="center"
+                label="变动值"
+                prop="num"
+                show-overflow-tooltip
+              />
+            </el-table>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          label="动作"
+          prop="remark"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="center"
+          label="调整变动后"
+          prop="tnum"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="center"
+          label="变动前"
+          prop="fnum"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="center"
+          label="变动值"
+          prop="num"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="center"
+          label="操作人"
+          prop="name"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="center"
+          label="创建时间"
+          prop="ctime"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          align="center"
+          fixed="right"
+          label="操作"
+          prop="unit"
+          width="100"
+        >
+          <template slot-scope="scope">
+            <el-button
+              class="fs-16"
+              size="medium"
+              type="text"
+              @click="expandsHandle(scope.row)"
+            >
+              更多
+              <i class="el-icon-arrow-down el-icon--right fs-20"></i>
+            </el-button>
+          </template>
+        </el-table-column>
+        <template #empty>
+          <el-image
+            class="vab-data-empty"
+            :src="require('@/assets/empty_images/data_empty.png')"
+          />
+        </template>
+      </el-table>
+      <!-- 分页 -->
+      <el-pagination
+        background
+        :current-page="page"
+        layout="total, sizes, prev, pager,next,jumper"
+        :page-size="pageSize"
+        :page-sizes="[10, 20, 50, 100]"
+        :total="total"
+        @current-change="changePage"
+        @size-change="changePageSize"
+      />
+    </div>
+
+    <!-- <QYList
       v-if="tabindex == '6'"
       :list="list"
       :list-type="listType"
@@ -254,7 +365,7 @@
           show-overflow-tooltip
         />
       </template>
-    </QYList>
+    </QYList> -->
     <QYList
       v-if="tabindex == '7'"
       :list="list"
@@ -391,12 +502,26 @@
         default: 10,
       },
     },
+    data() {
+      return {
+        //设置row-key只展示一行
+        expands: [], //只展开一行放入当前行id
+        getRowKeys: (row) => {
+          //获取当前行id
+          return row.id //这里看这一行中需要根据哪个属性值是id
+        },
+      }
+    },
     methods: {
       changePage(val) {
         this.$emit('changePage', val)
       },
       changePageSize(val) {
         this.$emit('changePageSize', val)
+      },
+      // 款号欠货明细表格展开
+      async expandsHandle(row) {
+        this.$refs.expandstable.toggleRowExpansion(row)
       },
     },
   }

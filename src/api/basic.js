@@ -2505,6 +2505,22 @@ export function getErpInfo(data) {
     data,
   })
 }
+// 设置 - 系统设置 -短信设置-获取
+export function getSmsInfo(data) {
+  return request({
+    url: '/setting/smsInfo',
+    method: 'post',
+    data,
+  })
+}
+// 设置 - 系统设置 -短信设置-保存
+export function editSmsInfoSave(data) {
+  return request({
+    url: '/setting/smsInfoSave',
+    method: 'post',
+    data,
+  })
+}
 // 设置 - 系统设置 -开放接口
 // 开放接口 - 微店测试是否成功
 export function testVdianConfig(data) {
@@ -3018,6 +3034,71 @@ export function getMonitorGoodsList(data) {
 export function getMonitorCustomerList(data) {
   return request({
     url: '/monitorCustomer/list',
+    method: 'post',
+    data,
+  })
+}
+// 新首页
+// 新首页-客户拿货排行
+export function getHomeCustomerSaleRank(data) {
+  return request({
+    url: '/homeNew/customerSaleRank',
+    method: 'post',
+    data,
+  })
+}
+// 新首页-热销品牌
+export function getHomeBrandHotRank(data) {
+  return request({
+    url: '/homeNew/brandHotRank',
+    method: 'post',
+    data,
+  })
+}
+// 新首页-热销商品
+export function getHomeGoodsHotRank(data) {
+  return request({
+    url: '/homeNew/goodsHotRank',
+    method: 'post',
+    data,
+  })
+}
+// 新首页-轮播图
+export function getHomeBannerList(data) {
+  return request({
+    url: '/homeNew/bannerList',
+    method: 'post',
+    data,
+  })
+}
+// 新首页-推荐监控客户
+export function getHomeRecommendMonitorCustomer(data) {
+  return request({
+    url: '/homeNew/recommendMonitorCustomer',
+    method: 'post',
+    data,
+  })
+}
+// 新首页-监控商品
+export function getHomeMonitorGoodsAnalysis(data) {
+  return request({
+    url: '/homeNew/monitorGoodsAnalysis',
+    method: 'post',
+    data,
+  })
+}
+// 新首页-获取监控数据
+export function getHomeMonitorStatistics(data) {
+  return request({
+    url: '/homeNew/monitorStatistics',
+    method: 'post',
+    data,
+  })
+}
+// 新首页-商品飙升
+export function getHomeGoodsSoarRank(data) {
+  return request({
+    url: '/homeNew/goodsSoarRank',
     method: 'post',
     data,
   })

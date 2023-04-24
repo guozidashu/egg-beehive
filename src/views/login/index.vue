@@ -369,6 +369,7 @@
             }
         })
       },
+      // 获取短信验证码
       getCode() {
         if (this.form_phone.verify == '') {
           this.$message.error('请输入验证码')

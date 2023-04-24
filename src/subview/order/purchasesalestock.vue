@@ -176,7 +176,7 @@
                         white-space: nowrap;
                       "
                     >
-                      商品名称
+                      {{ row.goods_name }}
                     </div>
                   </div>
 
@@ -392,6 +392,11 @@
             title: '生产入库',
             type: 'text',
             key: 'sum_inbound_num',
+          },
+          {
+            title: '生产退货',
+            type: 'text',
+            key: 'sum_out_num',
           },
           {
             title: '销售发货',

@@ -269,7 +269,6 @@
     methods: {
       // 监控商品
       async Monitor(type) {
-        console.log(this.drawerInof.id)
         if (type == 1) {
           const { code } = await this.api.editMonitorAdd({
             look_type: 2, // 监控类型 1=客户 2=商品
@@ -292,40 +291,6 @@
             )
             this.getGoodsDetails()
           }
-        }
-      },
-      // 鼠标移入
-      handleEnter(item, index) {
-        this.menuList.forEach((item, dex) => {
-          if (dex == index) {
-            if (item.type != 3) {
-              item.type = 2
-            }
-          } else {
-            if (item.type != 3) {
-              item.type = 1
-            }
-          }
-        })
-      },
-      // 鼠标移出
-      handleLeave(item, index) {
-        this.menuList.forEach((item, dex) => {
-          if (item.type != 3) {
-            item.type = 1
-          }
-        })
-      },
-      handleClick(item, index) {
-        console.log(this.menuList[index].child)
-        if (this.menuList[index].child == undefined) {
-          this.menuList.forEach((item, dex) => {
-            if (dex == index) {
-              item.type = 3
-            } else {
-              item.type = 1
-            }
-          })
         }
       },
       // 菜单切换

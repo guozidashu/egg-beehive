@@ -281,76 +281,20 @@
         </div>
       </el-card>
     </div>
-    <el-dialog
-      center
-      class="Customerservice"
-      style="border-radius: 25px"
-      :visible.sync="centerDialogVisible"
-      width="450px"
-    >
-      <div
-        style="
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding: 0 20px 20px 20px;
-        "
-      >
-        <div
-          style="padding: 20px 0; font-size: 20px; font-weight: 600; color: red"
-        >
-          在线客服
-        </div>
-        <div
-          style="
-            width: 100%;
-            padding: 20px 0;
-            font-size: 16px;
-            text-align: center;
-            border-top: 1px solid #efefef;
-            border-bottom: 1px solid #efefef;
-          "
-        >
-          你的私人顾问：老何
-        </div>
-        <div style="padding: 10px 0 0 0">
-          <div style="padding: 10px 0 0 0; font-size: 16px; text-align: center">
-            <vab-icon
-              icon="wechat-line"
-              style="font-size: 20px; color: #4daf29"
-            />
-            微信咨询
-          </div>
-          <el-image
-            src="https://oss.business.quanyu123.com//dee133c54041034454ca94d27b301a2f.png"
-            style="width: 200px; height: 200px"
-          />
-        </div>
-        <div
-          style="
-            width: 100%;
-            padding: 20px 0;
-            font-size: 14px;
-            text-align: center;
-            border-top: 1px solid #efefef;
-            border-bottom: 1px solid #efefef;
-          "
-        >
-          服务热线 &nbsp;&nbsp;
-          <span style="font-size: 20px; font-weight: 600; color: red">
-            191-0655-9871
-          </span>
-        </div>
-      </div>
-    </el-dialog>
+    <CustomerService
+      :center-dialog-visible="centerDialogVisible"
+      @close="close"
+    />
   </div>
 </template>
 
 <script>
   // 静态页面不做处理
+  import CustomerService from '@/subview/components/Edit/CustomerService'
   import { mapGetters } from 'vuex'
   export default {
     name: 'Account',
+    components: { CustomerService },
     data() {
       return {
         centerDialogVisible: false,
@@ -493,6 +437,10 @@
       this.fetchData()
     },
     methods: {
+      // 关闭弹窗
+      close() {
+        this.centerDialogVisible = false
+      },
       handleChange() {},
       async fetchData() {
         const { data } = await this.api.getAccountDetail()

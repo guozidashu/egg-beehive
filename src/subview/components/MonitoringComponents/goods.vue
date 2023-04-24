@@ -190,6 +190,16 @@
             </div>
           </template>
         </el-table-column>
+        <el-table-column align="center" label="排名变化" prop="goods_price">
+          <template #default="{ row }">
+            <div>
+              <el-tag type="success">本期：{{ row.current_rank }}</el-tag>
+            </div>
+            <div style="margin-top: 10px">
+              <el-tag>上期：{{ row.last_rank }}</el-tag>
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="总销量" prop="sale_num" />
         <el-table-column align="center" label="总销售额" prop="sale_amount">
           <template #default="{ row }">
@@ -293,11 +303,12 @@
           this.getList()
         },
         deep: true,
+        // 初次加载
+        immediate: true,
       },
     },
     created() {
       this.getTypeList()
-      this.getList()
     },
     methods: {
       // 列表详情跳转商品分析
@@ -385,7 +396,7 @@
       },
       async getList() {
         this.state = true
-        const { data } = await this.api.getMonitorGoodsList(this.form)
+        const { data } = await this.api.getMonitorGoodsList(this.formTemp)
         this.tableData = data.list
         this.total = data.total
         this.state = false

@@ -80,7 +80,17 @@
         menu_select: '1',
       }
     },
-    watch: {},
+    watch: {
+      '$route.query': {
+        handler: async function (newval) {
+          if (newval.type) {
+            this.menu_select = '3'
+          }
+        },
+        deep: true,
+        immediate: true,
+      },
+    },
     created() {},
     methods: {
       // 菜单切换

@@ -35,6 +35,11 @@
             :list="selectList.customer_type"
             :name="'客户类型'"
           />
+          <QYPopover
+            v-model="form.sex"
+            :list="selectList.gender"
+            :name="'客户性别'"
+          />
         </div>
       </div>
     </div>
@@ -159,8 +164,12 @@
         </el-table-column>
         <el-table-column align="center" label="排名变化" prop="goods_price">
           <template #default="{ row }">
-            <el-tag>上期：{{ row.last_rank }}</el-tag>
-            <el-tag>本期：{{ row.current_rank }}</el-tag>
+            <div>
+              <el-tag type="success">本期：{{ row.current_rank }}</el-tag>
+            </div>
+            <div style="margin-top: 10px">
+              <el-tag>上期：{{ row.last_rank }}</el-tag>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
@@ -213,6 +222,7 @@
           keyword: null,
           type_id: null, // 类型id
           level_id: null, // 等级id
+          sex: null, // 性别
           start_date: this.getPastTime(30)[0],
           end_date: this.getPastTime(30)[1],
           sort_field: {
@@ -240,11 +250,12 @@
           this.getList()
         },
         deep: true,
+        // 初次加载
+        immediate: true,
       },
     },
     created() {
       this.getTypeList()
-      this.getList()
     },
     methods: {
       // 监控客户
@@ -270,6 +281,7 @@
           keyword: null,
           type_id: null, // 类型id
           level_id: null, // 等级id
+          sex: null, // 性别
           start_date: this.getPastTime(30)[0],
           end_date: this.getPastTime(30)[1],
           sort_field: {
@@ -284,6 +296,20 @@
           type: 'customer_type,customer_grade',
         })
         this.selectList = data
+        this.selectList.gender = [
+          {
+            id: 1,
+            name: '男',
+          },
+          {
+            id: 2,
+            name: '女',
+          },
+          {
+            id: 3,
+            name: '中',
+          },
+        ]
       },
       handleCurrentChange(val) {
         this.form.page = val
@@ -293,7 +319,7 @@
       },
       async getList() {
         this.state = true
-        const { data } = await this.api.getMonitorCustomerList(this.form)
+        const { data } = await this.api.getMonitorCustomerList(this.formTemp)
         this.tableData = data.list
         this.total = data.total
         this.state = false

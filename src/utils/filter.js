@@ -22,6 +22,34 @@ export function permissionFiltering(path, role) {
   })
   return temp
 }
+// 金额转换 万元
+Vue.filter('ConversionAmount', (value) => {
+  // 金额分割符
+  const separator = ','
+  // 金额小数点
+  const decimal = '.'
+  // 金额小数点位数
+  const decimalDigits = 2
+  // 金额正则
+  const moneyReg = new RegExp(
+    `\\d(?=(\\d{3})+${decimalDigits > 0 ? '\\D' : '$'})`,
+    'g'
+  )
+  // 金额格式化
+  const moneyFormat = (value) => {
+    value = Math.abs(value)
+    value = value.toFixed(decimalDigits)
+    value = value.replace(moneyReg, `$&${separator}`)
+    value = value.replace('.', decimal)
+    return value
+  }
+  // 金额格式化
+  // value 如果金额 大于 10000 则转换为 万元并且保留两位小数，都保持金额格式，三位分割
+  if (value >= 10000) {
+    return moneyFormat((value / 10000).toFixed(2)) + '万元'
+  }
+  return moneyFormat(value) + '元'
+})
 // 输入框正整数格式化
 export function numFormatInput(value) {
   let temp = value

@@ -4,15 +4,17 @@
     <el-row :gutter="20">
       <el-col :span="18">
         <div style="background-color: white; border-radius: 5px">
-          <el-carousel height="270px" trigger="click">
+          <el-carousel height="255px" trigger="click">
             <el-carousel-item
-              v-for="item in 4"
-              :key="item"
+              v-for="(item, index) in banner_list"
+              :key="index"
               style="border-radius: 5px"
             >
-              <img
-                src="https://img.wechatboss.com/FgSPgakMOZN7FUVKV8HnKlw1-SKe"
+              <el-image
+                fit="fill"
+                :src="item.banner_img"
                 style="width: 100%; height: 100%"
+                @click="externalLink(item.banner_url)"
               />
             </el-carousel-item>
           </el-carousel>
@@ -21,52 +23,63 @@
       <el-col :span="6">
         <div style="background-color: white; border-radius: 5px">
           <div
-            style="display: flex; justify-content: space-between; padding: 20px"
+            style="
+              position: relative;
+              display: flex;
+              justify-content: space-between;
+              padding: 20px 20px 15px 20px;
+            "
           >
-            <div style="position: relative; display: flex">
+            <div style="">
               <el-image
                 src="https://oss.business.quanyu123.com//c2b5246e50fdad5fb062a060e869a31e.png"
+                style="position: absolute; top: 10px; left: -3px"
               >
                 <div slot="error" class="el-image__error">暂无图片</div>
               </el-image>
-              <div style="position: absolute; top: 3px; left: 3px">至尊版</div>
-              <div style="margin: 5px 10px 5px 10px">杭州洛一服饰有限公司</div>
-            </div>
-            <div style="display: flex">
-              <div style="margin-top: 9px; margin-right: 10px; font-size: 12px">
-                481天后到期
+              <div style="position: absolute; top: 15px; left: 3px">至尊版</div>
+              <div
+                style="
+                  position: relative;
+                  display: flex;
+                  justify-content: space-between;
+                  width: 100%;
+                  margin: 10px 0 0 50px;
+                "
+              >
+                <div style="margin-top: -12px">杭州洛一服饰有限公司</div>
+                <div
+                  style="
+                    position: absolute;
+                    right: -100px;
+                    margin-top: -9px;
+                    font-size: 12px;
+                    color: #2795fa;
+                  "
+                  @click="centerDialogVisible = true"
+                >
+                  续费/升级
+                  <i class="el-icon-arrow-right"></i>
+                </div>
               </div>
-              <el-button style="padding: 2px 0 0 0" type="text">
-                咨询
-                <i class="el-icon-arrow-right"></i>
-              </el-button>
             </div>
           </div>
+          <!-- 右侧插件 -->
           <div
             style="
               display: flex;
-              padding: 10px 20px 20px 20px;
+              padding: 20px 20px 20px 20px;
               text-align: center;
             "
           >
-            <div style="width: 33%; background-color: #fafafa">
-              <div class="plug_icon">
+            <div
+              v-for="(item, index) in right_side_plug"
+              :key="index"
+              style="width: 33%; background-color: #fafafa"
+            >
+              <div :class="item.css_name">
                 <div style="margin-left: 20px; background-color: #ffffff">
-                  采集插件
-                </div>
-              </div>
-            </div>
-            <div style="width: 33%; background-color: #fafafa">
-              <div class="plug_icon">
-                <div style="margin-left: 20px; background-color: #ffffff">
-                  智能分析
-                </div>
-              </div>
-            </div>
-            <div style="width: 33%; background-color: #fafafa">
-              <div class="plug_icon">
-                <div style="margin-left: 20px; background-color: #ffffff">
-                  报表工具
+                  {{ item.name }}
                 </div>
               </div>
             </div>
@@ -78,7 +91,7 @@
               style="position: relative; width: 33%; background-color: #f7f8fa"
             >
               <div style="padding-top: 10px; font-size: 18px; font-weight: 600">
-                17
+                {{ monitor_statistics.goods_monitor_count }}
               </div>
               <div style="padding: 10px 0; font-size: 12px; color: gray">
                 监控商品
@@ -93,7 +106,7 @@
               style="position: relative; width: 33%; background-color: #f7f8fa"
             >
               <div style="padding-top: 10px; font-size: 18px; font-weight: 600">
-                1
+                {{ monitor_statistics.customer_monitor_count }}
               </div>
               <div style="padding: 10px 0; font-size: 12px; color: gray">
                 监控客户
@@ -105,76 +118,34 @@
               </span>
             </div>
             <div style="width: 33%; background-color: #f7f8fa">
-              <el-button style="padding: 0; margin-top: 25px" type="text">
+              <el-button
+                style="padding: 0; margin-top: 25px"
+                type="text"
+                @click="jump('monitoring')"
+              >
                 监控中心
                 <i class="el-icon-arrow-right"></i>
               </el-button>
             </div>
           </div>
-          <div
-            style="
-              display: flex;
-              padding: 10px 20px 20px 20px;
-              text-align: center;
-            "
-          >
-            <div
-              style="
-                width: 25%;
-                padding: 20px 10px 10px 10px;
-                font-size: 12px;
-                font-weight: 900;
-                color: #626fc5;
-                background: #f1f5ff;
-                border-radius: 5px;
-              "
-            >
-              供应链
-            </div>
-            <div
-              style="
-                width: 25%;
-                padding: 20px 10px 10px 10px;
-                margin-left: 10px;
-                font-size: 12px;
-                font-weight: 900;
-                color: #626fc5;
-                background: #f1f5ff;
-                border-radius: 5px;
-              "
-            >
-              研发协同
-            </div>
-            <div
-              style="
-                width: 25%;
-                padding: 20px 10px 10px 10px;
-                margin-left: 10px;
-                font-size: 12px;
-                font-weight: 900;
-                color: #626fc5;
-                background: #f1f5ff;
-                border-radius: 5px;
-              "
-            >
-              私域商城
-            </div>
-            <div
-              style="
-                width: 25%;
-                padding: 20px 10px 10px 10px;
-                margin-right: 5px;
-                margin-left: 10px;
-                font-size: 12px;
-                font-weight: 900;
-                color: #626fc5;
-                background: #f1f5ff;
-                border-radius: 5px;
-              "
-            >
-              生产跟单
-            </div>
-          </div>
+          <!-- 右侧应用 -->
+          <el-row :gutter="10" style="padding: 0 20px 20px 20px">
+            <el-col v-for="(item, index) in right_app" :key="index" :span="6">
+              <div
+                style="
+                  padding: 20px 10px 10px 10px;
+                  font-size: 12px;
+                  font-weight: 900;
+                  color: #626fc5;
+                  text-align: center;
+                  background: #f1f5ff;
+                  border-radius: 5px;
+                "
+              >
+                {{ item.name }}
+              </div>
+            </el-col>
+          </el-row>
         </div>
       </el-col>
     </el-row>
@@ -182,146 +153,51 @@
     <div style="margin-top: 20px; background-color: #f6f8f9">
       <el-row :gutter="20">
         <el-col :span="18">
-          <div
-            style="display: flex; padding: 15px 20px; background-color: white"
-          >
-            <div style="width: 25%; margin-right: 20px">
-              <div
-                style="
-                  display: flex;
-                  padding: 20px;
-                  color: #7e575f;
-                  background-color: #eff3ff;
-                  border-radius: 5px;
-                "
+          <!-- 跳转区域 -->
+          <div style="padding: 15px 20px; background-color: white">
+            <el-row :gutter="20">
+              <el-col
+                v-for="(item, index) in jump_region_list"
+                :key="index"
+                :span="6"
               >
-                <el-image
-                  src="https://oss.business.quanyu123.com//938da43042397e244a2a78dba1828491.png"
-                  style="width: 20px; height: 20px"
+                <div
+                  :style="{
+                    display: 'flex',
+                    padding: '20px',
+                    color: '#7e575f',
+                    backgroundColor: item.background,
+                    borderRadius: '5px',
+                  }"
                 >
-                  <div slot="error" class="el-image__error">暂无图片</div>
-                </el-image>
-                <div style="margin-top: 2px; margin-left: 10px">
-                  商品库
-                  <i class="el-icon-arrow-right"></i>
+                  <el-image
+                    :src="item.title_img"
+                    style="width: 20px; height: 20px"
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                  <div
+                    style="margin-top: 2px; margin-left: 10px"
+                    @click="jump(item.url)"
+                  >
+                    {{ item.title }}
+                    <i class="el-icon-arrow-right"></i>
+                  </div>
                 </div>
-              </div>
-              <div style="padding: 20px 0 0 20px; font-size: 14px">
-                今日热销商品
-                <el-tag size="mini" type="warning">推荐</el-tag>
-              </div>
-              <div style="padding: 20px 0 0 20px; font-size: 14px">
-                商城热销商品
-              </div>
-              <div style="padding: 20px 0 0 20px; font-size: 14px">
-                热销飙升商品
-              </div>
-              <div style="padding: 20px 0 0 20px">
-                新品智测
-                <el-tag size="mini" type="danger">NEW</el-tag>
-              </div>
-            </div>
-            <div style="width: 25%; margin-right: 20px">
-              <div
-                style="
-                  display: flex;
-                  padding: 20px;
-                  color: #7e575f;
-                  background-color: #e8f5fb;
-                  border-radius: 5px;
-                "
-              >
-                <el-image
-                  src="https://oss.business.quanyu123.com//74651669d06777e0a5886faaa37efd56.png"
-                  style="width: 20px; height: 20px"
+                <div
+                  v-for="(item1, index1) in item.child"
+                  :key="index1"
+                  style="padding: 20px 0 0 20px; font-size: 14px"
                 >
-                  <div slot="error" class="el-image__error">暂无图片</div>
-                </el-image>
-                <div style="margin-top: 2px; margin-left: 10px">
-                  客户库
-                  <i class="el-icon-arrow-right"></i>
+                  {{ item1.name }}
+                  <el-tag v-if="item1.tags" size="mini" :type="item1.tags_type">
+                    {{ item1.tags }}
+                  </el-tag>
                 </div>
-              </div>
-              <div style="padding: 20px 0 0 20px; font-size: 14px">
-                今日拿货最多
-                <el-tag size="mini" type="danger">HOT</el-tag>
-              </div>
-              <div style="padding: 20px 0 0 20px; font-size: 14px">
-                拿货客户排行
-              </div>
-              <div style="padding: 20px 0 0 20px; font-size: 14px">
-                拿货飙升客户
-              </div>
-              <div style="padding: 20px 0 0 20px">
-                高价值优质客户
-                <el-tag size="mini" type="warning">推荐</el-tag>
-              </div>
-            </div>
-            <div style="width: 25%; margin-right: 20px">
-              <div
-                style="
-                  display: flex;
-                  padding: 20px;
-                  color: #7e575f;
-                  background-color: #e4f7f5;
-                  border-radius: 5px;
-                "
-              >
-                <el-image
-                  src="https://oss.business.quanyu123.com//e3a1bb70414e9d40984fd3fa75919020.png"
-                  style="width: 20px; height: 20px"
-                >
-                  <div slot="error" class="el-image__error">暂无图片</div>
-                </el-image>
-                <div style="margin-top: 2px; margin-left: 10px">
-                  去发货
-                  <i class="el-icon-arrow-right"></i>
-                </div>
-              </div>
-              <div style="padding: 20px 0 0 20px; font-size: 14px">
-                客户发货列表
-              </div>
-              <div style="padding: 20px 0 0 20px; font-size: 14px">
-                商品发货汇总分析
-              </div>
-              <div style="padding: 20px 0 0 20px; font-size: 14px">
-                退货数据分析
-              </div>
-              <div style="padding: 20px 0 0 20px">进销存数据分析</div>
-            </div>
-            <div style="width: 25%">
-              <div
-                style="
-                  display: flex;
-                  padding: 20px;
-                  color: #7e575f;
-                  background-color: #eef7e5;
-                  border-radius: 5px;
-                "
-              >
-                <el-image
-                  src="https://oss.business.quanyu123.com//21378edba2b54fa5e0479d60ba62bdc3.png"
-                  style="width: 20px; height: 20px"
-                >
-                  <div slot="error" class="el-image__error">暂无图片</div>
-                </el-image>
-                <div style="margin-top: 2px; margin-left: 10px">
-                  看回款
-                  <i class="el-icon-arrow-right"></i>
-                </div>
-              </div>
-              <div style="padding: 20px 0 0 20px; font-size: 14px">
-                那个客户回款多
-              </div>
-              <div style="padding: 20px 0 0 20px; font-size: 14px">
-                那个客户欠款多
-              </div>
-              <div style="padding: 20px 0 0 20px; font-size: 14px">
-                那个客户回款快
-              </div>
-              <div style="padding: 20px 0 0 20px">那个客户回款慢</div>
-            </div>
+              </el-col>
+            </el-row>
           </div>
+          <!-- 监控客户 -->
           <div
             style="
               padding: 20px;
@@ -331,36 +207,39 @@
             "
           >
             <div style="display: flex; justify-content: space-between">
-              <div style="font-size: 14px">推荐监控</div>
-              <div style="font-size: 12px">
-                换一批
-                <i class="el-icon-refresh-right"></i>
+              <div style="font-size: 14px">监控客户分析</div>
+              <div
+                style="font-size: 12px"
+                @click="jump('monitoring', 'customer')"
+              >
+                更多
               </div>
             </div>
             <div style="display: flex; flex-wrap: wrap">
               <div
-                v-for="o in 6"
-                :key="o"
+                v-for="(item, index) in recommended_monitoring_customer"
+                :key="index"
                 style="display: flex; width: 33%; margin-top: 28px"
               >
                 <el-image
-                  src="https://oss.business.quanyu123.com//a6668ea487c0c3fc2c6bdf0b50a79ce2.jpg"
+                  :src="item.customer_avatar"
                   style="width: 60px; height: 60px; border-radius: 50%"
                 >
                   <div slot="error" class="el-image__error">暂无图片</div>
                 </el-image>
                 <div style="padding: 10px; margin-left: 10px">
                   <div style="margin-bottom: 10px; font-weight: 600">
-                    广州&nbsp;|&nbsp;赖玉珍
+                    {{ item.customer_name }}
                   </div>
                   <div style="font-size: 12px; color: #1890ff">
-                    近三天拿货金额第一名
+                    近三天拿货金额第{{ index + 1 }}名
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </el-col>
+        <!-- 监控商品 -->
         <el-col :span="6">
           <div
             style="
@@ -376,18 +255,17 @@
                 padding-bottom: 20px;
               "
             >
-              <div style="font-size: 14px">监控分析</div>
-              <div style="font-size: 12px">更多</div>
+              <div style="font-size: 14px">监控商品分析</div>
+              <div style="font-size: 12px" @click="jump('monitoring')">
+                更多
+              </div>
             </div>
             <div
-              v-for="o in 5"
-              :key="o"
+              v-for="(item, index) in monitor_goods"
+              :key="index"
               style="display: flex; margin-top: 20px"
             >
-              <el-image
-                src="https://img.wechatboss.com/FgSPgakMOZN7FUVKV8HnKlw1-SKe"
-                style="width: 60px; height: 60px"
-              >
+              <el-image :src="item.goods_img" style="width: 60px; height: 60px">
                 <div slot="error" class="el-image__error">暂无图片</div>
               </el-image>
               <el-card
@@ -405,119 +283,39 @@
                     white-space: nowrap;
                   "
                 >
-                  向阳花两穿法式连衣裙女童田园风裙向阳花两穿法式连衣裙女童田园风裙向阳花两穿法式连衣裙女童田园风裙
+                  {{ item.goods_name }}
                 </div>
-                <div style="font-size: 12px">销量:2982件2023-03-30上架28天</div>
+                <div style="font-size: 12px">
+                  销量: {{ item.sale_num }} 件 &nbsp;{{
+                    item.goods_upper_time | formatTimeData
+                  }}
+                  &nbsp;上架 {{ item.upper_day }}&nbsp;天
+                </div>
               </el-card>
             </div>
           </div>
         </el-col>
       </el-row>
     </div>
-    <!-- 监控推荐和更新公告 -->
-    <!-- <div style="margin-top: 20px; background-color: #f6f8f9">
-      <el-row :gutter="20">
-        <el-col :span="18">
-        
-        </el-col>
-        <el-col :span="6">
-          <div
-            style="padding: 20px; background-color: white; border-radius: 5px"
-          >
-            <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                padding-bottom: 20px;
-              "
-            >
-              <div style="font-size: 14px">更新公告</div>
-              <div style="font-size: 12px">更多</div>
-            </div>
-            <div
-              v-for="o in 2"
-              :key="o"
-              style="
-                display: flex;
-                justify-content: space-between;
-                margin-top: 20px;
-              "
-            >
-              <div style="display: flex">
-                <el-image
-                  src="https://oss.business.quanyu123.com//1a2a696b0ab34169a6c7736e536daf73.png"
-                  style="width: 20px; height: 20px"
-                >
-                  <div slot="error" class="el-image__error">暂无图片</div>
-                </el-image>
-                <div style="margin: 0 0 0 10px">圈域v1.2.8更新公告</div>
-              </div>
-              <div style="margin: 5px 0 0 0; font-size: 12px">4-28</div>
-            </div>
-            <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                padding: 10px 0;
-                margin: 10px 0;
-                border-top: 1px solid rgb(230, 230, 235);
-              "
-            >
-              <div style="font-size: 14px">[圈域数字]&nbsp; 公众号</div>
-              <div style="font-size: 12px">立即关注</div>
-            </div>
-            <div style="display: flex">
-              <el-image
-                src="https://oss.business.quanyu123.com//98fbddbbc3d20b01b62e01c69da61fe9.png"
-                style="width: 20px; height: 20px; margin-right: 10px"
-              >
-                <div slot="error" class="el-image__error">暂无图片</div>
-              </el-image>
-              <span style="margin-top: 2px">
-                关注公众号，获取企业数字化转型可执行性方案
-              </span>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-    </div> -->
     <!--热销、飙升 -->
     <div style="margin-top: 20px; background-color: #f6f8f9">
       <el-row :gutter="20">
         <el-col :span="12">
-          <div
-            style="
-              position: relative;
-              padding: 20px;
-              background: -webkit-linear-gradient(top, #fff5f3 0%, #fff 10%);
-              background-color: white;
-              border-radius: 5px;
-            "
-          >
+          <div class="sell_well_warp">
             <el-image
+              class="sell_well_img"
               fit="fill"
               src="https://oss.business.quanyu123.com//50bcc50006a75081dc3f8f979ee98be7.png"
-              style="
-                position: absolute;
-                top: 15px;
-                left: 70px;
-                width: 40px;
-                height: 25px;
-              "
             />
-            <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                padding-bottom: 20px;
-              "
-            >
+            <div class="sell_well_div">
               <div style="font-size: 14px">商品热销榜</div>
-              <div style="font-size: 12px">更多</div>
+              <div style="font-size: 12px" @click="jump('report/reportGoods')">
+                更多
+              </div>
             </div>
             <div
-              v-for="o in 3"
-              :key="o"
+              v-for="(item, index) in goods_sell_well"
+              :key="index"
               style="
                 display: flex;
                 justify-content: space-between;
@@ -526,18 +324,20 @@
             >
               <div style="display: flex">
                 <QYRanking
-                  :index="o - 1"
+                  :index="index"
                   style="margin: 30px 10px 0 0"
                   :type="8"
                 />
                 <el-image
-                  src="https://img.wechatboss.com/FgSPgakMOZN7FUVKV8HnKlw1-SKe"
+                  :src="item.goods_img"
                   style="width: 100px; height: 100px"
                 >
                   <div slot="error" class="el-image__error">暂无图片</div>
                 </el-image>
                 <div style="width: 280px; margin-left: 10px">
-                  <div style="font-size: 14px; font-weight: 600">Yz23082-1</div>
+                  <div style="font-size: 14px; font-weight: 600">
+                    {{ item.goods_sn }}
+                  </div>
                   <div
                     style="
                       display: flex;
@@ -554,20 +354,30 @@
                         white-space: nowrap;
                       "
                     >
-                      卡通刺烤贴标T恤T他
+                      {{ item.goods_name }}
                     </div>
                   </div>
 
                   <div style="display: flex; width: 100%; margin: 10px 0">
-                    <el-tag type="info">T恤</el-tag>
+                    <el-tag v-if="item.category_name" type="info">
+                      {{ item.category_name }}
+                    </el-tag>
                     &nbsp;
-                    <el-tag type="info">2023</el-tag>
+                    <el-tag v-if="item.year_name" type="info">
+                      {{ item.year_name }}
+                    </el-tag>
                     &nbsp;
-                    <el-tag type="info">夏季</el-tag>
+                    <el-tag v-if="item.season_name" type="info">
+                      {{ item.season_name }}
+                    </el-tag>
                     &nbsp;
-                    <el-tag type="info">波段二</el-tag>
+                    <el-tag v-if="item.band_name" type="info">
+                      {{ item.band_name }}
+                    </el-tag>
                   </div>
-                  <div style="margin: 10px 0 0 0">2023-03-30 10:28:18</div>
+                  <div style="margin: 10px 0 0 0">
+                    {{ item.goods_upper_time | formatTime }}
+                  </div>
                 </div>
               </div>
               <div>
@@ -579,47 +389,35 @@
                     color: red;
                   "
                 >
-                  12.25万元
+                  {{ item.sale_amount | ConversionAmount }}
                 </div>
-                <div>售价 &nbsp;35.00&nbsp; 元</div>
+                <div>
+                  售价 &nbsp; {{ item.goods_price | moneyFormat }}&nbsp; 元
+                </div>
               </div>
             </div>
           </div>
         </el-col>
         <el-col :span="12">
-          <div
-            style="
-              position: relative;
-              padding: 20px;
-              background: -webkit-linear-gradient(top, #f1f5ff 0%, #fff 10%);
-              background-color: white;
-              border-radius: 5px;
-            "
-          >
+          <div class="soar_warp">
             <el-image
+              class="sell_well_img"
               fit="fill"
               src="https://oss.business.quanyu123.com//e3f1c56bf92dcc30f9c63c7bb02bb67f.png"
-              style="
-                position: absolute;
-                top: 15px;
-                left: 70px;
-                width: 40px;
-                height: 25px;
-              "
             />
-            <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                padding-bottom: 20px;
-              "
-            >
-              <div style="font-size: 14px">商品热销榜</div>
-              <div style="font-size: 12px">更多</div>
+            <div class="sell_well_div">
+              <div style="font-size: 14px">商品飙升榜</div>
+              <div style="margin-top: -15px">
+                <el-radio-group v-model="time">
+                  <el-radio-button label="七天" />
+                  <el-radio-button label="15天" />
+                  <el-radio-button label="30天" />
+                </el-radio-group>
+              </div>
             </div>
             <div
-              v-for="o in 3"
-              :key="o"
+              v-for="(item, index) in goods_soar"
+              :key="index"
               style="
                 display: flex;
                 justify-content: space-between;
@@ -628,18 +426,20 @@
             >
               <div style="display: flex">
                 <QYRanking
-                  :index="o - 1"
+                  :index="index"
                   style="margin: 30px 10px 0 0"
                   :type="7"
                 />
                 <el-image
-                  src="https://img.wechatboss.com/FgSPgakMOZN7FUVKV8HnKlw1-SKe"
+                  :src="item.goods_img"
                   style="width: 100px; height: 100px"
                 >
                   <div slot="error" class="el-image__error">暂无图片</div>
                 </el-image>
                 <div style="width: 280px; margin-left: 10px">
-                  <div style="font-size: 14px; font-weight: 600">Yz23082-1</div>
+                  <div style="font-size: 14px; font-weight: 600">
+                    {{ item.goods_sn }}
+                  </div>
                   <div
                     style="
                       display: flex;
@@ -656,20 +456,30 @@
                         white-space: nowrap;
                       "
                     >
-                      卡通刺烤贴标T恤T他
+                      {{ item.goods_name }}
                     </div>
                   </div>
 
                   <div style="display: flex; width: 100%; margin: 10px 0">
-                    <el-tag type="info">T恤</el-tag>
+                    <el-tag v-if="item.category_name" type="info">
+                      {{ item.category_name }}
+                    </el-tag>
                     &nbsp;
-                    <el-tag type="info">2023</el-tag>
+                    <el-tag v-if="item.year_name" type="info">
+                      {{ item.year_name }}
+                    </el-tag>
                     &nbsp;
-                    <el-tag type="info">夏季</el-tag>
+                    <el-tag v-if="item.season_name" type="info">
+                      {{ item.season_name }}
+                    </el-tag>
                     &nbsp;
-                    <el-tag type="info">波段二</el-tag>
+                    <el-tag v-if="item.band_name" type="info">
+                      {{ item.band_name }}
+                    </el-tag>
                   </div>
-                  <div style="margin: 10px 0 0 0">2023-03-30 10:28:18</div>
+                  <div style="margin: 10px 0 0 0">
+                    {{ item.goods_upper_time | formatTime }}
+                  </div>
                 </div>
               </div>
               <div>
@@ -681,9 +491,11 @@
                     color: red;
                   "
                 >
-                  12.25万元
+                  {{ item.sale_amount | ConversionAmount }}
                 </div>
-                <div>售价 &nbsp;35.00&nbsp; 元</div>
+                <div>
+                  售价 &nbsp; {{ item.goods_price | moneyFormat }}&nbsp; 元
+                </div>
               </div>
             </div>
           </div>
@@ -693,42 +505,42 @@
     <!--拿货、品牌 -->
     <div style="margin-top: 20px; background-color: #f6f8f9">
       <el-row :gutter="20">
+        <!-- 客户拿货排行榜 -->
         <el-col :span="12">
-          <div
-            style="
-              position: relative;
-              padding: 20px;
-              background: -webkit-linear-gradient(top, #fff5f3 0%, #fff 10%);
-              background-color: white;
-              border-radius: 5px;
-            "
-          >
+          <div class="sell_well_warp">
             <el-image
+              class="sell_well_img"
               fit="fill"
               src="https://oss.business.quanyu123.com//50bcc50006a75081dc3f8f979ee98be7.png"
-              style="
-                position: absolute;
-                top: 15px;
-                left: 70px;
-                width: 40px;
-                height: 25px;
-              "
             />
-            <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                padding-bottom: 20px;
-              "
-            >
+            <div class="sell_well_div">
               <div style="font-size: 14px">客户拿货排行榜</div>
-              <div style="font-size: 12px">更多</div>
+              <div
+                style="font-size: 12px"
+                @click="jump('report/reportCustomer')"
+              >
+                更多
+              </div>
             </div>
             <div style="display: flex">
-              <div style="width: 33%; margin-top: 30px; text-align: center">
+              <div
+                v-for="(item, index) in customer_ranking"
+                :key="index"
+                :style="{
+                  width: '33%',
+                  marginTop: index == 0 ? '30px' : index == 1 ? '0px' : '50px',
+                  textAlign: 'center',
+                }"
+              >
                 <div style="position: relative">
                   <el-image
-                    src="https://oss.business.quanyu123.com//7f2f279fe5fbf0d86fb568673ac871b1.png"
+                    :src="
+                      index == 0
+                        ? 'https://oss.business.quanyu123.com//7f2f279fe5fbf0d86fb568673ac871b1.png'
+                        : index == 1
+                        ? 'https://oss.business.quanyu123.com//053e8de20c3c5c214fff0704750a15d8.png'
+                        : 'https://oss.business.quanyu123.com//ad017a3aac2926e21cc65020087405da.png'
+                    "
                     style="
                       position: absolute;
                       top: 0px;
@@ -739,7 +551,7 @@
                     "
                   />
                   <el-image
-                    src="https://oss.business.quanyu123.com//a6668ea487c0c3fc2c6bdf0b50a79ce2.jpg"
+                    :src="item.customer_avatar"
                     style="
                       z-index: 1;
                       width: 60px;
@@ -752,79 +564,13 @@
                   </el-image>
                 </div>
                 <div style="padding: 10px; margin-left: 10px">
-                  <div style="font-weight: 600">广州&nbsp;|&nbsp;赖玉珍</div>
+                  <div style="font-weight: 600">{{ item.customer_name }}</div>
                   <div style="margin: 5px 0; font-size: 14px; color: red">
-                    33.00万元
+                    {{ item.sale_amount | ConversionAmount }}
                   </div>
-                  <div style="font-size: 12px">拿货次数233</div>
-                </div>
-              </div>
-              <div style="width: 33%; text-align: center">
-                <div style="position: relative">
-                  <el-image
-                    src="https://oss.business.quanyu123.com//053e8de20c3c5c214fff0704750a15d8.png"
-                    style="
-                      position: absolute;
-                      top: 0px;
-                      z-index: 99;
-                      width: 25px;
-                      height: 25px;
-                      transform: rotate(330deg);
-                    "
-                  />
-                  <el-image
-                    src="https://oss.business.quanyu123.com//a6668ea487c0c3fc2c6bdf0b50a79ce2.jpg"
-                    style="
-                      z-index: 1;
-                      width: 60px;
-                      height: 60px;
-                      margin-top: 15px;
-                      border-radius: 50%;
-                    "
-                  >
-                    <div slot="error" class="el-image__error">暂无图片</div>
-                  </el-image>
-                </div>
-                <div style="padding: 10px; margin-left: 10px">
-                  <div style="font-weight: 600">广州&nbsp;|&nbsp;赖玉珍</div>
-                  <div style="margin: 5px 0; font-size: 14px; color: red">
-                    33.00万元
+                  <div style="font-size: 12px">
+                    拿货次数 {{ item.sale_count }}
                   </div>
-                  <div style="font-size: 12px">拿货次数233</div>
-                </div>
-              </div>
-              <div style="width: 33%; margin-top: 50px; text-align: center">
-                <div style="position: relative">
-                  <el-image
-                    src="https://oss.business.quanyu123.com//ad017a3aac2926e21cc65020087405da.png"
-                    style="
-                      position: absolute;
-                      top: 0px;
-                      z-index: 99;
-                      width: 25px;
-                      height: 25px;
-                      transform: rotate(330deg);
-                    "
-                  />
-                  <el-image
-                    src="https://oss.business.quanyu123.com//a6668ea487c0c3fc2c6bdf0b50a79ce2.jpg"
-                    style="
-                      z-index: 1;
-                      width: 60px;
-                      height: 60px;
-                      margin-top: 15px;
-                      border-radius: 50%;
-                    "
-                  >
-                    <div slot="error" class="el-image__error">暂无图片</div>
-                  </el-image>
-                </div>
-                <div style="padding: 10px; margin-left: 10px">
-                  <div style="font-weight: 600">广州&nbsp;|&nbsp;赖玉珍</div>
-                  <div style="margin: 5px 0; font-size: 14px; color: red">
-                    33.00万元
-                  </div>
-                  <div style="font-size: 12px">拿货次数233</div>
                 </div>
               </div>
             </div>
@@ -834,42 +580,37 @@
             />
           </div>
         </el-col>
+        <!-- 热销品牌榜 -->
         <el-col :span="12">
-          <div
-            style="
-              position: relative;
-              padding: 20px;
-              background: -webkit-linear-gradient(top, #f1f5ff 0%, #fff 10%);
-              background-color: white;
-              border-radius: 5px;
-            "
-          >
+          <div class="soar_warp">
             <el-image
+              class="sell_well_img"
               fit="fill"
               src="https://oss.business.quanyu123.com//e3f1c56bf92dcc30f9c63c7bb02bb67f.png"
-              style="
-                position: absolute;
-                top: 15px;
-                left: 70px;
-                width: 40px;
-                height: 25px;
-              "
             />
-            <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                padding-bottom: 20px;
-              "
-            >
+            <div class="sell_well_div">
               <div style="font-size: 14px">热销品牌榜</div>
               <div style="font-size: 12px">更多</div>
             </div>
             <div style="display: flex">
-              <div style="width: 33%; margin-top: 30px; text-align: center">
+              <div
+                v-for="(item, index) in brand_ranking"
+                :key="index"
+                :style="{
+                  width: '33%',
+                  marginTop: index == 0 ? '30px' : index == 1 ? '0px' : '50px',
+                  textAlign: 'center',
+                }"
+              >
                 <div style="position: relative">
                   <el-image
-                    src="https://oss.business.quanyu123.com//7f2f279fe5fbf0d86fb568673ac871b1.png"
+                    :src="
+                      index == 0
+                        ? 'https://oss.business.quanyu123.com//7f2f279fe5fbf0d86fb568673ac871b1.png'
+                        : index == 1
+                        ? 'https://oss.business.quanyu123.com//053e8de20c3c5c214fff0704750a15d8.png'
+                        : 'https://oss.business.quanyu123.com//ad017a3aac2926e21cc65020087405da.png'
+                    "
                     style="
                       position: absolute;
                       top: 0px;
@@ -880,7 +621,7 @@
                     "
                   />
                   <el-image
-                    src="https://oss.business.quanyu123.com//a6668ea487c0c3fc2c6bdf0b50a79ce2.jpg"
+                    :src="item.brand_img"
                     style="
                       z-index: 1;
                       width: 60px;
@@ -892,77 +633,13 @@
                   </el-image>
                 </div>
                 <div style="padding: 10px; margin-left: 10px">
-                  <div style="font-weight: 600">丸纸</div>
+                  <div style="font-weight: 600">{{ item.brand_name }}</div>
                   <div style="margin: 5px 0; font-size: 14px; color: red">
-                    33.00万元
+                    {{ item.sale_amount | ConversionAmount }}
                   </div>
-                  <div style="font-size: 12px">在售商品数233</div>
-                </div>
-              </div>
-              <div style="width: 33%; text-align: center">
-                <div style="position: relative">
-                  <el-image
-                    src="https://oss.business.quanyu123.com//053e8de20c3c5c214fff0704750a15d8.png"
-                    style="
-                      position: absolute;
-                      top: 0px;
-                      z-index: 99;
-                      width: 25px;
-                      height: 25px;
-                      transform: rotate(330deg);
-                    "
-                  />
-                  <el-image
-                    src="https://oss.business.quanyu123.com//a6668ea487c0c3fc2c6bdf0b50a79ce2.jpg"
-                    style="
-                      z-index: 1;
-                      width: 60px;
-                      height: 60px;
-                      margin-top: 15px;
-                    "
-                  >
-                    <div slot="error" class="el-image__error">暂无图片</div>
-                  </el-image>
-                </div>
-                <div style="padding: 10px; margin-left: 10px">
-                  <div style="font-weight: 600">丸纸</div>
-                  <div style="margin: 5px 0; font-size: 14px; color: red">
-                    33.00万元
+                  <div style="font-size: 12px">
+                    在售商品数 {{ item.sale_goods_count }}
                   </div>
-                  <div style="font-size: 12px">在售商品数233</div>
-                </div>
-              </div>
-              <div style="width: 33%; margin-top: 50px; text-align: center">
-                <div style="position: relative">
-                  <el-image
-                    src="https://oss.business.quanyu123.com//ad017a3aac2926e21cc65020087405da.png"
-                    style="
-                      position: absolute;
-                      top: 0px;
-                      z-index: 99;
-                      width: 25px;
-                      height: 25px;
-                      transform: rotate(330deg);
-                    "
-                  />
-                  <el-image
-                    src="https://oss.business.quanyu123.com//a6668ea487c0c3fc2c6bdf0b50a79ce2.jpg"
-                    style="
-                      z-index: 1;
-                      width: 60px;
-                      height: 60px;
-                      margin-top: 15px;
-                    "
-                  >
-                    <div slot="error" class="el-image__error">暂无图片</div>
-                  </el-image>
-                </div>
-                <div style="padding: 10px; margin-left: 10px">
-                  <div style="font-weight: 600">丸纸</div>
-                  <div style="margin: 5px 0; font-size: 14px; color: red">
-                    33.00万元
-                  </div>
-                  <div style="font-size: 12px">在售商品数233</div>
                 </div>
               </div>
             </div>
@@ -974,21 +651,285 @@
         </el-col>
       </el-row>
     </div>
+    <CustomerService
+      :center-dialog-visible="centerDialogVisible"
+      @close="close"
+    />
   </div>
 </template>
 <script>
+  // 日期组件和日期方法混入
+  import datajosn from '@/assets/assets_josn/datajosn'
+  import CustomerService from '@/subview/components/Edit/CustomerService'
   export default {
+    components: { CustomerService },
+    mixins: [datajosn],
     data() {
       return {
-        img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202107%2F09%2F20210709142454_dc8dc.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1670217619&t=7e7d4ed',
+        time: '七天',
+        // 客服弹窗
+        centerDialogVisible: false,
+        // 走马灯数组
+        banner_list: [],
+        // 右侧插件
+        right_side_plug: [
+          {
+            name: '采集插件',
+            css_name: 'plug_icon',
+          },
+          {
+            name: '智能分析',
+            css_name: 'plug_icon',
+          },
+          {
+            name: '报表工具',
+            css_name: 'plug_icon',
+          },
+        ],
+        // 右侧应用
+        right_app: [
+          {
+            name: '供应链',
+          },
+          {
+            name: '研发协同',
+          },
+          {
+            name: '私域商城',
+          },
+          {
+            name: '生产跟单',
+          },
+        ],
+        // 跳转区域
+        jump_region_list: [
+          {
+            title: '商品库',
+            title_img:
+              'https://oss.business.quanyu123.com//938da43042397e244a2a78dba1828491.png',
+            url: 'goods/goodsManage',
+            background: '#eff3ff',
+            child: [
+              {
+                name: '今日热销商品',
+                tags: '热销',
+                tags_type: 'warning',
+                url: 'goods/goodsManage',
+              },
+              {
+                name: '商城热销商品',
+                url: 'goods/goodsManage',
+              },
+              {
+                name: '热销飙升商品',
+                url: 'goods/goodsManage',
+              },
+              {
+                name: '新品智测',
+                tags: 'NEW',
+                tags_type: 'danger',
+                url: 'goods/goodsManage',
+              },
+            ],
+          },
+
+          {
+            title: '客户库',
+            title_img:
+              'https://oss.business.quanyu123.com//74651669d06777e0a5886faaa37efd56.png',
+            background: '#e8f5fb',
+            url: 'customer/customerManage',
+            child: [
+              {
+                name: '今日拿货最多',
+                tags: 'HOT',
+                tags_type: 'danger',
+                url: 'goods/goodsManage',
+              },
+              {
+                name: '拿货客户排行',
+                url: 'goods/goodsManage',
+              },
+              {
+                name: '拿货飙升客户',
+                url: 'goods/goodsManage',
+              },
+              {
+                name: '高价值优质客户',
+                tags: '推荐',
+                tags_type: 'warning',
+                url: 'goods/goodsManage',
+              },
+            ],
+          },
+          {
+            title: '去发货',
+            title_img:
+              'https://oss.business.quanyu123.com//e3a1bb70414e9d40984fd3fa75919020.png',
+            url: 'order/orderCustomerDelivery',
+            background: '#e4f7f5',
+            child: [
+              {
+                name: '客户发货列表',
+                url: 'goods/goodsManage',
+              },
+              {
+                name: '商品发货汇总分析',
+                url: 'goods/goodsManage',
+              },
+              {
+                name: '退货数据分析',
+                url: 'goods/goodsManage',
+              },
+              {
+                name: '进销存数据分析',
+                url: 'goods/goodsManage',
+              },
+            ],
+          },
+          {
+            title: '看回款',
+            title_img:
+              'https://oss.business.quanyu123.com//21378edba2b54fa5e0479d60ba62bdc3.png',
+            background: '#eef7e5',
+            url: 'financial/financialCustomerVoucher',
+            child: [
+              {
+                name: '那个回款最多',
+                url: 'goods/goodsManage',
+              },
+              {
+                name: '那个客户欠款多',
+                url: 'goods/goodsManage',
+              },
+              {
+                name: '那个客户回款快',
+                url: 'goods/goodsManage',
+              },
+              {
+                name: '那个客户回款慢',
+                url: 'goods/goodsManage',
+              },
+            ],
+          },
+        ],
+        // 监控客户
+        recommended_monitoring_customer: [],
+        // 监控商品
+        monitor_goods: [],
+        // 热销商品
+        goods_sell_well: [],
+        // 飙升商品
+        goods_soar: [],
+        // 客户排行
+        customer_ranking: [],
+        // 品牌排行
+        brand_ranking: [],
+        // 监控数据
+        monitor_statistics: {},
       }
     },
-    watch: {},
-    created() {},
-    methods: {},
+    watch: {
+      // 监听时间变化
+      time: {
+        handler: function (newval) {
+          this.get_goods_soar(newval)
+        },
+        deep: true,
+        immediate: true,
+      },
+    },
+    created() {
+      this.get_monitor_statistics()
+      this.get_banner_list()
+      this.get_recommended_monitoring_customer()
+      this.get_monitor_goods()
+      this.get_goods_sell_well()
+      this.get_customer_ranking()
+      this.get_brand_ranking()
+    },
+    methods: {
+      // 关闭弹窗
+      close() {
+        this.centerDialogVisible = false
+      },
+      // 跳转页面
+      jump(url, type) {
+        console.log(url, type)
+        if (type == undefined) {
+          this.$router.push({
+            path: '/' + url,
+          })
+        } else {
+          this.$router.push({
+            path: '/' + url,
+            query: {
+              type: type,
+            },
+          })
+        }
+      },
+      // 走马灯跳转外部页面
+      externalLink(url) {
+        window.open(url)
+      },
+      // 获取走马灯数据
+      async get_banner_list() {
+        const { data } = await this.api.getHomeBannerList()
+        this.banner_list = data
+      },
+      // 获取监控客户
+      async get_recommended_monitoring_customer() {
+        const { data } = await this.api.getHomeRecommendMonitorCustomer()
+        this.recommended_monitoring_customer = data
+      },
+      // 获取监控商品
+      async get_monitor_goods() {
+        const { data } = await this.api.getHomeMonitorGoodsAnalysis()
+        this.monitor_goods = data
+      },
+      // 获取热销商品
+      async get_goods_sell_well() {
+        const { data } = await this.api.getHomeGoodsHotRank()
+        this.goods_sell_well = data
+      },
+      // 获取商品飙升
+      async get_goods_soar(value) {
+        let time = []
+        if (value == '30天') {
+          time = this.getPastTime(30)
+        } else if (value == '七天') {
+          time = this.getWeenTime(6)
+        } else if (value == '15天') {
+          time = this.getPastTime(15)
+        }
+        const { data } = await this.api.getHomeGoodsSoarRank({
+          start_date: time[0],
+          end_date: time[1],
+        })
+        this.goods_soar = data
+      },
+      // 获取客户排行
+      async get_customer_ranking() {
+        const { data } = await this.api.getHomeCustomerSaleRank()
+        this.customer_ranking = data
+      },
+      // 获取品牌排行
+      async get_brand_ranking() {
+        const { data } = await this.api.getHomeBrandHotRank()
+        this.brand_ranking = data
+      },
+
+      // 获取监控数据
+      async get_monitor_statistics() {
+        const { data } = await this.api.getHomeMonitorStatistics()
+        this.monitor_statistics = data
+      },
+    },
   }
 </script>
 <style lang="scss" scoped>
+  // 走马灯样式
   .el-carousel__item h3 {
     margin: 0;
     font-size: 14px;
@@ -1003,9 +944,37 @@
   .el-carousel__item:nth-child(2n + 1) {
     background-color: #d3dce6;
   }
+  // 插件图标样式
   .plug_icon {
     width: 100px;
     background-image: url('https://oss.business.quanyu123.com//b0a7f769f67891838ddf3d8f495116b2.png');
     background-size: 100% 100%;
+  }
+  // 商品热销,客户排行
+  .soar_warp {
+    position: relative;
+    padding: 20px;
+    background: -webkit-linear-gradient(top, #f1f5ff 0%, #fff 10%);
+    background-color: white;
+    border-radius: 5px;
+  }
+  .sell_well_warp {
+    position: relative;
+    padding: 20px;
+    background: -webkit-linear-gradient(top, #fff5f3 0%, #fff 10%);
+    background-color: white;
+    border-radius: 5px;
+  }
+  .sell_well_img {
+    position: absolute;
+    top: 15px;
+    left: 70px;
+    width: 40px;
+    height: 25px;
+  }
+  .sell_well_div {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px;
   }
 </style>
