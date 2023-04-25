@@ -319,9 +319,6 @@
                       "
                     >
                       {{ row.sn }}
-                      <span v-if="goodsForm1.merge">
-                        && {{ row.sn + '-1' }}
-                      </span>
                     </div>
                     <el-tag v-if="goodsForm1.merge" type="warning">
                       合并中

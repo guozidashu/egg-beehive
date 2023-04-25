@@ -98,7 +98,17 @@
             <div style="margin-top: 10px">
               指标说明
               <el-popover placement="right" trigger="hover">
-                <div style="font-size: 12px">测试</div>
+                <div style="font-size: 12px">
+                  <p>
+                    排名变化：指商品在所选日期范围内的本期排名和本期环比排名
+                  </p>
+                  <p>总销量：指商品在ERP和订货商城的累计销量</p>
+                  <p>总销售额：指商品在ERP和订货商城的累计销售额</p>
+                  <p>平均售价：指商品总销售额/总销量</p>
+                  <p>带货客户数：指商品总共有多少个客户参与过此商品的下单</p>
+                  <p>本期销量：指商品在所选日期范围内的累计销量</p>
+                  <p>本期销售额：指商品在所选日期范围内的累计销售额</p>
+                </div>
                 <vab-icon
                   slot="reference"
                   icon="question-line"

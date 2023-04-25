@@ -339,9 +339,6 @@
                       "
                     >
                       {{ row.sn }}
-                      <span v-if="goodsForm1.merge">
-                        && {{ row.sn + '-1' }}
-                      </span>
                     </div>
                     <el-tag v-if="goodsForm1.merge" type="warning">
                       合并中
@@ -425,31 +422,23 @@
             width="100"
           >
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row)">
+              <!-- <el-button type="text" @click="handleDetail(row)">
                 单品分析
-              </el-button>
-              &nbsp;
-              <el-dropdown>
-                <el-button class="el-dropdown-link" type="text">
-                  <span>更多</span>
-                  <vab-icon
-                    class="vab-dropdown-active"
-                    icon="arrow-up-s-line"
-                  />
+              </el-button> -->
+              <div>
+                <el-button
+                  v-if="goodsForm1.goods_type == 1"
+                  type="text"
+                  @click="handleEdit(row)"
+                >
+                  合并同款
                 </el-button>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item v-if="goodsForm1.goods_type == 1">
-                    <el-button type="text" @click="handleEdit(row)">
-                      合并同款
-                    </el-button>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <el-button type="text" @click="handleDetailMonitor(row)">
-                      监控商品
-                    </el-button>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
+              </div>
+              <div>
+                <el-button type="text" @click="handleDetailMonitor(row)">
+                  监控商品
+                </el-button>
+              </div>
             </template>
           </el-table-column>
         </template>
@@ -762,6 +751,7 @@
       // 单款合并弹出
       async handleEdit(row) {
         this.queryCondition = JSON.parse(JSON.stringify(this.goodsForm1))
+        this.queryCondition.merge = false
         this.queryCondition.goods_id = row.id
         this.queryCondition.viewType = 'goods'
         this.$refs['edit'].showEdit(row)

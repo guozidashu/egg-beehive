@@ -179,7 +179,7 @@
               >
                 不看终止合作的
               </el-checkbox>
-              <div>
+              <!-- <div>
                 | &nbsp; 指标说明
                 <el-popover placement="right" trigger="hover">
                   <div style="font-size: 12px">测试</div>
@@ -189,7 +189,7 @@
                     style="position: relative; top: -2px; font-size: 14px"
                   />
                 </el-popover>
-              </div>
+              </div> -->
             </div>
           </el-form-item>
         </el-form>
@@ -427,31 +427,29 @@
               width="100"
             >
               <template #default="{ row }">
-                <el-button type="text" @click="handleDetail(row)">
-                  客户分析
-                </el-button>
-                &nbsp;
-                <el-dropdown>
-                  <el-button class="el-dropdown-link" type="text">
-                    <span>更多</span>
-                    <vab-icon
-                      class="vab-dropdown-active"
-                      icon="arrow-up-s-line"
-                    />
+                <div>
+                  <el-button type="text" @click="handleDetail(row)">
+                    客户详情
                   </el-button>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item v-if="row.monitor_status == 0">
-                      <el-button type="text" @click="Monitor(row.id, 1)">
-                        监控客户
-                      </el-button>
-                    </el-dropdown-item>
-                    <el-dropdown-item v-if="row.monitor_status == 1">
-                      <el-button type="text" @click="Monitor(row.id, 2)">
-                        取消监控
-                      </el-button>
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
+                </div>
+                <div>
+                  <el-button
+                    v-if="row.monitor_status == 0"
+                    type="text"
+                    @click="Monitor(row.id, 1)"
+                  >
+                    监控客户
+                  </el-button>
+                </div>
+                <div>
+                  <el-button
+                    v-if="row.monitor_status == 1"
+                    type="text"
+                    @click="Monitor(row.id, 2)"
+                  >
+                    取消监控
+                  </el-button>
+                </div>
               </template>
             </el-table-column>
           </template>

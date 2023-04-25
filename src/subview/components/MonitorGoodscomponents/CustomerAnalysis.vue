@@ -26,63 +26,24 @@
         <el-col :span="18">
           <div style="margin-top: 10px">监控热销客户</div>
           <div style="display: flex; margin-top: 20px">
-            <div style="display: flex; width: 33%">
-              <el-image src="row.img" style="width: 80px; height: 80px">
+            <div
+              v-for="(item, index) in recommended_monitoring_customer"
+              :key="index"
+              style="display: flex; width: 33%"
+            >
+              <el-image
+                :src="item.customer_avatar"
+                style="width: 80px; height: 80px"
+              >
                 <div slot="error" class="el-image__error">暂无图片</div>
               </el-image>
               <div style="margin-left: 10px">
-                <div style="margin: 5px 0 0 0">吉林王平</div>
+                <div style="margin: 5px 0 0 0">{{ item.customer_name }}</div>
                 <div style="margin: 10px 0 0 0; color: gray">
-                  普通会员|零售店
+                  普通会员&nbsp;|&nbsp;零售店
                 </div>
                 <div style="margin: 10px 0 0 0; color: gray">
-                  加入时间:2020-02-02 12:12:12
-                </div>
-              </div>
-            </div>
-            <div style="display: flex; width: 33%">
-              <el-image src="row.img" style="width: 80px; height: 80px">
-                <div slot="error" class="el-image__error">暂无图片</div>
-              </el-image>
-              <div style="margin-left: 10px">
-                <div
-                  style="
-                    width: 150px;
-                    margin: 5px 0 0 0;
-                    overflow: hidden;
-                    text-align: left;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                  "
-                >
-                  心优选空间站团购das;ldjkasl;djlskdl
-                </div>
-                <div style="margin: 10px 0 0 0; color: gray">粉丝数 13213</div>
-                <div style="margin: 10px 0 0 0; color: gray">
-                  合作直播数量 2
-                </div>
-              </div>
-            </div>
-            <div style="display: flex; width: 33%">
-              <el-image src="row.img" style="width: 80px; height: 80px">
-                <div slot="error" class="el-image__error">暂无图片</div>
-              </el-image>
-              <div style="margin-left: 10px">
-                <div
-                  style="
-                    width: 150px;
-                    margin: 5px 0 0 0;
-                    overflow: hidden;
-                    text-align: left;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                  "
-                >
-                  心优选空间站团购das;ldjkasl;djlskdl
-                </div>
-                <div style="margin: 10px 0 0 0; color: gray">粉丝数 13213</div>
-                <div style="margin: 10px 0 0 0; color: gray">
-                  合作直播数量 2
+                  加入时间&nbsp;2020-02-02 12:12:12
                 </div>
               </div>
             </div>
@@ -237,6 +198,8 @@
     },
     data() {
       return {
+        // 推荐监控客户
+        recommended_monitoring_customer: [],
         // 合作客户数
         cooperate_customer_num: 0,
         selectList: [],
@@ -275,10 +238,16 @@
       },
     },
     created() {
+      this.get_recommended_monitoring_customer()
       this.getHead()
       this.getList()
     },
     methods: {
+      // 获取监控客户
+      async get_recommended_monitoring_customer() {
+        const { data } = await this.api.getHomeRecommendMonitorCustomer()
+        this.recommended_monitoring_customer = data.slice(0, 3)
+      },
       // 获取头部数据
       async getHead() {
         const { data } = await this.api.getMonitorCooperateCustomerHead({

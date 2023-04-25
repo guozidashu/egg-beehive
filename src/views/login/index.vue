@@ -10,7 +10,36 @@
           <div class="title-tips">
             {{ appName }}数字中台 · 好生意随时掌握 · Manage Account
           </div>
-          <el-button-group>
+          <div
+            style="
+              display: flex;
+              padding: 20px 0 0 0;
+              font-size: 20px;
+              font-weight: 600;
+              color: #98b7d9;
+            "
+          >
+            <div
+              :style="{
+                paddingBottom: '10px',
+                marginRight: '20px',
+                borderBottom: loginType ? '2px solid #98B7D6' : '',
+              }"
+              @click="loginType = !loginType"
+            >
+              账号登录
+            </div>
+            <div
+              :style="{
+                paddingBottom: '10px',
+                borderBottom: !loginType ? '2px solid #98B7D6' : '',
+              }"
+              @click="loginType = !loginType"
+            >
+              手机号登录
+            </div>
+          </div>
+          <!-- <el-button-group>
             <el-button
               :plain="!loginType"
               type="primary"
@@ -25,7 +54,7 @@
             >
               手机号登录
             </el-button>
-          </el-button-group>
+          </el-button-group> -->
           <el-form
             v-if="loginType"
             key="Account"
@@ -109,7 +138,7 @@
             :model="form_phone"
             :rules="rules_phone"
           >
-            <el-form-item prop="verify">
+            <!-- <el-form-item prop="verify">
               <el-input
                 v-model="form_phone.verify"
                 placeholder="请输入图片验证码"
@@ -123,7 +152,7 @@
               <el-image class="code" :src="codeUrl" @click="changeCode">
                 <div slot="error" class="el-image__error">暂无图片</div>
               </el-image>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item prop="phone">
               <el-input
                 v-model="form_phone.phone"
@@ -131,8 +160,11 @@
                 @input="form_phone.phone = $numFormatInput(form_phone.phone)"
               />
             </el-form-item>
-            <el-form-item prop="code">
-              <el-input v-model="form_phone.code" placeholder="请输入验证码">
+            <el-form-item prop="phone_code">
+              <el-input
+                v-model="form_phone.phone_code"
+                placeholder="请输入验证码"
+              >
                 <el-button
                   v-if="sending"
                   slot="append"
@@ -142,11 +174,23 @@
                     padding: 18px;
                     background-color: #1890ff;
                   "
+                  type="info"
                   @click="getCode"
                 >
                   获取验证码
                 </el-button>
-                <el-button v-else slot="append" :disabled="disabled">
+                <el-button
+                  v-else
+                  :disabled="disabled"
+                  style="
+                    position: relative;
+                    right: -3px;
+                    padding: 18px;
+                    background-color: #83cd5e;
+                  "
+                  type="info"
+                  slot="append"
+                >
                   {{ second }}秒后获取
                 </el-button>
               </el-input>
@@ -227,7 +271,7 @@
         form_phone: {
           phone: '',
           verify: '',
-          code: '',
+          phone_code: '',
         },
         rules_phone: {
           phone: [
@@ -249,7 +293,7 @@
               message: '验证码不能空',
             },
           ],
-          code: [
+          phone_code: [
             {
               required: true,
               trigger: 'blur',
@@ -340,7 +384,11 @@
 
       enterSearch: function (e) {
         if (e.keyCode === 13) {
-          this.handleLogin()
+          if (this.loginType) {
+            this.handleLogin()
+          } else {
+            this.handleLoginPhone()
+          }
         }
       },
       handleLogin() {
@@ -361,7 +409,7 @@
           if (valid)
             try {
               this.loading = true
-              await this.login(this.form).catch(() => {})
+              await this.login(this.form_phone).catch(() => {})
               await this.$router.push(this.handleRoute())
               this.$event.$emit('watermark', true)
             } finally {
@@ -370,11 +418,11 @@
         })
       },
       // 获取短信验证码
-      getCode() {
-        if (this.form_phone.verify == '') {
-          this.$message.error('请输入验证码')
-          return
-        }
+      async getCode() {
+        // if (this.form_phone.verify == '') {
+        //   this.$message.error('请输入验证码')
+        //   return
+        // }
         if (this.form_phone.phone == '') {
           this.$message.error('请输入手机号')
           return
@@ -383,9 +431,15 @@
           this.$message.error('手机号格式不正确')
           return
         }
-        this.sending = false
-        this.disabled = true
-        this.timeDown()
+        const { code } = await this.api.getPhoneLogin({
+          phone: this.form_phone.phone,
+        })
+        if (code == 200) {
+          this.$message.success('发送成功')
+          this.sending = false
+          this.disabled = true
+          this.timeDown()
+        }
       },
       //倒计时
       timeDown() {

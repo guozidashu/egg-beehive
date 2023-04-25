@@ -25,6 +25,7 @@
       this.Watermarking()
     },
     methods: {
+      // 全局水印
       Watermarking() {
         const that = this
         this.$event.$on('watermark', (res) => {

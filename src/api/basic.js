@@ -2505,6 +2505,14 @@ export function getErpInfo(data) {
     data,
   })
 }
+// 设置 - 系统设置 -短信列表-获取
+export function getSmsList(data) {
+  return request({
+    url: '/setting/getSmsList',
+    method: 'post',
+    data,
+  })
+}
 // 设置 - 系统设置 -短信设置-获取
 export function getSmsInfo(data) {
   return request({
@@ -3099,6 +3107,15 @@ export function getHomeMonitorStatistics(data) {
 export function getHomeGoodsSoarRank(data) {
   return request({
     url: '/homeNew/goodsSoarRank',
+    method: 'post',
+    data,
+  })
+}
+// 登录 -手机号验证
+
+export function getPhoneLogin(data) {
+  return request({
+    url: '/phoneLogin',
     method: 'post',
     data,
   })

@@ -66,7 +66,7 @@
           发货信息&nbsp;&nbsp;杭州24小时内发货
         </div>
         <div style="display: flex; margin-top: 110px">
-          <div
+          <!-- <div
             v-for="(item, index) in icon_btn_list"
             :key="index"
             style="position: relative; padding-right: 20px"
@@ -88,7 +88,7 @@
             >
               |
             </span>
-          </div>
+          </div> -->
           <el-tag
             v-if="form.monitor_status == 0"
             effect="plain"
@@ -125,29 +125,21 @@
           <el-menu-item-group class="menu_group">
             <el-menu-item index="1-1">基础分析</el-menu-item>
             <el-menu-item index="1-2">SKU分析</el-menu-item>
-            <el-menu-item index="1-3">属性分析</el-menu-item>
+            <!-- <el-menu-item index="1-3">属性分析</el-menu-item> -->
           </el-menu-item-group>
         </el-submenu>
-        <el-menu-item index="2">
+        <!-- <el-menu-item index="2">
           <vab-icon icon="user-4-line" style="padding: 0 5px" />
-          <span slot="title">竞争分析</span>
-        </el-menu-item>
-        <el-menu-item index="3">
-          <vab-icon icon="live-line" style="padding: 0 5px" />
-          <span slot="title">直播分析</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <vab-icon icon="file-3-line" style="padding: 0 5px" />
-          <span slot="title">作品分析</span>
-        </el-menu-item>
+          <span slot="title">库存分析</span>
+        </el-menu-item> -->
         <el-menu-item index="5">
           <vab-icon icon="shield-user-line" style="padding: 0 5px" />
-          <span slot="title">达人分析</span>
+          <span slot="title">客户分析</span>
         </el-menu-item>
-        <el-menu-item index="6">
+        <!-- <el-menu-item index="6">
           <vab-icon icon="shopping-bag-line" style="padding: 0 5px" />
-          <span slot="title">相似款式</span>
-        </el-menu-item>
+          <span slot="title">同款商品</span>
+        </el-menu-item> -->
       </el-menu>
       <div style="width: 100%; border-left: 20px solid #f6f8f9">
         <BasicAnalysis v-if="menu_select == '1-1'" :goods-id="drawerInof.id" />

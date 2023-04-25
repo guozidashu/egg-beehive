@@ -35,7 +35,7 @@
       @close="close"
     >
       <el-form ref="form" label-width="100px" :model="form" :rules="rules">
-        <el-form-item label="验证码" prop="verify" style="position: relative">
+        <!-- <el-form-item label="验证码" prop="verify" style="position: relative">
           <el-input
             v-model="form.verify"
             placeholder="请输入图片验证码"
@@ -48,7 +48,7 @@
               </el-image>
             </template>
           </el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="手机号" prop="phone">
           <el-input
             v-model="form.phone"
@@ -160,7 +160,7 @@
           password: '',
           password1: '',
           phone: '',
-          verify: '',
+          // verify: '',
           code: '',
         },
         rules: {
@@ -183,13 +183,13 @@
               message: '手机号格式不正确',
             },
           ],
-          verify: [
-            {
-              required: true,
-              trigger: 'blur',
-              message: '验证码不能空',
-            },
-          ],
+          // verify: [
+          //   {
+          //     required: true,
+          //     trigger: 'blur',
+          //     message: '验证码不能空',
+          //   },
+          // ],
           code: [
             {
               required: true,
@@ -206,11 +206,22 @@
         avatar: 'user/avatar',
         username: 'user/username',
       }),
+      ...mapGetters({
+        avatar: 'user/avatar',
+        phone: 'user/phone',
+      }),
     },
     watch: {
       username: {
         handler: function (newVal) {
           this.form.account = newVal
+        },
+        deep: true,
+        immediate: true,
+      },
+      phone: {
+        handler: function (newVal) {
+          this.form.phone = newVal
         },
         deep: true,
         immediate: true,
@@ -241,11 +252,12 @@
       changeCode() {
         this.getVerifyImg()
       },
-      getCode() {
-        if (this.form.verify == '') {
-          this.$message.error('请输入验证码')
-          return
-        }
+      async getCode() {
+        // if (this.form.verify == '') {
+        //   this.$message.error('请输入验证码')
+        //   return
+        // }
+        console.log(111, this.form)
         if (this.form.phone == '') {
           this.$message.error('请输入手机号')
           return
@@ -254,9 +266,15 @@
           this.$message.error('手机号格式不正确')
           return
         }
-        this.sending = false
-        this.disabled = true
-        this.timeDown()
+        const { code } = await this.api.getPhoneLogin({
+          phone: this.form.phone,
+        })
+        if (code == 200) {
+          this.$message.success('发送成功')
+          this.sending = false
+          this.disabled = true
+          this.timeDown()
+        }
       },
       handleCommand(command) {
         switch (command) {
@@ -321,6 +339,8 @@
                 }
                 const { code } = await editChangePassword({
                   new_password: this.form.password,
+                  phone: this.form.phone,
+                  phone_code: this.form.code,
                 })
                 if (code != 200) {
                   return

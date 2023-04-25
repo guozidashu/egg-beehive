@@ -207,7 +207,7 @@
             "
           >
             <div style="display: flex; justify-content: space-between">
-              <div style="font-size: 14px">监控客户分析</div>
+              <div style="font-size: 14px">监控客户</div>
               <div
                 style="font-size: 12px"
                 @click="jump('monitoring', 'customer')"
@@ -286,7 +286,7 @@
                   {{ item.goods_name }}
                 </div>
                 <div style="font-size: 12px">
-                  销量: {{ item.sale_num }} 件 &nbsp;{{
+                  销量 {{ item.sale_num }} 件 &nbsp;{{
                     item.goods_upper_time | formatTimeData
                   }}
                   &nbsp;上架 {{ item.upper_day }}&nbsp;天
@@ -387,6 +387,7 @@
                     font-size: 16px;
                     font-weight: 600;
                     color: red;
+                    text-align: right;
                   "
                 >
                   {{ item.sale_amount | ConversionAmount }}
@@ -489,6 +490,7 @@
                     font-size: 16px;
                     font-weight: 600;
                     color: red;
+                    text-align: right;
                   "
                 >
                   {{ item.sale_amount | ConversionAmount }}
@@ -605,9 +607,9 @@
                 <div style="position: relative">
                   <el-image
                     :src="
-                      index == 0
+                      index == 1
                         ? 'https://oss.business.quanyu123.com//7f2f279fe5fbf0d86fb568673ac871b1.png'
-                        : index == 1
+                        : index == 0
                         ? 'https://oss.business.quanyu123.com//053e8de20c3c5c214fff0704750a15d8.png'
                         : 'https://oss.business.quanyu123.com//ad017a3aac2926e21cc65020087405da.png'
                     "
@@ -912,11 +914,23 @@
       // 获取客户排行
       async get_customer_ranking() {
         const { data } = await this.api.getHomeCustomerSaleRank()
+        const a = 0
+        const b = 1
+        const temp = data[a]
+        const temp1 = data[b]
+        data[a] = temp1
+        data[b] = temp
         this.customer_ranking = data
       },
       // 获取品牌排行
       async get_brand_ranking() {
         const { data } = await this.api.getHomeBrandHotRank()
+        const a = 0
+        const b = 1
+        const temp = data[a]
+        const temp1 = data[b]
+        data[a] = temp1
+        data[b] = temp
         this.brand_ranking = data
       },
 

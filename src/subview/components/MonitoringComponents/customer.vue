@@ -74,7 +74,15 @@
             <div style="margin-top: 10px">
               指标说明
               <el-popover placement="right" trigger="hover">
-                <div style="font-size: 12px">测试</div>
+                <div style="font-size: 12px">
+                  <p>
+                    排名变化：指客户在所选日期范围内的本期排名和本期环比排名
+                  </p>
+                  <p>动销商品数：指客户在所选日期范围内动销过多少个商品款数</p>
+                  <p>拿货次数：指客户在所选日期范围内拿货的订单数</p>
+                  <p>拿货件数：指客户在所选日期范围内的拿货件数总和</p>
+                  <p>拿货件数：指客户在所选日期范围内的拿货金额总和</p>
+                </div>
                 <vab-icon
                   slot="reference"
                   icon="question-line"

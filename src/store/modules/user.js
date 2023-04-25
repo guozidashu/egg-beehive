@@ -16,10 +16,12 @@ const state = () => ({
   avatar: 'https://i.gtimg.cn/club/item/face/img/2/15922_100.gif',
   userRouteList: [],
   printer: {},
+  phone: '',
 })
 const getters = {
   token: (state) => state.token,
   username: (state) => state.username,
+  phone: (state) => state.phone,
   rolename: (state) => state.rolename,
   avatar: (state) => state.avatar,
   userRouteList: (state) => state.userRouteList,
@@ -42,6 +44,14 @@ const mutations = {
    */
   setUsername(state, username) {
     state.username = username
+  },
+  /**
+   * @description 设置用户手机号
+   * @param {*} state
+   * @param {*} phone
+   */
+  setPhone(state, phone) {
+    state.phone = phone
   },
   /**
    * @description 设置权限名
@@ -207,7 +217,7 @@ const actions = {
       if (data.list.group_name) commit('setRolename', data.list.group_name)
       // 如不使用avatar头像,可删除以下代码
       if (data.list.avatar) commit('setAvatar', data.list.avatar)
-
+      if (data.list.phone) commit('setPhone', data.list.phone)
       // 如不使用roles权限控制,可删除以下代码
       // if (roles) dispatch('acl/setRole', roles, { root: true })
       // 如不使用permissions权限控制,可删除以下代码
@@ -229,6 +239,7 @@ const actions = {
    */
   async resetAll({ commit, dispatch }) {
     commit('setUsername', '游客')
+    commit('setPhone', '')
     commit('setRolename', '游客')
     commit('setAvatar', 'https://i.gtimg.cn/club/item/face/img/2/15922_100.gif')
     commit('routes/setRoutes', [], { root: true })

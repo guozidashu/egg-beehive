@@ -22,6 +22,19 @@
       <el-form-item label="管理员密码" prop="password">
         <el-input v-model="form.password" />
       </el-form-item>
+      <el-form-item label="绑定手机号" prop="phone">
+        <el-input v-model="form.phone" />
+      </el-form-item>
+      <!-- <el-form-item label="短信验证码" prop="code">
+        <el-input v-model="form.code" placeholder="请输入验证码">
+          <el-button v-if="sending" slot="append" @click="getCode">
+            获取验证码
+          </el-button>
+          <el-button v-else slot="append" :disabled="disabled">
+            {{ second }}秒后获取
+          </el-button>
+        </el-input>
+      </el-form-item> -->
       <el-form-item label="状态" prop="status">
         <el-switch
           v-model="form.status"
@@ -50,11 +63,23 @@
   export default {
     data() {
       return {
+        // sending: true, //是否发送验证码
+        // disabled: false, //是否禁发验证码
+        // second: 59, //倒计时间
         typeData: [],
         form: {
           status: 0,
         },
         rules: {
+          code: [{ required: true, trigger: 'blur', message: '请输入验证码' }],
+          phone: [
+            { required: true, trigger: 'blur', message: '请输入手机号' },
+            {
+              pattern: /^1[3456789]\d{9}$/,
+              trigger: 'blur',
+              message: '手机号格式不正确',
+            },
+          ],
           username: [
             { required: true, trigger: 'blur', message: '请输入管理员名称' },
           ],
@@ -74,6 +99,42 @@
       this.getSelectList()
     },
     methods: {
+      // 获取短信验证码
+      // async getCode() {
+      //   // if (this.form_phone.verify == '') {
+      //   //   this.$message.error('请输入验证码')
+      //   //   return
+      //   // }
+      //   if (this.form.phone == '') {
+      //     this.$message.error('请输入手机号')
+      //     return
+      //   }
+      //   if (!/^1[3456789]\d{9}$/.test(this.form.phone)) {
+      //     this.$message.error('手机号格式不正确')
+      //     return
+      //   }
+      //   const { code } = await this.api.getPhoneLogin({
+      //     phone: this.form.phone,
+      //   })
+      //   if (code == 200) {
+      //     this.$message.success('发送成功')
+      //     this.sending = false
+      //     this.disabled = true
+      //     this.timeDown()
+      //   }
+      // },
+      // //倒计时
+      // timeDown() {
+      //   let result = setInterval(() => {
+      //     --this.second
+      //     if (this.second < 0) {
+      //       clearInterval(result)
+      //       this.sending = true
+      //       this.disabled = false
+      //       this.second = 59
+      //     }
+      //   }, 1000)
+      // },
       getSelectList() {
         this.api.getRoleList().then((res) => {
           this.typeData = res.data
