@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding: 20px">
     <el-form
       ref="form"
       label-position="right"
@@ -7,6 +7,7 @@
       :model="form"
       style="width: 50%"
     >
+      <h2>配货单打印预览-测试数据模拟-宽20cm-长15cm</h2>
       <el-form-item v-if="printerList.length > 0" label="打印机">
         <el-select v-model="form.printerType" placeholder="请选择打印机">
           <el-option
@@ -22,30 +23,6 @@
         <el-button type="primary" @click="btnClickPrint(2)">立即打印</el-button>
       </el-form-item>
     </el-form>
-    <div style="padding: 20px">
-      <div style="position: relative; text-align: center">
-        <h2>客户配货单</h2>
-        <div style="position: absolute; top: 0; right: 0">批次号：112</div>
-      </div>
-      <div style="display: flex; justify-content: space-between">
-        <div>
-          客户名称： 河南商丘 | 琪琪 &nbsp;&nbsp;&nbsp;&nbsp;客户电话：
-          15236804776
-        </div>
-        <div>开单时间： 2023-04-15</div>
-      </div>
-      <div style="margin-bottom: 20px">客户地址：杭州市滨江区滨盛路 1 号</div>
-      <table border="1" cellpadding="0" cellspacing="0">
-        <tr>
-          <th>序号</th>
-          <th>款号|类型|商品详情及规格</th>
-        </tr>
-        <tr>
-          <td>January</td>
-          <td>$100</td>
-        </tr>
-      </table>
-    </div>
   </div>
 </template>
 <script>
@@ -59,6 +36,133 @@
           printerType: '',
           printerWidth: 500,
           printerHeight: 500,
+        },
+        object1: {
+          title: '客户配货单',
+          id: '112',
+          name: '河南商丘 | 琪琪',
+          phone: '15236804776',
+          time: '2023-04-15',
+          address: '杭州市滨江区滨盛路 1 号',
+          all_num: 40,
+          all_money: 1000,
+          discounts: 500,
+          end_money: 102500.02,
+          wechat: '15236804776',
+          alipay: '15236804776',
+          bank_card: '6228480000000000',
+          bank_card_name: '农行邱海军',
+          remark: '备注备注备注备注备注备注',
+          table: [
+            {
+              id: '1',
+              detail:
+                'WZ13008-1 | 散码 | 小狗连体两件套 | 白色：2；黑色：10；黄色：12件',
+              num: '32',
+              price: '44.52',
+              tagPrice: '55.00',
+              money: 80,
+            },
+            {
+              id: '2',
+              detail:
+                'WZ13008-1 | 散码 | 小狗连体两件套 | 白色：2；黑色：10；黄色：12件',
+              num: '32',
+              price: '44.52',
+              tagPrice: '55.00',
+              money: 80,
+            },
+            {
+              id: '1',
+              detail:
+                'WZ13008-1 | 散码 | 小狗连体两件套 | 白色：2；黑色：10；黄色：12件',
+              num: '32',
+              price: '44.52',
+              tagPrice: '55.00',
+              money: 80,
+            },
+            {
+              id: '2',
+              detail:
+                'WZ13008-1 | 散码 | 小狗连体两件套 | 白色：2；黑色：10；黄色：12件',
+              num: '32',
+              price: '44.52',
+              tagPrice: '55.00',
+              money: 80,
+            },
+            {
+              id: '1',
+              detail:
+                'WZ13008-1 | 散码 | 小狗连体两件套 | 白色：2；黑色：10；黄色：12件',
+              num: '32',
+              price: '44.52',
+              tagPrice: '55.00',
+              money: 80,
+            },
+            {
+              id: '2',
+              detail:
+                'WZ13008-1 | 散码 | 小狗连体两件套 | 白色：2；黑色：10；黄色：12件',
+              num: '32',
+              price: '44.52',
+              tagPrice: '55.00',
+              money: 80,
+            },
+            {
+              id: '1',
+              detail:
+                'WZ13008-1 | 散码 | 小狗连体两件套 | 白色：2；黑色：10；黄色：12件',
+              num: '32',
+              price: '44.52',
+              tagPrice: '55.00',
+              money: 80,
+            },
+            {
+              id: '2',
+              detail:
+                'WZ13008-1 | 散码 | 小狗连体两件套 | 白色：2；黑色：10；黄色：12件',
+              num: '32',
+              price: '44.52',
+              tagPrice: '55.00',
+              money: 80,
+            },
+            {
+              id: '1',
+              detail:
+                'WZ13008-1 | 散码 | 小狗连体两件套 | 白色：2；黑色：10；黄色：12件',
+              num: '32',
+              price: '44.52',
+              tagPrice: '55.00',
+              money: 80,
+            },
+            {
+              id: '2',
+              detail:
+                'WZ13008-1 | 散码 | 小狗连体两件套 | 白色：2；黑色：10；黄色：12件',
+              num: '32',
+              price: '44.52',
+              tagPrice: '55.00',
+              money: 80,
+            },
+            {
+              id: '1',
+              detail:
+                'WZ13008-1 | 散码 | 小狗连体两件套 | 白色：2；黑色：10；黄色：12件',
+              num: '32',
+              price: '44.52',
+              tagPrice: '55.00',
+              money: 80,
+            },
+            {
+              id: '2',
+              detail:
+                'WZ13008-1 | 散码 | 小狗连体两件套 | 白色：2；黑色：10；黄色：12件',
+              num: '32',
+              price: '44.52',
+              tagPrice: '55.00',
+              money: 80,
+            },
+          ],
         },
       }
     },
@@ -79,23 +183,18 @@
     },
     methods: {
       // 商品条码打印
+      // ()
       btnClickPrint: function (type) {
-        let htmlStr = ''
-        htmlStr += '<div style="position: relative; text-align: center">'
-        htmlStr += '<h2>客户配货单</h2>'
-        htmlStr +=
-          '<div style="position: absolute; top: 0; right: 0">批次号：112</div>'
-        htmlStr += '</div>'
-        htmlStr += '<div style="display: flex; justify-content: space-between">'
-        htmlStr +=
-          '<div>客户名称： 河南商丘 | 琪琪 &nbsp;&nbsp;&nbsp;&nbsp;客户电话： 15236804776</div>'
-        htmlStr += '<div>开单时间： 2023-04-15</div>'
-        htmlStr += '</div>'
-        htmlStr += '<div>客户地址：杭州市滨江区滨盛路 1 号</div>'
+        let htmlStr = this.print.getDistributionGoodsHtml(this.object1)
         const LODOP = getLodop() //调用getLodop获取LODOP对象
         LODOP.PRINT_INIT('打印任务名') //首先一个初始化语句
+        LODOP.SET_PRINT_PAGESIZE(1, 2000, 1500, '') //设置纸张为80mm*60mm
         LODOP.ADD_PRINT_HTM(10, 10, '100%', '100%', htmlStr)
-        LODOP.PREVIEW() //最后一个打印(或预览、维护、设计)语句
+        if (type == 1) {
+          LODOP.PREVIEW() // 预览
+        } else {
+          LODOP.PRINT() // 打印
+        }
       },
     },
   }

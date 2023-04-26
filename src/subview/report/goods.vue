@@ -270,6 +270,7 @@
               <el-radio-button :label="2">按规格</el-radio-button>
             </el-radio-group>
             <el-button
+              v-if="!goodsForm1.merge"
               size="small"
               style="margin-left: 10px"
               type="primary"
@@ -300,6 +301,7 @@
         @selectRows="handleSelectionChange"
       >
         <template #List>
+          <el-table-column align="center" type="selection" width="40" />
           <el-table-column align="center" label="排行" type="index" width="60">
             <template slot-scope="scope">
               <QYRanking
@@ -737,7 +739,14 @@
       // 列表导出
       async handleDerive() {
         let temp = JSON.parse(JSON.stringify(this.goodsForm1))
-        let ids = this.selectRowsId.map((item) => item.id)
+        let ids = []
+        this.selectRowsId.forEach((item) => {
+          if (this.goodsForm1.goods_type == 2) {
+            ids.push(item.stock_id)
+          } else {
+            ids.push(item.id)
+          }
+        })
         temp.ids = ids
         const { code, data } = await this.api.getGoodsRankExport(temp)
         if (code == 200) {

@@ -205,9 +205,6 @@
       ...mapGetters({
         avatar: 'user/avatar',
         username: 'user/username',
-      }),
-      ...mapGetters({
-        avatar: 'user/avatar',
         phone: 'user/phone',
       }),
     },

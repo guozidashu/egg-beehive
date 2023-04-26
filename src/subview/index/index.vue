@@ -47,7 +47,7 @@
                   margin: 10px 0 0 50px;
                 "
               >
-                <div style="margin-top: -12px">杭州洛一服饰有限公司</div>
+                <div style="margin-top: -12px">{{ company_name }}</div>
                 <div
                   style="
                     position: absolute;
@@ -660,6 +660,7 @@
   </div>
 </template>
 <script>
+  import { mapGetters } from 'vuex'
   // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   import CustomerService from '@/subview/components/Edit/CustomerService'
@@ -831,7 +832,17 @@
         monitor_statistics: {},
       }
     },
+    computed: {
+      ...mapGetters({
+        company_name: 'user/company_name',
+      }),
+    },
     watch: {
+      company_name: {
+        handler: function () {},
+        deep: true,
+        immediate: true,
+      },
       // 监听时间变化
       time: {
         handler: function (newval) {

@@ -552,7 +552,7 @@
       :limit="imgNum"
       name="file"
       :size="2"
-      :upload-type="1"
+      :upload-type="0"
       url="/upload"
       @submitUpload="getSon1"
     />
@@ -562,7 +562,7 @@
       :limit="50"
       name="file"
       :size="2"
-      :upload-type="1"
+      :upload-type="0"
       url="/upload"
       @submitUpload="getSon2"
     />

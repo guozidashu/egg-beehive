@@ -50,7 +50,7 @@
       :limit="1"
       name="file"
       :size="2"
-      :upload-type="1"
+      :upload-type="0"
       url="/upload"
       @submitUpload="getSon"
     />

@@ -65,6 +65,30 @@
               </el-radio-group>
               <div style="color: gray">退货数量不允许超过发货数量</div>
             </el-form-item>
+            <el-form-item label="公司logo" prop="company_logo">
+              <div style="display: flex">
+                <div>
+                  <el-button
+                    size="small"
+                    style="margin: 0 10px 0 0"
+                    type="primary"
+                    @click="handleShow()"
+                  >
+                    图片上传
+                  </el-button>
+                </div>
+                <el-image
+                  v-if="form1.company_logo"
+                  :src="form1.company_logo"
+                  style="width: 80px; height: 80px"
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
+              </div>
+            </el-form-item>
+            <el-form-item label="公司名称" prop="company_name">
+              <el-input v-model="form1.company_name" style="width: 215px" />
+            </el-form-item>
             <el-form-item label="公司地址" prop="company_address">
               <el-input v-model="form1.company_address" style="width: 500px" />
             </el-form-item>
@@ -372,12 +396,24 @@
         </el-tab-pane> -->
       </el-tabs>
     </el-card>
+    <vab-upload
+      ref="vabUpload"
+      :limit="1"
+      name="file"
+      :size="2"
+      url="/upload"
+      @submitUpload="getSon"
+    />
   </div>
 </template>
 
 <script>
+  import VabUpload from '@/extra/VabUpload'
   export default {
     name: 'SystemModule',
+    components: {
+      VabUpload,
+    },
     data() {
       return {
         activeName: 'ERP配置',
@@ -390,6 +426,8 @@
           arrears_type: 1, //0开单扣款1发货扣款
           unstock: 1, //是否允许负库存1
           company_address: null, //公司地址
+          company_name: null, //公司名称
+          company_logo: null, //公司logo
           company_tel: null, //电话
           company_wechat: null, //微信
           company_alipay: null, //支付宝
@@ -414,6 +452,20 @@
             {
               required: true,
               message: '请输入公司地址',
+              trigger: 'blur',
+            },
+          ],
+          company_name: [
+            {
+              required: true,
+              message: '请输入公司名称',
+              trigger: 'blur',
+            },
+          ],
+          company_logo: [
+            {
+              required: true,
+              message: '请输入公司logo',
               trigger: 'blur',
             },
           ],
@@ -710,6 +762,13 @@
       this.fetchData()
     },
     methods: {
+      getSon(data) {
+        this.form1.company_logo = data[0]
+        this.$forceUpdate()
+      },
+      handleShow() {
+        this.$refs['vabUpload'].handleShow()
+      },
       handleClick() {
         this.fetchData()
       },

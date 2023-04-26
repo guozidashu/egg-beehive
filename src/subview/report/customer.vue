@@ -272,6 +272,7 @@
           @selectRows="handleSelectionChange"
         >
           <template #List>
+            <el-table-column align="center" type="selection" width="40" />
             <el-table-column
               align="center"
               label="排行"
