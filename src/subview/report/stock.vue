@@ -225,6 +225,25 @@
               style="width: 150px"
             >
               <el-option label="按总库存排序" value="sum_stock_num" />
+              <el-option label="按自主仓库存" value="sum_xh_num" />
+              <el-option
+                v-if="!goodsForm1.not_jst"
+                label="按聚水潭可用库存"
+                value="sum_jst_num"
+              />
+              <el-option
+                v-if="!goodsForm1.not_zsc"
+                label="按生成中库存"
+                value="sum_zsc_num"
+              />
+              <el-option label="按总库存成本" value="stock_cost_price" />
+              <el-option label="按自主仓库存成本" value="xh_stock_cost_price" />
+              <el-option
+                v-if="!goodsForm1.not_zsc"
+                label="按生产中库存成本"
+                value="zsc_stock_cost_price"
+              />
+              <el-option label="欠货件数" value="owe_num" />
             </el-select>
             <el-radio-group
               v-model="goodsForm1.sort"
