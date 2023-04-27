@@ -186,6 +186,9 @@
               <el-checkbox v-model="goodsForm1.not_jst">
                 不含聚水潭可用库存
               </el-checkbox>
+              <el-checkbox v-model="goodsForm1.occupy">
+                包含欠货件数（订单占有数）
+              </el-checkbox>
             </div>
             <div v-if="goodsForm1.goods_type == 1" style="display: flex">
               <div>
@@ -417,18 +420,30 @@
             align="center"
             label="总库存成本"
             prop="stock_cost_price"
-          />
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.stock_cost_price | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="自主仓库库存成本"
             prop="xh_stock_cost_price"
-          />
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.xh_stock_cost_price | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             v-if="!goodsForm1.not_zsc"
             align="center"
             label="生产中库存成本"
             prop="zsc_stock_cost_price"
-          />
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.zsc_stock_cost_price | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column align="center" label="欠货件数" prop="owe_num" />
           <el-table-column align="center" label="库存占比" prop="stock_rate" />
           <el-table-column align="center" prop="sale_day">
@@ -534,6 +549,7 @@
           ids: [],
           not_zsc: false,
           not_jst: false,
+          occupy: false,
         },
         // 卡片、饼图 查询条件
         goodsForm: {
@@ -827,6 +843,7 @@
           ids: [],
           not_zsc: false,
           not_jst: false,
+          occupy: false,
         }
       },
       // 分页

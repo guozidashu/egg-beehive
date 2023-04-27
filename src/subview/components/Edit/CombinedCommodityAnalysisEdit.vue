@@ -91,6 +91,11 @@
             <el-table-column label="自主仓库存" prop="xh_num" />
             <el-table-column label="聚水潭可用库存" prop="sum_jst_num" />
             <el-table-column label="生产中库存" prop="zsc_num" />
+            <el-table-column
+              v-if="query.viewType == 'stock'"
+              label="欠货件数"
+              prop="owe_num"
+            />
           </el-table>
         </template>
       </el-table-column>
@@ -154,6 +159,12 @@
         prop="sum_jst_num"
       />
       <el-table-column align="center" label="生产中库存" prop="sum_zsc_num" />
+      <el-table-column
+        v-if="query.viewType == 'stock'"
+        align="center"
+        label="欠货件数"
+        prop="owe_num"
+      />
       <el-table-column
         align="center"
         fixed="right"

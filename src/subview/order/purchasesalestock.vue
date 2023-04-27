@@ -96,8 +96,8 @@
               &nbsp; &nbsp; | &nbsp; 指标说明
               <el-popover placement="right" trigger="hover">
                 <div style="font-size: 12px">
-                  实际库存 = 期初数量 + 生产入库 - 生产退货 - 销售发货 +
-                  销售退货 +- 调整
+                  实际库存 = 生产入库 - 生产退货 - 销售发货 + 销售退货 &plusmn;
+                  调整
                 </div>
                 <div style="font-size: 12px">
                   可售库存 = 实际库存 -订单占有数（待发货）
