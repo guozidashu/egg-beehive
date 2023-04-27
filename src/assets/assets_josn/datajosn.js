@@ -42,7 +42,7 @@ export default {
               const end = new Date(new Date().setHours(23, 59, 59, 59))
               const start = new Date(
                 new Date(new Date().setHours(0, 0, 0, 0)).getTime() -
-                  3600 * 1000 * 24 * 7
+                  3600 * 1000 * 24 * 6
               )
               picker.$emit('pick', [start, end])
             },
@@ -53,7 +53,7 @@ export default {
               const end = new Date(new Date().setHours(23, 59, 59, 59))
               const start = new Date(
                 new Date(new Date().setHours(0, 0, 0, 0)).getTime() -
-                  3600 * 1000 * 24 * 30
+                  3600 * 1000 * 24 * 29
               )
               picker.$emit('pick', [start, end])
             },

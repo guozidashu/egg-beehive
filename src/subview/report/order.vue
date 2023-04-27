@@ -119,7 +119,7 @@
           brand: null,
           year_id: null,
           season_id: null,
-          time: this.getPastTime(30),
+          time: this.getPastTime(29),
         },
         // 下拉框数据
         selectList: [],
@@ -312,7 +312,7 @@
           brand: null,
           year_id: null,
           season_id: null,
-          time: this.getPastTime(30),
+          time: this.getPastTime(29),
         }
       },
       // 获取下拉框数据

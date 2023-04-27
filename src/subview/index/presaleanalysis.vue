@@ -364,7 +364,7 @@
         },
         // 图表 查询条件
         form: {
-          time: this.getPastTime(30),
+          time: this.getPastTime(29),
           type: 1,
         },
       }
@@ -374,11 +374,11 @@
       'goodsForm.time': {
         handler: function (newval) {
           if (newval == '30天') {
-            this.form.time = this.getPastTime(30)
+            this.form.time = this.getPastTime(29)
           } else if (newval == '七天') {
             this.form.time = this.getWeenTime(6)
           } else if (newval == '90天') {
-            this.form.time = this.getPastTime(90)
+            this.form.time = this.getPastTime(89)
           }
           this.dateList = []
           this.dataAllList = {

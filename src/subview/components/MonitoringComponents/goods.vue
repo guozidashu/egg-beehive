@@ -275,7 +275,7 @@
         // 下拉框数据
         selectList: {},
         form: {
-          order_time: this.getPastTime(30),
+          order_time: this.getPastTime(29),
           page: 1,
           page_size: 20,
           keyword: null,
@@ -286,8 +286,8 @@
           gender: null, // 性别 1男2女3中
           season_id: null, // 季节id
           year_id: null, // 年份id
-          start_date: this.getPastTime(30)[0],
-          end_date: this.getPastTime(30)[1],
+          start_date: this.getPastTime(29)[0],
+          end_date: this.getPastTime(29)[1],
           sort_field: {
             key: 'sale_num', // 按销量 = sale_num 按销售额 = sale_amount 按拿货客户 = sale_customer_count 按价格 = goods_price 按上架时间 = goods_upper_time 按监控时间 = monitor_time
             sort: 'desc',
@@ -348,7 +348,7 @@
       },
       resetForm() {
         this.form = {
-          order_time: this.getPastTime(30),
+          order_time: this.getPastTime(29),
           page: 1,
           page_size: 20,
           keyword: null,
@@ -359,8 +359,8 @@
           gender: null, // 性别 1男2女3中
           season_id: null, // 季节id
           year_id: null, // 年份id
-          start_date: this.getPastTime(30)[0],
-          end_date: this.getPastTime(30)[1],
+          start_date: this.getPastTime(29)[0],
+          end_date: this.getPastTime(29)[1],
           sort_field: {
             key: 'sale_num', // 按销量 = sale_num 按销售额 = sale_amount 按拿货客户 = sale_customer_count 按价格 = goods_price 按上架时间 = goods_upper_time 按监控时间 = monitor_time
             sort: 'desc',

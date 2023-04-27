@@ -286,7 +286,7 @@
           keywords: '', //关键字
           page: 1,
           pageSize: 10,
-          order_time: this.getPastTime(30),
+          order_time: this.getPastTime(29),
           order_source: '0', //0 所有订单 1线下退货单 2线上退货单
           customer_name: '',
           is_return: false,
@@ -392,7 +392,7 @@
           keywords: '', //关键字
           page: 1,
           pageSize: 10,
-          order_time: this.getPastTime(30),
+          order_time: this.getPastTime(29),
           order_source: '0', //0 所有订单 1线下退货单 2线上退货单
           customer_name: '',
           is_return: false,

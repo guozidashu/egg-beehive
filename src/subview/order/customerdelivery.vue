@@ -281,7 +281,7 @@
           keywords: null, //关键字
           page: 1,
           pageSize: 10,
-          order_time: this.getPastTime(30),
+          order_time: this.getPastTime(29),
           is_return: true, //是否显示作废de
           sort: 'asc', //按照发货时间排序
           region: '1',
@@ -389,7 +389,7 @@
           keywords: null, //关键字
           page: 1,
           pageSize: 10,
-          order_time: this.getPastTime(30),
+          order_time: this.getPastTime(29),
           is_return: true, //是否显示作废de
           sort: 'asc', //按照发货时间排序
           region: '1',

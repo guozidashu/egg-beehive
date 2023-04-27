@@ -721,7 +721,7 @@
                 name: '前周',
               },
             ]
-            this.goodsForm.time = this.getPastTime(7)
+            this.goodsForm.time = this.getPastTime(6)
           } else if (newVal == '30天') {
             this.timeType = 3
             this.turnoverBranchList = [
@@ -741,7 +741,7 @@
                 name: '前月',
               },
             ]
-            this.goodsForm.time = this.getPastTime(30)
+            this.goodsForm.time = this.getPastTime(29)
           }
         },
         deep: true,

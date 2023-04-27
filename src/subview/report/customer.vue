@@ -490,7 +490,7 @@
           sort: 'desc', //asc正序 desc倒序
           page: 1,
           pageSize: 50,
-          time: this.getPastTime(30),
+          time: this.getPastTime(29),
         },
         // 列表条数 ，分页加载状态，列表类型，列表数据
         total: 0,
@@ -503,7 +503,7 @@
         // 顶部卡片，地图,饼图 查询条件
         goodsForm: {
           // source: null,
-          time: this.getPastTime(30),
+          time: this.getPastTime(29),
         },
         // 员工下拉框
         employeeList: [],
@@ -699,9 +699,9 @@
           } else if (newVal == '近7天') {
             this.goodsForm1.time = this.getWeenTime()
           } else if (newVal == '近15天') {
-            this.goodsForm1.time = this.getPastTime(15)
+            this.goodsForm1.time = this.getPastTime(14)
           } else if (newVal == '近30天') {
-            this.goodsForm1.time = this.getPastTime(30)
+            this.goodsForm1.time = this.getPastTime(29)
           }
         },
         deep: true,
@@ -806,14 +806,14 @@
           sort: 'desc', //asc正序 desc倒序
           page: 1,
           pageSize: 50,
-          time: this.getPastTime(30),
+          time: this.getPastTime(29),
         }
       },
       // 重置顶部卡片，地图,饼图 查询条件
       resetForm() {
         this.goodsForm = {
           // source: null,
-          time: this.getPastTime(30),
+          time: this.getPastTime(29),
         }
       },
       // 获取下拉框数据

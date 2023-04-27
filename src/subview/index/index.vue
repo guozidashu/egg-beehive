@@ -910,11 +910,11 @@
       async get_goods_soar(value) {
         let time = []
         if (value == '30天') {
-          time = this.getPastTime(30)
+          time = this.getPastTime(29)
         } else if (value == '七天') {
           time = this.getWeenTime(6)
         } else if (value == '15天') {
-          time = this.getPastTime(15)
+          time = this.getPastTime(14)
         }
         const { data } = await this.api.getHomeGoodsSoarRank({
           start_date: time[0],

@@ -224,15 +224,15 @@
         // 下拉框数据
         selectList: {},
         form: {
-          order_time: this.getPastTime(30),
+          order_time: this.getPastTime(29),
           page: 1,
           page_size: 20,
           keyword: null,
           type_id: null, // 类型id
           level_id: null, // 等级id
           sex: null, // 性别
-          start_date: this.getPastTime(30)[0],
-          end_date: this.getPastTime(30)[1],
+          start_date: this.getPastTime(29)[0],
+          end_date: this.getPastTime(29)[1],
           sort_field: {
             key: 'sale_num', // 按拿货金额 = sale_amount 按拿货件数 = sale_num 按拿货次数 = sale_count 按动销商品数 = moving_goods_count 按监控时间 = monitor_time
             sort: 'desc',
@@ -283,15 +283,15 @@
       },
       resetForm() {
         this.form = {
-          order_time: this.getPastTime(30),
+          order_time: this.getPastTime(29),
           page: 1,
           page_size: 20,
           keyword: null,
           type_id: null, // 类型id
           level_id: null, // 等级id
           sex: null, // 性别
-          start_date: this.getPastTime(30)[0],
-          end_date: this.getPastTime(30)[1],
+          start_date: this.getPastTime(29)[0],
+          end_date: this.getPastTime(29)[1],
           sort_field: {
             key: 'sale_num', // 按拿货金额 = sale_amount 按拿货件数 = sale_num 按拿货次数 = sale_count 按动销商品数 = moving_goods_count 按监控时间 = monitor_time
             sort: 'desc',

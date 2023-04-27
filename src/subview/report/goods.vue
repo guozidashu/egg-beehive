@@ -505,7 +505,7 @@
         page: 1,
         pageSize: 50,
         goodsForm1: {
-          time: this.getPastTime(30),
+          time: this.getPastTime(29),
           page: 1,
           pageSize: 50,
           goods_type: 1,
@@ -533,7 +533,7 @@
           season: null,
           year: null,
           brand: null,
-          time: this.getPastTime(30),
+          time: this.getPastTime(29),
         },
         // 折线图 日期轴
         dateList: [],
@@ -714,9 +714,9 @@
           } else if (newVal == '近7天') {
             this.goodsForm1.time = this.getWeenTime()
           } else if (newVal == '近15天') {
-            this.goodsForm1.time = this.getPastTime(15)
+            this.goodsForm1.time = this.getPastTime(14)
           } else if (newVal == '近30天') {
-            this.goodsForm1.time = this.getPastTime(30)
+            this.goodsForm1.time = this.getPastTime(29)
           }
         },
         deep: true,
@@ -780,13 +780,13 @@
           season: null,
           year: null,
           brand: null,
-          time: this.getPastTime(30),
+          time: this.getPastTime(29),
         }
       },
       // 表格 查询条件重置
       resetForm1() {
         this.goodsForm1 = {
-          time: this.getPastTime(30),
+          time: this.getPastTime(29),
           page: 1,
           pageSize: 50,
           goods_type: 1,

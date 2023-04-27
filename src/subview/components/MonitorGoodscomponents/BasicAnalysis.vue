@@ -277,7 +277,7 @@
           ],
         },
         // 头部数据
-        headTime: this.getPastTime(30),
+        headTime: this.getPastTime(29),
         // 头部卡片
         card_list: [
           {
@@ -326,7 +326,7 @@
         // 最近拿货客户
         customer_list: [],
         // 图表数据
-        chartTime: this.getPastTime(30),
+        chartTime: this.getPastTime(29),
       }
     },
     watch: {

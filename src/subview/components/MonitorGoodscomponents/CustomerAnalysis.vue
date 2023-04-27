@@ -223,14 +223,14 @@
         page: 1,
         page_size: 20,
         form: {
-          time: this.getPastTime(30), // 开始日期
+          time: this.getPastTime(29), // 开始日期
           page: 1,
           page_size: 20,
           goods_id: this.goodsId, // 商品id
           customer_grade: null, // 客户等级
           customer_type: null, // 客户分类
-          start_date: this.getPastTime(30)[0], // 开始日期
-          end_date: this.getPastTime(30)[1], // 结束日期
+          start_date: this.getPastTime(29)[0], // 开始日期
+          end_date: this.getPastTime(29)[1], // 结束日期
           keyword: '', // 关键字搜索
           sort_field: {
             key: 'sale_num', // 拿货数量 = sale_num 最新合作 = customer_create_time
@@ -304,9 +304,9 @@
           goods_id: 710, // 商品id
           customer_grade: null, // 客户等级
           customer_type: null, // 客户分类
-          start_date: this.getPastTime(30)[0], // 开始日期
-          end_date: this.getPastTime(30)[1], // 结束日期
-          time: this.getPastTime(30), // 开始日期
+          start_date: this.getPastTime(29)[0], // 开始日期
+          end_date: this.getPastTime(29)[1], // 结束日期
+          time: this.getPastTime(29), // 开始日期
           keyword: '', // 关键字搜索
           sort_field: {
             key: 'sale_num', // 拿货数量 = sale_num 最新合作 = customer_create_time

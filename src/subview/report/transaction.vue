@@ -84,7 +84,7 @@
       return {
         // 卡片折线图查询条件
         goodsForm: {
-          time: this.getPastTime(30),
+          time: this.getPastTime(29),
         },
         // 折线图数据 y轴 x轴 配置
         dateList: [],
@@ -232,7 +232,7 @@
       // 重置
       resetForm() {
         this.goodsForm = {
-          time: this.getPastTime(30),
+          time: this.getPastTime(29),
         }
       },
       // 获取卡片数据
