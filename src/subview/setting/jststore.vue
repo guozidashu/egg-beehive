@@ -52,7 +52,10 @@
           >
             同步聚水潭店铺
           </el-button>
-          <el-button plain type="info">公司编号：{{ list[1].co_id }}</el-button>
+          <el-button plain type="info">
+            公司编号：
+            <span v-if="list.length > 0">{{ list[1].co_id }}</span>
+          </el-button>
         </div>
         <div style="padding-top: 10px">
           平台授权说明

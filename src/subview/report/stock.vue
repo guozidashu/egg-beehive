@@ -23,6 +23,16 @@
         <!-- 查询条件 -->
         <span style="margin-top: 10px; font-size: 16px">库存概览</span>
         <el-form-item style="float: right; margin-right: 0; font-size: 12px">
+          <el-form-item label="库存类型:" prop="type">
+            <el-select
+              v-model="goodsForm.type"
+              placeholder="请选择仓库类型"
+              style="width: 120px"
+            >
+              <el-option label="自有仓" :value="1" />
+              <el-option label="聚水潭仓" :value="2" />
+            </el-select>
+          </el-form-item>
           <el-form-item label="年份:" prop="year">
             <el-select
               v-model="goodsForm.year"
@@ -177,7 +187,7 @@
                 不含聚水潭可用库存
               </el-checkbox>
             </div>
-            <div style="display: flex">
+            <div v-if="goodsForm1.goods_type == 1" style="display: flex">
               <div>
                 合并同款
                 <el-popover placement="right" trigger="hover">
@@ -238,12 +248,14 @@
               />
               <el-option label="按总库存成本" value="stock_cost_price" />
               <el-option label="按自主仓库存成本" value="xh_stock_cost_price" />
+
               <el-option
                 v-if="!goodsForm1.not_zsc"
                 label="按生产中库存成本"
                 value="zsc_stock_cost_price"
               />
               <el-option label="欠货件数" value="owe_num" />
+              <el-option label="库存可售天数" value="sale_day" />
             </el-select>
             <el-radio-group
               v-model="goodsForm1.sort"
@@ -260,11 +272,7 @@
               prefix-icon="el-icon-search"
               style="width: 150px; margin-right: 10px"
             />
-            <el-radio-group
-              v-if="!goodsForm1.merge"
-              v-model="goodsForm1.goods_type"
-              style="width: 200"
-            >
+            <el-radio-group v-model="goodsForm1.goods_type" style="width: 200">
               <el-radio-button :label="1">按款号</el-radio-button>
               <el-radio-button :label="2">按规格</el-radio-button>
             </el-radio-group>
@@ -532,6 +540,7 @@
           season: null,
           year: null,
           brand: null,
+          type: null,
         },
         // 卡片宽度，卡片数据
         widthStyle: '20%',
@@ -736,6 +745,7 @@
         this.queryCondition = JSON.parse(JSON.stringify(this.goodsForm1))
         this.queryCondition.goods_id = row.id
         this.queryCondition.viewType = 'stock'
+        this.queryCondition.sn = ''
         this.$refs['edit'].showEdit(row)
       },
       // 款式联调饼图初始化
@@ -792,6 +802,7 @@
           season: null,
           year: null,
           brand: null,
+          type: null,
         }
       },
       // 列表重置

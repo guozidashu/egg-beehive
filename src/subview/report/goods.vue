@@ -193,7 +193,7 @@
                 减去退货数
               </el-checkbox>
             </div>
-            <div style="display: flex">
+            <div v-if="goodsForm1.goods_type == 1" style="display: flex">
               <div>
                 合并同款
                 <el-popover placement="right" trigger="hover">
@@ -261,11 +261,7 @@
               prefix-icon="el-icon-search"
               style="width: 150px; margin-right: 10px"
             />
-            <el-radio-group
-              v-if="!goodsForm1.merge"
-              v-model="goodsForm1.goods_type"
-              style="width: 200"
-            >
+            <el-radio-group v-model="goodsForm1.goods_type" style="width: 200">
               <el-radio-button :label="1">按款号</el-radio-button>
               <el-radio-button :label="2">按规格</el-radio-button>
             </el-radio-group>
@@ -763,6 +759,7 @@
         this.queryCondition.merge = false
         this.queryCondition.goods_id = row.id
         this.queryCondition.viewType = 'goods'
+        this.queryCondition.sn = ''
         this.$refs['edit'].showEdit(row)
       },
       // 单品分析

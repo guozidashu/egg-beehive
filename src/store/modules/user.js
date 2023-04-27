@@ -228,7 +228,7 @@ const actions = {
       // 如不使用avatar头像,可删除以下代码
       if (data.list.avatar) commit('setAvatar', data.list.avatar)
       if (data.list.phone) commit('setPhone', data.list.phone)
-      if (data.list.company_name)
+      if (data.list.company_name != '')
         commit('setCompanyName', data.list.company_name)
 
       // 如不使用roles权限控制,可删除以下代码

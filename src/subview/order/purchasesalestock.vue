@@ -100,7 +100,7 @@
                   销售退货 +- 调整
                 </div>
                 <div style="font-size: 12px">
-                  可售库存 = 实际库存 -订单占有数（代发货）
+                  可售库存 = 实际库存 -订单占有数（待发货）
                 </div>
                 <vab-icon
                   slot="reference"

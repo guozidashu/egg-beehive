@@ -310,7 +310,9 @@
       // 获取列表
       async getList() {
         this.state = true
-        const { data } = await this.api.getMonitorSpecList(this.form)
+        let temp = JSON.parse(JSON.stringify(this.form))
+        temp.goods_id = this.goodsId
+        const { data } = await this.api.getMonitorSpecList(temp)
         this.total = data.total
         this.tableData = data.list
         this.state = false

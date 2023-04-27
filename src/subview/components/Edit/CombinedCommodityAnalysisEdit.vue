@@ -65,7 +65,8 @@
         </div>
         <div style="margin-right: 20px">
           <div style="margin-bottom: 20px; font-size: 14px; font-weight: 600">
-            库存合计
+            <span v-if="queryCondition.viewType == 'goods'">现货库存合计</span>
+            <span v-else>库存合计</span>
           </div>
           <div style="font-size: 20px; font-weight: 600">
             {{ form.all_sum_xh }}
@@ -87,7 +88,8 @@
             <el-table-column label="颜色" prop="color_name" />
             <el-table-column label="尺码" prop="size_name" />
             <el-table-column label="销售件数" prop="sum_num" />
-            <el-table-column label="现货库存" prop="xh_num" />
+            <el-table-column label="自主仓库存" prop="xh_num" />
+            <el-table-column label="聚水潭可用库存" prop="sum_jst_num" />
             <el-table-column label="生产中库存" prop="zsc_num" />
           </el-table>
         </template>
@@ -145,7 +147,12 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="销售件数" prop="sum_num" />
-      <el-table-column align="center" label="现货库存" prop="sum_xh_num" />
+      <el-table-column align="center" label="自主仓库存" prop="sum_xh_num" />
+      <el-table-column
+        align="center"
+        label="聚水潭可用库存"
+        prop="sum_jst_num"
+      />
       <el-table-column align="center" label="生产中库存" prop="sum_zsc_num" />
       <el-table-column
         align="center"

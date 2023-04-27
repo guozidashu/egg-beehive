@@ -113,7 +113,7 @@
       <!-- 菜单 -->
       <el-menu
         class="el-menu-vertical-demo menu_qy"
-        default-active="1-1"
+        :default-active="menu_select"
         style="width: 200px"
         @select="handleSelect"
       >
@@ -201,7 +201,7 @@
           },
         ],
         type: false,
-        menu_select: '1-1',
+        menu_select: null,
         // 商品数据
         form: {},
         // 选中图片地址
@@ -252,6 +252,8 @@
       drawerInof: {
         handler: function (newVal) {
           this.getGoodsDetails()
+          this.menu_select = '1-1'
+          this.$forceUpdate()
         },
         deep: true,
         immediate: true,

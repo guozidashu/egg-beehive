@@ -669,7 +669,7 @@
     mixins: [datajosn],
     data() {
       return {
-        time: '七天',
+        time: '30天',
         // 客服弹窗
         centerDialogVisible: false,
         // 走马灯数组

@@ -19,7 +19,7 @@
             关联业务
           </span>
           <el-image
-            src="../../assets/quanyu.png"
+            src="https://oss.business.quanyu123.com//1531842ac635cda7ebbf96815fdc9012.png"
             style="
               width: 20px;
               height: 20px;
@@ -28,7 +28,7 @@
             "
           />
           <el-image
-            src="../../assets/quanyubao.png"
+            src="https://oss.business.quanyu123.com//ecfda3ba30f96ce39513f9c6a3885cc2.png"
             style="
               width: 20px;
               height: 20px;
@@ -37,7 +37,7 @@
             "
           />
           <el-image
-            src="../../assets/shangcheng.png"
+            src="https://oss.business.quanyu123.com/8d6c94829d8639bdf8c09ab14bb0bc22.png"
             style="width: 20px; height: 20px; border-radius: 50%"
           />
         </div>
@@ -73,7 +73,7 @@
           >
             <div style="padding: 10px 0; font-size: 14px; font-weight: 600">
               <el-image
-                src="../../assets/quanyu.png"
+                src="https://oss.business.quanyu123.com//1531842ac635cda7ebbf96815fdc9012.png"
                 style="width: 20px; height: 20px"
               />
               <span style="position: relative; top: -5px; left: 5px">
@@ -101,7 +101,7 @@
           >
             <div style="padding: 10px 0; font-size: 14px; font-weight: 600">
               <el-image
-                src="../../assets/shangcheng.png"
+                src="https://oss.business.quanyu123.com//8d6c94829d8639bdf8c09ab14bb0bc22.png"
                 style="width: 20px; height: 20px"
               />
               <span style="position: relative; top: -5px; left: 5px">
@@ -129,7 +129,7 @@
           >
             <div style="padding: 10px 0; font-size: 14px; font-weight: 600">
               <el-image
-                src="../../assets/yanfa.png"
+                src="https://oss.business.quanyu123.com//303082ae31cb55dbb89ac2be4f41180d.png"
                 style="width: 20px; height: 20px"
               />
               <span style="position: relative; top: -5px; left: 5px">
@@ -157,7 +157,7 @@
           >
             <div style="padding: 10px 0; font-size: 14px; font-weight: 600">
               <el-image
-                src="../../assets/quanyubao.png"
+                src="https://oss.business.quanyu123.com//ecfda3ba30f96ce39513f9c6a3885cc2.png"
                 style="width: 20px; height: 20px"
               />
               <span style="position: relative; top: -5px; left: 5px">
@@ -186,7 +186,7 @@
           >
             <div style="padding: 10px 0; font-size: 14px; font-weight: 600">
               <el-image
-                src="../../assets/gendan.png"
+                src="https://oss.business.quanyu123.com//4c85d0ddfb19a58df2f2c88d748c3fec.png"
                 style="width: 20px; height: 20px"
               />
 

@@ -40,10 +40,10 @@
               <div style="margin-left: 10px">
                 <div style="margin: 5px 0 0 0">{{ item.customer_name }}</div>
                 <div style="margin: 10px 0 0 0; color: gray">
-                  普通会员&nbsp;|&nbsp;零售店
+                  {{ item.level_name }}&nbsp;|&nbsp;{{ item.type_name }}
                 </div>
                 <div style="margin: 10px 0 0 0; color: gray">
-                  加入时间&nbsp;2020-02-02 12:12:12
+                  加入时间&nbsp;{{ item.customer_monitor_time }}
                 </div>
               </div>
             </div>
@@ -61,7 +61,7 @@
     >
       <div style="margin-top: 10px">合作客户列表</div>
       <el-date-picker
-        v-model="time"
+        v-model="form.time"
         align="right"
         :clearable="false"
         :default-time="['00:00:00', '23:59:59']"
@@ -86,14 +86,14 @@
     >
       <div style="display: flex">
         <QYPopover
-          v-model="form.brand"
-          :list="selectList.brand"
-          :name="'销售渠道'"
+          v-model="form.customer_grade"
+          :list="selectList.customer_grade"
+          :name="'客户等级'"
         />
         <QYPopover
-          v-model="form.year"
-          :list="selectList.year"
-          :name="'带货风格'"
+          v-model="form.customer_type"
+          :list="selectList.customer_type"
+          :name="'客户分类'"
         />
       </div>
       <div>
@@ -106,7 +106,7 @@
           size="small"
           style="margin-left: 10px"
           type="primary"
-          @click="resetForm1('goodsForm1')"
+          @click="resetForm()"
         >
           重置
         </el-button>
@@ -162,20 +162,35 @@
           label="加入时间"
           prop="customer_create_time"
           sortable="true"
-        />
+        >
+          <template #default="{ row }">
+            {{ row.customer_create_time | formatTime }}
+          </template>
+        </el-table-column>
         <el-table-column align="center" fixed="right" label="操作" width="150">
           <template #default="{ row }">
-            <el-button type="text" @click="handleDetail(row)">
+            <el-button
+              v-if="row.monitor_status == 0"
+              type="text"
+              @click="Monitor(row.customer_id, 1)"
+            >
               监控客户
+            </el-button>
+            <el-button
+              v-if="row.monitor_status == 1"
+              type="text"
+              @click="Monitor(row.customer_id, 2)"
+            >
+              取消监控
             </el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
         background
-        :current-page="form.page"
+        :current-page="page"
         :layout="'total, sizes, prev, pager, next, jumper'"
-        :page-size="form.page_size"
+        :page-size="page_size"
         :page-sizes="[10, 20, 50, 100]"
         :total="total"
         @current-change="handleCurrentChange"
@@ -204,11 +219,16 @@
         cooperate_customer_num: 0,
         selectList: [],
         // 列表查询条件
-        time: this.getPastTime(30),
+        formTemp: null,
+        page: 1,
+        page_size: 20,
         form: {
+          time: this.getPastTime(30), // 开始日期
           page: 1,
           page_size: 20,
-          goods_id: 710, // 商品id
+          goods_id: this.goodsId, // 商品id
+          customer_grade: null, // 客户等级
+          customer_type: null, // 客户分类
           start_date: this.getPastTime(30)[0], // 开始日期
           end_date: this.getPastTime(30)[1], // 结束日期
           keyword: '', // 关键字搜索
@@ -223,21 +243,28 @@
       }
     },
     watch: {
-      'form.keyword'() {
-        this.form.page = 1
-        this.getList()
-      },
-      time: {
-        handler: function (newval) {
-          this.form.start_date = newval[0]
-          this.form.end_date = newval[1]
-          this.form.page = 1
+      form: {
+        handler: function (newVal) {
+          this.formTemp = JSON.parse(JSON.stringify(newVal))
+          if (this.pageState) {
+            this.formTemp.page = newVal.page
+            this.formTemp.page_size = newVal.page_size
+            this.page = newVal.page
+            this.page_size = newVal.page_size
+          } else {
+            this.formTemp.page = 1
+            this.formTemp.page_size = 20
+            this.page = 1
+            this.page_size = 20
+          }
           this.getList()
+          this.pageState = false
         },
         deep: true,
       },
     },
     created() {
+      this.getTypeList()
       this.get_recommended_monitoring_customer()
       this.getHead()
       this.getList()
@@ -258,17 +285,34 @@
       // 获取下拉框数据 假数据
       async getTypeList() {
         const { data } = await this.api.getCommonAllList({
-          type: 'brand,season,year,band,category,agegroup,size',
+          type: 'customer_grade,customer_type',
         })
         this.selectList = data
       },
       handleCurrentChange(val) {
+        this.pageState = true
         this.form.page = val
-        this.getList()
       },
       handleSizeChange(val) {
+        this.pageState = true
         this.form.page_size = val
-        this.getList()
+      },
+      resetForm() {
+        this.form = {
+          page: 1,
+          page_size: 20,
+          goods_id: 710, // 商品id
+          customer_grade: null, // 客户等级
+          customer_type: null, // 客户分类
+          start_date: this.getPastTime(30)[0], // 开始日期
+          end_date: this.getPastTime(30)[1], // 结束日期
+          time: this.getPastTime(30), // 开始日期
+          keyword: '', // 关键字搜索
+          sort_field: {
+            key: 'sale_num', // 拿货数量 = sale_num 最新合作 = customer_create_time
+            sort: 'asc',
+          },
+        }
       },
       // 排序类型
       sortChange(column) {
@@ -286,12 +330,43 @@
       // 获取列表数据
       async getList() {
         this.state = true
+        if (this.formTemp == null) {
+          this.formTemp = JSON.parse(JSON.stringify(this.form))
+        }
+        this.formTemp.start_date = this.formTemp.time[0]
+        this.formTemp.end_date = this.formTemp.time[1]
         const { data } = await this.api.getMonitorCooperateCustomerList(
-          this.form
+          this.formTemp
         )
         this.total = data.total
         this.tableData = data.list
         this.state = false
+      },
+      // 监控客户
+      async Monitor(id, type) {
+        if (type == 1) {
+          const { code } = await this.api.editMonitorAdd({
+            look_type: 1, // 监控类型 1=客户 2=商品
+            look_id: id, // 客户id或者商品id
+          })
+          if (code == 200) {
+            this.$baseMessage('监控成功', 'success', 'vab-hey-message-success')
+            this.getList()
+          }
+        } else if (type == 2) {
+          const { code } = await this.api.delCancellation({
+            look_type: 1, // 监控类型 1=客户 2=商品
+            look_id: id, // 客户id或者商品id
+          })
+          if (code == 200) {
+            this.$baseMessage(
+              '取消监控成功',
+              'success',
+              'vab-hey-message-success'
+            )
+            this.getList()
+          }
+        }
       },
     },
   }

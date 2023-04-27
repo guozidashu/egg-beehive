@@ -180,7 +180,7 @@
         <el-table-column align="center" label="总库存" prop="goods_price" />
         <el-table-column align="center" label="自有仓库存" prop="sale_num" />
         <el-table-column align="center" label="聚水潭实际库存" prop="stock" />
-        <el-table-column align="center" label="代发货件数" prop="zsc_num" />
+        <el-table-column align="center" label="待发货件数" prop="zsc_num" />
         <el-table-column align="center" label="生产中" prop="stock" />
         <el-table-column align="center" label="总销量" prop="zsc_num" />
         <el-table-column align="center" fixed="right" label="操作" width="150">
