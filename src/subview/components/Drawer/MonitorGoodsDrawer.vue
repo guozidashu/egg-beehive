@@ -310,7 +310,10 @@
         })
         let temp = data
         temp.shop_multiplot = arr
-        this.img_checked_src = temp.shop_multiplot[0].img
+        if (temp.shop_multiplot.length > 0) {
+          this.img_checked_src = temp.shop_multiplot[0].img
+        }
+
         this.form = temp
       },
       // 点击图片

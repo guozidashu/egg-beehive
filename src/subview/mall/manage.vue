@@ -521,12 +521,22 @@
                 <div class="ql-container">
                   <div
                     class="ql-editor"
+                    :contenteditable="true"
+                    :data-gramm="false"
                     style="width: 100%; height: 720px; border: 1px solid #ccc"
                     v-html="formCommodityDetails.detail"
                   ></div>
                 </div>
               </div>
             </div>
+            <!-- <div style="height: 800px; overflow: auto">
+              <vab-quill
+                ref="vab-quill"
+                v-model="formCommodityDetails.detail"
+                :min-height="600"
+                :options="options1"
+              />
+            </div> -->
           </el-form-item>
         </div>
       </el-form>
@@ -630,6 +640,12 @@
           },
           placeholder: '内容...',
           readOnly: false,
+        },
+        options1: {
+          bounds: document.body,
+          placeholder: '内容...',
+          debug: 'warn',
+          readOnly: true,
         },
         // 商品详情新增编辑弹窗 表单
         formCommodityDetails: {
@@ -841,13 +857,14 @@
       },
       // 商品详情编辑器上传成功回调方法
       getSon2(data) {
+        console.log(data, this.formCommodityDetails.detail)
         if (data instanceof Array) {
           data.forEach((item) => {
             if (this.formCommodityDetails.detail == null) {
               this.formCommodityDetails.detail = ''
             }
             if (this.formCommodityDetails.detail.indexOf(item) == -1) {
-              this.formCommodityDetails.detail += `<el-image src="${item}" />`
+              this.formCommodityDetails.detail += `<img src="${item}" />`
             }
           })
         }
