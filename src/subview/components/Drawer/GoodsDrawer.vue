@@ -455,6 +455,7 @@
         this.tabindex = tab.name
         this.activeName = tab.name
         this.listLoading = true
+        this.searchName = ''
         if (tab.name == 0) {
           return
         }
@@ -469,7 +470,10 @@
         this.orderTotal = data.total
         this.listLoading = false
       },
-      async changeBtnPageList() {
+      changeBtnPageList() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
+      async debounceFetchData() {
         const { data } = await this.api.getGoodOrderDetails({
           type: this.activeName, //搜索条件 1订单记录 2入库信息 3退货记录 4付款记录 5对账单记录
           good_id: this.drawerInof.id, //物料采购订单id

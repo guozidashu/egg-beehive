@@ -111,8 +111,11 @@
       this.getSelectData()
     },
     methods: {
+      fetchData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 获取下拉框数据
-      async fetchData() {
+      async debounceFetchData() {
         this.listLoading = true
         const { data } = await this.api.getIntegralRule(this.form)
         this.list = data

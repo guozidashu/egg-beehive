@@ -224,7 +224,7 @@
           >
             <template #default="{ row }">
               <el-tag v-if="row.balance < 0" type="danger">
-                -￥{{ row.balance | moneyFormat }}
+                ￥{{ row.balance | moneyFormat }}
               </el-tag>
               <el-tag v-else>￥{{ row.balance | moneyFormat }}</el-tag>
             </template>
@@ -273,7 +273,7 @@
                 ￥{{ row.earnest_money | moneyFormat }}
               </el-tag>
               <el-tag v-else type="danger">
-                -￥{{ row.earnest_money | moneyFormat }}
+                ￥{{ row.earnest_money | moneyFormat }}
               </el-tag>
             </template>
           </el-table-column>
@@ -394,7 +394,7 @@
           >
             <template #default="{ row }">
               <el-tag v-if="row.amount >= 0">￥{{ row.amount }}</el-tag>
-              <el-tag v-else type="danger">-￥{{ row.amount }}</el-tag>
+              <el-tag v-else type="danger">￥{{ row.amount }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column
@@ -783,8 +783,11 @@
         this.depositList = data
         this.depositListLoading = false
       },
+      fetchData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 获取客户列表
-      async fetchData(type) {
+      async debounceFetchData(type) {
         if (type == 1) {
           this.drawer = false
         }

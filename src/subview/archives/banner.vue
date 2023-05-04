@@ -25,9 +25,6 @@
         @changePageSize="changeBtnPageSize"
       >
         <template #List>
-          "id": 1, // id "img": "其味无穷无群", // 图片地址 "url": "其味无穷",
-          // 跳转地址 "status": 1, // 状态 1=启用 2=停用 "create_time":
-          "2023-04-23 16:08:26" // 创建时间
           <el-table-column
             align="center"
             show-overflow-tooltip

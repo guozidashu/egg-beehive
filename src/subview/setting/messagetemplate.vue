@@ -220,8 +220,11 @@
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
+      fetchData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 获取列表数据
-      async fetchData() {
+      async debounceFetchData() {
         this.listLoading = true
         const { data } = await this.api.getPushList(this.form)
         this.list = data.list

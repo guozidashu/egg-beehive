@@ -847,8 +847,11 @@
         })
         this.selectList = data
       },
+      getGoodsOwedTableList() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 获取欠货明细表格
-      async getGoodsOwedTableList() {
+      async debounceFetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))

@@ -289,8 +289,10 @@
       resetForm() {
         this.form = this.$options.data().form
       },
-
-      async fetchData() {
+      fetchData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
+      async debounceFetchData() {
         const { data } = await this.api.getRoleList(this.form)
         data.forEach((item) => {
           item.cartSta = false

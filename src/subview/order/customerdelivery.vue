@@ -409,8 +409,11 @@
         this.pageState = true
         this.form.pageSize = data
       },
+      fetchData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 获取数据
-      async fetchData() {
+      async debounceFetchData() {
         this.listLoading = true
         const { data } = await this.api.getCustomerDeliveryOrderList({
           start_date: this.form.order_time[0],

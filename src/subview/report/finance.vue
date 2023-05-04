@@ -188,7 +188,7 @@
             <span v-if="operating_profit >= 0">
               ￥ {{ operating_profit | moneyFormat }}
             </span>
-            <span v-else>-￥ {{ operating_profit | moneyFormat }}</span>
+            <span v-else>￥ {{ operating_profit | moneyFormat }}</span>
           </div>
         </el-card>
         <el-card

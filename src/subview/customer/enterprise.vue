@@ -153,12 +153,16 @@
           />
           <el-table-column fixed="right" label="操作" width="100">
             <template #default="{ row }">
-              <el-button type="text" @click="handleDetail(row, 1)">
-                客户跟进记录
-              </el-button>
-              <el-button type="text" @click="handleDetail(row, 2)">
-                添加客户标签
-              </el-button>
+              <div>
+                <el-button type="text" @click="handleDetail(row, 1)">
+                  客户跟进记录
+                </el-button>
+              </div>
+              <div>
+                <el-button type="text" @click="handleDetail(row, 2)">
+                  添加客户标签
+                </el-button>
+              </div>
             </template>
           </el-table-column>
         </template>
@@ -325,8 +329,11 @@
         this.pageState = true
         this.form.pageSize = data
       },
+      fetchData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 获取列表数据
-      async fetchData() {
+      async debounceFetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))

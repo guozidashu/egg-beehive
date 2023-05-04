@@ -665,8 +665,11 @@
           block: 'start', // 上边框与视窗顶部平齐。默认值
         })
       },
+      fetchData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 商品列表
-      async fetchData(type) {
+      async debounceFetchData(type) {
         if (type == 1) {
           this.drawer = false
         }

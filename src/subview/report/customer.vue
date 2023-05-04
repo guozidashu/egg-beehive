@@ -397,7 +397,7 @@
                   ￥{{ row.sale_arrears | moneyFormat }}
                 </el-tag>
                 <el-tag v-else type="danger">
-                  -￥{{ row.sale_arrears | moneyFormat }}
+                  ￥{{ row.sale_arrears | moneyFormat }}
                 </el-tag>
               </template>
             </el-table-column>
@@ -942,8 +942,11 @@
           })
         })
       },
+      getTableList() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 获取列表数据
-      async getTableList() {
+      async debounceFetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.goodsForm1))

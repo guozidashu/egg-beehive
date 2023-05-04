@@ -323,7 +323,10 @@
         this.selectList = data
       },
       // 获取卡片和折线图数据
-      async fetchData() {
+      fetchData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
+      async debounceFetchData() {
         const { data } = await this.api.getInformationOrderList(this.goodsForm)
         this.goodsStaList.forEach((item) => {
           for (let i in data) {

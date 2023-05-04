@@ -404,7 +404,10 @@
       handleSizeChange(val) {
         this.form.page_size = val
       },
-      async getList() {
+      getList() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
+      async debounceFetchData() {
         this.state = true
         const { data } = await this.api.getMonitorGoodsList(this.formTemp)
         this.tableData = data.list

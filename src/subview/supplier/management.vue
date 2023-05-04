@@ -190,7 +190,10 @@
       handleClick() {
         this.form.page = 1
       },
-      async fetchData(type) {
+      fetchData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
+      async debounceFetchData(type) {
         if (type == 1) {
           this.drawer = false
         }

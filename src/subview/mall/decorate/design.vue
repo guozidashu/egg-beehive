@@ -372,8 +372,11 @@
         this.pageState = true
         this.form.pageSize = data
       },
+      fetchData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 获取列表
-      async fetchData() {
+      async debounceFetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))

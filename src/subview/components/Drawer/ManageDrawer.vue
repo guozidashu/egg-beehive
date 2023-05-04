@@ -58,7 +58,7 @@
           <div style="display: flex; flex: 1; flex-direction: column">
             <span style="margin-bottom: 12px">余额/欠款</span>
             <span v-if="form.balance < 0">
-              -￥{{ form.balance | moneyFormat }}
+              ￥{{ form.balance | moneyFormat }}
             </span>
             <span v-else>￥{{ form.balance | moneyFormat }}</span>
           </div>

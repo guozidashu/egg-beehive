@@ -105,7 +105,7 @@
               <span v-if="form.sale_arrears < 0">
                 销售累计欠款：
                 <span style="color: red">
-                  -￥{{ form.sale_arrears | moneyFormat }}
+                  ￥{{ form.sale_arrears | moneyFormat }}
                 </span>
               </span>
               <span v-else>
@@ -116,7 +116,7 @@
               <span v-if="form.delivery_arrears < 0">
                 发货累计欠款：
                 <span style="color: red">
-                  -￥{{ form.delivery_arrears | moneyFormat }}
+                  ￥{{ form.delivery_arrears | moneyFormat }}
                 </span>
               </span>
               <span v-else>

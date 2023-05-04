@@ -251,8 +251,11 @@
         this.menuList = list
         this.fetchList()
       },
+      fetchList() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 获取子级列表
-      async fetchList() {
+      async debounceFetchData() {
         this.listLoading = true
         const {
           data: { data, total },

@@ -25,6 +25,29 @@ Vue.prototype.$numFormatInput = numFormatInput // 正整数格式化函数输入
 Vue.use(QyComponent) // 圈域全局组件
 Vue.use(hasPermi) // 权限自定义指令
 Vue.prototype.print = print // 自定义打印文件挂载
+import { debounce, throttle } from '@/utils/throttle' // 引入防抖节流函数
+Vue.prototype.$debounce = debounce // 防抖
+Vue.prototype.$throttle = throttle // 节流
+// 防抖处理-立即执行 -- 按钮点击事件 查询，导出，同步等
+const on = Vue.prototype.$on
+Vue.prototype.$on = function (event, func) {
+  let timer
+  let flag = true
+  let newFunc = func
+  if (event == 'click') {
+    newFunc = function () {
+      if (flag) {
+        func.apply(this, arguments)
+        flag = false
+      }
+      clearTimeout(timer)
+      timer = setTimeout(function () {
+        flag = true
+      }, 500)
+    }
+  }
+  on.call(this, event, newFunc)
+}
 /**
  * @description 正式环境默认使用mock，正式项目记得注释后再打包
  */
@@ -33,7 +56,6 @@ import { baseURL, pwa } from './config'
 import { isExternal } from '@/utils/validate'
 
 if (pwa) require('./registerServiceWorker')
-
 Vue.config.productionTip = false
 new Vue({
   el: '#app',

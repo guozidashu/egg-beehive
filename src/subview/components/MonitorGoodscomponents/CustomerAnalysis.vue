@@ -327,8 +327,11 @@
           this.getList()
         }
       },
+      getList() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 获取列表数据
-      async getList() {
+      async debounceFetchData() {
         this.state = true
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))

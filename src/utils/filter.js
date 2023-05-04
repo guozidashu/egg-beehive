@@ -89,7 +89,8 @@ Vue.filter('moneyFormat', (value) => {
     `\\d(?=(\\d{3})+${decimalDigits > 0 ? '\\D' : '$'})`,
     'g'
   )
-  // 金额格式化
+  // 金额格式化 有正值和负值
+  let temp = value
   const moneyFormat = (value) => {
     value = Math.abs(value)
     value = value.toFixed(decimalDigits)
@@ -98,7 +99,11 @@ Vue.filter('moneyFormat', (value) => {
     return value
   }
   // 金额格式化
-  return moneyFormat(value)
+  if (temp > 0) {
+    return moneyFormat(value)
+  } else {
+    return '-' + moneyFormat(value)
+  }
 })
 // 三位数姓名脱敏，中间一位隐藏
 Vue.filter('threeName', (value) => {

@@ -273,7 +273,10 @@
         this.pageState = true
         this.form.pageSize = data
       },
-      async fetchData() {
+      fetchData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
+      async debounceFetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))

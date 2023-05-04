@@ -553,8 +553,11 @@
       handleClick(tab) {
         this.form.list_type = tab.name
       },
+      fetchData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 商品列表
-      async fetchData(type) {
+      async debounceFetchData(type) {
         if (type == 1) {
           this.drawer = false
         }

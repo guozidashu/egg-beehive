@@ -872,8 +872,11 @@
           }
         })
       },
+      tableData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 获取列表数据
-      async tableData() {
+      async debounceFetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.goodsForm1))

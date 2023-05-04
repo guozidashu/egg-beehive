@@ -264,8 +264,11 @@
         this.menuList[0].btnIconStatus = true
         this.fetchList()
       },
+      fetchList() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 获取标签列表
-      async fetchList() {
+      async debounceFetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))

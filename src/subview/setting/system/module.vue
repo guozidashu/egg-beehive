@@ -65,6 +65,12 @@
               </el-radio-group>
               <div style="color: gray">退货数量不允许超过发货数量</div>
             </el-form-item>
+            <el-form-item label="库存显示方式">
+              <el-radio-group v-model="form1.stock_show">
+                <el-radio :label="1">实际库存</el-radio>
+                <el-radio :label="2">可售库存</el-radio>
+              </el-radio-group>
+            </el-form-item>
             <el-form-item label="公司logo" prop="company_logo">
               <div style="display: flex">
                 <div>
@@ -419,6 +425,7 @@
         activeName: 'ERP配置',
         showIf: false,
         form1: {
+          stock_show: 1,
           return_not_exceed: 0,
           forced_warehouse: 0,
           shopid: null, //关联商城标识符

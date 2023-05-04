@@ -284,8 +284,11 @@
         this.menuList = list
         this.fetchList()
       },
+      fetchList() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 获取子级列表
-      async fetchList() {
+      async debounceFetchData() {
         this.listLoading = true
         if (this.formTemp == null) {
           this.formTemp = JSON.parse(JSON.stringify(this.form))

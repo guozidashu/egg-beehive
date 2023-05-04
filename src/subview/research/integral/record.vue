@@ -110,8 +110,11 @@
       changeBtnPageSize(data) {
         this.form.pageSize = data
       },
+      fetchData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 获取列表
-      async fetchData() {
+      async debounceFetchData() {
         this.listLoading = true
         const { data } = await this.api.getEmployeeIntegralList(this.form)
         this.list = data.data

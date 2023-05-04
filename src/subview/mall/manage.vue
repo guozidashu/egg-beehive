@@ -914,8 +914,11 @@
       handleClick(tab) {
         this.form.shop_type = tab.name
       },
+      fetchData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 获取列表数据
-      async fetchData(type) {
+      async debounceFetchData(type) {
         if (type == 1) {
           this.drawer = false
         }

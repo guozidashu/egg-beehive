@@ -94,7 +94,7 @@
                 ￥{{ row.total | moneyFormat }}
               </el-tag>
               <el-tag v-else type="danger">
-                -￥{{ row.total | moneyFormat }}
+                ￥{{ row.total | moneyFormat }}
               </el-tag>
             </template>
           </el-table-column>
@@ -230,8 +230,11 @@
         this.pageState = true
         this.form.pageSize = data
       },
+      fetchData() {
+        this.$debounce(this.debounceFetchData, 500)
+      },
       // 列表数据
-      async fetchData() {
+      async debounceFetchData() {
         this.listLoading = true
 
         if (this.formTemp == null) {
