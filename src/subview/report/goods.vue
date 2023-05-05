@@ -432,7 +432,7 @@
                   合并同款
                 </el-button>
               </div>
-              <div>
+              <div v-if="!goodsForm1.merge">
                 <el-button type="text" @click="handleDetailMonitor(row)">
                   监控商品
                 </el-button>

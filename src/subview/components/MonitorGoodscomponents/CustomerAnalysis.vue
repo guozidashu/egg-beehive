@@ -152,11 +152,7 @@
           prop="sale_num"
           sortable="true"
         />
-        <el-table-column
-          align="center"
-          label="拿货金额"
-          prop="sale_order_num"
-        />
+        <el-table-column align="center" label="拿货金额" prop="sale_amount" />
         <el-table-column
           align="center"
           label="加入时间"

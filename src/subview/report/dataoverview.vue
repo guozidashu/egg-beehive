@@ -28,7 +28,7 @@
       <el-col :span="4">
         <el-card shadow="hover" style="border-radius: 5px">
           <template #header>
-            <p style="text-align: center">在售库存数</p>
+            <p style="text-align: center">可售库存数</p>
             <p style="font-size: 18px; font-weight: 600; text-align: center">
               {{ RightData.spot_stock }}
             </p>

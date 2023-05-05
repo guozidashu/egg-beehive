@@ -186,9 +186,9 @@
               <el-checkbox v-model="goodsForm1.not_jst">
                 不含聚水潭可用库存
               </el-checkbox>
-              <el-checkbox v-model="goodsForm1.occupy">
+              <!-- <el-checkbox v-model="goodsForm1.occupy">
                 包含欠货件数（订单占有数）
-              </el-checkbox>
+              </el-checkbox> -->
             </div>
             <div v-if="goodsForm1.goods_type == 1" style="display: flex">
               <div>
@@ -399,11 +399,8 @@
             </template>
           </el-table-column>
           <el-table-column align="center" label="总库存" prop="sum_stock_num" />
-          <el-table-column
-            align="center"
-            label="自主仓库库存"
-            prop="sum_xh_num"
-          />
+          <el-table-column align="center" label="实际库存" prop="sum_xh_num" />
+          <el-table-column align="center" label="可售库存" prop="sum_xh_num" />
           <el-table-column
             v-if="!goodsForm1.not_jst"
             align="center"
@@ -427,7 +424,7 @@
           </el-table-column>
           <el-table-column
             align="center"
-            label="自主仓库库存成本"
+            label="实际库存库存成本"
             prop="xh_stock_cost_price"
           >
             <template #default="{ row }">
@@ -549,7 +546,7 @@
           ids: [],
           not_zsc: false,
           not_jst: false,
-          occupy: false,
+          // occupy: false,
         },
         // 卡片、饼图 查询条件
         goodsForm: {
@@ -582,7 +579,7 @@
             content: '刷新时间截止时，累计创建的商品款式总数（不包含停售商品）',
           },
           {
-            title: '现存库存',
+            title: '可售库存数',
             number: 0,
             num: 0,
             type: 1,
@@ -634,7 +631,7 @@
             content: '库存为零的商品款数/商品总款数*100%',
           },
           {
-            title: '现货库存成本',
+            title: '可售库存成本',
             number: 0,
             num: 0,
             type: 2,
@@ -843,7 +840,7 @@
           ids: [],
           not_zsc: false,
           not_jst: false,
-          occupy: false,
+          // occupy: false,
         }
       },
       // 分页

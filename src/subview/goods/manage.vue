@@ -301,10 +301,10 @@
                 <el-tag type="warning">待上市</el-tag>
               </div>
 
-              <div v-if="row.is_shop == 1" style="margin-bottom: 10px">
+              <div v-if="row.is_top == 1" style="margin-bottom: 10px">
                 <el-tag type="danger">未置顶</el-tag>
               </div>
-              <div v-else-if="row.is_shop == 2" style="margin-bottom: 10px">
+              <div v-else-if="row.is_top == 2" style="margin-bottom: 10px">
                 <el-tag>置顶</el-tag>
               </div>
               <div v-if="row.recommend == 0">
