@@ -868,7 +868,6 @@
       },
       // 跳转页面
       jump(url, type) {
-        console.log(url, type)
         if (type == undefined) {
           this.$router.push({
             path: '/' + url,

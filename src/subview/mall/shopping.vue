@@ -18,18 +18,28 @@
       :rules="rules"
     >
       <div>
-        <el-form-item label="小程序头像和昵称" prop="avatar_name">
+        <el-form-item label="引导设置头像和昵称" prop="avatar_name">
           <el-radio-group v-model="form.avatar_name">
             <el-radio :label="1">暂不设置</el-radio>
             <el-radio :label="2">强制设置</el-radio>
           </el-radio-group>
+          <div style="color: #999999">
+            微信小程序未设置头像和昵称的用户，将会引导设置头像和昵称，强制设置将会必须设置
+          </div>
         </el-form-item>
         <el-form-item label="强制登录" prop="forced_login">
           <el-radio-group v-model="form.forced_login">
             <el-radio :label="1">开启</el-radio>
             <el-radio :label="0">关闭</el-radio>
           </el-radio-group>
-          <div style="color: #999999">开启后进入系统必须先登录</div>
+          <div style="color: #999999">
+            开启后，进入系统时必须先登录设置头像和昵称，以及必须授权手机号，否则连首页都进不去
+          </div>
+        </el-form-item>
+        <el-form-item label="适用渠道">
+          <div style="color: red">
+            注∶因微信小程序用户登录规范要求不能强制弹窗要求登录，小程序开启此功能可能会被封号，请谨慎设置。
+          </div>
         </el-form-item>
         <el-form-item label="商家名称" prop="name">
           <el-input v-model="form.name" style="width: 215px" />
@@ -40,7 +50,7 @@
         <el-form-item label="api域名" prop="domain">
           <el-input v-model="form.domain" style="width: 215px" />
         </el-form-item>
-        <el-form-item label="商家LOGO：" prop="logo">
+        <el-form-item label="品牌LOGO：" prop="logo">
           <el-button type="primary" @click="handleShow(1)">图片上传</el-button>
           <span style="margin-left: 20px; color: #999999">
             建议尺寸：200×200像素
@@ -51,7 +61,7 @@
             </el-image>
           </div>
         </el-form-item>
-        <el-form-item label="商家底部图片：" prop="bottom_logo">
+        <el-form-item label="登录界面底部图片：" prop="bottom_logo">
           <el-button type="primary" @click="handleShow(3)">图片上传</el-button>
           <span style="margin-left: 20px; color: #999999">
             建议尺寸：25×25像素
@@ -78,7 +88,7 @@
             style="width: 100px; margin-left: 15px"
           />
         </el-form-item>
-        <el-form-item label="微信客服url" prop="wechat_service_url">
+        <!-- <el-form-item label="微信客服url" prop="wechat_service_url">
           <el-input v-model="form.wechat_service_url" style="width: 215px" />
         </el-form-item>
         <el-form-item label="微信客服企业id" prop="wechat_service_corpid">
@@ -111,7 +121,7 @@
           系统注册账号并绑定，
           <a href="" style="color: black">查看绑定流程</a>
           ，填写企业ID并复制客服链接填写到客服链接处
-        </div>
+        </div> -->
         <el-form-item label="是否开启截图提醒" prop="screen_notice_state">
           <el-radio-group v-model="form.screen_notice_state">
             <el-radio :label="1">开启</el-radio>
@@ -136,12 +146,24 @@
             <el-radio :label="0">关闭</el-radio>
             <el-radio :label="1">开启</el-radio>
           </el-radio-group>
+          <div style="color: #999999">
+            开启后，客户获得授权后将能查到相关类别商品的库存查询权限
+          </div>
         </el-form-item>
-        <el-form-item label="是否开启在生产" prop="forced_production">
+        <el-form-item label="生产中库存参与销售" prop="forced_production">
           <el-radio-group v-model="form.forced_production">
             <el-radio :label="0">关闭</el-radio>
             <el-radio :label="1">开启</el-radio>
           </el-radio-group>
+          <div style="color: #999999">
+            开启后，客户可下单的库存数量将会包含在生产中的库存数量
+          </div>
+        </el-form-item>
+        <el-form-item label="预售订单超时取消时间:" prop="presell_cancel_mins">
+          <el-input v-model="form.presell_cancel_mins" style="width: 300px" />
+          <div style="font-size: 12px; color: #c0c4cc">
+            默认值为30分钟，小程序商城提交的预售订单，未按约定的时间支付定金比例，将会自动取消该预售的订单。
+          </div>
         </el-form-item>
         <el-form-item>
           <el-button
@@ -221,6 +243,7 @@
         activeName: '基础配置',
         // 基础配置表单
         form: {
+          presell_cancel_mins: 30,
           forced_production: 0,
           look_stock: 0,
           bottom_logo: 'https://new.shopvvv.cn/static/imgsrc/logo.jpg', //商家底部图片
@@ -244,6 +267,13 @@
         },
         // 基础配置验证规则
         rules: {
+          presell_cancel_mins: [
+            {
+              required: true,
+              message: '请输入预售订单超时取消时间',
+              trigger: 'blur',
+            },
+          ],
           forced_production: [
             {
               required: true,

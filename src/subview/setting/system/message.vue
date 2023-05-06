@@ -158,7 +158,6 @@
       saveSms() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
-            console.log(22, this.form)
             const { code } = await this.api.editSmsInfoSave(this.form)
             if (code == 200) {
               this.$message({

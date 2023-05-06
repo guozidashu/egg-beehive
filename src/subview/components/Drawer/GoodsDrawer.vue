@@ -344,7 +344,6 @@
       async changeTypeBtn(e) {
         // this.$refs['form'].validate(async (valid) => {
         //   if (valid) {
-        //     console.log()
         //             }
         // })
         if (e != 1) {

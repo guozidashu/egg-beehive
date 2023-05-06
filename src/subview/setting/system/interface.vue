@@ -147,7 +147,7 @@
               <el-checkbox label="3">包含销退仓库存</el-checkbox>
             </el-checkbox-group>
             <div style="color: gray">
-              商品库存 = 主仓实际库存 - 订单占有数 + 虚拟库存 + 采购在途
+              {{ htmlStr }}
             </div>
             <div style="color: red">
               注：此处设置的库存公式，需要和聚水潭保持一致，若双方库存设置不一致，将会导致库存不统一
@@ -560,6 +560,7 @@
     name: 'SystemStorage',
     data() {
       return {
+        htmlStr: '',
         // 假网址
         wangzhi:
           'https://luoyi.business.quanyu123.com/shop/apps/erp321/client/api2/q36dye440r01',
@@ -771,6 +772,26 @@
         ],
       }
     },
+    watch: {
+      // 监听商品id
+      'form.jst_stock_type': {
+        handler: function (newVal) {
+          let str = '商品库存=主仓实际库存-订单占有数＋虚拟库存'
+          if (newVal.includes('1')) {
+            str += '＋采购在途'
+          }
+          if (newVal.includes('2')) {
+            str += '＋进货仓'
+          }
+          if (newVal.includes('3')) {
+            str += '＋销退仓库存'
+          }
+          this.htmlStr = str
+        },
+        deep: true,
+        immediate: true,
+      },
+    },
     created() {
       this.fetchData()
     },
@@ -866,6 +887,12 @@
             this.form.jst_refresh_token = temp.jst_refresh_token
             this.form.jst_expiration_period = temp.jst_expiration_period
             this.form.company_name = temp.company_name
+            if (temp.jst_goods_edit == null) {
+              temp.jst_goods_edit = 1
+            }
+            if (temp.jst_stock_type == null) {
+              temp.jst_stock_type = ''
+            }
             this.form.jst_goods_edit = Number(temp.jst_goods_edit)
             this.form.jst_stock_type = temp.jst_stock_type.split(',')
           }

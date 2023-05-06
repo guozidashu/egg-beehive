@@ -857,7 +857,6 @@
       },
       // 商品详情编辑器上传成功回调方法
       getSon2(data) {
-        console.log(data, this.formCommodityDetails.detail)
         if (data instanceof Array) {
           data.forEach((item) => {
             if (this.formCommodityDetails.detail == null) {

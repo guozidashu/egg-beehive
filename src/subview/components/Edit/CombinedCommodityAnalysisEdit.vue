@@ -91,14 +91,9 @@
             <el-table-column
               v-if="query.viewType == 'stock'"
               label="可售库存"
-              prop="xh_num"
+              prop="sum_active_num"
             />
-            <el-table-column
-              v-if="query.viewType == 'stock'"
-              label="实际库存"
-              prop="xh_num"
-            />
-            <el-table-column v-else label="自主仓库存" prop="xh_num" />
+            <el-table-column label="实际库存" prop="xh_num" />
             <el-table-column label="聚水潭可用库存" prop="sum_jst_num" />
             <el-table-column label="生产中库存" prop="zsc_num" />
             <el-table-column
@@ -165,20 +160,9 @@
       <el-table-column
         v-if="query.viewType == 'stock'"
         label="可售库存"
-        prop="sum_xh_num"
+        prop="sum_active_num"
       />
-      <el-table-column
-        v-if="query.viewType == 'stock'"
-        align="center"
-        label="实际库存"
-        prop="sum_xh_num"
-      />
-      <el-table-column
-        v-else
-        align="center"
-        label="自主仓库存"
-        prop="sum_xh_num"
-      />
+      <el-table-column align="center" label="实际库存" prop="sum_xh_num" />
       <el-table-column
         align="center"
         label="聚水潭可用库存"

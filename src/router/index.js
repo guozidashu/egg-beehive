@@ -1015,6 +1015,16 @@ export const asyncRoutes = [
         },
       },
       {
+        path: 'mallService',
+        name: 'MallService',
+        component: () => import('@/subview/mall/service'),
+        meta: {
+          title: '客服设置',
+          icon: 'archive-line',
+        },
+      },
+
+      {
         path: 'decorate',
         name: 'decorate',
         meta: {

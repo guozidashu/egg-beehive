@@ -39,7 +39,7 @@
           <span style="text-decoration: line-through">￥{{ form.price }}</span>
           /&nbsp; 最低售价&nbsp;￥{{ form.lowest_price }}
           <el-popover placement="right" trigger="hover">
-            <div style="font-size: 12px">测试</div>
+            <div style="font-size: 12px">会员等级最低折扣的售价</div>
             <vab-icon
               slot="reference"
               icon="question-line"

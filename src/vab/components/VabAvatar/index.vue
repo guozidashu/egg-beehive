@@ -254,7 +254,6 @@
         //   this.$message.error('请输入验证码')
         //   return
         // }
-        console.log(111, this.form)
         if (this.form.phone == '') {
           this.$message.error('请输入手机号')
           return

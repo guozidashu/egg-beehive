@@ -23,6 +23,12 @@
         <!-- 查询条件 -->
         <span style="margin-top: 10px; font-size: 16px">库存概览</span>
         <el-form-item style="float: right; margin-right: 0; font-size: 12px">
+          <el-checkbox
+            v-model="goodsForm.subtract_zsc"
+            style="margin-left: 5px"
+          >
+            不含生产中库存
+          </el-checkbox>
           <el-form-item label="库存类型:" prop="type">
             <el-select
               v-model="goodsForm.type"
@@ -400,7 +406,11 @@
           </el-table-column>
           <el-table-column align="center" label="总库存" prop="sum_stock_num" />
           <el-table-column align="center" label="实际库存" prop="sum_xh_num" />
-          <el-table-column align="center" label="可售库存" prop="sum_xh_num" />
+          <el-table-column
+            align="center"
+            label="可售库存"
+            prop="sum_active_num"
+          />
           <el-table-column
             v-if="!goodsForm1.not_jst"
             align="center"
@@ -554,6 +564,7 @@
           year: null,
           brand: null,
           type: null,
+          subtract_zsc: false,
         },
         // 卡片宽度，卡片数据
         widthStyle: '20%',
@@ -579,7 +590,7 @@
             content: '刷新时间截止时，累计创建的商品款式总数（不包含停售商品）',
           },
           {
-            title: '可售库存数',
+            title: '实际库存数',
             number: 0,
             num: 0,
             type: 1,
@@ -631,7 +642,7 @@
             content: '库存为零的商品款数/商品总款数*100%',
           },
           {
-            title: '可售库存成本',
+            title: '实际库存成本',
             number: 0,
             num: 0,
             type: 2,
@@ -662,6 +673,48 @@
             numType: 1,
             content:
               '刷新时间截止时，当前生产中库存成本金额+当前现货库存成本金额',
+          },
+          {
+            title: '可售库存数',
+            number: 0,
+            num: 0,
+            type: 2,
+            typeSta: false,
+            name: 'available_stock',
+            numType: 2,
+            content:
+              '刷新时间截止时，实际库存 - 订单占有数（待发货）+ 裁床在生产（系统设置）',
+          },
+          {
+            title: '可售库存成本',
+            number: 0,
+            num: 0,
+            type: 2,
+            typeSta: false,
+            name: 'available_price',
+            numType: 1,
+            content:
+              '刷新时间截止时，实际库存成本 - 订单占有数（待发货）成本+ 裁床在生产（系统设置）成本',
+          },
+          {
+            title: '吊牌均价',
+            number: 0,
+            num: 0,
+            type: 2,
+            typeSta: false,
+            name: 'average_price',
+            numType: 1,
+            content: '测试',
+          },
+          {
+            title: '成本均价',
+            number: 0,
+            num: 0,
+            type: 2,
+            typeSta: false,
+            name: 'average_cost',
+            numType: 1,
+            content: '测试',
           },
         ],
         // 年份饼图 样式 数据
@@ -816,6 +869,7 @@
           year: null,
           brand: null,
           type: null,
+          subtract_zsc: false,
         }
       },
       // 列表重置
