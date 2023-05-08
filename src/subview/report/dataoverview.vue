@@ -28,7 +28,19 @@
       <el-col :span="4">
         <el-card shadow="hover" style="border-radius: 5px">
           <template #header>
-            <p style="text-align: center">可售库存数</p>
+            <p style="text-align: center">
+              实际库存数
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">
+                  刷新时间截止时，当前所有(自主仓库+聚水潭云仓）在售商品的实际现货库存总数量
+                </div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </p>
             <p style="font-size: 18px; font-weight: 600; text-align: center">
               {{ RightData.spot_stock }}
             </p>

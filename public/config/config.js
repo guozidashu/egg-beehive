@@ -1,11 +1,11 @@
 const GlobalConfig = {
-  // baseApiUrl: 'https://luoyi.business.quanyu123.com/QYAPI/index.php/platform',
-  // appName: '丸纸',
-  baseApiUrl: 'https://demo.quanyu123.com/QYAPI/index.php/platform',
-  appName: '圈域',
+  baseApiUrl: 'https://luoyi.business.quanyu123.com/QYAPI/index.php/platform',
+  appName: '丸纸',
+  // baseApiUrl: 'https://demo.quanyu123.com/QYAPI/index.php/platform',
+  // appName: '圈域',
   // baseApiUrl:
   //   'https://xiaojiujiu.business.quanyu123.com/QYAPI/index.php/platform',
-  // appName: '发生米',
+  // appName: '小九九',
   // 打包时 账户信息路由 有个授权中心根据 实际替换
 }
 

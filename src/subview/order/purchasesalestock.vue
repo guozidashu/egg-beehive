@@ -232,6 +232,11 @@
           <el-table-column align="center" label="生产退货" prop="sum_out_num" />
           <el-table-column
             align="center"
+            label="聚水潭出库"
+            prop="jst_out_stock"
+          />
+          <el-table-column
+            align="center"
             label="销售发货"
             prop="sum_delivery_num"
           />
@@ -399,6 +404,11 @@
             key: 'sum_out_num',
           },
           {
+            title: '聚水潭出库',
+            type: 'text',
+            key: 'jst_out_stock',
+          },
+          {
             title: '销售发货',
             type: 'text',
             key: 'sum_delivery_num',
@@ -487,6 +497,16 @@
             title: '生产入库',
             type: 'text',
             key: 'sum_inbound_num',
+          },
+          {
+            title: '生产退货',
+            type: 'text',
+            key: 'sum_out_num',
+          },
+          {
+            title: '聚水潭出库',
+            type: 'text',
+            key: 'jst_out_stock',
           },
           {
             title: '销售发货',

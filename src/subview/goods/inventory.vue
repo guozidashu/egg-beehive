@@ -16,12 +16,6 @@
         :model="form"
         style="padding: 20px 0 0 0"
       >
-        <!-- year_id: '', // 年份id
-          category_id: '', // 分类id
-          brand_id: '', // 品牌id
-          season_id: '', // 季节id
-          order_type: '', // 订单类型 1=库存调整 2=在生产调整
-          sort_field: 'g.sn', // 排序字段 g.sn = 按款号 g.upper_time = 按上市时间 gao.create_time = 按订单创建时间 -->
         <el-form-item label="款式类别:">
           <el-select v-model="form.category_id" placeholder="请选择类别款式">
             <el-option
@@ -68,13 +62,13 @@
             <el-option label="在生产调整" :value="2" />
           </el-select>
         </el-form-item>
-        <el-form-item label="状态:">
+        <!-- <el-form-item label="状态:">
           <el-select v-model="form.goods_status" placeholder="请选择状态">
             <el-option label="停售" value="2" />
             <el-option label="在售" value="1" />
             <el-option label="待上市" value="3" />
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="类型:" placeholder="请选择类型">
           <el-select v-model="form.goods_type">
             <el-option label="整手" value="1" />
@@ -95,15 +89,35 @@
             style="width: 215px"
           />
         </el-form-item>
-        <el-button size="small" type="primary" @click="resetForm">
-          重置
-        </el-button>
-        <el-button size="small" type="primary" @click="handleQuery">
-          查询
-        </el-button>
-        <el-button size="small" type="primary" @click="handleDerive(1)">
-          全部导出
-        </el-button>
+        <el-form-item label="时间筛选:">
+          <el-date-picker
+            v-model="form.time"
+            align="left"
+            :clearable="false"
+            :default-time="['00:00:00', '23:59:59']"
+            end-placeholder="结束日期"
+            format="yyyy-MM-dd"
+            :picker-options="pickerOptions"
+            range-separator="至"
+            start-placeholder="开始日期"
+            type="daterange"
+            unlink-panels
+            value-format="yyyy-MM-dd HH:mm:ss"
+          />
+        </el-form-item>
+        <el-form-item>
+          <div style="display: flex; margin-left: 20px">
+            <el-button size="small" type="primary" @click="resetForm">
+              重置
+            </el-button>
+            <el-button size="small" type="primary" @click="handleQuery">
+              查询
+            </el-button>
+            <el-button size="small" type="primary" @click="handleDerive(1)">
+              全部导出
+            </el-button>
+          </div>
+        </el-form-item>
       </el-form>
     </div>
     <el-card shadow="never" style="border: 0; border-radius: 5px">
@@ -251,8 +265,10 @@
 </template>
 
 <script>
+  import datajosn from '@/assets/assets_josn/datajosn'
   import table2excel from 'js-table2excel'
   export default {
+    mixins: [datajosn],
     data() {
       return {
         // 下拉框数据
@@ -279,6 +295,7 @@
           sort_field: 'g.sn', // 排序字段 g.sn = 按款号 g.upper_time = 按上市时间 gao.create_time = 按订单创建时间
           sort_type: 'desc', // desc asc,
           list_type: '1', // 1=按颜色尺码 2=按商品
+          time: this.getPastTime(29),
         },
         listType: 1,
         list: [],
@@ -610,6 +627,7 @@
           sort_field: 'g.sn', // 排序字段 g.sn = 按款号 g.upper_time = 按上市时间 gao.create_time = 按订单创建时间
           sort_type: 'desc', // desc asc,
           list_type: '1', // 1=按颜色尺码 2=按商品
+          time: this.getPastTime(29),
         }
       },
       // 列表选中数据
