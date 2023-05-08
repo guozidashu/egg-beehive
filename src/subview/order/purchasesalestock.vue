@@ -115,7 +115,7 @@
           排序
           <el-select v-model="form.order" style="width: 150px; margin: 0 10px">
             <el-option label="按创建时间" value="create_time" />
-            <el-option label="按上架时间" value="upper_time" />
+            <el-option label="按上市时间" value="upper_time" />
             <el-option label="按商品款号" value="sn" />
           </el-select>
           <el-radio-group v-model="form.sort">
@@ -551,9 +551,9 @@
           day +
           ' ' +
           hour +
-          ':' +
+          '-' +
           minute +
-          ':' +
+          '-' +
           second
         // 拼接文件名称
         const excelName = '进销存统计-' + time
@@ -563,7 +563,6 @@
           } else {
             table2excel(columnSize, excelData, excelName) //生成Excel表格，自动下载
           }
-
           this.$message.success('导出成功')
           this.dialogVisible = false
           this.fetchData()

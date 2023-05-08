@@ -182,7 +182,7 @@
       <el-form
         v-if="form.drawerType == 2 || form.drawerType == 3"
         ref="form"
-        label-width="140px"
+        label-width="180px"
         :model="form"
         :rules="rules"
         style="width: 100%"
@@ -327,6 +327,14 @@
                   inactive-color="#D2D2D2"
                   inactive-text="关闭"
                   :inactive-value="0"
+                />
+              </el-form-item>
+              <el-form-item class="item" label="订货商城库存查看权限：">
+                <QYCustomerPopover
+                  v-model="form.inventory_permission_group"
+                  :brand="selectData.brand"
+                  :season="selectData.season"
+                  :year="selectData.year"
                 />
               </el-form-item>
               <el-form-item
@@ -786,7 +794,7 @@
       },
       async getSelectData() {
         const { data } = await this.api.getCommonAllList({
-          type: 'customer_grade,customer_type,customer_source,customer_tag,customer_service',
+          type: 'customer_grade,customer_type,customer_source,customer_tag,customer_service,brand,year,season',
         })
         data.customer_tag.forEach((item) => {
           item.value = item.id

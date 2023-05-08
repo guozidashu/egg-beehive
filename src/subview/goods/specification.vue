@@ -15,6 +15,12 @@
         @resetForm="resetForm"
       >
         <template #Form>
+          <el-form-item label="状态">
+            <el-select v-model="form.status" placeholder="请选择商品状态">
+              <el-option label="在售" :value="1" />
+              <el-option label="停售" :value="2" />
+            </el-select>
+          </el-form-item>
           <el-form-item label="商品款号" prop="sn">
             <el-input v-model="form.sn" size="small" />
           </el-form-item>
@@ -33,12 +39,96 @@
         @changePageSize="changeBtnPageSize"
       >
         <template #List>
-          <el-table-column
+          <el-table-column label="商品信息" width="400">
+            <template #default="{ row }">
+              <div style="display: flex">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.img"
+                    style="width: 200px; height: 200px"
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                  <el-image :src="row.img" style="width: 105px; height: 105px">
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                </el-tooltip>
+                <div style="width: 280px; margin-left: 10px">
+                  <div style="display: flex; justify-content: space-between">
+                    <div
+                      style="
+                        width: 200px;
+                        overflow: hidden;
+                        font-size: 14px;
+                        font-weight: 600;
+                        text-align: left;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      "
+                    >
+                      {{ row.goods_sn }}
+                    </div>
+                    <el-tag v-if="row.type == 0" type="danger">整手</el-tag>
+                    <el-tag v-if="row.type == 1" type="success">散码</el-tag>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 5px 0 0 0;
+                    "
+                  >
+                    <div>
+                      {{ row.name }}
+                      &nbsp;
+                      <span>
+                        {{ row.size_name }}
+                      </span>
+                    </div>
+                    <el-tag type="success">{{ row.upper_day }}天</el-tag>
+                  </div>
+                  <div style="display: flex; width: 100%; margin: 5px 0">
+                    <el-tag v-if="row.category_name != null" type="info">
+                      {{ row.category_name }}
+                    </el-tag>
+                    &nbsp;
+                    <el-tag v-if="row.year_name != null" type="info">
+                      {{ row.year_name }}
+                    </el-tag>
+                    &nbsp;
+                    <el-tag v-if="row.season_name != null" type="info">
+                      {{ row.season_name }}
+                    </el-tag>
+                    &nbsp;
+                    <el-tag v-if="row.band_name != null" type="info">
+                      {{ row.band_name }}
+                    </el-tag>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 5px 0 0 0;
+                    "
+                  >
+                    <div>
+                      <span style="color: red">
+                        ￥{{ row.price | moneyFormat }}
+                      </span>
+                    </div>
+                    <div>{{ row.upper_time | formatTimeData }} &nbsp; 上架</div>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column
             align="center"
             label="款号"
             prop="goods_sn"
             show-overflow-tooltip
-          />
+          /> -->
           <el-table-column
             align="center"
             label="颜色"
@@ -78,6 +168,7 @@
           sn: '',
           page: 1,
           pageSize: 10,
+          status: 1,
         },
         formType: 4,
         listType: 1,

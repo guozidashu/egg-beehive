@@ -644,6 +644,23 @@ export function getNodeSystemList(data) {
   })
 }
 // 商品模块接口
+// 商品 - 库存调整
+// 库存调整 -列表
+export function getGoodsAdjustList(data) {
+  return request({
+    url: '/goods/goodsAdjustList',
+    method: 'post',
+    data,
+  })
+}
+// 库存调整 -导出
+export function getGoodsAdjustExport(data) {
+  return request({
+    url: '/goods/goodsAdjustExport',
+    method: 'post',
+    data,
+  })
+}
 // 商品 - 商品规格
 // 商品规格列表
 export function getGoodsSkuList(data) {

@@ -140,6 +140,12 @@
               <el-radio :label="2">不同步修改内容</el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="商品同步范围：" prop="jst_sensitive_sync">
+            <el-radio-group v-model="form.jst_sensitive_sync">
+              <el-radio :label="0">商品基本信息</el-radio>
+              <el-radio :label="1">包含敏感信息（成本价、采购价）</el-radio>
+            </el-radio-group>
+          </el-form-item>
           <el-form-item label="库存计算方式：" prop="jst_stock_type">
             <el-checkbox-group v-model="form.jst_stock_type">
               <el-checkbox label="1">包含采购在途</el-checkbox>
@@ -289,7 +295,7 @@
           </el-form-item>
         </div>
         <div v-if="activeName == '微店商城版'">
-          <el-form-item label="微店商城版接口是否开启：" prop="vdian_api_open">
+          <el-form-item label="接口状态：" prop="vdian_api_open">
             <el-radio-group v-model="form.vdian_api_open">
               <el-radio :label="1">开启</el-radio>
               <el-radio :label="0">关闭</el-radio>
@@ -325,6 +331,18 @@
               disabled
               style="width: 40%"
             />
+          </el-form-item>
+          <!-- <el-form-item label="商品编辑：" prop="vdian_goods_edit">
+            <el-radio-group v-model="form.vdian_goods_edit">
+              <el-radio :label="1">自动同步修改内容</el-radio>
+              <el-radio :label="2">不同步修改内容</el-radio>
+            </el-radio-group>
+          </el-form-item> -->
+          <el-form-item label="商品同步范围：" prop="vdian_sensitive_sync">
+            <el-radio-group v-model="form.vdian_sensitive_sync">
+              <el-radio :label="0">商品基本信息</el-radio>
+              <el-radio :label="1">包含敏感信息（成本价、采购价）</el-radio>
+            </el-radio-group>
           </el-form-item>
           <el-form-item label="接口访问地址：">
             <span style="color: rgb(251, 102, 56)">
@@ -588,6 +606,8 @@
           vdian_secret: null, //应用APP_Secret
           vdian_access_token: null, //Access_token
           vdian_expiration_period: null, //access_token过期时间
+          // vdian_goods_edit: 1,
+          vdian_sensitive_sync: 1,
           // 聚水潭相关参数
           jst_api_open: 1, //聚水潭接口是否开启
           jst_version: 1, //1：ERP专业版（无精细化库存管理）\r\n\r\n2：ERP企业版（有精细化库存管理）
@@ -602,6 +622,7 @@
           company_name: null, //公司名称
           jst_goods_edit: '1', //默认自动同步 1自动 2不自动
           jst_stock_type: '1', //聚水潭库存计算方式 1包含采购在途 2包含进货仓 3包含撤退仓库存 英文逗号分割
+          jst_sensitive_sync: '1', //敏感词同步 1同步 2不同步
         },
         // 表单验证规格
         rules: {
@@ -630,6 +651,20 @@
             {
               required: true,
               message: '请输入access_token过期时间',
+              trigger: 'blur',
+            },
+          ],
+          // vdian_goods_edit: [
+          //   {
+          //     required: true,
+          //     message: '请选择是否自动同步商品',
+          //     trigger: 'blur',
+          //   },
+          // ],
+          vdian_sensitive_sync: [
+            {
+              required: true,
+              message: '请选择是否同步敏感词',
               trigger: 'blur',
             },
           ],
@@ -688,6 +723,13 @@
             {
               required: true,
               message: '请选择默认自动同步',
+              trigger: 'blur',
+            },
+          ],
+          jst_sensitive_sync: [
+            {
+              required: true,
+              message: '请选择敏感词同步',
               trigger: 'blur',
             },
           ],
@@ -894,6 +936,7 @@
               temp.jst_stock_type = ''
             }
             this.form.jst_goods_edit = Number(temp.jst_goods_edit)
+            this.form.jst_sensitive_sync = Number(temp.jst_sensitive_sync)
             this.form.jst_stock_type = temp.jst_stock_type.split(',')
           }
         } else if (this.activeName == '微店商城版') {
@@ -905,6 +948,8 @@
             this.form.vdian_secret = temp.vdian_secret
             this.form.vdian_access_token = temp.vdian_access_token
             this.form.vdian_expiration_period = temp.vdian_expiration_period
+            // this.form.vdian_goods_edit = Number(temp.vdian_goods_edit)
+            this.form.vdian_sensitive_sync = Number(temp.vdian_sensitive_sync)
           }
         }
       },
@@ -925,7 +970,8 @@
                 jst_refresh_token: this.form.jst_refresh_token, //聚水潭refresh_token
                 jst_expiration_period: this.form.jst_expiration_period, //聚水潭过期时间
                 company_name: this.form.company_name,
-                jst_goods_edit: this.form.jst_goods_edit, //聚水潭接口是否开启
+                jst_goods_edit: this.form.jst_goods_edit,
+                jst_sensitive_sync: this.form.jst_sensitive_sync,
                 jst_stock_type: this.form.jst_stock_type.join(','),
               })
               if (code === 200) {
@@ -1000,6 +1046,8 @@
                 vdian_secret: this.form.vdian_secret,
                 vdian_access_token: this.form.vdian_access_token,
                 vdian_expiration_period: this.form.vdian_expiration_period,
+                // vdian_goods_edit: this.form.vdian_goods_edit,
+                vdian_sensitive_sync: this.form.vdian_sensitive_sync,
               })
               if (code === 200) {
                 this.$message.success('保存成功')

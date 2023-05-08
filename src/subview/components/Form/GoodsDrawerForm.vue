@@ -14,7 +14,7 @@
               {{ goodsDetails.name }}
             </div>
             <div style="margin: 10px 0">商品ID：{{ goodsDetails.id }}</div>
-            <div>上架时间：{{ goodsDetails.upper_time }}</div>
+            <div>上市时间：{{ goodsDetails.upper_time }}</div>
           </div>
         </div>
       </div>

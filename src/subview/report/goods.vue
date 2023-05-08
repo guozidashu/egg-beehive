@@ -244,7 +244,7 @@
               <el-option label="按销售额" value="sum_total" />
               <el-option label="按动销客户数" value="count_customer" />
               <el-option label="按商品毛利" value="sum_profit" />
-              <el-option label="按上架时间" value="upper_time" />
+              <el-option label="按上市时间" value="upper_time" />
             </el-select>
             <el-radio-group
               v-model="goodsForm1.sort"

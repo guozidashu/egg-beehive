@@ -301,6 +301,15 @@ export const asyncRoutes = [
           icon: 'file-list-line',
         },
       },
+      {
+        path: 'goodsInventory',
+        name: 'GoodsInventory',
+        component: () => import('@/subview/goods/inventory'),
+        meta: {
+          title: '库存调整单',
+          icon: 'file-list-line',
+        },
+      },
     ],
   },
   {

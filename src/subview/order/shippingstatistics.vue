@@ -135,7 +135,7 @@
           排序
           <el-select v-model="form.order" style="width: 150px; margin: 0 10px">
             <el-option label="按创建时间" value="create_time" />
-            <el-option label="按上架时间" value="upper_time" />
+            <el-option label="按上市时间" value="upper_time" />
             <el-option label="按商品款号" value="sn" />
           </el-select>
           <el-radio-group v-model="form.sort">
@@ -354,7 +354,7 @@
           type: '1', // 数据格式  1款号 2颜色  3颜色+尺码
           not_stop_goods: true, //不统计停售商品
           not_is_void: true, //不统计作废数据
-          order: 'create_time', //排序 create_time创建时间 upper_time上架时间 sn款号
+          order: 'create_time', //排序 create_time创建时间 upper_time上市时间 sn款号
           sort: 'desc', //
         },
         formType: 5,
@@ -407,7 +407,11 @@
         this.selectList = data
       },
       // 导出
-      async handleDownload() {
+      async handleDownload(type) {
+        if (type == 2 && this.selectRows.length == 0) {
+          this.$message.error('请选择要导出的规格')
+          return
+        }
         let stock_id = []
         if (this.selectRows.length != 0) {
           this.selectRows.forEach((item) => {
@@ -421,9 +425,429 @@
         let temp = JSON.parse(JSON.stringify(this.formTemp))
         temp.ids = stock_id
         const { code, data } = await this.api.getDeliveryStatisticsExport(temp)
+        let columnSn = [
+          {
+            title: '图片',
+            type: 'image',
+            width: 100,
+            height: 100,
+            key: 'img',
+          },
+          {
+            title: '商品名称',
+            type: 'text',
+            key: 'name',
+          },
+          {
+            title: '商品款号',
+            type: 'text',
+            key: 'sn',
+          },
+          {
+            title: '市场价',
+            type: 'text',
+            key: 'sale_price',
+          },
+          {
+            title: '销售价',
+            type: 'text',
+            key: 'price',
+          },
+
+          {
+            title: '发货数量',
+            type: 'text',
+            key: 'sum_deliver_num',
+          },
+          {
+            title: '发货金额',
+            type: 'text',
+            key: 'sum_deliver_total',
+          },
+          {
+            title: '平均出库价',
+            type: 'text',
+            key: 'avg_deliver_price',
+          },
+          {
+            title: '平均发货折扣',
+            type: 'text',
+            key: 'deliver_rate',
+          },
+          {
+            title: '平均出库成本',
+            type: 'text',
+            key: 'cost_price',
+          },
+          {
+            title: '出库成本金额',
+            type: 'text',
+            key: 'deliver_cost_price',
+          },
+          {
+            title: '退货数量',
+            type: 'text',
+            key: 'sum_return_num',
+          },
+          {
+            title: '退货金额',
+            type: 'text',
+            key: 'sum_return_total',
+          },
+          {
+            title: '平均退货价',
+            type: 'text',
+            key: 'avg_return_price',
+          },
+          {
+            title: '平均退货折扣',
+            type: 'text',
+            key: 'return_rate',
+          },
+          {
+            title: '平均退货成本',
+            type: 'text',
+            key: 'cost_prices',
+          },
+          {
+            title: '退货成本金额',
+            type: 'text',
+            key: 'return_cost_price',
+          },
+          {
+            title: '毛利额',
+            type: 'text',
+            key: 'sum_profit',
+          },
+          {
+            title: '品牌',
+            type: 'text',
+            key: 'brand_name',
+          },
+          {
+            title: '上市年份',
+            type: 'text',
+            key: 'year_name',
+          },
+          {
+            title: '上市季节',
+            type: 'text',
+            key: 'season_name',
+          },
+          {
+            title: '商品状态',
+            type: 'text',
+            key: 'goods_status',
+          },
+          {
+            title: '上市时间',
+            type: 'text',
+            key: 'upper_time',
+          },
+          {
+            title: '创建时间',
+            type: 'text',
+            key: 'create_time',
+          },
+        ]
+        let columnColor = [
+          {
+            title: '图片',
+            type: 'image',
+            width: 100,
+            height: 100,
+            key: 'img',
+          },
+          {
+            title: '商品名称',
+            type: 'text',
+            key: 'name',
+          },
+          {
+            title: '商品款号',
+            type: 'text',
+            key: 'sn',
+          },
+          {
+            title: '颜色',
+            type: 'text',
+            key: 'color_name',
+          },
+          {
+            title: '市场价',
+            type: 'text',
+            key: 'sale_price',
+          },
+          {
+            title: '销售价',
+            type: 'text',
+            key: 'price',
+          },
+
+          {
+            title: '发货数量',
+            type: 'text',
+            key: 'sum_deliver_num',
+          },
+          {
+            title: '发货金额',
+            type: 'text',
+            key: 'sum_deliver_total',
+          },
+          {
+            title: '平均出库价',
+            type: 'text',
+            key: 'avg_deliver_price',
+          },
+          {
+            title: '平均发货折扣',
+            type: 'text',
+            key: 'deliver_rate',
+          },
+          {
+            title: '平均出库成本',
+            type: 'text',
+            key: 'cost_price',
+          },
+          {
+            title: '出库成本金额',
+            type: 'text',
+            key: 'deliver_cost_price',
+          },
+          {
+            title: '退货数量',
+            type: 'text',
+            key: 'sum_return_num',
+          },
+          {
+            title: '退货金额',
+            type: 'text',
+            key: 'sum_return_total',
+          },
+          {
+            title: '平均退货价',
+            type: 'text',
+            key: 'avg_return_price',
+          },
+          {
+            title: '平均退货折扣',
+            type: 'text',
+            key: 'return_rate',
+          },
+          {
+            title: '平均退货成本',
+            type: 'text',
+            key: 'cost_prices',
+          },
+          {
+            title: '退货成本金额',
+            type: 'text',
+            key: 'return_cost_price',
+          },
+          {
+            title: '毛利额',
+            type: 'text',
+            key: 'sum_profit',
+          },
+          {
+            title: '品牌',
+            type: 'text',
+            key: 'brand_name',
+          },
+          {
+            title: '上市年份',
+            type: 'text',
+            key: 'year_name',
+          },
+          {
+            title: '上市季节',
+            type: 'text',
+            key: 'season_name',
+          },
+          {
+            title: '商品状态',
+            type: 'text',
+            key: 'goods_status',
+          },
+          {
+            title: '上市时间',
+            type: 'text',
+            key: 'upper_time',
+          },
+          {
+            title: '创建时间',
+            type: 'text',
+            key: 'create_time',
+          },
+        ]
+        let columnSize = [
+          {
+            title: '图片',
+            type: 'image',
+            width: 100,
+            height: 100,
+            key: 'img',
+          },
+          {
+            title: '商品名称',
+            type: 'text',
+            key: 'name',
+          },
+          {
+            title: '商品款号',
+            type: 'text',
+            key: 'sn',
+          },
+          {
+            title: '颜色',
+            type: 'text',
+            key: 'color_name',
+          },
+          {
+            title: '尺码',
+            type: 'text',
+            key: 'size_name',
+          },
+          {
+            title: '市场价',
+            type: 'text',
+            key: 'sale_price',
+          },
+          {
+            title: '销售价',
+            type: 'text',
+            key: 'price',
+          },
+
+          {
+            title: '发货数量',
+            type: 'text',
+            key: 'sum_deliver_num',
+          },
+          {
+            title: '发货金额',
+            type: 'text',
+            key: 'sum_deliver_total',
+          },
+          {
+            title: '平均出库价',
+            type: 'text',
+            key: 'avg_deliver_price',
+          },
+          {
+            title: '平均发货折扣',
+            type: 'text',
+            key: 'deliver_rate',
+          },
+          {
+            title: '平均出库成本',
+            type: 'text',
+            key: 'cost_price',
+          },
+          {
+            title: '出库成本金额',
+            type: 'text',
+            key: 'deliver_cost_price',
+          },
+          {
+            title: '退货数量',
+            type: 'text',
+            key: 'sum_return_num',
+          },
+          {
+            title: '退货金额',
+            type: 'text',
+            key: 'sum_return_total',
+          },
+          {
+            title: '平均退货价',
+            type: 'text',
+            key: 'avg_return_price',
+          },
+          {
+            title: '平均退货折扣',
+            type: 'text',
+            key: 'return_rate',
+          },
+          {
+            title: '平均退货成本',
+            type: 'text',
+            key: 'cost_prices',
+          },
+          {
+            title: '退货成本金额',
+            type: 'text',
+            key: 'return_cost_price',
+          },
+          {
+            title: '毛利额',
+            type: 'text',
+            key: 'sum_profit',
+          },
+          {
+            title: '品牌',
+            type: 'text',
+            key: 'brand_name',
+          },
+          {
+            title: '上市年份',
+            type: 'text',
+            key: 'year_name',
+          },
+          {
+            title: '上市季节',
+            type: 'text',
+            key: 'season_name',
+          },
+          {
+            title: '商品状态',
+            type: 'text',
+            key: 'goods_status',
+          },
+          {
+            title: '上市时间',
+            type: 'text',
+            key: 'upper_time',
+          },
+          {
+            title: '创建时间',
+            type: 'text',
+            key: 'create_time',
+          },
+        ]
+        const excelData = data
+        const date = new Date()
+        const year = date.getFullYear()
+        const month = date.getMonth() + 1
+        const day = date.getDate()
+        const hour = date.getHours()
+        const minute = date.getMinutes()
+        const second = date.getSeconds()
+        // 拼接年月日时分秒
+        const time =
+          year +
+          '-' +
+          month +
+          '-' +
+          day +
+          ' ' +
+          hour +
+          '-' +
+          minute +
+          '-' +
+          second
+        // 拼接文件名称
+        const excelName = '商品出入库汇总列表-' + time
         if (code == 200) {
-          window.open(data.url)
+          if (this.form.type == 1) {
+            table2excel(columnSn, excelData, excelName) //生成Excel表格，自动下载
+          } else if (this.form.type == 2) {
+            table2excel(columnColor, excelData, excelName) //生成Excel表格，自动下载
+          } else {
+            table2excel(columnSize, excelData, excelName) //生成Excel表格，自动下载
+          }
           this.$message.success('导出成功')
+          this.dialogVisible = false
           this.fetchData()
         } else {
           this.$message.error('导出失败')
@@ -447,7 +871,7 @@
           type: '1', // 数据格式  1款号 2颜色  3颜色+尺码
           not_stop_goods: true, //不统计停售商品
           not_is_void: true, //不统计作废数据
-          order: 'create_time', //排序 create_time创建时间 upper_time上架时间 sn款号
+          order: 'create_time', //排序 create_time创建时间 upper_time上市时间 sn款号
           sort: 'desc', //
         }
       },

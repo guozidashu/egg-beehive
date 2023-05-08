@@ -825,6 +825,11 @@
           this.drawerInof.order_belong = 2
           this.drawerInof.status = 1
           this.drawerInof.is_online_order = 0
+          this.drawerInof.inventory_permission_group = {
+            brand: [],
+            year: [],
+            season: [],
+          }
         } else {
           this.drawerInof = JSON.parse(JSON.stringify(row))
           this.drawerInof.drawerType = type

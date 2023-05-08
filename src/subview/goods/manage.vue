@@ -36,8 +36,8 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="年份:">
-            <el-select v-model="form.year" placeholder="请选择年份">
+          <el-form-item label="上市年份:">
+            <el-select v-model="form.year" placeholder="请选择上市年份">
               <el-option
                 v-for="(item, index) in selectList.year"
                 :key="index"
@@ -46,8 +46,8 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="季节:">
-            <el-select v-model="form.season" placeholder="请选择季节">
+          <el-form-item label="上市季节:">
+            <el-select v-model="form.season" placeholder="请选择上市季节">
               <el-option
                 v-for="(item, index) in selectList.season"
                 :key="index"
@@ -158,7 +158,7 @@
           <el-form-item label="排序">
             <el-select v-model="form.sort_field" style="width: 150px">
               <el-option label="按创建时间" value="create_time" />
-              <el-option label="按上架时间" value="upper_time" />
+              <el-option label="按上市时间" value="upper_time" />
               <el-option label="按商品款号" value="sn" />
             </el-select>
           </el-form-item>
@@ -506,11 +506,18 @@
 
       // 导出商品条形码
       async handleExportBarcode() {
+        let ids = []
+        this.selectRowsId.forEach((item) => {
+          ids.push(item.id)
+        })
         if (this.formTemp == null) {
-          this.formTemp = JSON.parse(JSON.stringify(this.form))
+          this.formTemp1 = JSON.parse(JSON.stringify(this.form))
+        } else {
+          this.formTemp1 = JSON.parse(JSON.stringify(this.formTemp))
         }
+        this.formTemp1.ids = ids
         const { code, data } = await this.api.getGoodsExportBarcode(
-          this.formTemp
+          this.formTemp1
         )
         if (code == 200) {
           window.open(data.url)
@@ -522,10 +529,17 @@
       },
       // 导出商品
       async handleDerive() {
+        let ids = []
+        this.selectRowsId.forEach((item) => {
+          ids.push(item.id)
+        })
         if (this.formTemp == null) {
-          this.formTemp = JSON.parse(JSON.stringify(this.form))
+          this.formTemp1 = JSON.parse(JSON.stringify(this.form))
+        } else {
+          this.formTemp1 = JSON.parse(JSON.stringify(this.formTemp))
         }
-        const { code, data } = await this.api.getGoodsExport(this.formTemp)
+        this.formTemp1.ids = ids
+        const { code, data } = await this.api.getGoodsExport(this.formTemp1)
         if (code == 200) {
           window.open(data.url)
           this.$message.success('导出成功')

@@ -36,8 +36,8 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="年份:">
-            <el-select v-model="form.year" placeholder="请选择年份">
+          <el-form-item label="上市年份:">
+            <el-select v-model="form.year" placeholder="请选择上市年份">
               <el-option
                 v-for="(item, index) in selectList.year"
                 :key="index"
@@ -46,8 +46,8 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="季节:">
-            <el-select v-model="form.season" placeholder="请选择季节">
+          <el-form-item label="上市季节:">
+            <el-select v-model="form.season" placeholder="请选择上市季节">
               <el-option
                 v-for="(item, index) in selectList.season"
                 :key="index"
@@ -143,7 +143,7 @@
           <el-form-item label="排序">
             <el-select v-model="form.sort_field" style="width: 150px">
               <el-option label="按创建时间" value="create_time" />
-              <el-option label="按上架时间" value="upper_time" />
+              <el-option label="按上市时间" value="upper_time" />
               <el-option label="按商品款号" value="sn" />
             </el-select>
           </el-form-item>

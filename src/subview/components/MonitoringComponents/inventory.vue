@@ -76,7 +76,7 @@
               <el-option label="按生产中数量" value="sum_total" />
               <el-option label="按发货件数" value="count_customer" />
               <el-option label="按价格" value="sum_profit" />
-              <el-option label="按上架时间" value="upper_time" />
+              <el-option label="按上市时间" value="upper_time" />
             </el-select>
             <el-radio-group
               v-model="form.sort"

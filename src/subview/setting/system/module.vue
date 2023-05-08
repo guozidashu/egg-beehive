@@ -82,8 +82,14 @@
             <el-form-item label="库存显示设置" prop="stock_show">
               <el-radio-group v-model="form1.stock_show">
                 <el-radio :label="1">实际库存（推荐）</el-radio>
-                <el-radio :label="2">可售库存-订单占有数（代发货）</el-radio>
+                <el-radio :label="2">可售库存</el-radio>
               </el-radio-group>
+              <div style="color: gray">
+                实际库存数:商品在主仓仓库中的实物库存数量（可以用于发货的数量)
+              </div>
+              <div style="color: gray">
+                可售库存数:实际库存数-订单占有数(待发货)+在生产中的库（系统配置可选项)
+              </div>
             </el-form-item>
             <el-form-item label="库存监控人id" prop="monitor_id">
               <el-input v-model="form1.monitor_id" style="width: 215px" />
@@ -120,6 +126,9 @@
                 style="width: 215px"
                 @input="form1.warn_day = $numFormatInput(form1.warn_day)"
               />
+              <div style="color: gray">
+                距交货曰期还有X天，如果还没有全部完成入库，则会进入预警状态
+              </div>
             </el-form-item>
             <el-form-item label="库存预警全局" prop="goods_stock_warning">
               <el-input

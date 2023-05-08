@@ -85,7 +85,7 @@
               <el-option label="按销售额" value="sale_amount" />
               <el-option label="按拿货客户" value="sale_customer_count" />
               <el-option label="按价格" value="goods_price" />
-              <el-option label="按上架时间" value="goods_upper_time" />
+              <el-option label="按上市时间" value="goods_upper_time" />
               <el-option label="按监控时间" value="monitor_time" />
             </el-select>
             <el-radio-group
@@ -289,7 +289,7 @@
           start_date: this.getPastTime(29)[0],
           end_date: this.getPastTime(29)[1],
           sort_field: {
-            key: 'sale_num', // 按销量 = sale_num 按销售额 = sale_amount 按拿货客户 = sale_customer_count 按价格 = goods_price 按上架时间 = goods_upper_time 按监控时间 = monitor_time
+            key: 'sale_num', // 按销量 = sale_num 按销售额 = sale_amount 按拿货客户 = sale_customer_count 按价格 = goods_price 按上市时间 = goods_upper_time 按监控时间 = monitor_time
             sort: 'desc',
           },
         },
@@ -362,7 +362,7 @@
           start_date: this.getPastTime(29)[0],
           end_date: this.getPastTime(29)[1],
           sort_field: {
-            key: 'sale_num', // 按销量 = sale_num 按销售额 = sale_amount 按拿货客户 = sale_customer_count 按价格 = goods_price 按上架时间 = goods_upper_time 按监控时间 = monitor_time
+            key: 'sale_num', // 按销量 = sale_num 按销售额 = sale_amount 按拿货客户 = sale_customer_count 按价格 = goods_price 按上市时间 = goods_upper_time 按监控时间 = monitor_time
             sort: 'desc',
           },
         }

@@ -51,7 +51,7 @@
           创建时间&nbsp;&nbsp;{{ form.create_time }}
         </div>
         <div style="margin-bottom: 30px; font-size: 12px">
-          上架时间&nbsp;&nbsp;{{ form.upper_time }}
+          上市时间&nbsp;&nbsp;{{ form.upper_time }}
         </div>
         <div style="margin-bottom: 20px; font-size: 12px">
           所属类目&nbsp;&nbsp;{{ form.category_name }}

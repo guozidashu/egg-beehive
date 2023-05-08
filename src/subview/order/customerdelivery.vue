@@ -146,8 +146,8 @@
                 <div style="width: 280px; margin-left: 10px">
                   <div style="font-size: 14px; font-weight: 600">
                     批次号:{{ row.id }} |
-                    <el-tag type="warning">{{ row.status_text }}</el-tag>
-                    <el-tag type="success">已签收</el-tag>
+                    <el-tag type="success">{{ row.status_text }}</el-tag>
+                    <el-tag type="warning">未签收</el-tag>
                   </div>
                   <div style="margin: 5px 0">
                     {{ row.customer_name }}

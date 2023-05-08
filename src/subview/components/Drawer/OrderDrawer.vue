@@ -163,7 +163,7 @@
                       text-decoration: line-through;
                     "
                   >
-                    ￥ {{ item.sale_price | moneyFormat }}
+                    ￥ {{ item.price | moneyFormat }}
                   </div>
                 </div>
                 <el-image :src="item.img" style="width: 80px; height: 80px">

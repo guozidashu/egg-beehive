@@ -13,6 +13,7 @@ import QYBranchTooltip from '@/qy/QYComponents/QYBranchTooltip'
 import QYPopover from '@/qy/QYComponents/QYPopover'
 import QYPopoverPrice from '@/qy/QYComponents/QYPopoverPrice'
 import QYRanking from '@/qy/QYComponents/QYRanking'
+import QYCustomerPopover from '@/qy/QYComponents/QYCustomerPopover'
 
 export default {
   install(Vue) {
@@ -31,5 +32,6 @@ export default {
     Vue.component('QYPopover', QYPopover)
     Vue.component('QYPopoverPrice', QYPopoverPrice)
     Vue.component('QYRanking', QYRanking)
+    Vue.component('QYCustomerPopover', QYCustomerPopover)
   },
 }

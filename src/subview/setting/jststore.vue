@@ -78,7 +78,6 @@
         @changePageSize="changeBtnPageSize"
       >
         <template #List>
-          <el-table-column align="center" type="index" width="50" />
           <el-table-column align="center" label="店铺编号" prop="shop_id" />
           <el-table-column align="center" label="店铺名称" prop="shop_name" />
           <el-table-column align="center" label="所属平台" prop="shop_site" />
@@ -164,8 +163,8 @@
       async debounceFetchData() {
         this.listLoading = true
         const { data } = await this.api.getjstShopList(this.form)
-        this.list = data
-        this.total = data.length
+        this.list = data.list
+        this.total = data.total
         this.listLoading = false
       },
     },
