@@ -251,6 +251,7 @@
             dayNum: 0,
             month: 0,
             yesterday_month: 0,
+            icon: true,
           },
           {
             title: '总销量',

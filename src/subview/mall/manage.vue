@@ -256,9 +256,9 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="吊牌价" prop="sale_price">
+          <el-table-column align="center" label="吊牌价" prop="price">
             <template #default="{ row }">
-              <el-tag>￥{{ row.sale_price | moneyFormat }}</el-tag>
+              <el-tag>￥{{ row.price | moneyFormat }}</el-tag>
             </template>
           </el-table-column>
 

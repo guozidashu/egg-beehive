@@ -554,7 +554,7 @@
             typeSta: false,
             name: 'today_new',
             numType: 2,
-            content: '今日创建商品款数量',
+            content: '今日上架的商品款数量',
           },
           {
             title: '商品款式总数',

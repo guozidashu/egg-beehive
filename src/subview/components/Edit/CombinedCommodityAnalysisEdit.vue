@@ -220,38 +220,7 @@
         dialogFormVisible: false,
         // 商品列表 loading 数据
         listLoading: false,
-        tableData: [
-          {
-            not_delivery_num: '32',
-            num: '32',
-            goods_id: 711,
-            goods_sn: 'YZ13002',
-            goods_name: '棉布背带裙',
-            create_time: 1671125846,
-            sale_price: '109.00',
-            goods_img:
-              'https://img.wechatboss.com/FkV-x3-FbnJ6M3Ag2TovXXopOg_H',
-            outage_rate: '100%',
-            xh_total: -32,
-            zsc_total: 0,
-            is_show: [],
-          },
-          {
-            not_delivery_num: '32',
-            num: '32',
-            goods_id: 711,
-            goods_sn: 'YZ13002',
-            goods_name: '棉布背带裙',
-            create_time: 1671125846,
-            sale_price: '109.00',
-            goods_img:
-              'https://img.wechatboss.com/FkV-x3-FbnJ6M3Ag2TovXXopOg_H',
-            outage_rate: '100%',
-            xh_total: -32,
-            zsc_total: 0,
-            is_show: [],
-          },
-        ],
+        tableData: [],
         query: JSON.parse(JSON.stringify(this.queryCondition)),
       }
     },

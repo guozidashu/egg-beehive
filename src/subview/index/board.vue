@@ -453,7 +453,7 @@
                     margin: 10px 0;
                   "
                 >
-                  <div style="color: red">￥{{ row.sale_price }}</div>
+                  <div style="color: red">￥{{ row.price }}</div>
                   <div>{{ row.create_time | formatTime }}</div>
                 </div>
               </div>

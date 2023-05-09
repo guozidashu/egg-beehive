@@ -68,8 +68,9 @@
           </el-form-item>
           <el-form-item label="ERP版本：">
             <el-radio-group v-model="form.jst_version">
-              <el-radio :label="1">ERP专业版</el-radio>
-              <el-radio :label="2">ERP企业版</el-radio>
+              <el-radio :label="1">企业版</el-radio>
+              <el-radio :label="2">专业版</el-radio>
+              <el-radio :label="3">分销版</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="聚水潭AuthUrl：" prop="jst_auth_url">

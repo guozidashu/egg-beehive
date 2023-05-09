@@ -15,6 +15,16 @@
             <div style="margin-top: 5px">
               <vab-icon icon="line-chart-line" style="color: red" />
               {{ item.title }}
+              <el-popover v-if="item.icon" placement="right" trigger="hover">
+                <div style="font-size: 12px">
+                  在选定条件下，所有成功提交订单实际应收金额（减去订单优惠金额）
+                </div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
             </div>
           </div>
         </template>
