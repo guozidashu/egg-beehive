@@ -215,6 +215,7 @@
         ref="expandstable"
         v-loading="state"
         border
+        class="GoodsDrawerList"
         :data="list"
         :expand-row-keys="expands"
         :row-key="getRowKeys"
@@ -526,3 +527,8 @@
     },
   }
 </script>
+<style lang="scss">
+  .GoodsDrawerList .el-icon-arrow-right {
+    opacity: 0;
+  }
+</style>

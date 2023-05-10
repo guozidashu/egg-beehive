@@ -18,6 +18,16 @@
         @resetForm="resetForm"
       >
         <template #Form>
+          <el-form-item label="仓库类型:">
+            <el-select
+              v-model="form.WarehouseType"
+              placeholder="请选择仓库类型"
+            >
+              <el-option label="全部仓库" :value="0" />
+              <el-option label="自主仓库" :value="1" />
+              <el-option label="聚水潭云仓" :value="2" />
+            </el-select>
+          </el-form-item>
           <el-form-item label="品牌:">
             <el-select v-model="form.brand_id" placeholder="请选择品牌">
               <el-option
@@ -96,11 +106,18 @@
               &nbsp; &nbsp; | &nbsp; 指标说明
               <el-popover placement="right" trigger="hover">
                 <div style="font-size: 12px">
-                  实际库存 = 生产入库 - 生产退货 - 销售发货 + 销售退货 &plusmn;
-                  调整
+                  主仓实际库存 = 生产入库（主仓） - 生产退货 - 销售发货 +
+                  销售退货 &plusmn; 调整
+                </div>
+                <div style="font-size: 12px">
+                  云仓实际库存 = 生产入库（云仓） - 聚水潭销售出库 &plusmn;
+                  库存盘点调整
                 </div>
                 <div style="font-size: 12px">
                   可售库存 = 实际库存 -订单占有数（待发货）
+                </div>
+                <div style="font-size: 12px">
+                  PS：注意区分自主仓发货数量和聚水潭出库重复的小程序商城发货数据
                 </div>
                 <vab-icon
                   slot="reference"
@@ -126,6 +143,236 @@
       </div>
       <!-- 列表 -->
       <QYList
+        v-if="form.WarehouseType == 0"
+        :list="list"
+        :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
+        :state="listLoading"
+        :total="total"
+        @changePage="changeBtnPage"
+        @changePageSize="changeBtnPageSize"
+        @selectRows="selectBtnRows"
+      >
+        <template #List>
+          <el-table-column align="center" type="selection" width="50" />
+          <el-table-column label="商品信息" width="400">
+            <template #default="{ row }">
+              <div style="display: flex">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.goods_img"
+                    style="width: 200px; height: 200px"
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                  <el-image
+                    :src="row.goods_img"
+                    style="width: 105px; height: 105px"
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                </el-tooltip>
+                <div style="width: 280px; margin-left: 10px">
+                  <div style="font-size: 14px; font-weight: 600">
+                    {{ row.goods_sn }}
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 5px 0 0 0;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 150px;
+                        overflow: hidden;
+                        text-align: left;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      "
+                    >
+                      {{ row.goods_name }}
+                    </div>
+                  </div>
+
+                  <div style="display: flex; width: 100%; margin: 5px 0">
+                    <el-tag type="info">{{ row.category_name }}</el-tag>
+                    &nbsp;
+                    <el-tag type="info">{{ row.year_name }}</el-tag>
+                    &nbsp;
+                    <el-tag v-if="row.season_name != null" type="info">
+                      {{ row.season_name }}
+                    </el-tag>
+                    &nbsp;
+                    <el-tag v-if="row.brand_name != null" type="info">
+                      {{ row.brand_name }}
+                    </el-tag>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 5px 0 0 0;
+                    "
+                  >
+                    {{ row.upper_time }}
+                    <el-tag v-if="row.status == 1">在售</el-tag>
+                    <el-tag v-if="row.status == 2" type="danger">停售</el-tag>
+                    <el-tag v-if="row.status == 3" type="warning">
+                      待上市
+                    </el-tag>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            v-if="form.type == 2"
+            align="center"
+            label="颜色"
+            prop="color_name"
+          />
+          <el-table-column
+            v-if="form.type == 2"
+            align="center"
+            label="尺码"
+            prop="size_name"
+          />
+          <el-table-column align="center" label="裁床数" prop="zsc_num" />
+          <el-table-column align="center" prop="sum_inbound_num">
+            <template slot="header">
+              生产入库
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">包含主仓和聚水潭云仓数据</div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="sum_out_num">
+            <template slot="header">
+              生产退货
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">包含主仓和聚水潭云仓退货数据</div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="jst_out_stock">
+            <template slot="header">
+              聚水潭出库
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">
+                  聚水潭销售出库(包含小程序商城发货数据)
+                </div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="sum_delivery_num">
+            <template slot="header">
+              销售发货
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">
+                  主仓订单发货数据〔排除小程序商城发货数据)
+                </div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="sum_return_num">
+            <template slot="header">
+              销售退货
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">
+                  包含退至自主仓和聚水潭云仓的数据
+                </div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="sum_adjust_num_num">
+            <template slot="header">
+              调整数量
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">
+                  包含自主仓和聚水潭云仓调整和盘点数据
+                </div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="real_stock">
+            <template slot="header">
+              实际库存
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">主仓和聚水潭云仓实际库存总和</div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="sum_wait_num">
+            <template slot="header">
+              订单占有数
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">
+                  主仓和聚水潭云仓订单占有数总和
+                </div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="sale_stock">
+            <template slot="header">
+              可售库存
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">主仓和聚水潭云仓可售库存总和</div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </template>
+          </el-table-column>
+        </template>
+      </QYList>
+      <QYList
+        v-if="form.WarehouseType == 1"
         :list="list"
         :list-type="listType"
         :page-no="page"
@@ -226,15 +473,10 @@
           <el-table-column align="center" label="裁床数" prop="zsc_num" />
           <el-table-column
             align="center"
-            label="生产入库"
+            label="生产入库(主仓)"
             prop="sum_inbound_num"
           />
           <el-table-column align="center" label="生产退货" prop="sum_out_num" />
-          <el-table-column
-            align="center"
-            label="聚水潭出库"
-            prop="jst_out_stock"
-          />
           <el-table-column
             align="center"
             label="销售发货"
@@ -251,6 +493,134 @@
             prop="sum_adjust_num_num"
           />
           <el-table-column align="center" label="实际库存" prop="real_stock" />
+          <el-table-column
+            align="center"
+            label="订单占有数"
+            prop="sum_wait_num"
+          />
+          <el-table-column align="center" label="可售库存" prop="sale_stock" />
+        </template>
+      </QYList>
+      <QYList
+        v-if="form.WarehouseType == 2"
+        :list="list"
+        :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
+        :state="listLoading"
+        :total="total"
+        @changePage="changeBtnPage"
+        @changePageSize="changeBtnPageSize"
+        @selectRows="selectBtnRows"
+      >
+        <template #List>
+          <el-table-column align="center" type="selection" width="50" />
+          <el-table-column label="商品信息" width="400">
+            <template #default="{ row }">
+              <div style="display: flex">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.goods_img"
+                    style="width: 200px; height: 200px"
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                  <el-image
+                    :src="row.goods_img"
+                    style="width: 105px; height: 105px"
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                </el-tooltip>
+                <div style="width: 280px; margin-left: 10px">
+                  <div style="font-size: 14px; font-weight: 600">
+                    {{ row.goods_sn }}
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 5px 0 0 0;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 150px;
+                        overflow: hidden;
+                        text-align: left;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      "
+                    >
+                      {{ row.goods_name }}
+                    </div>
+                  </div>
+
+                  <div style="display: flex; width: 100%; margin: 5px 0">
+                    <el-tag type="info">{{ row.category_name }}</el-tag>
+                    &nbsp;
+                    <el-tag type="info">{{ row.year_name }}</el-tag>
+                    &nbsp;
+                    <el-tag v-if="row.season_name != null" type="info">
+                      {{ row.season_name }}
+                    </el-tag>
+                    &nbsp;
+                    <el-tag v-if="row.brand_name != null" type="info">
+                      {{ row.brand_name }}
+                    </el-tag>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 5px 0 0 0;
+                    "
+                  >
+                    {{ row.upper_time }}
+                    <el-tag v-if="row.status == 1">在售</el-tag>
+                    <el-tag v-if="row.status == 2" type="danger">停售</el-tag>
+                    <el-tag v-if="row.status == 3" type="warning">
+                      待上市
+                    </el-tag>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            v-if="form.type == 2"
+            align="center"
+            label="颜色"
+            prop="color_name"
+          />
+          <el-table-column
+            v-if="form.type == 2"
+            align="center"
+            label="尺码"
+            prop="size_name"
+          />
+          <el-table-column align="center" label="裁床数" prop="zsc_num" />
+          <el-table-column
+            align="center"
+            label="生产入库(云仓)"
+            prop="sum_inbound_num"
+          />
+          <el-table-column
+            align="center"
+            label="聚水潭销售出库"
+            prop="sum_delivery_num"
+          />
+          <el-table-column
+            align="center"
+            label="云仓调整盘点"
+            prop="jst­_adjust_num"
+          />
+          <el-table-column
+            align="center"
+            label="云仓实际库存"
+            prop="real_stock"
+          />
           <el-table-column
             align="center"
             label="订单占有数"
@@ -277,6 +647,7 @@
         page: 1,
         pageSize: 10,
         form: {
+          WarehouseType: 1,
           page: 1,
           pageSize: 10,
           sn: '', //订单号
@@ -607,7 +978,8 @@
           is_return: false, //
           is_void: true, //
           order: 'create_time', //create_time upper_time
-          sort: 'desc', //
+          sort: 'desc',
+          WarehouseType: 1, //1总仓 2分仓
         }
       },
       // 分页

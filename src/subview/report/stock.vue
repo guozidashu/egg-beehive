@@ -704,7 +704,7 @@
             typeSta: false,
             name: 'average_price',
             numType: 1,
-            content: '测试',
+            content: '所有在售商品的吊牌总金额/库存总件数,对应吊牌均价的注释',
           },
           {
             title: '成本均价',
@@ -714,7 +714,7 @@
             typeSta: false,
             name: 'average_cost',
             numType: 1,
-            content: '测试',
+            content: '所有在售商品的成本总金额/库存总件数,对应成本均价的注释',
           },
         ],
         // 年份饼图 样式 数据

@@ -318,7 +318,9 @@
                     </el-button>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <el-button type="text">等级</el-button>
+                    <el-button type="text" @click="getBillList(row.id)">
+                      对账单
+                    </el-button>
                   </el-dropdown-item>
                   <el-dropdown-item v-if="row.monitor_status == 0">
                     <el-button type="text" @click="Monitor(row.id, 1)">
@@ -502,10 +504,13 @@
       url="/upload"
       @submitUpload="getSon"
     />
+    <!-- 对账单 -->
+    <edit ref="edit" />
   </div>
 </template>
 
 <script>
+  import Edit from '@/subview/components/Edit/StatementAccountEdit'
   import { mapGetters } from 'vuex'
   // 获取接口路径配置
   import { baseURL } from '@/config'
@@ -515,7 +520,7 @@
   // 日期组件和日期方法混入
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
-    components: { Drawer, VabUpload },
+    components: { Drawer, VabUpload, Edit },
     mixins: [datajosn],
     data() {
       // 新增保证金金额验证
@@ -647,6 +652,12 @@
       this.fetchData()
     },
     methods: {
+      //对账单
+      async getBillList(id) {
+        const { data } = await this.api.giteCustomerDetail({ id: id })
+        let form = JSON.parse(JSON.stringify(data[0]))
+        this.$refs['edit'].showEdit(form)
+      },
       // 监控客户
       async Monitor(id, type) {
         if (type == 1) {

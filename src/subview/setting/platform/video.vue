@@ -23,6 +23,257 @@
         <el-button type="primary" @click="btnClickPrint(2)">立即打印</el-button>
       </el-form-item>
     </el-form>
+    <div v-html="gethtml()"></div>
+    <!-- <div style="padding-right: 20px">
+      <div style="display: flex; justify-content: space-between">
+        <div style="display: flex">
+          <img
+            src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202107%2F09%2F20210709142454_dc8dc.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1670217619&t=7e7d4ed"
+            style="width: 70px; height: 70px"
+          />
+          <div style="margin-left: 40px">
+            <div style="padding: 10px 0 0 0; font-size: 18px">集时供应链</div>
+            <div style="color: gray">
+              您好，这是贵公司的电子对账单，请核实！
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="color: gray">生产日期：2020-02-02 15:00:00</div>
+          <div style="padding: 10px; color: gray">
+            「&nbsp;洛一服饰&nbsp;」&nbsp;电子对账单
+          </div>
+          <div style="color: gray">账单周期：2020-02-02 ~ 2020-02-02</div>
+        </div>
+      </div>
+      <div style="padding: 20px">
+        <div style="display: flex">
+          <div
+            style="
+              position: relative;
+              width: 22%;
+              padding: 10px 0;
+              margin-right: 10px;
+              color: white;
+              text-align: center;
+              background-color: #527fda;
+            "
+          >
+            <div>累计应付金额</div>
+            <div>￥1000.00</div>
+            <div
+              style="
+                position: absolute;
+                top: 20px;
+                right: -10px;
+                width: 20px;
+                height: 20px;
+                padding: 2px 0 0 0;
+                color: black;
+                background-color: #f5f5f5;
+                border: 1px solid #e2e2e2;
+              "
+            >
+              =
+            </div>
+          </div>
+          <div
+            style="
+              position: relative;
+              width: 18%;
+              padding: 10px 0;
+              margin-right: 10px;
+              color: white;
+              text-align: center;
+              background-color: #f5f5f5;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: 0;
+                width: 100%;
+                height: 4px;
+                background-color: #527fda;
+              "
+            ></div>
+            <div style="color: #527fda">入仓应付金额</div>
+            <div style="color: black">￥1000.00</div>
+            <div
+              style="
+                position: absolute;
+                top: 20px;
+                right: -10px;
+                width: 20px;
+                height: 20px;
+                padding: 2px 0 0 0;
+                color: black;
+                background-color: #f5f5f5;
+                border: 1px solid #e2e2e2;
+              "
+            >
+              +
+            </div>
+          </div>
+          <div
+            style="
+              position: relative;
+              width: 18%;
+              padding: 10px 0;
+              margin-right: 10px;
+              color: white;
+              text-align: center;
+              background-color: #f5f5f5;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: 0;
+                width: 100%;
+                height: 4px;
+                background-color: #527fda;
+              "
+            ></div>
+            <div style="color: #cfb7e0">报废出库金额</div>
+            <div style="color: black">￥1000.00</div>
+            <div
+              style="
+                position: absolute;
+                top: 20px;
+                right: -10px;
+                width: 20px;
+                height: 20px;
+                padding: 2px 0 0 0;
+                color: black;
+                background-color: #f5f5f5;
+                border: 1px solid #e2e2e2;
+              "
+            >
+              +
+            </div>
+          </div>
+          <div
+            style="
+              position: relative;
+              width: 18%;
+              padding: 10px 0;
+              margin-right: 10px;
+              color: white;
+              text-align: center;
+              background-color: #f5f5f5;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: 0;
+                width: 100%;
+                height: 4px;
+                background-color: #527fda;
+              "
+            ></div>
+            <div style="color: #77c1b7">实付金额</div>
+            <div style="color: black">￥1000.00</div>
+            <div
+              style="
+                position: absolute;
+                top: 20px;
+                right: -10px;
+                width: 20px;
+                height: 20px;
+                padding: 2px 0 0 0;
+                color: black;
+                background-color: #f5f5f5;
+                border: 1px solid #e2e2e2;
+              "
+            >
+              +
+            </div>
+          </div>
+          <div
+            style="
+              position: relative;
+              width: 18%;
+              padding: 10px 0;
+              margin-right: 10px;
+              color: white;
+              text-align: center;
+              background-color: #f5f5f5;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: 0;
+                width: 100%;
+                height: 4px;
+                background-color: #527fda;
+              "
+            ></div>
+            <div style="color: #527fda">其他扣款/优惠</div>
+            <div style="color: black">￥1000.00</div>
+          </div>
+        </div>
+        <div style="display: flex; padding: 10px 0">
+          <div
+            style="width: 2px; height: 20px; background-color: #5984d9"
+          ></div>
+          <div style="margin-top: 2px; margin-left: 20px">生产入库明细</div>
+        </div>
+        <table
+          border="1"
+          cellpadding="0"
+          cellspacing="0"
+          style="width: 100%; border-color: #eceded"
+        >
+          <tr style="border-color: #eceded">
+            <th
+              align="center"
+              style="background-color: #f5f5f5; border-color: #eceded"
+            >
+              <p style="padding: 20px 0">序号</p>
+            </th>
+            <th
+              align="center"
+              style="background-color: #f5f5f5; border-color: #eceded"
+            >
+              <p style="padding: 20px 0">业务日期</p>
+            </th>
+            <th
+              align="center"
+              style="background-color: #f5f5f5; border-color: #eceded"
+            >
+              <p style="padding: 20px 0">业务单号</p>
+            </th>
+            <th
+              align="center"
+              style="background-color: #f5f5f5; border-color: #eceded"
+            >
+              <p style="padding: 20px 0">入库数量</p>
+            </th>
+            <th
+              align="center"
+              style="background-color: #f5f5f5; border-color: #eceded"
+            >
+              <p style="padding: 20px 0">应付金额（元）</p>
+            </th>
+            <th
+              align="center"
+              style="background-color: #f5f5f5; border-color: #eceded"
+            >
+              <p style="padding: 20px 0">入至仓库</p>
+            </th>
+            <th
+              align="center"
+              style="background-color: #f5f5f5; border-color: #eceded"
+            >
+              <p style="padding: 20px 0">备注</p>
+            </th>
+          </tr>
+        </table>
+      </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -184,12 +435,17 @@
     methods: {
       // 商品条码打印
       // ()
+      gethtml() {
+        let htmlStr = this.print.getDistributionGoodsHtml1()
+        return htmlStr
+      },
       btnClickPrint: function (type) {
-        let htmlStr = this.print.getDistributionGoodsHtml(this.object1)
+        // let htmlStr = this.print.getDistributionGoodsHtml(this.object1)
+        let htmlStr = this.print.getDistributionGoodsHtml1()
         const LODOP = getLodop() //调用getLodop获取LODOP对象
         LODOP.PRINT_INIT('打印任务名') //首先一个初始化语句
-        LODOP.SET_PRINT_PAGESIZE(1, 2000, 1500, '') //设置纸张为80mm*60mm
-        LODOP.ADD_PRINT_HTM(10, 10, '100%', '100%', htmlStr)
+        // LODOP.SET_PRINT_PAGESIZE(1, 2000, 1500, '') //设置纸张为80mm*60mm
+        // LODOP.ADD_PRINT_HTM(10, 10, '100%', '100%', htmlStr)
         if (type == 1) {
           LODOP.PREVIEW() // 预览
         } else {

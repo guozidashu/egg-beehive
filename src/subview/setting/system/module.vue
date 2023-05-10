@@ -69,6 +69,9 @@
                 <el-radio :label="0">不允许</el-radio>
                 <el-radio :label="1">允许</el-radio>
               </el-radio-group>
+              <div style="color: gray">
+                开启后，当实际库存为零时也支持销售开单和小程序商城订货
+              </div>
             </el-form-item>
             <el-form-item label="是否开启强制入库" prop="forced_warehouse">
               <el-radio-group v-model="form1.forced_warehouse">

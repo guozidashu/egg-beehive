@@ -179,6 +179,18 @@
               >
                 不看终止合作的
               </el-checkbox>
+              <el-checkbox
+                v-model="goodsForm1.return_info"
+                style="margin: 0 10px"
+              >
+                减去退货数据
+              </el-checkbox>
+              <el-checkbox
+                v-model="goodsForm1.is_filter"
+                style="margin: 0 10px"
+              >
+                过滤未数据的客户
+              </el-checkbox>
               <!-- <div>
                 | &nbsp; 指标说明
                 <el-popover placement="right" trigger="hover">
@@ -491,6 +503,8 @@
           page: 1,
           pageSize: 50,
           time: this.getPastTime(29),
+          return_info: false,
+          is_filter: false,
         },
         // 列表条数 ，分页加载状态，列表类型，列表数据
         total: 0,
@@ -807,6 +821,8 @@
           page: 1,
           pageSize: 50,
           time: this.getPastTime(29),
+          return_info: false,
+          is_filter: false,
         }
       },
       // 重置顶部卡片，地图,饼图 查询条件

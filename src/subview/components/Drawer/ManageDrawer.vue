@@ -548,48 +548,16 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-dialog
-      :append-to-body="true"
-      :before-close="handleBillClose"
-      title="导出对账单"
-      :visible.sync="dialogVisibleBill"
-      width="500PX"
-    >
-      <el-form label-width="50px" :model="formBill">
-        <el-form-item label="日期:">
-          <el-date-picker
-            v-model="formBill.time"
-            align="left"
-            :clearable="false"
-            :default-time="['00:00:00', '23:59:59']"
-            end-placeholder="结束日期"
-            format="yyyy-MM-dd"
-            :picker-options="pickerOptions"
-            range-separator="至"
-            start-placeholder="开始日期"
-            type="daterange"
-            unlink-panels
-            value-format="yyyy-MM-dd HH:mm:ss"
-          />
-        </el-form-item>
-        <el-form-item label="类型">
-          <el-radio-group v-model="formBill.state">
-            <el-radio :label="1">拿货欠款</el-radio>
-            <el-radio :label="2">发货欠款</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="formBillSub()">确 定</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+    <edit ref="edit" />
   </div>
 </template>
 <script>
+  import Edit from '@/subview/components/Edit/StatementAccountEdit'
   import datajosn from '@/assets/assets_josn/datajosn'
   import { mapGetters } from 'vuex'
   export default {
     name: 'ComponentsDrawer',
+    components: { Edit },
     mixins: [datajosn],
     props: {
       drawerInof: {
@@ -599,11 +567,6 @@
     },
     data() {
       return {
-        dialogVisibleBill: false,
-        formBill: {
-          time: null,
-          state: 1,
-        },
         selectData: [],
         formShow: {
           cardstate: false,
@@ -726,6 +689,9 @@
       this.getSelectData()
     },
     methods: {
+      async getBillList() {
+        this.$refs['edit'].showEdit(this.form)
+      },
       async getDetail() {
         const { data } = await this.api.giteCustomerDetail({ id: this.form.id })
         let type = this.form.drawerType
@@ -737,32 +703,7 @@
           this.form.district,
         ]
       },
-      async formBillSub() {
-        let temp = {
-          customer_id: this.drawerInof.id,
-          start_date: '',
-          end_date: '',
-          state: this.formBill.state,
-        }
-        if (this.formBill.time != null) {
-          temp.start_date = this.formBill.time[0]
-          temp.end_date = this.formBill.time[1]
-        }
-        const { data, code } = await this.api.getCustomerExportBill(temp)
-        this.dialogVisibleBill = false
-        if (code == 200) {
-          window.open(data.url)
-          this.$message.success('导出成功')
-        } else {
-          this.$message.error('导出失败')
-        }
-      },
-      handleBillClose() {
-        this.dialogVisibleBill = false
-      },
-      getBillList() {
-        this.dialogVisibleBill = true
-      },
+
       async changeTypeBtn(e) {
         if (e != 1) {
           this.form.drawerType = e

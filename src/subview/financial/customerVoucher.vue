@@ -77,12 +77,46 @@
             show-overflow-tooltip
             type="selection"
           />
-          <el-table-column
-            align="center"
-            label="客户名称"
-            prop="customer_name"
-            show-overflow-tooltip
-          />
+          <el-table-column label="客户信息" width="400">
+            <template #default="{ row }">
+              <div style="display: flex">
+                <el-tooltip placement="top">
+                  <el-image
+                    slot="content"
+                    :src="row.customer_avatar"
+                    style="width: 200px; height: 200px"
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                  <el-image
+                    :src="row.customer_avatar"
+                    style="width: 85px; height: 85px"
+                  >
+                    <div slot="error" class="el-image__error">暂无图片</div>
+                  </el-image>
+                </el-tooltip>
+                <div style="width: 280px; margin-left: 10px">
+                  <div style="display: flex; justify-content: space-between">
+                    <div style="font-weight: 600">
+                      {{ row.customer_name }}
+                    </div>
+                  </div>
+                  <div style="margin: 5px 0 0 0; text-align: left">
+                    {{ row.customer_mobile }}
+                  </div>
+                  <div style="width: 100%; margin: 5px 0 0 0">
+                    <el-tag v-if="row.level_name != null" type="info">
+                      {{ row.level_name }}
+                    </el-tag>
+
+                    <el-tag v-if="row.type_name != null" type="info">
+                      {{ row.type_name }}
+                    </el-tag>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column
             align="right"
             label="金额"
