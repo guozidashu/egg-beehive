@@ -25,6 +25,9 @@ Vue.prototype.$numFormatInput = numFormatInput // 正整数格式化函数输入
 Vue.use(QyComponent) // 圈域全局组件
 Vue.use(hasPermi) // 权限自定义指令
 Vue.prototype.print = print // 自定义打印文件挂载
+// 导出为pdf
+import htmlToPdf from '@/utils/pdf.js' //注意，这里的路径是我本地的路径，需要自行应用，请不要随便复制进去导致报错
+Vue.use(htmlToPdf)
 import { debounce, throttle } from '@/utils/throttle' // 引入防抖节流函数
 Vue.prototype.$debounce = debounce // 防抖
 Vue.prototype.$throttle = throttle // 节流

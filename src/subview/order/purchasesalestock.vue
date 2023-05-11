@@ -470,6 +470,7 @@
             label="尺码"
             prop="size_name"
           />
+
           <el-table-column align="center" label="裁床数" prop="zsc_num" />
           <el-table-column
             align="center"
@@ -614,7 +615,7 @@
           <el-table-column
             align="center"
             label="云仓调整盘点"
-            prop="jst­_adjust_num"
+            prop="jst_adjust_num"
           />
           <el-table-column
             align="center"
@@ -721,210 +722,11 @@
             }
           })
         }
-        const { code, data } = await this.api.getInventoryExport({
-          sn: this.form.sn, // 商品款号
-          brand_id: this.form.brand_id, //品牌id
-          season_id: this.form.season_id, //季节id
-          ids: stock_id, // 导出指定规格数据
-          type: this.form.type, //按照款号 2按照颜色c
-          is_return: this.form.is_return, //
-          is_void: this.form.is_void, //
-          order: this.form.order, //create_time upper_time sn
-          sort: this.form.sort, //按照款号 2按照颜色
-          page: this.form.page,
-          pageSize: this.form.pageSize,
-        })
-
-        let columnSn = [
-          {
-            title: '图片',
-            type: 'image',
-            width: 100,
-            height: 100,
-            key: 'goods_img',
-          },
-          {
-            title: '款号',
-            type: 'text',
-            key: 'goods_sn',
-          },
-          {
-            title: '品牌',
-            type: 'text',
-            key: 'brand_name',
-          },
-          {
-            title: '季节',
-            type: 'text',
-            key: 'season_name',
-          },
-
-          {
-            title: '裁床数',
-            type: 'text',
-            key: 'zsc_num',
-          },
-          {
-            title: '生产入库',
-            type: 'text',
-            key: 'sum_inbound_num',
-          },
-          {
-            title: '生产退货',
-            type: 'text',
-            key: 'sum_out_num',
-          },
-          {
-            title: '聚水潭出库',
-            type: 'text',
-            key: 'jst_out_stock',
-          },
-          {
-            title: '销售发货',
-            type: 'text',
-            key: 'sum_delivery_num',
-          },
-          {
-            title: '销售退货',
-            type: 'text',
-            key: 'sum_return_num',
-          },
-          {
-            title: '调整数量',
-            type: 'text',
-            key: 'sum_adjust_num_num',
-          },
-          {
-            title: '实际库存',
-            type: 'text',
-            key: 'real_stock',
-          },
-          {
-            title: '订单占有数',
-            type: 'text',
-            key: 'sum_wait_num',
-          },
-          {
-            title: '可售库存',
-            type: 'text',
-            key: 'sale_stock',
-          },
-          {
-            title: '库存成本',
-            type: 'text',
-            key: 'stock_cost',
-          },
-          {
-            title: '吊牌价',
-            type: 'text',
-            key: 'sale_price',
-          },
-          {
-            title: '成本价',
-            type: 'text',
-            key: 'cost_price',
-          },
-        ]
-        let columnSize = [
-          {
-            title: '图片',
-            type: 'image',
-            width: 100,
-            height: 100,
-            key: 'goods_img',
-          },
-          {
-            title: '款号',
-            type: 'text',
-            key: 'goods_sn',
-          },
-          {
-            title: '颜色',
-            type: 'text',
-            key: 'color_name',
-          },
-          {
-            title: '尺码',
-            type: 'text',
-            key: 'size_name',
-          },
-          {
-            title: '品牌',
-            type: 'text',
-            key: 'brand_name',
-          },
-          {
-            title: '季节',
-            type: 'text',
-            key: 'season_name',
-          },
-
-          {
-            title: '裁床数',
-            type: 'text',
-            key: 'zsc_num',
-          },
-          {
-            title: '生产入库',
-            type: 'text',
-            key: 'sum_inbound_num',
-          },
-          {
-            title: '生产退货',
-            type: 'text',
-            key: 'sum_out_num',
-          },
-          {
-            title: '聚水潭出库',
-            type: 'text',
-            key: 'jst_out_stock',
-          },
-          {
-            title: '销售发货',
-            type: 'text',
-            key: 'sum_delivery_num',
-          },
-          {
-            title: '销售退货',
-            type: 'text',
-            key: 'sum_return_num',
-          },
-          {
-            title: '调整数量',
-            type: 'text',
-            key: 'sum_adjust_num_num',
-          },
-          {
-            title: '实际库存',
-            type: 'text',
-            key: 'real_stock',
-          },
-          {
-            title: '订单占有数',
-            type: 'text',
-            key: 'sum_wait_num',
-          },
-          {
-            title: '可售库存',
-            type: 'text',
-            key: 'sale_stock',
-          },
-          {
-            title: '库存成本',
-            type: 'text',
-            key: 'stock_cost',
-          },
-          {
-            title: '吊牌价',
-            type: 'text',
-            key: 'sale_price',
-          },
-          {
-            title: '成本价',
-            type: 'text',
-            key: 'cost_price',
-          },
-        ]
+        let temp = JSON.parse(JSON.stringify(this.form))
+        temp.ids = stock_id
+        const { code, data } = await this.api.getInventoryExport(temp)
+        let columnSn = this.getColumn(1, this.form.WarehouseType)
+        let columnSize = this.getColumn(2, this.form.WarehouseType)
         const excelData = data.list
         const date = new Date()
         const year = date.getFullYear()
@@ -959,6 +761,455 @@
           this.fetchData()
         } else {
           this.$message.error('导出失败')
+        }
+      },
+      getColumn(type, formType) {
+        if (formType == 0) {
+          if (type == 1) {
+            return [
+              {
+                title: '图片',
+                type: 'image',
+                width: 100,
+                height: 100,
+                key: 'goods_img',
+              },
+              {
+                title: '款号',
+                type: 'text',
+                key: 'goods_sn',
+              },
+              {
+                title: '品牌',
+                type: 'text',
+                key: 'brand_name',
+              },
+              {
+                title: '季节',
+                type: 'text',
+                key: 'season_name',
+              },
+              {
+                title: '裁床数',
+                type: 'text',
+                key: 'zsc_num',
+              },
+              {
+                title: '生产入库',
+                type: 'text',
+                key: 'sum_inbound_num',
+              },
+              {
+                title: '生产退货',
+                type: 'text',
+                key: 'sum_out_num',
+              },
+              {
+                title: '聚水潭出库',
+                type: 'text',
+                key: 'jst_out_stock',
+              },
+              {
+                title: '销售发货',
+                type: 'text',
+                key: 'sum_delivery_num',
+              },
+              {
+                title: '销售退货',
+                type: 'text',
+                key: 'sum_return_num',
+              },
+              {
+                title: '调整数量',
+                type: 'text',
+                key: 'sum_adjust_num_num',
+              },
+              {
+                title: '实际库存',
+                type: 'text',
+                key: 'real_stock',
+              },
+              {
+                title: '订单占有数',
+                type: 'text',
+                key: 'sum_wait_num',
+              },
+              {
+                title: '可售库存',
+                type: 'text',
+                key: 'sale_stock',
+              },
+            ]
+          } else {
+            return [
+              {
+                title: '图片',
+                type: 'image',
+                width: 100,
+                height: 100,
+                key: 'goods_img',
+              },
+              {
+                title: '款号',
+                type: 'text',
+                key: 'goods_sn',
+              },
+              {
+                title: '品牌',
+                type: 'text',
+                key: 'brand_name',
+              },
+              {
+                title: '季节',
+                type: 'text',
+                key: 'season_name',
+              },
+              {
+                title: '颜色',
+                type: 'text',
+                key: 'color_name',
+              },
+              {
+                title: '尺码',
+                type: 'text',
+                key: 'size_name',
+              },
+              {
+                title: '裁床数',
+                type: 'text',
+                key: 'zsc_num',
+              },
+              {
+                title: '生产入库',
+                type: 'text',
+                key: 'sum_inbound_num',
+              },
+              {
+                title: '生产退货',
+                type: 'text',
+                key: 'sum_out_num',
+              },
+              {
+                title: '聚水潭出库',
+                type: 'text',
+                key: 'jst_out_stock',
+              },
+              {
+                title: '销售发货',
+                type: 'text',
+                key: 'sum_delivery_num',
+              },
+              {
+                title: '销售退货',
+                type: 'text',
+                key: 'sum_return_num',
+              },
+              {
+                title: '调整数量',
+                type: 'text',
+                key: 'sum_adjust_num_num',
+              },
+              {
+                title: '实际库存',
+                type: 'text',
+                key: 'real_stock',
+              },
+              {
+                title: '订单占有数',
+                type: 'text',
+                key: 'sum_wait_num',
+              },
+              {
+                title: '可售库存',
+                type: 'text',
+                key: 'sale_stock',
+              },
+            ]
+          }
+        } else if (formType == 1) {
+          if (type == 1) {
+            return [
+              {
+                title: '图片',
+                type: 'image',
+                width: 100,
+                height: 100,
+                key: 'goods_img',
+              },
+              {
+                title: '款号',
+                type: 'text',
+                key: 'goods_sn',
+              },
+              {
+                title: '品牌',
+                type: 'text',
+                key: 'brand_name',
+              },
+              {
+                title: '季节',
+                type: 'text',
+                key: 'season_name',
+              },
+              {
+                title: '裁床数',
+                type: 'text',
+                key: 'zsc_num',
+              },
+              {
+                title: '生产入库(主仓)',
+                type: 'text',
+                key: 'sum_inbound_num',
+              },
+              {
+                title: '生产退货',
+                type: 'text',
+                key: 'sum_out_num',
+              },
+              {
+                title: '销售发货',
+                type: 'text',
+                key: 'sum_delivery_num',
+              },
+              {
+                title: '销售退货',
+                type: 'text',
+                key: 'sum_return_num',
+              },
+              {
+                title: '调整数量',
+                type: 'text',
+                key: 'sum_adjust_num_num',
+              },
+              {
+                title: '实际库存',
+                type: 'text',
+                key: 'real_stock',
+              },
+              {
+                title: '订单占有数',
+                type: 'text',
+                key: 'sum_wait_num',
+              },
+              {
+                title: '可售库存',
+                type: 'text',
+                key: 'sale_stock',
+              },
+            ]
+          } else {
+            return [
+              {
+                title: '图片',
+                type: 'image',
+                width: 100,
+                height: 100,
+                key: 'goods_img',
+              },
+              {
+                title: '款号',
+                type: 'text',
+                key: 'goods_sn',
+              },
+              {
+                title: '品牌',
+                type: 'text',
+                key: 'brand_name',
+              },
+              {
+                title: '季节',
+                type: 'text',
+                key: 'season_name',
+              },
+              {
+                title: '颜色',
+                type: 'text',
+                key: 'color_name',
+              },
+              {
+                title: '尺码',
+                type: 'text',
+                key: 'size_name',
+              },
+              {
+                title: '裁床数',
+                type: 'text',
+                key: 'zsc_num',
+              },
+              {
+                title: '生产入库(主仓)',
+                type: 'text',
+                key: 'sum_inbound_num',
+              },
+              {
+                title: '生产退货',
+                type: 'text',
+                key: 'sum_out_num',
+              },
+              {
+                title: '销售发货',
+                type: 'text',
+                key: 'sum_delivery_num',
+              },
+              {
+                title: '销售退货',
+                type: 'text',
+                key: 'sum_return_num',
+              },
+              {
+                title: '调整数量',
+                type: 'text',
+                key: 'sum_adjust_num_num',
+              },
+              {
+                title: '实际库存',
+                type: 'text',
+                key: 'real_stock',
+              },
+              {
+                title: '订单占有数',
+                type: 'text',
+                key: 'sum_wait_num',
+              },
+              {
+                title: '可售库存',
+                type: 'text',
+                key: 'sale_stock',
+              },
+            ]
+          }
+        } else if (formType == 2) {
+          if (type == 1) {
+            return [
+              {
+                title: '图片',
+                type: 'image',
+                width: 100,
+                height: 100,
+                key: 'goods_img',
+              },
+              {
+                title: '款号',
+                type: 'text',
+                key: 'goods_sn',
+              },
+              {
+                title: '品牌',
+                type: 'text',
+                key: 'brand_name',
+              },
+              {
+                title: '季节',
+                type: 'text',
+                key: 'season_name',
+              },
+              {
+                title: '裁床数',
+                type: 'text',
+                key: 'zsc_num',
+              },
+              {
+                title: '生产入库(云仓)',
+                type: 'text',
+                key: 'sum_inbound_num',
+              },
+              {
+                title: '聚水潭销售出库',
+                type: 'text',
+                key: 'sum_delivery_num',
+              },
+              {
+                title: '云仓调整盘点',
+                type: 'text',
+                key: 'jst_adjust_num',
+              },
+              {
+                title: '云仓实际库存',
+                type: 'text',
+                key: 'real_stock',
+              },
+              {
+                title: '订单占有数',
+                type: 'text',
+                key: 'sum_wait_num',
+              },
+              {
+                title: '可售库存',
+                type: 'text',
+                key: 'sale_stock',
+              },
+            ]
+          } else {
+            return [
+              {
+                title: '图片',
+                type: 'image',
+                width: 100,
+                height: 100,
+                key: 'goods_img',
+              },
+              {
+                title: '款号',
+                type: 'text',
+                key: 'goods_sn',
+              },
+              {
+                title: '品牌',
+                type: 'text',
+                key: 'brand_name',
+              },
+              {
+                title: '季节',
+                type: 'text',
+                key: 'season_name',
+              },
+              {
+                title: '颜色',
+                type: 'text',
+                key: 'color_name',
+              },
+              {
+                title: '尺码',
+                type: 'text',
+                key: 'size_name',
+              },
+              {
+                title: '裁床数',
+                type: 'text',
+                key: 'zsc_num',
+              },
+              {
+                title: '生产入库(云仓)',
+                type: 'text',
+                key: 'sum_inbound_num',
+              },
+              {
+                title: '聚水潭销售出库',
+                type: 'text',
+                key: 'sum_delivery_num',
+              },
+              {
+                title: '云仓调整盘点',
+                type: 'text',
+                key: 'jst_adjust_num',
+              },
+              {
+                title: '云仓实际库存',
+                type: 'text',
+                key: 'real_stock',
+              },
+              {
+                title: '订单占有数',
+                type: 'text',
+                key: 'sum_wait_num',
+              },
+              {
+                title: '可售库存',
+                type: 'text',
+                key: 'sale_stock',
+              },
+            ]
+          }
         }
       },
       // 查询

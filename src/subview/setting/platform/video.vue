@@ -23,7 +23,6 @@
         <el-button type="primary" @click="btnClickPrint(2)">立即打印</el-button>
       </el-form-item>
     </el-form>
-    <div v-html="gethtml()"></div>
     <!-- <div style="padding-right: 20px">
       <div style="display: flex; justify-content: space-between">
         <div style="display: flex">
@@ -274,6 +273,8 @@
         </table>
       </div>
     </div> -->
+    <!-- <div id="pdfCentent" style="display: none" v-html="gethtml()">
+    </div> -->
   </div>
 </template>
 <script>
@@ -433,19 +434,20 @@
       }, 2000)
     },
     methods: {
-      // 商品条码打印
-      // ()
-      gethtml() {
-        let htmlStr = this.print.getDistributionGoodsHtml1()
-        return htmlStr
-      },
       btnClickPrint: function (type) {
-        // let htmlStr = this.print.getDistributionGoodsHtml(this.object1)
-        let htmlStr = this.print.getDistributionGoodsHtml1()
+        // this.$nextTick(() => {
+        //   const loading = this.$loading({})
+        //   setTimeout(() => {
+        //     this.ExportSavePdf('这是PDF文件的名字', '')
+        //     loading.close()
+        //   }, 500)
+        // })
+        let htmlStr = this.print.getDistributionGoodsHtml(this.object1)
+        // let htmlStr = this.print.getDistributionGoodsHtml1()
         const LODOP = getLodop() //调用getLodop获取LODOP对象
         LODOP.PRINT_INIT('打印任务名') //首先一个初始化语句
-        // LODOP.SET_PRINT_PAGESIZE(1, 2000, 1500, '') //设置纸张为80mm*60mm
-        // LODOP.ADD_PRINT_HTM(10, 10, '100%', '100%', htmlStr)
+        LODOP.SET_PRINT_PAGESIZE(1, 2000, 1500, '') //设置纸张为80mm*60mm
+        LODOP.ADD_PRINT_HTM(10, 10, '100%', '100%', htmlStr)
         if (type == 1) {
           LODOP.PREVIEW() // 预览
         } else {

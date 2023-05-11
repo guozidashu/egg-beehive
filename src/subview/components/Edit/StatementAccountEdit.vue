@@ -86,14 +86,11 @@
 </template>
 
 <script>
-  import { getLodop } from '@/utils/LodopFuncs' //导入打印模块
   import datajosn from '@/assets/assets_josn/datajosn'
   export default {
     mixins: [datajosn],
     data() {
       return {
-        // 打印机下拉框
-        printerList: [],
         form: {},
         dialogFormVisible: false,
         formBill: {
@@ -103,50 +100,9 @@
       }
     },
     created() {},
-    mounted() {
-      setTimeout(() => {
-        const Name = []
-        const LODOP = getLodop()
-        console.log('LODOP', LODOP)
-        const iPrinterCount = LODOP.GET_PRINTER_COUNT()
-        for (let i = 0; i < iPrinterCount; i++) {
-          Name.push({ name: LODOP.GET_PRINTER_NAME(i), id: i })
-        }
-        this.printerList = Name
-        console.log('获取到可用的打印机及其id', Name)
-      }, 2000)
-    },
+    mounted() {},
     methods: {
-      // 商品条码打印
-      // ()
-      gethtml() {
-        let htmlStr = this.print.getDistributionGoodsHtml1()
-        return htmlStr
-      },
-      btnClickPrint: function (type) {
-        if (this.printerList.length == 0) {
-          this.$message({
-            message: '请先安装打印机',
-            type: 'warning',
-          })
-          return
-        }
-        // pdf 打印
-        let htmlStr = this.print.getDistributionGoodsHtml1()
-        const LODOP = getLodop() //调用getLodop获取LODOP对象
-        LODOP.PRINT_INIT('打印任务名') //首先一个初始化语句
-        // LODOP.SET_PRINT_PAGESIZE(1, 2000, 1500, '') //设置纸张为80mm*60mm
-        // LODOP.ADD_PRINT_HTM(10, 10, '100%', '100%', htmlStr)
-        LODOP.SET_PRINT_MODE('FULL_WIDTH_FOR_OVERFLOW', true) // 宽度溢出缩放
-        LODOP.SET_PRINT_MODE('PRINT_PAGE_PERCENT', 'Full-Page') // 高度溢出缩放
-        LODOP.SET_PRINT_MODE('FULL_HEIGHT_FOR_OVERFLOW', true) // 宽度溢出缩放
-        LODOP.ADD_PRINT_HTM('10mm', '10mm', '210mm', '287mm', htmlStr)
-        if (type == 2) {
-          LODOP.PREVIEW() // 预览
-        } else {
-          LODOP.PRINT() // 打印
-        }
-      },
+      btnClickPrint: function (type) {},
       showEdit(row) {
         this.form = Object.assign({}, row)
         this.dialogFormVisible = true
@@ -160,11 +116,35 @@
       },
       // 导出对账单
       async formBillSub() {
-        this.btnClickPrint(1)
+        const { code, data } = await this.api.getCustomerExportBill({
+          customer_id: this.form.id, // 客户id
+          start_date: this.formBill.time ? this.formBill.time[0] : '',
+          end_date: this.formBill.time ? this.formBill.time[1] : '',
+          type: this.formBill.state, // 1=拿货欠款 2=发货欠款
+        })
+        if (code == 200) {
+          window.open(data.url)
+          this.$message.success('导出成功')
+        } else {
+          this.$message.error('导出失败')
+        }
+        // this.btnClickPrint(1)
       },
       // 打印预览
       async formBillSub1() {
-        this.btnClickPrint(2)
+        const { code, data } = await this.api.getCustomerExportBill({
+          customer_id: this.form.id, // 客户id
+          start_date: this.formBill.time ? this.formBill.time[0] : '',
+          end_date: this.formBill.time ? this.formBill.time[1] : '',
+          type: this.formBill.state, // 1=拿货欠款 2=发货欠款
+        })
+        if (code == 200) {
+          window.open(data.url)
+          this.$message.success('导出成功')
+        } else {
+          this.$message.error('导出失败')
+        }
+        // this.btnClickPrint(2)
       },
     },
   }
