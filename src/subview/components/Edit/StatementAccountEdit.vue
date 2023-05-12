@@ -61,7 +61,7 @@
         border-left: 1px solid #f0f0f0;
       "
     >
-      <div style="width: 50%; padding: 0 15%; text-align: center">
+      <div style="width: 100%; padding: 0 30%; text-align: center">
         <div @click="formBillSub()">
           <div>
             <vab-icon icon="file-copy-2-line" style="font-size: 30px" />
@@ -69,7 +69,7 @@
           <div>快速导出</div>
         </div>
       </div>
-      <div style="width: 1px; border: 1px solid #f0f0f0"></div>
+      <!-- <div style="width: 1px; border: 1px solid #f0f0f0"></div>
       <div style="width: 50%; padding: 0 15%; text-align: center">
         <div @click="formBillSub1()">
           <div>
@@ -77,7 +77,7 @@
           </div>
           <div>打印账单</div>
         </div>
-      </div>
+      </div> -->
     </div>
     <div style="margin-top: 20px; color: #3875ff; text-align: center">
       「&nbsp;先进品牌&nbsp;先用圈域&nbsp;」&nbsp;立即咨询

@@ -484,6 +484,11 @@
       Select(item) {
         if (item == 1) {
           this.close()
+          this.selectList.forEach((item) => {
+            item.selectName = item.pname + '>' + item.id
+            item.selectTitle = item.shoptitle
+            item.selectUrl = item.url + item.id
+          })
           this.$emit('SelectLink', this.selectList)
         } else if (item == 2) {
           let temp = {}

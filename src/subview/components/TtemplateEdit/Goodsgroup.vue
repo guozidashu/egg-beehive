@@ -86,7 +86,7 @@
               background-color: #f7f8f9;
             "
           >
-            <div class="image">
+            <div style="position: relative">
               <i
                 class="el-icon-close"
                 style="
