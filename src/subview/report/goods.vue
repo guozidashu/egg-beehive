@@ -266,7 +266,7 @@
               <el-radio-button :label="2">按规格</el-radio-button>
             </el-radio-group>
             <el-button
-              v-if="!goodsForm1.merge"
+              v-if="!(goodsForm1.goods_type == 2 && goodsForm1.merge)"
               size="small"
               style="margin-left: 10px"
               type="primary"

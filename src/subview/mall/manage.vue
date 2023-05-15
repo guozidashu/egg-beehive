@@ -319,9 +319,27 @@
             align="center"
             fixed="right"
             label="操作"
-            width="100"
+            width="180"
           >
             <template #default="{ row }">
+              <el-popover
+                placement="right"
+                trigger="click"
+                @show="getQrcode(row.id)"
+              >
+                <el-image
+                  v-if="Qrcode != ''"
+                  :src="Qrcode"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image
+                  v-else
+                  src="https://oss.business.quanyu123.com/88e5e42d9cdf41a632faab9ee48814ed.jpeg"
+                  style="width: 200px; height: 200px"
+                />
+                <el-button slot="reference" type="text">小程序码</el-button>
+              </el-popover>
+              &nbsp;
               <el-button
                 v-has-permi="['btn:MallManage:view']"
                 type="text"
@@ -591,6 +609,7 @@
     components: { Drawer, VabUpload, VabQuill, Edit },
     data() {
       return {
+        Qrcode: '',
         // 预售 弹窗
         drawerSta: false,
         // 详情抽屉组件 标题，是否显示，数据,下拉框数据
@@ -736,6 +755,16 @@
       this.fetchData()
     },
     methods: {
+      // 获取商城商品二维码
+      async getQrcode(id) {
+        this.Qrcode = ''
+        const { code, data } = await this.api.getWechatQrcode({
+          goods_id: id, // 商品id
+        })
+        if (code == 200) {
+          this.Qrcode = data
+        }
+      },
       // 同步微店
       handleEditWD() {
         if (this.selectRowsId.length > 0) {

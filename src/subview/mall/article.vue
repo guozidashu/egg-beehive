@@ -69,9 +69,27 @@
             align="center"
             label="操作"
             show-overflow-tooltip
-            width="85"
+            width="150"
           >
             <template #default="{ row }">
+              <el-popover
+                placement="right"
+                trigger="click"
+                @show="getQrcode(row.id)"
+              >
+                <el-image
+                  v-if="Qrcode != ''"
+                  :src="Qrcode"
+                  style="width: 200px; height: 200px"
+                />
+                <el-image
+                  v-else
+                  src="https://oss.business.quanyu123.com/88e5e42d9cdf41a632faab9ee48814ed.jpeg"
+                  style="width: 200px; height: 200px"
+                />
+                <el-button slot="reference" type="text">小程序码</el-button>
+              </el-popover>
+              &nbsp;
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
               <el-button type="text" @click="handleDelete(row)">删除</el-button>
             </template>
@@ -89,6 +107,7 @@
     components: { Edit },
     data() {
       return {
+        Qrcode: '',
         // 页数，条数，表单查询条件 ，表单组件和列表组件的类型，选中数据,列表数据，列表加载状态，列表总数
         formTemp: null,
         page: 1,
@@ -133,6 +152,16 @@
       this.fetchData()
     },
     methods: {
+      // 获取文章二维码
+      async getQrcode(id) {
+        this.Qrcode = ''
+        const { code, data } = await this.api.getWechatArticleQrcode({
+          article_id: id, // 商品id
+        })
+        if (code == 200) {
+          this.Qrcode = data
+        }
+      },
       // 新增编辑
       async handleEdit(row) {
         if (row === 'add') {

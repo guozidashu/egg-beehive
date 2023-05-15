@@ -84,9 +84,30 @@
                   align="center"
                   label="操作"
                   show-overflow-tooltip
-                  width="250"
+                  width="300"
                 >
                   <template #default="{ row }">
+                    <el-popover
+                      v-if="row.is_default != 1"
+                      placement="right"
+                      trigger="click"
+                      @show="getQrcode(row.id)"
+                    >
+                      <el-image
+                        v-if="Qrcode != ''"
+                        :src="Qrcode"
+                        style="width: 200px; height: 200px"
+                      />
+                      <el-image
+                        v-else
+                        src="https://oss.business.quanyu123.com/88e5e42d9cdf41a632faab9ee48814ed.jpeg"
+                        style="width: 200px; height: 200px"
+                      />
+                      <el-button slot="reference" type="text">
+                        小程序码
+                      </el-button>
+                    </el-popover>
+                    &nbsp;
                     <el-button
                       v-has-permi="['btn:DecorateDesign:edit']"
                       type="text"
@@ -168,6 +189,7 @@
     name: 'DecorateTheme',
     data() {
       return {
+        Qrcode: '',
         // 弹窗标题
         title: '',
         // 模板类型下拉框数据
@@ -231,6 +253,16 @@
       this.fetchData()
     },
     methods: {
+      // 获取设计页面二维码
+      async getQrcode(id) {
+        this.Qrcode = ''
+        const { code, data } = await this.api.getWechatTemplateQrcode({
+          template_id: id, // 商品id
+        })
+        if (code == 200) {
+          this.Qrcode = data
+        }
+      },
       // 点击父级菜单
       handleGrouPQuery(item) {
         this.form.page = 1

@@ -503,7 +503,6 @@
       addColor(row) {
         this.$refs['ColorEdit'].showEdit(row)
       },
-
       // 导出商品条形码
       async handleExportBarcode() {
         let ids = []

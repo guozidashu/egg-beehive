@@ -2152,6 +2152,14 @@ export function getStockPrint(data) {
 }
 // 商城模块
 // 商城 - 商品管理
+// 商品管理 获取商品小程序二维码
+export function getWechatQrcode(data) {
+  return request({
+    url: '/goods/getWechatQrcode',
+    method: 'post',
+    data,
+  })
+}
 // 商品管理 - 商品详情编辑
 export function editGoodsDetailEdit(data) {
   return request({
@@ -2276,6 +2284,14 @@ export function getShopConfigWeChatAppletDetail(data) {
   })
 }
 // 商城-文章管理
+// 文章管理  - 文章二维码
+export function getWechatArticleQrcode(data) {
+  return request({
+    url: '/archive/getWechatQrcode',
+    method: 'post',
+    data,
+  })
+}
 // 文章管理  - 列表
 export function getArticleList(data) {
   return request({
@@ -2301,6 +2317,14 @@ export function delArticleDel(data) {
   })
 }
 // 商城 - 商城装修 - 页面设计
+// 模板组件  设计页面列表获取二维码
+export function getWechatTemplateQrcode(data) {
+  return request({
+    url: '/admin/getWechatQrcode',
+    method: 'post',
+    data,
+  })
+}
 // 模板组件  商品组组件模板 获取商品树形
 export function getGoodsCategoryTree(data) {
   return request({
