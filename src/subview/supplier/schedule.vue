@@ -137,7 +137,7 @@
           </el-form-item>
           <el-form-item label="搜索：">
             <el-input
-              v-model="form.keywords"
+              v-model="form.keyword"
               placeholder="请输入订单批次号、编号/供应商名称/商品、编号"
               size="small"
               style="width: 350px"

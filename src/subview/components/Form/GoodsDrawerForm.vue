@@ -203,6 +203,7 @@
               商品状态：
               <span v-if="goodsDetails.status == 1">在售</span>
               <span v-if="goodsDetails.status == 2">停售</span>
+              <span v-if="goodsDetails.status == 3">待上市</span>
             </div>
             <div style="width: 100%">
               是否同步聚水潭：

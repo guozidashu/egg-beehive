@@ -628,6 +628,7 @@
       // 商品详情编辑新增抽屉关闭
       handleClose() {
         this.drawer = false
+        this.drawerInof = {}
       },
       // 重置表单
       resetForm() {

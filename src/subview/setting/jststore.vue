@@ -54,7 +54,7 @@
           </el-button>
           <el-button plain type="info">
             公司编号：
-            <span v-if="list.length > 0">{{ list[1].co_id }}</span>
+            {{ co_id }}
           </el-button>
         </div>
         <div style="padding-top: 10px">
@@ -111,6 +111,7 @@
           shop_name: '', //店铺名称
           shop_site: '', //所属平台
         },
+        co_id: '',
         formType: 4,
         listType: 1,
         list: [],
@@ -165,6 +166,7 @@
         const { data } = await this.api.getjstShopList(this.form)
         this.list = data.list
         this.total = data.total
+        this.co_id = data.co_id
         this.listLoading = false
       },
     },

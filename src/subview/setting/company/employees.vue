@@ -87,7 +87,7 @@
                   </el-image>
                   <el-image
                     :src="row.avatar"
-                    style="width: 105px; height: 105px; border-radius: 50%"
+                    style="width: 85px; height: 85px; border-radius: 50%"
                   >
                     <div slot="error" class="el-image__error">暂无图片</div>
                   </el-image>
@@ -105,14 +105,7 @@
                     ></i>
                   </div>
                   <div
-                    style="
-                      width: 200px;
-                      margin: 5px 0 0 0;
-                      overflow: hidden;
-                      text-align: left;
-                      text-overflow: ellipsis;
-                      white-space: nowrap;
-                    "
+                    style="width: 200px; margin: 5px 0 0 0; text-align: left"
                   >
                     userid： {{ row.userid }}
                   </div>

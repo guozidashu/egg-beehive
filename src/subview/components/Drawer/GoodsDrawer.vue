@@ -303,6 +303,9 @@
       },
       // 获取头部详情
       async getGoodsAllDetail() {
+        if (this.form.id == undefined) {
+          return
+        }
         const { data } = await this.api.getGoodTotalDetails({
           good_id: this.form.id,
         })
@@ -311,6 +314,9 @@
       // 获取基础详情
       async getGoodsDetail() {
         let temp = this.form.drawerType
+        if (this.form.id == undefined) {
+          return
+        }
         const { data } = await this.api.getGoodBasicsDetails({
           good_id: this.form.id,
         })
