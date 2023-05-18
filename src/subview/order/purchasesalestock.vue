@@ -369,6 +369,11 @@
               </el-popover>
             </template>
           </el-table-column>
+          <el-table-column
+            align="center"
+            label="次品库存"
+            prop="defective_num"
+          />
         </template>
       </QYList>
       <QYList
@@ -500,6 +505,11 @@
             prop="sum_wait_num"
           />
           <el-table-column align="center" label="可售库存" prop="sale_stock" />
+          <el-table-column
+            align="center"
+            label="次品库存"
+            prop="defective_num"
+          />
         </template>
       </QYList>
       <QYList
@@ -628,6 +638,11 @@
             prop="sum_wait_num"
           />
           <el-table-column align="center" label="可售库存" prop="sale_stock" />
+          <el-table-column
+            align="center"
+            label="次品库存"
+            prop="defective_num"
+          />
         </template>
       </QYList>
     </el-card>
@@ -839,6 +854,11 @@
                 type: 'text',
                 key: 'sale_stock',
               },
+              {
+                title: '次品库存',
+                type: 'text',
+                key: 'defective_num',
+              },
             ]
           } else {
             return [
@@ -924,6 +944,11 @@
                 type: 'text',
                 key: 'sale_stock',
               },
+              {
+                title: '次品库存',
+                type: 'text',
+                key: 'defective_num',
+              },
             ]
           }
         } else if (formType == 1) {
@@ -996,6 +1021,11 @@
                 type: 'text',
                 key: 'sale_stock',
               },
+              {
+                title: '次品库存',
+                type: 'text',
+                key: 'defective_num',
+              },
             ]
           } else {
             return [
@@ -1076,6 +1106,11 @@
                 type: 'text',
                 key: 'sale_stock',
               },
+              {
+                title: '次品库存',
+                type: 'text',
+                key: 'defective_num',
+              },
             ]
           }
         } else if (formType == 2) {
@@ -1137,6 +1172,11 @@
                 title: '可售库存',
                 type: 'text',
                 key: 'sale_stock',
+              },
+              {
+                title: '次品库存',
+                type: 'text',
+                key: 'defective_num',
               },
             ]
           } else {
@@ -1207,6 +1247,11 @@
                 title: '可售库存',
                 type: 'text',
                 key: 'sale_stock',
+              },
+              {
+                title: '次品库存',
+                type: 'text',
+                key: 'defective_num',
               },
             ]
           }

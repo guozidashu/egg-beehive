@@ -197,6 +197,7 @@
           </el-table-column>
           <el-table-column align="center" label="操作人" prop="action_name" />
           <el-table-column align="center" label="退至仓库" prop="order_type" />
+          <el-table-column align="center" label="退货类型" prop="return_type" />
           <el-table-column align="center" label="退货原因" prop="remark">
             <template #default="{ row }">
               <div style="margin-top: 5px">
