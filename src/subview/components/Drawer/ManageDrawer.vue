@@ -201,6 +201,7 @@
                   v-model="form.name"
                   placeholder="例：杭州 | 张三"
                   style="width: 215px"
+                  @input="form.name = $WhitespaceRemoval(form.name)"
                 />
               </el-form-item>
               <el-form-item class="item" label="手机号码：" prop="mobile">
@@ -346,6 +347,9 @@
                   v-model="form.initial_amount"
                   placeholder="欠款请填负数"
                   style="width: 215px"
+                  @input="
+                    form.initial_amount = $moneyFormatInput(form.initial_amount)
+                  "
                 />
               </el-form-item>
               <el-form-item class="item" label="授信额度：" prop="max_arrears">

@@ -12,6 +12,7 @@
             v-model="form.group_name"
             placeholder="请输入名称"
             style="width: 215px"
+            @input="form.group_name = $WhitespaceRemoval(form.group_name)"
           />
         </el-form-item>
         <el-form-item label="排序" prop="order">
@@ -22,8 +23,12 @@
           />
         </el-form-item>
         <div v-for="(item, index) in form.tag" :key="index">
-          <el-form-item label="标签名称" prop="group_name">
-            <el-input v-model="item.name" style="width: 215px" />
+          <el-form-item label="标签名称" prop="name">
+            <el-input
+              v-model="item.name"
+              style="width: 215px"
+              @input="item.name = $WhitespaceRemoval(item.name)"
+            />
           </el-form-item>
           <el-form-item label="标签排序">
             <el-input
@@ -71,7 +76,11 @@
             trigger: 'blur',
           }"
         >
-          <el-input v-model="form.tag[0].name" style="width: 215px" />
+          <el-input
+            v-model="form.tag[0].name"
+            style="width: 215px"
+            @input="form.tag[0].name = $WhitespaceRemoval(form.tag[0].name)"
+          />
         </el-form-item>
         <el-form-item
           label="标签排序"
@@ -91,7 +100,11 @@
       </div>
       <div v-if="title == '编辑标签' || title == '编辑分类'">
         <el-form-item label="名称">
-          <el-input v-model="form.name" style="width: 215px" />
+          <el-input
+            v-model="form.name"
+            style="width: 215px"
+            @input="form.name = $WhitespaceRemoval(form.name)"
+          />
         </el-form-item>
         <el-form-item label="排序">
           <el-input

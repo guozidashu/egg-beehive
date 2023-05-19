@@ -131,7 +131,11 @@
         :rules="editrules"
       >
         <el-form-item label="角色名称" prop="name">
-          <el-input v-model="editform.name" />
+          <el-input
+            v-model="editform.name"
+            style="width: 215px"
+            @input="editform.name = $WhitespaceRemoval(editform.name)"
+          />
         </el-form-item>
       </el-form>
       <template #footer>

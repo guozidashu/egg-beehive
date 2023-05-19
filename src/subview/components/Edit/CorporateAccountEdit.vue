@@ -15,10 +15,20 @@
         </el-select>
       </el-form-item>
       <el-form-item v-if="form.type == 1" label="开户行:" prop="bank_name">
-        <el-input v-model="form.bank_name" size="small" style="width: 215px" />
+        <el-input
+          v-model="form.bank_name"
+          size="small"
+          style="width: 215px"
+          @input="form.bank_name = $WhitespaceRemoval(form.bank_name)"
+        />
       </el-form-item>
       <el-form-item label="姓名:" prop="name">
-        <el-input v-model="form.name" size="small" style="width: 215px" />
+        <el-input
+          v-model="form.name"
+          size="small"
+          style="width: 215px"
+          @input="form.name = $WhitespaceRemoval(form.name)"
+        />
       </el-form-item>
       <el-form-item label="账户:" prop="account">
         <el-input v-model="form.account" size="small" style="width: 215px" />

@@ -13,6 +13,7 @@ import {
   permissionFiltering,
   moneyFormatInput,
   numFormatInput,
+  WhitespaceRemoval,
 } from '@/utils/filter' //引入全局过滤器
 import * as echarts from 'echarts' //引入echart
 const Event = new Vue() // 全局事件总线声明
@@ -22,6 +23,7 @@ Vue.prototype.$event = Event // 全局事件总线
 Vue.prototype.api = API // 全局api
 Vue.prototype.$moneyFormatInput = moneyFormatInput // 全局金额格式化函数输入框
 Vue.prototype.$numFormatInput = numFormatInput // 正整数格式化函数输入框
+Vue.prototype.$WhitespaceRemoval = WhitespaceRemoval // 输入框去除空格
 Vue.use(QyComponent) // 圈域全局组件
 Vue.use(hasPermi) // 权限自定义指令
 Vue.prototype.print = print // 自定义打印文件挂载

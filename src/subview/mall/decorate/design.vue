@@ -163,7 +163,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="模板名称" prop="name">
-          <el-input v-model="form1.name" style="width: 215px" />
+          <el-input
+            v-model="form1.name"
+            style="width: 215px"
+            @input="form1.name = $WhitespaceRemoval(form1.name)"
+          />
           <div style="margin-left: 100`px; font-size: 12px; color: #c0c4cc">
             示例：2023春季（以波段命名）
           </div>

@@ -250,6 +250,7 @@
                   v-model="form.sn"
                   placeholder="请输入款号"
                   style="width: 215px"
+                  @input="form.sn = $WhitespaceRemoval(form.sn)"
                 />
               </el-form-item>
               <el-form-item class="item" label="商品名称：" prop="name">
@@ -257,6 +258,7 @@
                   v-model="form.name"
                   placeholder="请输入商品名称"
                   style="width: 215px"
+                  @input="form.name = $WhitespaceRemoval(form.name)"
                 />
               </el-form-item>
               <!-- <el-form-item class="item" label="商品描述：" prop="content">
@@ -271,6 +273,7 @@
                   v-model="form.shoptitle"
                   placeholder="请输入批次商城显示的商品名称"
                   style="width: 215px"
+                  @input="form.shoptitle = $WhitespaceRemoval(form.shoptitle)"
                 />
               </el-form-item>
               <el-form-item class="item" label="商品款式：" prop="category">

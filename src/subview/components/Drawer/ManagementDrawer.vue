@@ -164,6 +164,7 @@ d
                   v-model="form.name"
                   placeholder="请输入名称"
                   style="width: 215px"
+                  @input="form.name = $WhitespaceRemoval(form.name)"
                 />
               </el-form-item>
               <el-form-item class="item" label="联系人：" prop="contact_name">
@@ -171,6 +172,9 @@ d
                   v-model="form.contact_name"
                   placeholder="请输入联系人"
                   style="width: 215px"
+                  @input="
+                    form.contact_name = $WhitespaceRemoval(form.contact_name)
+                  "
                 />
               </el-form-item>
               <el-form-item class="item" label="手机号码：" prop="tel">

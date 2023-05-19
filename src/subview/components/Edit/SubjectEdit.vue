@@ -21,6 +21,7 @@
           v-model="form.sn"
           placeholder="请输入科目编号："
           style="width: 215px"
+          @input="form.sn = $WhitespaceRemoval(form.sn)"
         />
       </el-form-item>
       <el-form-item label="科目名称：" prop="name">
@@ -28,6 +29,7 @@
           v-model="form.name"
           placeholder="请输入科目名称"
           style="width: 215px"
+          @input="form.name = $WhitespaceRemoval(form.name)"
         />
       </el-form-item>
       <el-form-item label="类别：" prop="type">
@@ -74,13 +76,13 @@
         this.type = type
         if (row === 'add') {
           if (type === 1) {
-            this.title = '添加标签'
+            this.title = '添加科目'
           } else {
             this.title = '添加分类'
           }
         } else {
           if (type === 1) {
-            this.title = '编辑标签'
+            this.title = '编辑科目'
           } else {
             this.title = '编辑分类'
           }

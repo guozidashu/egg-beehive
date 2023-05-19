@@ -17,13 +17,21 @@
         </el-select>
       </el-form-item>
       <el-form-item label="管理员名称" prop="username">
-        <el-input v-model="form.username" />
+        <el-input
+          v-model="form.username"
+          style="width: 215px"
+          @input="form.username = $WhitespaceRemoval(form.username)"
+        />
       </el-form-item>
       <el-form-item label="管理员密码" prop="password">
-        <el-input v-model="form.password" />
+        <el-input
+          v-model="form.password"
+          style="width: 215px"
+          @input="form.password = $WhitespaceRemoval(form.password)"
+        />
       </el-form-item>
       <el-form-item label="绑定手机号" prop="phone">
-        <el-input v-model="form.phone" />
+        <el-input v-model="form.phone" style="width: 215px" />
       </el-form-item>
       <!-- <el-form-item label="短信验证码" prop="code">
         <el-input v-model="form.code" placeholder="请输入验证码">

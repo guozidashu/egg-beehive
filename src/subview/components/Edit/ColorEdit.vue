@@ -29,6 +29,7 @@
           v-model="form.name"
           placeholder="请输入名称"
           style="width: 215px"
+          @input="form.name = $WhitespaceRemoval(form.name)"
         />
       </el-form-item>
       <el-form-item v-if="type === 1" label="状态" prop="status">
@@ -66,6 +67,7 @@
           v-model="form.name"
           placeholder="请输入名称"
           style="width: 215px"
+          @input="form.name = $WhitespaceRemoval(form.name)"
         />
       </el-form-item>
       <el-form-item v-if="type === 2" label="排序" prop="sort">

@@ -7,13 +7,22 @@
   >
     <el-form ref="form" label-width="120px" :model="form" :rules="rules">
       <el-form-item label="商品名称" prop="name">
-        <el-input v-model="form.name" />
+        <el-input
+          v-model="form.name"
+          @input="form.name = $WhitespaceRemoval(form.name)"
+        />
       </el-form-item>
       <el-form-item label="兑换所需要积分" prop="integral">
-        <el-input v-model="form.integral" />
+        <el-input
+          v-model="form.integral"
+          @input="form.integral = $numFormatInput(form.integral)"
+        />
       </el-form-item>
-      <el-form-item label="商库存品名称" prop="stock">
-        <el-input v-model="form.stock" />
+      <el-form-item label="库存" prop="stock">
+        <el-input
+          v-model="form.stock"
+          @input="form.integral = $numFormatInput(form.integral)"
+        />
       </el-form-item>
       <el-form-item label="实际价格" prop="actual_price">
         <el-input

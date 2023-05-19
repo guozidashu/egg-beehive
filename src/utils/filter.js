@@ -50,6 +50,13 @@ Vue.filter('ConversionAmount', (value) => {
   }
   return moneyFormat(value) + '元'
 })
+// 输入框输入空格去除
+export function WhitespaceRemoval(value) {
+  let temp = value
+  console.log(111, temp)
+  temp = temp.replace(/\s+/g, '')
+  return temp
+}
 // 输入框正整数格式化
 export function numFormatInput(value) {
   let temp = value

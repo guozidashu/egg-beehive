@@ -7,11 +7,16 @@
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
       <el-form-item label="节点名称" prop="name">
-        <el-input v-model="form.name" />
+        <el-input
+          v-model="form.name"
+          style="width: 215px"
+          @input="form.name = $WhitespaceRemoval(form.name)"
+        />
       </el-form-item>
       <el-form-item label="排序" prop="sort">
         <el-input
           v-model="form.sort"
+          style="width: 215px"
           @input="form.sort = $numFormatInput(form.sort)"
         />
       </el-form-item>

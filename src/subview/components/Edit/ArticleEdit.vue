@@ -7,7 +7,11 @@
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
       <el-form-item label="文章标题" prop="title">
-        <el-input v-model="form.title" style="width: 215px" />
+        <el-input
+          v-model="form.title"
+          style="width: 215px"
+          @input="form.title = $WhitespaceRemoval(form.title)"
+        />
       </el-form-item>
       <el-form-item class="vab-quill-content" label="内容" prop="content">
         <vab-quill

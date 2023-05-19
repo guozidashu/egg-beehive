@@ -45,6 +45,7 @@
           v-model="form.name"
           placeholder="请输入收支名称"
           style="width: 215px"
+          @input="form.name = $WhitespaceRemoval(form.name)"
         />
       </el-form-item>
       <el-form-item label="类别：" prop="type">

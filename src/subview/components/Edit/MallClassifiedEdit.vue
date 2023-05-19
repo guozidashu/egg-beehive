@@ -7,7 +7,11 @@
   >
     <el-form ref="form" label-width="120px" :model="form" :rules="rules">
       <el-form-item label="商品别名">
-        <el-input v-model="form.another_name" />
+        <el-input
+          v-model="form.another_name"
+          style="width: 215px"
+          @input="form.another_name = $WhitespaceRemoval(form.another_name)"
+        />
       </el-form-item>
       <el-form-item label="商城是否显示" prop="shop_is_display">
         <el-radio-group v-model="form.shop_is_display">

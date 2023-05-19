@@ -7,7 +7,11 @@
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
       <el-form-item label="标题" prop="title">
-        <el-input v-model="form.title" style="width: 200px" />
+        <el-input
+          v-model="form.title"
+          style="width: 200px"
+          @input="form.title = $WhitespaceRemoval(form.title)"
+        />
       </el-form-item>
       <el-form-item label="所属员工" prop="employee_id">
         <el-select v-model="form.employee_id" style="width: 200px">

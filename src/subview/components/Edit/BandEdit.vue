@@ -7,7 +7,10 @@
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
       <el-form-item v-if="title == '添加'" label="波段名称" prop="name">
-        <el-input v-model="form.name" />
+        <el-input
+          v-model="form.name"
+          @input="form.name = $WhitespaceRemoval(form.name)"
+        />
       </el-form-item>
       <el-form-item label="排序" prop="sort">
         <el-input
@@ -66,17 +69,17 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              const { code } = await this.api.editBandSave(this.form)
-              if (code != 200) {
-                return
-              }
-              this.$baseMessage(
-                '新增成功',
-                'success',
-                'vab-hey-message-success'
-              )
-              this.$emit('fetch-data')
-              this.close()
+              // const { code } = await this.api.editBandSave(this.form)
+              // if (code != 200) {
+              //   return
+              // }
+              // this.$baseMessage(
+              //   '新增成功',
+              //   'success',
+              //   'vab-hey-message-success'
+              // )
+              // this.$emit('fetch-data')
+              // this.close()
             } else {
               const { code } = await this.api.editBandSave(this.form)
               if (code != 200) {

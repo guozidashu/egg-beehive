@@ -12,6 +12,7 @@
           v-model="form.name"
           placeholder="请输入等级名称"
           style="width: 415px"
+          @input="form.name = $WhitespaceRemoval(form.name)"
         />
       </el-form-item>
       <el-form-item label="等级权重" prop="sort">
