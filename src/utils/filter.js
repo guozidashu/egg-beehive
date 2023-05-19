@@ -53,7 +53,6 @@ Vue.filter('ConversionAmount', (value) => {
 // 输入框输入空格去除
 export function WhitespaceRemoval(value) {
   let temp = value
-  console.log(111, temp)
   temp = temp.replace(/\s+/g, '')
   return temp
 }

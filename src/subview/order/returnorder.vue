@@ -35,6 +35,13 @@
               </el-select>
             </el-input>
           </el-form-item>
+          <el-form-item label="退货类型:">
+            <el-select v-model="form.return_type">
+              <el-option label="全部" :value="0" />
+              <el-option label="正常退货" :value="1" />
+              <el-option label="次品退货" :value="2" />
+            </el-select>
+          </el-form-item>
           <el-form-item label="退货时间:">
             <el-date-picker
               v-model="form.order_time"
@@ -294,6 +301,7 @@
           sort: 'desc', //退货时间 asc 正序 desc倒序
           ids: [], //id
           region: '1',
+          return_type: 0, //0全部 1正常 2次品
         },
         formType: 4,
         listType: 1,
@@ -400,6 +408,7 @@
           sort: 'desc', //退货时间 asc 正序 desc倒序
           ids: [], //id
           region: '1',
+          return_type: 0, //0全部 1正常 2次品
         }
       },
       // tab 点击
