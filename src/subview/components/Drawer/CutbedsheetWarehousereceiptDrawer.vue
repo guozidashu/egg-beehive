@@ -59,52 +59,48 @@
       </div>
     </div>
     <h4>商品信息</h4>
-    <div style="display: flex">
-      <el-image
-        :src="form.goods_list[0].goods_img"
-        style="width: 140px; height: 140px"
-      >
-        <div slot="error" class="el-image__error">暂无图片</div>
-      </el-image>
-      <div style="margin-left: 20px">
-        <div style="margin-bottom: 10px">
-          款号：{{ form.goods_list[0].goods_sn }}
-        </div>
-        <div style="margin-bottom: 10px">
-          名称：{{ form.goods_list[0].goods_name }}
-        </div>
-        <div style="margin-bottom: 10px">
-          波段：{{ form.goods_list[0].band_name }}
-        </div>
-        <div style="margin-bottom: 10px">
-          单价：
-          <el-tag>￥{{ form.goods_list[0].goods_price | moneyFormat }}</el-tag>
-        </div>
-        <div style="margin-bottom: 10px">
-          合计：
-          <el-tag>￥{{ form.goods_list[0].goods_total | moneyFormat }}</el-tag>
-        </div>
-      </div>
-    </div>
-    <h4>规格信息</h4>
-    <el-table
-      border
-      :data="form.goods_list[0].details"
-      style="width: 100%; margin-top: 20px"
-    >
-      <el-table-column label="颜色" prop="colorname" />
-      <el-table-column label="尺码" prop="sizename" />
-      <el-table-column
-        v-if="drawerType == 1"
-        label="裁床数量"
-        prop="quantity"
-      />
-      <el-table-column
-        v-if="drawerType == 2"
-        label="裁床数量"
-        prop="quantity"
-      />
-    </el-table>
+    <el-row :gutter="20" style="height: calc(60vh); overflow: auto">
+      <el-col v-for="(item, index) in form.goods_list" :key="index" :span="12">
+        <el-card class="box-card" shadow="hover">
+          <div style="display: flex">
+            <el-image :src="item.goods_img" style="width: 140px; height: 140px">
+              <div slot="error" class="el-image__error">暂无图片</div>
+            </el-image>
+            <div style="margin-left: 20px">
+              <div style="margin-bottom: 10px">款号：{{ item.goods_sn }}</div>
+              <div style="margin-bottom: 10px">名称：{{ item.goods_name }}</div>
+              <div style="margin-bottom: 10px">波段：{{ item.band_name }}</div>
+              <div style="margin-bottom: 10px">
+                单价：
+                <el-tag>￥{{ item.goods_price | moneyFormat }}</el-tag>
+              </div>
+              <div style="margin-bottom: 10px">
+                合计：
+                <el-tag>￥{{ item.goods_total | moneyFormat }}</el-tag>
+              </div>
+            </div>
+          </div>
+          <el-table
+            border
+            :data="item.details"
+            style="width: 100%; height: 250px; margin-top: 20px; overflow: auto"
+          >
+            <el-table-column label="颜色" prop="colorname" />
+            <el-table-column label="尺码" prop="sizename" />
+            <el-table-column
+              v-if="drawerType == 1"
+              label="裁床数量"
+              prop="quantity"
+            />
+            <el-table-column
+              v-if="drawerType == 2"
+              label="入库数量"
+              prop="quantity"
+            />
+          </el-table>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
