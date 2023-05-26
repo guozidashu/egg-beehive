@@ -348,8 +348,9 @@
         },
         // 页数，条数，表单查询条件 ，表单组件和列表组件的类型,列表数据，列表加载状态，列表总数
         formTemp: null,
+        pageState: 0,
         page: 1,
-        pageSize: 10,
+        pageSize: 20,
         form: {
           is_return: false, //不看已经作废
           order_sort: 2,
@@ -362,7 +363,7 @@
           keywords: '', //搜索关键字
           order_source: '0', //0 所有订单 1ERP平台 2私有商城
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
           key_value: '',
         },
         listType: 1,
@@ -377,20 +378,25 @@
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState) {
+          if (this.pageState == 1) {
             this.formTemp.page = newVal.page
             this.formTemp.pageSize = newVal.pageSize
             this.page = newVal.page
             this.pageSize = newVal.pageSize
-          } else {
+          } else if (this.pageState == 2) {
             this.formTemp.page = 1
-            this.formTemp.pageSize = 10
+            this.formTemp.pageSize = newVal.pageSize
             this.page = 1
-            this.pageSize = 10
+            this.pageSize = newVal.pageSize
+          } else if (this.pageState == 0) {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 20
+            this.page = 1
+            this.pageSize = 20
           }
           this.fetchData()
           this.orderCount()
-          this.pageState = false
+          this.pageState = 0
         },
         deep: true,
       },
@@ -467,12 +473,12 @@
       },
       // 分页
       changeBtnPage(data) {
-        this.pageState = true
+        this.pageState = 1
         this.form.page = data
       },
       // 分页条数
       changeBtnPageSize(data) {
-        this.pageState = true
+        this.pageState = 2
         this.form.pageSize = data
       },
       fetchData() {

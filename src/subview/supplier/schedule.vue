@@ -380,11 +380,12 @@
         drawer: false,
         // 排期列表相关
         formTemp: null,
+        pageState: 0,
         page: 1,
-        pageSize: 10,
+        pageSize: 20,
         form: {
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
           status: 0, // 状态 0=全部 1=预警 2=超期 3=已完成
           keyword: '', // 关键字搜索  订单批次号/订单编号/供应商名称/商品名称/商品编号
           type: null, //订单类型 1=期货 2=首单 3=补单 4=预售
@@ -410,19 +411,24 @@
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState) {
+          if (this.pageState == 1) {
             this.formTemp.page = newVal.page
             this.formTemp.pageSize = newVal.pageSize
             this.page = newVal.page
             this.pageSize = newVal.pageSize
-          } else {
+          } else if (this.pageState == 2) {
             this.formTemp.page = 1
-            this.formTemp.pageSize = 10
+            this.formTemp.pageSize = newVal.pageSize
             this.page = 1
-            this.pageSize = 10
+            this.pageSize = newVal.pageSize
+          } else if (this.pageState == 0) {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 20
+            this.page = 1
+            this.pageSize = 20
           }
           this.fetchData()
-          this.pageState = false
+          this.pageState = 0
         },
         deep: true,
       },
@@ -477,11 +483,11 @@
         }
       },
       changeBtnPage(data) {
-        this.pageState = true
+        this.pageState = 1
         this.form.page = data
       },
       changeBtnPageSize(data) {
-        this.pageState = true
+        this.pageState = 2
         this.form.pageSize = data
       },
       fetchData() {

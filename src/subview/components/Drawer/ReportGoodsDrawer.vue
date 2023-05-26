@@ -138,7 +138,7 @@
           time: this.getYesterdayTime(),
           goods_id: null,
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
         },
         cardList: [
           {
@@ -178,14 +178,14 @@
               time: newVal.goods_time,
               stock_id: newVal.stock_id,
               page: 1,
-              pageSize: 10,
+              pageSize: 20,
             }
           } else {
             this.formList = {
               time: newVal.goods_time,
               goods_id: newVal.id,
               page: 1,
-              pageSize: 10,
+              pageSize: 20,
             }
           }
           this.time = newVal.goods_time

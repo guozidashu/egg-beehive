@@ -78,7 +78,7 @@
         const { data } = await this.api.getEmployeeList({
           name: '',
           page: -1,
-          pageSize: 10,
+          pageSize: 20,
           department_id: '', //部门id
           role: null, //岗位id
           status: 1, // 状态 1=在职 0=停职 默认传1

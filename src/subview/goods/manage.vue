@@ -443,15 +443,16 @@
         // 表格选中 ids
         selectRowsId: [],
         // 表格相关数据 页数，条数，表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
-        pageState: false,
+
         formTemp: null,
+        pageState: 0,
         page: 1,
-        pageSize: 10,
+        pageSize: 20,
         form: {
           sort_field: 'upper_time',
           sort_type: 'desc',
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
           list_type: '0', // 列表类型 0=全部 1=仓库中 2=已售完 3=库存预警 4=待确认 5=自营商城 6=第三方平台
           category: '',
           brand: '',
@@ -475,12 +476,17 @@
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState) {
+          if (this.pageState == 1) {
             this.formTemp.page = newVal.page
             this.formTemp.pageSize = newVal.pageSize
             this.page = newVal.page
             this.pageSize = newVal.pageSize
-          } else {
+          } else if (this.pageState == 2) {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = newVal.pageSize
+            this.page = 1
+            this.pageSize = newVal.pageSize
+          } else if (this.pageState == 0) {
             this.formTemp.page = 1
             this.formTemp.pageSize = 20
             this.page = 1
@@ -488,7 +494,7 @@
           }
           this.fetchData()
           this.getTatolData()
-          this.pageState = false
+          this.pageState = 0
         },
         deep: true,
       },
@@ -549,12 +555,12 @@
       },
       // 分页
       changeBtnPage(data) {
-        this.pageState = true
+        this.pageState = 1
         this.form.page = data
       },
       // 分页条数
       changeBtnPageSize(data) {
-        this.pageState = true
+        this.pageState = 2
         this.form.pageSize = data
       },
       // 查询
@@ -636,7 +642,7 @@
           sort_field: 'upper_time',
           sort_type: 'desc',
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
           list_type: '0', // 列表类型 0=全部 1=仓库中 2=已售完 3=库存预警 4=待确认 5=自营商城 6=第三方平台
           category: '',
           brand: '',

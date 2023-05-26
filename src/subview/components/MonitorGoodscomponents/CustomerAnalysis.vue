@@ -215,7 +215,9 @@
         cooperate_customer_num: 0,
         selectList: [],
         // 列表查询条件
+
         formTemp: null,
+        pageState: 0,
         page: 1,
         page_size: 20,
         form: {
@@ -242,19 +244,24 @@
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState) {
+          if (this.pageState == 1) {
             this.formTemp.page = newVal.page
-            this.formTemp.page_size = newVal.page_size
+            this.formTemp.pageSize = newVal.pageSize
             this.page = newVal.page
-            this.page_size = newVal.page_size
-          } else {
+            this.pageSize = newVal.pageSize
+          } else if (this.pageState == 2) {
             this.formTemp.page = 1
-            this.formTemp.page_size = 20
+            this.formTemp.pageSize = newVal.pageSize
             this.page = 1
-            this.page_size = 20
+            this.pageSize = newVal.pageSize
+          } else if (this.pageState == 0) {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 20
+            this.page = 1
+            this.pageSize = 20
           }
           this.getList()
-          this.pageState = false
+          this.pageState = 0
         },
         deep: true,
       },
@@ -286,11 +293,11 @@
         this.selectList = data
       },
       handleCurrentChange(val) {
-        this.pageState = true
+        this.pageState = 1
         this.form.page = val
       },
       handleSizeChange(val) {
-        this.pageState = true
+        this.pageState = 2
         this.form.page_size = val
       },
       resetForm() {

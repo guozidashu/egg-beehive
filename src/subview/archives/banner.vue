@@ -17,12 +17,8 @@
       <QYList
         :list="list"
         :list-type="listType"
-        :page-no="page"
-        :page-size="pageSize"
         :state="listLoading"
         :total="total"
-        @changePage="changeBtnPage"
-        @changePageSize="changeBtnPageSize"
       >
         <template #List>
           <el-table-column
@@ -104,15 +100,6 @@
     data() {
       return {
         // 页数，条数，表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
-        formTemp: null,
-        page: 1,
-        pageSize: 10,
-        form: {
-          id: 0,
-          name: '',
-          page: 1,
-          pageSize: 10,
-        },
         listType: 2,
         list: [],
         listLoading: false,
@@ -156,16 +143,6 @@
             this.fetchData()
           })
         }
-      },
-      // 分页
-      changeBtnPage(data) {
-        this.pageState = true
-        this.form.page = data
-      },
-      // 分页条数
-      changeBtnPageSize(data) {
-        this.pageState = true
-        this.form.pageSize = data
       },
       // 获取列表数据
       async fetchData() {

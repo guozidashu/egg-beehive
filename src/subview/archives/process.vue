@@ -85,7 +85,7 @@
         form: {
           name: '',
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
         },
         formType: 4,
         listType: 2,

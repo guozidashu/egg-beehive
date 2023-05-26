@@ -776,7 +776,7 @@
         // 爆款分析 查询条件，列表数据，加载状态，总数
         goodsAnalysisForm: {
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
         },
         goodsAnalysisList: [],
         goodslistLoading: false,
@@ -784,7 +784,7 @@
         // 库存预警分析 查询条件，列表数据，加载状态，总数
         stockAnalysisForm: {
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
         },
         stockAnalysisList: [],
         stocklistLoading: false,

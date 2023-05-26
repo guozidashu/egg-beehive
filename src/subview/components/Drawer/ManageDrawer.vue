@@ -601,7 +601,7 @@
           ],
         },
         page: 1,
-        pageSize: 10,
+        pageSize: 20,
         total: 0,
         listLoading: false,
         listType: 1,
@@ -755,7 +755,6 @@
         this.selectData = data
       },
       changeBtnPage(data) {
-        this.pageState = true
         this.page = data
       },
       changeBtnPageSize(data) {

@@ -150,7 +150,7 @@
           pid: 0,
           name: '',
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
         },
         menuList: [],
         formType: 4,

@@ -95,7 +95,7 @@
       async getSelectList() {
         const { data } = await this.api.getAccountList({
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
           id: 0, // 父级id （取父级时传0）
           type: null, // 类别 1收 2支
           name: '', // 科目名称

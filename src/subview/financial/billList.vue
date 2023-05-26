@@ -182,13 +182,14 @@
         // 下拉框数据,页数，条数，表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         selectList: [],
         formTemp: null,
+        pageState: 0,
         page: 1,
-        pageSize: 10,
+        pageSize: 20,
         form: {
           type: null, // 类型 1收 2支
           category_id: null, // 收支分类
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
           date: [],
         },
         formType: 4,
@@ -203,19 +204,24 @@
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState) {
+          if (this.pageState == 1) {
             this.formTemp.page = newVal.page
             this.formTemp.pageSize = newVal.pageSize
             this.page = newVal.page
             this.pageSize = newVal.pageSize
-          } else {
+          } else if (this.pageState == 2) {
             this.formTemp.page = 1
-            this.formTemp.pageSize = 10
+            this.formTemp.pageSize = newVal.pageSize
             this.page = 1
-            this.pageSize = 10
+            this.pageSize = newVal.pageSize
+          } else if (this.pageState == 0) {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 20
+            this.page = 1
+            this.pageSize = 20
           }
           this.fetchData()
-          this.pageState = false
+          this.pageState = 0
         },
         deep: true,
       },
@@ -229,7 +235,7 @@
       async getCategory() {
         const { data } = await this.api.getCategoryList({
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
           id: -1, // 父级id （取父级时传0）-1 = 所有子分类
           name: '', // 分类名称
           search: true, // 搜索
@@ -271,12 +277,12 @@
       },
       // 分页
       changeBtnPage(data) {
-        this.pageState = true
+        this.pageState = 1
         this.form.page = data
       },
       // 分页条数
       changeBtnPageSize(data) {
-        this.pageState = true
+        this.pageState = 2
         this.form.pageSize = data
       },
       fetchData() {

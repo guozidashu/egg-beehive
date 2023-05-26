@@ -112,14 +112,15 @@
         layout: 'total, sizes, prev, pager, next, jumper',
         total: 0,
         formTemp: null,
+        pageState: 0,
         page: 1,
-        pageSize: 10,
+        pageSize: 20,
         queryForm: {
           name: '', //操作名称
           admin_name: '', //操作人
           create_time: [],
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
         },
       }
     },
@@ -128,19 +129,24 @@
       queryForm: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState) {
+          if (this.pageState == 1) {
             this.formTemp.page = newVal.page
             this.formTemp.pageSize = newVal.pageSize
             this.page = newVal.page
             this.pageSize = newVal.pageSize
-          } else {
+          } else if (this.pageState == 2) {
             this.formTemp.page = 1
-            this.formTemp.pageSize = 10
+            this.formTemp.pageSize = newVal.pageSize
             this.page = 1
-            this.pageSize = 10
+            this.pageSize = newVal.pageSize
+          } else if (this.pageState == 0) {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 20
+            this.page = 1
+            this.pageSize = 20
           }
           this.fetchData()
-          this.pageState = false
+          this.pageState = 0
         },
         deep: true,
       },
@@ -151,12 +157,12 @@
     methods: {
       // 分页
       handleSizeChange(val) {
-        this.pageState = true
+        this.pageState = 1
         this.queryForm.pageSize = val
       },
       // 条数
       handleCurrentChange(val) {
-        this.pageState = true
+        this.pageState = 2
         this.queryForm.page = val
       },
       // 重置
@@ -166,7 +172,7 @@
           admin_name: '', //操作人
           create_time: [],
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
         }
       },
       fetchData() {

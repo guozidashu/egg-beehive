@@ -194,15 +194,16 @@
         total: 0,
         list: [],
         formTemp: null,
+        pageState: 0,
         page: 1,
-        pageSize: 10,
+        pageSize: 20,
         goodsForm1: {
           status: 1, //1收入 2退还
           level_id: '', //客户等级
           type: '', //客户类型
           create_time: [],
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
         },
         // 卡片组件长度，数据
         divLength: 8,
@@ -397,19 +398,24 @@
       goodsForm1: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState) {
+          if (this.pageState == 1) {
             this.formTemp.page = newVal.page
             this.formTemp.pageSize = newVal.pageSize
             this.page = newVal.page
             this.pageSize = newVal.pageSize
-          } else {
+          } else if (this.pageState == 2) {
             this.formTemp.page = 1
-            this.formTemp.pageSize = 10
+            this.formTemp.pageSize = newVal.pageSize
             this.page = 1
-            this.pageSize = 10
+            this.pageSize = newVal.pageSize
+          } else if (this.pageState == 0) {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 20
+            this.page = 1
+            this.pageSize = 20
           }
           this.tableData()
-          this.pageState = false
+          this.pageState = 0
         },
         deep: true,
       },
@@ -471,18 +477,18 @@
           tag: null,
           create_time: [],
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
           id: null,
         }
       },
       // 分页
       changeBtnPage(data) {
-        this.pageState = true
+        this.pageState = 1
         this.goodsForm1.page = data
       },
       // 分页条数
       changeBtnPageSize(data) {
-        this.pageState = true
+        this.pageState = 2
         this.goodsForm1.pageSize = data
       },
       // 获取列表数据

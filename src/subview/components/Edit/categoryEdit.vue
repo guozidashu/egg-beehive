@@ -118,7 +118,7 @@
       async getSelectList() {
         const { data } = await this.api.getCategoryList({
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
           id: 0, // 父级id （取父级时传0）-1 = 所有子分类
           name: '', // 分类名称
         })

@@ -509,6 +509,7 @@
         // 列表条数 ，分页加载状态，列表类型，列表数据
         total: 0,
         formTemp: null,
+        pageState: 0,
         page: 1,
         pageSize: 50,
         listLoading: false,
@@ -686,19 +687,24 @@
       goodsForm1: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState) {
+          if (this.pageState == 1) {
             this.formTemp.page = newVal.page
             this.formTemp.pageSize = newVal.pageSize
             this.page = newVal.page
             this.pageSize = newVal.pageSize
-          } else {
+          } else if (this.pageState == 2) {
             this.formTemp.page = 1
-            this.formTemp.pageSize = 50
+            this.formTemp.pageSize = newVal.pageSize
             this.page = 1
-            this.pageSize = 50
+            this.pageSize = newVal.pageSize
+          } else if (this.pageState == 0) {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 20
+            this.page = 1
+            this.pageSize = 20
           }
           this.getTableList()
-          this.pageState = false
+          this.pageState = 0
         },
         deep: true,
       },
@@ -756,12 +762,12 @@
       },
       // 分页
       changeBtnPage(data) {
-        this.pageState = true
+        this.pageState = 1
         this.goodsForm1.page = data
       },
       // 分页条数
       changeBtnPageSize(data) {
-        this.pageState = true
+        this.pageState = 2
         this.goodsForm1.pageSize = data
       },
       // 获取服务人员下拉框数据

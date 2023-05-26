@@ -38,7 +38,7 @@
         // 表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
         form: {
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
           employee_id: 3, // 员工id
           type: 1, // 类型
         },

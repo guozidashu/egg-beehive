@@ -685,12 +685,13 @@
         ],
         // 查询，分页表格处理相关参数，页数，条数，表单查询条件 ，列表数据，列表加载状态，列表总数，列表组件的类型，筛选条件
         formTemp: null,
+        pageState: 0,
         page: 1,
-        pageSize: 10,
+        pageSize: 20,
         // 查询条件表单
         form: {
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
           goods_sn: '', // 商品款号
           brand_id: '', // 品牌id
           year_id: '', // 年份id
@@ -713,19 +714,24 @@
       form: {
         handler: function (newVal) {
           this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState) {
+          if (this.pageState == 1) {
             this.formTemp.page = newVal.page
             this.formTemp.pageSize = newVal.pageSize
             this.page = newVal.page
             this.pageSize = newVal.pageSize
-          } else {
+          } else if (this.pageState == 2) {
             this.formTemp.page = 1
-            this.formTemp.pageSize = 10
+            this.formTemp.pageSize = newVal.pageSize
             this.page = 1
-            this.pageSize = 10
+            this.pageSize = newVal.pageSize
+          } else if (this.pageState == 0) {
+            this.formTemp.page = 1
+            this.formTemp.pageSize = 20
+            this.page = 1
+            this.pageSize = 20
           }
           this.getGoodsOwedTableList()
-          this.pageState = false
+          this.pageState = 0
         },
         deep: true,
       },
@@ -781,19 +787,19 @@
       },
       // 欠货明细表格切换页数
       changeBtnPage(data) {
-        this.pageState = true
+        this.pageState = 1
         this.form.page = data
       },
       // 欠货明细表格切换条数
       changeBtnPageSize(data) {
-        this.pageState = true
+        this.pageState = 2
         this.form.pageSize = data
       },
       // 欠货明细 查询表单重置
       resetForm() {
         this.form = {
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
           goods_sn: '', // 商品款号
           brand_id: '', // 品牌id
           year_id: '', // 年份id

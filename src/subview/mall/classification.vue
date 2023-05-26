@@ -60,7 +60,7 @@
         // 页数，条数，表单查询条件 ，选中数据，表单组件和列表组件的类型，列表数据，列表加载状态
         form: {
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
         },
         selectRowsId: [],
         formType: 4,

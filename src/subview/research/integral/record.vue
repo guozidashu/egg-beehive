@@ -73,7 +73,7 @@
         // 页数，条数，表单查询条件 选中数据 列表类型 列表数据 列表加载状态 总条数
         form: {
           page: 1,
-          pageSize: 10,
+          pageSize: 20,
         },
         formType: 4,
         listType: 1,
