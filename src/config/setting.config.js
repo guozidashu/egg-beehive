@@ -70,6 +70,7 @@ module.exports = {
     'templateAssemblyLayout',
     'goodsDetailEdit',
     'addGoodsToVdian',
+    'goods/goodsSyncJuShuiTan',
   ],
   // 分栏布局和综合布局时，是否点击一级菜单默认开启二级菜单(默认第一个，可通过redirect自定义)
   openFirstMenu: true,

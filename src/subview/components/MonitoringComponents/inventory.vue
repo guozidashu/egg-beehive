@@ -22,7 +22,7 @@
           </div>
         </div>
       </div>
-      <div style="margin: 20px 0">我监控的商品</div>
+      <div style="margin: 20px 0">我监控的库存</div>
       <div style="display: flex; justify-content: space-between">
         <div>
           <QYPopover

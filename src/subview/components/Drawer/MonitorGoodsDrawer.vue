@@ -312,6 +312,8 @@
         temp.shop_multiplot = arr
         if (temp.shop_multiplot.length > 0) {
           this.img_checked_src = temp.shop_multiplot[0].img
+        } else {
+          this.img_checked_src = temp.img
         }
 
         this.form = temp
