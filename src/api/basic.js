@@ -3161,3 +3161,13 @@ export function getPhoneLogin(data) {
     data,
   })
 }
+
+// 测试接口
+
+export function testCeshi(data) {
+  return request({
+    url: '/test/ceshi',
+    method: 'post',
+    data,
+  })
+}

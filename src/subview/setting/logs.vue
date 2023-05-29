@@ -111,8 +111,6 @@
         listLoading: false,
         layout: 'total, sizes, prev, pager, next, jumper',
         total: 0,
-        formTemp: null,
-        pageState: 0,
         page: 1,
         pageSize: 20,
         queryForm: {
@@ -127,26 +125,10 @@
     watch: {
       // 监听查询条件
       queryForm: {
-        handler: function (newVal) {
-          this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState == 1) {
-            this.formTemp.page = newVal.page
-            this.formTemp.pageSize = newVal.pageSize
-            this.page = newVal.page
-            this.pageSize = newVal.pageSize
-          } else if (this.pageState == 2) {
-            this.formTemp.page = 1
-            this.formTemp.pageSize = newVal.pageSize
-            this.page = 1
-            this.pageSize = newVal.pageSize
-          } else if (this.pageState == 0) {
-            this.formTemp.page = 1
-            this.formTemp.pageSize = 20
-            this.page = 1
-            this.pageSize = 20
-          }
+        handler: function () {
+          this.page = 1
+          this.pageSize = 20
           this.fetchData()
-          this.pageState = 0
         },
         deep: true,
       },
@@ -157,13 +139,14 @@
     methods: {
       // 分页
       handleSizeChange(val) {
-        this.pageState = 1
-        this.queryForm.pageSize = val
+        this.page = val
+        this.fetchData()
       },
       // 条数
       handleCurrentChange(val) {
-        this.pageState = 2
-        this.queryForm.page = val
+        this.pageSize = val
+        this.page = 1
+        this.fetchData()
       },
       // 重置
       queryData() {
@@ -181,9 +164,9 @@
       // 获取列表
       async debounceFetchData() {
         this.listLoading = true
-        if (this.formTemp == null) {
-          this.formTemp = JSON.parse(JSON.stringify(this.queryForm))
-        }
+        this.formTemp = JSON.parse(JSON.stringify(this.queryForm))
+        this.formTemp.page = this.page
+        this.formTemp.pageSize = this.pageSize
         const { data } = await this.api.getLogList(this.formTemp)
         this.list = data.data
         this.total = data.total

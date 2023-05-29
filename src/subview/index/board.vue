@@ -684,8 +684,6 @@
           },
         ],
         // 查询，分页表格处理相关参数，页数，条数，表单查询条件 ，列表数据，列表加载状态，列表总数，列表组件的类型，筛选条件
-        formTemp: null,
-        pageState: 0,
         page: 1,
         pageSize: 20,
         // 查询条件表单
@@ -712,34 +710,16 @@
     watch: {
       // 欠货查询表单监听
       form: {
-        handler: function (newVal) {
-          this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState == 1) {
-            this.formTemp.page = newVal.page
-            this.formTemp.pageSize = newVal.pageSize
-            this.page = newVal.page
-            this.pageSize = newVal.pageSize
-          } else if (this.pageState == 2) {
-            this.formTemp.page = 1
-            this.formTemp.pageSize = newVal.pageSize
-            this.page = 1
-            this.pageSize = newVal.pageSize
-          } else if (this.pageState == 0) {
-            this.formTemp.page = 1
-            this.formTemp.pageSize = 20
-            this.page = 1
-            this.pageSize = 20
-          }
+        handler: function () {
+          this.page = 1
+          this.pageSize = 20
           this.getGoodsOwedTableList()
-          this.pageState = 0
         },
         deep: true,
       },
       // tabs 切换 监听 款号和客户
       radioButton: {
         handler: function () {
-          this.formTemp.page = 1
-          this.formTemp.pageSize = 10
           this.page = 1
           this.pageSize = 10
           this.getGoodsOwedTableList()
@@ -787,13 +767,14 @@
       },
       // 欠货明细表格切换页数
       changeBtnPage(data) {
-        this.pageState = 1
-        this.form.page = data
+        this.page = data
+        this.getGoodsOwedTableList()
       },
       // 欠货明细表格切换条数
       changeBtnPageSize(data) {
-        this.pageState = 2
-        this.form.pageSize = data
+        this.pageSize = data
+        this.page = 1
+        this.getGoodsOwedTableList()
       },
       // 欠货明细 查询表单重置
       resetForm() {
@@ -859,9 +840,9 @@
       // 获取欠货明细表格
       async debounceFetchData() {
         this.listLoading = true
-        if (this.formTemp == null) {
-          this.formTemp = JSON.parse(JSON.stringify(this.form))
-        }
+        this.formTemp = JSON.parse(JSON.stringify(this.form))
+        this.formTemp.page = this.page
+        this.formTemp.pageSize = this.pageSize
         if (this.radioButton == 1) {
           const { data } = await this.api.getWarehouseAnalysisSnOutStockAnalyse(
             this.formTemp

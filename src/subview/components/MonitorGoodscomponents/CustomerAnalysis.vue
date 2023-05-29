@@ -215,9 +215,6 @@
         cooperate_customer_num: 0,
         selectList: [],
         // 列表查询条件
-
-        formTemp: null,
-        pageState: 0,
         page: 1,
         page_size: 20,
         form: {
@@ -242,26 +239,10 @@
     },
     watch: {
       form: {
-        handler: function (newVal) {
-          this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState == 1) {
-            this.formTemp.page = newVal.page
-            this.formTemp.pageSize = newVal.pageSize
-            this.page = newVal.page
-            this.pageSize = newVal.pageSize
-          } else if (this.pageState == 2) {
-            this.formTemp.page = 1
-            this.formTemp.pageSize = newVal.pageSize
-            this.page = 1
-            this.pageSize = newVal.pageSize
-          } else if (this.pageState == 0) {
-            this.formTemp.page = 1
-            this.formTemp.pageSize = 20
-            this.page = 1
-            this.pageSize = 20
-          }
+        handler: function () {
+          this.page = 1
+          this.page_size = 20
           this.getList()
-          this.pageState = 0
         },
         deep: true,
       },
@@ -293,12 +274,13 @@
         this.selectList = data
       },
       handleCurrentChange(val) {
-        this.pageState = 1
-        this.form.page = val
+        this.page = val
+        this.getList()
       },
       handleSizeChange(val) {
-        this.pageState = 2
-        this.form.page_size = val
+        this.page_size = val
+        this.page = 1
+        this.getList()
       },
       resetForm() {
         this.form = {
@@ -336,9 +318,9 @@
       // 获取列表数据
       async debounceFetchData() {
         this.state = true
-        if (this.formTemp == null) {
-          this.formTemp = JSON.parse(JSON.stringify(this.form))
-        }
+        this.formTemp = JSON.parse(JSON.stringify(this.form))
+        this.formTemp.page = this.page
+        this.formTemp.page_size = this.page_size
         this.formTemp.start_date = this.formTemp.time[0]
         this.formTemp.end_date = this.formTemp.time[1]
         const { data } = await this.api.getMonitorCooperateCustomerList(

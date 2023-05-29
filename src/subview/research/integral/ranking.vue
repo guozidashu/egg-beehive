@@ -80,8 +80,6 @@
     data() {
       return {
         // 页数，条数，表单查询条件 表单类型 表格类型 表格数据 表格加载状态 总条数
-        formTemp: null,
-        pageState: 0,
         page: 1,
         pageSize: 20,
         form: {
@@ -99,26 +97,10 @@
     watch: {
       // 监听表单变化
       form: {
-        handler: function (newVal) {
-          this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState == 1) {
-            this.formTemp.page = newVal.page
-            this.formTemp.pageSize = newVal.pageSize
-            this.page = newVal.page
-            this.pageSize = newVal.pageSize
-          } else if (this.pageState == 2) {
-            this.formTemp.page = 1
-            this.formTemp.pageSize = newVal.pageSize
-            this.page = 1
-            this.pageSize = newVal.pageSize
-          } else if (this.pageState == 0) {
-            this.formTemp.page = 1
-            this.formTemp.pageSize = 20
-            this.page = 1
-            this.pageSize = 20
-          }
+        handler: function () {
+          this.page = 1
+          this.pageSize = 20
           this.fetchData()
-          this.pageState = 0
         },
         deep: true,
       },
@@ -137,13 +119,14 @@
       },
       // 分页
       changeBtnPage(data) {
-        this.pageState = 1
-        this.form.page = data
+        this.page = data
+        this.fetchData()
       },
       // 分页条数
       changeBtnPageSize(data) {
-        this.pageState = 2
-        this.form.pageSize = data
+        this.pageSize = data
+        this.page = 1
+        this.fetchData()
       },
       fetchData() {
         this.$debounce(this.debounceFetchData, 500)
@@ -151,9 +134,9 @@
       // 获取数据
       async debounceFetchData() {
         this.listLoading = true
-        if (this.formTemp == null) {
-          this.formTemp = JSON.parse(JSON.stringify(this.form))
-        }
+        this.formTemp = JSON.parse(JSON.stringify(this.form))
+        this.formTemp.page = this.page
+        this.formTemp.pageSize = this.pageSize
         const { data } = await this.api.getEmployeeIntegralRank(this.formTemp)
         this.list = data.data
         this.total = data.total

@@ -477,7 +477,7 @@ d
               this.form.produce_type = this.form.produce_type.map((item) => {
                 return Number(item)
               })
-            } else {
+            } else if (this.form.produce_type != '') {
               this.form.produce_type = [Number(this.form.produce_type)]
             }
           }
@@ -487,7 +487,7 @@ d
               this.form.craft_type = this.form.craft_type.map((item) => {
                 return Number(item)
               })
-            } else {
+            } else if (this.form.craft_type != '') {
               this.form.craft_type = [Number(this.form.craft_type)]
             }
           }

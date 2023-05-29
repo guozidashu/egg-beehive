@@ -276,8 +276,6 @@
         // 表格选中 ids
         selectRowsId: [],
         // 表格相关数据 页数，条数，表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
-        formTemp: null,
-        pageState: 0,
         page: 1,
         pageSize: 20,
         form: {
@@ -306,26 +304,10 @@
     watch: {
       // 监听表单数据变化
       form: {
-        handler: function (newVal) {
-          this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState == 1) {
-            this.formTemp.page = newVal.page
-            this.formTemp.pageSize = newVal.pageSize
-            this.page = newVal.page
-            this.pageSize = newVal.pageSize
-          } else if (this.pageState == 2) {
-            this.formTemp.page = 1
-            this.formTemp.pageSize = newVal.pageSize
-            this.page = 1
-            this.pageSize = newVal.pageSize
-          } else if (this.pageState == 0) {
-            this.formTemp.page = 1
-            this.formTemp.pageSize = 20
-            this.page = 1
-            this.pageSize = 20
-          }
+        handler: function () {
+          this.page = 1
+          this.pageSize = 20
           this.fetchData()
-          this.pageState = 0
         },
         deep: true,
       },
@@ -352,7 +334,9 @@
             }
           })
         }
-        let formTemp1 = JSON.parse(JSON.stringify(this.form))
+        this.formTemp1 = JSON.parse(JSON.stringify(this.form))
+        this.formTemp1.page = this.page
+        this.formTemp1.pageSize = this.pageSize
         if (formTemp1.list_type == 1) {
           formTemp1.order_ids = order_ids
         } else {
@@ -580,13 +564,14 @@
       },
       // 分页
       changeBtnPage(data) {
-        this.pageState = 1
-        this.form.page = data
+        this.page = data
+        this.fetchData()
       },
       // 分页条数
       changeBtnPageSize(data) {
-        this.pageState = 2
-        this.form.pageSize = data
+        this.pageSize = data
+        this.page = 1
+        this.fetchData()
       },
       // 查询
       handleQuery() {
@@ -601,9 +586,9 @@
           this.drawer = false
         }
         this.listLoading = true
-        if (this.formTemp == null) {
-          this.formTemp = JSON.parse(JSON.stringify(this.form))
-        }
+        this.formTemp = JSON.parse(JSON.stringify(this.form))
+        this.formTemp.page = this.page
+        this.formTemp.pageSize = this.pageSize
         const { data } = await this.api.getGoodsAdjustList(this.formTemp)
         this.list = data.list
         this.total = data.total

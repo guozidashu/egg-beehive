@@ -22,6 +22,7 @@
         <el-button type="primary" @click="btnClickPrint(1)">打印预览</el-button>
         <el-button type="primary" @click="btnClickPrint(2)">立即打印</el-button>
       </el-form-item>
+      <el-button type="primary" @click="daochu()">导出测试</el-button>
     </el-form>
     <!-- <div style="padding-right: 20px">
       <div style="display: flex; justify-content: space-between">
@@ -278,6 +279,8 @@
   </div>
 </template>
 <script>
+  // 表格导出插件
+  import table2excel from 'js-table2excel'
   import { getLodop } from '@/utils/LodopFuncs' //导入打印模块
   export default {
     data() {
@@ -421,19 +424,102 @@
     created() {},
     // 页面加载时打印模块读取设备
     mounted() {
-      setTimeout(() => {
-        const Name = []
-        const LODOP = getLodop()
-        console.log('LODOP', LODOP)
-        const iPrinterCount = LODOP.GET_PRINTER_COUNT()
-        for (let i = 0; i < iPrinterCount; i++) {
-          Name.push({ name: LODOP.GET_PRINTER_NAME(i), id: i })
-        }
-        this.printerList = Name
-        console.log('获取到可用的打印机及其id', Name)
-      }, 2000)
+      // setTimeout(() => {
+      //   const Name = []
+      //   const LODOP = getLodop()
+      //   console.log('LODOP', LODOP)
+      //   const iPrinterCount = LODOP.GET_PRINTER_COUNT()
+      //   for (let i = 0; i < iPrinterCount; i++) {
+      //     Name.push({ name: LODOP.GET_PRINTER_NAME(i), id: i })
+      //   }
+      //   this.printerList = Name
+      //   console.log('获取到可用的打印机及其id', Name)
+      // }, 2000)
     },
     methods: {
+      async daochu() {
+        const { code, data } = await this.api.testCeshi()
+        let columnSn = [
+          {
+            title: '图片',
+            type: 'image',
+            width: 100,
+            height: 100,
+            key: 'img',
+          },
+          {
+            title: 'id',
+            type: 'text',
+            key: 'id',
+          },
+          {
+            title: '编号',
+            type: 'text',
+            key: 'bianhao',
+          },
+          {
+            title: '设计师',
+            type: 'text',
+            key: 'uid',
+          },
+          {
+            title: '款式',
+            type: 'text',
+            key: 'kuanshi',
+          },
+          {
+            title: '季节',
+            type: 'text',
+            key: 'season_name',
+          },
+          {
+            title: '年份',
+            type: 'text',
+            key: 'year_name',
+          },
+          {
+            title: '品牌',
+            type: 'text',
+            key: 'brand_name',
+          },
+          {
+            title: '费用',
+            type: 'text',
+            key: 'feiyong',
+          },
+        ]
+        const excelData = data
+        const date = new Date()
+        const year = date.getFullYear()
+        const month = date.getMonth() + 1
+        const day = date.getDate()
+        const hour = date.getHours()
+        const minute = date.getMinutes()
+        const second = date.getSeconds()
+        // 拼接年月日时分秒
+        const time =
+          year +
+          '-' +
+          month +
+          '-' +
+          day +
+          ' ' +
+          hour +
+          '-' +
+          minute +
+          '-' +
+          second
+        // 拼接文件名称
+        const excelName = '打印测试-' + time
+        if (code == 200) {
+          table2excel(columnSn, excelData, excelName) //生成Excel表格，自动下载
+          this.$message.success('导出成功')
+          this.dialogVisible = false
+          this.fetchData()
+        } else {
+          this.$message.error('导出失败')
+        }
+      },
       btnClickPrint: function (type) {
         // this.$nextTick(() => {
         //   const loading = this.$loading({})

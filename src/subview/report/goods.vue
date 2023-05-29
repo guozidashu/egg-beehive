@@ -501,8 +501,6 @@
         listType: 1,
         goosList: [],
         total: 0,
-        formTemp: null,
-        pageState: 0,
         page: 1,
         pageSize: 50,
         goodsForm1: {
@@ -686,26 +684,10 @@
       },
       // 监听表格查询条件
       goodsForm1: {
-        handler: function (newVal) {
-          this.formTemp = JSON.parse(JSON.stringify(newVal))
-          if (this.pageState == 1) {
-            this.formTemp.page = newVal.page
-            this.formTemp.pageSize = newVal.pageSize
-            this.page = newVal.page
-            this.pageSize = newVal.pageSize
-          } else if (this.pageState == 2) {
-            this.formTemp.page = 1
-            this.formTemp.pageSize = newVal.pageSize
-            this.page = 1
-            this.pageSize = newVal.pageSize
-          } else if (this.pageState == 0) {
-            this.formTemp.page = 1
-            this.formTemp.pageSize = 20
-            this.page = 1
-            this.pageSize = 20
-          }
+        handler: function () {
+          this.page = 1
+          this.pageSize = 20
           this.getTableList()
-          this.pageState = 0
         },
         deep: true,
       },
@@ -816,13 +798,14 @@
       },
       // 分页
       changeBtnPage(data) {
-        this.pageState = 1
-        this.goodsForm1.page = data
+        this.page = data
+        this.getTableList()
       },
       // 分页条数
       changeBtnPageSize(data) {
-        this.pageState = 2
-        this.goodsForm1.pageSize = data
+        this.pageSize = data
+        this.page = 1
+        this.getTableList()
       },
       // 获取下拉框数据
       async getTypeList() {
@@ -913,13 +896,13 @@
       // 获取列表数据
       async debounceFetchData1() {
         this.listLoading = true
-        if (this.formTemp == null) {
-          this.formTemp = JSON.parse(JSON.stringify(this.goodsForm1))
-        }
-        let temp = JSON.parse(JSON.stringify(this.formTemp))
+        this.formTemp = JSON.parse(JSON.stringify(this.goodsForm1))
+        this.formTemp.page = this.page
+        this.formTemp.pageSize = this.pageSize
         if (this.formTemp.merge) {
           this.formTemp.goods_type = 1
         }
+        let temp = JSON.parse(JSON.stringify(this.formTemp))
         const { data } = await this.api.getGoodsRank(temp)
         if (temp.id) {
           this.handleDetailMonitor(data.data[0])
