@@ -283,6 +283,19 @@
               </el-popover>
             </template>
           </el-table-column>
+          <el-table-column align="center" prop="jst_other_out_stock">
+            <template slot="header">
+              聚水潭其他销售出库
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">聚水潭其他销售出库</div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </template>
+          </el-table-column>
           <el-table-column align="center" prop="sum_delivery_num">
             <template slot="header">
               销售发货
@@ -624,6 +637,11 @@
           />
           <el-table-column
             align="center"
+            label="聚水潭其他销售出库"
+            prop="jst_other_out_stock"
+          />
+          <el-table-column
+            align="center"
             label="云仓调整盘点"
             prop="jst_adjust_num"
           />
@@ -813,6 +831,11 @@
                 key: 'jst_out_stock',
               },
               {
+                title: '聚水潭其他销售出库',
+                type: 'text',
+                key: 'jst_other_out_stock',
+              },
+              {
                 title: '销售发货',
                 type: 'text',
                 key: 'sum_delivery_num',
@@ -901,6 +924,11 @@
                 title: '聚水潭出库',
                 type: 'text',
                 key: 'jst_out_stock',
+              },
+              {
+                title: '聚水潭其他销售出库',
+                type: 'text',
+                key: 'jst_other_out_stock',
               },
               {
                 title: '销售发货',
@@ -1142,6 +1170,11 @@
                 key: 'sum_delivery_num',
               },
               {
+                title: '聚水潭其他销售出库',
+                type: 'text',
+                key: 'jst_other_out_stock',
+              },
+              {
                 title: '云仓调整盘点',
                 type: 'text',
                 key: 'jst_adjust_num',
@@ -1215,6 +1248,11 @@
                 title: '聚水潭销售出库',
                 type: 'text',
                 key: 'sum_delivery_num',
+              },
+              {
+                title: '聚水潭其他销售出库',
+                type: 'text',
+                key: 'jst_other_out_stock',
               },
               {
                 title: '云仓调整盘点',

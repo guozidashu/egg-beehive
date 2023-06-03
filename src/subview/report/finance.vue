@@ -28,7 +28,7 @@
           ￥{{ item.value | moneyFormat }}
         </p>
         <p v-else style="font-size: 30px; color: black">
-          - ￥{{ item.value | moneyFormat }}
+          ￥{{ item.value | moneyFormat }}
         </p>
       </div>
     </div>

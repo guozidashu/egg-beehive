@@ -34,7 +34,7 @@
           >
             <span v-if="item.numType == 1">
               <span v-if="item.num >= 0">￥{{ item.num | moneyFormat }}</span>
-              <span v-else>- ￥{{ item.num | moneyFormat }}</span>
+              <span v-else>￥{{ item.num | moneyFormat }}</span>
             </span>
             <span v-else>{{ item.num }}</span>
           </div>
