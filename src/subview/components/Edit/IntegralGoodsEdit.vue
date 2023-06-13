@@ -163,7 +163,7 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             if (this.title === '添加') {
-              this.form.pic = '111'
+              // this.form.pic = '111'
               const { code } = await this.api.editIntegralGoodsSave(this.form)
               if (code != 200) {
                 return

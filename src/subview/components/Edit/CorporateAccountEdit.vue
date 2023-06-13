@@ -33,7 +33,7 @@
       <el-form-item label="账户:" prop="account">
         <el-input v-model="form.account" size="small" style="width: 215px" />
       </el-form-item>
-      <el-form-item label="是否默认:">
+      <el-form-item label="是否默认:" prop="is_default">
         <el-radio-group v-model="form.is_default">
           <el-radio :label="1">是</el-radio>
           <el-radio :label="0">否</el-radio>
@@ -61,8 +61,14 @@
           is_default: 0, // 是否默认 0否 1是
         },
         rules: {
-          amount: [{ required: true, trigger: 'blur', message: '请输入金额' }],
-          remark: [{ required: true, trigger: 'blur', message: '请输入备注' }],
+          type: [
+            { required: true, message: '请选择账户类型', trigger: 'blur' },
+          ],
+          name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
+          account: [{ required: true, message: '请输入账户', trigger: 'blur' }],
+          is_default: [
+            { required: true, message: '请选择是否默认', trigger: 'blur' },
+          ],
         },
         title: '',
         dialogFormVisible: false,

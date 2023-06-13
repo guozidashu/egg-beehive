@@ -19,6 +19,7 @@
             <el-select v-model="form.status" placeholder="请选择商品状态">
               <el-option label="在售" :value="1" />
               <el-option label="停售" :value="2" />
+              <el-option label="待上市" :value="3" />
             </el-select>
           </el-form-item>
           <el-form-item label="商品款号" prop="sn">

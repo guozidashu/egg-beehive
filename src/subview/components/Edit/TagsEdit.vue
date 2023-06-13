@@ -101,14 +101,14 @@
         </div>
       </div>
       <div v-if="title == '编辑标签' || title == '编辑分类'">
-        <el-form-item label="名称">
+        <el-form-item label="名称" prop="name">
           <el-input
             v-model="form.name"
             style="width: 215px"
             @input="form.name = $WhitespaceRemoval(form.name)"
           />
         </el-form-item>
-        <el-form-item label="排序">
+        <el-form-item label="排序" prop="order">
           <el-input
             v-model="form.order"
             style="width: 215px"
@@ -176,6 +176,7 @@
             { required: true, trigger: 'blur', message: '请输入名称' },
           ],
           order: [{ required: true, trigger: 'blur', message: '请输入排序' }],
+          name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
           tagName: [
             { required: true, message: '请输入标签名称', trigger: 'blur' },
           ],
