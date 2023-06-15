@@ -24,7 +24,7 @@
           </el-form-item>
           <el-form-item label="搜索" prop="region">
             <el-input
-              v-model="form.name"
+              v-model="form.keyword"
               placeholder="请输入员工姓名/模板标题"
               size="small"
             />

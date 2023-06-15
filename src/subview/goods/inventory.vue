@@ -337,12 +337,14 @@
         this.formTemp1 = JSON.parse(JSON.stringify(this.form))
         this.formTemp1.page = this.page
         this.formTemp1.pageSize = this.pageSize
-        if (formTemp1.list_type == 1) {
-          formTemp1.order_ids = order_ids
+        if (this.formTemp1.list_type == 1) {
+          this.formTemp1.order_ids = order_ids
         } else {
-          formTemp1.order_sids = order_sids
+          this.formTemp1.order_sids = order_sids
         }
-        const { code, data } = await this.api.getGoodsAdjustExport(formTemp1)
+        const { code, data } = await this.api.getGoodsAdjustExport(
+          this.formTemp1
+        )
 
         let columnSn = [
           {

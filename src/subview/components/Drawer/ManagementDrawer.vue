@@ -521,13 +521,13 @@ d
         this.form.district = selectArea
       },
       async changeTypeBtn(e) {
+        if (e == 2) {
+          this.form.drawerType = e
+          this.$forceUpdate()
+          return
+        }
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
-            if (e == 2) {
-              this.form.drawerType = e
-              this.$forceUpdate()
-              return
-            }
             if (this.form.id == undefined) {
               this.form.id = 0
               const { code } = await this.api.editSupplierSave(this.form)

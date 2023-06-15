@@ -139,13 +139,13 @@
     methods: {
       // 分页
       handleSizeChange(val) {
-        this.page = val
+        this.pageSize = val
+        this.page = 1
         this.fetchData()
       },
       // 条数
       handleCurrentChange(val) {
-        this.pageSize = val
-        this.page = 1
+        this.page = val
         this.fetchData()
       },
       // 重置

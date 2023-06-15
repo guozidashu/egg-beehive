@@ -21,7 +21,7 @@
       <el-form-item label="库存" prop="stock">
         <el-input
           v-model="form.stock"
-          @input="form.integral = $numFormatInput(form.integral)"
+          @input="form.stock = $numFormatInput(form.stock)"
         />
       </el-form-item>
       <el-form-item label="实际价格" prop="actual_price">
