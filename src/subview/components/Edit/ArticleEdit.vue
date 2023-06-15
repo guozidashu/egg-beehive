@@ -90,7 +90,7 @@
         },
         form: {
           title: '', //名称
-          content: '', //内容
+          content: '<p></p>', //内容
         },
         rules: {
           title: [
@@ -116,11 +116,13 @@
     methods: {
       getSon(data) {
         if (data.length > 0) {
+          let imgStr = ''
           data.forEach((item) => {
             if (this.form.content.indexOf(item) == -1) {
-              this.form.content += `<el-image src="${item}" />`
+              imgStr += `<img src="${item}" />`
             }
           })
+          this.form.content = this.form.content + imgStr
         }
       },
       showEdit(row) {
