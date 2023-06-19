@@ -485,7 +485,7 @@
         this.formTemp.pageSize = this.pageSize
         const { data } = await this.api.getDocumentaryOrderList(this.formTemp)
         this.list = data.list
-        this.total = data.count[0].count
+        this.total = data.count[Number(this.form.status)].count
         data.count.forEach((item) => {
           this.tabList.forEach((tab) => {
             if (item.status == tab.value) {
