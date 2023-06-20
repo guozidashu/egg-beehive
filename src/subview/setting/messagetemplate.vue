@@ -49,6 +49,8 @@
       <QYList
         :list="list"
         :list-type="listType"
+        :page-no="page"
+        :page-size="pageSize"
         :state="listLoading"
         :total="total"
         @changePage="changeBtnPage"
@@ -124,6 +126,8 @@
         drawerInfo: {}, // 详情数据
         drawer: false, // 详情弹窗
         // 表单查询条件 ，表单组件和列表组件的类型，列表数据，列表加载状态，列表总数
+        page: 1,
+        pageSize: 20,
         form: {
           type: '',
           page: 1,
@@ -141,6 +145,8 @@
       // 表单监听
       form: {
         handler: function () {
+          this.page = 1
+          this.pageSize = 20
           this.fetchData()
         },
         deep: true,
@@ -214,11 +220,14 @@
       },
       // 分页
       changeBtnPage(data) {
-        this.form.page = data
+        this.page = data
+        this.fetchData()
       },
       // 分页条数
       changeBtnPageSize(data) {
-        this.form.pageSize = data
+        this.pageSize = data
+        this.page = 1
+        this.fetchData()
       },
       fetchData() {
         this.$debounce(this.debounceFetchData, 500)
@@ -226,7 +235,10 @@
       // 获取列表数据
       async debounceFetchData() {
         this.listLoading = true
-        const { data } = await this.api.getPushList(this.form)
+        this.formTemp = JSON.parse(JSON.stringify(this.form))
+        this.formTemp.page = this.page
+        this.formTemp.pageSize = this.pageSize
+        const { data } = await this.api.getPushList(this.formTemp)
         this.list = data.list
         this.total = data.total
         this.listLoading = false

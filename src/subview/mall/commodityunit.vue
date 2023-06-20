@@ -91,6 +91,8 @@
           <QYList
             :list="list"
             :list-type="listType"
+            :page-no="form.page"
+            :page-size="form.pageSize"
             :state="listLoading"
             :total="total"
             @changePage="changeBtnPage"
@@ -249,7 +251,10 @@
       },
       // 父级列表
       async fetchData() {
-        const { data } = await this.api.getGoodsGroupList(this.form)
+        const { data } = await this.api.getGoodsGroupList({
+          page: 1,
+          pageSize: 1000,
+        })
         let list = data
         list.forEach((item) => {
           item.btnIconStatus = false

@@ -82,6 +82,8 @@
           <QYList
             :list="list"
             :list-type="listType"
+            :page-no="page"
+            :page-size="pageSize"
             :state="listLoading"
             :total="total"
             @changePage="changeBtnPage"
@@ -146,6 +148,8 @@
     data() {
       return {
         // 表单查询条件 ，父级列表,表单组件和列表组件的类型，子级列表数据，列表加载状态，列表总数
+        page: 1,
+        pageSize: 20,
         form: {
           pid: 0,
           name: '',
@@ -164,6 +168,8 @@
       // 表单监听
       form: {
         handler: function () {
+          this.page = 1
+          this.pageSize = 20
           this.fetchList()
         },
         deep: true,
@@ -229,15 +235,21 @@
       },
       // 分页
       changeBtnPage(data) {
-        this.form.page = data
+        this.page = data
+        this.fetchData()
       },
       // 分页条数
       changeBtnPageSize(data) {
-        this.form.pageSize = data
+        this.pageSize = data
+        this.page = 1
+        this.fetchData()
       },
       // 获取父级列表
       async fetchData() {
-        const { data } = await this.api.getSizeGroupList(this.form)
+        const { data } = await this.api.getSizeGroupList({
+          page: 1,
+          pageSize: 1000,
+        })
         let list = [
           {
             id: 0,
@@ -257,9 +269,12 @@
       // 获取子级列表
       async debounceFetchData() {
         this.listLoading = true
+        this.formTemp = JSON.parse(JSON.stringify(this.form))
+        this.formTemp.page = this.page
+        this.formTemp.pageSize = this.pageSize
         const {
           data: { data, total },
-        } = await this.api.getSizeList(this.form)
+        } = await this.api.getSizeList(this.formTemp)
         this.list = data
         this.total = total
         this.listLoading = false
