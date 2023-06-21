@@ -422,8 +422,13 @@
                   </el-image>
                 </el-tooltip>
                 <div style="width: 280px; margin-left: 10px">
-                  <div style="font-size: 14px; font-weight: 600">
-                    {{ row.goods_sn }}
+                  <div style="display: flex; justify-content: space-between">
+                    <div style="font-size: 14px; font-weight: 600">
+                      {{ row.goods_sn }}
+                    </div>
+                    <div style="color: red">
+                      ￥{{ row.goods_price | moneyFormat }}
+                    </div>
                   </div>
                   <div
                     style="
@@ -801,6 +806,11 @@
                 key: 'goods_sn',
               },
               {
+                title: '吊牌价',
+                type: 'text',
+                key: 'goods_price',
+              },
+              {
                 title: '品牌',
                 type: 'text',
                 key: 'brand_name',
@@ -884,6 +894,11 @@
                 title: '款号',
                 type: 'text',
                 key: 'goods_sn',
+              },
+              {
+                title: '吊牌价',
+                type: 'text',
+                key: 'goods_price',
               },
               {
                 title: '品牌',
@@ -983,6 +998,11 @@
                 key: 'goods_sn',
               },
               {
+                title: '吊牌价',
+                type: 'text',
+                key: 'goods_price',
+              },
+              {
                 title: '品牌',
                 type: 'text',
                 key: 'brand_name',
@@ -1056,6 +1076,11 @@
                 title: '款号',
                 type: 'text',
                 key: 'goods_sn',
+              },
+              {
+                title: '吊牌价',
+                type: 'text',
+                key: 'goods_price',
               },
               {
                 title: '品牌',
@@ -1145,6 +1170,11 @@
                 key: 'goods_sn',
               },
               {
+                title: '吊牌价',
+                type: 'text',
+                key: 'goods_price',
+              },
+              {
                 title: '品牌',
                 type: 'text',
                 key: 'brand_name',
@@ -1213,6 +1243,11 @@
                 title: '款号',
                 type: 'text',
                 key: 'goods_sn',
+              },
+              {
+                title: '吊牌价',
+                type: 'text',
+                key: 'goods_price',
               },
               {
                 title: '品牌',
