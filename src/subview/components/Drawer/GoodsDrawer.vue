@@ -464,11 +464,13 @@
         if (tab.name == 0) {
           return
         }
+        this.page = 1
+        this.pageSize = 20
         const { data } = await this.api.getGoodOrderDetails({
           type: tab.name, //搜索条件 1订单记录 2入库信息 3退货记录 4付款记录 5对账单记录
           good_id: this.drawerInof.id, //物料采购订单id
-          page: 1,
-          pageSize: 20,
+          page: this.page,
+          pageSize: this.pageSize,
           name: this.searchName,
         })
         this.orderList = data.data

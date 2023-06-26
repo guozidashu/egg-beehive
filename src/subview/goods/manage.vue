@@ -511,7 +511,7 @@
           this.$message.error('导出失败')
         }
       },
-      // 导出商品
+      // 导出商品 wufenzhisi jinghuadedongxibainhua
       async handleDerive() {
         let ids = []
         this.selectRowsId.forEach((item) => {
