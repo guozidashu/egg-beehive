@@ -309,7 +309,7 @@
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
-            if (this.title === '添加') {
+            if (this.title === '添加会员等级') {
               const { code } = await this.api.editGradeList(this.form)
               if (code != 200) {
                 return
