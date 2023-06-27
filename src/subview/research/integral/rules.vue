@@ -178,7 +178,7 @@
         if (code != 200) {
           return
         }
-        this.$baseMessage('编辑成功', 'success', 'vab-hey-message-success')
+        this.$baseMessage('修改成功', 'success', 'vab-hey-message-success')
         this.fetchData()
       },
       // 获取下拉框数据

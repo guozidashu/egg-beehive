@@ -279,7 +279,7 @@
             } else {
               const { code } = await this.api.editStoreSave(this.formDrawer)
               if (code === 200) {
-                this.$message.success('编辑成功')
+                this.$message.success('修改成功')
               } else {
                 this.$message.error('编辑失败')
               }
