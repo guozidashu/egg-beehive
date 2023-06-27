@@ -49,7 +49,7 @@
           style="margin: 0 10px"
         />
       </el-form-item>
-      <el-form-item label="商品图片">
+      <el-form-item label="商品图片" prop="pic">
         <div style="display: flex">
           <div>
             <el-button
@@ -131,6 +131,7 @@
           actual_price: [
             { required: true, trigger: 'blur', message: '请输入实际价格' },
           ],
+          pic: [{ required: true, trigger: 'blur', message: '请上传图片' }],
         },
         title: '',
         dialogFormVisible: false,

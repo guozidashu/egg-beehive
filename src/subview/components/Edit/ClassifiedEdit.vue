@@ -6,7 +6,7 @@
     @close="close"
   >
     <el-form ref="form" label-width="80px" :model="form" :rules="rules">
-      <el-form-item v-if="type === 1" label="款式分类">
+      <el-form-item v-if="type === 1" label="款式分类" prop="pid">
         <el-select v-model="form.pid" placeholder="请选择分类">
           <el-option
             v-for="(item, index) in selectList"
@@ -93,6 +93,7 @@
         rules: {
           name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
           sort: [{ required: true, trigger: 'blur', message: '请输入排序' }],
+          pid: [{ required: true, trigger: 'blur', message: '请选择分类' }],
         },
         title: '',
         dialogFormVisible: false,

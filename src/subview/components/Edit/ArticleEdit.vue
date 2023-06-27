@@ -105,6 +105,13 @@
               required: true,
               message: '请输入文章内容',
               trigger: 'blur',
+              validator: (rule, value, callback) => {
+                if (value == '' || value == '<p></p>') {
+                  callback(new Error('请输入文章内容'))
+                } else {
+                  callback()
+                }
+              },
             },
           ],
         },
