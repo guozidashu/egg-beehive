@@ -274,7 +274,7 @@
           if (code == 200) {
             this.$message({
               type: 'success',
-              message: '添加成功',
+              message: '编辑成功',
             })
             this.dialogFormVisible = false
             this.fetchData()
