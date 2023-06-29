@@ -16,6 +16,7 @@ import {
   WhitespaceRemoval,
 } from '@/utils/filter' //引入全局过滤器
 import * as echarts from 'echarts' //引入echart
+
 const Event = new Vue() // 全局事件总线声明
 Vue.prototype.$echarts = echarts // echarts 全局注册
 Vue.prototype.$permissionFiltering = permissionFiltering // 非按钮权限过滤
