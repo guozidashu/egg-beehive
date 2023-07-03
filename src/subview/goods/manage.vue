@@ -603,6 +603,7 @@
           this.drawerInof.manage_price = 0
           this.drawerInof.price = 0
           this.drawerInof.status = 3
+          this.drawerInof.forced_production = 0
           this.drawerInof.lockSta = false
         } else {
           this.drawerInof = JSON.parse(JSON.stringify(row))

@@ -205,6 +205,11 @@
               <span v-if="goodsDetails.status == 2">停售</span>
               <span v-if="goodsDetails.status == 3">待上市</span>
             </div>
+            <div>
+              生产中库存参与销售：
+              <span v-if="goodsDetails.forced_production == 0">关闭</span>
+              <span v-if="goodsDetails.forced_production == 1">开启</span>
+            </div>
             <div style="width: 100%">
               是否同步聚水潭：
               <span v-if="goodsDetails.is_jushuitan == 1">开启</span>
@@ -613,6 +618,12 @@
                 <el-radio-group v-model="form.is_jushuitan">
                   <el-radio :label="1">开启</el-radio>
                   <el-radio :label="0">关闭</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item label="生产中库存参与销售：" style="width: 100%">
+                <el-radio-group v-model="form.forced_production">
+                  <el-radio :label="0">关闭</el-radio>
+                  <el-radio :label="1">开启</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="置顶商品：" style="width: 100%">

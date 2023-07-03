@@ -265,7 +265,7 @@
                     v-for="(item, index) in selectData.customer_source"
                     :key="index"
                     :label="item.name"
-                    :value="item.id"
+                    :value="Number(item.id)"
                   />
                 </el-select>
               </el-form-item>
