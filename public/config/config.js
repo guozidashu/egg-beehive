@@ -7,7 +7,7 @@ const GlobalConfig = {
   // appName: '希麦',
   // baseApiUrl:
   //   'https://xiaojiujiu.business.quanyu123.com/QYAPI/index.php/platform',
-  // appName: '小九九',
+  // appName: '嘿，甜心',
   // 打包时 账户信息路由 有个授权中心根据 实际替换
 }
 

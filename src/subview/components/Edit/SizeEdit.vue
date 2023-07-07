@@ -166,7 +166,7 @@
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
-            if (this.title === '添加') {
+            if (this.title === '添加尺码' || this.title === '添加尺码组') {
               if (this.type === 1) {
                 const { code } = await this.api.addSizeSave(this.form)
                 if (code != 200) {

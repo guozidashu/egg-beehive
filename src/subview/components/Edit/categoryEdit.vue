@@ -148,7 +148,7 @@
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
             this.form.account_id = this.form.account_id[1]
-            if (this.title == '添加标签' || this.title == '添加分类') {
+            if (this.title == '添加收支' || this.title == '添加分类') {
               if (this.type == 2) {
                 this.form.pid = 0
               }

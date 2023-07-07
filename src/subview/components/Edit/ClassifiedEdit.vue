@@ -118,7 +118,7 @@
           }
         } else {
           if (type === 1) {
-            this.title = '添加款式'
+            this.title = '编辑款式'
           } else {
             this.title = '编辑分类'
           }
@@ -140,7 +140,7 @@
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
-            if (this.title === '添加') {
+            if (this.title === '添加款式' || this.title === '添加分类') {
               if (this.type === 1) {
                 const { code } = await this.api.editCategorySonSave(this.form)
                 if (code != 200) {

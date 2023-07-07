@@ -144,7 +144,7 @@
       save() {
         this.$refs['form'].validate(async (valid) => {
           if (valid) {
-            if (this.title === '添加') {
+            if (this.title === '添加颜色' || this.title === '添加颜色组') {
               if (this.type === 1) {
                 const { code } = await this.api.addColorSave(this.form)
                 if (code != 200) {
