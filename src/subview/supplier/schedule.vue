@@ -222,7 +222,9 @@
           </el-table-column>
           <el-table-column align="center" label="计划生产数" prop="order_num" />
           <el-table-column align="center" label="实际裁床数" prop="cut_total" />
-          <el-table-column align="center" label="裁剪率" prop="cut_rate" />
+          <el-table-column align="center" label="裁剪率" prop="cut_rate">
+            <template #default="{ row }">{{ row.cut_rate }}%</template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="成品入库数"
@@ -232,7 +234,12 @@
             align="center"
             label="入库完成率"
             prop="completion_rate"
-          />
+          >
+            <template #default="{ row }">
+              <span v-if="row.completion_rate == 0">0%</span>
+              <span v-else>{{ row.completion_rate }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="加工方式"
