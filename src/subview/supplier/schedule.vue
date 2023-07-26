@@ -177,8 +177,91 @@
       >
         <template #List>
           <el-table-column align="center" type="selection" />
-          <el-table-column align="center" label="生产批次" prop="order_id" />
-          <el-table-column align="center" label="订单编号" prop="order_sn" />
+          <el-table-column
+            align="center"
+            label="跟单信息"
+            prop="goods"
+            width="400"
+          >
+            <template #default="{ row }">
+              <div style="display: flex">
+                <el-image
+                  :src="row.goods_img"
+                  style="width: 100px; height: 100px"
+                >
+                  <div slot="error" class="el-image__error">暂无图片</div>
+                </el-image>
+                <div style="margin-left: 10px">
+                  <div style="text-align: left">
+                    <span style="font-weight: 600">
+                      批次号:{{ row.goods_id }}
+                    </span>
+                    &nbsp;| &nbsp;
+                    <el-tag v-if="row.order_type == 1">期货</el-tag>
+                    <el-tag v-if="row.order_type == 2" type="success">
+                      首单
+                    </el-tag>
+                    <el-tag v-if="row.order_type == 3" type="warning">
+                      补单
+                    </el-tag>
+                    <el-tag v-if="row.order_type == 4" type="danger">
+                      预售
+                    </el-tag>
+                  </div>
+                  <div style="margin: 15px 0; text-align: left">
+                    {{ row.goods_sn }} &nbsp; {{ row.goods_name }}
+                  </div>
+                  <div>
+                    <div style="text-align: left">
+                      预计交货时间: {{ row.order_expected_date | formatTime }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="计划生产数" prop="order_num" />
+          <el-table-column align="center" label="实际裁床数" prop="cut_total" />
+          <el-table-column align="center" label="裁剪率" prop="cut_rate" />
+          <el-table-column
+            align="center"
+            label="成品入库数"
+            prop="entered_total"
+          />
+          <el-table-column
+            align="center"
+            label="入库完成率"
+            prop="completion_rate"
+          />
+          <el-table-column
+            align="center"
+            label="加工方式"
+            prop="supplier_oem_type"
+          >
+            <template #default="{ row }">
+              <el-tag v-if="row.supplier_oem_type == 1">FOB</el-tag>
+              <el-tag v-if="row.supplier_oem_type == 2" type="success">
+                CMT
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
+            align="center"
+            label="进度状态"
+            prop="node_status_text"
+          >
+            <template #default="{ row }">
+              <div v-if="row.order_status == 3" style="margin-bottom: 10px">
+                <el-tag type="danger">超期（{{ row.diff_days }}天）</el-tag>
+              </div>
+              <div>
+                <el-tag>
+                  {{ row.node_status_text }}
+                </el-tag>
+              </div>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column align="center" label="订单编号" prop="order_sn" />
           <el-table-column
             align="center"
             label="供应商名称"
@@ -202,36 +285,6 @@
                 紧急
               </el-tag>
               <el-tag v-if="row.order_priority == 3" type="danger">加急</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="center"
-            label="商品信息"
-            prop="goods"
-            width="300"
-          >
-            <template #default="{ row }">
-              <div style="display: flex">
-                <el-image
-                  :src="row.goods_img"
-                  style="width: 100px; height: 100px"
-                >
-                  <div slot="error" class="el-image__error">暂无图片</div>
-                </el-image>
-                <div style="margin-left: 10px">
-                  <div
-                    style="
-                      width: 150px;
-                      overflow: hidden;
-                      text-overflow: ellipsis;
-                      white-space: nowrap;
-                    "
-                  >
-                    {{ row.goods_name }}
-                  </div>
-                  <div style="margin: 15px 0">{{ row.goods_sn }}</div>
-                </div>
-              </div>
             </template>
           </el-table-column>
           <el-table-column
@@ -278,7 +331,7 @@
             <template #default="{ row }">
               {{ row.order_expected_date | formatTime }}
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
             align="center"
             fixed="right"
@@ -369,6 +422,11 @@
           {
             label: '完成订单',
             value: '4',
+            Number: 0,
+          },
+          {
+            label: '未完成订单',
+            value: '5',
             Number: 0,
           },
         ],

@@ -643,6 +643,14 @@ export function getNodeSystemList(data) {
     data,
   })
 }
+// 生产排期 - 编辑生产准备
+export function editSavePrepare(data) {
+  return request({
+    url: '/documentaryOrder/savePrepare',
+    method: 'post',
+    data,
+  })
+}
 // 商品模块接口
 // 商品 - 库存调整
 // 库存调整 -列表

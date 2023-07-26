@@ -63,7 +63,10 @@
         <el-tag v-if="form.order_type == 4" type="danger">预售</el-tag>
       </div>
     </div>
-    <div>预计交货日期：{{ form.order_expected_date | formatTime }}</div>
+    <div style="margin-bottom: 10px">供应商：{{ form.supplier_name }}</div>
+    <div style="margin-bottom: 10px">
+      预计交货日期：{{ form.order_expected_date | formatTime }}
+    </div>
     <div style="display: flex; justify-content: space-between">
       <h4>数量信息</h4>
       <div>
@@ -85,6 +88,96 @@
       <el-table-column label="在生产" prop="zsc_num" />
       <el-table-column label="已入库" prop="entered_num" />
     </el-table>
+    <div
+      style="display: flex; justify-content: space-between; margin-top: 20px"
+    >
+      <h4>生产准备</h4>
+      <div>
+        <el-button
+          v-if="!prepareSta == true"
+          size="small"
+          type="primary"
+          @click="prepareSta = true"
+        >
+          编辑
+        </el-button>
+        <el-button
+          v-if="prepareSta == true"
+          size="small"
+          type="primary"
+          @click="handleEditPrepare(form.prepare, form.order_id)"
+        >
+          完成
+        </el-button>
+      </div>
+    </div>
+    <el-form v-if="prepareSta == true" ref="form" label-width="120px">
+      <el-form-item label="布料:">
+        <el-radio-group v-model="form.prepare.cloth">
+          <el-radio :label="1">齐全</el-radio>
+          <el-radio :label="0">不齐</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item v-if="form.prepare.cloth == 0" label="缺失原因">
+        <el-input
+          v-model="form.prepare.cloth_note"
+          placeholder="请输入缺失原因"
+          style="width: 200px"
+        />
+      </el-form-item>
+      <el-form-item label="辅料:">
+        <el-radio-group v-model="form.prepare.accessory">
+          <el-radio :label="1">齐全</el-radio>
+          <el-radio :label="0">不齐</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item v-if="form.prepare.accessory == 0" label="缺失原因">
+        <el-input
+          v-model="form.prepare.accessory_note"
+          placeholder="请输入缺失原因"
+          style="width: 200px"
+        />
+      </el-form-item>
+      <el-form-item label="其他:">
+        <el-radio-group v-model="form.prepare.other">
+          <el-radio :label="1">齐全</el-radio>
+          <el-radio :label="0">不齐</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item v-if="form.prepare.other == 0" label="缺失原因">
+        <el-input
+          v-model="form.prepare.other_note"
+          placeholder="请输入缺失原因"
+          style="width: 200px"
+        />
+      </el-form-item>
+    </el-form>
+    <el-form v-else ref="form" label-width="120px">
+      <el-form-item label="布料:">
+        <span v-if="form.prepare.cloth == 0">不齐</span>
+        <span v-else>齐全</span>
+      </el-form-item>
+      <el-form-item v-if="form.prepare.cloth == 0" label="缺失原因">
+        <span v-if="form.prepare.cloth_note == ''">无</span>
+        <span v-else>{{ form.prepare.cloth_note }}</span>
+      </el-form-item>
+      <el-form-item label="辅料:">
+        <span v-if="form.prepare.accessory == 0">不齐</span>
+        <span v-else>齐全</span>
+      </el-form-item>
+      <el-form-item v-if="form.prepare.accessory == 0" label="缺失原因">
+        <span v-if="form.prepare.accessory_note == ''">无</span>
+        <span v-else>{{ form.prepare.accessory_note }}</span>
+      </el-form-item>
+      <el-form-item label="其他:">
+        <span v-if="form.prepare.other == 0">不齐</span>
+        <span v-else>齐全</span>
+      </el-form-item>
+      <el-form-item v-if="form.prepare.other == 0" label="缺失原因">
+        <span v-if="form.prepare.other_note == ''">无</span>
+        <span v-else>{{ form.prepare.other_note }}</span>
+      </el-form-item>
+    </el-form>
     <h4>跟单流程</h4>
     <el-timeline>
       <el-timeline-item
@@ -258,6 +351,11 @@
                 </el-dropdown-menu>
               </el-dropdown>
             </div>
+            <div v-if="item.remark == ''">供应商备注：未知</div>
+            <div v-else>供应商备注：{{ item.remark }}</div>
+            <div v-if="item.rate != undefined" style="margin-top: 10px">
+              裁剪率：{{ item.rate }}%
+            </div>
           </div>
           <div style="padding: 10px">
             <div
@@ -307,7 +405,7 @@
         style="width: 25%; padding: 10px"
       >
         <el-upload
-          accept=".doc, .docx, .pdf"
+          accept=".xls, .xlsx, .pdf, .doc, .docx, .ppt, .pptx, .jpg, .jpeg, .png"
           :action="getAction()"
           :before-upload="beforeUpload"
           class="upload-demo"
@@ -395,6 +493,7 @@
     },
     data() {
       return {
+        prepareSta: false,
         form: {},
         // 排期跟进列表
         followList: [],
@@ -481,7 +580,17 @@
           })
         }
       },
-
+      async handleEditPrepare(obj, id) {
+        const { code } = await this.api.editSavePrepare({
+          prepare: obj,
+          order_id: id,
+        })
+        if (code != 200) {
+          return
+        }
+        this.$message.success('编辑成功')
+        this.prepareSta = false
+      },
       async getDetail(row) {
         const { data } = await this.api.getDocumentaryOrderDetail({
           order_id: row.order_id,

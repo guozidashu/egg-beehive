@@ -125,7 +125,17 @@
         </div>
 
         <h4 id="scoll1">订单信息</h4>
-        <el-form-item label="供应商:" prop="supplier_id">
+        <el-form-item label="加工方式:" prop="processing">
+          <el-radio-group v-model="subFormData.processing">
+            <el-radio :label="1">FOB</el-radio>
+            <el-radio :label="2">CMT</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item
+          v-if="subFormData.processing == 1"
+          label="供应商:"
+          prop="supplier_id"
+        >
           <el-select v-model="subFormData.supplier_id">
             <el-option
               v-for="(item, index) in selectLists.supplier"
@@ -152,6 +162,58 @@
             <el-radio :label="3">加急</el-radio>
           </el-radio-group>
         </el-form-item>
+        <h4 id="scoll1">生产准备</h4>
+        <el-form-item label="布料:">
+          <el-radio-group v-model="subFormData.prepare.cloth">
+            <el-radio :label="1">齐全</el-radio>
+            <el-radio :label="0">不齐</el-radio>
+          </el-radio-group>
+          <el-form-item
+            v-if="subFormData.prepare.cloth == 0"
+            label="缺失原因"
+            style="margin-top: 20px; margin-left: -100px"
+          >
+            <el-input
+              v-model="subFormData.prepare.cloth_note"
+              placeholder="请输入缺失原因"
+              style="width: 200px"
+            />
+          </el-form-item>
+        </el-form-item>
+        <el-form-item label="辅料:">
+          <el-radio-group v-model="subFormData.prepare.accessory">
+            <el-radio :label="1">齐全</el-radio>
+            <el-radio :label="0">不齐</el-radio>
+          </el-radio-group>
+          <el-form-item
+            v-if="subFormData.prepare.accessory == 0"
+            label="缺失原因"
+            style="margin-top: 20px; margin-left: -100px"
+          >
+            <el-input
+              v-model="subFormData.prepare.accessory_note"
+              placeholder="请输入缺失原因"
+              style="width: 200px"
+            />
+          </el-form-item>
+        </el-form-item>
+        <el-form-item label="其他:">
+          <el-radio-group v-model="subFormData.prepare.other">
+            <el-radio :label="1">齐全</el-radio>
+            <el-radio :label="0">不齐</el-radio>
+          </el-radio-group>
+          <el-form-item
+            v-if="subFormData.prepare.other == 0"
+            label="缺失原因"
+            style="margin-top: 20px; margin-left: -100px"
+          >
+            <el-input
+              v-model="subFormData.prepare.other_note"
+              placeholder="请输入缺失原因"
+              style="width: 200px"
+            />
+          </el-form-item>
+        </el-form-item>
         <div style="display: flex; justify-content: space-between">
           <h4 id="scoll2">生产协同节点(长按拖动排序)</h4>
           <div style="margin-top: 20px">
@@ -161,11 +223,16 @@
           </div>
         </div>
         <div>
+          <!-- vuedraggable 组件拖动如果有禁止拖动项 两种解决方式 
+            1.vuedraggable 标签使用  filter=".forbid" forbid是禁止拖动的className
+            2.vuedraggable 标签使用  draggable=".singlePerson" singlePerson是允许拖动的className
+            ****注意： 使用 filter 时如果禁止拖动标签内有输入框一类的值绑定标签，是无法使用的，使用draggable时可以输入内容
+             -->
           <vuedraggable
             v-model="ProductionNodeList"
             animation="300"
             :disabled="disabled"
-            filter=".forbid"
+            draggable=".singlePerson"
             :move="onMove"
           >
             <div
@@ -175,7 +242,7 @@
               :class="
                 index == 0 || index == ProductionNodeList.length - 1
                   ? 'item forbid'
-                  : 'item'
+                  : 'item singlePerson'
               "
               length="ProductionNodeList.length"
               style="display: flex; margin-bottom: 20px"
@@ -185,16 +252,33 @@
                   {{ item.name }}
                 </el-tag>
               </div>
+              <div>
+                <div style="display: flex; margin-bottom: 20px">
+                  <el-date-picker
+                    v-model="item.completion_time"
+                    placeholder="选择日期时间"
+                    type="datetime"
+                  />
 
-              <el-date-picker
-                v-model="item.completion_time"
-                placeholder="选择日期时间"
-                type="datetime"
-              />
-              <div v-if="item.type == 3" style="margin-left: 20px">
-                <el-button size="small" type="primary" @click="delNode(index)">
-                  删除
-                </el-button>
+                  <div v-if="item.type == 3" style="margin-left: 20px">
+                    <el-button
+                      size="small"
+                      type="primary"
+                      @click="delNode(index)"
+                    >
+                      删除
+                    </el-button>
+                  </div>
+                </div>
+                <div style="margin-left: -40px">
+                  <el-form-item label="供应商备注">
+                    <el-input
+                      v-model="item.remark"
+                      placeholder="请输入备注"
+                      style="pointer-events: auto"
+                    />
+                  </el-form-item>
+                </div>
               </div>
             </div>
           </vuedraggable>
@@ -208,7 +292,7 @@
             style="width: 25%; padding: 10px"
           >
             <el-upload
-              accept=".doc, .docx, .pdf"
+              accept=".xls, .xlsx, .pdf, .doc, .docx, .ppt, .pptx, .jpg, .jpeg, .png"
               :action="getAction()"
               :before-upload="beforeUpload"
               class="upload-demo"
@@ -348,7 +432,15 @@
           employee: [],
         },
         // 提交表单
-        subFormData: {},
+        subFormData: {
+          processing: 1,
+          priority: 1,
+          prepare: {
+            cloth: 1,
+            accessory: 1,
+            other: 1,
+          },
+        },
         // 节点拖拽禁用
         disabled: false,
         // 选择节点
@@ -503,6 +595,7 @@
         let arr = []
         data.list.forEach((item) => {
           item.completion_time = ''
+          item.remark = ''
           if (item.type == 1) {
             firstItem = item
           }
