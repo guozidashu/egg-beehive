@@ -26,12 +26,12 @@
         <el-table-column label="尺码" prop="size_name" />
         <el-table-column v-if="editType == 5" label="订单数" prop="num" />
         <el-table-column
-          v-if="title == '创建入库单'"
+          v-if="title == '填写入库单'"
           label="已入库"
           prop="entered_num"
         />
         <el-table-column
-          v-if="title == '创建入库单'"
+          v-if="title == '填写入库单'"
           label="将入库"
           prop="subNum"
         >
@@ -125,7 +125,7 @@
           type="textarea"
         />
       </div>
-      <div v-if="title == '创建入库单'">
+      <!-- <div v-if="title == '填写入库单'">
         <div
           :style="{
             padding: '10px',
@@ -160,7 +160,7 @@
           placeholder="请输入库单备注"
           type="textarea"
         />
-      </div>
+      </div> -->
     </div>
     <!-- 新增跟进 -->
     <div v-if="editType == 6">
@@ -284,7 +284,7 @@
             if (status == 1) {
               this.title = '创建裁床单'
             } else {
-              this.title = '创建入库单'
+              this.title = '填写入库单'
             }
           }
           this.tableData = JSON.parse(JSON.stringify(row))
@@ -380,11 +380,11 @@
               spec: spec,
             })
             if (code == 200) {
-              this.$message.success('生成成功')
+              this.$message.success('创建成功')
               this.$emit('fetch-data')
               this.dialogFormVisible = false
             }
-          } else if (this.title == '创建入库单') {
+          } else if (this.title == '填写入库单') {
             let spec = []
             this.tableData.forEach((item) => {
               if (item.subNum != 0) {
@@ -395,15 +395,13 @@
                 })
               }
             })
-            const { code } = await this.api.editCreateInboundOrder({
+            const { code } = await this.api.editFillInboundNum({
               order_id: this.order_id,
               node_id: this.node_id,
-              remark: this.remarks,
-              receipt_type: this.receipt_type,
               spec: spec,
             })
             if (code == 200) {
-              this.$message.success('生成成功')
+              this.$message.success('填写成功')
               this.$emit('fetch-data')
               this.dialogFormVisible = false
             }

@@ -651,6 +651,14 @@ export function editSavePrepare(data) {
     data,
   })
 }
+// 生产排期 - 填写入库数
+export function editFillInboundNum(data) {
+  return request({
+    url: '/documentaryOrder/fillInboundNum',
+    method: 'post',
+    data,
+  })
+}
 // 商品模块接口
 // 商品 - 库存调整
 // 库存调整 -列表

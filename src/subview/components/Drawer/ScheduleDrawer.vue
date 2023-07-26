@@ -157,7 +157,7 @@
         </el-form-item>
         <el-form-item label="优先度:" prop="priority">
           <el-radio-group v-model="subFormData.priority">
-            <el-radio :label="1">正常</el-radio>
+            <el-radio :label="1">普通</el-radio>
             <el-radio :label="2">紧急</el-radio>
             <el-radio :label="3">加急</el-radio>
           </el-radio-group>

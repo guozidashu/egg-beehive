@@ -48,7 +48,7 @@
       <div style="width: 50%">单号：{{ form.order_sn }}</div>
       <div style="width: 50%">
         优先度：
-        <el-tag v-if="form.order_priority == 1">正常</el-tag>
+        <el-tag v-if="form.order_priority == 1">普通</el-tag>
         <el-tag v-if="form.order_priority == 2" type="warning">紧急</el-tag>
         <el-tag v-if="form.order_priority == 3" type="danger">加急</el-tag>
       </div>
@@ -92,7 +92,7 @@
       style="display: flex; justify-content: space-between; margin-top: 20px"
     >
       <h4>生产准备</h4>
-      <div>
+      <div v-if="form.order_operate && form.is_void == 0">
         <el-button
           v-if="!prepareSta == true"
           size="small"
@@ -239,11 +239,6 @@
                     </template>
                   </template>
                   <template v-if="item.type == 2">
-                    <el-dropdown-item>
-                      <div @click="handleEdit('storage', form.order_id, 3)">
-                        查看相关入库单
-                      </div>
-                    </el-dropdown-item>
                     <template v-if="item.status == 0">
                       <el-dropdown-item>
                         <div
