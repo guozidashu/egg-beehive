@@ -719,9 +719,22 @@
       // 上传限制
       beforeUpload(file) {
         const fileSuffix = file.name.substring(file.name.lastIndexOf('.') + 1)
-        const whiteList = ['pdf', 'doc', 'docx']
+        const whiteList = [
+          'xls',
+          'xlsx',
+          'pdf',
+          'doc',
+          'docx',
+          'ppt',
+          'pptx',
+          'jpg',
+          'jpeg',
+          'png',
+        ]
         if (whiteList.indexOf(fileSuffix) === -1) {
-          this.$message.error('上传文件只能是 pdf、doc、docx格式')
+          this.$message.error(
+            '上传文件只能是 xls、xlsx、pdf、doc、docx、ppt、pptx、jpg、jpeg、png格式'
+          )
           return false
         }
         const isLt2M = file.size / 1024 / 1024 < 2
