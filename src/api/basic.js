@@ -289,6 +289,55 @@ export function getHomeRightData(data) {
   })
 }
 // 研发模块接口
+// 研发 - 基础配置
+// 运营成本 - 列表
+export function getOperatingCostsList(data) {
+  return request({
+    url: '/research/operatingCostsList',
+    method: 'post',
+    data,
+  })
+}
+// 运营成本 - 编辑
+export function editOperatingCostsUpd(data) {
+  return request({
+    url: '/research/operatingCostsUpd',
+    method: 'post',
+    data,
+  })
+}
+// 运营成本 - 新增
+export function addOperatingCostsAdd(data) {
+  return request({
+    url: '/research/operatingCostsAdd',
+    method: 'post',
+    data,
+  })
+}
+// 运营成本 - 删除
+export function delOperatingCostsDel(data) {
+  return request({
+    url: '/research/operatingCostsDel',
+    method: 'post',
+    data,
+  })
+}
+// 积分价值 - 获取
+export function getIntegratedWorth(data) {
+  return request({
+    url: '/research/getIntegratedWorth',
+    method: 'post',
+    data,
+  })
+}
+// 积分价值 - 保存
+export function setIntegratedWorth(data) {
+  return request({
+    url: '/research/setIntegratedWorth',
+    method: 'post',
+    data,
+  })
+}
 // 研发 - 商品企划
 // 商品企划列表
 export function getPlanList(data) {

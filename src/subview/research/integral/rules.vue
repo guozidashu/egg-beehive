@@ -16,7 +16,7 @@
             <el-radio-button label="淘汰" />
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="供应商类别:">
+        <el-form-item label="款式品类:">
           <el-select v-model="form.category_id">
             <el-option
               v-for="item in parent_category"
@@ -77,7 +77,7 @@
           typeName: '奖励',
         },
         listLoading: false, // 表格加载状态
-        parent_category: [], // 供应商类别
+        parent_category: [],
         // originData 为后端原始正常的数据, 此数据按正常表格展示 一行一行的数据
         // 保证数组里每一个对象中的字段顺序, 从上到下 一次对应显示表格中的从左到右
         originData: [], // 属性名对应 transTitle的属性 值对应奖惩的数值
@@ -91,7 +91,7 @@
         handler: function (newVal) {
           if (this.form.category_id == '') {
             this.$baseMessage(
-              '请选择供应商类别',
+              '请选择款式品类',
               'warning',
               'vab-hey-message-warning'
             )

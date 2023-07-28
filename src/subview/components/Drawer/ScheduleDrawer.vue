@@ -117,7 +117,7 @@
                 <el-input
                   v-model="row.num"
                   placeholder="请输入件数"
-                  @input="row.num = $moneyFormatInput(row.num)"
+                  @input="row.num = $numFormatInput(row.num)"
                 />
               </template>
             </el-table-column>
@@ -528,9 +528,69 @@
       },
       drawerInof: {
         handler: function () {
+          // 初始化
+          this.loading = true
+          this.subFormData = {
+            processing: 1,
+            priority: 1,
+            prepare: {
+              cloth: 1,
+              accessory: 1,
+              other: 1,
+            },
+          }
+          this.disabled = false
+          this.dialogVisibleNode = false
+          this.ProductionNodeAddList = []
+          this.ProductionNodeList = []
+          this.divUploadList = [
+            {
+              name: '上传裁床指示单',
+              type: 1,
+              list: [],
+              url: '',
+            },
+            {
+              name: '上传生产工艺单',
+              type: 2,
+              list: [],
+              url: '',
+            },
+            {
+              name: '上传大货指示单',
+              type: 3,
+              list: [],
+              url: '',
+            },
+            {
+              name: '上传后整指示单',
+              type: 4,
+              list: [],
+              url: '',
+            },
+          ]
+          this.headers = {}
+          this.uploadType = 1
+          this.dialogVisible = false
+          this.page = 1
+          this.pageSize = 20
+          this.form = {
+            page: 1,
+            pageSize: 20,
+            name: '',
+          }
+          this.listType = 1
+          this.list = []
+          this.listLoading = false
+          this.total = 0
           this.goodsDetails = null
           this.tableData = []
-          this.loading = true
+          this.colorBtnArr = []
+          this.selectData()
+          this.getTypeList()
+          this.getNodeList()
+          // 上传接口获取token
+          this.headers['Authorization'] = `${this.token}`
         },
         deep: true,
       },

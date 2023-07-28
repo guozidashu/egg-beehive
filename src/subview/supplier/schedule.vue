@@ -406,6 +406,7 @@
         this.drawerDetail = true
       },
       handleAdd() {
+        this.drawerInof = {}
         this.drawer = true
       },
       handleClick(tab) {

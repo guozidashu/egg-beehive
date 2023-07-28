@@ -205,6 +205,58 @@ export const asyncRoutes = [
           },
         ],
       },
+      {
+        path: 'basicConfig',
+        name: 'BasicConfig',
+        meta: {
+          title: '基础配置',
+          icon: 'archive-line',
+        },
+        children: [
+          {
+            path: 'basicConfigEmployee',
+            name: 'BasicConfigEmployee',
+            component: () => import('@/subview/research/basicConfig/employee'),
+            meta: {
+              title: '员工成本设置',
+            },
+          },
+          {
+            path: 'basicConfigOperate',
+            name: 'BasicConfigOperate',
+            component: () => import('@/subview/research/basicConfig/operate'),
+            meta: {
+              title: '运营成本设置',
+            },
+          },
+          {
+            path: 'basicConfigPoints',
+            name: 'BasicConfigPoints',
+            component: () => import('@/subview/research/basicConfig/points'),
+            meta: {
+              title: '积分价值设置',
+            },
+          },
+          {
+            path: 'basicConfigProcess',
+            name: 'BasicConfigProcess',
+            component: () => import('@/subview/research/basicConfig/process'),
+            meta: {
+              title: '工艺类型',
+              icon: 'archive-line',
+            },
+          },
+          {
+            path: 'basicConfigProcedure',
+            name: 'BasicConfigProcedure',
+            component: () => import('@/subview/research/basicConfig/procedure'),
+            meta: {
+              title: '工序类型',
+              icon: 'archive-line',
+            },
+          },
+        ],
+      },
     ],
   },
   {
@@ -703,24 +755,6 @@ export const asyncRoutes = [
         meta: {
           title: '吊牌打印',
           icon: 'printer-cloud-line',
-        },
-      },
-      {
-        path: 'archivesProcess',
-        name: 'ArchivesProcess',
-        component: () => import('@/subview/archives/process'),
-        meta: {
-          title: '工艺管理',
-          icon: 'file-settings-line',
-        },
-      },
-      {
-        path: 'archivesProcedure',
-        name: 'ArchivesProcedure',
-        component: () => import('@/subview/archives/procedure'),
-        meta: {
-          title: '工序管理',
-          icon: 'file-settings-line',
         },
       },
       {

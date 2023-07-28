@@ -16,7 +16,7 @@
         @resetForm="resetForm"
       >
         <template #Form>
-          <el-form-item label="角色:">
+          <el-form-item label="角色岗位:">
             <el-select v-model="form.role_id" size="small">
               <el-option
                 v-for="(item, index) in selectList.role"
@@ -80,6 +80,12 @@
           <el-table-column
             align="center"
             label="淘汰价值"
+            prop="out_worth"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            align="center"
+            label="员工成本"
             prop="out_worth"
             show-overflow-tooltip
           />

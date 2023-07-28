@@ -39,7 +39,7 @@
             <el-input
               v-model="row.subNum"
               placeholder="请输入件数"
-              @input="row.subNum = $moneyFormatInput(row.subNum)"
+              @input="row.subNum = $numFormatInput(row.subNum)"
             />
           </template>
         </el-table-column>
@@ -57,7 +57,7 @@
             <el-input
               v-model="row.subNum"
               placeholder="请输入件数"
-              @input="row.subNum = $moneyFormatInput(row.subNum)"
+              @input="row.subNum = $numFormatInput(row.subNum)"
             />
           </template>
         </el-table-column>
@@ -66,7 +66,7 @@
             <el-input
               v-model="row.num"
               placeholder="请输入件数"
-              @input="row.num = $moneyFormatInput(row.num)"
+              @input="row.num = $numFormatInput(row.num)"
             />
           </template>
         </el-table-column>
@@ -345,7 +345,7 @@
             spec: this.tableData,
           })
           if (code == 200) {
-            this.$message.success('新增成功')
+            this.$message.success('编辑成功')
             this.$emit('fetch-data')
             this.dialogFormVisible = false
           }
