@@ -82,23 +82,24 @@
     </div>
     <!-- 列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
+      <p style="font-size: 18px; font-weight: 600">总费用 ￥2000</p>
       <QYList :list="list" :list-type="listType" :state="listLoading">
         <template #List>
           <el-table-column
             align="center"
-            label="波段名称"
+            label="费用类别"
             prop="band_name"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="波段成本"
+            label="类别成本"
             prop="band_cost"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="波段占比"
+            label="类别占比"
             prop="proportion"
             show-overflow-tooltip
           />

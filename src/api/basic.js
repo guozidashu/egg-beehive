@@ -44,7 +44,7 @@ export function vdianAddGoods(data) {
 //物料分类 material_category
 //供应商分类 supplier_type
 //供应商等级 supplier_grade
-//品牌分类 brand
+//所属品牌 brand
 //年份 year
 //季节 season
 //波段 band

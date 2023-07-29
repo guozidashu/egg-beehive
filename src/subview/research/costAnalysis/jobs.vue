@@ -16,6 +16,16 @@
         @resetForm="resetForm"
       >
         <template #Form>
+          <el-form-item label="角色岗位:">
+            <el-select v-model="form.role_id" size="small">
+              <el-option
+                v-for="(item, index) in selectRoleList.role"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
           <el-form-item label="日期筛选:">
             <el-date-picker
               v-model="form.date"
@@ -75,10 +85,12 @@
     mixins: [datajosn],
     data() {
       return {
+        selectRoleList: [],
         // 下拉框数据 查询条件 表单类型，列表类型，列表数据，列表加载状态，列表总数
         selectList: [],
         form: {
           date: ['', ''],
+          role_id: '',
         },
         formType: 4,
         listType: 2,
@@ -96,10 +108,18 @@
       },
     },
     created() {
+      this.getRoleTypeList()
       this.getTypeList()
       this.fetchData()
     },
     methods: {
+      // 下拉框
+      async getRoleTypeList() {
+        const { data } = await this.api.getCommonAllList({
+          type: 'role',
+        })
+        this.selectRoleList = data
+      },
       // 查询
       handleQuery() {
         this.fetchData()

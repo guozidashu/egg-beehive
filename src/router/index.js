@@ -203,6 +203,14 @@ export const asyncRoutes = [
               title: '岗位分析',
             },
           },
+          {
+            path: 'costAnalysisExpense',
+            name: 'CostAnalysisExpense',
+            component: () => import('@/subview/research/costAnalysis/expense'),
+            meta: {
+              title: '费用分析',
+            },
+          },
         ],
       },
       {

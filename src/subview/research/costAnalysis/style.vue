@@ -16,7 +16,7 @@
         @resetForm="resetForm"
       >
         <template #Form>
-          <el-form-item label="品牌分类:">
+          <el-form-item label="所属品牌:">
             <el-select
               v-model="form.brand_id"
               collapse-tags
@@ -31,7 +31,7 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="年份分类:">
+          <el-form-item label="上市年份:">
             <el-select
               v-model="form.year_id"
               collapse-tags
@@ -46,7 +46,7 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="季节分类:">
+          <el-form-item label="适合季节:">
             <el-select
               v-model="form.season_id"
               collapse-tags
