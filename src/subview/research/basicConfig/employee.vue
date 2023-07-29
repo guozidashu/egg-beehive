@@ -121,14 +121,62 @@
             </template>
           </el-table-column>
           <el-table-column align="center" label="部门" prop="department_name" />
-          <el-table-column align="center" label="每月成本" prop="wages_month" />
-          <el-table-column align="center" label="每日成本" prop="wages" />
-          <el-table-column align="center" label="工作制" prop="duty" />
-          <el-table-column
-            align="center"
-            label="其它福利"
-            prop="other_benefits"
-          />
+          <el-table-column align="center" prop="wages_month">
+            <template slot="header">
+              每月成本
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">员工月固定的工资金额</div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="wages">
+            <template slot="header">
+              每日成本
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">
+                  （员工每月成本+其它福利）/工作制天数
+                </div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="duty">
+            <template slot="header">
+              工作制
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">全日制每个月上班多少天</div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="other_benefits">
+            <template slot="header">
+              其它福利
+              <el-popover placement="right" trigger="hover">
+                <div style="font-size: 12px">
+                  每月固定的福利开支：如社保公积金等等，提成不属于固定成本范围
+                </div>
+                <vab-icon
+                  slot="reference"
+                  icon="question-line"
+                  style="position: relative; top: -2px; font-size: 14px"
+                />
+              </el-popover>
+            </template>
+          </el-table-column>
           <el-table-column align="center" label="备注" prop="remark" />
           <el-table-column align="center" label="操作" width="85">
             <template #default="{ row }">
