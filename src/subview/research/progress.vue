@@ -52,6 +52,16 @@
               />
             </el-select>
           </el-form-item>
+          <el-form-item label="上市波段:">
+            <el-select v-model="form.band_id" size="small">
+              <el-option
+                v-for="(item, index) in selectList.band"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
           <el-form-item label="款式品类:">
             <el-select v-model="form.category_id" size="small">
               <el-option
@@ -74,8 +84,8 @@
               v-model="form.dateType"
               style="width: 100px; margin: 0 10px"
             >
-              <el-option label="交货日期" :value="1" />
-              <el-option label="订单日期" :value="2" />
+              <el-option label="下单日期" :value="1" />
+              <el-option label="完成日期" :value="2" />
             </el-select>
             <el-date-picker
               v-if="form.dateType == 1"
@@ -113,7 +123,7 @@
               v-model="form.keyword"
               placeholder="请输入样衣设计编号"
               size="small"
-              style="width: 350px"
+              style="width: 200px"
             />
           </el-form-item>
         </template>
@@ -151,8 +161,7 @@
           <el-form-item label="排序">
             <el-select v-model="form.sortType" style="width: 150px">
               <el-option label="按下单日期" value="do.create_time" />
-              <el-option label="按交货日期" value="do.expected_date" />
-              <el-option label="按进度完工率" value="do.rate" />
+              <el-option label="按完成日期" value="do.expected_date" />
             </el-select>
           </el-form-item>
           <el-radio-group v-model="form.sort">
@@ -494,7 +503,7 @@
       // 获取下拉框数据
       async getTypeList() {
         const { data } = await this.api.getCommonAllList({
-          type: 'brand,category,year,season',
+          type: 'brand,category,year,season,band',
         })
         this.selectList = data
       },

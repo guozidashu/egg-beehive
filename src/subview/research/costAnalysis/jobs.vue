@@ -47,19 +47,19 @@
           />
           <el-table-column
             align="center"
-            label="用户数量"
+            label="员工数量"
             prop="user_total"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="用户成本"
+            label="员工成本"
             prop="user_cost"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="用户占比"
+            label="岗位占比"
             prop="proportion"
             show-overflow-tooltip
           />

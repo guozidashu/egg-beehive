@@ -73,13 +73,13 @@
           />
           <el-table-column
             align="center"
-            label="完成价值"
+            label="完成任务"
             prop="complete_worth"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
-            label="淘汰价值"
+            label="淘汰任务"
             prop="out_worth"
             show-overflow-tooltip
           />
@@ -91,7 +91,7 @@
           />
           <el-table-column
             align="center"
-            label="用户价值"
+            label="员工价值"
             prop="employee_worth"
             show-overflow-tooltip
           />
