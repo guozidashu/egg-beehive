@@ -367,7 +367,7 @@
             Number: 0,
           },
           {
-            label: '待制版',
+            label: '设计完成',
             value: '2',
             Number: 0,
           },
@@ -377,13 +377,33 @@
             Number: 0,
           },
           {
-            label: '待剪版',
+            label: '制版完成',
             value: '4',
             Number: 0,
           },
           {
-            label: '未完成订单',
+            label: '剪板中',
             value: '5',
+            Number: 0,
+          },
+          {
+            label: '剪板完成',
+            value: '6',
+            Number: 0,
+          },
+          {
+            label: '样衣中',
+            value: '7',
+            Number: 0,
+          },
+          {
+            label: '样衣完成',
+            value: '8',
+            Number: 0,
+          },
+          {
+            label: '审核完成',
+            value: '9',
             Number: 0,
           },
         ],
