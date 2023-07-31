@@ -86,7 +86,7 @@
           <el-table-column
             align="center"
             label="员工成本"
-            prop="out_worth"
+            prop="wages"
             show-overflow-tooltip
           />
           <el-table-column

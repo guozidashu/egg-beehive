@@ -105,7 +105,7 @@ Vue.filter('moneyFormat', (value) => {
     return value
   }
   // 金额格式化
-  if (temp > 0) {
+  if (temp >= 0) {
     return moneyFormat(value)
   } else {
     return '-' + moneyFormat(value)

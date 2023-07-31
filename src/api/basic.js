@@ -380,10 +380,19 @@ export function getPositionCostAnalysis(data) {
     data,
   })
 }
+// 成本分析 - 费用分析
+export function getCostAnalysis(data) {
+  return request({
+    url: '/research/costAnalysis',
+    method: 'post',
+    data,
+  })
+}
 //  研发 -研发进度
 export function getPlannedList(data) {
   return request({
-    url: '/research/researchPace',
+    // url: '/research/researchPace',
+    url: '/research/orderList',
     method: 'post',
     data,
   })

@@ -82,27 +82,37 @@
     </div>
     <!-- 列表 -->
     <el-card shadow="never" style="border: 0; border-radius: 5px">
-      <p style="font-size: 18px; font-weight: 600">总费用 ￥2000</p>
+      <p style="font-size: 18px; font-weight: 600">
+        总费用 ￥{{ total | moneyFormat }}
+      </p>
       <QYList :list="list" :list-type="listType" :state="listLoading">
         <template #List>
           <el-table-column
             align="center"
             label="费用类别"
-            prop="band_name"
+            prop="name"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
             label="类别成本"
-            prop="band_cost"
+            prop="value"
             show-overflow-tooltip
-          />
+          >
+            <template #default="{ row }">
+              ￥{{ row.value | moneyFormat }}
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="类别占比"
             prop="proportion"
             show-overflow-tooltip
-          />
+          >
+            <template #default="{ row }">
+              {{ ((row.value / total) * 100).toFixed(2) }}%
+            </template>
+          </el-table-column>
         </template>
       </QYList>
     </el-card>
@@ -119,9 +129,11 @@
         selectList: [],
         form: {
           date: ['', ''],
-          brand_id: null,
-          year_id: null,
-          season_id: null,
+          start_date: '',
+          end_date: '',
+          brand_id: '',
+          year_id: '',
+          season_id: '',
         },
         formType: 4,
         listType: 2,
@@ -164,14 +176,15 @@
       // 获取列表数据
       async debounceFetchData() {
         this.listLoading = true
-        const { data } = await this.api.getBandCostAnalysis({
+        const { data } = await this.api.getCostAnalysis({
           start_date: this.form.date[0],
           end_date: this.form.date[1],
           brand_id: this.form.brand_id,
           year_id: this.form.year_id,
           season_id: this.form.season_id,
         })
-        this.list = data
+        this.total = data.total
+        this.list = data.pie
         this.listLoading = false
       },
     },

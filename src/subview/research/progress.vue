@@ -17,7 +17,7 @@
       >
         <template #Form>
           <el-form-item label="样衣类型:">
-            <el-select v-model="form.design_type">
+            <el-select v-model="form.type">
               <el-option label="头版" :value="1" />
               <el-option label="复色" :value="2" />
             </el-select>
@@ -73,22 +73,25 @@
             </el-select>
           </el-form-item>
           <el-form-item label="优先度:">
-            <el-select v-model="form.priority">
-              <el-option label="普通" :value="1" />
-              <el-option label="紧急" :value="2" />
-              <el-option label="加急" :value="3" />
+            <el-select v-model="form.priority_id">
+              <el-option
+                v-for="(item, index) in selectList.priority"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
+              />
             </el-select>
           </el-form-item>
           <el-form-item label="">
             <el-select
-              v-model="form.dateType"
+              v-model="form.date_type"
               style="width: 100px; margin: 0 10px"
             >
-              <el-option label="下单日期" :value="1" />
-              <el-option label="完成日期" :value="2" />
+              <el-option label="下单日期" value="add_time" />
+              <el-option label="完成日期" value="complete_time" />
             </el-select>
             <el-date-picker
-              v-if="form.dateType == 1"
+              v-if="form.date_type == 'add_time'"
               v-model="form.expected_date"
               align="left"
               :clearable="false"
@@ -103,7 +106,7 @@
               value-format="yyyy-MM-dd HH:mm:ss"
             />
             <el-date-picker
-              v-if="form.dateType == 2"
+              v-if="form.date_type == 'complete_time'"
               v-model="form.order_date"
               align="left"
               :clearable="false"
@@ -155,16 +158,16 @@
           >
             批量转大货
           </el-button>
-          <el-checkbox v-model="form.void">不显示已淘汰订单</el-checkbox>
+          <el-checkbox v-model="form.show_out">不显示已淘汰订单</el-checkbox>
         </el-form>
         <el-form class="demo-form-inline" :inline="true" :model="form">
           <el-form-item label="排序">
-            <el-select v-model="form.sortType" style="width: 150px">
-              <el-option label="按下单日期" value="do.create_time" />
-              <el-option label="按完成日期" value="do.expected_date" />
+            <el-select v-model="form.sort_field" style="width: 150px">
+              <el-option label="按下单日期" value="add_time" />
+              <el-option label="按完成日期" value="complete_time" />
             </el-select>
           </el-form-item>
-          <el-radio-group v-model="form.sort">
+          <el-radio-group v-model="form.sort_type">
             <el-radio-button label="asc">正序</el-radio-button>
             <el-radio-button label="desc">倒序</el-radio-button>
           </el-radio-group>
@@ -187,12 +190,12 @@
             align="center"
             label="样衣信息"
             prop="goods"
-            width="400"
+            width="500"
           >
             <template #default="{ row }">
               <div style="display: flex">
                 <el-image
-                  :src="row.goods_img"
+                  :src="row.design_pic"
                   style="width: 105px; height: 105px"
                 >
                   <div slot="error" class="el-image__error">暂无图片</div>
@@ -200,32 +203,25 @@
                 <div style="margin-left: 10px">
                   <div style="text-align: left">
                     <span style="font-weight: 600">
-                      <!-- {{ row.order_id }} -->
-                      wz13012
+                      {{ row.design_sn }}
                     </span>
                     &nbsp;| &nbsp;
-                    <el-tag type="success">头版</el-tag>
-                    <!-- <el-tag type="success" v-if="row.order_type == 1">头版</el-tag>
-                    <el-tag v-if="row.order_type == 2" >
-                      首单
-                    </el-tag> -->
+                    <el-tag v-if="row.design_type == 1" type="success">
+                      头版
+                    </el-tag>
+                    <el-tag v-else>复色</el-tag>
                   </div>
                   <div style="margin: 5px 0; text-align: left">
                     <!-- {{ row.goods_sn }}  -->
-                    小鳄鱼连帽卫衣
+                    小鳄鱼连帽卫衣(改字段暂未确定)
                   </div>
                   <div style="display: flex; width: 100%; margin: 5px 0">
-                    <el-tag type="info">卫衣</el-tag>
+                    <el-tag v-if="row.brand_name != null" type="info">
+                      {{ row.brand_name }}
+                    </el-tag>
                     &nbsp;
-                    <el-tag type="info">2023</el-tag>
-                    &nbsp;
-                    <el-tag type="info">春季</el-tag>
-                    &nbsp;
-                    <el-tag type="info">波段一</el-tag>
-                    &nbsp;
-                    <el-tag type="info">品牌</el-tag>
-                    <!-- <el-tag v-if="row.cate_name != null" type="info">
-                      {{ row.cate_name }}
+                    <el-tag v-if="row.category_name != null" type="info">
+                      {{ row.category_name }}
                     </el-tag>
                     &nbsp;
                     <el-tag v-if="row.year_name != null" type="info">
@@ -238,12 +234,12 @@
                     &nbsp;
                     <el-tag v-if="row.band_name != null" type="info">
                       {{ row.band_name }}
-                    </el-tag> -->
+                    </el-tag>
                   </div>
                   <div>
                     <div style="text-align: left">
-                      下单时间: 2020-02-02 02:02:02
-                      <!-- {{ row.order_expected_date | formatTime }} -->
+                      下单时间:
+                      {{ row.add_time | formatTime }}
                     </div>
                   </div>
                 </div>
@@ -253,49 +249,69 @@
           <el-table-column
             align="center"
             label="优先度"
-            prop="1111"
+            prop="priority_name"
             show-overflow-tooltip
-          />
+          >
+            <template #default="{ row }">
+              <el-tag>
+                {{ row.priority_name }}
+              </el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="样衣费用"
-            prop="1111"
+            prop="design_cost"
             show-overflow-tooltip
-          />
+          >
+            <template #default="{ row }">
+              <el-tag>￥{{ row.design_cost | moneyFormat }}</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="付款方式"
-            prop="1111"
+            prop="paytype"
             show-overflow-tooltip
-          />
+          >
+            <template #default="{ row }">
+              <el-tag v-if="row.paytype == 1">签单</el-tag>
+              <el-tag v-if="row.paytype == 2" type="success">现金</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="设计来源"
-            prop="1111"
+            prop="source_name"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
             label="样衣类型"
-            prop="1111"
+            prop="design_type"
             show-overflow-tooltip
-          />
+          >
+            <template #default="{ row }">
+              <el-tag v-if="row.design_type == 1" type="success">头版</el-tag>
+              <el-tag v-else>复色</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             align="center"
             label="设计师"
-            prop="1111"
+            prop="employee_name"
             show-overflow-tooltip
           />
           <el-table-column
             align="center"
             label="耗时"
-            prop="1111"
-            show-overflow-tooltip
+            prop="time_consuming"
+            width="200"
           />
           <el-table-column
             align="center"
             label="进度状态"
-            prop="1111"
+            prop="status"
             show-overflow-tooltip
           />
           <el-table-column
@@ -305,8 +321,12 @@
             width="150"
           >
             <template #default="{ row }">
-              <el-button type="text" @click="DieOut(row)">淘汰</el-button>
-              <el-button disabled type="text">已淘汰</el-button>
+              <el-button v-if="row.isout == 0" type="text" @click="DieOut(row)">
+                淘汰
+              </el-button>
+              <el-button v-if="row.isout == 1" disabled type="text">
+                已淘汰
+              </el-button>
               &nbsp;
               <el-button type="text">更多</el-button>
             </template>
@@ -326,26 +346,25 @@
         page: 1,
         pageSize: 20,
         form: {
-          void: false,
-          sortType: 'do.create_time',
-          sort: 'desc',
           page: 1,
-          pageSize: 20,
-          brand_id: '',
-          season_id: '',
-          category_id: '',
-          year_id: '',
-          priority: '',
-          keyword: '',
-          status: 0, // 状态 0 全部 1设计中  2待制版 3制版中 4待剪板  5未完成订单
-          design_type: '', //1头版 2复色
-          // --
-          paytype: '', //1签单 2现金
-          order_type: '', //1设计中 2设计完成 3制版中 4制版完成 5剪板中 6剪板完成 7样衣中 8样衣完成 9审核完成
-          // --
-          dateType: 1, //日期类型 1=下单日期 2=交货日期
-          expected_date: [], //交货日期
-          order_date: [], //订单创建日期
+          pageSize: 1,
+          type: '', // 类型 1头版  2复色
+          brand_id: '', // 品牌id
+          year_id: '', // 年份id
+          season_id: '', // 季节id
+          band_id: '', // 波段id
+          category_id: '', // 分类id
+          priority_id: '', // 优先度id
+          start_date: '', // 开始日期
+          end_date: '', // 结束日期
+          date_type: 'add_time', // 日期类型 add_time=下单日期 complete_time=完成日期
+          keyword: '', // 关键字
+          sort_field: 'add_time', // 排序字段 add_time=下单日期 complete_time=完成日期
+          sort_type: 'desc', // desc asc
+          show_out: false, // 不显示淘汰订单 true = 不显示
+          status: '99', // 状态
+          expected_date: [],
+          order_date: [],
         },
         selectList: [],
         formType: 4,
@@ -358,52 +377,62 @@
         tabList: [
           {
             label: '全部订单',
-            value: '0',
+            value: '99',
             Number: 0,
           },
           {
             label: '设计中',
-            value: '1',
+            value: '0',
             Number: 0,
           },
           {
-            label: '设计完成',
-            value: '2',
+            label: '待制版',
+            value: '10',
             Number: 0,
           },
           {
             label: '制版中',
-            value: '3',
+            value: '1',
             Number: 0,
           },
           {
-            label: '制版完成',
-            value: '4',
+            label: '待剪板',
+            value: '2',
             Number: 0,
           },
           {
             label: '剪板中',
+            value: '3',
+            Number: 0,
+          },
+          {
+            label: '待制作',
+            value: '4',
+            Number: 0,
+          },
+          {
+            label: '制作中',
             value: '5',
             Number: 0,
           },
           {
-            label: '剪板完成',
+            label: '待审核',
             value: '6',
             Number: 0,
           },
           {
-            label: '样衣中',
+            label: '待复核',
             value: '7',
             Number: 0,
           },
           {
-            label: '样衣完成',
+            label: '已完成',
             value: '8',
             Number: 0,
           },
           {
-            label: '审核完成',
-            value: '9',
+            label: '已取消',
+            value: '21',
             Number: 0,
           },
         ],
@@ -523,7 +552,7 @@
       // 获取下拉框数据
       async getTypeList() {
         const { data } = await this.api.getCommonAllList({
-          type: 'brand,category,year,season,band',
+          type: 'brand,category,year,season,band,priority',
         })
         this.selectList = data
       },
@@ -536,9 +565,26 @@
         this.formTemp = JSON.parse(JSON.stringify(this.form))
         this.formTemp.page = this.page
         this.formTemp.pageSize = this.pageSize
+        this.formTemp.status = Number(this.formTemp.status)
+        if (this.formTemp.date_type == 'add_time') {
+          this.formTemp.start_date = this.formTemp.expected_date[0]
+          this.formTemp.end_date = this.formTemp.expected_date[1]
+        } else {
+          this.formTemp.start_date = this.formTemp.order_date[0]
+          this.formTemp.end_date = this.formTemp.order_date[1]
+        }
         const { data } = await this.api.getPlannedList(this.formTemp)
-        this.list = data.data
-        this.total = data.total
+        this.list = data.list
+        data.count.forEach((item) => {
+          this.tabList.forEach((tab) => {
+            if (item.status == Number(tab.value)) {
+              tab.Number = item.count
+            }
+            if (item.status == Number(this.form.status)) {
+              this.total = item.count
+            }
+          })
+        })
         this.listLoading = false
       },
     },
