@@ -144,7 +144,7 @@
       </el-tabs>
       <div style="display: flex; justify-content: space-between">
         <el-form class="demo-form-inline" :inline="true" :model="form">
-          <el-button size="small" type="primary" @click="handleExamine">
+          <!-- <el-button size="small" type="primary" @click="handleExamine">
             批量审核
           </el-button>
           <el-button size="small" type="primary" @click="handleDieOut">
@@ -157,7 +157,7 @@
             @click="handleTransferCargo"
           >
             批量转大货
-          </el-button>
+          </el-button> -->
           <el-checkbox v-model="form.show_out">不显示已淘汰订单</el-checkbox>
         </el-form>
         <el-form class="demo-form-inline" :inline="true" :model="form">
@@ -196,7 +196,7 @@
               <div style="display: flex">
                 <el-image
                   :src="row.design_pic"
-                  style="width: 105px; height: 105px"
+                  style="width: 80px; height: 80px"
                 >
                   <div slot="error" class="el-image__error">暂无图片</div>
                 </el-image>
@@ -210,10 +210,6 @@
                       头版
                     </el-tag>
                     <el-tag v-else>复色</el-tag>
-                  </div>
-                  <div style="margin: 5px 0; text-align: left">
-                    <!-- {{ row.goods_sn }}  -->
-                    小鳄鱼连帽卫衣(改字段暂未确定)
                   </div>
                   <div style="display: flex; width: 100%; margin: 5px 0">
                     <el-tag v-if="row.brand_name != null" type="info">
@@ -288,12 +284,11 @@
           <el-table-column
             align="center"
             label="样衣类型"
-            prop="design_type"
+            prop="style_name"
             show-overflow-tooltip
           >
             <template #default="{ row }">
-              <el-tag v-if="row.design_type == 1" type="success">头版</el-tag>
-              <el-tag v-else>复色</el-tag>
+              <span>{{ row.style_name }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -314,7 +309,7 @@
             prop="status"
             show-overflow-tooltip
           />
-          <el-table-column
+          <!-- <el-table-column
             align="center"
             fixed="right"
             label="操作"
@@ -330,7 +325,7 @@
               &nbsp;
               <el-button type="text">更多</el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </template>
       </QYList>
     </el-card>
