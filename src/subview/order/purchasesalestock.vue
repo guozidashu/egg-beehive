@@ -806,6 +806,11 @@
                 key: 'goods_sn',
               },
               {
+                title: '商品编码',
+                type: 'text',
+                key: 'goods_code',
+              },
+              {
                 title: '吊牌价',
                 type: 'text',
                 key: 'goods_price',
@@ -894,6 +899,11 @@
                 title: '款号',
                 type: 'text',
                 key: 'goods_sn',
+              },
+              {
+                title: '商品编码',
+                type: 'text',
+                key: 'goods_code',
               },
               {
                 title: '吊牌价',
@@ -998,6 +1008,11 @@
                 key: 'goods_sn',
               },
               {
+                title: '商品编码',
+                type: 'text',
+                key: 'goods_code',
+              },
+              {
                 title: '吊牌价',
                 type: 'text',
                 key: 'goods_price',
@@ -1076,6 +1091,11 @@
                 title: '款号',
                 type: 'text',
                 key: 'goods_sn',
+              },
+              {
+                title: '商品编码',
+                type: 'text',
+                key: 'goods_code',
               },
               {
                 title: '吊牌价',
@@ -1170,6 +1190,11 @@
                 key: 'goods_sn',
               },
               {
+                title: '商品编码',
+                type: 'text',
+                key: 'goods_code',
+              },
+              {
                 title: '吊牌价',
                 type: 'text',
                 key: 'goods_price',
@@ -1243,6 +1268,11 @@
                 title: '款号',
                 type: 'text',
                 key: 'goods_sn',
+              },
+              {
+                title: '商品编码',
+                type: 'text',
+                key: 'goods_code',
               },
               {
                 title: '吊牌价',
