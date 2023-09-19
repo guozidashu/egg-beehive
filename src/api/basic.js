@@ -1386,6 +1386,14 @@ export function getStockCircularSonCate(data) {
     data,
   })
 }
+//数据 -  商品skc分析 列表
+export function getGoodsSkcRankList(data) {
+  return request({
+    url: '/information/goodsSkcRankList',
+    method: 'post',
+    data,
+  })
+}
 //数据 -  商品分析
 // 商品分析 - 单款合并
 export function getMergeStock(data) {

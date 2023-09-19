@@ -16,7 +16,7 @@
         @resetForm="resetForm"
       >
         <template #Form>
-          <el-form-item label="角色岗位:">
+          <!-- <el-form-item label="角色岗位:">
             <el-select v-model="form.role_id" size="small">
               <el-option
                 v-for="(item, index) in selectRoleList.role"
@@ -25,7 +25,7 @@
                 :value="item.id"
               />
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="日期筛选:">
             <el-date-picker
               v-model="form.date"
@@ -90,7 +90,7 @@
         selectList: [],
         form: {
           date: ['', ''],
-          role_id: '',
+          // role_id: '',
         },
         formType: 4,
         listType: 2,

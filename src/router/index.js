@@ -597,6 +597,15 @@ export const asyncRoutes = [
           icon: 'archive-line',
         },
       },
+      {
+        path: 'reportGoodsskc',
+        name: 'ReportGoodsskc',
+        component: () => import('@/subview/report/goodsskc'),
+        meta: {
+          title: '商品SKC分析',
+          icon: 'archive-line',
+        },
+      },
     ],
   },
   {
